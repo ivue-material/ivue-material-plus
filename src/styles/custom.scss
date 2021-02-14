@@ -1,0 +1,53 @@
+// z-index
+$zindex-affix: 10;
+// button
+$ivue-button-min-width: 88px;
+$ivue-button-height: 36px;
+$ivue-button-radius: 2px;
+$ivue-button-font-size: 14px;
+$ivue-button-dense-height: 32px;
+$ivue-button-icon-size: 40px;
+// icon
+$icon-size: 24px;
+// color
+$primary-color: #4177f6;
+$success-color:#19be6b;
+$warning-color:#F90;
+$error-color: #ed4014;
+$disabled-color: #ccc;
+$divider-color: rgba(0, 0, 0, 0.38);
+$text-color:#515a6e;
+$text-disable-color:#c5c8ce;
+$arrow-color: #808695;
+$border-color: #dcdee2;
+$border-multiple-color: #e8eaec;
+$legend-color: #999;
+$title-color:#17233d;
+$accent-color: rgba(0, 0, 0, .87);
+$white-color:#fff;
+$label-color: #606266;
+$popper-color: #ebeef5;
+// cursor
+$cursor-disabled: not-allowed;
+// input
+$input-height-base: 32px;
+$input-placeholder-color: #c5c8ce;
+$input-disabled-color: #c5c8ce;
+$input-disabled-bg: #ededed;
+// background
+$background-color-select-hover: #f3f3f3;
+$background-color-multiple: #f7f7f7;
+// steps
+$steps-border-color: #ccc;
+$steps-title-color: #666;
+// size
+$font-small-size: 12px;
+$font-base-size: 14px;
+// progress
+$progress-bg: #f3f3f3;
+// radius
+$border-radius-small: 4px;
+// extensible
+$extensible-color: #bfcbd9;
+// trantition
+$ease-in-out: ease-in-out;
