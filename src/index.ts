@@ -1,9 +1,11 @@
 import type { App } from 'vue'
 
 import IvueAffix from './components/ivue-affix';
+import IvueInput from './components/ivue-input';
 
 export {
-    IvueAffix
+    IvueAffix,
+    IvueInput
 }
 
 
@@ -11,9 +13,9 @@ interface InstallOptions {
 
 }
 
-
 const install = (app: App, opt: InstallOptions): void => {
     IvueAffix(app);
+    IvueInput(app);
 }
 
 // auto install

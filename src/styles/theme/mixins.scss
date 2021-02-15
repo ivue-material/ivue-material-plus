@@ -1,0 +1,40 @@
+/*
+* 颜色样式循环渲染
+*/
+
+@each $key,
+$value in $colors {
+      // $colorName 子级名称  $rgb 颜色
+      @each $colorName,
+      $rgb in map-get($colors, $key) {
+            @if ($colorName=="base") {
+                  .#{$key} {
+                        border-color: $rgb !important;
+                        background: $rgb !important;
+                        &.ivue-button--raised.#{$key}:not([disabled]) {
+                              color: #fff !important;
+                              background: $rgb;
+                        }
+                  }
+                  .#{$key}--text {
+                        color: $rgb !important;
+                        caret-color: $rgb !important;
+                  }
+            }
+            @else {
+                  .#{$key}-#{$colorName} {
+                        background-color: $rgb !important;
+                        border-color: $rgb !important;
+                        &.ivue-button--raised.#{$key}-#{$colorName}:not([disabled]) {
+                              color: #fff !important;
+                              background: $rgb;
+                        }
+                  }
+                  .#{$key}-#{$colorName}--text {
+                        color: $rgb !important;
+                        caret-color: $rgb !important;
+                  }
+            }
+      }
+}
+

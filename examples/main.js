@@ -7,6 +7,7 @@ import IVue from '../src/index'
 // import IVue from '../dist/ivue';
 
 import "../src/styles/index.scss";
+import "../src/styles/theme/index.scss";
 
 const app = createApp(App)
 app.use(router)
