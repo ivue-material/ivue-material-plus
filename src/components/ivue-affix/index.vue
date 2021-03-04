@@ -1,9 +1,9 @@
 <template>
     <div ref="wrapper">
-        <div ref="content" :class="classes" :style="styles">
+        <div ref="content" :class="classes" :style="data.styles">
             <slot></slot>
         </div>
-        <div v-show="slot" :style="slotStyle"></div>
+        <div v-show="data.slot" :style="data.slotStyle"></div>
     </div>
 </template>
 
@@ -13,7 +13,8 @@ import {
     onMounted,
     onBeforeUnmount,
     ref,
-    computed
+    computed,
+    reactive
 } from 'vue';
 import { on, off } from '../../utils/dom';
 
@@ -50,16 +51,22 @@ export default defineComponent({
             default: false
         }
     },
+    // 声明事件
+    emits: ['on-change'],
     // 组合式 API
     setup(props, { emit }) {
-        // 组件状态是否开启固定
-        const affix = ref(false);
-        // slot 是否开启
-        const slot = ref(false);
-        // styles
-        const styles = ref({});
-        // slotStyle
-        const slotStyle = ref({});
+
+        // data
+        const data = reactive({
+            // 组件状态是否开启固定
+            affix: false,
+            // slot 是否开启
+            slot: false,
+            // styles
+            styles: {},
+            // slotStyle
+            slotStyle: {}
+        })
 
         // ref = wrapper
         const wrapper = ref(null);
@@ -84,12 +91,10 @@ export default defineComponent({
         const classes = computed(() => {
             return [
                 {
-                    [`${prefixCls}`]: affix.value
+                    [`${prefixCls}`]: data.affix
                 }
             ]
         })
-
-
 
         // method
 
@@ -134,7 +139,6 @@ export default defineComponent({
             }
         }
 
-
         // 监听滚动
         const handleScroll = () => {
             // 获取垂直滚动高度
@@ -151,21 +155,21 @@ export default defineComponent({
 
             // 固定在头部 Top
             // 元素的顶部 减去 需要到达指定位置的数值   < windo 的滚动高度 向上滚动 没有开启固定状态
-            if ((elOffset.top - props.offsetTop) < scrollTop && offsetType.value === 'top' && !affix.value) {
+            if ((elOffset.top - props.offsetTop) < scrollTop && offsetType.value === 'top' && !data.affix) {
                 // 开启固定状态
-                affix.value = true;
+                data.affix = true;
 
 
                 // slot样式
-                slotStyle.value = {
+                data.slotStyle = {
                     width: `${content.value.clientWidth}px`,
                     height: `${content.value.clientHeight}px`
                 }
 
-                slot.value = true;
+                data.slot = true;
 
                 // 组样式
-                styles.value = {
+                data.styles = {
                     top: `${props.offsetTop}px`,
                     left: `${elOffset.left}px`,
                     width: `${wrapper.value.offsetWidth}px`
@@ -174,11 +178,11 @@ export default defineComponent({
                 // 在固定状态发生改变时触发
                 emit('on-change', true);
             }
-            else if ((elOffset.top - props.offsetTop) > scrollTop && offsetType.value == 'top' && affix.value) {
-                slot.value = false;
-                slotStyle.value = {};
-                affix.value = false;
-                styles.value = null;
+            else if ((elOffset.top - props.offsetTop) > scrollTop && offsetType.value == 'top' && data.affix) {
+                data.slot = false;
+                data.slotStyle = {};
+                data.affix = false;
+                data.styles = null;
 
                 // 在固定状态发生改变时触发
                 emit('on-change', false);
@@ -186,9 +190,9 @@ export default defineComponent({
 
 
             // 固定在底部 Bottom
-            if ((elOffset.top + props.offsetBottom + elHeight) > (scrollTop + windowHeight) && offsetType.value == 'bottom' && !affix.value) {
-                affix.value = true;
-                styles.value = {
+            if ((elOffset.top + props.offsetBottom + elHeight) > (scrollTop + windowHeight) && offsetType.value == 'bottom' && !data.affix) {
+                data.affix = true;
+                data.styles = {
                     bottom: `${props.offsetBottom}px`,
                     left: `${elOffset.left}px`,
                     width: `${elOffset.top}px`
@@ -197,15 +201,14 @@ export default defineComponent({
                 // 在固定状态发生改变时触发
                 emit('on-change', true);
             }
-            else if ((elOffset.top + props.offsetBottom + elHeight) < (scrollTop + windowHeight) && offsetType.value == 'bottom' && affix.value) {
-                affix.value = false;
-                styles.value = null;
+            else if ((elOffset.top + props.offsetBottom + elHeight) < (scrollTop + windowHeight) && offsetType.value == 'bottom' && data.affix) {
+                data.affix = false;
+                data.styles = null;
 
                 // 在固定状态发生改变时触发
                 emit('on-change', false);
             }
         }
-
 
         // mounted
         onMounted(() => {
@@ -220,13 +223,8 @@ export default defineComponent({
             off(window, 'resize', handleScroll, props.useCapture);
         })
 
-
-
         return {
-            affix,
-            slot,
-            styles,
-            slotStyle,
+            data,
             classes,
             offsetType,
             wrapper,

@@ -3,15 +3,39 @@
     <div class="container">
         <nav>
             <ul>
-                <li>
+                <!-- <li>
                     <router-link to="/"> Home </router-link>
-                </li>
+                </li> -->
                 <li>
                     <router-link to="/affix"> Affix </router-link>
                 </li>
 
                 <li>
                     <router-link to="/input"> Input </router-link>
+                </li>
+
+                <li>
+                    <router-link to="/icon"> Icon </router-link>
+                </li>
+
+                <li>
+                    <router-link to="/button"> Button </router-link>
+                </li>
+
+                <li>
+                    <router-link to="/elevation"> Elevation </router-link>
+                </li>
+
+                <li>
+                    <router-link to="/layout"> Layout </router-link>
+                </li>
+
+                <li>
+                    <router-link to="/list"> List </router-link>
+                </li>
+
+                 <li>
+                    <router-link to="/carousel"> Carousel </router-link>
                 </li>
             </ul>
         </nav>

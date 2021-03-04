@@ -18,7 +18,9 @@
     "url": "https://github.com/qq282126990/ivue-ui"
   },
   "author": "qq282126990",
-  "dependencies": {},
+  "dependencies": {
+      "raf":"^3.4.1"
+  },
   "peerDependencies": {
     "vue": ">=3.0.0"
   },

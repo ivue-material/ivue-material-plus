@@ -1,16 +1,14 @@
-import isServer from './isServer'
-
 interface IE8HTMLInputElement extends HTMLInputElement {
     attachEvent(event: string, listener: EventListener): boolean;
 }
 
 /* istanbul ignore next */
-export const on = function (
+export const on = (
     element: HTMLElement | Document | Window,
     event: string,
     handler: EventListenerOrEventListenerObject,
     useCapture = false,
-): void {
+): void => {
     if (element && event && handler) {
         element.addEventListener(event, handler, useCapture);
     }
@@ -18,13 +16,13 @@ export const on = function (
 
 
 /* istanbul ignore next */
-export const off = function(
+export const off = (
     element: HTMLElement | Document | Window,
     event: string,
     handler: EventListenerOrEventListenerObject,
     useCapture = false
-  ): void {
+): void => {
     if (element && event && handler) {
-      element.removeEventListener(event, handler, useCapture)
+        element.removeEventListener(event, handler, useCapture)
     }
-  }
+}

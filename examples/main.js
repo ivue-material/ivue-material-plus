@@ -8,6 +8,8 @@ import IVue from '../src/index'
 
 import "../src/styles/index.scss";
 import "../src/styles/theme/index.scss";
+import "../src/components/ivue-elevation/index";
+import "../src/components/ivue-layout/index";
 
 const app = createApp(App)
 app.use(router)

@@ -10,7 +10,7 @@ const HIDDEN_TEXTAREA_STYLE = `
   right:0 !important
 `;
 
-const SIZING_STYLE = [
+const SIZING_STYLE: any = [
     'letter-spacing',
     'line-height',
     'padding-top',
@@ -28,14 +28,14 @@ const SIZING_STYLE = [
     'box-sizing',
 ];
 
-let computedStyleCache = {};
+let computedStyleCache: object = {};
 let hiddenTextarea;
 
-function calculateNodeStyling(node, useCache = false) {
+function calculateNodeStyling(node: any, useCache = false) {
     const nodeRef = (
-            node.getAttribute('id') ||
-            node.getAttribute('data-reactid') ||
-            node.getAttribute('name'));
+        node.getAttribute('id') ||
+        node.getAttribute('data-reactid') ||
+        node.getAttribute('name'));
 
     if (useCache && computedStyleCache[nodeRef]) {
         return computedStyleCache[nodeRef];
@@ -77,7 +77,7 @@ function calculateNodeStyling(node, useCache = false) {
     return nodeInfo;
 }
 
-export default function calcTextareaHeight(uiTextNode, minRows = null, maxRows = null, useCache = false) {
+export const calcTextareaHeight = (uiTextNode: any, minRows = null, maxRows = null, useCache = false) => {
     if (!hiddenTextarea) {
         hiddenTextarea = document.createElement('textarea');
         document.body.appendChild(hiddenTextarea);

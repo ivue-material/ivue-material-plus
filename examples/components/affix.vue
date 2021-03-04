@@ -26,6 +26,7 @@ export default {
 .affix {
     margin-top:100px;
     width: 100px;
+    height: 3000px;
     background: red;
 }
 

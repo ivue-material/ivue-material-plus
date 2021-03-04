@@ -1,0 +1,91 @@
+$name: 'ivue-list-item';
+
+
+.#{$name} {
+      position: relative;
+      height: auto;
+      z-index: 2;
+      list-style: none;
+      .ivue-icon {
+            margin: 0;
+            transition-property: color, margin-right;
+      }
+      &-text {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            overflow: hidden;
+            line-height: 1.25em;
+            white-space: nowrap;
+            & * {
+                  width: 100%;
+                  margin: 0;
+                  overflow: hidden;
+                  line-height: 1.25em;
+                  text-overflow: ellipsis;
+            }
+      }
+}
+
+.#{$name}-container {
+      width: 100%;
+      font-size: 16px;
+      font-weight: 400;
+      text-align: left;
+      text-transform: none;
+      &:not(.ivue-list-item-default):not([disabled]) {
+            user-select: none;
+            cursor: pointer;
+      }
+      &.ivue-button-clean:hover {
+            opacity: 1;
+            text-decoration: none;
+      }
+}
+
+.#{$name}-link,
+.#{$name}-router {
+      color: #000;
+}
+
+.#{$name}-content {
+      min-height: 48px;
+      padding: 4px 16px;
+      display: -webkit-box;
+      display: flex;
+      -webkit-box-align: center;
+      align-items: center;
+      -webkit-box-pack: justify;
+      justify-content: space-between;
+      transition: padding $ivue-transition-stand;
+      will-change: padding;
+}
+
+.#{$name}-expand {
+      border-top: 1px solid transparent;
+      border-bottom: 1px solid transparent;
+      transition: border $ivue-transition-stand;
+      will-change: border;
+      .ivue-list-expand {
+            height: 0;
+            opacity: 0;
+            overflow: hidden;
+            transform: translate3d(0, -24px, -0);
+            transition: $ivue-transition-stand;
+            transition-property: transform, opacity;
+            will-change: transform, opacity;
+      }
+      &.ivue-active {
+            border-color: rgba(0, 0, 0, 0.12);
+            .ivue-list-expand-icon {
+                  perspective: 1000px;
+                  perspective-origin: 50% 50%;
+                  transform: rotateX(180deg);
+            }
+            .ivue-list-expand {
+                  opacity: 1;
+                  transform: translate3d(0, 0, 0);
+            }
+      }
+}
