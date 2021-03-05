@@ -8,7 +8,7 @@ import {
     resolveDirective
 } from 'vue';
 
-import IvueButtonContent from "./content";
+import IvueButtonContent from "./content.vue";
 import Colorable from '../../utils/mixins/colorable';
 import { inject as registrableInject } from '../../utils/mixins/registrable';
 import ripple from '../../utils/directives/ripple';
@@ -96,7 +96,11 @@ export default defineComponent({
     // 组合式 API
     setup(props, { emit }) {
         // data
-        const data = reactive({
+        const data = reactive<{
+            rippleActive: boolean
+            isActive: boolean
+            mobile: boolean
+        }>({
             /**
              * 波纹效果激活
              *
@@ -125,7 +129,7 @@ export default defineComponent({
 
         // 判断按钮是否激活
         const activeButton = computed(() => {
-            if (props.isActive) {
+            if (data.isActive) {
                 return `${prefixCls}--active`;
             }
         });
@@ -182,7 +186,7 @@ export default defineComponent({
         const buttonContent = h(IvueButtonContent, {}, this.$slots.default);
 
         // 按钮属性
-        let buttonAttrs = {
+        let buttonAttrs: any = {
             class: {
                 [`${prefixCls}`]: true,
                 'isMobile': this.data.mobile,

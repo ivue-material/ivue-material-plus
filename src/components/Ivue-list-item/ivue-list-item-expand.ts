@@ -39,13 +39,20 @@ export default defineComponent({
         }
     },
     setup(props: any, { slots, emit }) {
-        const IvueList = inject('IvueList');
+        const IvueList = <{
+            pushExpandable: any,
+            removeExpandable: any,
+            expandATab: any
+        }>inject('IvueList');
 
         // 支持访问内部组件实例
-        const vm = getCurrentInstance();
+        const vm: any = getCurrentInstance();
 
         // data
-        const data = reactive({
+        const data = reactive<{
+            expandStyles: object,
+            showContent: boolean
+        }>({
             /**
              * 扩展样式
              *
@@ -100,7 +107,7 @@ export default defineComponent({
             const expandEl = listExpand.value;
             let size = 0;
 
-            Array.from(expandEl.children).forEach(child => {
+            Array.from(expandEl.children).forEach((child: any) => {
                 size += child.offsetHeight;
             })
             return size;

@@ -34,8 +34,12 @@
                     <router-link to="/list"> List </router-link>
                 </li>
 
-                 <li>
+                <li>
                     <router-link to="/carousel"> Carousel </router-link>
+                </li>
+
+                <li>
+                    <router-link to="/switch"> Switch </router-link>
                 </li>
             </ul>
         </nav>

@@ -4,7 +4,7 @@
     </div>
 </template>
 
-<script>
+<script lang='ts'>
 import {
     defineComponent,
     reactive,
@@ -23,11 +23,11 @@ export default defineComponent({
     name: prefixCls,
     componentName: 'ivue-carousel-item',
     inject: ['childData'],
-    setup () {
+    setup() {
         const childData = inject('childData');
 
         // 支持访问内部组件实例
-        const vm = getCurrentInstance();
+        const vm: any = getCurrentInstance();
 
         // data
         const data = reactive({
@@ -70,7 +70,7 @@ export default defineComponent({
         });
 
         // 监听宽度
-        watch(childData, (value) => {
+        watch(childData, (value: any) => {
             data.width = value.width;
             data.height = value.height;
 

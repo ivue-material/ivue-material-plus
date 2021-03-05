@@ -73,7 +73,7 @@
     </div>
 </template>
 
-<script>
+<script lang='ts'>
 import {
     defineComponent,
     reactive,
@@ -87,9 +87,9 @@ import {
     getCurrentInstance
 } from 'vue';
 
-import Touch from '@/utils/directives/touch';
-import { getStyle, oneOf } from '@/utils/assist';
-import { on, off } from '@/utils/dom';
+import Touch from '../../utils/directives/touch';
+import { getStyle, oneOf } from '../../utils/assist';
+import { on, off } from '../../utils/dom';
 
 import { IvueButton } from '../ivue-button';
 import { IvueIcon } from '../ivue-icon';
@@ -112,7 +112,7 @@ export default defineComponent({
         arrow: {
             type: String,
             default: 'hover',
-            validator (value) {
+            validator(value: string) {
                 return oneOf(value, ['hover', 'always', 'never'])
             }
         },
@@ -162,7 +162,7 @@ export default defineComponent({
         height: {
             type: [String, Number],
             default: 'auto',
-            validator (value) {
+            validator(value) {
                 return value === 'auto' || Object.prototype.toString.call(value) === '[object Number]';
             }
         },
@@ -201,7 +201,7 @@ export default defineComponent({
         dots: {
             type: String,
             default: 'inside',
-            validator (value) {
+            validator(value: string) {
                 return oneOf(value, ['inside', 'outside', 'none'])
             }
         },
@@ -222,12 +222,12 @@ export default defineComponent({
         trigger: {
             type: String,
             default: 'click',
-            validator (value) {
+            validator(value: string) {
                 return oneOf(value, ['click', 'hover'])
             }
         }
     },
-    setup (props, { emit }) {
+    setup(props: any, { emit }) {
 
         // ref
         const copyTrack = ref(null);
@@ -237,7 +237,7 @@ export default defineComponent({
         const vm = getCurrentInstance();
 
         // data
-        const data = reactive({
+        const data: any = reactive({
             /**
              * 列表内容宽度
              * @type {Number}

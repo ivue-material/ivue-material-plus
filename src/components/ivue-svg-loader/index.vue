@@ -4,8 +4,9 @@
 
 <script lang='ts'>
 let ivueSVGStore = {};
+import { defineComponent } from 'vue'
 
-export default {
+export default defineComponent({
       name: 'ivue-svg-loader',
       props: {
             /*
@@ -18,13 +19,13 @@ export default {
       },
       data () {
             return {
-                  /*
+                  /**
                   * html
                   *
                   * @type {String}
                   */
                   html: null,
-                  /*
+                  /**
                   * 错误提示
                   *
                   * @type {String}
@@ -107,5 +108,5 @@ export default {
             }
 
       }
-}
+})
 </script>

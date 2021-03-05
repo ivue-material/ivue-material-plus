@@ -10,6 +10,7 @@ import Elevation from '../components/elevation';
 import Layout from '../components/layout';
 import List from '../components/list';
 import Carousel from '../components/carousel';
+import Switch from '../components/switch';
 
 const routes = [{
     path: "/Affix",
@@ -50,6 +51,11 @@ const routes = [{
     path: "/Carousel",
     name: "Carousel",
     component: Carousel,
+  },
+  {
+    path: "/Switch",
+    name: "Switch",
+    component: Switch,
   },
 ];
 

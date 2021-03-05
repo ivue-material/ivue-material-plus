@@ -1,8 +1,13 @@
-<script>
+<script lang="ts">
 import {
     defineComponent,
     h,
-    PropType
+    PropType,
+    reactive,
+    computed,
+    watch,
+    withDirectives,
+    resolveDirective
 } from 'vue';
 
 
@@ -11,18 +16,14 @@ import Colorable from '../../utils/mixins/colorable';
 import ripple from '../../utils/directives/ripple';
 import touch from '../../utils/directives/touch';
 
+type Size = 'large' | 'small' | 'default';
+
 const prefixCls = 'ivue-switch';
 
-function isCssColor (color) {
-    return !!color && !!color.match(/^(#|(rgb|hsl)a?\()/)
-}
-
-export default {
+export default defineComponent({
     name: prefixCls,
     mixins: [Colorable],
-    directives: {
-        ripple
-    },
+    emits: ['on-change', 'update:modelValue'],
     props: {
         /**
          * 浮雕按钮
@@ -39,6 +40,15 @@ export default {
          * @type {String}
          */
         color: {
+            type: String,
+            default: ''
+        },
+        /**
+         * 按钮颜色
+         *
+         * @type {String}
+         */
+        falseColor: {
             type: String,
             default: ''
         },
@@ -92,7 +102,7 @@ export default {
          *
          * @type {String,Number,Boolean}
          */
-        value: {
+        modelValue: {
             type: [String, Number, Boolean],
             default: false
         },
@@ -102,232 +112,224 @@ export default {
          * @type {String,Number,Boolean}
          */
         size: {
-            type: String,
-            validator (value) {
+            type: String as PropType<Size>,
+            validator(value: string) {
                 return oneOf(value, ['large', 'small', 'default'])
             },
-            default () {
-                return !this.$Ivue || this.$Ivue.size === '' ? 'default' : this.$Ivue.size
+            default() {
+                return 'default'
             }
         }
     },
-    data () {
-        return {
+    setup(props: any, { emit }) {
+
+        // data
+        const data = reactive({
             /**
              * 当前选择状态
              *
              * @type {String,Number,Boolean}
              */
-            currentValue: this.value
-        }
-    },
-    computed: {
-        // 浮雕样式
-        embossClass () {
-            return {
-                [`${prefixCls}-emboss`]: true,
-                [`${prefixCls}-emboss--disabled`]: this.disabled,
-                [`${prefixCls}-emboss--${this.size}`]: this.size
-            }
-        },
+            currentValue: props.modelValue,
+        });
 
-        // 浮雕进度条
-        embossTrackClass () {
-            return [
-                `${prefixCls}-emboss--track`,
-                {
-                    [`${prefixCls}-emboss--track__checked`]: this.currentValue === this.trueValue
-                }
-            ]
-        },
-        // 浮雕指示器
-        embossThumbClass () {
-            return [
-                `${prefixCls}-emboss--thumb`,
-                {
-                    [`${prefixCls}-emboss--thumb__checked`]: this.currentValue === this.trueValue
-                }
-            ]
-        },
-        // 进度条样式
-        embossLodingClass () {
-            return {
-                [`${prefixCls}-emboss--loading`]: this.loading
+        // computed
 
-            }
-        },
-        // 浮雕ripple
-        embossRippleClass () {
-            return [
-                `${prefixCls}-emboss--ripple`,
-                {
-                    [`${prefixCls}-emboss--ripple__checked`]: this.currentValue === this.trueValue
-                }
-            ]
-        },
         // 外部样式
-        wrapClasses () {
+        const wrapClasses = computed(() => {
             // 是否开启浮雕
-            if (this.emboss) {
+            if (props.emboss) {
                 return {
                     [`${prefixCls}-emboss--wrapper`]: true,
-                    [`${prefixCls}-emboss--disabled`]: this.disabled
+                    [`${prefixCls}-emboss--disabled`]: props.disabled
                 }
             }
 
             return {
                 [`${prefixCls}`]: true,
-                [`${prefixCls}-checked`]: this.currentValue === this.trueValue,
-                [`${prefixCls}-disabled`]: this.disabled,
-                [`${prefixCls}-loading`]: this.loading,
-                [`${prefixCls}-${this.size}`]: this.size
+                [`${prefixCls}-false`]: props.falseColor !== '',
+                [`${prefixCls}-checked`]: data.currentValue === props.trueValue,
+                [`${prefixCls}-disabled`]: props.disabled,
+                [`${prefixCls}-loading`]: props.loading,
+                [`${prefixCls}-${props.size}`]: props.size
             }
-        },
-        // 内部文字样式
-        innerClasses () {
-            return `${prefixCls}-inner`;
-        },
-        // 修改v-model
-        inputValue: {
-            get () {
-                return this.currentValue
-            },
-            set (val) {
-                this.currentValue = val;
+        });
 
-                this.$emit('input', val);
+        // 浮雕样式
+        const embossClass = computed(() => {
+            return {
+                [`${prefixCls}-emboss`]: true,
+                [`${prefixCls}-emboss--disabled`]: props.disabled,
+                [`${prefixCls}-emboss--${props.size}`]: props.size
             }
-        },
+        });
+
+        // 浮雕进度条
+        const embossTrackClass = computed(() => {
+            return [
+                `${prefixCls}-emboss--track`,
+                {
+                    [`${prefixCls}-emboss--track__checked`]: data.currentValue === props.trueValue
+                }
+            ]
+        });
+
+        // 浮雕指示器
+        const embossThumbClass = computed(() => {
+            return [
+                `${prefixCls}-emboss--thumb`,
+                {
+                    [`${prefixCls}-emboss--thumb__checked`]: data.currentValue === props.trueValue
+                }
+            ]
+        });
+
+        // 进度条样式
+        const embossLodingClass = computed(() => {
+            return {
+                [`${prefixCls}-emboss--loading`]: props.loading
+            }
+        });
+
+        // 浮雕ripple
+        const embossRippleClass = computed(() => {
+            return [
+                `${prefixCls}-emboss--ripple`,
+                {
+                    [`${prefixCls}-emboss--ripple__checked`]: data.currentValue === props.trueValue
+                }
+            ]
+        });
+
+        // 设置背景颜色
+        const setColor = computed(() => {
+            let color = '';
+
+            // 激活
+            if (data.currentValue === props.trueValue) {
+                color = props.color
+            }
+
+            if (data.currentValue === props.falseValue) {
+                color = props.falseColor
+            }
+
+            console.log(data.currentValue)
+            console.log(props.trueValue)
+            console.log(color)
+
+            return color
+        });
+
+        // 内部文字样式
+        const innerClasses = computed(() => {
+            return `${prefixCls}-inner`;
+        });
+
         // 更新 ripple
-        computedRipple () {
-            if (this.rippleDisabled || this.disabled) {
+        const computedRipple = computed(() => {
+            if (props.rippleDisabled || props.disabled) {
                 return false;
             }
 
             return {
                 center: true
             };
-        }
-    },
-    methods: {
+        })
+
+        // methods
+
         // 切换状态
-        toggle (event) {
+        const toggle = (event) => {
             if (event) {
                 event.preventDefault();
             }
 
-            if (this.disabled || this.loading) {
+            if (props.disabled || props.loading) {
                 return false;
             }
 
-            const checked = this.currentValue === this.trueValue ? this.falseValue : this.trueValue;
+            const checked = data.currentValue === props.trueValue ? props.falseValue : props.trueValue;
 
             // 修改 v-modul
-            this.inputValue = checked
+            data.currentValue = checked
+            emit('update:modelValue', checked);
 
-            this.$emit('on-change', checked);
-        },
-        // 渲染内容
-        genInner (h) {
-            const {
-                currentValue,
-                trueValue,
-                falseValue,
-                innerClasses
-            } = this;
-
-            const name = currentValue === trueValue;
-            const close = currentValue === falseValue;
-
-            return h('span', {
-                class: innerClasses,
-            }, [
-                    name ? this.$slots.open : close ? this.$slots.close : ''
-                ]);
-        },
-        // 渲染浮雕
-        genEmboss (h) {
-            const {
-                setTextColor,
-                embossClass,
-                color,
-                currentValue,
-                trueValue,
-                embossTrackClass,
-                embossThumbClass,
-                embossRippleClass,
-                computedRipple,
-                embossLodingClass,
-                loadingColor
-            } = this;
-
-            // 是否开启颜色
-            const _color = currentValue === trueValue ? color : '';
-
-            return h('div', setTextColor(_color, {
-                class: embossClass
-            }), [
-                    h('span', { class: embossTrackClass }),
-                    h('span', { class: embossThumbClass }, [
-                        h('span', setTextColor(loadingColor, { class: embossLodingClass })),
-                    ]),
-                    h('span', {
-                        class: embossRippleClass,
-                        directives: [
-                            {
-                                name: 'ripple',
-                                value: computedRipple
-                            }
-                        ]
-                    })
-                ]);
+            emit('on-change', checked);
         }
-    },
-    watch: {
-        value (value) {
-            if (value !== this.trueValue && value !== this.falseValue) {
+
+        // 监听value
+        watch(() => props.modelValue, (value) => {
+            if (value !== props.trueValue && value !== props.falseValue) {
                 throw 'Value should be trueValue or falseValue.';
             }
 
-            this.currentValue = value;
+            data.currentValue = value;
+        });
+
+        return {
+            // data
+            data,
+
+            // computed
+            wrapClasses,
+            embossClass,
+            embossTrackClass,
+            embossThumbClass,
+            embossLodingClass,
+            embossRippleClass,
+            innerClasses,
+            computedRipple,
+            setColor,
+
+            // methods
+            toggle,
         }
     },
-    render (h) {
-        const {
-            setTextColor,
-            genInner,
-            wrapClasses,
-            currentValue,
-            trueValue,
-            color,
-            toggle,
-            emboss,
-            genEmboss
-        } = this;
+    render() {
+        // 解析指令
+        const rippleDirective = resolveDirective('ripple');
+        const touchDirective = resolveDirective('touch');
 
-        // 是否开启颜色
-        const _color = currentValue === trueValue ? color : '';
-
-        return h('div', setTextColor(!emboss && _color, {
-            class: wrapClasses,
-            attrs: {
-                tabindex: '0'
-            },
-            directives: [{
-                name: 'touch',
-                value: {
-                    left: () => toggle(),
-                    right: () => toggle()
-                }
-            }],
-            on: {
-                click: toggle
-
-            }
-        }), [
-                emboss && genEmboss(h),
-                genInner(h)
+        // 渲染浮雕
+        const genEmboss = () => {
+            return h('div', this.setTextColor(this.setColor, {
+                class: this.embossClass
+            }), [
+                h('span', { class: this.embossTrackClass }),
+                h('span', { class: this.embossThumbClass }, [
+                    h('span', this.setTextColor(this.loadingColor, { class: this.embossLodingClass })),
+                ]),
+                withDirectives(h('span', {
+                    class: this.embossRippleClass,
+                }), [[rippleDirective, this.computedRipple]])
             ]);
+        };
+
+        // 渲染内容
+        const genInner = () => {
+            const name = this.data.currentValue === this.trueValue;
+            const close = this.data.currentValue === this.falseValue;
+
+            return h('span', {
+                class: this.innerClasses,
+            }, [
+                name ? this.$slots.open && this.$slots.open() :
+                    close ? this.$slots.close && this.$slots.close() : ''
+            ]);
+        }
+
+        return withDirectives(h('div', this.setTextColor(!this.emboss && this.setColor, {
+            class: this.wrapClasses,
+            tabindex: '0',
+            onClick: this.toggle
+        }), [
+            this.emboss && genEmboss(),
+            genInner()
+        ]), [[touchDirective, {
+            left: () => this.toggle(),
+            right: () => this.toggle()
+        }]]);
     }
-}
+})
 </script>

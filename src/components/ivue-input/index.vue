@@ -675,6 +675,7 @@ export default defineComponent({
         })
 
         return {
+            prefixCls,
             // computed
             // prepend,
             // class | style
@@ -703,11 +704,6 @@ export default defineComponent({
             currentValue,
             textarea,
             input
-        }
-    },
-    data() {
-        return {
-            prefixCls: prefixCls,
         }
     },
     computed: {
@@ -771,6 +767,8 @@ export default defineComponent({
                 {
                     [`${prefixCls}-group`]: this.prepend || this.append || (this.search && this.enterButton),
                     [`${prefixCls}-no-border`]: !this.border,
+                    [`${prefixCls}-content--prepend`]: this.prepend,
+                    [`${prefixCls}-content--append`]: this.append || (this.search && this.enterButton)
                 }
             ]
         },

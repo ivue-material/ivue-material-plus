@@ -1,8 +1,8 @@
 
 <script lang='ts'>
-import { h } from 'vue';
+import { h,defineComponent } from 'vue';
 
-export default {
+export default defineComponent({
     name: 'ivue-content',
     props: {
         /**
@@ -21,5 +21,5 @@ export default {
             class: 'ivue-content',
         }, this.$slots)
     }
-}
+})
 </script>

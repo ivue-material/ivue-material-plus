@@ -8,6 +8,7 @@
 import {
     defineComponent,
     reactive,
+    provide
 } from 'vue';
 
 export default defineComponent({
@@ -23,19 +24,15 @@ export default defineComponent({
             default: false
         }
     },
-    provide() {
-        return {
-            IvueList: this.data.IvueList
-        }
-    },
     // 组合式 API
-    setup(props, { emit }) {
+    setup(props) {
+
         // methods
         // 扩展 tab
         const expandATab = (expandedListItem) => {
             if (props.ivueExpandSingle && expandedListItem) {
                 // 其他可扩展列表项
-                const otherExpandableListItem = data.IvueList.expandable.filter(target => target.uid !== expandedListItem.uid);
+                const otherExpandableListItem: any = data.IvueList.expandable.filter((target) => target.uid !== expandedListItem.uid);
 
                 otherExpandableListItem.forEach((expandableListItem) => {
                     expandableListItem.close()
@@ -67,13 +64,15 @@ export default defineComponent({
             });
 
             if (findItem) {
-                data.IvueList.expandable = expandableListItems.filter(target => target.uid !== expandableListItem.uid);
+                data.IvueList.expandable = expandableListItems.filter((target) => target.uid !== expandableListItem.uid);
 
             }
         }
 
         // data
-        const data = reactive({
+        const data: any = reactive<{
+            IvueList: object
+        }>({
             IvueList: {
                 /**
                  * 扩展列表
@@ -95,6 +94,9 @@ export default defineComponent({
                 removeExpandable: removeExpandable
             }
         });
+
+        // provide
+        provide('IvueList', data.IvueList);
 
         return {
             // data

@@ -57,7 +57,12 @@ export default defineComponent({
     setup(props, { emit }) {
 
         // data
-        const data = reactive({
+        const data = reactive<{
+            affix: boolean
+            slot: boolean
+            styles: object
+            slotStyle: object
+        }>({
             // 组件状态是否开启固定
             affix: false,
             // slot 是否开启

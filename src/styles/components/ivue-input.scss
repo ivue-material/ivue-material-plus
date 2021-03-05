@@ -177,6 +177,16 @@ $name: 'ivue-input';
       }
     }
 
+    &--prepend {
+      border-bottom-right-radius: 0 !important;
+      border-top-right-radius: 0 !important;
+    }
+
+    &--append {
+      border-bottom-left-radius: 0 !important;
+      border-top-left-radius: 0 !important;
+    }
+
   }
 
   // 密码
