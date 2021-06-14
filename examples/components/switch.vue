@@ -11,6 +11,7 @@
             false-color="#ff4949"
             v-model="switch1"
             @on-change="handleChange"
+            :before-change="handleBeforeChange"
         ></ivue-switch>
 
         <p>flat</p>
@@ -89,7 +90,7 @@
             color="#F41D74"
             size="small"
         ></ivue-switch>
-        <ivue-switch loading :value="true" ></ivue-switch>
+        <ivue-switch loading :value="true"></ivue-switch>
         <ivue-switch loading :value="true" size="large"></ivue-switch>
         <ivue-switch loading :value="true" size="small"></ivue-switch>
     </div>
@@ -105,6 +106,11 @@ export default {
     methods: {
         handleChange () {
             console.log('>')
+        },
+        handleBeforeChange () {
+            return new Promise((resolve) => {
+                console.log('?')
+            });
         }
     }
 }

@@ -10,6 +10,8 @@ import IvueListItem from './components/Ivue-list-item';
 import IvueCarousel from './components/ivue-carousel';
 import IvueCarouselItem from './components/ivue-carousel-item';
 import IvueSwitch from './components/ivue-switch';
+import IvueBottomNav from './components/ivue-bottom-nav';
+import IvueBottomNavItem from './components/ivue-bottom-nav-item';
 
 // 指令
 import Directives from './utils/directives/index';
@@ -24,7 +26,9 @@ export {
     IvueListItem,
     IvueCarousel,
     IvueCarouselItem,
-    IvueSwitch
+    IvueSwitch,
+    IvueBottomNav,
+    IvueBottomNavItem,
 }
 
 
@@ -42,7 +46,9 @@ const install = (app: App, opt: InstallOptions): void => {
     IvueListItem(app);
     IvueCarousel(app);
     IvueCarouselItem(app);
-    IvueSwitch(app)
+    IvueSwitch(app);
+    IvueBottomNav(app);
+    IvueBottomNavItem(app);
 
     // 注册全局指令
     // ripple resize touch click-outside

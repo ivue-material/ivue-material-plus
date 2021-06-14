@@ -41,6 +41,11 @@
                 <li>
                     <router-link to="/switch"> Switch </router-link>
                 </li>
+
+
+                <li>
+                    <router-link to="/bottom-nav"> BottomNav </router-link>
+                </li>
             </ul>
         </nav>
         <link

@@ -11,6 +11,7 @@ import Layout from '../components/layout';
 import List from '../components/list';
 import Carousel from '../components/carousel';
 import Switch from '../components/switch';
+import BottomNav from '../components/bottom-nav';
 
 const routes = [{
     path: "/Affix",
@@ -56,6 +57,11 @@ const routes = [{
     path: "/Switch",
     name: "Switch",
     component: Switch,
+  },
+  {
+    path: "/bottom-nav",
+    name: "BottomNav",
+    component: BottomNav,
   },
 ];
 

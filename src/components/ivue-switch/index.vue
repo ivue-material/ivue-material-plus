@@ -119,7 +119,13 @@ export default defineComponent({
             default() {
                 return 'default'
             }
-        }
+        },
+        /**
+         * 返回 Promise 可以阻止切换
+         *
+         * @type {Function}
+         */
+        beforeChange: Function
     },
     setup(props: any, { emit }) {
 
@@ -214,10 +220,6 @@ export default defineComponent({
                 color = props.falseColor
             }
 
-            console.log(data.currentValue)
-            console.log(props.trueValue)
-            console.log(color)
-
             return color
         });
 
@@ -249,6 +251,24 @@ export default defineComponent({
                 return false;
             }
 
+
+            // 是否有 Promise
+            if (!props.beforeChange) {
+                return handleToggle();
+            }
+
+            const before = props.beforeChange();
+
+            if (before && before.then) {
+                before.then(() => {
+                    handleToggle();
+                });
+            } else {
+                handleToggle();
+            }
+        }
+
+        const handleToggle = () => {
             const checked = data.currentValue === props.trueValue ? props.falseValue : props.trueValue;
 
             // 修改 v-modul
