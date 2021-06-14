@@ -21,7 +21,7 @@
                 <div class="demo-carousel">3</div>
             </ivue-carousel-item>
         </ivue-carousel>
-
+<!--
         <p>自动切换</p>
         <ivue-carousel v-model="value1" loop autoplay>
             <ivue-carousel-item>
@@ -53,7 +53,7 @@
             <ivue-carousel-item>
                 <div class="demo-carousel">3</div>
             </ivue-carousel-item>
-        </ivue-carousel>
+        </ivue-carousel> -->
     </div>
 </template>
 
@@ -68,7 +68,7 @@ export default {
             radiusDot: true,
             trigger: 'click',
             arrow: 'always',
-            loop: false
+            loop: true
         }
     },
     methods: {

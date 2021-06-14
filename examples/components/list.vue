@@ -1,18 +1,15 @@
 <template>
     <div>
-        <!-- <ivue-list>
+        <ivue-list>
             <ivue-list-item>Plain Text</ivue-list-item>
             <ivue-list-item rippleDisabled>Plain Text</ivue-list-item>
             <ivue-list-item @click="handleClick">click</ivue-list-item>
-            <ivue-list-item :disabled="true" type="button"
+            <ivue-list-item  type="button"
                 >button</ivue-list-item
             >
-
-            <ivue-list-item href="'www.baidu.com'" rippleDisabled
-                >link</ivue-list-item
-            >
-        </ivue-list> -->
+        </ivue-list>
         {{expandNews}}
+        {{expandSingle}}
         <p>expand</p>
         <ivue-list :ivueExpandSingle="expandSingle">
             <ivue-list-item
@@ -52,7 +49,7 @@
                 </template>
             </ivue-list-item>
 
-            <!-- <ivue-list-item
+            <ivue-list-item
                 ivue-expand
                 v-model:ivueExpanded="expandNews"
                 @ivue-expanded="handleExpanded"
@@ -70,7 +67,7 @@
                         >
                     </ivue-list>
                 </template>
-            </ivue-list-item> -->
+            </ivue-list-item>
         </ivue-list>
     </div>
 </template>

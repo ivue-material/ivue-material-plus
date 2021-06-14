@@ -11,8 +11,6 @@
                 <span>Favorites</span>
                 <!-- <IvueIcon>favorite</IvueIcon> -->
             </ivue-button>
-
-            <ivue-bottom-nav-item>123</ivue-bottom-nav-item>
         </ivue-bottom-nav>
         <!-- <p>基础</p>
         <ivue-bottom-nav :value="true" :active.sync="bottomNav" key="base" :height="'100'">

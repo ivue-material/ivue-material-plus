@@ -84,7 +84,7 @@ import {
     provide,
     watch,
     ref,
-    getCurrentInstance
+    getCurrentInstance,
 } from 'vue';
 
 import Touch from '../../utils/directives/touch';
@@ -113,8 +113,8 @@ export default defineComponent({
             type: String,
             default: 'hover',
             validator(value: string) {
-                return oneOf(value, ['hover', 'always', 'never'])
-            }
+                return oneOf(value, ['hover', 'always', 'never']);
+            },
         },
         /**
          * 左箭头图标
@@ -123,7 +123,7 @@ export default defineComponent({
          */
         leftArrow: {
             type: String,
-            default: 'keyboard_arrow_left'
+            default: 'keyboard_arrow_left',
         },
         /**
          * 右箭头图标
@@ -132,7 +132,7 @@ export default defineComponent({
          */
         rightArrow: {
             type: String,
-            default: 'keyboard_arrow_right'
+            default: 'keyboard_arrow_right',
         },
         /**
          * 动画效果
@@ -141,7 +141,7 @@ export default defineComponent({
          */
         easing: {
             type: String,
-            default: 'ease'
+            default: 'ease',
         },
         /**
          * 是否开启循环
@@ -150,7 +150,7 @@ export default defineComponent({
          */
         loop: {
             type: Boolean,
-            default: false
+            default: false,
         },
         /**
          * 轮播图高度
@@ -163,8 +163,11 @@ export default defineComponent({
             type: [String, Number],
             default: 'auto',
             validator(value) {
-                return value === 'auto' || Object.prototype.toString.call(value) === '[object Number]';
-            }
+                return (
+                    value === 'auto' ||
+                    Object.prototype.toString.call(value) === '[object Number]'
+                );
+            },
         },
         /**
          * 幻灯片的索引
@@ -173,7 +176,7 @@ export default defineComponent({
          */
         modelValue: {
             type: Number,
-            default: 0
+            default: 0,
         },
         /**
          * 是否自动切换
@@ -182,7 +185,7 @@ export default defineComponent({
          */
         autoplay: {
             type: Boolean,
-            default: false
+            default: false,
         },
         /**
          * 自动切换的时间间隔，单位为毫秒
@@ -191,7 +194,7 @@ export default defineComponent({
          */
         autoplaySpeed: {
             type: Number,
-            default: 2000
+            default: 2000,
         },
         /**
          * 指示器的位置，可选值为 inside （内部），outside（外部），none（不显示）
@@ -202,8 +205,8 @@ export default defineComponent({
             type: String,
             default: 'inside',
             validator(value: string) {
-                return oneOf(value, ['inside', 'outside', 'none'])
-            }
+                return oneOf(value, ['inside', 'outside', 'none']);
+            },
         },
         /**
          * 是否显示圆形指示器
@@ -212,7 +215,7 @@ export default defineComponent({
          */
         radiusDot: {
             type: Boolean,
-            default: false
+            default: false,
         },
         /**
          * 指示器的触发方式，可选值为 click（点击），hover（悬停）
@@ -223,12 +226,11 @@ export default defineComponent({
             type: String,
             default: 'click',
             validator(value: string) {
-                return oneOf(value, ['click', 'hover'])
-            }
-        }
+                return oneOf(value, ['click', 'hover']);
+            },
+        },
     },
     setup(props: any, { emit }) {
-
         // ref
         const copyTrack = ref(null);
         const originTrack = ref(null);
@@ -298,23 +300,18 @@ export default defineComponent({
              *
              * @type {Object}
              */
-            childData: {}
+            childData: {},
         });
 
         // computed
         // 外城样式
         const classes = computed(() => {
-            return [
-                `${prefixCls}`
-            ]
+            return [`${prefixCls}`];
         });
 
         // 箭头样式
         const arrowClasses = computed(() => {
-            return [
-                `${prefixCls}-arrow`,
-                `${prefixCls}-arrow-${props.arrow}`
-            ]
+            return [`${prefixCls}-arrow`, `${prefixCls}-arrow-${props.arrow}`];
         });
 
         // 内容样式
@@ -322,8 +319,8 @@ export default defineComponent({
             return {
                 width: `${data.trackWidth}px`,
                 transform: `translate3d(${-data.trackOffset}px, 0px, 0px)`,
-                transition: `transform 500ms ${props.easing}`
-            }
+                transition: `transform 500ms ${props.easing}`,
+            };
         });
 
         // 复制的内容的样式
@@ -333,16 +330,13 @@ export default defineComponent({
                 transform: `translate3d(${-data.trackCopyOffset}px, 0px, 0px)`,
                 transition: `transform 500ms ${props.easing}`,
                 position: 'absolute',
-                top: 0
-            }
+                top: 0,
+            };
         });
 
         // dots 样式
         const dotsClasses = computed(() => {
-            return [
-                `${prefixCls}-dots`,
-                `${prefixCls}-dots-${props.dots}`
-            ]
+            return [`${prefixCls}-dots`, `${prefixCls}-dots-${props.dots}`];
         });
 
         // mounted
@@ -359,7 +353,7 @@ export default defineComponent({
                 // 更新偏移位置
                 updateOffset();
             });
-        }
+        };
 
         // 更新滑动列表
         const updateSlides = (init) => {
@@ -368,7 +362,7 @@ export default defineComponent({
 
             findChild((child) => {
                 slides.push({
-                    $el: child.children.default()[0].el
+                    $el: child.children.default()[0].el,
                 });
 
                 child.index = index++;
@@ -378,13 +372,12 @@ export default defineComponent({
                 }
             });
 
-
             // 获取滑动列表数量
             data.slides = slides;
 
             // 更新内容宽度高度
             updatePos();
-        }
+        };
 
         // 找到子节点
         const findChild = (cb) => {
@@ -407,21 +400,22 @@ export default defineComponent({
                     find(child);
                 });
             }
-        }
+        };
 
         // 更新内容宽度高度
         const updatePos = () => {
-
             findChild(() => {
                 // 设置子节点宽度和高度
                 data.childData.width = data.listWidth;
-                data.childData.height = typeof props.height === 'number' ? `${props.height}px` : props.height;
-
+                data.childData.height =
+                    typeof props.height === 'number'
+                        ? `${props.height}px`
+                        : props.height;
             });
 
             // 跟踪宽度
             data.trackWidth = (data.slides.length || 0) * data.listWidth;
-        }
+        };
 
         // 更新偏移位置
         const updateOffset = () => {
@@ -430,9 +424,10 @@ export default defineComponent({
                 // 跟踪偏移位置
                 data.trackOffset = data.trackIndex * data.listWidth;
                 // 跟踪复制内容的偏移位置
-                data.trackCopyOffset = data.trackCopyIndex * data.listWidth + offset;
+                data.trackCopyOffset =
+                    data.trackCopyIndex * data.listWidth + offset;
             });
-        }
+        };
 
         // 监听调整大小
         const handleResize = () => {
@@ -454,7 +449,7 @@ export default defineComponent({
                     add(1);
                 }, props.autoplaySpeed);
             }
-        }
+        };
 
         // 切换
         const add = (offset) => {
@@ -464,14 +459,12 @@ export default defineComponent({
             if (slidesLen === 1) {
                 return;
             }
-
             // 如果是无缝滚动，需要初始化双内容位置
             if (props.loop) {
                 if (offset > 0) {
                     // 跟踪滑动位置
                     data.hideTrackPos = -1;
-                }
-                else {
+                } else {
                     // 跟踪滑动位置
                     data.hideTrackPos = slidesLen;
                 }
@@ -481,7 +474,9 @@ export default defineComponent({
             }
 
             // 获取当前显示图片的索引 如果显示复制的内容 跟踪复制索引位置 否则 跟踪索引位置
-            const oldIndex = data.showCopyTrack ? data.trackCopyIndex : data.trackIndex;
+            const oldIndex = data.showCopyTrack
+                ? data.trackCopyIndex
+                : data.trackIndex;
 
             let index = oldIndex + offset;
 
@@ -490,17 +485,21 @@ export default defineComponent({
             }
 
             // 判断到达边界点
-            if (((offset > 0 && index === slidesLen) || (offset < 0 && index === slidesLen - 1)) && props.loop) {
+            if (
+                ((offset > 0 && index === slidesLen) ||
+                    (offset < 0 && index === slidesLen - 1)) &&
+                props.loop
+            ) {
                 // 极限值（左滑：当前索引为总图片张数， 右滑：当前索引为总图片张数 - 1）切换内容
 
                 // 显示复制的内容
                 data.showCopyTrack = !data.showCopyTrack;
                 // 跟踪索引位置
                 data.trackIndex += offset;
+
                 //  跟踪复制索引位置
                 data.trackCopyIndex += offset;
-            }
-            else {
+            } else {
                 if (!props.loop) {
                     index = index % data.slides.length;
                 }
@@ -528,14 +527,12 @@ export default defineComponent({
             // 显示复制的内容
             if (data.showCopyTrack) {
                 // 跟踪索引位置
-                data.trackIndex = index
-            }
-            else {
+                data.trackIndex = index;
+            } else {
                 // 跟踪复制索引位置
                 data.trackCopyIndex = index;
             }
         };
-
 
         // 更新跟踪索引
         const updateTrackIndex = (index) => {
@@ -543,21 +540,21 @@ export default defineComponent({
             if (data.showCopyTrack) {
                 // 跟踪复制索引位置
                 data.trackCopyIndex = index;
-            }
-            else {
+            } else {
                 // 跟踪索引位置
                 data.trackIndex = index;
             }
 
             // 当前索引
             data.currentIndex = index;
-        }
-
+        };
 
         // dots 点击
         const dotsEvent = (event, index) => {
             // 获取当前显示图片的索引 如果显示复制的内容 跟踪复制索引位置 否则 跟踪索引位置
-            let currentIndex = data.showCopyTrack ? data.trackCopyIndex : data.trackIndex;
+            let currentIndex = data.showCopyTrack
+                ? data.trackCopyIndex
+                : data.trackIndex;
 
             if (event === props.trigger && currentIndex !== index) {
                 // 更新跟踪索引
@@ -575,7 +572,16 @@ export default defineComponent({
         const _initData = () => {
             data.currentIndex = props.modelValue;
             data.trackIndex = props.modelValue;
-        }
+
+            nextTick(() => {
+                // 初始索引位置
+                // if (props.modelValue === 0) {
+                // data.trackCopyIndex =  data.slides.length - props.modelValue;
+                // }
+
+                console.log('init', data.slides.length);
+            });
+        };
 
         // 初始化复制内容节点 用于 loop 效果
         const initCopyTrackDom = () => {
@@ -594,54 +600,74 @@ export default defineComponent({
 
         // watch
         // 是否自动切换
-        watch(() => props.autoplay, () => {
-            setAutoplay();
-        });
+        watch(
+            () => props.autoplay,
+            () => {
+                setAutoplay();
+            }
+        );
 
         // 是否自动切换速度
-        watch(() => props.autoplaySpeed, () => {
-            setAutoplay();
-        });
+        watch(
+            () => props.autoplaySpeed,
+            () => {
+                setAutoplay();
+            }
+        );
 
         // 跟踪索引位置
-        watch(() => data.trackIndex, () => {
-            updateOffset();
-        });
+        watch(
+            () => data.trackIndex,
+            () => {
+                updateOffset();
+            }
+        );
 
         // 跟踪复制索引位=置
-        watch(() => data.trackCopyIndex, () => {
-            updateOffset();
-        });
+        watch(
+            () => data.trackCopyIndex,
+            () => {
+                updateOffset();
+            }
+        );
 
         // 轮播图高度
-        watch(() => props.height, () => {
-            updatePos();
-        });
+        watch(
+            () => props.height,
+            () => {
+                updatePos();
+            }
+        );
 
         // 幻灯片的索引
-        watch(() => props.modelValue, (value) => {
-            updateTrackIndex(value);
-            setAutoplay();
-        });
+        watch(
+            () => props.modelValue,
+            (value) => {
+                updateTrackIndex(value);
+                setAutoplay();
+            }
+        );
 
         // 是否开启循环
-        watch(() => props.loop, (value) => {
-            // 监听调整大小
-            handleResize();
-            // 设置自动播放
-            setAutoplay();
-            // 初始化数据
-            _initData();
-            // 更新偏移位置
-            updateOffset();
+        watch(
+            () => props.loop,
+            (value) => {
+                // 监听调整大小
+                handleResize();
+                // 设置自动播放
+                setAutoplay();
+                // 初始化数据
+                _initData();
+                // 更新偏移位置
+                updateOffset();
 
-            if (value) {
-                initCopyTrackDom();
+                if (value) {
+                    initCopyTrackDom();
+                } else {
+                    data.showCopyTrack = false;
+                }
             }
-            else {
-                data.showCopyTrack = false;
-            }
-        });
+        );
 
         onMounted(() => {
             // 监听调整大小
@@ -649,6 +675,11 @@ export default defineComponent({
 
             // 设置自动播放
             setAutoplay();
+
+            nextTick(() => {
+                add(1);
+                add(-1);
+            });
 
             // 监听缩放事件
             on(window, 'resize', handleResize);
@@ -679,12 +710,12 @@ export default defineComponent({
             handleClick,
             arrowEvent,
             dotsEvent,
-            initCopyTrackDom
-        }
+            initCopyTrackDom,
+        };
     },
     components: {
         IvueButton,
-        IvueIcon
-    }
-})
+        IvueIcon,
+    },
+});
 </script>
