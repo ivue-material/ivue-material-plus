@@ -1,28 +1,30 @@
 <script lang='ts'>
 import {
+    PropType,
     defineComponent,
     h,
     reactive,
     computed,
     withDirectives,
-    resolveDirective
+    resolveDirective,
 } from 'vue';
 
-import IvueButtonContent from "./content.vue";
+import IvueButtonContent from './content.vue';
+
 import Colorable from '../../utils/mixins/colorable';
 import { inject as registrableInject } from '../../utils/mixins/registrable';
 import ripple from '../../utils/directives/ripple';
+import { oneOf } from '../../utils/assist';
 
 const prefixCls = 'ivue-button';
 
+type Status = 'primary' | 'light-primary' | 'dark-primary' | 'success';
+
 export default defineComponent({
     name: prefixCls,
-    mixins: [
-        Colorable,
-        registrableInject('buttonGroup', null, null)
-    ],
+    mixins: [Colorable, registrableInject('buttonGroup', null, null)],
     directives: {
-        ripple
+        ripple,
     },
     emits: ['click'],
     props: {
@@ -33,7 +35,7 @@ export default defineComponent({
          */
         href: {
             type: String,
-            default: null
+            default: null,
         },
         /**
          * 将类型应用于按钮 - 它不会影响链接
@@ -42,7 +44,7 @@ export default defineComponent({
          */
         type: {
             type: String,
-            default: 'button'
+            default: 'button',
         },
         /**
          * 禁用该按钮并阻止其操作
@@ -51,7 +53,7 @@ export default defineComponent({
          */
         disabled: {
             type: Boolean,
-            default: false
+            default: false,
         },
         /**
          * 激活涟漪效果
@@ -60,46 +62,86 @@ export default defineComponent({
          */
         ripple: {
             type: Boolean,
-            default: true
+            default: true,
         },
         /**
          * 是否扁平按钮
          *
          * @type {Boolean}
          */
-        flat: Boolean,
+        flat: {
+            type: Boolean,
+            default: false,
+        },
         /**
          * 凹陷的按钮依然保持其背景色，但没有框阴影
          *
          * @type {Boolean}
          */
-        depressed: Boolean,
+        depressed: {
+            type: Boolean,
+            default: false,
+        },
         /**
          * 圆形图标
          *
          * @type {Boolean}
          */
-        icon: Boolean,
+        icon: {
+            type: Boolean,
+            default: false,
+        },
         /**
          * 轮廓按钮从当前色彩应用继承他们的边框颜色。
          *
          * @type {Boolean}
          */
-        outline: Boolean,
+        outline: {
+            type: Boolean,
+            default: false,
+        },
         /**
          * 当使用中心选项时，纹波将始终来自目标的中心。
          *
          * @type {Boolean}
          */
-        center: Boolean
+        center: {
+            type: Boolean,
+            default: false,
+        },
+        /**
+         * 圆角
+         *
+         * @type {Boolean}
+         */
+        radius: {
+            type: Boolean,
+            default: false,
+        },
+        /**
+         * 按钮状态
+         *
+         * @type {String}
+         */
+        status: {
+            type: String as PropType<Status>,
+            validator(value: string) {
+                return oneOf(value, [
+                    'primary',
+                    'light-primary',
+                    'dark-primary',
+                    'success',
+                ]);
+            },
+        },
     },
     // 组合式 API
-    setup(props, { emit }) {
+    setup(props: any, { emit }) {
         // data
         const data = reactive<{
-            rippleActive: boolean
-            isActive: boolean
-            mobile: boolean
+            rippleActive: boolean;
+            isActive: boolean;
+            mobile: boolean;
         }>({
             /**
              * 波纹效果激活
@@ -118,7 +160,7 @@ export default defineComponent({
              *
              * @type {Boolean}
              */
-            mobile: false
+            mobile: false,
         });
 
         // computed
@@ -139,26 +181,27 @@ export default defineComponent({
             return {
                 [`${prefixCls}--raised`]: !props.flat,
                 [`${prefixCls}--flat`]: props.flat,
-                [`${prefixCls}--depressed`]: (props.depressed && !props.flat) || props.outline,
+                [`${prefixCls}--depressed`]:
+                    (props.depressed && !props.flat) || props.outline,
                 [`${prefixCls}--icon`]: props.icon,
-                [`${prefixCls}--outline`]: props.outline
-            }
+                [`${prefixCls}--outline`]: props.outline,
+                [`${prefixCls}--radius`]: props.radius,
+                [`${prefixCls}--${props.status}`]: props.status,
+            };
         });
 
         // 涟漪效果
         const computedRipple = computed(() => {
             if (props.ripple && props.center) {
                 return {
-                    center: true
-                }
-            }
-            else if (props.ripple && !props.disabled) {
+                    center: true,
+                };
+            } else if (props.ripple && !props.disabled) {
                 return props.ripple;
             }
 
             return false;
         });
-
 
         return {
             // data
@@ -167,17 +210,17 @@ export default defineComponent({
             rippleWorks,
             activeButton,
             btnClasses,
-            computedRipple
-        }
+            computedRipple,
+        };
     },
     mounted() {
         if (this.buttonGroup) {
-            this.buttonGroup.register(this)
+            this.buttonGroup.register(this);
         }
     },
     beforeUnmount() {
         if (this.buttonGroup) {
-            this.buttonGroup.unregister(this)
+            this.buttonGroup.unregister(this);
         }
     },
     render() {
@@ -189,9 +232,9 @@ export default defineComponent({
         let buttonAttrs: any = {
             class: {
                 [`${prefixCls}`]: true,
-                'isMobile': this.data.mobile,
+                isMobile: this.data.mobile,
                 'ivue-button--active': this.data.isActive,
-                ...this.btnClasses
+                ...this.btnClasses,
             },
             href: this.href,
             type: !this.href && (this.type || 'button'),
@@ -216,27 +259,31 @@ export default defineComponent({
                 }
 
                 this.$emit('click', this.data.rippleActive);
-            }
-        }
+            },
+        };
 
         if (this.disabled) {
-            buttonAttrs.disabled = this.disabled
+            buttonAttrs.disabled = this.disabled;
         }
 
         // a 标签
         if (this.href) {
-            _tag = 'a'
+            _tag = 'a';
         }
 
         // 设置颜色
-        const setColor = (!this.outline && !this.flat) ? this.setBackgroundColor : this.setTextColor;
+        const setColor =
+            !this.outline && !this.flat
+                ? this.setBackgroundColor
+                : this.setTextColor;
 
         // 解析指令
         const rippleDirective = resolveDirective('ripple');
 
-        return withDirectives(h(_tag, setColor(this.color, buttonAttrs), [buttonContent]), [
-            [rippleDirective, this.computedRipple]
-        ])
-    }
-})
+        return withDirectives(
+            h(_tag, setColor(this.color, buttonAttrs), [buttonContent]),
+            [[rippleDirective, this.computedRipple]]
+        );
+    },
+});
 </script>

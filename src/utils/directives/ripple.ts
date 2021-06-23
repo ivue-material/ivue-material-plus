@@ -136,7 +136,8 @@ const ripple = {
         container.appendChild(animation);
         container.className = 'ivue-ripple';
 
-        if (value.class) {
+        if (value.class && (typeof value.class === 'string')) {
+            console.log(value.class)
             container.className += ` ${value.class}`;
         }
 

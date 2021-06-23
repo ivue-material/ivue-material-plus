@@ -8,21 +8,39 @@ export default {
         /**
          * 颜色
          *
-         * @type {String}
+         * @type {String | Array}
          */
         color: {
-            type: String,
+            type: [String, Array],
             default: ''
+        },
+        /**
+        * 文字颜色
+        *
+        * @type {String}
+        */
+        textColor: {
+            type: String,
+            default: '#ffffff'
         }
     },
     methods: {
         // 设置背景颜色
         setBackgroundColor(color, data) {
-            if (isCssColor(color)) {
+
+            // 是否是数组
+            if (Array.isArray(color)) {
+                data.style = {
+                    'background': `linear-gradient(135deg,${color[0]} 0%, ${color[1]} 100%)`,
+                    'color': this.textColor
+                }
+            }
+            else if (isCssColor(color)) {
                 data.style = {
                     ...data.style,
                     'background-color': `${color}`,
-                    'border-color': `${color}`
+                    'border-color': `${color}`,
+                    'color': this.textColor
                 }
             }
             else if (color) {

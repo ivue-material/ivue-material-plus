@@ -150,20 +150,26 @@ import {
     defineComponent,
     nextTick,
     watch,
-    onMounted
-} from 'vue'
+    onMounted,
+} from 'vue';
 
 import { calcTextareaHeight } from '../../utils/calc-textarea-height';
 import { oneOf } from '../../utils/assist';
 
-
 function isCssColor(color) {
-    return !!color && !!color.match(/^(#|(rgb|hsl)a?\()/)
+    return !!color && !!color.match(/^(#|(rgb|hsl)a?\()/);
 }
 
 const prefixCls = 'ivue-input';
 
-type Type = 'text' | 'textarea' | 'password' | 'url' | 'email' | 'date' | 'hidden';
+type Type =
+    | 'text'
+    | 'textarea'
+    | 'password'
+    | 'url'
+    | 'email'
+    | 'date'
+    | 'hidden';
 
 type AutoComplete = 'on' | 'off';
 
@@ -180,7 +186,7 @@ export default defineComponent({
          */
         modelValue: {
             type: [String, Number],
-            default: ''
+            default: '',
         },
         /**
          * 绑定的值，可使用 v-model 双向绑定
@@ -189,19 +195,27 @@ export default defineComponent({
          */
         value: {
             type: [String, Number],
-            default: ''
+            default: '',
         },
         /*
-        * 输入框类型，可选值为 text、password、textarea、url、email、date
-        *
-        * @type {String}
-        */
+         * 输入框类型，可选值为 text、password、textarea、url、email、date
+         *
+         * @type {String}
+         */
         type: {
             type: String as PropType<Type>,
             validator(value: string) {
-                return oneOf(value, ['text', 'textarea', 'password', 'url', 'email', 'date', 'hidden']);
+                return oneOf(value, [
+                    'text',
+                    'textarea',
+                    'password',
+                    'url',
+                    'email',
+                    'date',
+                    'hidden',
+                ]);
             },
-            default: 'text'
+            default: 'text',
         },
         /**
          * 占位文本
@@ -210,7 +224,7 @@ export default defineComponent({
          */
         placeholder: {
             type: String,
-            default: ''
+            default: '',
         },
         /**
          * 原生的 spellcheck 属性
@@ -219,7 +233,7 @@ export default defineComponent({
          */
         spellcheck: {
             type: Boolean,
-            default: false
+            default: false,
         },
         /**
          * 设置输入框为禁用状态
@@ -228,7 +242,7 @@ export default defineComponent({
          */
         disabled: {
             type: Boolean,
-            default: false
+            default: false,
         },
         /**
          * 原生的自动完成功能
@@ -240,7 +254,7 @@ export default defineComponent({
             validator(value: string) {
                 return oneOf(value, ['on', 'off']);
             },
-            default: 'off'
+            default: 'off',
         },
         /**
          * 设置输入框为只读
@@ -249,7 +263,7 @@ export default defineComponent({
          */
         readonly: {
             type: Boolean,
-            default: false
+            default: false,
         },
         /**
          * 输入框name
@@ -257,7 +271,7 @@ export default defineComponent({
          * @type {String}
          */
         name: {
-            type: String
+            type: String,
         },
         /**
          * 最大输入长度
@@ -265,7 +279,7 @@ export default defineComponent({
          * @type {Number}
          */
         maxlength: {
-            type: Number
+            type: Number,
         },
         /**
          * id
@@ -273,7 +287,7 @@ export default defineComponent({
          * @type {String}
          */
         id: {
-            type: String
+            type: String,
         },
         /**
          * 自动获取焦点
@@ -282,7 +296,7 @@ export default defineComponent({
          */
         autofocus: {
             type: Boolean,
-            default: false
+            default: false,
         },
         /**
          * 将用户的输入转换为 Number 类型
@@ -291,7 +305,7 @@ export default defineComponent({
          */
         number: {
             type: Boolean,
-            default: false
+            default: false,
         },
         /**
          * prepend前置内容背景颜色
@@ -300,16 +314,16 @@ export default defineComponent({
          */
         prependBgColor: {
             type: String,
-            default: '#f8f8f9'
+            default: '#f8f8f9',
         },
         /**
-        * append前后置内容背景颜色
-        *
-        * @type {String}
-        */
+         * append前后置内容背景颜色
+         *
+         * @type {String}
+         */
         appendBgColor: {
             type: String,
-            default: '#f8f8f9'
+            default: '#f8f8f9',
         },
         /**
          * 输入框头部图标
@@ -318,7 +332,7 @@ export default defineComponent({
          */
         prefix: {
             type: String,
-            default: ''
+            default: '',
         },
         /**
          * 输入框尾部图标
@@ -327,7 +341,7 @@ export default defineComponent({
          */
         suffix: {
             type: String,
-            default: ''
+            default: '',
         },
         /**
          * 输入框尺寸，可选值为large、small、default或者不设置
@@ -342,7 +356,7 @@ export default defineComponent({
             },
             default() {
                 return 'default';
-            }
+            },
         },
         /**
          * 是否显示清除按钮
@@ -351,7 +365,7 @@ export default defineComponent({
          */
         clearable: {
             type: Boolean,
-            default: false
+            default: false,
         },
         /**
          * 输入框清除图标
@@ -360,7 +374,7 @@ export default defineComponent({
          */
         clearIcon: {
             type: String,
-            default: 'cancel'
+            default: 'cancel',
         },
         /**
          * 是否显示输入字数统计，可以配合 maxlength 使用
@@ -369,7 +383,7 @@ export default defineComponent({
          */
         showWordLimit: {
             type: Boolean,
-            default: false
+            default: false,
         },
         /**
          * 是否显示切换密码图标
@@ -378,7 +392,7 @@ export default defineComponent({
          */
         password: {
             type: Boolean,
-            default: false
+            default: false,
         },
         /**
          * 密码图标
@@ -389,8 +403,8 @@ export default defineComponent({
             type: Object,
             default: {
                 on: 'visibility',
-                off: 'visibility_off'
-            }
+                off: 'visibility_off',
+            },
         },
         /**
          * 是否显示为搜索型输入框
@@ -399,7 +413,7 @@ export default defineComponent({
          */
         search: {
             type: Boolean,
-            default: false
+            default: false,
         },
         /**
          * 开启 search 时可用，是否有确认按钮，可设为按钮文字
@@ -408,7 +422,7 @@ export default defineComponent({
          */
         enterButton: {
             type: [Boolean, String],
-            default: false
+            default: false,
         },
         /**
          * 文本域默认行数，仅在 textarea 类型下有效
@@ -417,17 +431,17 @@ export default defineComponent({
          */
         rows: {
             type: Number,
-            default: 2
+            default: 2,
         },
         /**
-        * 自适应内容高度，仅在 textarea 类型下有效
-        *  指定最小行数和最大行数
-        *
-        * @type {String}
-        */
+         * 自适应内容高度，仅在 textarea 类型下有效
+         *  指定最小行数和最大行数
+         *
+         * @type {String}
+         */
         autoHeight: {
             type: [Boolean, Object],
-            default: false
+            default: false,
         },
         /**
          * 是否显示边框
@@ -436,8 +450,8 @@ export default defineComponent({
          */
         border: {
             type: Boolean,
-            default: true
-        }
+            default: true,
+        },
     },
     // 组合式 API
     setup(props: any, { emit }) {
@@ -459,7 +473,7 @@ export default defineComponent({
 
         // 输入的内容
         const nativeInputValue = computed(() => {
-            return props.modelValue || props.value
+            return props.modelValue || props.value;
         });
 
         // 输入上限
@@ -491,27 +505,27 @@ export default defineComponent({
         // 按下回车键时触发
         const handleEnter = (event) => {
             emit('on-enter', event);
-        }
+        };
 
         // 原生的 keyup 事件
         const handleKeyup = (event) => {
             emit('on-keyup', event);
-        }
+        };
 
         // 原生的 keypress 事件
         const handleKeypress = (event) => {
             emit('on-keypress', event);
-        }
+        };
 
         // 原生的 keydown 事件
         const handleKeydown = (event) => {
             emit('on-keydown', event);
-        }
+        };
 
         // 尾部图标点击事件
         const handleSuffix = (event) => {
             emit('on-suffix', event);
-        }
+        };
 
         // 更新value
         const setNativeInputValue = () => {
@@ -519,8 +533,8 @@ export default defineComponent({
                 return;
             }
 
-            currentValue.value = nativeInputValue.value
-        }
+            currentValue.value = nativeInputValue.value;
+        };
 
         // 设置当前值
         const setCurrentValue = (value) => {
@@ -539,7 +553,7 @@ export default defineComponent({
             nextTick(() => {
                 setNativeInputValue();
             });
-        }
+        };
 
         // 自适应内容高度，仅在 textarea 类型下有效，可传入对象，
         // 如 { minRows: 2, maxRows: 6 }
@@ -555,9 +569,12 @@ export default defineComponent({
             const maxRows = autoHeight.maxRows;
 
             // 文本框样式
-            textareaStyles.value = calcTextareaHeight(textarea.value, minRows, maxRows);
-        }
-
+            textareaStyles.value = calcTextareaHeight(
+                textarea.value,
+                minRows,
+                maxRows
+            );
+        };
 
         // 输入事件
         const handleInput = (event) => {
@@ -575,17 +592,17 @@ export default defineComponent({
             setCurrentValue(value);
 
             emit('on-change', event.target.value);
-        }
+        };
 
         // 输入框聚焦时触发
         const handleFocus = (event) => {
             emit('on-focus', event);
-        }
+        };
 
         // 输入框失去焦点时触发
         const handleBlur = (event) => {
             emit('on-blur', event);
-        }
+        };
 
         // 清除数据
         const handleClear = () => {
@@ -595,11 +612,12 @@ export default defineComponent({
             setCurrentValue('');
 
             emit('on-change', { target: { value: '' } });
-        }
+        };
 
         // 获取焦点
         const focus = (option) => {
-            const $el = props.type === 'textarea' ? textarea.value : input.value;
+            const $el =
+                props.type === 'textarea' ? textarea.value : input.value;
             $el.focus(option);
 
             // 选择内容
@@ -618,7 +636,7 @@ export default defineComponent({
                         $el.setSelectionRange(0, len);
                 }
             }
-        }
+        };
 
         // 是否显示密码
         const handleShowPassword = () => {
@@ -634,7 +652,7 @@ export default defineComponent({
             setTimeout(() => {
                 input.value.setSelectionRange(len, len);
             }, 0);
-        }
+        };
 
         // 点击搜索
         const handleSearch = () => {
@@ -645,12 +663,15 @@ export default defineComponent({
             input.value.focus();
 
             emit('on-search', currentValue.value);
-        }
+        };
 
         // 监听value
-        watch(() => props.modelValue, (value) => {
-            setCurrentValue(value);
-        });
+        watch(
+            () => props.modelValue,
+            (value) => {
+                setCurrentValue(value);
+            }
+        );
 
         // native input value is set explicitly
         // do not use v-model / :value in template
@@ -662,17 +683,19 @@ export default defineComponent({
         // when change between <input> and <textarea>,
         // update DOM dependent value and styles
         // https://github.com/ElemeFE/element/issues/14857
-        watch(() => props.type, () => {
-            nextTick(() => {
-                setNativeInputValue()
-                resizeTextarea()
-            })
-        });
-
+        watch(
+            () => props.type,
+            () => {
+                nextTick(() => {
+                    setNativeInputValue();
+                    resizeTextarea();
+                });
+            }
+        );
 
         onMounted(() => {
             resizeTextarea();
-        })
+        });
 
         return {
             prefixCls,
@@ -703,8 +726,8 @@ export default defineComponent({
             showPassword,
             currentValue,
             textarea,
-            input
-        }
+            input,
+        };
     },
     computed: {
         // 是否有前置内容
@@ -753,24 +776,36 @@ export default defineComponent({
                 `${prefixCls}-wrapper`,
                 {
                     [`${prefixCls}-wrapper-${this.size}`]: !!this.size,
-                    [`${prefixCls}-group`]: this.prepend || this.append || (this.search && this.enterButton),
-                    [`${prefixCls}-group-${this.size}`]: (this.prepend || this.append || (this.search && this.enterButton)) && !!this.size,
+                    [`${prefixCls}-group`]:
+                        this.prepend ||
+                        this.append ||
+                        (this.search && this.enterButton),
+                    [`${prefixCls}-group-${this.size}`]:
+                        (this.prepend ||
+                            this.append ||
+                            (this.search && this.enterButton)) &&
+                        !!this.size,
                     [`${prefixCls}-group-with-prepend`]: this.prepend,
-                    [`${prefixCls}-group-with-append`]: this.append || (this.search && this.enterButton)
-                }
-            ]
+                    [`${prefixCls}-group-with-append`]:
+                        this.append || (this.search && this.enterButton),
+                },
+            ];
         },
         // 输入框外层样式
         contentClass() {
             return [
                 `${prefixCls}-content`,
                 {
-                    [`${prefixCls}-group`]: this.prepend || this.append || (this.search && this.enterButton),
+                    [`${prefixCls}-group`]:
+                        this.prepend ||
+                        this.append ||
+                        (this.search && this.enterButton),
                     [`${prefixCls}-no-border`]: !this.border,
                     [`${prefixCls}-content--prepend`]: this.prepend,
-                    [`${prefixCls}-content--append`]: this.append || (this.search && this.enterButton)
-                }
-            ]
+                    [`${prefixCls}-content--append`]:
+                        this.append || (this.search && this.enterButton),
+                },
+            ];
         },
         // 输入框样式
         inputClass() {
@@ -779,11 +814,13 @@ export default defineComponent({
                 {
                     [`${prefixCls}-${this.size}`]: !!this.size,
                     [`${prefixCls}-with-prefix`]: this.showPrefix,
-                    [`${prefixCls}-with-suffix`]: this.showSuffix || (this.search && this.enterButton === false),
+                    [`${prefixCls}-with-suffix`]:
+                        this.showSuffix ||
+                        (this.search && this.enterButton === false),
                     [`${prefixCls}-disabled`]: this.disabled,
                     [`${prefixCls}-no-border`]: !this.border,
-                }
-            ]
+                },
+            ];
         },
         // 文本框样式
         textareaClasses() {
@@ -793,21 +830,18 @@ export default defineComponent({
                 {
                     [`${prefixCls}-disabled`]: this.disabled,
                     [`${prefixCls}-no-border`]: !this.border,
-                }
-
-            ]
+                },
+            ];
         },
         // 前置内容背景
         prependColor() {
             let _color = {};
 
             if (this.prependBgColor) {
-                _color = { [this.prependBgColor]: true }
+                _color = { [this.prependBgColor]: true };
             }
 
-            return [
-                _color
-            ]
+            return [_color];
         },
         prependStyle() {
             let _color = {};
@@ -816,19 +850,17 @@ export default defineComponent({
                 _color = { 'background-color': `${this.prependBgColor}` };
             }
 
-            return _color
+            return _color;
         },
         // 后置内容背景
         appendColor() {
             let _color = {};
 
             if (this.appendBgColor) {
-                _color = { [this.appendBgColor]: true }
+                _color = { [this.appendBgColor]: true };
             }
 
-            return [
-                _color
-            ]
+            return [_color];
         },
         appendStyle() {
             let _color = {};
@@ -837,8 +869,8 @@ export default defineComponent({
                 _color = { 'background-color': `${this.appendBgColor}` };
             }
 
-            return _color
-        }
+            return _color;
+        },
     },
-})
+});
 </script>
