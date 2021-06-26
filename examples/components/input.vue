@@ -9,7 +9,11 @@
             来改变输入框的宽度，默认 100%。
         </p>
 
-        <ivue-input v-model="value1" placeholder="Enter something..." @on-enter="handleEnter">
+        <ivue-input
+            v-model="value1"
+            placeholder="Enter something..."
+            @on-enter="handleEnter"
+        >
         </ivue-input>
         <p>
             输入框有三种尺寸：大、默认（中）、小
@@ -147,8 +151,10 @@
         </ivue-input>
         <p>rows</p>
         <ivue-input
-            disabled
+
             v-model="value1"
+            show-word-limit
+            :maxlength="1000"
             type="textarea"
             :autoHeight="{ minRows: 2, maxRows: 5 }"
         >
@@ -166,51 +172,45 @@
         <button @click="handleFocus('start')">Focus at first</button>
         <button @click="handleFocus('end')">Focus at last</button>
         <button @click="handleFocus('all')">Focus to select all</button>
-        <button @click="handleFocus('preventScroll')"
-            >Focus prevent scroll</button
-        >
+        <button @click="handleFocus('preventScroll')">
+            Focus prevent scroll
+        </button>
 
-        <ivue-input
-            ref="input"
-            v-model="value1"
-        ></ivue-input>
+        <ivue-input ref="input" v-model="value1"></ivue-input>
     </div>
 </template>
 
 <script>
-
 export default {
-    data () {
+    data() {
         return {
             value1: 'View UI’s birthday is July 28',
-        }
+        };
     },
     methods: {
-        handleChange () {
-
+        handleChange() {},
+        handleSuffix(e) {
+            console.log('??');
         },
-        handleSuffix (e) {
-            console.log('??')
+        handleSearch(e) {
+            console.log(e);
         },
-        handleSearch (e) {
-            console.log(e)
-        },
-        handleFocus (type) {
+        handleFocus(type) {
             if (type === 'preventScroll') {
                 this.$refs.input.focus({
-                    preventScroll: true
+                    preventScroll: true,
                 });
             } else {
                 this.$refs.input.focus({
-                    cursor: type
+                    cursor: type,
                 });
             }
         },
-        handleEnter(){
-            console.log('handleEnter')
-        }
-    }
-}
+        handleEnter() {
+            console.log('handleEnter');
+        },
+    },
+};
 </script>
 
 <style>

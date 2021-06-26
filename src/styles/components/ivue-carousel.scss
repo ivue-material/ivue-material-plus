@@ -5,6 +5,7 @@
       user-select: none;
       touch-action: pan-y;
       -webkit-tap-highlight-color: transparent;
+
       /*箭头*/
       &-arrow {
             position: absolute;
@@ -28,6 +29,7 @@
             color: #fff;
             background-color: rgba(31, 45, 61, .11);
             z-index: 10;
+
             &.left {
                   left: 16px;
             }
@@ -41,8 +43,13 @@
                   display: inline;
                   opacity: 0;
             }
+
             &:hover {
                   background-color: rgba(31, 45, 61, .5);
+            }
+
+            .ivue-icon{
+                  font-size: 24px;
             }
       }
       &:hover &-arrow-hover {
@@ -120,7 +127,7 @@
                         cursor: pointer;
                         color: transparent;
                         background: #8391a5;
-                        transition: all .5s;
+                        transition: all ease-in-out .5s;
                         &.radius {
                               padding: 0;
                               width: 6px;

@@ -61,10 +61,15 @@
 
         <div>
             <p>按钮状态</p>
-            <ivue-button status="primary" depressed>primary</ivue-button>
+            <ivue-button status="primary">primary</ivue-button>
             <ivue-button status="light-primary">Light Primary</ivue-button>
             <ivue-button status="dark-primary">Dark Primary</ivue-button>
             <ivue-button status="success">Success</ivue-button>
+            <ivue-button status="warning">Warning</ivue-button>
+            <ivue-button status="error">Error</ivue-button>
+            <ivue-button  disabled>disabled</ivue-button>
+
+
         </div>
     </div>
 </template>

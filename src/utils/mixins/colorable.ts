@@ -54,7 +54,16 @@ export default {
         },
         // 设置文字颜色
         setTextColor(color, data) {
-            if (isCssColor(color)) {
+
+             // 是否是数组
+             if (Array.isArray(color)) {
+                data.style = {
+                    ...data.style,
+                    'background': `linear-gradient(135deg,${color[0]} 0%, ${color[1]} 100%)`,
+                    'color': `${color[0]}`
+                }
+            }
+            else if (isCssColor(color)) {
                 data.style = {
                     ...data.style,
                     'color': `${color}`

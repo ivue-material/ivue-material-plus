@@ -7,9 +7,8 @@ import {
     computed,
     watch,
     withDirectives,
-    resolveDirective
+    resolveDirective,
 } from 'vue';
-
 
 import { oneOf } from '../../utils/assist';
 import Colorable from '../../utils/mixins/colorable';
@@ -32,7 +31,7 @@ export default defineComponent({
          */
         emboss: {
             type: Boolean,
-            default: false
+            default: false,
         },
         /**
          * 按钮颜色
@@ -41,16 +40,16 @@ export default defineComponent({
          */
         color: {
             type: String,
-            default: ''
+            default: '',
         },
         /**
-         * 按钮颜色
+         * 取消的颜色
          *
          * @type {String}
          */
         falseColor: {
             type: String,
-            default: ''
+            default: '',
         },
         /**
          * 是否禁用开关
@@ -59,7 +58,7 @@ export default defineComponent({
          */
         disabled: {
             type: Boolean,
-            default: false
+            default: false,
         },
         /**
          * 加载中的开关
@@ -68,16 +67,16 @@ export default defineComponent({
          */
         loading: {
             type: Boolean,
-            default: false
+            default: false,
         },
         /**
          * 进度条颜色
          *
          * @type {String}
          */
-        loadingColor: {
+        embossLoadingColor: {
             type: String,
-            default: ''
+            default: '',
         },
         /**
          * 选中时的值
@@ -86,7 +85,7 @@ export default defineComponent({
          */
         trueValue: {
             type: [String, Number, Boolean],
-            default: true
+            default: true,
         },
         /**
          * 没有选中时的值
@@ -95,7 +94,7 @@ export default defineComponent({
          */
         falseValue: {
             type: [String, Number, Boolean],
-            default: false
+            default: false,
         },
         /**
          * 指定当前是否开启，可以使用 v-model 双向绑定数据
@@ -104,7 +103,7 @@ export default defineComponent({
          */
         modelValue: {
             type: [String, Number, Boolean],
-            default: false
+            default: false,
         },
         /**
          * 开关的尺寸，可选值为large、small、default或者不写。建议如果使用了2个汉字的文字，使用 large
@@ -114,21 +113,29 @@ export default defineComponent({
         size: {
             type: String as PropType<Size>,
             validator(value: string) {
-                return oneOf(value, ['large', 'small', 'default'])
+                return oneOf(value, ['large', 'small', 'default']);
             },
             default() {
-                return 'default'
-            }
+                return 'default';
+            },
+        },
+        /**
+         * 是否开启渐变
+         *
+         * @type {Boolean}
+         */
+        gradient: {
+            type: Boolean,
+            default: false,
         },
         /**
          * 返回 Promise 可以阻止切换
          *
          * @type {Function}
          */
-        beforeChange: Function
+        beforeChange: Function,
     },
     setup(props: any, { emit }) {
-
         // data
         const data = reactive({
             /**
@@ -147,8 +154,8 @@ export default defineComponent({
             if (props.emboss) {
                 return {
                     [`${prefixCls}-emboss--wrapper`]: true,
-                    [`${prefixCls}-emboss--disabled`]: props.disabled
-                }
+                    [`${prefixCls}-emboss--disabled`]: props.disabled,
+                };
             }
 
             return {
@@ -157,8 +164,8 @@ export default defineComponent({
                 [`${prefixCls}-checked`]: data.currentValue === props.trueValue,
                 [`${prefixCls}-disabled`]: props.disabled,
                 [`${prefixCls}-loading`]: props.loading,
-                [`${prefixCls}-${props.size}`]: props.size
-            }
+                [`${prefixCls}-${props.size}`]: props.size,
+            };
         });
 
         // 浮雕样式
@@ -166,8 +173,8 @@ export default defineComponent({
             return {
                 [`${prefixCls}-emboss`]: true,
                 [`${prefixCls}-emboss--disabled`]: props.disabled,
-                [`${prefixCls}-emboss--${props.size}`]: props.size
-            }
+                [`${prefixCls}-emboss--${props.size}`]: props.size,
+            };
         });
 
         // 浮雕进度条
@@ -175,9 +182,11 @@ export default defineComponent({
             return [
                 `${prefixCls}-emboss--track`,
                 {
-                    [`${prefixCls}-emboss--track__checked`]: data.currentValue === props.trueValue
-                }
-            ]
+                    [`${prefixCls}-emboss--track__checked`]:
+                        data.currentValue === props.trueValue,
+                    [`${prefixCls}-emboss--track__gradient`]: props.gradient,
+                },
+            ];
         });
 
         // 浮雕指示器
@@ -185,16 +194,19 @@ export default defineComponent({
             return [
                 `${prefixCls}-emboss--thumb`,
                 {
-                    [`${prefixCls}-emboss--thumb__checked`]: data.currentValue === props.trueValue
-                }
-            ]
+                    [`${prefixCls}-emboss--thumb__checked`]:
+                        data.currentValue === props.trueValue,
+                    [`${prefixCls}-emboss--thumb__gradient`]: props.gradient,
+
+                },
+            ];
         });
 
         // 进度条样式
         const embossLodingClass = computed(() => {
             return {
-                [`${prefixCls}-emboss--loading`]: props.loading
-            }
+                [`${prefixCls}-emboss--loading`]: props.loading,
+            };
         });
 
         // 浮雕ripple
@@ -202,9 +214,10 @@ export default defineComponent({
             return [
                 `${prefixCls}-emboss--ripple`,
                 {
-                    [`${prefixCls}-emboss--ripple__checked`]: data.currentValue === props.trueValue
-                }
-            ]
+                    [`${prefixCls}-emboss--ripple__checked`]:
+                        data.currentValue === props.trueValue,
+                },
+            ];
         });
 
         // 设置背景颜色
@@ -213,14 +226,14 @@ export default defineComponent({
 
             // 激活
             if (data.currentValue === props.trueValue) {
-                color = props.color
+                color = props.color;
             }
 
             if (data.currentValue === props.falseValue) {
-                color = props.falseColor
+                color = props.falseColor;
             }
 
-            return color
+            return color;
         });
 
         // 内部文字样式
@@ -235,9 +248,9 @@ export default defineComponent({
             }
 
             return {
-                center: true
+                center: true,
             };
-        })
+        });
 
         // methods
 
@@ -247,10 +260,10 @@ export default defineComponent({
                 event.preventDefault();
             }
 
+
             if (props.disabled || props.loading) {
                 return false;
             }
-
 
             // 是否有 Promise
             if (!props.beforeChange) {
@@ -259,33 +272,45 @@ export default defineComponent({
 
             const before = props.beforeChange();
 
+            console.log('checked')
+            console.log(before)
+
             if (before && before.then) {
                 before.then(() => {
                     handleToggle();
                 });
             } else {
+
                 handleToggle();
             }
-        }
+        };
 
         const handleToggle = () => {
-            const checked = data.currentValue === props.trueValue ? props.falseValue : props.trueValue;
+            const checked =
+                data.currentValue === props.trueValue
+                    ? props.falseValue
+                    : props.trueValue;
 
             // 修改 v-modul
-            data.currentValue = checked
+            data.currentValue = checked;
+
+
             emit('update:modelValue', checked);
 
             emit('on-change', checked);
-        }
+        };
 
         // 监听value
-        watch(() => props.modelValue, (value) => {
-            if (value !== props.trueValue && value !== props.falseValue) {
-                throw 'Value should be trueValue or falseValue.';
-            }
+        watch(
+            () => props.modelValue,
+            (value) => {
+                if (value !== props.trueValue && value !== props.falseValue) {
+                    throw 'Value should be trueValue or falseValue.';
+                }
 
-            data.currentValue = value;
-        });
+                data.currentValue = value;
+            }
+        );
 
         return {
             // data
@@ -304,7 +329,7 @@ export default defineComponent({
 
             // methods
             toggle,
-        }
+        };
     },
     render() {
         // 解析指令
@@ -313,17 +338,30 @@ export default defineComponent({
 
         // 渲染浮雕
         const genEmboss = () => {
-            return h('div', this.setTextColor(this.setColor, {
-                class: this.embossClass
-            }), [
-                h('span', { class: this.embossTrackClass }),
-                h('span', { class: this.embossThumbClass }, [
-                    h('span', this.setTextColor(this.loadingColor, { class: this.embossLodingClass })),
-                ]),
-                withDirectives(h('span', {
-                    class: this.embossRippleClass,
-                }), [[rippleDirective, this.computedRipple]])
-            ]);
+
+            return h(
+                'div',
+                this.setTextColor(this.setColor, {
+                    class: this.embossClass,
+                }),
+                [
+                    h('span', { class: this.embossTrackClass }),
+                    h('span', { class: this.embossThumbClass }, [
+                        h(
+                            'span',
+                            this.setTextColor(this.embossLoadingColor, {
+                                class: this.embossLodingClass,
+                            })
+                        ),
+                    ]),
+                    withDirectives(
+                        h('span', {
+                            class: this.embossRippleClass,
+                        }),
+                        [[rippleDirective, this.computedRipple]]
+                    ),
+                ]
+            );
         };
 
         // 渲染内容
@@ -331,25 +369,41 @@ export default defineComponent({
             const name = this.data.currentValue === this.trueValue;
             const close = this.data.currentValue === this.falseValue;
 
-            return h('span', {
-                class: this.innerClasses,
-            }, [
-                name ? this.$slots.open && this.$slots.open() :
-                    close ? this.$slots.close && this.$slots.close() : ''
-            ]);
-        }
+            return h(
+                'span',
+                {
+                    class: this.innerClasses,
+                },
+                [
+                    name
+                        ? this.$slots.open && this.$slots.open()
+                        : close
+                        ? this.$slots.close && this.$slots.close()
+                        : '',
+                ]
+            );
+        };
 
-        return withDirectives(h('div', this.setTextColor(!this.emboss && this.setColor, {
-            class: this.wrapClasses,
-            tabindex: '0',
-            onClick: this.toggle
-        }), [
-            this.emboss && genEmboss(),
-            genInner()
-        ]), [[touchDirective, {
-            left: () => this.toggle(),
-            right: () => this.toggle()
-        }]]);
-    }
-})
+        return withDirectives(
+            h(
+                'div',
+                this.setTextColor(!this.emboss && this.setColor, {
+                    class: this.wrapClasses,
+                    tabindex: '0',
+                    onClick: this.toggle,
+                }),
+                [this.emboss && genEmboss(), genInner()]
+            ),
+            [
+                [
+                    touchDirective,
+                    {
+                        left: () => this.toggle(),
+                        right: () => this.toggle(),
+                    },
+                ],
+            ]
+        );
+    },
+});
 </script>

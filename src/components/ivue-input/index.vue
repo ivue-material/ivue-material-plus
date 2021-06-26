@@ -138,6 +138,10 @@
                 @input="handleInput"
                 ref="textarea"
             ></textarea>
+            <!-- 字数统计 -->
+            <span :class="`${prefixCls}-word-count`" v-if="showWordLimit"
+                >{{ textLength }}/{{ upperLimit }}</span
+            >
         </template>
     </div>
 </template>
@@ -776,6 +780,7 @@ export default defineComponent({
                 `${prefixCls}-wrapper`,
                 {
                     [`${prefixCls}-wrapper-${this.size}`]: !!this.size,
+                    [`${prefixCls}-type-${this.type}`]: this.type,
                     [`${prefixCls}-group`]:
                         this.prepend ||
                         this.append ||

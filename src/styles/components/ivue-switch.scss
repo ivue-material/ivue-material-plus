@@ -24,7 +24,7 @@ $emboss-margin: 7px;
   width: $defailt-width;
   height: $defailt-width / 2;
   line-height: $defailt-after-width;
-  border-radius: 22px;
+  border-radius: $defailt-width / 2;
   vertical-align: middle;
   border: 1px solid #858585;
   background: #858585;
@@ -308,6 +308,11 @@ $emboss-margin: 7px;
       &__checked {
         color: currentColor;
       }
+
+      // 渐变
+      &__gradient {
+        background: linear-gradient(135deg, #5AB2FF 0%, #5B8EFF 100%);
+      }
     }
 
     /* 指示器 */
@@ -324,6 +329,11 @@ $emboss-margin: 7px;
       background-color: currentColor;
       transition: $ivue-transition-default;
       transition-property: color, transform;
+
+      // 渐变
+      &__gradient {
+        background: linear-gradient(135deg, #5AB2FF 0%, #5B8EFF 100%);
+      }
 
       /* 激活 */
       &__checked {

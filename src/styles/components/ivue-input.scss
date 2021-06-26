@@ -222,7 +222,7 @@ $name: 'ivue-input';
   }
 
   &[disabled] {
-    background-color: $background-color-select-hover;
+    background-color: #F8F9FD;
     opacity: 1;
     cursor: not-allowed;
     color: $input-disabled-color;
@@ -242,6 +242,13 @@ $name: 'ivue-input';
   height: auto;
   min-height: 32px;
   vertical-align: bottom;
+}
+
+.#{$name}-type-textarea {
+  .#{$name}-word-count {
+    align-items: flex-end;
+    top: auto;
+  }
 }
 
 // 前置内容大小
@@ -319,7 +326,7 @@ $name: 'ivue-input';
   z-index: 1;
   display: inline-flex;
   align-items: center;
-  color: #808695;
+  color: #9AB0C6;
   font-size: 12px;
 }
 

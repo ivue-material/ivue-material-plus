@@ -7,16 +7,14 @@
         <p>基础</p>
 
         <ivue-switch
-            color="#13ce66"
-            false-color="#ff4949"
-            v-model="switch1"
-            @on-change="handleChange"
-            :before-change="handleBeforeChange"
+            :color="['#5AB2FF', '#5B8EFF']"
+            :false-color="['#FFA82D', '#FFBD3C']"
+            :modelValue="switch1"
         ></ivue-switch>
 
         <p>flat</p>
         <ivue-switch
-            color="#000"
+            gradient
             v-model="switch1"
             @on-change="handleChange"
             emboss
@@ -90,7 +88,8 @@
             color="#F41D74"
             size="small"
         ></ivue-switch>
-        <ivue-switch loading :value="true"></ivue-switch>
+
+        <ivue-switch loading :value="true" emboss embossLoadingColor="#F41D74"></ivue-switch>
         <ivue-switch loading :value="true" size="large"></ivue-switch>
         <ivue-switch loading :value="true" size="small"></ivue-switch>
     </div>
@@ -98,22 +97,22 @@
 
 <script>
 export default {
-    data () {
+    data() {
         return {
-            switch1: true
-        }
+            switch1: true,
+        };
     },
     methods: {
-        handleChange () {
-            console.log('>')
+        handleChange() {
+            console.log('>');
         },
-        handleBeforeChange () {
+        handleBeforeChange() {
             return new Promise((resolve) => {
-                console.log('?')
+                console.log('?');
             });
-        }
-    }
-}
+        },
+    },
+};
 </script>
 
 <style lang="scss">

@@ -12,22 +12,35 @@ import {
 import IvueButtonContent from './content.vue';
 
 import Colorable from '../../utils/mixins/colorable';
-import { inject as registrableInject } from '../../utils/mixins/registrable';
 import ripple from '../../utils/directives/ripple';
 import { oneOf } from '../../utils/assist';
 
 const prefixCls = 'ivue-button';
 
-type Status = 'primary' | 'light-primary' | 'dark-primary' | 'success';
+type Status =
+    | 'primary'
+    | 'light-primary'
+    | 'dark-primary'
+    | 'success'
+    | 'warning'
+    | 'error';
 
 export default defineComponent({
     name: prefixCls,
-    mixins: [Colorable, registrableInject('buttonGroup', null, null)],
+    mixins: [Colorable],
     directives: {
         ripple,
     },
     emits: ['click'],
     props: {
+        /**
+         * 当前下标
+         *
+         * @type {Number, string}
+         */
+        index: {
+            type: [Number, String],
+        },
         /**
          * 在按钮上创建一个锚点。在这种情况下，生成的标签将是 a
          *
@@ -119,6 +132,15 @@ export default defineComponent({
             default: false,
         },
         /**
+         * 按钮是否激活状态
+         *
+         * @type {Boolean}
+         */
+        isActive: {
+            type: Boolean,
+            default: false,
+        },
+        /**
          * 按钮状态
          *
          * @type {String}
@@ -131,6 +153,8 @@ export default defineComponent({
                     'light-primary',
                     'dark-primary',
                     'success',
+                    'warning',
+                    'error',
                 ]);
             },
         },
@@ -140,7 +164,6 @@ export default defineComponent({
         // data
         const data = reactive<{
             rippleActive: boolean;
-            isActive: boolean;
             mobile: boolean;
         }>({
             /**
@@ -149,12 +172,6 @@ export default defineComponent({
              * @type {Boolean}
              */
             rippleActive: false,
-            /**
-             * 按钮是否激活状态
-             *
-             * @type {Boolean}
-             */
-            isActive: false,
             /**
              * 是否是移动端
              *
@@ -171,7 +188,7 @@ export default defineComponent({
 
         // 判断按钮是否激活
         const activeButton = computed(() => {
-            if (data.isActive) {
+            if (props.isActive) {
                 return `${prefixCls}--active`;
             }
         });
@@ -206,22 +223,13 @@ export default defineComponent({
         return {
             // data
             data,
+
             // computed
             rippleWorks,
             activeButton,
             btnClasses,
             computedRipple,
         };
-    },
-    mounted() {
-        if (this.buttonGroup) {
-            this.buttonGroup.register(this);
-        }
-    },
-    beforeUnmount() {
-        if (this.buttonGroup) {
-            this.buttonGroup.unregister(this);
-        }
     },
     render() {
         let _tag = 'button';
@@ -233,7 +241,7 @@ export default defineComponent({
             class: {
                 [`${prefixCls}`]: true,
                 isMobile: this.data.mobile,
-                'ivue-button--active': this.data.isActive,
+                'ivue-button--active': this.isActive,
                 ...this.btnClasses,
             },
             href: this.href,
@@ -258,7 +266,12 @@ export default defineComponent({
                     this.data.rippleActive = event;
                 }
 
-                this.$emit('click', this.data.rippleActive);
+                // 激活数据
+                if (this.buttonGroup) {
+                    this.buttonGroup.register(this.index);
+                }
+
+                this.$emit('click', this.data.rippleActive, this.index);
             },
         };
 
