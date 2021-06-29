@@ -17,19 +17,24 @@ $name : 'ivue-breadcrumbs';
     transition: none;
   }
 
+  // 链接
+  .is-link {
+    font-weight: 700;
+    transition: color .2s cubic-bezier(.645, .045, .355, 1);
+    color: #303133;
+  }
+
   >span {
     display: inline-flex;
   }
 
-  &>span:last-child &-item {
-    color: rgba(0, 0, 0, .38);
-  }
 
   &--divider {
     padding: 0 12px;
     display: flex;
     align-items: center;
     color: $divider-color;
+    font-weight: bold;
 
     .ivue-icon {
       font-size: 16px;
@@ -37,27 +42,36 @@ $name : 'ivue-breadcrumbs';
   }
 
   &-item {
-    align-items: center;
-    justify-content: center;
-    display: inline-flex;
-    text-decoration: none;
-    color: $text-color;
-    transition: color $ivue-transition-default;
+    &__inner {
+      font-weight: bold;
+      align-items: center;
+      justify-content: center;
+      display: inline-flex;
+      text-decoration: none;
+      color: $text-color;
+      transition: color $ivue-transition-default;
 
-    &:hover {
-      color: $primary-color;
-      opacity: .8;
+      &:hover {
+        color: $primary-color;
+        opacity: .8;
+      }
+
+      .ivue-icon {
+        margin-right: 4px;
+        font-size: 12px;
+      }
     }
 
-    .ivue-icon {
-      margin-right: 4px;
-      font-size: 12px;
-    }
-  }
 
-  &-item--disabled {
-    cursor: default;
-    pointer-events: none;
-    color: $divider-color;
+    &:last-child {
+      .#{$name}-item__inner {
+        color: rgba(0, 0, 0, .38);
+      }
+
+      .#{$name}--divider {
+        display: none;
+      }
+
+    }
   }
 }

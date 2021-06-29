@@ -13,6 +13,7 @@ import IvueSwitch from './components/ivue-switch';
 import IvueBottomNav from './components/ivue-bottom-nav';
 import IvueBottomNavItem from './components/ivue-bottom-nav-item';
 import IvueBreadcrumbs from './components/ivue-breadcrumbs';
+import IvueBreadcrumbsItem from './components/ivue-breadcrumbs-item';
 
 // 指令
 import Directives from './utils/directives/index';
@@ -30,7 +31,8 @@ export {
     IvueSwitch,
     IvueBottomNav,
     IvueBottomNavItem,
-    IvueBreadcrumbs
+    IvueBreadcrumbs,
+    IvueBreadcrumbsItem
 };
 
 
@@ -53,6 +55,7 @@ const install = (app: App, opt: InstallOptions): void => {
     IvueBottomNav(app);
     IvueBottomNavItem(app);
     IvueBreadcrumbs(app);
+    IvueBreadcrumbsItem(app);
 
     // 注册全局指令
     // ripple resize touch click-outside
