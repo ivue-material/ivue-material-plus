@@ -1,8 +1,8 @@
-import { App } from 'vue'
+import { App } from 'vue';
 import IvueButton from './index.vue';
 
 export default (app: App): void => {
-  app.component(IvueButton.name, IvueButton)
-}
+    app.component(IvueButton.name, IvueButton);
+};
 
-export { IvueButton }
+export { IvueButton };

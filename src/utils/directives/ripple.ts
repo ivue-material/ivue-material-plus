@@ -137,7 +137,6 @@ const ripple = {
         container.className = 'ivue-ripple';
 
         if (value.class && (typeof value.class === 'string')) {
-            console.log(value.class)
             container.className += ` ${value.class}`;
         }
 
@@ -201,7 +200,7 @@ const ripple = {
         }
 
         // 从显示到消失的时间
-        const diff = performance.now() - Number(animation.dataset.activated)
+        const diff = performance.now() - Number(animation.dataset.activated);
         const delay = Math.max(250 - diff, 0);
 
         setTimeout(() => {
@@ -223,7 +222,7 @@ const ripple = {
             }, 300);
         }, delay);
     }
-}
+};
 
 
 // 更新涟漪效果
@@ -252,7 +251,7 @@ function updateRipple(el, binding, wasEnabled) {
     }
 
     if (value.circle) {
-        el._ripple.circle = value.circle
+        el._ripple.circle = value.circle;
     }
 
     // 注册触发事件
@@ -290,7 +289,7 @@ function removeListeners(el) {
 }
 
 // 只调用一次，指令第一次绑定到元素时调用。在这里可以进行一次性的初始化设置。
-function directive(el, binding, node) {
+function directive(el: Element, binding: Record<string, any>, node: Record<string, any>): void {
 
     updateRipple(el, binding, false);
 
@@ -299,9 +298,10 @@ function directive(el, binding, node) {
         const computed = window.getComputedStyle(el);
 
         if (computed && computed.display === 'inline') {
-            const context = node.fnOptions ? [node.fnOptions, node.context] : [node.componentInstance]
+            const context = node.fnOptions ? [node.fnOptions, node.context] : [node.componentInstance];
 
-            console.warn('v-ripple can only be used on block-level elements', ...context)
+            // eslint-disable-next-line no-console
+            console.warn('v-ripple can only be used on block-level elements', ...context);
         }
     });
 }
@@ -311,7 +311,7 @@ function directive(el, binding, node) {
  *
  * el: HTMLElement
  */
-function unmounted(el) {
+function unmounted(el: Record<string, any>): void {
     delete el._ripple;
 
     removeListeners(el);
@@ -322,7 +322,7 @@ function unmounted(el) {
  *
  * el: HTMLElement, binding: VNodeDirective
  */
-function updated(el, binding) {
+function updated(el: Record<string, any>, binding: Record<string, any>): void {
     if (binding.value === binding.oldValue) {
         return;
     }
@@ -335,4 +335,4 @@ export default {
     beforeMount: directive,
     unmounted,
     updated
-}
+};

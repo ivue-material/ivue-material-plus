@@ -160,7 +160,7 @@ export default defineComponent({
         },
     },
     // 组合式 API
-    setup(props: any, { emit }) {
+    setup(props: any) {
         // data
         const data = reactive<{
             rippleActive: boolean;
@@ -191,6 +191,8 @@ export default defineComponent({
             if (props.isActive) {
                 return `${prefixCls}--active`;
             }
+
+            return '';
         });
 
         // 按钮样式

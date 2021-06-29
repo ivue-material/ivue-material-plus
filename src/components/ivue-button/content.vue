@@ -18,7 +18,7 @@ export default defineComponent({
     data() {
         return {
             prefixCls: prefixCls
-        }
+        };
     }
-})
+});
 </script>

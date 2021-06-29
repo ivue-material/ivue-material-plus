@@ -1,4 +1,5 @@
 
+/* eslint-disable */
 const SPECIAL_CHARS_REGEXP = /([\:\-\_]+(.))/g;
 const MOZ_HACK_REGEXP = /^moz([A-Z])/;
 
@@ -17,12 +18,12 @@ export const oneOf = (
 ) => {
     for (let i = 0; i < validList.length; i++) {
         if (value === validList[i]) {
-            return true
+            return true;
         }
     }
 
-    return false
-}
+    return false;
+};
 
 // 获取样式
 export const getStyle = (element: any, styleName: any) => {
@@ -33,7 +34,7 @@ export const getStyle = (element: any, styleName: any) => {
     styleName = camelCase(styleName);
 
     if (styleName === 'float') {
-        styleName = 'cssFloat'
+        styleName = 'cssFloat';
     }
     try {
         const computed = document.defaultView.getComputedStyle(element, '');
@@ -43,4 +44,4 @@ export const getStyle = (element: any, styleName: any) => {
     catch (e) {
         return element.style[styleName];
     }
-}
+};

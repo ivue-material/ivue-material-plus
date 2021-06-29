@@ -19,7 +19,7 @@ export default defineComponent({
     render () {
         return h(this.ivueTag, {
             class: 'ivue-content',
-        }, this.$slots)
+        }, this.$slots);
     }
-})
+});
 </script>

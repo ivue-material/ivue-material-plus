@@ -27,7 +27,6 @@ function handleGesture(wrapper) {
 
 // 开始
 function touchstart(event, wrapper) {
-    console.log('?')
     const touch = event.changedTouches[0];
     wrapper.touchstartX = touch.clientX;
     wrapper.touchstartY = touch.clientY;
@@ -74,20 +73,20 @@ function createHandlers(value) {
         start: value.start,
         move: value.move,
         end: value.end
-    }
+    };
 
     return {
         touchstart: (e) => touchstart(e, wrapper),
         touchend: (e) => touchend(e, wrapper),
         touchmove: (e) => touchmove(e, wrapper)
-    }
+    };
 }
 
 // 指令定义
-function inserted(el, binding, vnode) {
+function inserted(el: Element, binding: Record<string, any>): void {
     const value = binding.value;
 
-    const target = value.parent ? el.parentElement : el;
+    const target: any = value.parent ? el.parentElement : el;
     const options = value.options || { passive: true };
 
     if (!target) {
@@ -96,7 +95,7 @@ function inserted(el, binding, vnode) {
 
     const handlers = createHandlers(value);
     target._touchHandlers = Object(target._touchHandlers);
-    target._touchHandlers[binding.instance.$.uid] = handlers
+    target._touchHandlers[binding.instance.$.uid] = handlers;
 
     // 添加事件
     Object.keys(handlers).forEach((eventName) => {
@@ -106,8 +105,9 @@ function inserted(el, binding, vnode) {
 
 
 // 指令与元素解绑时调用
-function unbind(el, binding, vnode) {
-    const target = binding.value.parent ? el.parentElement : el;
+function unbind(el: Element, binding: Record<string, any>): void {
+    const target: any = binding.value.parent ? el.parentElement : el;
+
     if (!target || !target._touchHandlers) {
         return;
     }
@@ -123,4 +123,4 @@ function unbind(el, binding, vnode) {
 export default {
     beforeMount: inserted,
     unmounted: unbind
-}
+};

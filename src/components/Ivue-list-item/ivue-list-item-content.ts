@@ -25,6 +25,6 @@ export default defineComponent({
             h('div', { class: 'ivue-list-item-content' }, slots),
             [
                 [rippleDirective, !props.rippleDisabled]
-            ])
+            ]);
     },
-})
+});

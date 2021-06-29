@@ -37,11 +37,11 @@ export default defineComponent({
             default: false
         }
     },
-    setup(props: any, { slots, attrs, emit }) {
+    setup(props: any, { slots, attrs }) {
         const data = {
             ...attrs,
             ...props
-        }
+        };
 
         // 获取列表组件
         let listComponent = createListComponent(data);
@@ -59,5 +59,5 @@ export default defineComponent({
             })
         ]);
     },
-})
+});
 </script>

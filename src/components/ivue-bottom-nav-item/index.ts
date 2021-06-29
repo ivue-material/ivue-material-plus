@@ -1,8 +1,8 @@
-import { App } from 'vue'
+import { App } from 'vue';
 import IvueBottomNavItem from './index.vue';
 
 export default (app: App): void => {
-  app.component(IvueBottomNavItem.name, IvueBottomNavItem)
-}
+    app.component(IvueBottomNavItem.name, IvueBottomNavItem);
+};
 
-export { IvueBottomNavItem }
+export { IvueBottomNavItem };

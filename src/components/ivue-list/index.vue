@@ -12,7 +12,7 @@ import {
 } from 'vue';
 
 export default defineComponent({
-    name: "ivue-list",
+    name: 'ivue-list',
     props: {
         /**
          * 用于扩展列表项，将在展开另一个列表项时折叠,一次最多可扩展一个列表项
@@ -35,10 +35,10 @@ export default defineComponent({
                 const otherExpandableListItem: any = data.IvueList.expandable.filter((target) => target.uid !== expandedListItem.uid);
 
                 otherExpandableListItem.forEach((expandableListItem) => {
-                    expandableListItem.close()
+                    expandableListItem.close();
                 });
             }
-        }
+        };
 
         // 插入扩展
         const pushExpandable = (expandableListItem) => {
@@ -46,13 +46,13 @@ export default defineComponent({
 
             // 寻找是否已经有了选项
             const findItem = expandableListItems.find((target) => {
-                return target.uid === expandableListItem.uid
+                return target.uid === expandableListItem.uid;
             });
 
             if (!findItem) {
                 data.IvueList.expandable = expandableListItems.concat([expandableListItem]);
             }
-        }
+        };
 
         // 删除扩展
         const removeExpandable = (expandableListItem) => {
@@ -60,18 +60,18 @@ export default defineComponent({
 
             // 寻找是否已经有了选项
             const findItem = expandableListItems.find((target) => {
-                return target.uid === expandableListItem.uid
+                return target.uid === expandableListItem.uid;
             });
 
             if (findItem) {
                 data.IvueList.expandable = expandableListItems.filter((target) => target.uid !== expandableListItem.uid);
 
             }
-        }
+        };
 
         // data
         const data: any = reactive<{
-            IvueList: object
+            IvueList: Record<string, any>
         }>({
             IvueList: {
                 /**
@@ -105,7 +105,7 @@ export default defineComponent({
             expandATab,
             pushExpandable,
             removeExpandable
-        }
+        };
     },
-})
+});
 </script>

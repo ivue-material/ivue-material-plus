@@ -239,7 +239,20 @@ export default defineComponent({
         const vm = getCurrentInstance();
 
         // data
-        const data: any = reactive({
+        const data: any = reactive<{
+            listWidth: number;
+            trackWidth: number;
+            trackOffset: number;
+            trackIndex: number;
+            trackCopyOffset: number;
+            trackCopyIndex: number;
+            showCopyTrack: boolean;
+            slides: Array<any>;
+            slideInstances: Array<any>;
+            currentIndex: number;
+            hideTrackPos: number;
+            childData: Record<string, any>;
+        }>({
             /**
              * 列表内容宽度
              * @type {Number}
@@ -341,7 +354,7 @@ export default defineComponent({
 
         // mounted
         // 当slot改变时使用
-        const slotChange = (child) => {
+        const slotChange = () => {
             nextTick(() => {
                 data.slides = [];
                 data.slideInstances = [];
@@ -572,15 +585,6 @@ export default defineComponent({
         const _initData = () => {
             data.currentIndex = props.modelValue;
             data.trackIndex = props.modelValue;
-
-            nextTick(() => {
-                // 初始索引位置
-                // if (props.modelValue === 0) {
-                // data.trackCopyIndex =  data.slides.length - props.modelValue;
-                // }
-
-                console.log('init', data.slides.length);
-            });
         };
 
         // 初始化复制内容节点 用于 loop 效果

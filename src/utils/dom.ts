@@ -1,6 +1,6 @@
-interface IE8HTMLInputElement extends HTMLInputElement {
-    attachEvent(event: string, listener: EventListener): boolean;
-}
+// interface IE8HTMLInputElement extends HTMLInputElement {
+//     attachEvent(event: string, listener: EventListener): boolean;
+// }
 
 /* istanbul ignore next */
 export const on = (
@@ -12,7 +12,7 @@ export const on = (
     if (element && event && handler) {
         element.addEventListener(event, handler, useCapture);
     }
-}
+};
 
 
 /* istanbul ignore next */
@@ -23,6 +23,6 @@ export const off = (
     useCapture = false
 ): void => {
     if (element && event && handler) {
-        element.removeEventListener(event, handler, useCapture)
+        element.removeEventListener(event, handler, useCapture);
     }
-}
+};

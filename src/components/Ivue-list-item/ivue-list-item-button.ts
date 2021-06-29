@@ -23,6 +23,6 @@ export default defineComponent({
             h(IvueListItemContent, {
                 rippleDisabled: props.disabled
             }, slots)
-        ])
+        ]);
     },
-})
+});

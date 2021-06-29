@@ -6,11 +6,12 @@ import IvueListItemExpand from './ivue-list-item-expand';
 
 // 判断是否有扩展
 function _hasExpansion(props) {
+    // eslint-disable-next-line no-prototype-builtins
     return props.hasOwnProperty('ivueExpand') && props.ivueExpand !== false;
 }
 
 // 创建列表组件
-export default (props) => {
+export default (props: { type: string; }): any => {
 
     // 判断扩展
     if (_hasExpansion(props)) {
@@ -28,4 +29,4 @@ export default (props) => {
     }
 
     return IvueListItemDefault;
-}
+};

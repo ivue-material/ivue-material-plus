@@ -405,9 +405,11 @@ export default defineComponent({
          */
         passwordIcon: {
             type: Object,
-            default: {
-                on: 'visibility',
-                off: 'visibility_off',
+            default: () => {
+                return {
+                    on: 'visibility',
+                    off: 'visibility_off',
+                };
             },
         },
         /**

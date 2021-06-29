@@ -28,7 +28,7 @@ const SIZING_STYLE: any = [
     'box-sizing',
 ];
 
-let computedStyleCache: object = {};
+const computedStyleCache: Record<string, any> = {};
 let hiddenTextarea;
 
 function calculateNodeStyling(node: any, useCache = false) {
@@ -77,7 +77,7 @@ function calculateNodeStyling(node: any, useCache = false) {
     return nodeInfo;
 }
 
-export const calcTextareaHeight = (uiTextNode: any, minRows = null, maxRows = null, useCache = false) => {
+export const calcTextareaHeight = (uiTextNode: Record<string, any>, minRows = null, maxRows = null, useCache = false): any => {
     if (!hiddenTextarea) {
         hiddenTextarea = document.createElement('textarea');
         document.body.appendChild(hiddenTextarea);
@@ -92,7 +92,7 @@ export const calcTextareaHeight = (uiTextNode: any, minRows = null, maxRows = nu
 
     // Copy all CSS properties that have an impact on the height of the content in
     // the textbox
-    let {
+    const {
         paddingSize, borderSize,
         boxSizing, sizingStyle,
     } = calculateNodeStyling(uiTextNode, useCache);
@@ -119,7 +119,7 @@ export const calcTextareaHeight = (uiTextNode: any, minRows = null, maxRows = nu
     if (minRows !== null || maxRows !== null) {
         // measure height of a textarea with a single row
         hiddenTextarea.value = ' ';
-        let singleRowHeight = hiddenTextarea.scrollHeight - paddingSize;
+        const singleRowHeight = hiddenTextarea.scrollHeight - paddingSize;
         if (minRows !== null) {
             minHeight = singleRowHeight * minRows;
             if (boxSizing === 'border-box') {
@@ -147,4 +147,4 @@ export const calcTextareaHeight = (uiTextNode: any, minRows = null, maxRows = nu
         maxHeight: `${maxHeight}px`,
         overflowY
     };
-}
+};

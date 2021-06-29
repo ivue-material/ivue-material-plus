@@ -60,8 +60,8 @@ export default defineComponent({
         const data = reactive<{
             affix: boolean
             slot: boolean
-            styles: object
-            slotStyle: object
+            styles: Record<string, any>
+            slotStyle: Record<string, any>
         }>({
             // 组件状态是否开启固定
             affix: false,
@@ -71,7 +71,7 @@ export default defineComponent({
             styles: {},
             // slotStyle
             slotStyle: {}
-        })
+        });
 
         // ref = wrapper
         const wrapper = ref(null);
@@ -90,7 +90,7 @@ export default defineComponent({
             }
 
             return type;
-        })
+        });
 
         // 是否添加class设置 fixed
         const classes = computed(() => {
@@ -98,8 +98,8 @@ export default defineComponent({
                 {
                     [`${prefixCls}`]: data.affix
                 }
-            ]
-        })
+            ];
+        });
 
         // method
 
@@ -118,7 +118,7 @@ export default defineComponent({
             }
 
             return ret;
-        }
+        };
 
         // 获取元素坐标
         const getOffset = (element) => {
@@ -141,8 +141,8 @@ export default defineComponent({
                 top: rect.top + scrollTop - clientTop,
                 // 元素左边到视窗左边的距离 + 滚动条的水平位置 - 元素的左边框的宽度(不包括左外边距和左内边距)
                 left: rect.left + scrollLeft - clientLeft
-            }
-        }
+            };
+        };
 
         // 监听滚动
         const handleScroll = () => {
@@ -169,7 +169,7 @@ export default defineComponent({
                 data.slotStyle = {
                     width: `${content.value.clientWidth}px`,
                     height: `${content.value.clientHeight}px`
-                }
+                };
 
                 data.slot = true;
 
@@ -178,7 +178,7 @@ export default defineComponent({
                     top: `${props.offsetTop}px`,
                     left: `${elOffset.left}px`,
                     width: `${wrapper.value.offsetWidth}px`
-                }
+                };
 
                 // 在固定状态发生改变时触发
                 emit('on-change', true);
@@ -201,7 +201,7 @@ export default defineComponent({
                     bottom: `${props.offsetBottom}px`,
                     left: `${elOffset.left}px`,
                     width: `${elOffset.top}px`
-                }
+                };
 
                 // 在固定状态发生改变时触发
                 emit('on-change', true);
@@ -213,7 +213,7 @@ export default defineComponent({
                 // 在固定状态发生改变时触发
                 emit('on-change', false);
             }
-        }
+        };
 
         // mounted
         onMounted(() => {
@@ -226,7 +226,7 @@ export default defineComponent({
         onBeforeUnmount(() => {
             off(window, 'resize', handleScroll, props.useCapture);
             off(window, 'resize', handleScroll, props.useCapture);
-        })
+        });
 
         return {
             data,
@@ -234,8 +234,8 @@ export default defineComponent({
             offsetType,
             wrapper,
             content
-        }
+        };
     },
 
-})
+});
 </script>

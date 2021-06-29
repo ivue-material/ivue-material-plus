@@ -13,7 +13,7 @@ import {
     nextTick,
     getCurrentInstance,
     onBeforeUnmount
-} from 'vue'
+} from 'vue';
 
 // requestAnimationFrame polyfill for node and the browser.
 import raf from 'raf';
@@ -50,7 +50,7 @@ export default defineComponent({
 
         // data
         const data = reactive<{
-            expandStyles: object,
+            expandStyles: Record<string, any>,
             showContent: boolean
         }>({
             /**
@@ -68,14 +68,15 @@ export default defineComponent({
         });
 
         // ref = listExpand
-        const listExpand = ref(null)
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        const listExpand = ref(null);
 
         // computed
         const expandClass = computed(() => {
             return {
                 'ivue-active': data.showContent
-            }
-        })
+            };
+        });
 
         // methods
 
@@ -91,27 +92,27 @@ export default defineComponent({
 
                     data.expandStyles = { height: fullHeight };
                     resolve();
-                })
-            })
-        }
+                });
+            });
+        };
 
         // 展开
         const toggleExpand = () => {
             fetchStyle().then(() => {
                 data.showContent = !data.showContent;
-            })
-        }
+            });
+        };
 
         // 获取子级大小
-        const getChildrenSize = () => {
-            const expandEl = listExpand.value;
-            let size = 0;
+        // const getChildrenSize = () => {
+        //     const expandEl = listExpand.value;
+        //     let size = 0;
 
-            Array.from(expandEl.children).forEach((child: any) => {
-                size += child.offsetHeight;
-            })
-            return size;
-        }
+        //     Array.from(expandEl.children).forEach((child: any) => {
+        //         size += child.offsetHeight;
+        //     });
+        //     return size;
+        // };
 
         // 展开
         const open = () => {
@@ -122,18 +123,18 @@ export default defineComponent({
             fetchStyle().then(() => {
                 data.showContent = true;
             });
-        }
+        };
 
         // 收起
         const close = () => {
             if (!data.showContent) {
-                return false
+                return false;
             }
 
             fetchStyle().then(() => {
-                data.showContent = false
-            })
-        }
+                data.showContent = false;
+            });
+        };
 
         // onMounted
         onMounted(() => {
@@ -166,9 +167,9 @@ export default defineComponent({
 
         // 是否显示内容
         watch(() => data.showContent, () => {
-            let showContent = data.showContent;
+            const showContent = data.showContent;
 
-            emit('update:ivueExpanded', showContent)
+            emit('update:ivueExpanded', showContent);
 
             nextTick(() => emit(showContent ? 'ivue-expanded' : 'ivue-collapsed'));
 
@@ -188,17 +189,17 @@ export default defineComponent({
                 }
             ]
         },
-            [withDirectives(h('div', {
-                class: 'ivue-list-item-content',
-                onClick: toggleExpand
-            }, [slots.default(), h(IvueArrowDownIcon, { class: 'ivue-list-expand-icon' }, {})]),
-                [[rippleDirective, true]]),
-            h('div', {
-                class: 'ivue-list-expand',
-                ref: 'listExpand',
-                style: data.expandStyles,
+        [withDirectives(h('div', {
+            class: 'ivue-list-item-content',
+            onClick: toggleExpand
+        }, [slots.default(), h(IvueArrowDownIcon, { class: 'ivue-list-expand-icon' }, {})]),
+        [[rippleDirective, true]]),
+        h('div', {
+            class: 'ivue-list-expand',
+            ref: 'listExpand',
+            style: data.expandStyles,
 
-            }, slots.ivueExpand())]
-        )
+        }, slots.ivueExpand())]
+        );
     },
-})
+});

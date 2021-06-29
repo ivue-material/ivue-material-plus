@@ -4,7 +4,7 @@
     </div>
 </template>
 
-<script lang='ts'>
+<script  lang='ts'>
 import {
     defineComponent,
     reactive,
@@ -14,7 +14,7 @@ import {
     onMounted,
     onBeforeUnmount,
     inject,
-    getCurrentInstance
+    getCurrentInstance,
 } from 'vue';
 
 const prefixCls = 'ivue-carousel-item';
@@ -55,8 +55,8 @@ export default defineComponent({
             return {
                 width: `${data.width}px`,
                 height: `${data.height}px`,
-                left: `${data.left}px`
-            }
+                left: `${data.left}px`,
+            };
         });
 
         onMounted(() => {
@@ -78,14 +78,14 @@ export default defineComponent({
                 nextTick(() => {
                     // 初始化复制内容节点 用于 loop 效果
                     vm.parent.ctx.initCopyTrackDom();
-                })
+                });
             }
         });
 
         return {
             prefixCls,
-            styles
-        }
+            styles,
+        };
     },
-})
+});
 </script>

@@ -1,4 +1,4 @@
-import type { App } from 'vue'
+import type { App } from 'vue';
 
 import IvueAffix from './components/ivue-affix';
 import IvueInput from './components/ivue-input';
@@ -29,13 +29,14 @@ export {
     IvueSwitch,
     IvueBottomNav,
     IvueBottomNavItem,
-}
+};
 
 
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface InstallOptions {
-
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const install = (app: App, opt: InstallOptions): void => {
     IvueAffix(app);
     IvueInput(app);
@@ -55,7 +56,7 @@ const install = (app: App, opt: InstallOptions): void => {
     Object.keys(Directives).forEach(key => {
         app.directive(key, Directives[key]);
     });
-}
+};
 
 // auto install
 /* istanbul ignore if */
@@ -65,6 +66,6 @@ const install = (app: App, opt: InstallOptions): void => {
 
 const API = {
     install,
-}
+};
 
-export default API
+export default API;

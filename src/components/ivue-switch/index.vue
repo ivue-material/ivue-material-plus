@@ -12,8 +12,8 @@ import {
 
 import { oneOf } from '../../utils/assist';
 import Colorable from '../../utils/mixins/colorable';
-import ripple from '../../utils/directives/ripple';
-import touch from '../../utils/directives/touch';
+// import ripple from '../../utils/directives/ripple';
+// import touch from '../../utils/directives/touch';
 
 type Size = 'large' | 'small' | 'default';
 
@@ -34,22 +34,12 @@ export default defineComponent({
             default: false,
         },
         /**
-         * 按钮颜色
-         *
-         * @type {String}
-         */
-        color: {
-            type: String,
-            default: '',
-        },
-        /**
          * 取消的颜色
          *
          * @type {String}
          */
         falseColor: {
-            type: String,
-            default: '',
+            type: [String, Array],
         },
         /**
          * 是否禁用开关
@@ -137,7 +127,9 @@ export default defineComponent({
     },
     setup(props: any, { emit }) {
         // data
-        const data = reactive({
+        const data = reactive<{
+            currentValue: string | boolean | number
+        }>({
             /**
              * 当前选择状态
              *
@@ -160,7 +152,7 @@ export default defineComponent({
 
             return {
                 [`${prefixCls}`]: true,
-                [`${prefixCls}-false`]: props.falseColor !== '',
+                [`${prefixCls}-false`]: props.falseColor,
                 [`${prefixCls}-checked`]: data.currentValue === props.trueValue,
                 [`${prefixCls}-disabled`]: props.disabled,
                 [`${prefixCls}-loading`]: props.loading,
@@ -272,9 +264,6 @@ export default defineComponent({
 
             const before = props.beforeChange();
 
-            console.log('checked')
-            console.log(before)
-
             if (before && before.then) {
                 before.then(() => {
                     handleToggle();
@@ -334,7 +323,6 @@ export default defineComponent({
     render() {
         // 解析指令
         const rippleDirective = resolveDirective('ripple');
-        const touchDirective = resolveDirective('touch');
 
         // 渲染浮雕
         const genEmboss = () => {
@@ -378,31 +366,20 @@ export default defineComponent({
                     name
                         ? this.$slots.open && this.$slots.open()
                         : close
-                        ? this.$slots.close && this.$slots.close()
-                        : '',
+                            ? this.$slots.close && this.$slots.close()
+                            : '',
                 ]
             );
         };
 
-        return withDirectives(
-            h(
-                'div',
-                this.setTextColor(!this.emboss && this.setColor, {
-                    class: this.wrapClasses,
-                    tabindex: '0',
-                    onClick: this.toggle,
-                }),
-                [this.emboss && genEmboss(), genInner()]
-            ),
-            [
-                [
-                    touchDirective,
-                    {
-                        left: () => this.toggle(),
-                        right: () => this.toggle(),
-                    },
-                ],
-            ]
+        return  h(
+            'div',
+            this.setTextColor(!this.emboss && this.setColor, {
+                class: this.wrapClasses,
+                tabindex: '0',
+                onClick: this.toggle,
+            }),
+            [this.emboss && genEmboss(), genInner()]
         );
     },
 });
