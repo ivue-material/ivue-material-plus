@@ -1,5 +1,5 @@
 
-<script  lang="ts">
+<script lang="ts">
 import { defineComponent, computed, inject, h } from 'vue';
 
 const prefixCls = 'ivue-breadcrumbs-item';
@@ -53,7 +53,6 @@ export default defineComponent({
             ];
         });
 
-
         return {
             prefixCls,
 
@@ -86,7 +85,9 @@ export default defineComponent({
                             }
 
                             // 是否开启  replace
-                            this.replace ? this.$router.replace(this.to) : this.$router.push(this.to);
+                            this.replace
+                                ? this.$router.replace(this.to)
+                                : this.$router.push(this.to);
                         },
                     },
                     this.$slots.default()

@@ -119,6 +119,5 @@ export default {
 .ivue-icon {
     font-size: 12px;
     min-width: 12px;
-    font-weight: bold;
 }
 </style>

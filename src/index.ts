@@ -14,6 +14,7 @@ import IvueBottomNav from './components/ivue-bottom-nav';
 import IvueBottomNavItem from './components/ivue-bottom-nav-item';
 import IvueBreadcrumbs from './components/ivue-breadcrumbs';
 import IvueBreadcrumbsItem from './components/ivue-breadcrumbs-item';
+import IvueSelect from './components/ivue-select';
 
 // 指令
 import Directives from './utils/directives/index';
@@ -32,7 +33,8 @@ export {
     IvueBottomNav,
     IvueBottomNavItem,
     IvueBreadcrumbs,
-    IvueBreadcrumbsItem
+    IvueBreadcrumbsItem,
+    IvueSelect
 };
 
 
@@ -40,8 +42,12 @@ export {
 interface InstallOptions {
 }
 
+const defaultInstallOpt =  {
+};
+
+
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-const install = (app: App, opt: InstallOptions): void => {
+const install = (app: App, opt: InstallOptions = defaultInstallOpt): void => {
     IvueAffix(app);
     IvueInput(app);
     IvueIcon(app);
@@ -56,6 +62,10 @@ const install = (app: App, opt: InstallOptions): void => {
     IvueBottomNavItem(app);
     IvueBreadcrumbs(app);
     IvueBreadcrumbsItem(app);
+    IvueSelect(app);
+
+    // 全局配置
+    app.config.globalProperties.$IVUE = opt;
 
     // 注册全局指令
     // ripple resize touch click-outside
