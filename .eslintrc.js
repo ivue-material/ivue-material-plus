@@ -27,6 +27,8 @@ module.exports = {
     "@typescript-eslint/no-explicit-any": ["off"],
     "vue/no-use-v-if-with-v-for": ["error", {
       "allowUsingIterationVar": false
-    }]
+    }],
+    '@typescript-eslint/explicit-module-boundary-types': 'off',
+    '@typescript-eslint/no-explicit-any': 'off',
   }
 }

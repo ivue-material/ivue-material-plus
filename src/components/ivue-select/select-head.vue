@@ -1,10 +1,7 @@
 <template>
     <div :class="classes">
         <!-- 图标 -->
-        <span
-            :class="`${prefixCls}-prefix`"
-            v-if="$slots.prefix || prefix"
-        >
+        <span :class="`${prefixCls}-prefix`" v-if="$slots.prefix || prefix">
             <slot name="prefix">
                 <ivue-icon v-if="prefix">{{ prefix }}</ivue-icon>
             </slot>
@@ -18,10 +15,12 @@
             :key="item.value"
             v-if="maxTagCount === undefined || index < maxTagCount"
         >
-            <span :class="{
+            <span
+                :class="{
                     [`${prefixCls}-tag-text`]: true,
                     [`${prefixCls}-multiple-tag-hidden`]: item.disabled,
-                }">{{ item.label }}</span>
+                }"
+            >{{ item.label }}</span>
             <ivue-icon v-if="!item.disabled" :class="multipleIcon">{{ multipleIcon }}</ivue-icon>
         </div>
         <!-- 多选达到最大值省略 -->
@@ -33,11 +32,12 @@
             "
         >
             <span :class="`${prefixCls}-tag-text ${prefixCls}-max-tag`">
-                <template v-if="maxTagPlaceholder">{{
+                <template v-if="maxTagPlaceholder">
+                    {{
                     maxTagPlaceholder(selectedMultiple.length - maxTagCount)
-                }}</template>
-                <template v-else>
-                    {{ selectedMultiple.length - maxTagCount }}...</template>
+                    }}
+                </template>
+                <template v-else>{{ selectedMultiple.length - maxTagCount }}...</template>
             </span>
         </div>
         <!-- 普通渲染 -->
@@ -45,8 +45,11 @@
             <span
                 :class="defaultDisplayClasses"
                 v-if="defaultDisplayValue"
-            >{{defaultDisplayValue}}</span>
+            >{{ defaultDisplayValue }}</span>
         </transition>
+
+        <!-- 下拉图标 -->
+        <ivue-icon :class="[`${prefixCls}-arrow`]" v-if="!resetSelect">{{ arrowDownIcon }}</ivue-icon>
     </div>
 </template>
 
@@ -129,6 +132,23 @@ export default defineComponent({
             type: String,
             default: '请选择',
         },
+        /**
+         * 下拉图标
+         *
+         * @type {Boolean}
+         */
+        arrowDownIcon: {
+            type: String,
+        },
+        /**
+         * 是否可以清楚选择
+         *
+         * @type {Boolean}
+         */
+        clearable: {
+            type: Boolean,
+            default: false,
+        },
     },
     setup(props, { slots }) {
         // computed
@@ -205,6 +225,11 @@ export default defineComponent({
             return selected ? selected.label : '';
         });
 
+        // 重置选择
+        const resetSelect = computed(() => {
+            return !showPlaceholder.value && props.clearable;
+        });
+
         return {
             prefixCls,
 
@@ -213,6 +238,7 @@ export default defineComponent({
             selectedMultiple,
             defaultDisplayClasses,
             defaultDisplayValue,
+            resetSelect,
         };
     },
     components: {

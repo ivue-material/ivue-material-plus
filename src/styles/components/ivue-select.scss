@@ -6,7 +6,7 @@ $name: 'ivue-select';
   box-sizing: border-box;
   vertical-align: middle;
   color: $text-color;
-  font-size: 14px;
+  font-size: 12px;
   line-height: normal;
 
   // 禁用样式
@@ -249,10 +249,9 @@ $name: 'ivue-select';
   // 输入框箭头方向
   &-arrow {
     position: absolute;
-    top: 50%;
+    top: 0;
     right: 0;
     line-height: 1;
-    margin-top: -15px;
     font-size: $font-base-size;
     font-weight: bold;
     color: $arrow-color;
@@ -293,7 +292,7 @@ $name: 'ivue-select';
   /*下拉菜单*/
   &-dropdown {
     position: absolute;
-    margin: 2px 0;
+    margin: 5px 0;
     padding: 5px 0;
     width: auto;
     max-height: 200px;
@@ -337,7 +336,7 @@ $name: 'ivue-select';
     list-style: none;
     cursor: pointer;
     color: $text-color;
-    transition: background $ivue-transition-default-timing;
+    transition: background $ivue-transition-default;
 
     @media screen and (min-width: 800px) {
       &:hover {
@@ -397,7 +396,7 @@ $name: 'ivue-select';
   transition: all .3s ease-in-out;
 }
 
-.transition-drop-enter,
+.transition-drop-enter-from,
 .transition-drop-leave-to {
   opacity: 0;
   transform-origin: 0% 0%;
@@ -412,7 +411,7 @@ $name: 'ivue-select';
   transition: opacity .3s ease-in-out;
 }
 
-.multiple-transition-enter,
+.multiple-transition-enter-from,
 .multiple-transition-leave-to {
   opacity: 0;
 }
@@ -424,7 +423,7 @@ $name: 'ivue-select';
   transition: opacity .3s ease-in-out;
 }
 
-.ivue-select-fade-enter,
+.ivue-select-fade-enter-from,
 .ivue-select-fade-leave-to {
   opacity: 0;
 }
