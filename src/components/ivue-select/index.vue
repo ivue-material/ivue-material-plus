@@ -11,6 +11,8 @@
             @blur="handleHeaderFocus"
             @focus="handleHeaderFocus"
             @click="handleToggleMenu"
+            @mouseenter="data.hasMouseHover = true"
+            @mouseleave="data.hasMouseHover = false"
         >
             <slot name="input">
                 <input type="hidden" :name="name" :value="currentSelectValue" />
@@ -19,6 +21,7 @@
                 <select-head
                     :prefix="prefix"
                     :filterable="filterable"
+                    :multiple="multiple"
                     :maxTagCount="maxTagCount"
                     :multipleIcon="multipleIcon"
                     :maxTagPlaceholder="maxTagPlaceholder"
@@ -26,6 +29,10 @@
                     :arrowDownIcon="arrowDownIcon"
                     :clearable="canClearable"
                     :values="data.values"
+                    :isSearchMethod="isSearchMethod"
+                    :resetSelectIcon="resetSelectIcon"
+                    :disabled="disabled"
+                    @on-clear="handleClearSingleSelect"
                 >
                     <template #prefix v-if="$slots.prefix">
                         <slot name="prefix"></slot>
@@ -41,9 +48,9 @@
                     <li>{{ notFindText }}</li>
                 </ul>
                 <!-- 列表 -->
-                <div :class="`${prefixCls}-dropdown-list`">
+                <ul :class="`${prefixCls}-dropdown-list`">
                     <slot></slot>
-                </div>
+                </ul>
             </drop-down>
         </transition>
     </div>
@@ -76,7 +83,7 @@ export default defineComponent({
     name: prefixCls,
     // 注册局部指令
     directives: { ClickOutside },
-    emits: ['update:modelValue', 'on-change'],
+    emits: ['update:modelValue', 'on-change', 'on-clear', 'on-menu-open'],
     props: {
         /**
          * 设置选择的值
@@ -86,6 +93,24 @@ export default defineComponent({
         modelValue: {
             type: [String, Number, Array],
             default: '',
+        },
+        /**
+         * 选择选项时的颜色
+         *
+         * @type {String | Array}
+         */
+        selectedColor: {
+            type: [String, Array],
+            default: '#5B8EFF',
+        },
+        /**
+         * hover 选择选项时的颜色
+         *
+         * @type {String | Array}
+         */
+        hoverColor: {
+            type: [String, Array],
+            default: () => '#5B8EFF',
         },
         /**
          * 是否开启多选
@@ -103,7 +128,7 @@ export default defineComponent({
          */
         multipleIcon: {
             type: String,
-            default: 'close',
+            default: 'cancel',
         },
         /**
          * 是否禁用选择组件
@@ -234,6 +259,15 @@ export default defineComponent({
         clearable: {
             type: Boolean,
             default: false,
+        },
+        /**
+         * 重置选择图标
+         *
+         * @type {String}
+         */
+        resetSelectIcon: {
+            type: String,
+            default: 'cancel',
         },
     },
     setup(props: any, { emit }) {
@@ -394,9 +428,6 @@ export default defineComponent({
             // 获取选项的列表
             const selectOptions = [];
 
-            // 选项的数据
-            const slotOptions = data.options;
-
             // 选项计数器，计算有多少个选项
             let optionCounter = -1;
 
@@ -413,20 +444,10 @@ export default defineComponent({
                 console.log('autoComplete');
             }
 
+            // 选项的数据
             data.options.forEach((option) => {
-                // 获取选项组件里的数据
-                let componentOptions = option.$options;
-                // 判断是否使用了选项组
-                if (componentOptions.name.match(optionGroupRegexp)) {
-                }
-                // 普通选项
-                else {
-                    // 如果没有 filterQueryChange ，则忽略选项
-                    if (data.filterQueryChange) {
-                    }
-                    // 选项计数器
-                    optionCounter = optionCounter + 1;
-                }
+                // 选项计数器
+                optionCounter = optionCounter + 1;
 
                 selectOptions.push(
                     handleOption(
@@ -499,8 +520,18 @@ export default defineComponent({
                     return;
                 }
 
+                // 用于 自动完成组件
+                if (!data.autocomplete) {
+                    event.stopPropagation();
+                }
+
                 // 取消焦点
                 data.isFocused = false;
+
+                event.preventDefault();
+
+                // 点击后隐藏菜单
+                hideMenu();
             }
             // 关闭
             else {
@@ -522,24 +553,20 @@ export default defineComponent({
         const handleOption = (option, values, isFocused) => {
             // 如果选项节点没有子组件就直接返回选项节点
 
-            // 渲染的 value
-            const optionValue = option.value;
-            // 渲染的 label
-            const optionLabel = option.label;
-            // 是否禁用选项
-            const disabled = option.disabled;
+            // 是否获取到焦点
+            option.data.isFocused = isFocused;
 
-            // 当前选择的选项
-            const isSelect =
-                values.includes(optionValue) || values.includes(optionLabel);
+            // 是否禁用选项
+            // option.data.disabled =
+            //     typeof disabled === 'undefined' ? false : disabled !== false;
 
             const propsData = {
-                selected: isSelect,
+                // selected: isSelect,
                 isFocused: isFocused,
-                disabled:
-                    typeof disabled === 'undefined'
-                        ? false
-                        : disabled !== false,
+                // disabled:
+                //     typeof disabled === 'undefined'
+                //         ? false
+                //         : disabled !== false,
             };
 
             return {
@@ -569,6 +596,33 @@ export default defineComponent({
         const handleOptionClick = (option) => {
             // 判断是否开启了多选
             if (props.multiple) {
+                const selected = data.values.find(
+                    ({ value }) => value === option.value
+                );
+
+                // 判断是搜索是否是一个方法
+                if (isSearchMethod.value) {
+                    // 下一个搜索请求 || 搜索输入框输入数据
+                    data.lastSearchQuery =
+                        data.lastSearchQuery || data.filterQuery;
+                } else {
+                    // 下一个搜索请求
+                    data.lastSearchQuery = '';
+                }
+
+                // 当前是否有对应的选项
+                if (selected) {
+                    data.values = data.values.filter(
+                        ({ value }) => value !== option.value
+                    );
+                }
+                // 没有当前选项
+                else {
+                    data.values = data.values.concat(option);
+                }
+
+                // 鼠标点击选项元素后放回焦点
+                data.isFocused = true;
             }
             // 单选
             else {
@@ -605,8 +659,6 @@ export default defineComponent({
                     data.filterQueryChange = false;
                 });
             }
-
-            console.log(data.values);
         };
 
         // 设置选项焦点位置
@@ -614,11 +666,48 @@ export default defineComponent({
             return selectOptions.value.findIndex((item) => {
                 if (typeof option === 'object') {
                     // 判断是否有key 使用key匹配选项
-                    return item.value === option.value;
+                    return item.option.value === option.value;
                 } else {
-                    return item.value === option;
+                    return item.option.value === option;
                 }
             });
+        };
+
+        // 清楚单项选择数据
+        const handleClearSingleSelect = () => {
+            // 非多选清除数据
+            if (!props.multiple) {
+                emit('update:modelValue', '');
+            }
+
+            // API 点击清空按钮时触发
+            emit('on-clear');
+
+            // 隐藏菜单
+            hideMenu();
+
+            // 初始化数据
+            if (props.clearable) {
+                resetData();
+            }
+        };
+
+        // 重置数据
+        const resetData = () => {
+            // 焦点项
+            data.focusIndex = -1;
+            // 最终渲染的数据
+            data.values = [];
+            // 鼠标悬浮
+            data.hasMouseHover = false;
+
+            // 等菜单动画消失后再清除
+            // setTimeout(() => {
+            // 搜索输入框输入数据
+            data.filterQuery = '';
+            // 是否开始输入框支持搜索
+            data.filterQueryChange = false;
+            // }, 300);
         };
 
         // provide
@@ -639,8 +728,6 @@ export default defineComponent({
         watch(
             () => data.values,
             (newValue, oldValue) => {
-                console.log(newValue, oldValue);
-
                 const _newValue = JSON.stringify(newValue);
                 const _oldValue = JSON.stringify(oldValue);
 
@@ -652,7 +739,6 @@ export default defineComponent({
                             : selectValue.value
                         : selectValue.value;
 
-
                 // 输入框值
                 const emitInput =
                     _newValue !== _oldValue && vModelValue !== props.modelValue;
@@ -661,8 +747,19 @@ export default defineComponent({
                     // 更新 v-model
                     emit('update:modelValue', vModelValue);
 
-                    emit('on-change', selectValue);
+                    emit('on-change', selectValue.value);
                 }
+            }
+        );
+
+        // watch
+
+        // 监听菜单显示隐藏
+        watch(
+            () => data.visibleMenu,
+            (state) => {
+                // API 下拉框展开或收起时触发
+                emit('on-menu-open', state);
             }
         );
 
@@ -690,6 +787,7 @@ export default defineComponent({
             handleHeaderFocus,
             handleOption,
             handleToggleMenu,
+            handleClearSingleSelect,
             setFocusIndex,
         };
     },

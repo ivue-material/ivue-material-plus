@@ -1,13 +1,19 @@
 <template>
     <div>
-        {{model1}}
-        <ivue-select v-model="model1">
+        <ivue-select
+            v-model="model1"
+            @on-change="handleOpen"
+            multiple
+            style="width:200px"
+            clearable
+        >
             <ivue-option
                 v-for="item in cityList"
                 :value="item.value"
                 :key="item.value"
             >{{ item.label }}</ivue-option>
         </ivue-select>
+        {{model1}}
     </div>
 </template>
 
@@ -43,6 +49,11 @@ export default {
             ],
             model1: '',
         };
+    },
+    methods: {
+        handleOpen(data) {
+            console.log(data);
+        },
     },
 };
 </script>

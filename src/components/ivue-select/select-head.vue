@@ -6,7 +6,6 @@
                 <ivue-icon v-if="prefix">{{ prefix }}</ivue-icon>
             </slot>
         </span>
-
         <!-- 多选和设置了最大显示数时的方框 -->
         <!-- eslint-disable vue/no-use-v-if-with-v-for -->
         <div
@@ -21,7 +20,11 @@
                     [`${prefixCls}-multiple-tag-hidden`]: item.disabled,
                 }"
             >{{ item.label }}</span>
-            <ivue-icon v-if="!item.disabled" :class="multipleIcon">{{ multipleIcon }}</ivue-icon>
+            <ivue-icon
+                v-if="!item.disabled"
+                :class="multipleIcon"
+                @click.stop="handleRemoveSelectItem(item)"
+            >{{ multipleIcon }}</ivue-icon>
         </div>
         <!-- 多选达到最大值省略 -->
         <div
@@ -41,20 +44,27 @@
             </span>
         </div>
         <!-- 普通渲染 -->
-        <transition name="ivue-select-fade">
-            <span
-                :class="defaultDisplayClasses"
-                v-if="defaultDisplayValue"
-            >{{ defaultDisplayValue }}</span>
-        </transition>
-
+        <span :class="defaultDisplayClasses" v-if="defaultDisplayValue">{{ defaultDisplayValue }}</span>
         <!-- 下拉图标 -->
-        <ivue-icon :class="[`${prefixCls}-arrow`]" v-if="!resetSelect">{{ arrowDownIcon }}</ivue-icon>
+        <transition name="ivue-select-fade">
+            <ivue-icon
+                :class="[`${prefixCls}-arrow`]"
+                v-if="!resetSelect && !isSearchMethod"
+            >{{ arrowDownIcon }}</ivue-icon>
+        </transition>
+        <transition name="ivue-select-fade">
+            <!-- 重置选择 -->
+            <ivue-icon
+                :class="[`${prefixCls}-arrow`,`${prefixCls}-clear`]"
+                v-if="resetSelect"
+                @click.stop="handleClear"
+            >{{ resetSelectIcon }}</ivue-icon>
+        </transition>
     </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, computed } from 'vue';
+import { defineComponent, computed, inject } from 'vue';
 
 import IvueIcon from '../ivue-icon/index.vue';
 
@@ -63,6 +73,15 @@ const prefixCls = 'ivue-select';
 export default defineComponent({
     name: 'ivue-select-head',
     props: {
+        /**
+         * 是否禁用
+         *
+         * @type {Boolean}
+         */
+        disabled: {
+            type: Boolean,
+            default: false,
+        },
         /**
          * 是否开启多选
          *
@@ -149,8 +168,29 @@ export default defineComponent({
             type: Boolean,
             default: false,
         },
+        /**
+         * 是否有搜索方法
+         *
+         * @type {Boolean}
+         */
+        isSearchMethod: {
+            type: Boolean,
+            default: false,
+        },
+        /**
+         * 重置选择图标
+         *
+         * @type {Boolean}
+         */
+        resetSelectIcon: {
+            type: String,
+            default: '',
+        },
     },
-    setup(props, { slots }) {
+    setup(props, { slots, emit }) {
+        // inject
+        const select: any = inject('ivue-select');
+
         // computed
 
         // 外层样式
@@ -230,6 +270,22 @@ export default defineComponent({
             return !showPlaceholder.value && props.clearable;
         });
 
+        // methods
+
+        // 清除选择
+        const handleClear = () => {
+            emit('on-clear');
+        };
+
+        // 删除选择选项
+        const handleRemoveSelectItem = (value) => {
+            if (props.disabled) {
+                return false;
+            }
+
+            select.handleOptionClick(value);
+        };
+
         return {
             prefixCls,
 
@@ -239,6 +295,10 @@ export default defineComponent({
             defaultDisplayClasses,
             defaultDisplayValue,
             resetSelect,
+
+            // methods
+            handleClear,
+            handleRemoveSelectItem,
         };
     },
     components: {

@@ -1,9 +1,12 @@
 <template>
     <li
         :class="classes"
+        :style="styles"
         v-ripple="!disabledRipple"
         @click.stop="handleOptionClick"
         @mousedown.prevent
+        @mouseenter="data.hasMouseHover = true"
+        @mouseleave="data.hasMouseHover = false"
     >
         <slot>{{ showLabel }}</slot>
     </li>
@@ -16,11 +19,16 @@ import {
     onBeforeUnmount,
     getCurrentInstance,
     inject,
+    reactive,
 } from 'vue';
 
 import ripple from '../../utils/directives/ripple';
 
 const prefixCls = 'ivue-select-item';
+
+function isCssColor(color) {
+    return !!color && !!color.match(/^(#|(rgb|hsl)a?\()/);
+}
 
 export default defineComponent({
     name: 'ivue-option',
@@ -82,10 +90,43 @@ export default defineComponent({
             type: [String, Number],
             required: true,
         },
+        /**
+         * 选择选项时的颜色
+         *
+         * @type {String | Array}
+         */
+        selectedColor: {
+            type: [String, Array],
+            default: '',
+        },
     },
-    setup(props) {
+    setup(props: any) {
         // inject
         const select: any = inject('ivue-select');
+        // 有选项组
+        const selectGroup = inject('ivue-select-group', { disabled: false });
+
+        // data
+        const data = reactive({
+            /**
+             * 是否获取到焦点
+             *
+             * @type {Boolean}
+             */
+            isFocused: false,
+            /**
+             * 是否禁用选项
+             *
+             * @type {Boolean}
+             */
+            disabled: props.disabled,
+            /**
+             * 鼠标悬浮
+             *
+             * @type {Boolean}
+             */
+            hasMouseHover: false,
+        });
 
         // vm
         const { proxy } = getCurrentInstance();
@@ -97,11 +138,60 @@ export default defineComponent({
             return [
                 prefixCls,
                 {
-                    [`${prefixCls}-disabled`]: props.disabled,
-                    [`${prefixCls}-selected`]: props.selected,
-                    [`${prefixCls}-focus`]: props.isFocused,
+                    [`${prefixCls}-disabled`]: isDisabled.value,
+                    [`${prefixCls}-focus`]: data.isFocused,
+                    [`${prefixCls}-selected`]: itemSelected.value,
                 },
             ];
+        });
+
+        // styles
+        const styles = computed(() => {
+            let obj = {};
+
+            // 单选触发
+            if (itemSelected.value) {
+                // 单选
+                if (!select.props.multiple) {
+                    obj = {
+                        ...obj,
+                        ...setBackgroundColor(select.props.selectedColor),
+                    };
+                }
+                // 多选
+                else {
+                    obj = {
+                        ...obj,
+                        ...setTextColor(select.props.selectedColor),
+                    };
+                }
+            }
+
+            // 鼠标悬浮
+            if (data.hasMouseHover && !isDisabled.value) {
+                // 单选
+                if (!select.props.multiple) {
+                    obj = {
+                        ...obj,
+                        ...setBackgroundColor(select.props.hoverColor),
+                    };
+                }
+                // 多选
+                else {
+                    obj = {
+                        ...obj,
+                        ...setBackgroundColor(select.props.selectedColor),
+                        color: '#ffffff',
+                    };
+                }
+            }
+
+            return obj;
+        });
+
+        // 是否禁用
+        const isDisabled = computed(() => {
+            return data.disabled || selectGroup.disabled;
         });
 
         // 是否显示label
@@ -114,13 +204,105 @@ export default defineComponent({
             return props.label || proxy.$el.textContent;
         });
 
+        // 当前选项是否激活
+        const itemSelected = computed(() => {
+            // 单选激活
+            if (!select.props.multiple) {
+                return isEqual(props.value, select.props.modelValue);
+            }
+            // 多选激活
+            else {
+                return contains(
+                    select.props.modelValue as unknown[],
+                    props.value
+                );
+            }
+        });
+
+        // computed
+        const isObject = computed(() => {
+            return (
+                Object.prototype.toString.call(props.value).toLowerCase() ===
+                '[object object]'
+            );
+        });
+
         // methods
 
         const handleOptionClick = () => {
+            // 禁用
+            if (isDisabled.value) {
+                return;
+            }
+
             select.handleOptionClick({
                 value: props.value,
                 label: getLabel.value,
             });
+        };
+
+        // 两个值是否相等
+        const isEqual = (a: unknown, b: unknown) => {
+            if (!isObject.value) {
+                return a === b;
+            } else {
+                // const { valueKey } = select.props;
+                // return getValueByPath(a, valueKey) === getValueByPath(b, valueKey);
+            }
+        };
+
+        // 是否包含元素
+        const contains = (arr = [], target) => {
+            if (!isObject.value) {
+                return arr && arr.indexOf(target) > -1;
+            } else {
+                // const valueKey = select.props.valueKey;
+                // return (
+                //     arr &&
+                //     arr.some((item) => {
+                //         return (
+                //             getValueByPath(item, valueKey) ===
+                //             getValueByPath(target, valueKey)
+                //         );
+                //     })
+                // );
+            }
+        };
+
+        // 设置背景颜色
+        const setBackgroundColor = (color: string | any[]) => {
+            let style = {};
+
+            // 是否是数组
+            if (Array.isArray(color)) {
+                style = {
+                    background: `linear-gradient(135deg,${color[0]} 0%, ${color[1]} 100%)`,
+                };
+            } else if (isCssColor(color)) {
+                style = {
+                    'background-color': `${color}`,
+                };
+            }
+
+            return style;
+        };
+
+        // 设置文字颜色
+        const setTextColor = (color: Record<string, any>) => {
+            let style = {};
+
+            // 是否是数组
+            if (Array.isArray(color)) {
+                style = {
+                    color: `${color[0]}`,
+                };
+            } else if (isCssColor(color)) {
+                style = {
+                    color: `${color}`,
+                };
+            }
+
+            return style;
         };
 
         // 插入dom
@@ -131,14 +313,20 @@ export default defineComponent({
             // let selectedOptions = select.props.multiple ? selected : [selected];
         });
 
-
         return {
+            // data,
+            data,
+
             // computed
             classes,
+            styles,
             showLabel,
+            itemSelected,
+            isDisabled,
 
             // methods
             handleOptionClick,
+            setBackgroundColor,
         };
     },
 });

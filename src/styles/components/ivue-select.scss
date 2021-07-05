@@ -21,6 +21,10 @@ $name: 'ivue-select';
         border-color: transparentize($input-disabled-color, 0.8);
       }
     }
+
+    .#{$name}-arrow {
+      color: $input-disabled-color;
+    }
   }
 
   // 默认样式
@@ -227,6 +231,20 @@ $name: 'ivue-select';
       text-overflow: ellipsis;
       white-space: nowrap;
     }
+
+    .#{$name}-item {
+      &-selected:after {
+        @include ivue-icon;
+        content: "done";
+        position: absolute;
+        top: 0;
+        right: 8px;
+        padding: 7px 0;
+        font-size: 17px;
+        color: currentColor;
+        transition: all .1s $ivue-transition-default-timing
+      }
+    }
   }
 
   // 头部开启了过滤 && 自定义了 prefix && 开启了多选
@@ -252,7 +270,7 @@ $name: 'ivue-select';
     top: 0;
     right: 0;
     line-height: 1;
-    font-size: $font-base-size;
+    font-size: $font-default-size;
     font-weight: bold;
     color: $arrow-color;
     height: 100%;
@@ -336,37 +354,44 @@ $name: 'ivue-select';
     list-style: none;
     cursor: pointer;
     color: $text-color;
-    transition: background $ivue-transition-default;
+    transition: all $ivue-transition-default;
 
     @media screen and (min-width: 800px) {
       &:hover {
-        background: $background-color-select-hover;
+        // background: $background-color-select-hover;
+        color: $white-color;
       }
     }
 
     &-focus {
-      background: $background-color-select-hover;
+      // background: $background-color-select-hover;
     }
 
-    &-selected {
-      color: $primary-color;
-    }
 
-    &-selected:after {
-      @include ivue-icon;
-      content: "done";
-      position: absolute;
-      top: 0;
-      right: 8px;
-      padding: 7px 0;
-      font-size: 17px;
-      color: transparentize($primary-color, 0.1);
-    }
+    // &-selected:after {
+    //   @include ivue-icon;
+    //   content: "done";
+    //   position: absolute;
+    //   top: 0;
+    //   right: 8px;
+    //   padding: 7px 0;
+    //   font-size: 17px;
+    //   color: transparentize($primary-color, 0.1);
+    // }
 
     /*选项菜单禁用样式*/
     &-disabled {
       cursor: not-allowed;
       color: $input-disabled-color;
+
+      &:hover {
+        color: $input-disabled-color;
+      }
+    }
+
+
+    &-selected {
+      color: $white-color;
     }
   }
 
