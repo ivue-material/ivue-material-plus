@@ -8,24 +8,25 @@
         </span>
         <!-- 多选和设置了最大显示数时的方框 -->
         <!-- eslint-disable vue/no-use-v-if-with-v-for -->
-        <div
-            :class="`${prefixCls}-tag`"
-            v-for="(item, index) in selectedMultiple"
-            :key="item.value"
-            v-if="maxTagCount === undefined || index < maxTagCount"
-        >
-            <span
-                :class="{
+        <template v-for="(item, index) in selectedMultiple">
+            <div
+                :class="`${prefixCls}-tag`"
+                :key="item.value"
+                v-if="maxTagCount === undefined || index < maxTagCount"
+            >
+                <span
+                    :class="{
                     [`${prefixCls}-tag-text`]: true,
                     [`${prefixCls}-multiple-tag-hidden`]: item.disabled,
                 }"
-            >{{ item.label }}</span>
-            <ivue-icon
-                v-if="!item.disabled"
-                :class="multipleIcon"
-                @click.stop="handleRemoveSelectItem(item)"
-            >{{ multipleIcon }}</ivue-icon>
-        </div>
+                >{{ item.label }}</span>
+                <ivue-icon
+                    v-if="!item.disabled"
+                    :class="multipleIcon"
+                    @click.stop="handleRemoveSelectItem(item)"
+                >{{ multipleIcon }}</ivue-icon>
+            </div>
+        </template>
         <!-- 多选达到最大值省略 -->
         <div
             :class="`${prefixCls}-tag`"
@@ -40,11 +41,28 @@
                     maxTagPlaceholder(selectedMultiple.length - maxTagCount)
                     }}
                 </template>
-                <template v-else>{{ selectedMultiple.length - maxTagCount }}...</template>
+                <template v-else>+{{ selectedMultiple.length - maxTagCount }}...</template>
             </span>
         </div>
         <!-- 普通渲染 -->
         <span :class="defaultDisplayClasses" v-if="defaultDisplayValue">{{ defaultDisplayValue }}</span>
+        <!-- 输入框 -->
+        <input
+            type="text"
+            v-if="filterable"
+            v-model="data.filterQuery"
+            :class="[`${prefixCls}-input-filter`,
+                        {'ivue-select-input-filter-placeholder': showPlaceholder}
+                    ]"
+            :style="inputStyle"
+            :placeholder="showPlaceholder ? placeholder : ''"
+            :disabled="disabled"
+            spellcheck="false"
+            autocomplete="off"
+            @focus="handleInputFocus"
+            @blur="handleInputFocus"
+            @keydown="handleResetInputState"
+        />
         <!-- 下拉图标 -->
         <transition name="ivue-select-fade">
             <ivue-icon
@@ -64,7 +82,14 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed, inject } from 'vue';
+import {
+    defineComponent,
+    computed,
+    inject,
+    reactive,
+    watch,
+    nextTick,
+} from 'vue';
 
 import IvueIcon from '../ivue-icon/index.vue';
 
@@ -186,10 +211,41 @@ export default defineComponent({
             type: String,
             default: '',
         },
+        /**
+         * 外部输入框输入数据
+         *
+         * @type {String}
+         */
+        filterQueryProp: {
+            type: String,
+            default: '',
+        },
     },
     setup(props, { slots, emit }) {
         // inject
         const select: any = inject('ivue-select');
+
+        // data
+        const data = reactive({
+            /**
+             * 输入框长度
+             *
+             * @type { Number}
+             */
+            inputLength: 20,
+            /**
+             * 输入框输入数据
+             *
+             * @type { String}
+             */
+            filterQuery: props.filterQueryProp,
+            /**
+             * 输入框是否输入-这里不是判断直接赋值v-model而是输入框确实有输入行为
+             *
+             * @type { Boolean}
+             */
+            isInputChange: false,
+        });
 
         // computed
 
@@ -270,6 +326,21 @@ export default defineComponent({
             return !showPlaceholder.value && props.clearable;
         });
 
+        // 输入框样式
+        const inputStyle = computed(() => {
+            let style: any = {};
+
+            if (props.multiple) {
+                if (showPlaceholder.value) {
+                    style.width = '100%';
+                } else {
+                    style.width = `${data.inputLength}px`;
+                }
+            }
+
+            return style;
+        });
+
         // methods
 
         // 清除选择
@@ -286,8 +357,89 @@ export default defineComponent({
             select.handleOptionClick(value);
         };
 
+        // 判断焦点发送事件
+        const handleInputFocus = (e) => {
+            emit(e.type === 'focus' ? 'on-input-focus' : 'on-input-blur');
+        };
+
+        // 重置输入框状态
+        const handleResetInputState = () => {
+            data.inputLength = data.filterQuery.length * 12 + 20;
+        };
+
+        // watch
+
+        // 监听最终渲染的数据
+        watch(
+            () => props.values,
+            ([value]: any) => {
+                // 开启了过滤
+                if (!props.filterable) {
+                    return;
+                }
+
+                data.isInputChange = true;
+
+                // 判断多选
+                if (props.multiple) {
+                    // 输入框输入数据
+                    data.filterQuery = '';
+                    // 判断输入框是否输入-这里不是判断直接赋值v-model而是输入框确实有输入行为
+                    data.isInputChange = false;
+
+                    return;
+                }
+
+                if (
+                    typeof value === 'undefined' ||
+                    value === '' ||
+                    value === null
+                ) {
+                    data.filterQuery = '';
+                } else {
+                    data.filterQuery = value.label;
+                }
+
+                nextTick(() => {
+                    // 判断输入框是否输入-这里不是判断直接赋值v-model而是输入框确实有输入行为
+                    data.isInputChange = false;
+                });
+            }
+        );
+
+        // 监听过滤输入
+        watch(
+            () => data.filterQuery,
+            (value) => {
+                if (data.isInputChange) {
+                    data.isInputChange = false;
+                    return;
+                }
+
+                emit('on-filter-query-change', value);
+            }
+        );
+
+        // 监听外部过滤输入
+        watch(
+            () => props.filterQueryProp,
+            (filterQuery) => {
+                if (filterQuery !== data.filterQuery && props.filterable) {
+                    data.filterQuery = filterQuery;
+                }
+
+                // 重置输入框长度
+                if (filterQuery.length === 0) {
+                    handleResetInputState();
+                }
+            }
+        );
+
         return {
             prefixCls,
+
+            // data
+            data,
 
             // computed
             classes,
@@ -295,10 +447,14 @@ export default defineComponent({
             defaultDisplayClasses,
             defaultDisplayValue,
             resetSelect,
+            showPlaceholder,
+            inputStyle,
 
             // methods
             handleClear,
             handleRemoveSelectItem,
+            handleInputFocus,
+            handleResetInputState,
         };
     },
     components: {

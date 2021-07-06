@@ -32,7 +32,11 @@
                     :isSearchMethod="isSearchMethod"
                     :resetSelectIcon="resetSelectIcon"
                     :disabled="disabled"
+                    :filterQueryProp="data.filterQuery"
                     @on-clear="handleClearSingleSelect"
+                    @on-filter-query-change="handleFilterQueryChange"
+                    @on-input-focus="data.isFocused = true"
+                    @on-input-blur="data.isFocused = false"
                 >
                     <template #prefix v-if="$slots.prefix">
                         <slot name="prefix"></slot>
@@ -42,7 +46,7 @@
         </div>
         <!-- 下拉菜单 -->
         <transition name="transition-drop">
-            <drop-down key="IvueSelectDropdown" v-show="dropVisible">
+            <drop-down key="IvueSelectDropdown" v-show="dropVisible" ref="dropdown">
                 <!-- 没有找到数据时的提示 -->
                 <ul :class="`${prefixCls}-not-find`" v-show="showNotFindText && !allowCreate">
                     <li>{{ notFindText }}</li>
@@ -71,19 +75,26 @@ import {
     ref,
     nextTick,
     watch,
+    onMounted,
+    inject
 } from 'vue';
 
 // 注册外部点击事件插件
 import ClickOutside from '../../utils/directives/click-outside';
 
 const prefixCls = 'ivue-select';
-const optionGroupRegexp = /^ivue-option-group$|^IvueOptionGroup$/i;
 
 export default defineComponent({
     name: prefixCls,
     // 注册局部指令
     directives: { ClickOutside },
-    emits: ['update:modelValue', 'on-change', 'on-clear', 'on-menu-open'],
+    emits: [
+        'update:modelValue',
+        'on-change',
+        'on-clear',
+        'on-menu-open',
+        'on-filter-query-change',
+    ],
     props: {
         /**
          * 设置选择的值
@@ -120,6 +131,15 @@ export default defineComponent({
         multiple: {
             type: Boolean,
             default: false,
+        },
+        /**
+         * 是否开启多选多虑收起时清除输入
+         *
+         * @type {Boolean}
+         */
+        multipleFilterableClear: {
+            type: Boolean,
+            default: true,
         },
         /**
          * 是否开启多选后的图表
@@ -271,8 +291,11 @@ export default defineComponent({
         },
     },
     setup(props: any, { emit }) {
+
         // dom
         const selectWrapper = ref<HTMLElement | null>(null);
+
+        const dropdown = ref(null);
 
         const { proxy }: any = getCurrentInstance();
 
@@ -289,6 +312,7 @@ export default defineComponent({
             filterQuery: string;
             hasMouseHover: boolean;
             lastSearchQuery: string;
+            selectEmitter: any
         }>({
             /**
              * 是否显示菜单
@@ -343,7 +367,7 @@ export default defineComponent({
              *
              * @type {String}
              */
-            filterQuery: '',
+            filterQuery: props.filterQueryProp,
             /**
              * 鼠标悬浮
              *
@@ -356,6 +380,12 @@ export default defineComponent({
              * @type {String}
              */
             lastSearchQuery: '',
+            /**
+             * 选择方法
+             *
+             * @type {Function}
+             */
+            selectEmitter: null
         });
 
         // computed
@@ -445,9 +475,30 @@ export default defineComponent({
             }
 
             // 选项的数据
-            data.options.forEach((option) => {
+            for (let option of data.options) {
                 // 选项计数器
                 optionCounter = optionCounter + 1;
+
+                //如果没有 filterQueryChange ，则忽略选项
+                if (data.filterQueryChange) {
+                    const optionFilter = props.filterable
+                        ? validateOption(option)
+                        : option;
+
+                    // 不符合条件的选项
+                    if (!optionFilter) {
+                        option.data.visible = false;
+                    } else {
+                        option.data.visible = true;
+                    }
+
+                    // 过滤数组
+                    if (!optionFilter) {
+                        continue;
+                    }
+                } else {
+                    option.data.visible = true;
+                }
 
                 selectOptions.push(
                     handleOption(
@@ -456,7 +507,7 @@ export default defineComponent({
                         optionCounter === currentIndex
                     )
                 );
-            });
+            }
 
             // 这是一个组件数组 [components]
             return selectOptions;
@@ -585,6 +636,16 @@ export default defineComponent({
             // 设置菜单状态
             data.visibleMenu =
                 typeof force !== 'undefined' ? force : !data.visibleMenu;
+
+            // 菜单收起
+            if (!data.visibleMenu) {
+                // 取消焦点
+                if (data.filterable) {
+                    const input = proxy.$el.querySelector('input[type="text"]');
+
+                    input.blur();
+                }
+            }
         };
 
         // 隐藏菜单
@@ -628,6 +689,7 @@ export default defineComponent({
             else {
                 // 过滤输入框数据
                 data.filterQuery = String(option.label).trim();
+
                 // 最终渲染的数据
                 data.values = [option];
 
@@ -640,6 +702,14 @@ export default defineComponent({
 
             // 是否支持搜索
             if (props.filterable) {
+                const input = proxy.$el.querySelector('input[type="text"]');
+
+                // 输入框获取焦点
+                if (!props.autocomplete) {
+                    nextTick(() => {
+                        input.focus();
+                    });
+                }
             }
 
             // 获取焦点项
@@ -710,6 +780,122 @@ export default defineComponent({
             // }, 300);
         };
 
+        // 初始化值
+        const getInitialValue = () => {
+            let initialValue = Array.isArray(props.modelValue)
+                ? props.modelValue
+                : [props.modelValue];
+
+            // 判断 值 === undefined 或者是 ''而且 参数不是无穷大
+            if (
+                typeof initialValue[0] === 'undefined' ||
+                (String(initialValue[0]).trim() === '' &&
+                    !Number.isFinite(initialValue[0]))
+            ) {
+                initialValue = [];
+            }
+
+            // 开启搜索，没有多选
+            if (isSearchMethod.value && !props.multiple && props.modelValue) {
+                // 获取选项数据
+                const data = getOptionData(props.modelValue);
+
+                // 过滤输入框数据
+                data.filterQuery = data ? data.label : String(props.modelValue);
+            }
+
+            return initialValue.filter((item) => {
+                return Boolean(item) || item === 0;
+            });
+        };
+
+        // 获取选项的值
+        const getOptionData = (value) => {
+            const option = data.options.find((option) => {
+                return option.value === value || option.label === value;
+            });
+
+            if (!option) {
+                return null;
+            }
+
+            // 获取焦点项
+            data.focusIndex = setFocusIndex(option);
+
+            return {
+                value: value,
+                label: option.getLabel,
+                disabled: option.isDisabled,
+            };
+        };
+
+        // 过滤输入框输入
+        const handleFilterQueryChange = (filterQuery) => {
+            // 是否显示下拉菜单
+            if (filterQuery.length > 0 && filterQuery !== data.filterQuery) {
+                data.visibleMenu = true;
+            }
+
+            // 输入框需要过滤的数据
+            data.filterQuery = filterQuery;
+
+            // 输入框过滤输入开始
+            data.filterQueryChange = true;
+        };
+
+        // 检查值不等于
+        const checkValuesNotEqual = (value, publicValue, values) => {
+            const strValue = JSON.stringify(value);
+            const strPublic = JSON.stringify(publicValue);
+            const strValues = JSON.stringify(
+                values.map((item) => {
+                    return item.value;
+                })
+            );
+            return (
+                strValue !== strPublic ||
+                strValue !== strValues ||
+                strValues !== strPublic
+            );
+        };
+
+        // 过滤选项组件
+        const validateOption = (options) => {
+            // value
+            const value = options.value;
+            // label
+            const label = options.label || '';
+            // elm
+            const elm = options.$el || '';
+
+            // 文本内容 将数组元素计算为一个值（从左到右）
+            const textContent = elm.textContent;
+
+            // 把数据转换成字符串
+            const stringValues = JSON.stringify([value, label, textContent]);
+
+            // 把输入框数据转换成小写去除前后空格
+            const filterQuery = data.filterQuery.toLowerCase().trim();
+
+            // 判断 stringValues 数组中是否包含 filterQuery 中的值 includes()
+            return stringValues.toLowerCase().includes(filterQuery);
+        };
+
+        // onMounted
+        onMounted(() => {
+            // 设置初始值
+            if (!isSearchMethod.value && selectOptions.value.length > 0) {
+                data.values = getInitialValue()
+                    .map((value) => {
+                        if (typeof value === 'undefined' && !value) {
+                            return null;
+                        }
+                        return getOptionData(value);
+                    })
+                    .filter(Boolean);
+            }
+        });
+
         // provide
         provide(
             'ivue-select',
@@ -723,6 +909,33 @@ export default defineComponent({
         );
 
         // watch
+
+        // 监听设置的值
+        watch(
+            () => props.modelValue,
+            (value) => {
+                if (value === undefined || value === null) {
+                    data.values = [];
+                }
+                // 搜索对应的数据
+                else if (
+                    checkValuesNotEqual(
+                        value,
+                        currentSelectValue.value,
+                        data.values
+                    )
+                ) {
+                    console.log('??modelValue');
+                    nextTick(() => {
+                        // data.values = ;
+
+                        console.log(
+                            getInitialValue().map(getOptionData).filter(Boolean)
+                        );
+                    });
+                }
+            }
+        );
 
         // 监听最终渲染的数据的变化
         watch(
@@ -752,8 +965,6 @@ export default defineComponent({
             }
         );
 
-        // watch
-
         // 监听菜单显示隐藏
         watch(
             () => data.visibleMenu,
@@ -763,11 +974,119 @@ export default defineComponent({
             }
         );
 
+        // 焦点项
+        watch(
+            () => data.focusIndex,
+            (index) => {
+                if (index < 0 || props.autoComplete) {
+                    return;
+                }
+
+                // update scroll
+                const options = data.options[index];
+
+                // dropdown
+                const _dropdown = dropdown.value.$el;
+                // 底部距离
+                let bottomOverflowDistance =
+                    options.$el.getBoundingClientRect().bottom -
+                    _dropdown.getBoundingClientRect().bottom;
+
+                // 顶部距离
+                let topOverflowDistance =
+                    options.$el.getBoundingClientRect().top -
+                    _dropdown.getBoundingClientRect().top;
+
+                // 滚动到底部
+                if (bottomOverflowDistance > 0) {
+                    _dropdown.scrollTop += bottomOverflowDistance;
+                }
+
+                // 滚动到顶部
+                if (topOverflowDistance < 0) {
+                    _dropdown.scrollTop += topOverflowDistance;
+                }
+            }
+        );
+
+        // 监听过滤输入框输入数据
+        watch(
+            () => data.filterQuery,
+            (filterQuery) => {
+                // API 搜索词改变时触发
+                emit('on-filter-query-change', filterQuery);
+
+                // 更新 v-model
+                // emit('update:modelValue', filterQuery);
+
+                // 是否是有效查询
+                const hasValidQuery =
+                    filterQuery !== '' &&
+                    (filterQuery !== data.lastSearchQuery ||
+                        !data.lastSearchQuery);
+
+                // 是否有搜索方法
+                if (props.searchMethod && hasValidQuery) {
+                    data.focusIndex = -1;
+                    props.searchMethod(filterQuery);
+                }
+
+                // 正常搜索
+                if (filterQuery !== '' && isSearchMethod) {
+                    data.lastSearchQuery = filterQuery;
+                }
+            }
+        );
+
+        // 监听焦点
+        watch(
+            () => data.isFocused,
+            (focused) => {
+                // 输入框获取焦点，移除焦点
+                const el = props.filterable
+                    ? proxy.$el.querySelector('input[type="text"]')
+                    : proxy.$el;
+
+                el[focused ? 'focus' : 'blur']();
+
+                // 恢复单选查询值
+                const [option] = data.values;
+
+                // 判断是否有点击删除按钮在进行还原输入框内容
+                if (option && props.filterable && !props.multiple && !focused) {
+                    const label = String(option.label || option.value).trim();
+                    if (label && data.filterQuery !== label) {
+                        data.filterQuery = label;
+
+                        nextTick(() => {
+                            data.filterQueryChange = false;
+                        });
+                    }
+                }
+
+                // 清除输入
+                if (
+                    option &&
+                    !focused &&
+                    props.filterable &&
+                    props.multiple &&
+                    props.multipleFilterableClear
+                ) {
+                    data.filterQuery = '';
+
+                    nextTick(() => {
+                        data.filterQueryChange = false;
+                    });
+                }
+            }
+        );
+
         return {
             prefixCls,
 
             // dom
             selectWrapper,
+            dropdown,
 
             // data
             data,
@@ -788,6 +1107,7 @@ export default defineComponent({
             handleOption,
             handleToggleMenu,
             handleClearSingleSelect,
+            handleFilterQueryChange,
             setFocusIndex,
         };
     },

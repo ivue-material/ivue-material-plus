@@ -146,12 +146,16 @@ $name: 'ivue-select';
 
   // 在 Select 内显示图标
   &-prefix {
+    padding-left: 4px;
     display: inline-block;
     vertical-align: middle;
+    height: $input-height-base - 2px;
+    line-height: $input-height-base - 2px;
   }
 
   // 有图标设置样式
   &-head-with-prefix {
+    padding-left: 4px !important;
     display: inline-block !important;
     vertical-align: middle
   }
@@ -171,10 +175,12 @@ $name: 'ivue-select';
     vertical-align: middle;
     opacity: 1;
     overflow: hidden;
+    transition: all $ivue-transition-default;
 
     // 文字
     &-text {
       color: #4A505E;
+      transition: color $ivue-transition-default;
     }
 
     .ivue-icon {
@@ -186,6 +192,21 @@ $name: 'ivue-select';
       font-size: 14px;
       color: #BFCDD9;
       line-height: 26px;
+      transition: color $ivue-transition-default;
+    }
+
+    // hover
+    &:hover {
+      background: $primary-color;
+      border-color: #5B8EFF;
+
+
+      // 文字
+      .#{$name}-tag-text,
+      .ivue-icon {
+        color: $white-color;
+      }
+
     }
   }
 
@@ -198,6 +219,10 @@ $name: 'ivue-select';
 
   // 开启了多选
   &-multiple {
+
+    .#{$name}-prefix {
+      padding: 0 4px 0 0;
+    }
 
     // tag 隐藏
     &-tag-hidden {

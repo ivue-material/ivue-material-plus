@@ -1,5 +1,6 @@
 <template>
     <li
+        v-show="data.visible"
         :class="classes"
         :style="styles"
         v-ripple="!disabledRipple"
@@ -16,7 +17,6 @@
 import {
     defineComponent,
     computed,
-    onBeforeUnmount,
     getCurrentInstance,
     inject,
     reactive,
@@ -126,6 +126,12 @@ export default defineComponent({
              * @type {Boolean}
              */
             hasMouseHover: false,
+            /**
+             * 是否显示
+             *
+             * @type {Boolean}
+             */
+            visible: true,
         });
 
         // vm
@@ -308,11 +314,6 @@ export default defineComponent({
         // 插入dom
         select.options.push(proxy);
 
-        // onBeforeUnmount
-        onBeforeUnmount(() => {
-            // let selectedOptions = select.props.multiple ? selected : [selected];
-        });
-
         return {
             // data,
             data,
@@ -321,6 +322,7 @@ export default defineComponent({
             classes,
             styles,
             showLabel,
+            getLabel,
             itemSelected,
             isDisabled,
 
