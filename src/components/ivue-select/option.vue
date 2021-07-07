@@ -1,6 +1,8 @@
 <template>
     <li
         v-show="data.visible"
+        :data-visible="data.visible"
+        data-select="select-item"
         :class="classes"
         :style="styles"
         v-ripple="!disabledRipple"
@@ -20,6 +22,7 @@ import {
     getCurrentInstance,
     inject,
     reactive,
+    onBeforeUnmount
 } from 'vue';
 
 import ripple from '../../utils/directives/ripple';
@@ -310,6 +313,12 @@ export default defineComponent({
 
             return style;
         };
+
+        onBeforeUnmount(() => {
+            select.onOptionDestroy(
+                select.options.map((item) => item.value).indexOf(props.value)
+            );
+        });
 
         // 插入dom
         select.options.push(proxy);

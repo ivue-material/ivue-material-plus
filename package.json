@@ -19,7 +19,8 @@
   },
   "author": "qq282126990",
   "dependencies": {
-    "raf": "^3.4.1"
+    "raf": "^3.4.1",
+    "mitt": "^3.0.0"
   },
   "peerDependencies": {
     "vue": ">=3.0.0"

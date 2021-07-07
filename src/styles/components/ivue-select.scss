@@ -9,6 +9,12 @@ $name: 'ivue-select';
   font-size: 12px;
   line-height: normal;
 
+  // 加载中
+  &-loading {
+    text-align: center;
+    color: #9AB0C6;
+  }
+
   // 禁用样式
   &-disabled {
     .#{$name}-selection {
@@ -360,7 +366,7 @@ $name: 'ivue-select';
   /*没有数据时的提示*/
   &-not-find {
     text-align: center;
-    color: $text-disable-color;
+    color: #9AB0C6;
 
     li {
       margin-bottom: 0;
@@ -475,5 +481,15 @@ $name: 'ivue-select';
 
 .ivue-select-fade-enter-from,
 .ivue-select-fade-leave-to {
+  opacity: 0;
+}
+
+// 下拉菜单选项动画
+.ivue-select-item-fade-enter-active {
+  transition: opacity .3s ease-in-out;
+}
+
+.ivue-select-item-fade-enter-from,
+.ivue-select-item-fade-leave-to {
   opacity: 0;
 }

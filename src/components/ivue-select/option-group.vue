@@ -4,7 +4,7 @@
         <li :class="[`${prefixCls}-title`]">{{ label }}</li>
         <!-- 选项 -->
         <ul>
-            <li :class="[`${prefixCls}`]">
+            <li :class="[`${prefixCls}`]" ref="list">
                 <slot></slot>
             </li>
         </ul>
@@ -12,7 +12,15 @@
 </template>
 
 <script lang='ts'>
-import { defineComponent, provide, reactive, toRefs, inject, ref } from 'vue';
+import {
+    defineComponent,
+    provide,
+    reactive,
+    toRefs,
+    inject,
+    ref,
+    nextTick,
+} from 'vue';
 
 const prefixCls = 'ivue-select-group';
 
@@ -44,11 +52,34 @@ export default defineComponent({
 
         const visible: any = ref(true);
 
+        const list = ref(null);
+
         // methods
         const queryChange = () => {
-            visible.value = select?.options?.some(
-                (option) => option.visible === true
-            );
+            if (select.props.filterable) {
+                if (select.props.filterableHiddenGroup) {
+                    setTimeout(() => {
+                        const children: any = list.value.children;
+
+                        visible.value = [...children].some((option) => {
+                            const visible = option.dataset.visible;
+                            const _select = option.dataset.select;
+
+                            // 是否是选项组件
+                            if (_select) {
+                                // 当前选项是否显示
+                                return visible === 'true';
+                            }
+                        });
+                    });
+                } else {
+                    nextTick(() => {
+                        visible.value = select?.options?.some((option) => {
+                            return option.data.visible === true;
+                        });
+                    });
+                }
+            }
         };
 
         // provide
@@ -61,14 +92,16 @@ export default defineComponent({
 
         // queryChange: queryChange
 
-        select.selectEmitter = queryChange;
-
+        select.selectEmitter.on('ivueOptionGroupQueryChange', queryChange);
 
         return {
             prefixCls,
 
+            // dom
+            list,
+
             // ref
-            visible
+            visible,
         };
     },
 });
