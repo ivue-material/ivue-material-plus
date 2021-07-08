@@ -17,6 +17,7 @@
             @keydown.up.stop.prevent="handldKeyDown"
             @keydown.enter.stop.prevent="handldKeyDown"
             @keydown.esc.stop.prevent="handldKeyDown"
+            @keydown.tab="handldKeyDown"
         >
             <slot name="input">
                 <input type="hidden" :name="name" :value="currentSelectValue" />
@@ -103,6 +104,7 @@ export default defineComponent({
         'on-clear',
         'on-menu-open',
         'on-filter-query-change',
+        'on-set-default-options',
     ],
     props: {
         /**
@@ -111,6 +113,15 @@ export default defineComponent({
          * @type {String, Number, Array}
          */
         modelValue: {
+            type: [String, Number, Array],
+            default: '',
+        },
+        /**
+         * 远程搜索时，显示默认 label，详见示例
+         *
+         * @type {}
+         */
+        defaultLabel: {
             type: [String, Number, Array],
             default: '',
         },
@@ -334,6 +345,15 @@ export default defineComponent({
             type: Boolean,
             default: false,
         },
+        /**
+         * 是否开启还原输入框内容（仅在单选时生效）
+         *
+         * @type {Boolean}
+         */
+        restoreInputOption: {
+            type: Boolean,
+            default: true,
+        },
     },
     setup(props: any, { emit }) {
         // 事件发射器/发布订阅
@@ -360,6 +380,7 @@ export default defineComponent({
             hasMouseHover: boolean;
             lastSearchQuery: string;
             selectEmitter: any;
+            hasExpectedValue: boolean;
         }>({
             /**
              * 是否显示菜单
@@ -433,6 +454,12 @@ export default defineComponent({
              * @type {Function}
              */
             selectEmitter,
+            /**
+             * 当前有 value 值
+             *
+             * @type {Boolean}
+             */
+            hasExpectedValue: false,
         });
 
         // computed
@@ -864,7 +891,7 @@ export default defineComponent({
         // 获取选项的值
         const getOptionData = (value) => {
             const option = data.options.find((option) => {
-                return option.value === value || option.label === value;
+                return option.value === value || option.getLabel === value;
             });
 
             if (!option) {
@@ -875,7 +902,7 @@ export default defineComponent({
             data.focusIndex = setFocusIndex(option);
 
             return {
-                value: value,
+                value: option.value,
                 label: option.getLabel,
                 disabled: option.isDisabled,
             };
@@ -991,7 +1018,15 @@ export default defineComponent({
 
             // 展开
             if (data.visibleMenu) {
-                event.preventDefault();
+                // Tab
+                if (key === 'Tab') {
+                    hideMenu();
+                }
+
+                // Esc slide-up
+                if (key === 'Escape') {
+                    hideMenu();
+                }
 
                 // next
                 if (key === 'ArrowUp') {
@@ -1001,6 +1036,24 @@ export default defineComponent({
                 // prev
                 if (key === 'ArrowDown') {
                     navigateOptions(1);
+                }
+
+                // enter
+                if (key === 'Enter') {
+                    if (data.focusIndex === -1) {
+                        return hideMenu();
+                    }
+
+                    const optionItem = selectOptions.value[data.focusIndex];
+
+                    if (optionItem) {
+                        // 获取选项数据
+                        const option = getOptionData(optionItem.option.value);
+
+                        handleOptionClick(option);
+                    } else {
+                        hideMenu();
+                    }
                 }
             } else {
                 const keysCanOpenMenu = ['ArrowDown', 'ArrowUp'];
@@ -1071,6 +1124,16 @@ export default defineComponent({
             data.focusIndex = index;
         };
 
+        // 检查当前值更新状态
+        // const checkUpdateStatus = () => {
+        //     if (data.values.length === 0) {
+        //         // 获取选项数据
+        //         const optionData = getOptionData(data.filterQuery);
+
+        //         handleOptionClick(optionData);
+        //     }
+        // };
+
         // onMounted
         onMounted(() => {
             // 设置初始值
@@ -1083,6 +1146,34 @@ export default defineComponent({
                         return getOptionData(value);
                     })
                     .filter(Boolean);
+            }
+
+            // 有搜索方法，设置默认标签
+            if (isSearchMethod.value && props.defaultLabel) {
+                // 单选
+                if (!props.multiple) {
+                    data.filterQuery = props.defaultLabel;
+
+                    data.hasExpectedValue = true;
+                }
+                // 多选
+                else if (
+                    props.multiple &&
+                    props.defaultLabel instanceof Array &&
+                    props.modelValue.length === props.defaultLabel.length
+                ) {
+                    const values = props.modelValue.map((item, index) => {
+                        return {
+                            value: item,
+                            label: props.defaultLabel[index],
+                        };
+                    });
+
+                    emit('on-set-default-options', values);
+                    nextTick(() => {
+                        data.values = values;
+                    });
+                }
             }
         });
 
@@ -1106,23 +1197,13 @@ export default defineComponent({
         watch(
             () => props.modelValue,
             (value) => {
+
                 if (value === '') {
                     data.values = [];
 
                     data.filterQueryChange = true;
                 }
-                // 搜索对应的数据
-                else if (
-                    checkValuesNotEqual(
-                        value,
-                        currentSelectValue.value,
-                        data.values
-                    )
-                ) {
-                    // nextTick(() => {
-                    //     data.values = getInitialValue().map(getOptionData).filter(Boolean);
-                    // });
-                }
+
             }
         );
 
@@ -1205,8 +1286,6 @@ export default defineComponent({
                 // API 搜索词改变时触发
                 emit('on-filter-query-change', filterQuery);
 
-                // emit('update:modelValue', filterQuery);
-
                 // 是否是有效查询
                 const hasValidQuery =
                     filterQuery !== '' &&
@@ -1225,6 +1304,11 @@ export default defineComponent({
                 // 正常搜索
                 if (filterQuery !== '' && isSearchMethod.value) {
                     data.lastSearchQuery = filterQuery;
+                }
+
+                // 输入为空隐藏下拉框
+                if (filterQuery === '') {
+                    data.visibleMenu = false;
                 }
 
                 // 触发选项组显示;
@@ -1247,7 +1331,7 @@ export default defineComponent({
                 const [option] = data.values;
 
                 // 判断是否有点击删除按钮在进行还原输入框内容
-                if (option && props.filterable && !props.multiple && !focused) {
+                if (option && props.filterable && !props.multiple && !focused && props.restoreInputOption) {
                     const label = String(option.label || option.value).trim();
 
                     if (label && data.filterQuery !== label) {
@@ -1260,6 +1344,33 @@ export default defineComponent({
                             data.focusIndex = setFocusIndex(option);
                         });
                     }
+                }
+
+                // 没有开启还原输入框内容
+                if (option && props.filterable && !props.multiple && !focused && !props.restoreInputOption) {
+                    // 更新 v-model
+                    emit('update:modelValue', data.filterQuery);
+                }
+            }
+        );
+
+        // 监听选项变化
+        watch(
+            () => selectOptions.value,
+            (value) => {
+                // 初始化值
+                if (data.hasExpectedValue && value.length > 0) {
+
+                    data.values = getInitialValue()
+                        .map((value) => {
+                            if (typeof value === 'undefined' && !value) {
+                                return null;
+                            }
+                            return getOptionData(value);
+                        })
+                        .filter(Boolean);
+
+                    data.hasExpectedValue = false;
                 }
             }
         );

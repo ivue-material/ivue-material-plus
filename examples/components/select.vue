@@ -1,6 +1,6 @@
 <template>
     <div>
-        {{model1}}
+        <!-- {{model1}}
          <ivue-select
             v-model="model1"
             @on-change="handleOpen"
@@ -17,27 +17,46 @@
                 :key="item.value"
                 :disabled="item.disabled"
             >{{ item.label }}</ivue-option>
-        </ivue-select>
+        </ivue-select>-->
         <!-- {{model1}} -->
-        {{options1}}
+        <!-- {{options1}} -->
         <ivue-select
-            v-model="model2"
-            @on-change="handleOpen"
-            style="width:200px"
+            v-model="model19"
             filterable
+            style="width:200px"
+            :searchMethod="remoteMethod3"
+            default-label="北京"
+            :loading="loading3"
             clearable
-            :searchMethod="remoteMethod1"
-            :loading="loading1"
         >
             <ivue-option
-                v-for="item in options1"
+                v-for="item in options3"
                 :value="item.value"
                 :key="item.value"
                 :disabled="item.disabled"
             >{{ item.label }}</ivue-option>
         </ivue-select>
-        {{model2}}
-        <p>预览图标</p>
+
+        {{model19}}
+        <ivue-select
+            v-model="model20"
+            multiple
+            filterable
+            style="width:200px"
+            :searchMethod="remoteMethod4"
+            :default-label="['北京', '深圳']"
+            :loading="loading4"
+            @on-set-default-options="setDefaultOptions"
+        >
+            <ivue-option
+                v-for="item in options4"
+                :value="item.value"
+                :key="item.value"
+                :disabled="item.disabled"
+            >{{ item.label }}</ivue-option>
+        </ivue-select>
+        {{model20}}
+        <!-- <p>预览图标</p>
         <div>
             <ivue-select
                 @on-change="handleOpen"
@@ -96,7 +115,7 @@
                     :disabled="item.disabled"
                 >{{ item.label }}</ivue-option>
             </ivue-select>
-        </div>
+        </div>-->
     </div>
 </template>
 
@@ -104,191 +123,68 @@
 export default {
     data() {
         return {
-            cityList: [
+            model19: 'beijing',
+            options3: [],
+            loading3: false,
+            model20: ['beijing', 'shenzhen'],
+            options4: [],
+            loading4: false,
+            list2: [
                 {
-                    value: 'New York',
-                    label: 'New York',
-                    disabled: true,
+                    value: 'beijing',
+                    label: '北京',
                 },
                 {
-                    value: 'London',
-                    label: 'London',
+                    value: 'shanghai',
+                    label: '上海',
                 },
                 {
-                    value: 'Sydney',
-                    label: 'Sydney',
+                    value: 'shenzhen',
+                    label: '深圳',
                 },
                 {
-                    value: 'Ottawa',
-                    label: 'Ottawa',
+                    value: 'hangzhou',
+                    label: '杭州',
                 },
                 {
-                    value: 'Paris',
-                    label: 'Paris',
-                },
-                {
-                    value: 'Canberra',
-                    label: 'Canberra',
-                },
-            ],
-            cityList1: [
-                {
-                    value: 'New York',
-                    label: 'New York',
-                    disabled: true,
-                },
-                {
-                    value: 'London',
-                    label: 'London',
-                },
-                {
-                    value: 'Sydney',
-                    label: 'Sydney',
+                    value: 'guangzhou',
+                    label: '广州',
                 },
             ],
-            cityList2: [
-                {
-                    value: 'Ottawa',
-                    label: 'Ottawa',
-                },
-                {
-                    value: 'Paris',
-                    label: 'Paris',
-                },
-                {
-                    value: '1',
-                    label: '1',
-                },
-                {
-                    value: '2',
-                    label: '2',
-                },
-                {
-                    value: '3',
-                    label: '3',
-                },
-                {
-                    value: '4',
-                    label: '4',
-                },
-                {
-                    value: '5',
-                    label: '5',
-                },
-            ],
-            model1: [],
-            model2: '',
-            list: [
-                'Alabama',
-                'Alaska',
-                'Arizona',
-                'Arkansas',
-                'California',
-                'Colorado',
-                'Connecticut',
-                'Delaware',
-                'Florida',
-                'Georgia',
-                'Hawaii',
-                'Idaho',
-                'Illinois',
-                'Indiana',
-                'Iowa',
-                'Kansas',
-                'Kentucky',
-                'Louisiana',
-                'Maine',
-                'Maryland',
-                'Massachusetts',
-                'Michigan',
-                'Minnesota',
-                'Mississippi',
-                'Missouri',
-                'Montana',
-                'Nebraska',
-                'Nevada',
-                'New hampshire',
-                'New jersey',
-                'New mexico',
-                'New york',
-                'North carolina',
-                'North dakota',
-                'Ohio',
-                'Oklahoma',
-                'Oregon',
-                'Pennsylvania',
-                'Rhode island',
-                'South carolina',
-                'South dakota',
-                'Tennessee',
-                'Texas',
-                'Utah',
-                'Vermont',
-                'Virginia',
-                'Washington',
-                'West virginia',
-                'Wisconsin',
-                'Wyoming',
-            ],
-            loading1: false,
-            loading2: false,
-            options1: [],
-            options2: []
         };
     },
     methods: {
-        handleOpen(data) {
-            console.log(data);
-        },
-        maxTagPlaceholder(num) {
-            return 'more ' + num;
-        },
-        remoteMethod1(query) {
-            console.log('query')
-            console.log(query)
+        remoteMethod3(query) {
+            console.log(query);
             if (query !== '') {
-                this.loading1 = true;
+                this.loading3 = true;
                 setTimeout(() => {
-                    this.loading1 = false;
-
-                    const list = this.list.map((item) => {
-                        return {
-                            value: item,
-                            label: item,
-                        };
-                    });
-
-
-                    this.options1 = list.filter(
-                        (item) =>
-                            item.label
-                                .toLowerCase()
-                                .indexOf(query.toLowerCase()) > -1
+                    this.loading3 = false;
+                    this.options3 = this.list2.filter(
+                        (item) => item.label.indexOf(query) > -1
                     );
-
-                    console.log(this.options1)
-                }, 0);
+                }, 200);
             } else {
-                this.options1 = [];
+                this.options3 = [];
             }
         },
-         remoteMethod2 (query) {
-                if (query !== '') {
-                    this.loading2 = true;
-                    setTimeout(() => {
-                        this.loading2 = false;
-                        const list = this.list.map(item => {
-                            return {
-                                value: item,
-                                label: item
-                            };
-                        });
-                        this.options2 = list.filter(item => item.label.toLowerCase().indexOf(query.toLowerCase()) > -1);
-                    }, 200);
-                } else {
-                    this.options2 = [];
-                }
+        remoteMethod4(query) {
+            if (query !== '') {
+                this.loading4 = true;
+                setTimeout(() => {
+                    this.loading4 = false;
+                    this.options4 = this.list2.filter(
+                        (item) => item.label.indexOf(query) > -1
+                    );
+                }, 200);
+            } else {
+                this.options4 = [];
             }
+        },
+        setDefaultOptions(options) {
+            console.log(options);
+            this.options4 = options;
+        },
     },
 };
 </script>

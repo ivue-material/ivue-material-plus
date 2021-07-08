@@ -62,6 +62,7 @@
             @focus="handleInputFocus"
             @blur="handleInputFocus"
             @keydown="handleResetInputState"
+            @keydown.delete="handleInputDelete"
         />
         <!-- 下拉图标 -->
         <transition name="ivue-select-fade">
@@ -89,7 +90,7 @@ import {
     reactive,
     watch,
     nextTick,
-    ref
+    ref,
 } from 'vue';
 
 import IvueIcon from '../ivue-icon/index.vue';
@@ -235,7 +236,6 @@ export default defineComponent({
 
         // inject
         const select: any = inject('ivue-select');
-
 
         // data
         const data = reactive({
@@ -385,6 +385,16 @@ export default defineComponent({
             }
         };
 
+        // 输入框删除
+        const handleInputDelete = (event) => {
+            const targetValue = event.target.value;
+
+            if (props.multiple && selectedMultiple.value.length && data.filterQuery === '' && targetValue === '') {
+
+                handleRemoveSelectItem(selectedMultiple.value[selectedMultiple.value.length - 1]);
+            }
+        };
+
         // watch
 
         // 监听最终渲染的数据
@@ -474,6 +484,7 @@ export default defineComponent({
             handleRemoveSelectItem,
             handleInputFocus,
             handleResetInputState,
+            handleInputDelete,
         };
     },
     components: {
