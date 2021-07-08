@@ -13,6 +13,10 @@
             @click="handleToggleMenu"
             @mouseenter="data.hasMouseHover = true"
             @mouseleave="data.hasMouseHover = false"
+            @keydown.down.stop.prevent="handldKeyDown"
+            @keydown.up.stop.prevent="handldKeyDown"
+            @keydown.enter.stop.prevent="handldKeyDown"
+            @keydown.esc.stop.prevent="handldKeyDown"
         >
             <slot name="input">
                 <input type="hidden" :name="name" :value="currentSelectValue" />
@@ -144,7 +148,7 @@ export default defineComponent({
          */
         multipleFilterableClear: {
             type: Boolean,
-            default: true,
+            default: false,
         },
         /**
          * 是否开启多选后的图表
@@ -321,8 +325,17 @@ export default defineComponent({
             type: String,
             default: '加载中',
         },
+        /**
+         * 搜索时，只按 label 进行搜索
+         *
+         * @type {Boolean}
+         */
+        filterByLabel: {
+            type: Boolean,
+            default: false,
+        },
     },
-    setup(props: any, { emit, slots }) {
+    setup(props: any, { emit }) {
         // 事件发射器/发布订阅
         const selectEmitter = mitt();
 
@@ -811,12 +824,10 @@ export default defineComponent({
             data.hasMouseHover = false;
 
             // 等菜单动画消失后再清除
-            // setTimeout(() => {
             // 搜索输入框输入数据
             data.filterQuery = '';
             // 是否开始输入框支持搜索
             data.filterQueryChange = false;
-            // }, 300);
         };
 
         // 初始化值
@@ -905,7 +916,7 @@ export default defineComponent({
             // value
             const value = options.value;
             // label
-            const label = options.label || '';
+            const label = options.label || options.value;
             // elm
             const elm = options.$el || '';
 
@@ -913,10 +924,17 @@ export default defineComponent({
             const textContent = elm.textContent;
 
             // 把数据转换成字符串
-            const stringValues = JSON.stringify([value, label, textContent]);
+            const stringValues = props.filterByLabel
+                ? [label].toString()
+                : [value, label, textContent].toString();
 
             // 把输入框数据转换成小写去除前后空格
             const filterQuery = data.filterQuery.toLowerCase().trim();
+
+            // 是否开启搜索，没有多选，没有输入
+            if (props.filterable && !props.multiple && filterQuery === '') {
+                return false;
+            }
 
             // 判断 stringValues 数组中是否包含 filterQuery 中的值 includes()
             return stringValues.toLowerCase().includes(filterQuery);
@@ -954,12 +972,103 @@ export default defineComponent({
             }
         };
 
-
         // 选项销毁
-        const  handleOptionDestroy = (index) => {
+        const handleOptionDestroy = (index) => {
             if (index > -1) {
                 data.options.splice(index, 1);
             }
+        };
+
+        // 按键
+        const handldKeyDown = (event) => {
+            const key = event.key || event.code;
+            const keyCode = event.keyCode || event.which;
+
+            // Backspace
+            if (key === 'Backspace' || keyCode === 8) {
+                return; // so we don't call preventDefault
+            }
+
+            // 展开
+            if (data.visibleMenu) {
+                event.preventDefault();
+
+                // next
+                if (key === 'ArrowUp') {
+                    navigateOptions(-1);
+                }
+
+                // prev
+                if (key === 'ArrowDown') {
+                    navigateOptions(1);
+                }
+            } else {
+                const keysCanOpenMenu = ['ArrowDown', 'ArrowUp'];
+
+                // 如果焦点在当前选择框的话按 next or prev 可以打开选项菜单
+                if (keysCanOpenMenu.includes(event.key)) {
+                    handleToggleMenu(null, true);
+                }
+            }
+        };
+
+        // 下一个选项
+        const navigateOptions = (direction) => {
+            const optionLength = selectOptions.value.length - 1;
+
+            let index = data.focusIndex + direction;
+
+            if (index < 0) {
+                index = optionLength;
+            }
+
+            // 重置下标
+            if (index > optionLength) {
+                index = 0;
+            }
+
+            // 寻找下标选项
+            if (direction > 0) {
+                let activeOption = -1;
+                for (let i = 0; i < selectOptions.value.length; i++) {
+                    // 判断选项是否可选
+                    const isActiveOption =
+                        !selectOptions.value[i].option.disabled;
+
+                    // 设置激活的选项
+                    if (isActiveOption) {
+                        activeOption = i;
+                    }
+
+                    if (activeOption >= index) {
+                        break;
+                    }
+                }
+
+                index = activeOption;
+            } else {
+                let activeOption = selectOptions.value.length;
+
+                for (let i = optionLength; i >= 0; i--) {
+                    // 判断选项是否可选
+                    const isActiveOption =
+                        !selectOptions.value[i].option.disabled;
+
+                    // 设置激活的选项
+                    if (isActiveOption) {
+                        activeOption = i;
+                    }
+
+                    if (activeOption <= index) {
+                        break;
+                    }
+                }
+
+                index = activeOption;
+            }
+
+            // 设置焦点选项
+            data.focusIndex = index;
         };
 
         // onMounted
@@ -987,7 +1096,7 @@ export default defineComponent({
                 values: data.values,
                 handleOptionClick,
                 selectEmitter: data.selectEmitter,
-                onOptionDestroy: handleOptionDestroy
+                onOptionDestroy: handleOptionDestroy,
             })
         );
 
@@ -997,7 +1106,6 @@ export default defineComponent({
         watch(
             () => props.modelValue,
             (value) => {
-
                 if (value === '') {
                     data.values = [];
 
@@ -1060,6 +1168,25 @@ export default defineComponent({
                         data.selectEmitter.emit('ivueOptionGroupQueryChange');
                     }
                 }
+
+                // 恢复单选查询值
+                const [option] = data.values;
+
+                // 清除输入
+                if (
+                    option &&
+                    !data.isFocused &&
+                    props.filterable &&
+                    props.multiple &&
+                    props.multipleFilterableClear
+                ) {
+                    data.filterQuery = '';
+
+                    // 等菜单动画执行完再清除
+                    nextTick(() => {
+                        data.filterQueryChange = false;
+                    });
+                }
             }
         );
 
@@ -1078,7 +1205,6 @@ export default defineComponent({
                 // API 搜索词改变时触发
                 emit('on-filter-query-change', filterQuery);
 
-                // 更新 v-model
                 // emit('update:modelValue', filterQuery);
 
                 // 是否是有效查询
@@ -1087,8 +1213,11 @@ export default defineComponent({
                     (filterQuery !== data.lastSearchQuery ||
                         !data.lastSearchQuery);
 
+                const shouldCallRemoteMethod =
+                    props.searchMethod && hasValidQuery;
+
                 // 是否有搜索方法
-                if (props.searchMethod) {
+                if (shouldCallRemoteMethod) {
                     data.focusIndex = -1;
                     props.searchMethod(filterQuery);
                 }
@@ -1097,7 +1226,6 @@ export default defineComponent({
                 if (filterQuery !== '' && isSearchMethod.value) {
                     data.lastSearchQuery = filterQuery;
                 }
-
 
                 // 触发选项组显示;
                 data.selectEmitter.emit('ivueOptionGroupQueryChange');
@@ -1133,21 +1261,6 @@ export default defineComponent({
                         });
                     }
                 }
-
-                // 清除输入
-                if (
-                    option &&
-                    !focused &&
-                    props.filterable &&
-                    props.multiple &&
-                    props.multipleFilterableClear
-                ) {
-                    data.filterQuery = '';
-
-                    nextTick(() => {
-                        data.filterQueryChange = false;
-                    });
-                }
             }
         );
 
@@ -1178,6 +1291,7 @@ export default defineComponent({
             handleToggleMenu,
             handleClearSingleSelect,
             handleFilterQueryChange,
+            handldKeyDown,
             setFocusIndex,
         };
     },

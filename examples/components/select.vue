@@ -1,29 +1,23 @@
 <template>
     <div>
-        <!-- <ivue-select
+        {{model1}}
+         <ivue-select
             v-model="model1"
             @on-change="handleOpen"
             style="width:200px"
             filterable
+            clearable
             multiple
-            filterableHiddenGroup
+            :searchMethod="remoteMethod2"
+            :loading="loading2"
         >
-            <ivue-option-group label="1">
-                <ivue-option
-                    v-for="item in cityList1"
-                    :value="item.value"
-                    :key="item.value"
-                    :disabled="item.disabled"
-                >{{ item.label }}</ivue-option>
-            </ivue-option-group>
-            <ivue-option-group label="2">
-                <ivue-option
-                    v-for="item in cityList2"
-                    :value="item.value"
-                    :key="item.value"
-                >{{ item.label }}</ivue-option>
-            </ivue-option-group>
-        </ivue-select> -->
+            <ivue-option
+                v-for="item in options2"
+                :value="item.value"
+                :key="item.value"
+                :disabled="item.disabled"
+            >{{ item.label }}</ivue-option>
+        </ivue-select>
         <!-- {{model1}} -->
         {{options1}}
         <ivue-select
@@ -43,7 +37,7 @@
             >{{ item.label }}</ivue-option>
         </ivue-select>
         {{model2}}
-        <!-- <p>预览图标</p>
+        <p>预览图标</p>
         <div>
             <ivue-select
                 @on-change="handleOpen"
@@ -102,7 +96,7 @@
                     :disabled="item.disabled"
                 >{{ item.label }}</ivue-option>
             </ivue-select>
-        </div>-->
+        </div>
     </div>
 </template>
 
@@ -182,7 +176,7 @@ export default {
                     label: '5',
                 },
             ],
-            model1: ['London'],
+            model1: [],
             model2: '',
             list: [
                 'Alabama',
@@ -237,7 +231,9 @@ export default {
                 'Wyoming',
             ],
             loading1: false,
+            loading2: false,
             options1: [],
+            options2: []
         };
     },
     methods: {
@@ -271,11 +267,28 @@ export default {
                     );
 
                     console.log(this.options1)
-                }, 2000);
+                }, 0);
             } else {
                 this.options1 = [];
             }
         },
+         remoteMethod2 (query) {
+                if (query !== '') {
+                    this.loading2 = true;
+                    setTimeout(() => {
+                        this.loading2 = false;
+                        const list = this.list.map(item => {
+                            return {
+                                value: item,
+                                label: item
+                            };
+                        });
+                        this.options2 = list.filter(item => item.label.toLowerCase().indexOf(query.toLowerCase()) > -1);
+                    }, 200);
+                } else {
+                    this.options2 = [];
+                }
+            }
     },
 };
 </script>

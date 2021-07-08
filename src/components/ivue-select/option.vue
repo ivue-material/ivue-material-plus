@@ -159,7 +159,7 @@ export default defineComponent({
             let obj = {};
 
             // 单选触发
-            if (itemSelected.value) {
+            if (itemSelected.value || data.isFocused) {
                 // 单选
                 if (!select.props.multiple) {
                     obj = {

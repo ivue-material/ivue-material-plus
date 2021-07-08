@@ -1,5 +1,5 @@
 <template>
-    <div :class="classes">
+    <div :class="classes" ref="wrapper">
         <!-- 图标 -->
         <span :class="`${prefixCls}-prefix`" v-if="$slots.prefix || prefix">
             <slot name="prefix">
@@ -89,6 +89,7 @@ import {
     reactive,
     watch,
     nextTick,
+    ref
 } from 'vue';
 
 import IvueIcon from '../ivue-icon/index.vue';
@@ -220,10 +221,21 @@ export default defineComponent({
             type: String,
             default: '',
         },
+        /**
+         * 外部dom元素
+         *
+         * @type {Object}
+         */
+        selectionDom: {
+            type: Object,
+        },
     },
-    setup(props, { slots, emit }) {
+    setup(props: any, { slots, emit }) {
+        const wrapper = ref<HTMLElement | null>(null);
+
         // inject
         const select: any = inject('ivue-select');
+
 
         // data
         const data = reactive({
@@ -365,6 +377,12 @@ export default defineComponent({
         // 重置输入框状态
         const handleResetInputState = () => {
             data.inputLength = data.filterQuery.length * 12 + 20;
+
+            const wrapperOffsetWidth = wrapper.value.offsetWidth;
+
+            if (data.inputLength > wrapperOffsetWidth) {
+                data.inputLength = wrapperOffsetWidth;
+            }
         };
 
         // watch
@@ -429,14 +447,15 @@ export default defineComponent({
                 }
 
                 // 重置输入框长度
-                if (filterQuery.length === 0) {
-                    handleResetInputState();
-                }
+                handleResetInputState();
             }
         );
 
         return {
             prefixCls,
+
+            // dom
+            wrapper,
 
             // data
             data,
