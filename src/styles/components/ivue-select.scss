@@ -395,7 +395,7 @@ $name: 'ivue-select';
     }
 
     &-focus {
-      color: $white-color;
+      // color: $white-color;
       // background: $background-color-select-hover;
     }
 
@@ -423,6 +423,7 @@ $name: 'ivue-select';
 
 
     &-selected {
+      opacity: 1;
       color: $white-color;
     }
   }

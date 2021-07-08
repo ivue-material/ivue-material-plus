@@ -545,11 +545,6 @@ export default defineComponent({
                 .filter(Boolean)
                 .map(({ value }) => value);
 
-            // 判断是否有自动输入
-            // if (props.autoComplete) {
-            //     console.log('autoComplete');
-            // }
-
             // 选项的数据
             for (let option of data.options) {
                 // 选项计数器
@@ -686,22 +681,8 @@ export default defineComponent({
             // 是否获取到焦点
             option.data.isFocused = isFocused;
 
-            // 是否禁用选项
-            // option.data.disabled =
-            //     typeof disabled === 'undefined' ? false : disabled !== false;
-
-            const propsData = {
-                // selected: isSelect,
-                isFocused: isFocused,
-                // disabled:
-                //     typeof disabled === 'undefined'
-                //         ? false
-                //         : disabled !== false,
-            };
-
             return {
                 option,
-                propsData: propsData,
             };
         };
 
@@ -922,22 +903,6 @@ export default defineComponent({
             data.filterQueryChange = true;
         };
 
-        // 检查值不等于
-        const checkValuesNotEqual = (value, publicValue, values) => {
-            const strValue = JSON.stringify(value);
-            const strPublic = JSON.stringify(publicValue);
-            const strValues = JSON.stringify(
-                values.map((item) => {
-                    return item.value;
-                })
-            );
-            return (
-                strValue !== strPublic ||
-                strValue !== strValues ||
-                strValues !== strPublic
-            );
-        };
-
         // 过滤选项组件
         const validateOption = (options) => {
             // value
@@ -1124,6 +1089,23 @@ export default defineComponent({
             data.focusIndex = index;
         };
 
+        // 检查值是否相等
+        const checkValuesNotEqual = (value, publicValue, values) => {
+            const strValue = JSON.stringify(value);
+            const strPublic = JSON.stringify(publicValue);
+            const strValues = JSON.stringify(
+                values.map((item) => {
+                    return item.value;
+                })
+            );
+
+            return (
+                strValue !== strPublic ||
+                strValue !== strValues ||
+                strValues !== strPublic
+            );
+        };
+
         // 检查当前值更新状态
         // const checkUpdateStatus = () => {
         //     if (data.values.length === 0) {
@@ -1133,6 +1115,8 @@ export default defineComponent({
         //         handleOptionClick(optionData);
         //     }
         // };
+
+        data.options = [];
 
         // onMounted
         onMounted(() => {
@@ -1203,7 +1187,23 @@ export default defineComponent({
 
                     data.filterQueryChange = true;
                 }
+                // 当前值是否相等
+                else if (
+                    checkValuesNotEqual(value, selectValue.value, data.values)
+                ) {
 
+                    // 修改适配
+                    nextTick(() => {
+                        // data.values = getInitialValue()
+                        //     .map((value) => {
+                        //         if (typeof value === 'undefined' && !value) {
+                        //             return null;
+                        //         }
+                        //         return getOptionData(value);
+                        //     })
+                        //     .filter(Boolean);
+                    });
+                }
             }
         );
 
@@ -1331,7 +1331,13 @@ export default defineComponent({
                 const [option] = data.values;
 
                 // 判断是否有点击删除按钮在进行还原输入框内容
-                if (option && props.filterable && !props.multiple && !focused && props.restoreInputOption) {
+                if (
+                    option &&
+                    props.filterable &&
+                    !props.multiple &&
+                    !focused &&
+                    props.restoreInputOption
+                ) {
                     const label = String(option.label || option.value).trim();
 
                     if (label && data.filterQuery !== label) {
@@ -1347,7 +1353,13 @@ export default defineComponent({
                 }
 
                 // 没有开启还原输入框内容
-                if (option && props.filterable && !props.multiple && !focused && !props.restoreInputOption) {
+                if (
+                    option &&
+                    props.filterable &&
+                    !props.multiple &&
+                    !focused &&
+                    !props.restoreInputOption
+                ) {
                     // 更新 v-model
                     emit('update:modelValue', data.filterQuery);
                 }
@@ -1360,7 +1372,6 @@ export default defineComponent({
             (value) => {
                 // 初始化值
                 if (data.hasExpectedValue && value.length > 0) {
-
                     data.values = getInitialValue()
                         .map((value) => {
                             if (typeof value === 'undefined' && !value) {

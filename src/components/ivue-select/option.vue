@@ -22,7 +22,8 @@ import {
     getCurrentInstance,
     inject,
     reactive,
-    onBeforeUnmount
+    onBeforeUnmount,
+    onMounted,
 } from 'vue';
 
 import ripple from '../../utils/directives/ripple';
@@ -169,10 +170,17 @@ export default defineComponent({
                 }
                 // 多选
                 else {
-                    obj = {
-                        ...obj,
-                        ...setTextColor(select.props.selectedColor),
-                    };
+                    if (data.isFocused) {
+                        obj = {
+                            ...obj,
+                            ...setBackgroundColor(select.props.selectedColor),
+                        };
+                    } else {
+                        obj = {
+                            ...obj,
+                            ...setTextColor(select.props.selectedColor),
+                        };
+                    }
                 }
             }
 
@@ -314,14 +322,18 @@ export default defineComponent({
             return style;
         };
 
+        // onMounted
+        onMounted(() => {
+            // 插入dom
+            select.options.push(proxy);
+        });
+
+        // onBeforeUnmount
         onBeforeUnmount(() => {
             select.onOptionDestroy(
                 select.options.map((item) => item.value).indexOf(props.value)
             );
         });
-
-        // 插入dom
-        select.options.push(proxy);
 
         return {
             // data,
