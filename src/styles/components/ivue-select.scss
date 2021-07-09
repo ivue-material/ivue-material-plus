@@ -381,9 +381,11 @@ $name: 'ivue-select';
     clear: both;
     line-height: normal;
     font-size: $font-small-size;
-    white-space: nowrap;
     list-style: none;
     cursor: pointer;
+    word-break: break-all;
+    display: flex;
+    align-items: center;
     color: $text-color;
     transition: all $ivue-transition-default;
 
@@ -397,6 +399,21 @@ $name: 'ivue-select';
     &-focus {
       // color: $white-color;
       // background: $background-color-select-hover;
+    }
+
+    &--create {
+      justify-content: space-between;
+
+      .text {
+        flex: 1;
+        width: 100%;
+      }
+
+      i {
+        font-size: 14px;
+        margin: 0;
+        transition: all .1s $ivue-transition-default-timing;
+      }
     }
 
 

@@ -60,9 +60,10 @@
             spellcheck="false"
             autocomplete="off"
             @focus="handleInputFocus"
-            @blur="handleInputFocus"
-            @keydown="handleResetInputState"
+            @blur="handleInputBlur"
+            @input="handleResetInputState"
             @keydown.delete="handleInputDelete"
+            @keydown.enter="handleInputEnter"
         />
         <!-- 下拉图标 -->
         <transition name="ivue-select-fade">
@@ -230,6 +231,24 @@ export default defineComponent({
         selectionDom: {
             type: Object,
         },
+        /**
+         * 是否允许用户创建新条目，需开启 filterable
+         *
+         * @type {Boolean}
+         */
+        allowCreate: {
+            type: Boolean,
+            default: false,
+        },
+        /**
+         * 显示创建的选项
+         *
+         * @type {Boolean}
+         */
+        showCreateItem: {
+            type: Boolean,
+            default: false,
+        },
     },
     setup(props: any, { slots, emit }) {
         const wrapper = ref<HTMLElement | null>(null);
@@ -244,7 +263,7 @@ export default defineComponent({
              *
              * @type { Number}
              */
-            inputLength: 20,
+            inputLength: 30,
             /**
              * 输入框输入数据
              *
@@ -370,13 +389,29 @@ export default defineComponent({
         };
 
         // 判断焦点发送事件
-        const handleInputFocus = (e) => {
-            emit(e.type === 'focus' ? 'on-input-focus' : 'on-input-blur');
+        const handleInputFocus = () => {
+            emit('on-input-focus');
+        };
+
+        // 失去焦点
+        const handleInputBlur = () => {
+            if (props.showCreateItem) {
+                return;
+            }
+
+            // 没有选项
+            if (!props.values.length) {
+                data.filterQuery = '';
+            }
+
+            emit('on-input-blur');
         };
 
         // 重置输入框状态
-        const handleResetInputState = () => {
-            data.inputLength = data.filterQuery.length * 12 + 20;
+        const handleResetInputState = (event = null) => {
+            const value = (event && event.target.value) || data.filterQuery;
+
+            data.inputLength = value.length * 12 + 20;
 
             const wrapperOffsetWidth = wrapper.value.offsetWidth;
 
@@ -389,10 +424,21 @@ export default defineComponent({
         const handleInputDelete = (event) => {
             const targetValue = event.target.value;
 
-            if (props.multiple && selectedMultiple.value.length && data.filterQuery === '' && targetValue === '') {
-
-                handleRemoveSelectItem(selectedMultiple.value[selectedMultiple.value.length - 1]);
+            if (
+                props.multiple &&
+                selectedMultiple.value.length &&
+                data.filterQuery === '' &&
+                targetValue === ''
+            ) {
+                handleRemoveSelectItem(
+                    selectedMultiple.value[selectedMultiple.value.length - 1]
+                );
             }
+        };
+
+        // 点击确认
+        const handleInputEnter = () => {
+            emit('on-enter');
         };
 
         // watch
@@ -483,8 +529,10 @@ export default defineComponent({
             handleClear,
             handleRemoveSelectItem,
             handleInputFocus,
+            handleInputBlur,
             handleResetInputState,
             handleInputDelete,
+            handleInputEnter,
         };
     },
     components: {

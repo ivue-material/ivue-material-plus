@@ -3,7 +3,7 @@
         class="ivue-select-dropdown"
         :class="className"
         :style="{
-              minWidth: minWidth
+             width: minWidth
          }"
     >
         <slot></slot>

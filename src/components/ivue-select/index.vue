@@ -38,10 +38,13 @@
                     :resetSelectIcon="resetSelectIcon"
                     :disabled="disabled"
                     :filterQueryProp="data.filterQuery"
+                    :allowCreate="allowCreate"
+                    :showCreateItem="showCreateItem"
                     @on-clear="handleClearSingleSelect"
                     @on-filter-query-change="handleFilterQueryChange"
                     @on-input-focus="data.isFocused = true"
                     @on-input-blur="data.isFocused = false"
+                    @on-enter="handleCreateItem"
                 >
                     <template #prefix v-if="$slots.prefix">
                         <slot name="prefix"></slot>
@@ -61,6 +64,21 @@
                     :class="`${prefixCls}-dropdown-list`"
                     v-if="(!isSearchMethod) || (isSearchMethod && !loading)"
                 >
+                    <!-- 创建选项 -->
+                    <ivue-option
+                        :class="createItemClass"
+                        :allowCreate="allowCreate"
+                        :showCreateItem="showCreateItem"
+                        :filterQuery="data.filterQuery"
+                        @on-create="handleCreateItem"
+                        v-if="showCreateItem"
+                    >
+                        <!-- 搜索内容 -->
+                        <p class="text">{{ data.filterQuery }}</p>
+                        <!-- 图标 -->
+                        <ivue-icon>{{ allowCreateIcon }}</ivue-icon>
+                    </ivue-option>
+                    <!-- slot -->
                     <slot></slot>
                 </ul>
                 <!-- 加载中 -->
@@ -75,6 +93,8 @@
 import SelectHead from './select-head.vue';
 // 下拉框
 import DropDown from './drop-down.vue';
+import IvueOption from './option.vue';
+import IvueIcon from '../ivue-icon/index.vue';
 import mitt from 'mitt';
 
 import {
@@ -105,6 +125,7 @@ export default defineComponent({
         'on-menu-open',
         'on-filter-query-change',
         'on-set-default-options',
+        'on-create',
     ],
     props: {
         /**
@@ -189,15 +210,6 @@ export default defineComponent({
             default: true,
         },
         /**
-         * 用于 自动完成组件
-         *
-         * @type {Boolean}
-         */
-        autocomplete: {
-            type: Boolean,
-            default: false,
-        },
-        /**
          * 是否支持搜索
          *
          * @type {Boolean}
@@ -264,6 +276,15 @@ export default defineComponent({
         allowCreate: {
             type: Boolean,
             default: false,
+        },
+        /**
+         * 是否开启还原输入框内容 图标
+         *
+         * @type {Boolean}
+         */
+        allowCreateIcon: {
+            type: String,
+            default: 'reply',
         },
         /**
          * 没有找到数据时的提示
@@ -486,10 +507,15 @@ export default defineComponent({
             return [
                 `${prefixCls}-selection-default`,
                 {
-                    [`${prefixCls}-selection`]: !props.autocomplete,
+                    [`${prefixCls}-selection`]: true,
                     [`${prefixCls}-selection-focused`]: data.isFocused,
                 },
             ];
+        });
+
+        // 创建列表选项样式
+        const createItemClass = computed(() => {
+            return [`${prefixCls}-item`, `${prefixCls}-item--create`];
         });
 
         // tab 键顺序
@@ -602,11 +628,6 @@ export default defineComponent({
                 status = false;
             }
 
-            // 自动输入框
-            if (props.autocomplete && noSelectOptions) {
-                status = false;
-            }
-
             return data.visibleMenu && status;
         });
 
@@ -633,6 +654,28 @@ export default defineComponent({
             }
         });
 
+        // 显示创建的选项
+        const showCreateItem = computed(() => {
+            let state = false;
+
+            // 开启了创建选项, 有搜索内容
+            if (props.allowCreate && data.filterQuery !== '') {
+                state = true;
+
+                // 是否有选项列表
+                if (data.options && data.options.length) {
+                    if (
+                        data.options.find(
+                            (item) => item.getLabel === data.filterQuery
+                        )
+                    )
+                        state = false;
+                }
+            }
+
+            return state;
+        });
+
         // methods
 
         // 点击外部
@@ -645,13 +688,11 @@ export default defineComponent({
                     return;
                 }
 
-                // 用于 自动完成组件
-                if (!data.autocomplete) {
-                    event.stopPropagation();
-                }
-
                 // 取消焦点
                 data.isFocused = false;
+
+                // 用于 自动完成组件
+                event.stopPropagation();
 
                 event.preventDefault();
 
@@ -765,11 +806,9 @@ export default defineComponent({
                 const input = proxy.$el.querySelector('input[type="text"]');
 
                 // 输入框获取焦点
-                if (!props.autocomplete) {
-                    nextTick(() => {
-                        input.focus();
-                    });
-                }
+                nextTick(() => {
+                    input.focus();
+                });
             }
 
             // 获取焦点项
@@ -934,7 +973,7 @@ export default defineComponent({
 
         // 设置滚动条滚动
         const focusScroll = (index) => {
-            if (index < 0 || props.autoComplete) {
+            if (index < 0) {
                 return;
             }
 
@@ -1107,15 +1146,43 @@ export default defineComponent({
         };
 
         // 检查当前值更新状态
-        // const checkUpdateStatus = () => {
-        //     if (data.values.length === 0) {
-        //         // 获取选项数据
-        //         const optionData = getOptionData(data.filterQuery);
+        const checkUpdateStatus = () => {
+            if (
+                getInitialValue().length > 0 &&
+                selectOptions.value.length === 0
+            ) {
+                data.hasExpectedValue = true;
+            }
+        };
 
-        //         handleOptionClick(optionData);
-        //     }
-        // };
+        // 创建新列表
+        const handleCreateItem = () => {
+            if (props.allowCreate && data.filterQuery !== '' && showCreateItem.value) {
+                const filterQuery = data.filterQuery;
 
+                emit('on-create', filterQuery);
+
+                // 清除输入
+                data.filterQuery = '';
+
+                const option = {
+                    value: filterQuery,
+                    label: filterQuery,
+                    disabled: false,
+                };
+
+                if (props.multiple) {
+                    handleOptionClick(option);
+                } else {
+                    // 单选时如果不在 nextTick 里执行，无法赋值
+                    nextTick(() => {
+                        handleOptionClick(option);
+                    });
+                }
+            }
+        };
+
+        // 初始化输入
         data.options = [];
 
         // onMounted
@@ -1181,6 +1248,8 @@ export default defineComponent({
         watch(
             () => props.modelValue,
             (value) => {
+                // 检查当前值更新状态
+                checkUpdateStatus();
 
                 if (value === '') {
                     data.values = [];
@@ -1191,17 +1260,24 @@ export default defineComponent({
                 else if (
                     checkValuesNotEqual(value, selectValue.value, data.values)
                 ) {
-
                     // 修改适配
                     nextTick(() => {
-                        // data.values = getInitialValue()
-                        //     .map((value) => {
-                        //         if (typeof value === 'undefined' && !value) {
-                        //             return null;
-                        //         }
-                        //         return getOptionData(value);
-                        //     })
-                        //     .filter(Boolean);
+                        if (data.options.length > 0) {
+                            const values = getInitialValue()
+                                .map((value) => {
+                                    if (
+                                        typeof value === 'undefined' &&
+                                        !value
+                                    ) {
+                                        return null;
+                                    }
+
+                                    return getOptionData(value);
+                                })
+                                .filter(Boolean);
+
+                            data.values = values;
+                        }
                     });
                 }
             }
@@ -1219,7 +1295,7 @@ export default defineComponent({
                     props.labelAndValue && selectValue.value
                         ? props.multiple
                             ? selectValue.value.map(({ value }) => value)
-                            : selectValue.value
+                            : selectValue.value.value
                         : selectValue.value;
 
                 // 输入框值
@@ -1306,9 +1382,14 @@ export default defineComponent({
                     data.lastSearchQuery = filterQuery;
                 }
 
-                // 输入为空隐藏下拉框
-                if (filterQuery === '') {
+                // 输入为空隐藏下拉框 非多选
+                if (filterQuery === '' && !props.multiple) {
                     data.visibleMenu = false;
+
+                    // 等菜单动画执行完再清除
+                    nextTick(() => {
+                        data.filterQueryChange = false;
+                    });
                 }
 
                 // 触发选项组显示;
@@ -1377,6 +1458,7 @@ export default defineComponent({
                             if (typeof value === 'undefined' && !value) {
                                 return null;
                             }
+
                             return getOptionData(value);
                         })
                         .filter(Boolean);
@@ -1399,12 +1481,14 @@ export default defineComponent({
             // computed
             classes,
             selectionClasses,
+            createItemClass,
             selectTabindex,
             currentSelectValue,
             isSearchMethod,
             showNotFindText,
             dropVisible,
             canClearable,
+            showCreateItem,
 
             // methods
             handleClickOutside,
@@ -1414,12 +1498,15 @@ export default defineComponent({
             handleClearSingleSelect,
             handleFilterQueryChange,
             handldKeyDown,
+            handleCreateItem,
             setFocusIndex,
         };
     },
     components: {
         SelectHead,
         DropDown,
+        IvueOption,
+        IvueIcon,
     },
 });
 </script>

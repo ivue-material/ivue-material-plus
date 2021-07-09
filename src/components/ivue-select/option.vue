@@ -92,7 +92,6 @@ export default defineComponent({
          */
         value: {
             type: [String, Number],
-            required: true,
         },
         /**
          * 选择选项时的颜色
@@ -101,10 +100,44 @@ export default defineComponent({
          */
         selectedColor: {
             type: [String, Array],
+        },
+        /**
+         * hover 选择选项时的颜色
+         *
+         * @type {String | Array}
+         */
+        hoverColor: {
+            type: [String, Array],
+        },
+        /**
+         * 是否允许用户创建新条目，需开启 filterable
+         *
+         * @type {Boolean}
+         */
+        allowCreate: {
+            type: Boolean,
+            default: false,
+        },
+        /**
+         * 显示创建的选项
+         *
+         * @type {Boolean}
+         */
+        showCreateItem: {
+            type: Boolean,
+            default: false,
+        },
+        /**
+         * 输入框输入数据
+         *
+         * @type {String}
+         */
+        filterQuery: {
+            type: String,
             default: '',
         },
     },
-    setup(props: any) {
+    setup(props: any, { emit }) {
         // inject
         const select: any = inject('ivue-select');
         // 有选项组
@@ -190,14 +223,18 @@ export default defineComponent({
                 if (!select.props.multiple) {
                     obj = {
                         ...obj,
-                        ...setBackgroundColor(select.props.hoverColor),
+                        ...setBackgroundColor(
+                            props.hoverColor || select.props.hoverColor
+                        ),
                     };
                 }
                 // 多选
                 else {
                     obj = {
                         ...obj,
-                        ...setBackgroundColor(select.props.selectedColor),
+                        ...setBackgroundColor(
+                            props.selectedColor || select.props.selectedColor
+                        ),
                         color: '#ffffff',
                     };
                 }
@@ -246,16 +283,49 @@ export default defineComponent({
 
         // methods
 
+        // 点击选项
         const handleOptionClick = () => {
             // 禁用
             if (isDisabled.value) {
                 return;
             }
 
-            select.handleOptionClick({
-                value: props.value,
-                label: getLabel.value,
-            });
+            // 开启了创建列表
+            if (props.allowCreate) {
+                handleCreateItem();
+            }
+            // 普通点击
+            else {
+                select.handleOptionClick({
+                    value: props.value,
+                    label: getLabel.value,
+                });
+            }
+        };
+
+        // 创建新列表
+
+        const handleCreateItem = () => {
+            if (
+                props.allowCreate &&
+                props.filterQuery !== '' &&
+                props.showCreateItem
+            ) {
+                emit('on-create');
+
+                // this.query = '';
+                // const option = {
+                //     value: query,
+                //     label: query,
+                //     tag: undefined,
+                // };
+                // if (this.multiple) {
+                //     this.onOptionClick(option);
+                // } else {
+                //     // 单选时如果不在 nextTick 里执行，无法赋值
+                //     this.$nextTick(() => this.onOptionClick(option));
+                // }
+            }
         };
 
         // 两个值是否相等
@@ -324,8 +394,10 @@ export default defineComponent({
 
         // onMounted
         onMounted(() => {
-            // 插入dom
-            select.options.push(proxy);
+            if (!props.allowCreate) {
+                // 插入dom
+                select.options.push(proxy);
+            }
         });
 
         // onBeforeUnmount
