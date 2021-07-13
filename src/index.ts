@@ -15,6 +15,7 @@ import IvueBottomNavItem from './components/ivue-bottom-nav-item';
 import IvueBreadcrumbs from './components/ivue-breadcrumbs';
 import IvueBreadcrumbsItem from './components/ivue-breadcrumbs-item';
 import IvueSelect from './components/ivue-select';
+import IvueSteps from './components/ivue-steps';
 
 // 指令
 import Directives from './utils/directives/index';
@@ -34,7 +35,8 @@ export {
     IvueBottomNavItem,
     IvueBreadcrumbs,
     IvueBreadcrumbsItem,
-    IvueSelect
+    IvueSelect,
+    IvueSteps
 };
 
 
@@ -63,6 +65,7 @@ const install = (app: App, opt: InstallOptions = defaultInstallOpt): void => {
     IvueBreadcrumbs(app);
     IvueBreadcrumbsItem(app);
     IvueSelect(app);
+    IvueSteps(app);
 
     // 全局配置
     app.config.globalProperties.$IVUE = opt;

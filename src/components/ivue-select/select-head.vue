@@ -257,7 +257,11 @@ export default defineComponent({
         const select: any = inject('ivue-select');
 
         // data
-        const data = reactive({
+        const data = reactive<{
+            inputLength: number,
+            filterQuery: any,
+            isInputChange: boolean
+        }>({
             /**
              * 输入框长度
              *

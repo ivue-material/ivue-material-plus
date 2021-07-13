@@ -144,7 +144,12 @@ export default defineComponent({
         const selectGroup = inject('ivue-select-group', { disabled: false });
 
         // data
-        const data = reactive({
+        const data = reactive<{
+            isFocused: boolean;
+            disabled: boolean;
+            hasMouseHover: boolean;
+            visible: boolean;
+        }>({
             /**
              * 是否获取到焦点
              *
@@ -312,19 +317,6 @@ export default defineComponent({
                 props.showCreateItem
             ) {
                 emit('on-create');
-
-                // this.query = '';
-                // const option = {
-                //     value: query,
-                //     label: query,
-                //     tag: undefined,
-                // };
-                // if (this.multiple) {
-                //     this.onOptionClick(option);
-                // } else {
-                //     // 单选时如果不在 nextTick 里执行，无法赋值
-                //     this.$nextTick(() => this.onOptionClick(option));
-                // }
             }
         };
 

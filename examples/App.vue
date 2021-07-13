@@ -5,71 +5,70 @@
             <ul>
                 <!-- <li>
                     <router-link to="/"> Home </router-link>
-                </li> -->
+                </li>-->
                 <li>
-                    <router-link to="/affix"> Affix </router-link>
+                    <router-link to="/affix">Affix</router-link>
                 </li>
 
                 <li>
-                    <router-link to="/input"> Input </router-link>
+                    <router-link to="/input">Input</router-link>
                 </li>
 
                 <li>
-                    <router-link to="/icon"> Icon </router-link>
+                    <router-link to="/icon">Icon</router-link>
                 </li>
 
                 <li>
-                    <router-link to="/button"> Button </router-link>
+                    <router-link to="/button">Button</router-link>
                 </li>
 
                 <li>
-                    <router-link to="/elevation"> Elevation </router-link>
+                    <router-link to="/elevation">Elevation</router-link>
                 </li>
 
                 <li>
-                    <router-link to="/layout"> Layout </router-link>
+                    <router-link to="/layout">Layout</router-link>
                 </li>
 
                 <li>
-                    <router-link to="/list"> List </router-link>
+                    <router-link to="/list">List</router-link>
                 </li>
 
                 <li>
-                    <router-link to="/carousel"> Carousel </router-link>
+                    <router-link to="/carousel">Carousel</router-link>
                 </li>
 
                 <li>
-                    <router-link to="/switch"> Switch </router-link>
+                    <router-link to="/switch">Switch</router-link>
                 </li>
 
+                <li>
+                    <router-link to="/bottom-nav">BottomNav</router-link>
+                </li>
 
                 <li>
-                    <router-link to="/bottom-nav"> BottomNav </router-link>
+                    <router-link to="/breadcrumb">Breadcrumb</router-link>
+                </li>
+
+                <li>
+                    <router-link to="/select">Select</router-link>
                 </li>
 
                  <li>
-                    <router-link to="/breadcrumb"> Breadcrumb </router-link>
-                </li>
-
-                   <li>
-                    <router-link to="/select"> Select </router-link>
+                    <router-link to="/steps">Steps</router-link>
                 </li>
             </ul>
         </nav>
-        <link
-            href="https://fonts.googleapis.com/icon?family=Material+Icons"
-            rel="stylesheet"
-        />
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
         <router-view />
     </div>
 </template>
 <script>
 module.exports = {
-    data () {
-        return {
-        }
-    }
-}
+    data() {
+        return {};
+    },
+};
 </script>
 
 <style lang="scss" scoped>

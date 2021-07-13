@@ -14,6 +14,7 @@ import Switch from '../components/switch';
 import BottomNav from '../components/bottom-nav';
 import Breadcrumb from '../components/breadcrumb';
 import Select from '../components/select';
+import Steps from '../components/steps';
 
 const routes = [{
     path: "/Affix",
@@ -74,6 +75,11 @@ const routes = [{
     path: "/select",
     name: "Select",
     component: Select,
+  },
+  {
+    path: "/steps",
+    name: "Steps",
+    component: Steps,
   },
 ];
 
