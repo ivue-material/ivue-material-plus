@@ -1,11 +1,22 @@
 <template>
     <div :class="wrapClasses" :style="wrapStyle">
         <!-- 下划线 -->
-        <div :class="[`${prefixCls}-divider`]">
+        <div
+            :class="[`${prefixCls}-divider`]"
+            v-if="data.textDirection === 'right' || data.direction === 'horizontal'"
+        >
             <i></i>
         </div>
         <!-- 步骤 -->
         <div :class="[`${prefixCls}-header`]">
+            <!-- 下划线 -->
+            <div
+                :class="[`${prefixCls}-divider`]"
+                v-if="data.textDirection === 'bottom'|| data.direction === 'vertical' "
+            >
+                <i></i>
+            </div>
+
             <div :class="[`${prefixCls}-header-content`]">
                 <!-- 步骤数 还没完成或者没有错误显示-->
                 <span
@@ -22,6 +33,15 @@
                 >{{icon ? icon : data.currentStatus === 'finish' ? 'check' : data.currentStatus === 'error'? 'close': ''}}</ivue-icon>
             </div>
         </div>
+        <!-- 文字 -->
+        <div :class="[`${prefixCls}-content`]">
+            <div :class="[`${prefixCls}-title`]">
+                <slot name="title">{{ title }}</slot>
+            </div>
+            <slot>
+                <div :class="[`${prefixCls}-content-slot`]">{{ content }}</div>
+            </slot>
+        </div>
     </div>
 </template>
 
@@ -31,7 +51,6 @@ import {
     computed,
     reactive,
     inject,
-    onMounted,
     getCurrentInstance,
     onBeforeUnmount,
 } from 'vue';
@@ -45,6 +64,23 @@ const prefixCls = 'ivue-step';
 export default defineComponent({
     name: prefixCls,
     props: {
+        /**
+         * 标题
+         *
+         * @type {String}
+         */
+        title: {
+            type: String,
+            default: '',
+        },
+        /**
+         * 内容
+         *
+         * @type {String}
+         */
+        content: {
+            type: String,
+        },
         /**
          * 当前步骤的状态
          *
@@ -80,6 +116,9 @@ export default defineComponent({
             currentStatus: string;
             nextError: boolean;
             index: number;
+            textDirection: string;
+            alignCenter: boolean;
+            direction: string;
         }>({
             /**
              * 步骤数
@@ -105,6 +144,24 @@ export default defineComponent({
              * @type {Number}
              */
             index: 0,
+            /**
+             * 文字方向
+             *
+             * @type {String}
+             */
+            textDirection: steps.props.textDirection,
+            /**
+             * 步骤条方向
+             *
+             * @default {horizontal}
+             */
+            direction: steps.props.direction,
+            /**
+             * 进行居中对齐
+             *
+             * @type {Boolean}
+             */
+            alignCenter: steps.props.alignCenter,
         });
 
         // computed
@@ -117,6 +174,10 @@ export default defineComponent({
                 {
                     [`${prefixCls}-custom`]: props.icon || slots.icon,
                     [`${prefixCls}-next-error`]: data.nextError,
+                    [`${prefixCls}-text-${data.textDirection}`]: !isVertical.value,
+                    [`${prefixCls}-${data.textDirection}-center`]:
+                        data.alignCenter && !isVertical.value,
+                    [`${prefixCls}-last`]: isLast.value && !steps.props.space && !isCenter.value,
                 },
             ];
         });

@@ -71,6 +71,17 @@ export default defineComponent({
             type: Boolean,
             default: false,
         },
+        /**
+         * 文字方向
+         *
+         * @type {String}
+         */
+        textDirection: {
+            validator(value: string) {
+                return oneOf(value, ['right', 'bottom']);
+            },
+            default: 'right',
+        },
     },
     setup(props: any) {
         // data
@@ -114,7 +125,7 @@ export default defineComponent({
             // 设置错误步骤
             setNextError();
             // 更新当前数据
-            updateCurrent(true);
+            updateCurrent();
 
             data.initData = false;
         };
@@ -163,7 +174,7 @@ export default defineComponent({
         };
 
         // 更新当前数据
-        const updateCurrent = (isInit) => {
+        const updateCurrent = () => {
             if (
                 props.currentStep < 0 ||
                 props.currentStep >= data.options.length
@@ -171,21 +182,7 @@ export default defineComponent({
                 return;
             }
 
-            // 是否初始化
-            if (isInit) {
-                const currentStatus =
-                    data.options[props.currentStep].data.currentStatus;
-
-                if (!currentStatus) {
-                    data.options[props.currentStep].data.currentStatus =
-                        data.status;
-                }
-            }
-            // 普通渲染
-            else {
-                data.options[props.currentStep].data.currentStatus =
-                    data.status;
-            }
+            data.options[props.currentStep].data.currentStatus = data.status;
         };
 
         // 选项销毁
@@ -241,7 +238,7 @@ export default defineComponent({
         watch(
             () => props.status,
             () => {
-                updateCurrent(false);
+                updateCurrent();
             }
         );
 
