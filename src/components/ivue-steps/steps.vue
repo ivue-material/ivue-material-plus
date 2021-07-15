@@ -131,7 +131,7 @@ export default defineComponent({
         };
 
         // 更新子组件props
-        const updateChildProps = (isInit) => {
+        const updateChildProps = (isInit: boolean) => {
             data.options.map((child, index) => {
                 child.data.stepNumber = index + 1;
                 child.data.index = index;
@@ -186,7 +186,7 @@ export default defineComponent({
         };
 
         // 选项销毁
-        const handleOptionDestroy = (index) => {
+        const handleOptionDestroy = (index: number) => {
             if (index > -1) {
                 data.options.splice(index, 1);
             }

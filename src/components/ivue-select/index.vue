@@ -716,7 +716,7 @@ export default defineComponent({
         };
 
         // 提取选项数据
-        const handleOption = (option, values, isFocused) => {
+        const handleOption = (option, values, isFocused: boolean) => {
             // 如果选项节点没有子组件就直接返回选项节点
 
             // 是否获取到焦点

@@ -15,6 +15,8 @@ import BottomNav from '../components/bottom-nav';
 import Breadcrumb from '../components/breadcrumb';
 import Select from '../components/select';
 import Steps from '../components/steps';
+import UpLoad from '../components/upLoad';
+import Progress from '../components/progress';
 
 const routes = [{
     path: "/Affix",
@@ -80,6 +82,16 @@ const routes = [{
     path: "/steps",
     name: "Steps",
     component: Steps,
+  },
+  {
+    path: "/upLoad",
+    name: "UpLoad",
+    component: UpLoad,
+  },
+  {
+    path: "/progress",
+    name: "Progress",
+    component: Progress,
   },
 ];
 

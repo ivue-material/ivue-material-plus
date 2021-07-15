@@ -1,0 +1,89 @@
+$name: 'ivue-loading';
+
+.#{$name} {
+
+  // 蒙版
+  &-mask {
+    position: absolute;
+    z-index: 2000;
+    background-color: hsla(0, 0%, 100%, .9);
+    margin: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    transition: opacity .3s;
+  }
+
+  // 父节点
+  &-parent {
+    &--relative {
+      position: relative !important
+    }
+
+    &--hidden {
+      overflow: hidden !important;
+    }
+  }
+
+  // 全屏
+  .is-fullscreen {
+    position: fixed;
+
+    .#{$name}-spinner {
+      margin-top: -25px;
+    }
+
+    .circular {
+      height: 50px;
+      width: 50px;
+    }
+  }
+
+  // 滚动
+  &-spinner {
+    top: 50%;
+    margin-top: -21px;
+    width: 100%;
+    text-align: center;
+    position: absolute;
+
+    .circular {
+      height: 42px;
+      width: 42px;
+      animation: loading-rotate 2s linear infinite;
+    }
+  }
+}
+
+
+// 滚动渐变
+.ivue-loading-fade-enter,
+.ivue-loading-fade-leave-active {
+  opacity: 0;
+}
+
+// 滚动
+@keyframes loading-rotate {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+// 圆形滚动样式
+@keyframes loading-dash {
+  0% {
+    stroke-dasharray: 1, 200;
+    stroke-dashoffset: 0;
+  }
+
+  50% {
+    stroke-dasharray: 90, 150;
+    stroke-dashoffset: -40px;
+  }
+
+  100% {
+    stroke-dasharray: 90, 150;
+    stroke-dashoffset: -120px;
+  }
+}

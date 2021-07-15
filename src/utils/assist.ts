@@ -11,6 +11,12 @@ function camelCase(name: string) {
 }
 
 
+/* istanbul ignore next */
+const trim = function (s: string) {
+    return (s || '').replace(/^[\s\uFEFF]+|[\s\uFEFF]+$/g, '')
+}
+
+
 // 判断参数是否是其中之一
 export const oneOf = (
     value: string,
@@ -26,7 +32,7 @@ export const oneOf = (
 };
 
 // 获取样式
-export const getStyle = (element: any, styleName: any) => {
+export const getStyle = (element: any, styleName: any): string => {
     if (!element || !styleName) {
         return null;
     }
@@ -45,3 +51,63 @@ export const getStyle = (element: any, styleName: any) => {
         return element.style[styleName];
     }
 };
+
+
+// 判断是否有class
+/* istanbul ignore next */
+export function hasClass(el: HTMLElement, cls: string): boolean {
+    if (!el || !cls) return false;
+    if (cls.indexOf(' ') !== -1) throw new Error('className should not contain space.');
+    if (el.classList) {
+        return el.classList.contains(cls);
+    } else {
+        return (' ' + el.className + ' ').indexOf(' ' + cls + ' ') > -1;
+    }
+}
+
+
+// 删除class
+/* istanbul ignore next */
+export function removeClass(el: HTMLElement, cls: string): void {
+    if (!el || !cls) return;
+    const classes = cls.split(' ');
+    let curClass = ' ' + el.className + ' ';
+
+    for (let i = 0, j = classes.length; i < j; i++) {
+        const clsName = classes[i];
+        if (!clsName) continue;
+
+        if (el.classList) {
+            el.classList.remove(clsName);
+        } else {
+            if (hasClass(el, clsName)) {
+                curClass = curClass.replace(' ' + clsName + ' ', ' ');
+            }
+        }
+    }
+    if (!el.classList) {
+        el.className = trim(curClass);
+    }
+}
+
+// 添加 class
+/* istanbul ignore next */
+export function addClass(el: HTMLElement, cls: string): void {
+    if (!el) return
+    let curClass = el.className
+    const classes = (cls || '').split(' ')
+
+    for (let i = 0, j = classes.length; i < j; i++) {
+        const clsName = classes[i]
+        if (!clsName) continue
+
+        if (el.classList) {
+            el.classList.add(clsName)
+        } else if (!hasClass(el, clsName)) {
+            curClass += ' ' + clsName
+        }
+    }
+    if (!el.classList) {
+        el.className = curClass
+    }
+}

@@ -54,8 +54,16 @@
                     <router-link to="/select">Select</router-link>
                 </li>
 
-                 <li>
+                <li>
                     <router-link to="/steps">Steps</router-link>
+                </li>
+
+                <li>
+                    <router-link to="/upLoad">UpLoad</router-link>
+                </li>
+
+                  <li>
+                    <router-link to="/progress">Progress</router-link>
                 </li>
             </ul>
         </nav>

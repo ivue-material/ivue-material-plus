@@ -1,0 +1,148 @@
+$name: 'ivue-upload';
+
+.#{$name} {
+  display: flex;
+  flex-wrap: wrap;
+
+  input[type="file"] {
+    display: none;
+  }
+
+  &-select {
+    display: inline-block;
+  }
+
+  // 内容
+  &-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    width: 80px;
+    height: 80px;
+    margin: 0 8px 8px 0;
+    background: $white-color;
+    border-radius: 8px;
+    border: 2px solid #DEE2E7;
+    color: #9AB0C6;
+    cursor: pointer;
+    transition: all $ivue-transition-default, color 1ms;
+
+    &:hover {
+      border-color: $primary-color;
+      color: $primary-color;
+    }
+
+    // 图标
+    &__icon {
+      margin: 0;
+      color: currentColor;
+      transition: all $ivue-transition-default;
+    }
+
+    // 文件
+    &__text {
+      margin-top: 5px;
+      color: currentColor;
+      font-weight: bold;
+      transition: all $ivue-transition-default;
+    }
+  }
+
+  // 列表
+  &-list {
+    display: flex;
+
+    // 图片
+    &-image {
+      width: 80px;
+      height: 80px;
+      display: block;
+      overflow: hidden;
+      border-radius: 8px;
+      cursor: pointer;
+
+      &__img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+    }
+
+    // 图片项
+    &-status {
+      margin: 0 8px 8px 0;
+
+      // position: relative;
+      // padding: 4px;
+      // color: $text-color;
+      // border-radius: $border-radius-small;
+      // font-size: $font-small-size;
+      // transition: background-color $ivue-transition-default;
+      // overflow: hidden;
+
+      // &>span {
+      //   cursor: pointer;
+      //   transition: color $ivue-transition-default;
+
+      //   i {
+      //     position: relative;
+      //     top: -1px;
+      //     display: inline-block;
+      //     width: $font-small-size;
+      //     height: 100%;
+      //     font-size: $font-small-size;
+      //     color: $text-color;
+      //     text-align: center;
+      //   }
+      // }
+
+      // &:hover {
+      //   background-color: $input-disabled-bg;
+
+      //   &>span {
+      //     color: $primary-color;
+      //   }
+
+      //   .#{$name}-list-remove {
+      //     opacity: 1;
+      //   }
+      // }
+    }
+
+    // &-remove {
+    //   opacity: 0;
+    //   padding: 2.5px 0;
+    //   margin-right: 4px;
+    //   font-size: $font-small-size;
+    //   height: 100%;
+    //   cursor: pointer;
+    //   float: right;
+    //   color: $legend-color;
+    //   transition: all $ivue-transition-default;
+
+    //   &:hover {
+    //     color: #444;
+    //   }
+    // }
+  }
+
+  &-drag {
+    position: relative;
+    text-align: center;
+    border: 1px dashed $border-color;
+    border-radius: $border-radius-small;
+    background-color: #fff;
+    overflow: hidden;
+    cursor: pointer;
+    transition: border-color .2s ease;
+
+    &:hover {
+      border: 1px dashed $primary-color;
+    }
+  }
+
+  &-dragOver {
+    border: 2px dashed $primary-color;
+  }
+}

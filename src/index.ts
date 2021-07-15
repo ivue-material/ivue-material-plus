@@ -16,9 +16,14 @@ import IvueBreadcrumbs from './components/ivue-breadcrumbs';
 import IvueBreadcrumbsItem from './components/ivue-breadcrumbs-item';
 import IvueSelect from './components/ivue-select';
 import IvueSteps from './components/ivue-steps';
+import IvueUpload from './components/ivue-upload';
+import IvueProgress from './components/ivue-progress';
+import IvueCircular from './components/ivue-circular';
+import IvueLoading from './components/ivue-loading';
 
 // 指令
 import Directives from './utils/directives/index';
+
 
 export {
     IvueAffix,
@@ -36,7 +41,11 @@ export {
     IvueBreadcrumbs,
     IvueBreadcrumbsItem,
     IvueSelect,
-    IvueSteps
+    IvueSteps,
+    IvueUpload,
+    IvueProgress,
+    IvueCircular,
+    IvueLoading
 };
 
 
@@ -66,6 +75,10 @@ const install = (app: App, opt: InstallOptions = defaultInstallOpt): void => {
     IvueBreadcrumbsItem(app);
     IvueSelect(app);
     IvueSteps(app);
+    IvueUpload(app);
+    IvueProgress(app);
+    IvueCircular(app);
+    IvueLoading(app);
 
     // 全局配置
     app.config.globalProperties.$IVUE = opt;
