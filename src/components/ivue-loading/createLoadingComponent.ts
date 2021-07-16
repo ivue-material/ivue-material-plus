@@ -15,7 +15,7 @@ export function createLoadingComponent({ options, globalLoadingOption }: Loading
     const afterLeaveFlag = ref(false);
 
     const data = reactive({
-    // 选项
+        // 选项
         ...options,
         originalPosition: '',
         originalOverflow: '',
@@ -31,7 +31,7 @@ export function createLoadingComponent({ options, globalLoadingOption }: Loading
 
     // 销毁
     function destorySelf() {
-    // 父节点
+        // 父节点
         const target = data.parent;
 
         // 删除 class
@@ -48,7 +48,7 @@ export function createLoadingComponent({ options, globalLoadingOption }: Loading
 
     // 关闭
     function close() {
-    // 父节点
+        // 父节点
         const target = data.parent;
         target.LoadingAddClassList = null;
 
@@ -108,7 +108,7 @@ export function createLoadingComponent({ options, globalLoadingOption }: Loading
             ]);
 
             // 图标
-            const noSpinner = h('i', { class: this.spinner });
+            const noSpinner = h('i', { class: this.iconClass }, this.iconText );
 
             // 需要渲染的文字
             const spinnerText = h('p', { class: 'ivue-loading-text' }, [this.text]);
@@ -132,7 +132,7 @@ export function createLoadingComponent({ options, globalLoadingOption }: Loading
                     h('div', {
                         class: 'ivue-loading-spinner',
                     }, [
-                        !this.spinner ? spinner : noSpinner,
+                        !this.iconClass ? spinner : noSpinner,
                         this.text ? spinnerText : null,
                     ]),
                 ]),

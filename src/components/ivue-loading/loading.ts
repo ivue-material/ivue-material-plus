@@ -18,6 +18,8 @@ const defaults: LoadingOptions = {
     body: false,
     lock: false,
     customClass: '',
+    iconClass: '',
+    iconText: '',
 };
 
 // 全局加载选项
@@ -130,8 +132,6 @@ const Loading = function (options: LoadingOptions = {}): LoadingInstance {
     // 返回实例
     return instance;
 };
-console.log(Loading());
-
 
 
 export default Loading;

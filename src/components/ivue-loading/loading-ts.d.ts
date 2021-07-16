@@ -10,13 +10,17 @@ export type LoadingOptions = {
     lock?: boolean
     customClass?: string
     visible?: boolean
-    target?: string | HTMLElement
+    target?: string | HTMLElement,
+    iconClass?: string,
+    iconText?: string
 }
 
 export type LoadingInstance = {
     parent?: Ref<LoadingParentElement>
     background?: Ref<string>
     spinner?: Ref<boolean | string>
+    iconClass?: Ref<boolean | string>
+    iconText?: Ref<boolean | string>
     text?: Ref<string>
     fullscreen?: Ref<boolean>
     body?: Ref<boolean>
@@ -30,7 +34,7 @@ export type LoadingInstance = {
     close?: () => void
     handleAfterLeave?: () => void
     vm?: VNode
-    $el?: HTMLElement
+    $el?: HTMLElement,
 }
 
 export type LoadingGlobalConfig = {

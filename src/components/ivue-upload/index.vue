@@ -1,9 +1,22 @@
 <template>
     <div :class="prefixCls">
+        <slot></slot>
+
         <!-- 列表 -->
-        <upload-list :files="data.fileList"></upload-list>
+        <upload-list
+            :files="data.fileList"
+            :failedIcon="failedIcon"
+            :deletable="deletable"
+            :name="name"
+            @delete="handleRemove"
+            @preview="handleFileData"
+        >
+            <template v-if="$slots['preview-cover']" #preview-cover="{ file }">
+                <slot name="preview-cover" :file="file"></slot>
+            </template>
+        </upload-list>
         <!-- 输入框 -->
-        <div :class="inputWrapClass" @click="handleClickInput">
+        <div :class="inputWrapClass" @click="handleClickInput" v-show="renderUpload">
             <input
                 type="file"
                 ref="input"
@@ -24,7 +37,14 @@
 </template>
 
 <script lang='ts'>
-import { defineComponent, computed, ref, reactive, PropType } from 'vue';
+import {
+    defineComponent,
+    computed,
+    ref,
+    reactive,
+    PropType,
+    watch,
+} from 'vue';
 
 import IvueIcon from '../ivue-icon/index.vue';
 import UploadList from './upload-list.vue';
@@ -62,7 +82,7 @@ export type UploaderBeforeRead = (
 
 export default defineComponent({
     name: prefixCls,
-    emits: ['update:modelValue', 'on-oversize'],
+    emits: ['update:modelValue', 'on-oversize', 'on-delete', 'on-preview'],
     props: {
         /**
          * 上传组件类型
@@ -167,6 +187,33 @@ export default defineComponent({
             type: [Number, String],
             default: '',
         },
+        /**
+         * 错误时的图标
+         *
+         * @type {String}
+         */
+        failedIcon: {
+            type: String,
+            default: '',
+        },
+        /**
+         * 是否展示删除按钮
+         *
+         * @type {Boolean}
+         */
+        deletable: {
+            type: Boolean,
+            default: true,
+        },
+        /**
+         * 是否展示上传区域
+         *
+         * @type {Boolean}
+         */
+        showUpload: {
+            type: Boolean,
+            default: true,
+        },
     },
     setup(props: any, { emit }) {
         // dom
@@ -177,7 +224,7 @@ export default defineComponent({
             fileList: Array<any>;
         }>({
             /**
-             * 上传文件的列表
+             * 当前选择状态
              *
              * @type {Array}
              */
@@ -195,6 +242,18 @@ export default defineComponent({
                         props.type === 'drag' && props.dragOver,
                 },
             ];
+        });
+
+        // 判断图片上传数量
+        const renderUpload = computed(() => {
+            if (
+                props.modelValue.length >= props.maxCount ||
+                !props.showUpload
+            ) {
+                return false;
+            }
+
+            return true;
         });
 
         // methods
@@ -333,14 +392,35 @@ export default defineComponent({
             index,
         });
 
+        // 删除函数
+        const handleRemove = (file, index) => {
+            data.fileList.splice(index, 1);
+
+            emit('update:modelValue', data.fileList);
+            emit('on-delete', file, getDetail(index));
+        };
+
+        // 查看图片
+        const handleFileData = (file) => {
+            emit('on-preview', file);
+        };
+
+        // 监听数据变化
+        watch(
+            () => props.modelValue,
+            (value) => {
+                data.fileList = value;
+            }
+        );
+
         return {
             prefixCls,
 
-            // dom
-            input,
-
             // data
             data,
+
+            // dom
+            input,
 
             // computed
             inputWrapClass,
@@ -348,7 +428,10 @@ export default defineComponent({
             // methods
             handleClickInput,
             handleChange,
+            handleRemove,
+            handleFileData,
             uploadFiles,
+            renderUpload,
         };
     },
     components: {

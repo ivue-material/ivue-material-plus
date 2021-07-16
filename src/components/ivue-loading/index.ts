@@ -1,8 +1,11 @@
 import { App } from 'vue';
 import Loading from './loading';
+import directive from './directive';
 
 export default (app: App): void => {
-    app.config.globalProperties.$loading = Loading;
+    app.directive('ivueloading', directive);
+
+    app.config.globalProperties.$ivueloading = Loading;
 };
 
 export { Loading };

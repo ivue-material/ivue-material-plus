@@ -103,3 +103,41 @@ export const getRandomStr = (len = 32) => {
 
     return str;
 };
+
+// 是否有值
+export function isDef<T>(val: T): val is NonNullable<T> {
+    return val !== undefined && val !== null;
+}
+
+const IMAGE_REGEXP = /\.(jpeg|jpg|gif|png|svg|webp|jfif|bmp|dpg)/i;
+
+export function isImageUrl(url: string): boolean {
+    return IMAGE_REGEXP.test(url);
+}
+
+// 是图片
+export function isImageFile(item): boolean {
+    // some special urls cannot be recognized
+    // user can add `isImage` flag to mark it as an image url
+
+    if (item.isImage) {
+        return true;
+    }
+
+    // 文件类型
+    if (item.file && item.file.type) {
+        return item.file.type.indexOf('image') === 0;
+    }
+
+    // 有链接
+    if (item.url) {
+        return isImageUrl(item.url);
+    }
+
+    // base64
+    if (typeof item.content === 'string') {
+        return item.content.indexOf('data:image') === 0;
+    }
+
+    return false;
+}
