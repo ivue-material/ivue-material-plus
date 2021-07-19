@@ -1,10 +1,18 @@
 <template>
     <div>
-        <!-- <h1>基础用法</h1>
+        <h1>基础用法</h1>
         <p>文件上传完毕后会触发 after-read 回调函数，获取到对应的 file 对象。</p>
 
         <div>
-            <ivue-upload v-model="fileList1" :after-read="afterRead"></ivue-upload>
+            <ivue-upload
+                v-model="fileList1"
+                accept="image/*"
+                name="123"
+                preview-size="100px"
+            :maxCount="2"
+
+                :before-delete="handleDelete"
+            ></ivue-upload>
             {{fileList1}}
         </div>
 
@@ -64,15 +72,29 @@
             >
                 <ivue-button :color="['#5AB2FF', '#5B8EFF']">上传</ivue-button>
             </ivue-upload>
-        </div> -->
+        </div>
 
         <h1>自定义预览样式</h1>
-        <ivue-upload v-model="fileList3">
-            <template #preview-cover="{ file }">
-                {{file.file && file.file.name}}
-                <!-- <div class="preview-cover van-ellipsis">{{ file.name }}</div> -->
-            </template>
-        </ivue-upload>
+        <div>
+            <ivue-upload v-model="fileList3">
+                <template #preview-cover="{ file }">{{file.file && file.file.name}}</template>
+            </ivue-upload>
+        </div>
+
+        <h1>上传前置处理</h1>
+        <div>
+            <ivue-upload v-model="fileList7" multiple :before-read="asyncBeforeRead"></ivue-upload>
+        </div>
+
+        <h1>禁用文件上传</h1>
+        <div>
+            <ivue-upload v-model="fileList7" disabled></ivue-upload>
+        </div>
+
+        <h1>自定义单个图片预览</h1>
+        <div>
+            <ivue-upload v-model="fileList8" disabled></ivue-upload>
+        </div>
     </div>
 </template>
 
@@ -138,6 +160,26 @@ export default {
             ],
             fileList5: [],
             fileList6: [],
+            fileList7: [],
+            fileList8: [
+                {
+                    url: 'https://img01.yzcdn.cn/vant/leaf.jpg',
+                    deletable: false,
+                },
+                {
+                    url: 'https://img01.yzcdn.cn/vant/sand.jpg',
+                    deletable: true,
+                    beforeDelete: () => {
+                        console.log(自定义单个预览图片的事件和样式);
+                    },
+                },
+                {
+                    url: 'https://img01.yzcdn.cn/vant/tree.jpg',
+                    deletable: true,
+                    imageFit: 'contain',
+                    previewSize: 120,
+                },
+            ],
         };
     },
     methods: {
@@ -167,6 +209,35 @@ export default {
                 file.status = 'failed';
                 file.message = '上传失败';
             }, 2000);
+        },
+        // 返回布尔值
+        beforeRead(file) {
+            if (file.type !== 'image/jpeg') {
+                console.log('请上传 jpg 格式图片');
+                return false;
+            }
+            return true;
+        },
+        // 返回 Promise
+        asyncBeforeRead(file) {
+            return new Promise((resolve, reject) => {
+                if (file.type !== 'image/jpeg') {
+                    console.log('请上传 jpg 格式图片');
+                    reject();
+                } else {
+                    let img = new File(['foo'], 'bar.jpg', {
+                        type: 'image/jpeg',
+                    });
+                    resolve(img);
+                }
+            });
+        },
+        handleDelete() {
+            console.log('文件删除前的回调函数，返回 ');
+            return false;
+        },
+        beforeRead1(file, name) {
+            return false;
         },
     },
 };

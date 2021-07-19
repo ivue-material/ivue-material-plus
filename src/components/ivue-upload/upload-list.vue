@@ -3,8 +3,16 @@
         <template v-for="(file, index) in files" :key="file.uid">
             <li :class="fileStatusClass(file)" v-show="isImageFile(file)">
                 <!-- 图片 -->
-                <div :class="`${prefixCls}-image`" @click="handleFileData(file)">
-                    <img :src="file.content || file.url" :class="`${prefixCls}-image__img`" />
+                <div
+                    :class="`${prefixCls}-image`"
+                    @click="handleFileData(file)"
+                    :style="getSizeStyle(file.previewSize || previewSize)"
+                >
+                    <img
+                        :src="file.content || file.url"
+                        :class="`${prefixCls}-image__img`"
+                        :style="imgStyle(file)"
+                    />
                 </div>
                 <!-- 蒙层 -->
                 <div :class="`${prefixCls}-mask`" v-if="currentStatus(file)">
@@ -29,10 +37,12 @@
                 <ivue-icon
                     :class="`${prefixCls}-remove`"
                     @click.stop="handleRemove(file, index)"
-                    v-if="deletable && file.status !== 'uploading'"
+                    v-if="isDeletable(file)"
                 >close</ivue-icon>
                 <!-- 自定义覆盖在预览区域上方的内容 -->
-                <slot name="preview-cover" :file="file"></slot>
+                <div class="preview-cover" v-if="$slots['preview-cover']">
+                    <slot name="preview-cover" :file="file"></slot>
+                </div>
             </li>
         </template>
     </ul>
@@ -43,7 +53,7 @@ import { defineComponent, PropType } from 'vue';
 import ivueloading from '../ivue-loading/directive';
 import IvueIcon from '../ivue-icon/index.vue';
 import { callInterceptor, Interceptor } from '../../utils/interceptor';
-import { isImageFile } from '../../utils/helpers';
+import { isImageFile, getSizeStyle } from '../../utils/helpers';
 
 const prefixCls = 'ivue-upload-list';
 
@@ -78,7 +88,6 @@ export default defineComponent({
          */
         deletable: {
             type: Boolean,
-            default: false,
         },
         /**
          * 文件删除前的回调函数，返回 false 可终止文件读取，
@@ -98,9 +107,29 @@ export default defineComponent({
             type: [Number, String],
             default: '',
         },
+        /**
+         * 预览图和上传区域的尺寸，默认单位为 px
+         *
+         * @type {Number | String}
+         */
+        previewSize: [Number, String],
     },
-    setup(props, { emit, slots }) {
+    setup(props, { emit }) {
         // methods
+
+        // 有删除
+        const isDeletable = (file) => {
+            // 自定义单个图片预览
+            if (typeof file.deletable !== 'undefined') {
+                if (file.deletable && file.status !== 'uploading') {
+                    return true;
+                }
+            } else if (props.deletable && file.status !== 'uploading') {
+                return true;
+            }
+
+            return false;
+        };
 
         // 文件上传状态
         const fileStatusClass = (file) => {
@@ -147,6 +176,19 @@ export default defineComponent({
             emit('preview', file);
         };
 
+        // 图片样式
+        const imgStyle = (file) => {
+            let obj = {};
+
+            if (file.imageFit) {
+                obj = {
+                    'object-fit': file.imageFit,
+                };
+            }
+
+            return obj;
+        };
+
         return {
             prefixCls,
 
@@ -156,6 +198,9 @@ export default defineComponent({
             handleRemove,
             handleFileData,
             isImageFile,
+            isDeletable,
+            imgStyle,
+            getSizeStyle
         };
     },
     components: {

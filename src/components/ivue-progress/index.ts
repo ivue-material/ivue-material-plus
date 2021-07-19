@@ -1,9 +1,9 @@
 
 import { App } from 'vue';
-import IvueProgressLinear from './linear.vue';
+import IvueProgress from './index.vue';
 
 export default (app: App): void => {
-    app.component(IvueProgressLinear.name, IvueProgressLinear);
+    app.component(IvueProgress.name, IvueProgress);
 };
 
-export { IvueProgressLinear };
+export { IvueProgress };

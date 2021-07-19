@@ -62,8 +62,12 @@
                     <router-link to="/upLoad">UpLoad</router-link>
                 </li>
 
-                  <li>
+                <li>
                     <router-link to="/progress">Progress</router-link>
+                </li>
+
+                <li>
+                    <router-link to="/circle">Circle</router-link>
                 </li>
             </ul>
         </nav>

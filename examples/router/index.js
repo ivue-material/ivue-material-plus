@@ -17,6 +17,7 @@ import Select from '../components/select';
 import Steps from '../components/steps';
 import UpLoad from '../components/upLoad';
 import Progress from '../components/progress';
+import Circle from '../components/circle';
 
 const routes = [{
     path: "/Affix",
@@ -92,6 +93,11 @@ const routes = [{
     path: "/progress",
     name: "Progress",
     component: Progress,
+  },
+  {
+    path: "/circle",
+    name: "Circle",
+    component: Circle,
   },
 ];
 

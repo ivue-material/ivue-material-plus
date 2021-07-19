@@ -1,3 +1,5 @@
+import { CSSProperties } from 'vue';
+import { isDef, isNumeric } from './validate';
 
 // 文件上传类型
 export type UploaderResultType = 'dataUrl' | 'text' | 'file';
@@ -18,6 +20,8 @@ export type UploaderFileListItem = {
 // 读取文件内容
 export function readFileContent(file: File, resultType: UploaderResultType) {
     return new Promise<string | void>((resolve) => {
+
+        // 文件类型
         if (resultType === 'file') {
             resolve();
             return;
@@ -29,9 +33,12 @@ export function readFileContent(file: File, resultType: UploaderResultType) {
             resolve((event.target as FileReader).result as string);
         };
 
+        // base64
         if (resultType === 'dataUrl') {
             reader.readAsDataURL(file);
-        } else if (resultType === 'text') {
+        }
+        // 文本类型
+        else if (resultType === 'text') {
             reader.readAsText(file);
         }
     });
@@ -104,11 +111,6 @@ export const getRandomStr = (len = 32) => {
     return str;
 };
 
-// 是否有值
-export function isDef<T>(val: T): val is NonNullable<T> {
-    return val !== undefined && val !== null;
-}
-
 const IMAGE_REGEXP = /\.(jpeg|jpg|gif|png|svg|webp|jfif|bmp|dpg)/i;
 
 export function isImageUrl(url: string): boolean {
@@ -140,4 +142,25 @@ export function isImageFile(item): boolean {
     }
 
     return false;
+}
+
+export function addUnit(value?: string | number): string | undefined {
+    if (!isDef(value)) {
+        return undefined;
+    }
+
+    return isNumeric(value) ? `${value}px` : String(value);
+}
+
+// 获取大小样式
+export function getSizeStyle(
+    originSize?: string | number
+): CSSProperties | undefined {
+    if (isDef(originSize)) {
+        const size = addUnit(originSize);
+        return {
+            width: size,
+            height: size,
+        };
+    }
 }

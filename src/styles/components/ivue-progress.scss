@@ -1,199 +1,212 @@
-$linear: 'ivue-progress-linear';
-$circular: 'ivue-circular';
+$name: 'ivue-progress';
 
-.#{$linear} {
-      display: inline-block;
-      position: relative;
-      font-size: $font-small-size;
-      width: 100%;
-      color: $primary-color;
-      background: none !important;
-      &-outer {
-            display: inline-block;
-            padding: 0;
-            margin: 0;
-            width: 100%;
-      }
-      &-show-info &-outer {
-            padding-right: 55px;
-            margin-right: -55px;
-      }
-      &-inner {
-            display: inline-block;
-            position: relative;
-            width: 100%;
-            background-color: $progress-bg;
-            border-radius: 100px;
-            vertical-align: middle;
-      }
-      &-bg {
-            position: relative;
-            border-radius: 100px;
-            background-color: currentColor;
-            transition: all $ivue-transition-default;
-      }
-      &-success-bg {
-            position: absolute;
-            top: 0;
-            left: 0;
-            border-radius: 100px;
-            background-color: $success-color;
-            transition: all $ivue-transition-default;
-      }
-      &-text {
-            display: inline-block;
-            margin-left: 5px;
-            text-align: left;
-            vertical-align: middle;
-      }
-      &-text-inner {
-            vertical-align: middle;
-            &>i {
-                  vertical-align: initial;
-                  width: auto;
-                  height: auto;
-                  min-width: auto;
-                  font-size: $font-small-size;
-            }
-      }
-      &-success {
-            .#{$linear}-bg {
-                  background-color: $success-color;
-            }
-            .#{$linear}-text {
-                  color: $success-color;
-            }
-      }
-      &-wrong {
-            .#{$linear}-bg {
-                  background-color: $error-color;
-            }
-            .#{$linear}-text {
-                  color: $error-color;
-            }
-      }
-      &-active {
-            .#{$linear}-bg:before {
-                  content: '';
-                  position: absolute;
-                  top: 0;
-                  left: 0;
-                  right: 0;
-                  bottom: 0;
-                  background: #fff;
-                  border-radius: 10px;
-                  opacity: 0;
-                  animation: ivue-progress-active 2s ease-in-out infinite;
-            }
-      }
-}
+.#{$name} {
+  display: flex;
+  align-items: center;
+  position: relative;
+  font-size: $font-small-size;
+  width: 100%;
+  color: $primary-color;
+  background: none !important;
 
-.#{$circular} {
-      position: relative;
+  // 进度条
+  &-outer {
+    display: inline-block;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+  }
+
+  &-show-info &-outer {
+    padding-right: 55px;
+    margin-right: -55px;
+  }
+
+  // 内容
+  &-inner {
+    display: inline-block;
+    position: relative;
+    width: 100%;
+    background-color: $progress-bg;
+    border-radius: 100px;
+    vertical-align: middle;
+
+    // 文字
+    &-text {
       display: inline-block;
       vertical-align: middle;
-      background: none !important;
-      color: $primary-color;
-      svg {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            width: 100%;
-            height: 100%;
-            margin: auto;
-            z-index: 0;
+      color: #fff;
+      font-size: 12px;
+      margin: 0 6px;
+    }
+  }
+
+  // 背景颜色
+  &-bg {
+    text-align: right;
+    position: relative;
+    border-radius: 100px;
+    background-color: currentColor;
+    transition: all .6s $ivue-transition-default-timing;
+    animation-duration: 3s;
+  }
+
+  &-success-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    border-radius: 100px;
+    background-color: $success-color;
+    transition: all .6s $ivue-transition-default-timing;
+    animation-duration: 3s;
+  }
+
+  &-text {
+    display: flex;
+    margin-left: 5px;
+    text-align: left;
+    color: #4A505E;
+
+    .ivue-icon {
+      min-width: auto;
+      width: auto;
+      font-size: 12px;
+      height: auto;
+    }
+  }
+
+  &-text-inner {
+    vertical-align: middle;
+
+    &>i {
+      vertical-align: initial;
+      width: auto;
+      height: auto;
+      min-width: auto;
+      font-size: $font-small-size;
+    }
+  }
+
+  &-success {
+    .#{$name}-bg {
+      background-color: $success-color;
+    }
+
+    .#{$name}-text {
+      color: $success-color;
+    }
+  }
+
+  &-wrong {
+    .#{$name}-bg {
+      background-color: $error-color;
+    }
+
+    .#{$name}-text {
+      color: $error-color;
+    }
+  }
+
+  &-warning {
+    .#{$name}-bg {
+      background-color: $warning-color;
+    }
+
+    .#{$name}-text {
+      color: $warning-color;
+    }
+  }
+
+  &-active {
+    .#{$name}-bg:before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: #fff;
+      border-radius: 10px;
+      opacity: 0;
+      animation: ivue-progress-active 2s ease infinite;
+    }
+  }
+
+
+  // 垂直
+  &-vertical {
+    height: 100px;
+    width: auto;
+    flex-direction: column;
+    justify-content: center;
+
+    .#{$name}-outer {
+      height: 100%;
+      width: auto;
+      padding: 0;
+      margin: 0;
+    }
+
+    .#{$name}-bg {
+      display: inline-block;
+      vertical-align: bottom;
+
+      &:before {
+        top: auto;
+        animation: ivue-progress-active-vertical 2s ease infinite;
       }
-      svg:not(:root) {
-            overflow: hidden;
+    }
+
+    .#{$name}-inner {
+      height: 100%;
+      width: auto;
+
+      &:after {
+        content: "";
+        height: 100%;
+        display: inline-block;
+        vertical-align: bottom;
+
       }
-      &-underlay {
-            stroke: $progress-bg;
-            z-index: 1;
-      }
-      &-overlay {
-            stroke: currentColor;
-            z-index: 2;
-            transition: all .6s ease-in-out;
-      }
-      &-indeterminate {
-            svg {
-                  animation: progress-circular-rotate 1.4s linear infinite;
-                  transform-origin: center center;
-                  transition: all 0.2s ease-in-out;
-            }
-      }
-      &-indeterminate &-overlay {
-            // animation: progress-circular-dash 1.4s ease-in-out infinite;
-            stroke-linecap: round;
-            stroke-dasharray: 80, 200;
-            stroke-dashoffset: 0px;
-      }
-      &-text {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate3d(-50%, -50%, 0);
-            font-size: $font-small-size;
-            color: currentColor;
-      }
-      &-success {
-            .#{$circular}-overlay {
-                  color: $success-color;
-            }
-            .#{$circular}-text {
-                  color: $success-color;
-            }
-      }
-      &-wrong {
-            .#{$circular}-overlay {
-                  color: $error-color;
-            }
-            .#{$circular}-text {
-                  color: $error-color;
-            }
-      }
+    }
+
+    .#{$name}-text {
+      margin-left: 0;
+    }
+
+  }
 }
 
 .progress-fade-enter-active,
 .progress-fade-leave-active {
-      transition: opacity .3s;
+  transition: opacity .3s;
 }
 
 .progress-fade-enter,
 .progress-fade-leave-to {
-      opacity: 0;
+  opacity: 0;
 }
 
 @keyframes ivue-progress-active {
-      0% {
-            opacity: .3;
-            width: 0;
-      }
-      100% {
-            opacity: 0;
-            width: 100%;
-      }
+  0% {
+    opacity: .3;
+    width: 0;
+  }
+
+  100% {
+    opacity: 0;
+    width: 100%;
+  }
 }
 
-@keyframes progress-circular-rotate {
-      100% {
-            transform: rotate(360deg);
-      }
-}
+@keyframes ivue-progress-active-vertical {
+  0% {
+    opacity: .3;
+    height: 0;
+  }
 
-@keyframes progress-circular-dash {
-      0% {
-            stroke-dasharray: 1, 200;
-            stroke-dashoffset: 0px;
-      }
-      50% {
-            stroke-dasharray: 100, 200;
-            stroke-dashoffset: -15px;
-      }
-      100% {
-            stroke-dasharray: 100, 200;
-            stroke-dashoffset: -125px;
-      }
+  100% {
+    opacity: 0;
+    height: 100%;
+  }
 }

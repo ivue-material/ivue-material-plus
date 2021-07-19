@@ -58,6 +58,8 @@ $name: 'ivue-upload';
       width: 80px;
       height: 80px;
       display: block;
+      border-radius: 8px;
+      overflow: hidden;
 
       &__img {
         width: 100%;
@@ -140,6 +142,17 @@ $name: 'ivue-upload';
 
   }
 
+  // 禁用
+  &-disabled {
+    border-color: $disabled-color;
+    color: $disabled-color;
+
+    &:hover {
+      border-color: $disabled-color;
+      color: $disabled-color;
+    }
+  }
+
   &-drag {
     position: relative;
     text-align: center;
@@ -157,5 +170,20 @@ $name: 'ivue-upload';
 
   &-dragOver {
     border: 2px dashed $primary-color;
+  }
+
+  .preview-cover {
+    position: absolute;
+    bottom: 0;
+    box-sizing: border-box;
+    text-align: center;
+    width: 100%;
+    color: $white-color;
+    font-size: 12px;
+    padding: 4px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    background: rgba(0, 0, 0, .3);
   }
 }

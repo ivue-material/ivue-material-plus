@@ -8,8 +8,11 @@
             :failedIcon="failedIcon"
             :deletable="deletable"
             :name="name"
+            :previewSize="previewSize"
+            :beforeDelete="beforeDelete"
             @delete="handleRemove"
             @preview="handleFileData"
+            v-if="previewImage"
         >
             <template v-if="$slots['preview-cover']" #preview-cover="{ file }">
                 <slot name="preview-cover" :file="file"></slot>
@@ -26,7 +29,13 @@
                 @change="handleChange"
             />
             <slot>
-                <div :class="`${prefixCls}-content`">
+                <div
+                    :class="{
+                    [`${prefixCls}-content`]: true,
+                    [`${prefixCls}-disabled`]: disabled,
+                }"
+                    :style="getSizeStyle(previewSize)"
+                >
                     <!-- 图标 -->
                     <ivue-icon :class="`${prefixCls}-content__icon`">cloud_upload</ivue-icon>
                     <p :class="`${prefixCls}-content__text`">点击上传</p>
@@ -37,19 +46,15 @@
 </template>
 
 <script lang='ts'>
-import {
-    defineComponent,
-    computed,
-    ref,
-    reactive,
-    PropType,
-    watch,
-} from 'vue';
+import { defineComponent, computed, ref, reactive, PropType, watch } from 'vue';
 
 import IvueIcon from '../ivue-icon/index.vue';
 import UploadList from './upload-list.vue';
 
 import { oneOf } from '../../utils/assist';
+import { isPromise } from '../../utils/validate';
+import { Interceptor } from '../../utils/interceptor';
+
 import {
     readFileContent,
     isOversize,
@@ -58,6 +63,7 @@ import {
     UploaderMaxSize,
     filterFiles,
     toArray,
+    getSizeStyle,
 } from '../../utils/helpers';
 
 const prefixCls = 'ivue-upload';
@@ -214,6 +220,30 @@ export default defineComponent({
             type: Boolean,
             default: true,
         },
+        /**
+         * 预览图和上传区域的尺寸，默认单位为 px
+         *
+         * @type {Number | String}
+         */
+        previewSize: [Number, String],
+        /**
+         * 是否在上传完成后展示预览图
+         *
+         * @type {Boolean}
+         */
+        previewImage:{
+            type: Boolean,
+            default: true,
+        },
+        /**
+         * 文件删除前的回调函数，返回 false 可终止文件读取，
+         * 支持返回 Promise
+         *
+         * @type {Function}
+         */
+        beforeDelete: {
+            type: Function as PropType<Interceptor>,
+        },
     },
     setup(props: any, { emit }) {
         // dom
@@ -290,7 +320,26 @@ export default defineComponent({
 
             // 文件读取前的回调函数
             if (props.beforeRead) {
-                console.log('?/');
+                const response = props.beforeRead(file, getDetail());
+
+                // 没有会调重置输入框
+                if (!response) {
+                    resetInput();
+                    return;
+                }
+
+                if (isPromise(response)) {
+                    response
+                        .then((data) => {
+                            if (data) {
+                                uploadFiles(data);
+                            } else {
+                                uploadFiles(file);
+                            }
+                        })
+                        .catch(resetInput);
+                    return;
+                }
             }
 
             // 获取上传文件
@@ -432,6 +481,7 @@ export default defineComponent({
             handleFileData,
             uploadFiles,
             renderUpload,
+            getSizeStyle,
         };
     },
     components: {
