@@ -4,6 +4,17 @@ $circular: 'ivue-circular';
   position: relative;
   display: inline-block;
 
+  // 文字
+  &-inner {
+    width: 100%;
+    text-align: center;
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    line-height: 1;
+  }
+
   svg {
     position: absolute;
     top: 0;
@@ -18,84 +29,5 @@ $circular: 'ivue-circular';
 
   svg:not(:root) {
     overflow: hidden;
-  }
-
-  &-underlay {
-    stroke: $progress-bg;
-    z-index: 1;
-  }
-
-  &-overlay {
-    stroke: currentColor;
-    z-index: 2;
-    transition: all .6s ease-in-out;
-  }
-
-  &-indeterminate {
-    svg {
-      animation: progress-circular-rotate 1.4s linear infinite;
-      transform-origin: center center;
-      transition: all 0.2s ease-in-out;
-    }
-  }
-
-  &-indeterminate &-overlay {
-    // animation: progress-circular-dash 1.4s ease-in-out infinite;
-    stroke-linecap: round;
-    stroke-dasharray: 80, 200;
-    stroke-dashoffset: 0px;
-  }
-
-  &-text {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate3d(-50%, -50%, 0);
-    font-size: $font-small-size;
-    color: currentColor;
-  }
-
-  &-success {
-    .#{$circular}-overlay {
-      color: $success-color;
-    }
-
-    .#{$circular}-text {
-      color: $success-color;
-    }
-  }
-
-  &-wrong {
-    .#{$circular}-overlay {
-      color: $error-color;
-    }
-
-    .#{$circular}-text {
-      color: $error-color;
-    }
-  }
-}
-
-
-@keyframes progress-circular-rotate {
-  100% {
-    transform: rotate(360deg);
-  }
-}
-
-@keyframes progress-circular-dash {
-  0% {
-    stroke-dasharray: 1, 200;
-    stroke-dashoffset: 0px;
-  }
-
-  50% {
-    stroke-dasharray: 100, 200;
-    stroke-dashoffset: -15px;
-  }
-
-  100% {
-    stroke-dasharray: 100, 200;
-    stroke-dashoffset: -125px;
   }
 }
