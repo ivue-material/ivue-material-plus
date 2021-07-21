@@ -1,11 +1,11 @@
 <template>
     <div>
         <h1>区域加载</h1>
-        <div class="conetn1" v-ivueloading="true"></div>
+        <div class="conetn1" v-loading="true"></div>
         <h1>自定义</h1>
         <div
             class="conetn1"
-            v-ivueloading="{
+            v-loading="{
                 iconRender: renderIcon,
                 visible: true
             }"
@@ -20,7 +20,7 @@
             <ivue-button
                 :color="['#5AB2FF', '#5B8EFF']"
                 @click="openFullScreen1"
-                v-ivueloading.fullscreen.lock="fullscreenLoading"
+                v-loading.fullscreen.lock="fullscreenLoading"
             >指令方式</ivue-button>
             <ivue-button
                 :color="['#5AB2FF', '#5B8EFF']"
@@ -49,7 +49,7 @@ export default {
             }, 2000);
         },
         openFullScreen2() {
-            const loading = this.$ivueloading({
+            const loading = this.$loading({
                 lock: true,
                 text: 'Loading',
                 spinner: 'el-icon-loading',

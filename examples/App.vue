@@ -73,6 +73,10 @@
                 <li>
                     <router-link to="/loading">Loading</router-link>
                 </li>
+
+                 <li>
+                    <router-link to="/notice">Notice</router-link>
+                </li>
             </ul>
         </nav>
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />

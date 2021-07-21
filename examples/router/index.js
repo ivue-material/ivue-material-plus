@@ -19,6 +19,7 @@ import UpLoad from '../components/upLoad';
 import Progress from '../components/progress';
 import Circle from '../components/circle';
 import Loading from '../components/loading';
+import Notice from '../components/notice';
 
 const routes = [{
     path: "/Affix",
@@ -104,6 +105,11 @@ const routes = [{
     path: "/loading",
     name: "Loading",
     component: Loading,
+  },
+  {
+    path: "/notice",
+    name: "Notice",
+    component: Notice,
   },
 ];
 
