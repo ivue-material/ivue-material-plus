@@ -12,7 +12,8 @@ export type LoadingOptions = {
     visible?: boolean
     target?: string | HTMLElement,
     iconClass?: string,
-    iconText?: string
+    iconText?: string,
+    iconRender?: any
 }
 
 export type LoadingInstance = {
@@ -35,6 +36,7 @@ export type LoadingInstance = {
     handleAfterLeave?: () => void
     vm?: VNode
     $el?: HTMLElement,
+    iconRender?: any
 }
 
 export type LoadingGlobalConfig = {

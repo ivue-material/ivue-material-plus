@@ -1,4 +1,6 @@
 
+import { nextTick } from 'vue';
+import { hasOwn } from '@vue/shared';
 
 import { createLoadingComponent } from './createLoadingComponent';
 
@@ -20,6 +22,7 @@ const defaults: LoadingOptions = {
     customClass: '',
     iconClass: '',
     iconText: '',
+    iconRender: null,
 };
 
 // 全局加载选项
@@ -79,7 +82,6 @@ const Loading = function (options: LoadingOptions = {}): LoadingInstance {
         ...options,
     };
 
-
     // Loading 需要覆盖的 DOM 节点。可传入一个 DOM 对象或字符串；若传入字符串，
     // 则会将其作为参数传入 document.querySelector以获取到对应 DOM 节点
     if (typeof options.target === 'string') {
@@ -90,7 +92,7 @@ const Loading = function (options: LoadingOptions = {}): LoadingInstance {
 
     // 节点元素是否相等
     if (options.target !== document.body) {
-    // 开启全屏展示
+        // 开启全屏展示
         options.fullscreen = false;
     } else {
         options.body = true;
@@ -123,6 +125,11 @@ const Loading = function (options: LoadingOptions = {}): LoadingInstance {
 
     // 添加子节点
     parent.appendChild(instance.$el);
+
+    // 在实例渲染之后，然后修改可见以触发过渡
+    nextTick().then(() => {
+        instance.visible.value = hasOwn(options, 'visible') ? options.visible : true;
+    });
 
     // 开启了全屏
     if (options.fullscreen) {

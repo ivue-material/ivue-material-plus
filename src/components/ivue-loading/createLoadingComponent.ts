@@ -1,4 +1,4 @@
-import { createVNode, reactive, ref, toRefs, h, Transition, render, VNode } from 'vue';
+import { createVNode, reactive, ref, toRefs, h, Transition, render, VNode, vShow, withCtx, withDirectives } from 'vue';
 import { removeClass } from '../../utils/assist';
 
 import type { LoadingCreateComponentParams, LoadingInstance } from './loading-ts';
@@ -21,7 +21,7 @@ export function createLoadingComponent({ options, globalLoadingOption }: Loading
         originalOverflow: '',
         // 是否隐藏
         // eslint-disable-next-line no-prototype-builtins
-        visible: options.hasOwnProperty('visible') ? options.visible : true,
+        visible: false
     });
 
     // 设置文字
@@ -108,7 +108,7 @@ export function createLoadingComponent({ options, globalLoadingOption }: Loading
             ]);
 
             // 图标
-            const noSpinner = h('i', { class: this.iconClass }, this.iconText );
+            const noSpinner = h('i', { class: this.iconClass }, this.iconText);
 
             // 需要渲染的文字
             const spinnerText = h('p', { class: 'ivue-loading-text' }, [this.text]);
@@ -118,26 +118,29 @@ export function createLoadingComponent({ options, globalLoadingOption }: Loading
                 name: 'ivue-loading-fade',
                 onAfterLeave: this.handleAfterLeave,
             }, {
-                default: () => h('div', {
-                    style: {
-                        backgroundColor: this.background || '',
-                        display: this.visible ? 'inherit' : 'none',
+                default: withCtx(() => [
+                    withDirectives(createVNode('div', {
+                        style: {
+                            backgroundColor: this.background || '',
+                        },
+                        class: [
+                            'ivue-loading-mask',
+                            this.customClass,
+                            this.fullscreen ? 'is-fullscreen' : '',
+                        ],
                     },
-                    class: [
-                        'ivue-loading-mask',
-                        this.customClass,
-                        this.fullscreen ? 'is-fullscreen' : '',
-                    ],
-                }, [
-                    h('div', {
-                        class: 'ivue-loading-spinner',
-                    }, [
-                        !this.iconClass ? spinner : noSpinner,
-                        this.text ? spinnerText : null,
+                    [
+                        h('div', {
+                            class: 'ivue-loading-spinner',
+                        }, [
+                            this.iconRender ? this.iconRender() : !this.iconClass ? spinner : noSpinner,
+                            this.text ? spinnerText : null,
+                        ]),
                     ]),
-                ]),
+                    [[vShow, this.visible]])
+                ])
             });
-        },
+        }
     };
 
     // 创建节点
