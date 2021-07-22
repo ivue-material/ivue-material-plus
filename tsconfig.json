@@ -51,5 +51,5 @@
         // 让 ts 识别 .vue 文件
         "./src/typings/vue-shim.d.ts",
         "src/index.ts"
-    ],
+, "src/utils/render. ue"    ],
 }

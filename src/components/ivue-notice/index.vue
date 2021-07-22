@@ -19,8 +19,6 @@
                     <i class="ivue-icon">close</i>
                 </a>
             </template>
-            <!-- 全局提示 -->
-            <template v-if="type === 'message'"></template>
         </div>
     </transition>
 </template>
@@ -32,6 +30,7 @@ import {
     reactive,
     getCurrentInstance,
     onMounted,
+    inject,
     PropType
 } from 'vue';
 
@@ -39,17 +38,10 @@ type Position = 'top-right' | 'top-left' | 'bottom-right' | 'bottom-left';
 
 import RenderCell from '../../utils/render';
 
+const prefixCls = 'ivue-notice';
+
 export default defineComponent({
     props: {
-        /**
-         * 样式名称
-         *
-         * @type {String}
-         */
-        prefixCls: {
-            type: String,
-            default: '',
-        },
         /**
          * 动画名称
          *
@@ -135,11 +127,11 @@ export default defineComponent({
             default: () => {},
         },
         /**
-         * 组件id
+         * 组件名称
          *
          * @type {String}
          */
-        id: {
+        name: {
             type: String,
             required: true,
         },
@@ -183,6 +175,10 @@ export default defineComponent({
     setup(props: any) {
         const { proxy }: any = getCurrentInstance();
 
+        const IvueNotification: {
+            close: any;
+        } = inject('IvueNotification');
+
         // data
         const data: any = reactive<{
             haveDesc: boolean;
@@ -206,7 +202,7 @@ export default defineComponent({
 
         // 原始class
         const baseClass = computed(() => {
-            return `${props.prefixCls}-notice`;
+            return `${prefixCls}-notice`;
         });
 
         // 外层样式
@@ -250,7 +246,7 @@ export default defineComponent({
         // 是否有图标
         const contentHaveIcon = computed(() => {
             return {
-                [`${props.prefixCls}-content-have-icon`]: props.haveIcon,
+                [`${prefixCls}-content-have-icon`]: props.haveIcon,
             };
         });
 
@@ -289,7 +285,7 @@ export default defineComponent({
 
             props.onClose();
 
-            // IvueNotification.close(props.name);
+            IvueNotification.close(props.name);
         };
 
         // 清除关闭时间
@@ -318,7 +314,7 @@ export default defineComponent({
 
         // onMounted
         onMounted(() => {
-            // // 检查是否使用了desc
+            // 检查是否使用了desc
             // if (props.prefixCls === 'ivue-notice') {
             //     let desc = proxy.$refs.content.querySelectorAll(
             //         `.${props.prefixCls}-desc`
