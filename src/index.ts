@@ -21,6 +21,7 @@ import IvueProgress from './components/ivue-progress';
 import IvueCircular from './components/ivue-circular';
 import IvueLoading from './components/ivue-loading';
 import IvueNotice from './components/ivue-notice';
+import IvueMessage from './components/ivue-message';
 
 // 指令
 import Directives from './utils/directives/index';
@@ -47,7 +48,8 @@ export {
     IvueProgress,
     IvueCircular,
     IvueLoading,
-    IvueNotice
+    IvueNotice,
+    IvueMessage
 };
 
 
@@ -55,7 +57,7 @@ export {
 interface InstallOptions {
 }
 
-const defaultInstallOpt =  {
+const defaultInstallOpt = {
 };
 
 
@@ -82,6 +84,8 @@ const install = (app: App, opt: InstallOptions = defaultInstallOpt): void => {
     IvueCircular(app);
     IvueLoading(app);
     IvueNotice(app);
+    IvueMessage(app);
+
 
     // 全局配置
     app.config.globalProperties.$IVUE = opt;

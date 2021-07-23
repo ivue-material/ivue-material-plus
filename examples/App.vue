@@ -77,6 +77,10 @@
                  <li>
                     <router-link to="/notice">Notice</router-link>
                 </li>
+
+                 <li>
+                    <router-link to="/message">Message</router-link>
+                </li>
             </ul>
         </nav>
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />

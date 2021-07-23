@@ -3,19 +3,19 @@ import { transferIndex, transferIncrease } from '../../utils/transfer-queue';
 
 import Notice from './index.vue';
 
+ type Type = 'normal' | 'info' | 'warning' | 'success' | 'error'
+
 type options = {
     title?: string,
     desc?: string,
-    name?: string,
     onClose?: () => any,
     render?: () => any,
     duration?: number,
-    top?: number,
     position?: any,
     offset?: number,
     id?: string,
     zIndex?: number,
-    type?: string,
+    type?: Type,
     closable?: boolean
 }
 
@@ -36,6 +36,10 @@ const notifications = {
 // 每个通知之间的间隙大小
 const GAP_SIZE = 16;
 
+let offset;
+let defaultDuration;
+
+
 function notice(type, options: options = {}) {
     // key
     const id = `${prefixKey}${name}`;
@@ -48,10 +52,13 @@ function notice(type, options: options = {}) {
     // onclose
     options.onClose = options.onClose || function () { };
 
+    // duration
+    options.duration = defaultDuration || options.duration;
+
     name++;
 
     // 偏移距离
-    let verticalOffset = options.offset || 0;
+    let verticalOffset = offset || options.offset || 0;
     // 偏移方向
     const position = options.position || 'top-right';
 
@@ -88,10 +95,15 @@ function notice(type, options: options = {}) {
     const vm: VNode = createVNode(Notice, options);
     const container = document.createElement('div');
 
+    // 清除通知元素防止内存泄漏
+    vm.props.onDestroy = () => {
+        render(null, container);
+    };
+
     notifications[position].push({ vm });
 
-    // instances will remove this item when close function gets called.
-    //  So we do not need to worry about it.
+    // 当 close 函数被调用时，实例将删除此项。
+    // 所以我们不需要担心。
     render(vm, container);
 
     document.body.appendChild(container.firstElementChild);
@@ -138,14 +150,12 @@ const close = (
     if (len < 1) return;
 
     // 开始移除项
-
     for (let i = idx; i < len; i++) {
         // 新位置等于当前的 offsetTop 减去移除的高度加上 16px（每个项目之间的间隙大小）
         const { el, component } = orientedNotifications[i].vm;
         const pos = parseInt(el.style[verticalPos], 10) - removedHeight - GAP_SIZE;
         component.props.offset = pos;
     }
-
 };
 
 // 关闭所有
@@ -176,6 +186,18 @@ const notification = {
     },
     error(options: options) {
         return notice('error', options);
+    },
+    // 全局配置
+    config(options) {
+        // 偏移位置
+        if (options.offset) {
+            offset = options.offset;
+        }
+
+        // 延迟时间
+        if (options.duration > 0) {
+            defaultDuration = options.duration;
+        }
     },
     close,
     closeAll

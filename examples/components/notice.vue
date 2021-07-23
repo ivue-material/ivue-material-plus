@@ -53,6 +53,12 @@
 import { h } from 'vue';
 
 export default {
+    mounted() {
+            this.$notice.config({
+                offset: 100,
+                // duration: 2000
+            })
+    },
     methods: {
         showCloseAll() {
             this.$notice.closeAll()

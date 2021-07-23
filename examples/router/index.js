@@ -20,6 +20,7 @@ import Progress from '../components/progress';
 import Circle from '../components/circle';
 import Loading from '../components/loading';
 import Notice from '../components/notice';
+import Message from '../components/message';
 
 const routes = [{
     path: "/Affix",
@@ -110,6 +111,11 @@ const routes = [{
     path: "/notice",
     name: "Notice",
     component: Notice,
+  },
+  {
+    path: "/message",
+    name: "Message",
+    component: Message,
   },
 ];
 

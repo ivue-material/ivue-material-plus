@@ -1,6 +1,6 @@
 <template>
     <transition
-        name="ivue-notification-fade"
+        :name="`${prefixCls}-message-fade`"
         @before-leave="onClose"
         @after-leave="$emit('destroy')"
     >
@@ -11,33 +11,17 @@
             @mouseleave="handleMouseleave"
             v-show="data.visible"
         >
-            <!-- 内容 -->
-            <div :class="contentClasses" ref="content">
-                <template v-if="type === 'normal'">
-                    <div :class="[`${prefixCls}-content` , haveDesc]">
-                        <div :class="`${prefixCls}-title`">{{ title }}</div>
-                        <div :class="`${prefixCls}-desc`">{{ desc }}</div>
-                    </div>
-                </template>
-                <template v-else>
-                    <div
-                        :class="`${prefixCls}-content ${prefixCls}-have-icon ${prefixCls}-have-${type} ${haveDesc}`"
-                    >
-                        <i
-                            :class="`ivue-icon ${prefixCls}-icon ${prefixCls}-icon-${type}`"
-                        >{{ data.iconTypes[type] }}</i>
-                        <div :class="`${prefixCls}-title`">{{ title }}</div>
-                        <div :class="`${prefixCls}-desc`">{{ desc }}</div>
-                    </div>
-                </template>
-            </div>
-            <!-- render 渲染 -->
-            <div :class="contentHaveIcon" v-if="renderFunc">
-                <render-cell :render="renderFunc"></render-cell>
-            </div>
-            <!-- 关闭按钮 -->
-            <div :class="`${baseClass}-close`" @click.stop="handleClose" v-show="closable">
-                <i class="ivue-icon">close</i>
+            <div :class="`${baseClass}-content`" ref="content">
+                <!-- 内容 -->
+                <div :class="`${baseClass}-content-text`" v-html="content"></div>
+                <!-- render 渲染 -->
+                <div :class="`${baseClass}-content-text`" v-if="renderFunc">
+                    <render-cell :render="renderFunc"></render-cell>
+                </div>
+                <!-- 关闭按钮 -->
+                <div :class="`${baseClass}-close`" @click="handleClose" v-show="closable">
+                    <i class="ivue-icon">close</i>
+                </div>
             </div>
         </div>
     </transition>
@@ -51,7 +35,7 @@ type Type = 'normal' | 'info' | 'warning' | 'success' | 'error';
 
 import RenderCell from '../../utils/render';
 
-const prefixCls = 'ivue-notice';
+const prefixCls = 'ivue-message';
 
 export default defineComponent({
     emits: ['destroy'],
@@ -89,7 +73,16 @@ export default defineComponent({
          */
         closable: {
             type: Boolean,
-            default: true,
+            default: false,
+        },
+        /**
+         * 背景颜色
+         *
+         * @type {Boolean}
+         */
+        background: {
+            type: Boolean,
+            default: false,
         },
         /**
          * render 渲染函数
@@ -237,31 +230,21 @@ export default defineComponent({
             const _baseClass = baseClass.value;
 
             return [
-                'ivue-notice',
+                'ivue-message',
                 baseClass.value,
                 {
                     [`${props.className}`]: !!props.className,
                     [`${_baseClass}-closable`]: props.closable,
+                    [`${_baseClass}-have-background`]: props.background,
                     [`${_baseClass}-have-desc`]: data.haveDesc,
                 },
-                horizontalClass.value,
             ];
-        });
-
-        // 当前方向
-        const verticalProperty = computed(() => {
-            return props.position.startsWith('top') ? 'top' : 'bottom';
-        });
-
-        // 弹出方向
-        const horizontalClass = computed(() => {
-            return props.position.indexOf('right') > 1 ? 'right' : 'left';
         });
 
         // 外层样式
         const wrapperStyle = computed(() => {
             return {
-                [verticalProperty.value]: `${props.offset}px`,
+                top: `${props.offset}px`,
                 'z-index': props.zIndex,
             };
         });
@@ -301,7 +284,7 @@ export default defineComponent({
 
         // 关闭
         const handleClose = () => {
-            data.visible = false;
+            // data.visible = false;
         };
 
         // 清除关闭时间
@@ -335,7 +318,7 @@ export default defineComponent({
 
         // onMounted
         onMounted(() => {
-            startTime();
+            // startTime();
 
             data.visible = true;
         });
@@ -360,7 +343,6 @@ export default defineComponent({
             clearCloseTimer,
             handleMouseenter,
             handleMouseleave,
-            horizontalClass,
         };
     },
     components: {
