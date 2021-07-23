@@ -10,18 +10,15 @@ $have-icon: 51px;
   margin-right: 25px;
   z-index: 1000;
 
+
   &-notice {
     position: fixed;
-    right: 16px;
     width: $notice-width;
-
     padding: $notice-padding;
-    margin-bottom: $notice-margin-bottom;
     border-radius: $border-radius-small;
     box-shadow: 0 1px 6px rgba(0, 0, 0, .2);
     overflow: hidden;
     background-color: #fff;
-
     transition: opacity .3s,
       transform .3s,
       left .3s,
@@ -29,12 +26,22 @@ $have-icon: 51px;
       top .4s,
       bottom .3s;
 
+
+    &.right {
+      right: 16px;
+    }
+
+    &.left {
+      left: 16px;
+    }
+
     &-close {
       position: absolute;
       right: 10px;
       top: 15px;
       outline: none;
       color: #999;
+      cursor: pointer;
 
       i {
         position: relative;

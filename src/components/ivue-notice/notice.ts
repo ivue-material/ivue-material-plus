@@ -1,4 +1,4 @@
-import { createVNode, VNode, render, h } from 'vue';
+import { createVNode, VNode, render, ComponentPublicInstance } from 'vue';
 import { transferIndex, transferIncrease } from '../../utils/transfer-queue';
 
 import Notice from './index.vue';
@@ -11,27 +11,19 @@ type options = {
     render?: () => any,
     duration?: number,
     top?: number,
-    position?: number,
+    position?: any,
     offset?: number,
     id?: string,
-    zIndex?: number
+    zIndex?: number,
+    type?: string,
+    closable?: boolean
 }
+
+type Position = 'top-right' | 'top-left' | 'bottom-right' | 'bottom-left';
 
 
 const prefixKey = 'ivue_notice_key_';
-// 顶部距离
-const top = 24;
-// 默认延迟关闭时间
-const defaultDuration = 4.5;
 let name = 1;
-
-// 图标类型
-const iconTypes = {
-    'success': 'check_circle',
-    'info': 'info',
-    'warning': 'warning',
-    'error': 'error'
-};
 
 // 队列
 const notifications = {
@@ -41,28 +33,34 @@ const notifications = {
     'bottom-right': [],
 };
 
+// 每个通知之间的间隙大小
+const GAP_SIZE = 16;
 
 function notice(type, options: options = {}) {
+    // key
+    const id = `${prefixKey}${name}`;
+
     // 标题
     options.title = options.title || '';
-    // // 描述
+    // 描述
     options.desc = options.desc || '';
 
     // onclose
     options.onClose = options.onClose || function () { };
 
-    // duration
-    options.duration = options.duration || defaultDuration;
-
     name++;
 
     // 偏移距离
-    const verticalOffset = options.offset || 0;
+    let verticalOffset = options.offset || 0;
     // 偏移方向
     const position = options.position || 'top-right';
 
-    // key
-    const id = `${prefixKey}${name}`;
+    notifications[position]
+        .forEach(({ vm }) => {
+            verticalOffset += (vm.el.offsetHeight || 0) + GAP_SIZE;
+        });
+    verticalOffset += GAP_SIZE;
+
 
     // 获取Index
     const handleGetIndex = () => {
@@ -72,19 +70,20 @@ function notice(type, options: options = {}) {
 
     // 当前index
     const tIndex = handleGetIndex();
-
-
+    // 用户设置的关闭回调
+    const userOnClose = options.onClose;
 
     options = {
         // default options end
         ...options,
-        onClose: options.onClose || function () { },
+        type,
+        onClose: () => {
+            close(id, position, userOnClose);
+        },
         offset: verticalOffset,
         id: id,
         zIndex: 1010 + tIndex,
     };
-
-
 
     const vm: VNode = createVNode(Notice, options);
     const container = document.createElement('div');
@@ -96,109 +95,90 @@ function notice(type, options: options = {}) {
     render(vm, container);
 
     document.body.appendChild(container.firstElementChild);
-
-    console.log(vm);
-    console.log(options);
-
-    // const instance = getNoticeInstance();
-
-    // let content;
-
-    // let haveIcon;
-
-    // 描述
-    // const haveDesc = (options.render && !title) ? '' :
-    //     (desc || options.render) ?
-    //         `${prefixCls}-have-desc` : '';
-
-
-    // if (type === 'normal') {
-    //     haveIcon = false;
-    //     content = `
-    //           <div class="${prefixCls}-content ${haveDesc}">
-    //                 <div class="${prefixCls}-title">${title}</div>
-    //                 <div class="${prefixCls}-desc">${desc}</div>
-    //           </div>
-    //     `;
-    // }
-    // else {
-    //     const iconType = iconTypes[type];
-
-    //     haveIcon = true;
-
-    //     content = `
-    //           <div class="${prefixCls}-content ${prefixCls}-have-icon ${prefixCls}-have-${type} ${haveDesc}">
-    //                 <i class="ivue-icon ${prefixCls}-icon ${prefixCls}-icon-${type}">${iconType}</i>
-    //                 <div class="${prefixCls}-title">${title}</div>
-    //                 <div class="${prefixCls}-desc">${desc}</div>
-    //           </div>
-    //     `;
-    // }
-
-
-    // instance.notice({
-    //     prefixCls: prefixCls,
-    //     name: key.toString(),
-    //     duration: duration,
-    //     styles: {},
-    //     transitionName: 'move-notice',
-    //     content: content,
-    //     render: render,
-    //     onClose: onClose,
-    //     closable: true,
-    //     type: 'notice',
-    //     haveIcon: haveIcon
-    // });
 }
+
+/**
+  * 当用户点击`x` 按钮或按下`esc` 或时间达到其限制时，将调用此函数。
+  * 由transition@before-leave 事件发出，以便我们可以获取当前的notification.offsetHeight，如果它被调用
+  * 通过@after-leave DOM 元素将从页面中删除，因此我们无法再获取 offsetHeight。
+  * @param {String} id 要关闭的通知 id
+  * @param {Position} 定位定位策略
+  * @param {Function} userOnClose 用户关闭时调用的回调
+  */
+const close = (
+    id: string,
+    position: Position,
+    userOnClose?: (vm: VNode) => void,
+): void => {
+    // 将 vm 插入通知列表时存储索引
+    const orientedNotifications = notifications[position];
+
+    // 当前的下标
+    const idx = orientedNotifications.findIndex(({ vm }) => vm.component.props.id === id);
+
+    if (idx === -1) {
+        return;
+    }
+
+    // vm
+    const { vm } = orientedNotifications[idx];
+
+    if (!vm) return;
+
+    // 在通知从 DOM 中移除之前调用用户的关闭函数。
+    userOnClose?.(vm);
+
+    // 请注意，这称为@before-leave，这就是我们能够获取此属性的原因。
+    const removedHeight = vm.el.offsetHeight;
+
+    const verticalPos = position.split('-')[0];
+    orientedNotifications.splice(idx, 1);
+    const len = orientedNotifications.length;
+
+    if (len < 1) return;
+
+    // 开始移除项
+
+    for (let i = idx; i < len; i++) {
+        // 新位置等于当前的 offsetTop 减去移除的高度加上 16px（每个项目之间的间隙大小）
+        const { el, component } = orientedNotifications[i].vm;
+        const pos = parseInt(el.style[verticalPos], 10) - removedHeight - GAP_SIZE;
+        component.props.offset = pos;
+    }
+
+};
+
+// 关闭所有
+const closeAll = (): void => {
+    // 遍历所有方向，立即关闭它们。
+    for (const key in notifications) {
+        const orientedNotifications = notifications[key as Position];
+
+        orientedNotifications.forEach(({ vm }) => {
+            // same as the previous close method, we'd like to make sure lifecycle gets handle properly.
+            (vm.component.proxy.data as ComponentPublicInstance<{ visible: boolean; }>).visible = false;
+        });
+    }
+};
 
 const notification = {
     open(options: options) {
         return notice('normal', options);
     },
-    // info(options: options) {
-    //     return notice('info', options);
-    // },
-    // warning(options: options) {
-    //     return notice('warning', options);
-    // },
-    // success(options: options) {
-    //     return notice('success', options);
-    // },
-    // error(options: options) {
-    //     return notice('error', options);
-    // },
-    // // 全局配置
-    // config(options: options) {
-    //     // 顶部距离
-    //     if (options.top) {
-    //         top = options.top;
-    //     }
-
-    //     // 延迟关闭时间
-    //     if (options.duration || options.duration === 0) {
-    //         defaultDuration = options.duration;
-    //     }
-    // },
-    // // 关闭某个通知
-    // close(name) {
-    //     if (name) {
-    //         name = name.toString();
-
-    //         if (noticeInstance) {
-    //             noticeInstance.remove(name);
-    //         }
-    //     }
-    //     else {
-    //         return false;
-    //     }
-    // },
-    // // 销毁所有组件
-    // destroy() {
-    //     const instance = getNoticeInstance();
-    //     noticeInstance = null;
-
-    //     // 销毁
-    //     instance.destroy('ivue-notice');
-    // }
+    info(options: options) {
+        return notice('info', options);
+    },
+    warning(options: options) {
+        return notice('warning', options);
+    },
+    success(options: options) {
+        return notice('success', options);
+    },
+    error(options: options) {
+        return notice('error', options);
+    },
+    close,
+    closeAll
 };
+
 export default notification;

@@ -1,24 +1,40 @@
 <template>
-    <transition :name="transitionName" @enter="handleEnter" @leave="handleLeave" appear>
+    <transition name="ivue-notification-fade" @before-leave="onClose">
         <div
             :class="classes"
-            :style="styles"
+            :style="wrapperStyle"
             @mouseenter="handleMouseenter"
             @mouseleave="handleMouseleave"
+            v-show="data.visible"
         >
-            <!-- 通知提醒 -->
-            <template v-if="type === 'notice'">
-                <!-- 内容 -->
-                <div :class="contentClasses" ref="content" v-html="content"></div>
-                <!-- render 渲染 -->
-                <div :class="contentHaveIcon" v-if="renderFunc">
-                    <render-cell :render="renderFunc"></render-cell>
-                </div>
-                <!-- 关闭按钮 -->
-                <a :class="`${baseClass}-close`" @click="handleClose" v-show="closable">
-                    <i class="ivue-icon">close</i>
-                </a>
-            </template>
+            <!-- 内容 -->
+            <div :class="contentClasses" ref="content">
+                <template v-if="type === 'normal'">
+                    <div :class="[`${prefixCls}-content` , haveDesc]">
+                        <div :class="`${prefixCls}-title`">{{ title }}</div>
+                        <div :class="`${prefixCls}-desc`">{{ desc }}</div>
+                    </div>
+                </template>
+                <template v-else>
+                    <div
+                        :class="`${prefixCls}-content ${prefixCls}-have-icon ${prefixCls}-have-${type} ${haveDesc}`"
+                    >
+                        <i
+                            :class="`ivue-icon ${prefixCls}-icon ${prefixCls}-icon-${type}`"
+                        >{{ data.iconTypes[type] }}</i>
+                        <div :class="`${prefixCls}-title`">{{ title }}</div>
+                        <div :class="`${prefixCls}-desc`">{{ desc }}</div>
+                    </div>
+                </template>
+            </div>
+            <!-- render 渲染 -->
+            <div :class="contentHaveIcon" v-if="renderFunc">
+                <render-cell :render="renderFunc"></render-cell>
+            </div>
+            <!-- 关闭按钮 -->
+            <div :class="`${baseClass}-close`" @click.stop="handleClose" v-show="closable">
+                <i class="ivue-icon">close</i>
+            </div>
         </div>
     </transition>
 </template>
@@ -28,13 +44,12 @@ import {
     defineComponent,
     computed,
     reactive,
-    getCurrentInstance,
     onMounted,
-    inject,
-    PropType
+    PropType,
 } from 'vue';
 
 type Position = 'top-right' | 'top-left' | 'bottom-right' | 'bottom-left';
+type Type = 'normal' | 'info' | 'warning' | 'success' | 'error';
 
 import RenderCell from '../../utils/render';
 
@@ -42,14 +57,6 @@ const prefixCls = 'ivue-notice';
 
 export default defineComponent({
     props: {
-        /**
-         * 动画名称
-         *
-         * @type {String}
-         */
-        transitionName: {
-            type: String,
-        },
         /**
          * 内容
          *
@@ -65,7 +72,8 @@ export default defineComponent({
          * @type {String}
          */
         type: {
-            type: String,
+            type: String as PropType<Type>,
+            default: 'normal',
         },
         /**
          * 样式名称
@@ -82,7 +90,7 @@ export default defineComponent({
          */
         closable: {
             type: Boolean,
-            default: false,
+            default: true,
         },
         /**
          * 背景颜色
@@ -131,7 +139,7 @@ export default defineComponent({
          *
          * @type {String}
          */
-        name: {
+        id: {
             type: String,
             required: true,
         },
@@ -142,7 +150,7 @@ export default defineComponent({
          */
         duration: {
             type: Number,
-            default: 1.5,
+            default: 4500,
         },
         /**
          * 偏移位置
@@ -167,22 +175,34 @@ export default defineComponent({
          *
          * @type {Numebr}
          */
-        zIndex:{
+        zIndex: {
             type: Number,
             default: 0,
-        }
+        },
+        /**
+         * 标题
+         *
+         * @type {String}
+         */
+        title: {
+            type: String,
+        },
+        /**
+         * 描述
+         *
+         * @type {String}
+         */
+        desc: {
+            type: String,
+        },
     },
     setup(props: any) {
-        const { proxy }: any = getCurrentInstance();
-
-        const IvueNotification: {
-            close: any;
-        } = inject('IvueNotification');
-
         // data
         const data: any = reactive<{
             haveDesc: boolean;
             closeTimer: any;
+            visible: boolean;
+            iconTypes: Record<string, string>;
         }>({
             /**
              * 是否有描述
@@ -196,6 +216,23 @@ export default defineComponent({
              * @type {Function}
              */
             closeTimer: null,
+            /**
+             * 显示
+             *
+             * @type {Boolean}
+             */
+            visible: false,
+            /**
+             * 图标类型
+             *
+             * @type {Object}
+             */
+            iconTypes: {
+                success: 'check_circle',
+                info: 'info',
+                warning: 'warning',
+                error: 'error',
+            },
         });
 
         // computed
@@ -217,6 +254,7 @@ export default defineComponent({
                     [`${_baseClass}-have-background`]: props.background,
                     [`${_baseClass}-have-desc`]: data.haveDesc,
                 },
+                horizontalClass.value,
             ];
         });
 
@@ -225,12 +263,26 @@ export default defineComponent({
             return props.position.startsWith('top') ? 'top' : 'bottom';
         });
 
+        // 弹出方向
+        const horizontalClass = computed(() => {
+            return props.position.indexOf('right') > 1 ? 'right' : 'left';
+        });
+
         // 外层样式
         const wrapperStyle = computed(() => {
             return {
                 [verticalProperty.value]: `${props.offset}px`,
                 'z-index': props.zIndex,
             };
+        });
+
+        // 有描述
+        const haveDesc = computed(() => {
+            return props.render && !props.title
+                ? ''
+                : props.desc || props.render
+                    ? `${prefixCls}-have-desc`
+                    : '';
         });
 
         // 内容样式
@@ -246,7 +298,7 @@ export default defineComponent({
         // 是否有图标
         const contentHaveIcon = computed(() => {
             return {
-                [`${prefixCls}-content-have-icon`]: props.haveIcon,
+                [`${prefixCls}-content-have-icon`]: props.type !== 'normal',
             };
         });
 
@@ -257,35 +309,9 @@ export default defineComponent({
 
         // methods
 
-        // 动画 enter
-        const handleEnter = (el) => {
-            if (props.type === 'message') {
-                el.style.height = `${el.scrollHeight}px`;
-            }
-        };
-
-        // 动画 leave
-        const handleLeave = (el) => {
-            if (props.type === 'message') {
-                //如果当前只有一个 Message，则不使用 js 过渡动画
-                if (
-                    document.getElementsByClassName('ivue-message-notice')
-                        .length !== 1
-                ) {
-                    el.style.height = 0;
-                    el.style.paddingTop = 0;
-                    el.style.paddingBottom = 0;
-                }
-            }
-        };
-
         // 关闭
         const handleClose = () => {
-            clearCloseTimer();
-
-            props.onClose();
-
-            IvueNotification.close(props.name);
+            data.visible = false;
         };
 
         // 清除关闭时间
@@ -293,6 +319,16 @@ export default defineComponent({
             if (data.closeTimer) {
                 clearTimeout(data.closeTimer);
                 data.closeTimer = null;
+            }
+        };
+
+        // 开始时间
+        const startTime = () => {
+            // 重新设置延迟关闭
+            if (props.duration > 0) {
+                data.closeTimer = setTimeout(() => {
+                    handleClose();
+                }, props.duration);
             }
         };
 
@@ -304,35 +340,19 @@ export default defineComponent({
 
         // 鼠标移开
         const handleMouseleave = () => {
-            // 重新设置延迟关闭
-            if (props.duration > 0) {
-                data.closeTimer = setTimeout(() => {
-                    handleClose();
-                }, props.duration * 1000);
-            }
+            startTime();
         };
 
         // onMounted
         onMounted(() => {
-            // 检查是否使用了desc
-            // if (props.prefixCls === 'ivue-notice') {
-            //     let desc = proxy.$refs.content.querySelectorAll(
-            //         `.${props.prefixCls}-desc`
-            //     )[0];
+            startTime();
 
-            //     data.haveDesc = desc ? desc.innerHTML !== '' : false;
-            // }
-
-            // clearCloseTimer();
-
-            // if (props.duration > 0) {
-            //     data.closeTimer = setTimeout(() => {
-            //         handleClose();
-            //     }, props.duration * 1000);
-            // }
+            data.visible = true;
         });
 
         return {
+            prefixCls,
+
             // data
             data,
 
@@ -343,14 +363,14 @@ export default defineComponent({
             contentHaveIcon,
             renderFunc,
             wrapperStyle,
+            haveDesc,
 
             // methods
-            handleEnter,
-            handleLeave,
             handleClose,
             clearCloseTimer,
             handleMouseenter,
             handleMouseleave,
+            horizontalClass,
         };
     },
     components: {
