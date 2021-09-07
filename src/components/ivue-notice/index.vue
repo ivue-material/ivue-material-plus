@@ -44,7 +44,16 @@
 </template>
 
 <script lang='ts'>
-import { defineComponent, computed, reactive, onMounted, PropType } from 'vue';
+import {
+    defineComponent,
+    onBeforeUnmount,
+    computed,
+    reactive,
+    onMounted,
+    PropType,
+} from 'vue';
+import { EVENT_CODE } from '../../utils/helpers';
+import { on, off } from '../../utils/dom';
 
 type Position = 'top-right' | 'top-left' | 'bottom-right' | 'bottom-left';
 type Type = 'normal' | 'info' | 'warning' | 'success' | 'error';
@@ -271,8 +280,8 @@ export default defineComponent({
             return props.render && !props.title
                 ? ''
                 : props.desc || props.render
-                    ? `${prefixCls}-have-desc`
-                    : '';
+                ? `${prefixCls}-have-desc`
+                : '';
         });
 
         // 内容样式
@@ -333,11 +342,31 @@ export default defineComponent({
             startTime();
         };
 
+        // 键盘点击
+        const onKeydown = ({ code }: KeyboardEvent) => {
+            if (code === EVENT_CODE.delete || code === EVENT_CODE.backspace) {
+                clearCloseTimer(); // press delete/backspace clear timer
+            } else if (code === EVENT_CODE.esc) {
+                // press esc to close the notification
+                if (data.visible) {
+                    handleClose();
+                }
+            } else {
+                startTime(); // resume timer
+            }
+        };
+
         // onMounted
         onMounted(() => {
             startTime();
 
             data.visible = true;
+
+            on(document, 'keydown', onKeydown);
+        });
+
+        onBeforeUnmount(() => {
+            off(document, 'keydown', onKeydown);
         });
 
         return {

@@ -22,8 +22,9 @@ $name: 'ivue-message';
     &-close {
       position: absolute;
       right: 4px;
-      top: 10px;
+      top: 8px;
       color: #999;
+      cursor: pointer;
 
       i {
         position: relative;
@@ -41,15 +42,70 @@ $name: 'ivue-message';
     }
   }
 
+  &-notice-have-background {
+    &-success {
+      .#{$name}-notice-content {
+        color: #fff;
+        background: $success-color;
+        border: 1px solid $success-color;
+      }
+
+      .ivue-icon {
+        color: #fff;
+      }
+    }
+
+    &-info {
+      .#{$name}-notice-content {
+        background: $primary-color;
+        color: #fff;
+        border: 1px solid $primary-color;
+      }
+
+      .ivue-icon {
+        color: #fff;
+      }
+    }
+
+    &-warning {
+      .#{$name}-notice-content {
+        background: $warning-color;
+        color: #fff;
+        border: 1px solid $warning-color;
+      }
+
+      .ivue-icon {
+        color: #fff;
+      }
+    }
+
+    &-error {
+      .#{$name}-notice-content {
+        background: $error-color;
+        color: #fff;
+        border: 1px solid $error-color;
+      }
+
+      .ivue-icon {
+        color: #fff;
+      }
+    }
+
+    .#{$name}-notice-content {
+      box-shadow: none;
+    }
+  }
+
   /*内容*/
   &-notice-content {
-    display: inline-block;
+    display: flex;
+    align-items: center;
     position: relative;
     padding: 8px 16px;
     pointer-events: all;
-    border-radius: $border-radius-small;
     box-shadow: 0 1px 6px rgba(0, 0, 0, .2);
     background-color: #fff;
+    border-radius: $border-radius-small;
 
     &-text {
       display: inline-block;
@@ -67,14 +123,15 @@ $name: 'ivue-message';
   }
 
   &-icon {
-    font-size: 17px;
+    margin-right: 4px;
+    font-size: 18px;
+    vertical-align: middle;
     width: auto;
     min-width: auto;
     height: auto;
 
     &-success {
       color: $success-color;
-      display: inline-block;
     }
 
     &-info {
@@ -97,9 +154,34 @@ $name: 'ivue-message';
     color: $primary-color;
   }
 
+  .ivue-progress-circular-overlay {
+    stroke: currentColor;
+    z-index: 2;
+    transition: all .6s ease-in-out;
+  }
+
   .ivue-progress-circular-indeterminate {
     display: inline-block;
   }
+
+  .ivue-load-loop {
+    animation: ivue-load-loop 1s linear infinite;
+  }
+
+  @keyframes ivue-load-loop {
+    from {
+      transform: rotate(0deg);
+    }
+
+    50% {
+      transform: rotate(180deg);
+    }
+
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
 }
 
 .#{$name}-message-fade-enter-from,

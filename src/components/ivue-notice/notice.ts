@@ -66,6 +66,7 @@ function notice(type, options: options = {}) {
         .forEach(({ vm }) => {
             verticalOffset += (vm.el.offsetHeight || 0) + GAP_SIZE;
         });
+
     verticalOffset += GAP_SIZE;
 
 

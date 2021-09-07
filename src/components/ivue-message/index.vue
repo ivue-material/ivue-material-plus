@@ -12,16 +12,46 @@
             v-show="data.visible"
         >
             <div :class="`${baseClass}-content`" ref="content">
-                <!-- 内容 -->
-                <div :class="`${baseClass}-content-text`" v-html="content"></div>
-                <!-- render 渲染 -->
-                <div :class="`${baseClass}-content-text`" v-if="renderFunc">
-                    <render-cell :render="renderFunc"></render-cell>
-                </div>
-                <!-- 关闭按钮 -->
-                <div :class="`${baseClass}-close`" @click="handleClose" v-show="closable">
-                    <i class="ivue-icon">close</i>
-                </div>
+                <template v-if="type === 'loading'">
+                    <div class="ivue-progress-circular-indeterminate">
+                        <i :class="`ivue-icon ${loadingIcon}`" v-if="loadingIcon"></i>
+
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            :viewBox="`${viewBoxSize} ${viewBoxSize} ${2 * viewBoxSize} ${2 * viewBoxSize}`"
+                            :class="`${prefixCls}-loading ivue-load-loop`"
+                            v-else
+                        >
+                            <circle
+                                fill="transparent"
+                                :cx="`${2 * viewBoxSize}`"
+                                :cy="`${2 * viewBoxSize}`"
+                                r="20"
+                                :stroke-width="`${strokeWidth}`"
+                                :stroke-dasharray="`${strokeDasharray}`"
+                                :stroke-dashoffset="`${strokeDashoffset}`"
+                                class="ivue-progress-circular-overlay"
+                            />
+                        </svg>
+                    </div>
+                    <span v-html="content"></span>
+                </template>
+                <template v-else>
+                    <!-- icon -->
+                    <i
+                        :class="`ivue-icon ${prefixCls}-icon ${prefixCls}-icon-${type}`"
+                    >{{ data.iconTypes[type] }}</i>
+                    <!-- 内容 -->
+                    <div :class="`${baseClass}-content-text`" v-html="content"></div>
+                    <!-- render 渲染 -->
+                    <div :class="`${baseClass}-content-text`" v-if="renderFunc">
+                        <render-cell :render="renderFunc"></render-cell>
+                    </div>
+                    <!-- 关闭按钮 -->
+                    <div :class="`${baseClass}-close`" @click="handleClose" v-show="closable">
+                        <i class="ivue-icon">close</i>
+                    </div>
+                </template>
             </div>
         </div>
     </transition>
@@ -133,7 +163,7 @@ export default defineComponent({
          */
         duration: {
             type: Number,
-            default: 4500,
+            default: 1500,
         },
         /**
          * 偏移位置
@@ -178,8 +208,25 @@ export default defineComponent({
         desc: {
             type: String,
         },
+        /**
+         * loading icon
+         *
+         * @type {String}
+         */
+        loadingIcon: {
+            type: String,
+        },
     },
     setup(props: any) {
+        const radius = 20;
+        const size = 20;
+        const percent = 20;
+        const viewBoxSize = radius / (1 - 4 / +size);
+        const circumference = 2 * Math.PI * radius;
+        const strokeDashoffset = ((100 - percent) / 100) * circumference + 'px';
+        const strokeDasharray = Math.round(circumference * 1000) / 1000;
+        const strokeWidth = (2 / +size) * viewBoxSize * 2;
+
         // data
         const data: any = reactive<{
             haveDesc: boolean;
@@ -237,6 +284,8 @@ export default defineComponent({
                     [`${_baseClass}-closable`]: props.closable,
                     [`${_baseClass}-have-background`]: props.background,
                     [`${_baseClass}-have-desc`]: data.haveDesc,
+                    [`${_baseClass}-have-background-${props.type}`]:
+                        props.background,
                 },
             ];
         });
@@ -254,8 +303,8 @@ export default defineComponent({
             return props.render && !props.title
                 ? ''
                 : props.desc || props.render
-                    ? `${prefixCls}-have-desc`
-                    : '';
+                ? `${prefixCls}-have-desc`
+                : '';
         });
 
         // 内容样式
@@ -284,7 +333,7 @@ export default defineComponent({
 
         // 关闭
         const handleClose = () => {
-            // data.visible = false;
+            data.visible = false;
         };
 
         // 清除关闭时间
@@ -318,7 +367,7 @@ export default defineComponent({
 
         // onMounted
         onMounted(() => {
-            // startTime();
+            startTime();
 
             data.visible = true;
         });
@@ -328,6 +377,10 @@ export default defineComponent({
 
             // data
             data,
+            viewBoxSize,
+            strokeWidth,
+            strokeDasharray,
+            strokeDashoffset,
 
             // computed
             classes,
