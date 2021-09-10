@@ -21,11 +21,17 @@ import Circle from '../components/circle';
 import Loading from '../components/loading';
 import Notice from '../components/notice';
 import Message from '../components/message';
+import LoadingBar from '../components/loading-bar';
 
 const routes = [{
     path: "/Affix",
     name: "Affix",
     component: Affix,
+  },
+  {
+    path: "/loading-bar",
+    name: "LoadingBar",
+    component: LoadingBar,
   },
   {
     path: "/Input",

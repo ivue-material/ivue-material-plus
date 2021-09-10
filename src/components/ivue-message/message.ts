@@ -165,7 +165,6 @@ const closeAll = (): void => {
     for (const key in instances) {
         instances.forEach(({ vm }) => {
             // same as the previous close method, we'd like to make sure lifecycle gets handle properly.
-            /* istanbul ignore if */
             (vm.component.proxy.data as ComponentPublicInstance<{ visible: boolean; }>).visible = false;
         });
     }

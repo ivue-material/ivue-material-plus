@@ -74,12 +74,15 @@
                     <router-link to="/loading">Loading</router-link>
                 </li>
 
-                 <li>
+                <li>
                     <router-link to="/notice">Notice</router-link>
                 </li>
 
-                 <li>
+                <li>
                     <router-link to="/message">Message</router-link>
+                </li>
+                <li>
+                    <router-link to="/loading-bar">LoadingBar</router-link>
                 </li>
             </ul>
         </nav>

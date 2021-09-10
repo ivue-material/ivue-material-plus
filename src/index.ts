@@ -22,6 +22,7 @@ import IvueCircular from './components/ivue-circular';
 import IvueLoading from './components/ivue-loading';
 import IvueNotice from './components/ivue-notice';
 import IvueMessage from './components/ivue-message';
+import IvueLoadingBar from './components/ivue-loading-bar';
 
 // 指令
 import Directives from './utils/directives/index';
@@ -49,7 +50,8 @@ export {
     IvueCircular,
     IvueLoading,
     IvueNotice,
-    IvueMessage
+    IvueMessage,
+    IvueLoadingBar
 };
 
 
@@ -85,7 +87,7 @@ const install = (app: App, opt: InstallOptions = defaultInstallOpt): void => {
     IvueLoading(app);
     IvueNotice(app);
     IvueMessage(app);
-
+    IvueLoadingBar(app);
 
     // 全局配置
     app.config.globalProperties.$IVUE = opt;
