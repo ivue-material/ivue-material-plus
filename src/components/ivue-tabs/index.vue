@@ -5,12 +5,14 @@
             <transition name="fade-transition">
                 <ivue-icon
                     :class="`ivue-tabs-icon ivue-tabs-icon--prev`"
-                    v-show="hasArrows && prevIconVisible"
+                    v-show="hasArrows && data.prevIconVisible"
+                    @click="handleScrollTo('prev')"
                 >{{ prevIcon }}</ivue-icon>
             </transition>
             <!-- 内容 -->
             <div
                 :class="tabWrapperClass"
+                :style="tabWrapperStyle"
                 v-touch="{
                     start: e => overflowCheck(e, onTouchStart),
                     move: e => overflowCheck(e, onTouchMove),
@@ -19,7 +21,11 @@
                 ref="wrapper"
             >
                 <div :class="tabContainerClass" :style="containerStyles" ref="container">
-                    <slider :color="sliderColor"></slider>
+                    <slider
+                        :sliderLeft="data.sliderLeft"
+                        :sliderWidth="data.sliderWidth"
+                        :color="sliderColor"
+                    ></slider>
                     <slot></slot>
                 </div>
             </div>
@@ -27,16 +33,24 @@
             <transition name="fade-transition">
                 <ivue-icon
                     :class="`ivue-tabs-icon ivue-tabs-icon--next`"
-                    v-show="hasArrows && nextIconVisible"
+                    v-show="hasArrows && data.nextIconVisible"
+                    @click="handleScrollTo('next')"
                 >{{ nextIcon }}</ivue-icon>
             </transition>
         </div>
-        {{data.isOverflowing}}
     </div>
 </template>
 
 <script lang='ts'>
-import { defineComponent, reactive, provide, computed, ref, watch } from 'vue';
+import {
+    defineComponent,
+    reactive,
+    provide,
+    computed,
+    ref,
+    watch,
+    nextTick,
+} from 'vue';
 
 import tabsComputed from './tabs-computed';
 import tabsTouch from './tabs-touch';
@@ -75,7 +89,7 @@ export default defineComponent({
          */
         showArrows: {
             type: Boolean,
-            default: false,
+            default: true,
         },
         /**
          * 右边按钮
@@ -122,6 +136,42 @@ export default defineComponent({
             type: String,
             default: 'primary',
         },
+        /**
+         * 滑动条隐藏
+         *
+         * @type {Boolean}
+         */
+        hideSlider: {
+            type: Boolean,
+            default: false,
+        },
+        /**
+         * 当前激活 tab 面板的 name，可以使用 v-model 双向绑定数据
+         *
+         * @type {String,Number,Boolean}
+         */
+        modelValue: {
+            type: [String, Number],
+            default: '',
+        },
+        /**
+         * 调整显示箭头时设置的前后滚动的间距
+         *
+         * @type {Number}
+         */
+        arrowsMargin: {
+            type: Number,
+            default: 40,
+        },
+        /**
+         * 箭头样式单位
+         *
+         * @type {String}
+         */
+        arrowsMarginUnit: {
+            type: String,
+            default: 'px',
+        },
     },
     setup(props) {
         // dom
@@ -144,7 +194,13 @@ export default defineComponent({
             scrollOffset: Number;
             startX: Number;
             widths: Object;
+            resizeTimeout: any;
+            lazyValue: any;
+            sliderLeft: Number;
+            sliderWidth: Number;
         }>({
+            // 激活的tab
+            lazyValue: props.modelValue,
             // tab导航数组
             tabs: [],
             // 导航栏是否需要滚动
@@ -163,16 +219,37 @@ export default defineComponent({
                 container: 0,
                 wrapper: 0,
             },
+            // 重置时间函数
+            resizeTimeout: null,
+            // 滑动条位置
+            sliderLeft: 0,
+            // 滑动条宽度
+            sliderWidth: 0,
         });
 
         // computed
-        const { hasArrows, containerStyles } = tabsComputed(props, data);
+        const { hasArrows, containerStyles, activeTab, activeIndex } =
+            tabsComputed(props, data);
 
         // tab外层样式
         const tabWrapperClass = computed(() => {
             return {
                 'ivue-tabs-wrapper': true,
                 'ivue-tabs-wrapper--show-arrow': hasArrows.value,
+            };
+        });
+
+        // tab外层样式
+        const tabWrapperStyle = computed(() => {
+            return {
+                'margin-left':
+                    hasArrows && data.prevIconVisible
+                        ? `${props.arrowsMargin}${props.arrowsMarginUnit}`
+                        : '0',
+                // 'margin-right':
+                //     hasArrows && data.nextIconVisible
+                //         ? `${props.arrowsMargin}${props.arrowsMarginUnit}`
+                //         : '',
             };
         });
 
@@ -189,7 +266,7 @@ export default defineComponent({
 
         // methods
 
-        const { onTouchStart, onTouchMove, onTouchEnd } = tabsTouch(
+        const { onTouchStart, onTouchMove, onTouchEnd, newOffset } = tabsTouch(
             data,
             container,
             wrapper
@@ -221,8 +298,6 @@ export default defineComponent({
                 wrapper: _wrapper,
             };
 
-            console.log(data.widths);
-
             setOverflow();
         };
 
@@ -231,9 +306,98 @@ export default defineComponent({
             data.isOverflowing = data.widths.bar < data.widths.container;
         };
 
+        // 设置滑动条
+        const callSlider = () => {
+            const _activeTab = activeTab.value;
+
+            if (props.hideSlider || !_activeTab) {
+                return false;
+            }
+
+            nextTick(() => {
+                if (!_activeTab || !_activeTab.$el || _activeTab.disabled) {
+                    return;
+                }
+
+                data.sliderLeft = _activeTab.$el.offsetLeft;
+                data.sliderWidth = _activeTab.$el.clientWidth;
+            });
+        };
+
+        // 滚动导航栏
+        const scrollIntoView = () => {
+            const _activeTab = activeTab.value;
+
+            if (!_activeTab) {
+                return;
+            }
+            if (!data.isOverflowing) {
+                return (data.scrollOffset = 0);
+            }
+            // 导航栏总共的宽度
+            const totalWidth = data.widths.wrapper + data.scrollOffset;
+            const { clientWidth, offsetLeft } = _activeTab.$el;
+
+            let additionalOffset = clientWidth * 0.3;
+
+            // item偏移宽度
+            const offset = clientWidth + offsetLeft;
+            const itemOffset = props.showArrows
+                ? offset + (props.arrowsMargin + additionalOffset)
+                : offset;
+
+            // 如果选择最后一个选项卡，请不要添加偏移量
+            if (activeIndex.value === data.tabs.length - 1) {
+                additionalOffset === 0;
+            }
+
+            /* istanbul ignore else */
+            if (offsetLeft < data.scrollOffset) {
+                data.scrollOffset = Math.max(offsetLeft - additionalOffset, 0);
+            } else if (totalWidth < itemOffset) {
+                data.scrollOffset -= totalWidth - itemOffset - additionalOffset;
+            }
+        };
+
+        // 检查是否有icon
+        const checkIcons = () => {
+            data.nextIconVisible = checkNextIcon();
+            data.prevIconVisible = checkPrevIcon();
+        };
+
+        // 检查右边按钮
+        const checkNextIcon = () => {
+            const offset = data.scrollOffset + data.widths.wrapper;
+            console.log(offset);
+            return (
+                data.widths.container >
+                (props.showArrows ? offset - props.arrowsMargin : offset)
+            );
+        };
+
+        // 检查左边按钮
+        const checkPrevIcon = () => {
+            return data.scrollOffset > 0;
+        };
+
+        // 点击箭头滚动
+        const handleScrollTo = (direction) => {
+            data.scrollOffset = newOffset(direction);
+        };
+
         // 监听resize
         const onResize = () => {
             setWidths();
+
+            clearTimeout(data.resizeTimeout);
+            data.resizeTimeout = setTimeout(() => {
+                // 设置滑动条
+                callSlider();
+                // 滚动导航栏
+                scrollIntoView();
+                // 检查是否有icon
+                checkIcons();
+            }, 300);
         };
 
         // provide
@@ -273,12 +437,14 @@ export default defineComponent({
             hasArrows,
             tabContainerClass,
             containerStyles,
+            tabWrapperStyle,
 
             // methods
             overflowCheck,
             onTouchStart,
             onTouchMove,
             onTouchEnd,
+            handleScrollTo,
             unregister,
         };
     },

@@ -1,11 +1,11 @@
 
-export default (data: any, container: HTMLElement, wrapper: HTMLElement) => {
+export default (data: any, container: any, wrapper: any) => {
       // 手势开始
       const onTouchStart = (e) => {
             data.startX = data.scrollOffset + e.touchstartX;
 
-            container.style.transition = 'none';
-            container.style.willChange = 'transform';
+            container.value.style.transition = 'none';
+            container.value.style.willChange = 'transform';
       }
 
       // 手势移动
@@ -15,10 +15,10 @@ export default (data: any, container: HTMLElement, wrapper: HTMLElement) => {
 
       // 手势结束
       const onTouchEnd = () => {
-            const maxScrollOffset = container.clientWidth - wrapper.clientWidth;
+            const maxScrollOffset = container.value.clientWidth - wrapper.value.clientWidth;
 
-            container.style.transition = '';
-            container.style.willChange = '';
+            container.value.style.transition = '';
+            container.value.style.willChange = '';
 
             if (data.scrollOffset < 0 || !data.isOverflowing) {
                   data.scrollOffset = 0;
@@ -28,9 +28,22 @@ export default (data: any, container: HTMLElement, wrapper: HTMLElement) => {
             }
       }
 
+      // 偏移位置
+      const newOffset = (direction: string) => {
+            const clientWidth = wrapper.value.clientWidth;
+
+            if (direction === 'prev') {
+                  return Math.max(data.scrollOffset - clientWidth, 0);
+            }
+            else {
+                  return Math.min(data.scrollOffset + clientWidth, container.value.clientWidth - clientWidth);
+            }
+      };
+
       return {
             onTouchStart,
             onTouchMove,
-            onTouchEnd
+            onTouchEnd,
+            newOffset
       }
 }
