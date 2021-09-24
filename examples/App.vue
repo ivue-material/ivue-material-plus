@@ -84,6 +84,9 @@
                 <li>
                     <router-link to="/loading-bar">LoadingBar</router-link>
                 </li>
+                <li>
+                    <router-link to="/tabs">Tabs</router-link>
+                </li>
             </ul>
         </nav>
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />

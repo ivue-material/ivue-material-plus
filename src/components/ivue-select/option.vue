@@ -140,6 +140,7 @@ export default defineComponent({
     setup(props: any, { emit }) {
         // inject
         const select: any = inject('ivue-select');
+
         // 有选项组
         const selectGroup = inject('ivue-select-group', { disabled: false });
 

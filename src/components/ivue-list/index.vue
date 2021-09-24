@@ -32,7 +32,7 @@ export default defineComponent({
         const expandATab = (expandedListItem) => {
             if (props.ivueExpandSingle && expandedListItem) {
                 // 其他可扩展列表项
-                const otherExpandableListItem: any = data.IvueList.expandable.filter((target) => target.uid !== expandedListItem.uid);
+                const otherExpandableListItem: any = data.ivueList.expandable.filter((target) => target.uid !== expandedListItem.uid);
 
                 otherExpandableListItem.forEach((expandableListItem) => {
                     expandableListItem.close();
@@ -42,7 +42,7 @@ export default defineComponent({
 
         // 插入扩展
         const pushExpandable = (expandableListItem) => {
-            let expandableListItems = data.IvueList.expandable;
+            let expandableListItems = data.ivueList.expandable;
 
             // 寻找是否已经有了选项
             const findItem = expandableListItems.find((target) => {
@@ -50,13 +50,13 @@ export default defineComponent({
             });
 
             if (!findItem) {
-                data.IvueList.expandable = expandableListItems.concat([expandableListItem]);
+                data.ivueList.expandable = expandableListItems.concat([expandableListItem]);
             }
         };
 
         // 删除扩展
         const removeExpandable = (expandableListItem) => {
-            let expandableListItems = data.IvueList.expandable;
+            let expandableListItems = data.ivueList.expandable;
 
             // 寻找是否已经有了选项
             const findItem = expandableListItems.find((target) => {
@@ -64,16 +64,16 @@ export default defineComponent({
             });
 
             if (findItem) {
-                data.IvueList.expandable = expandableListItems.filter((target) => target.uid !== expandableListItem.uid);
+                data.ivueList.expandable = expandableListItems.filter((target) => target.uid !== expandableListItem.uid);
 
             }
         };
 
         // data
         const data: any = reactive<{
-            IvueList: Record<string, any>
+            ivueList: Record<string, any>
         }>({
-            IvueList: {
+            ivueList: {
                 /**
                  * 扩展列表
                  *
@@ -96,7 +96,7 @@ export default defineComponent({
         });
 
         // provide
-        provide('IvueList', data.IvueList);
+        provide('IvueList', data.ivueList);
 
         return {
             // data

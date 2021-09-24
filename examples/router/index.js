@@ -22,6 +22,7 @@ import Loading from '../components/loading';
 import Notice from '../components/notice';
 import Message from '../components/message';
 import LoadingBar from '../components/loading-bar';
+import Tabs from '../components/tabs';
 
 const routes = [{
     path: "/Affix",
@@ -122,6 +123,11 @@ const routes = [{
     path: "/message",
     name: "Message",
     component: Message,
+  },
+  {
+    path: "/tabs",
+    name: "Tabs",
+    component: Tabs,
   },
 ];
 
