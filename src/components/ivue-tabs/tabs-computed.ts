@@ -12,19 +12,20 @@ export default (props, data) => {
       const containerStyles = computed(() => {
             const height = props.height
 
-            return height ? {
-                  height: isNumeric(height) ? `${parseInt(height, 10)}px` : height
-            } : null
+            return {
+                  height: isNumeric(height) ? `${parseInt(height, 10)}${props.unit}` : height,
+                  transform: `translate3d(-${data.scrollOffset}${props.unit}, 0,0)`,
+            }
       });
 
       // 激活的Index
       const activeIndex = computed(() => {
             return data.tabs.findIndex((tab, index) => {
-                  if (!data.lazyValue) {
+                  if (!props.modelValue) {
                         return index === 0;
                   }
 
-                  return tab.key === data.lazyValue || index === data.lazyValue;
+                  return tab.name === props.modelValue || index === props.modelValue;
             });
       });
 
@@ -42,6 +43,6 @@ export default (props, data) => {
             hasArrows,
             activeTab,
             activeIndex,
-            containerStyles
+            containerStyles,
       }
 }

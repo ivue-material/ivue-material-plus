@@ -1,10 +1,11 @@
 <template>
     <div>
-        <ivue-tabs>
-            <ivue-tab v-for="n in 30" :key="`item${n}`">Item {{ n }}</ivue-tab>
+        <ivue-tabs v-model="tab">
+            <ivue-tab v-for="n in 30" :key="`item${n}`" :name="`item${n}`">Item {{ n }}</ivue-tab>
         </ivue-tabs>
 
         {{items}}
+        {{tab}}
 
         <ivue-button v-on:click="add">Add</ivue-button>
         <ivue-button v-on:click="remove">Remove</ivue-button>
@@ -16,7 +17,8 @@ export default {
     data() {
         return {
             items: [1, 2, 3, 4, 5, 6, 7, 8, 9],
-            nextNum: 10
+            nextNum: 10,
+            tab: ''
         };
     },
     methods: {

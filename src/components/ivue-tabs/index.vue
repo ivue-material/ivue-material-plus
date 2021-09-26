@@ -25,6 +25,7 @@
                         :sliderLeft="data.sliderLeft"
                         :sliderWidth="data.sliderWidth"
                         :color="sliderColor"
+                        :unit="unit"
                     ></slider>
                     <slot></slot>
                 </div>
@@ -38,6 +39,7 @@
                 >{{ nextIcon }}</ivue-icon>
             </transition>
         </div>
+        {{data.prevIconVisible}}
     </div>
 </template>
 
@@ -63,6 +65,8 @@ const prefixCls = 'ivue-tabs';
 export default defineComponent({
     name: prefixCls,
     directives: { Touch },
+    // 声明事件
+    emits: ['update:modelValue'],
     props: {
         /**
          * 导航内容居中
@@ -164,16 +168,16 @@ export default defineComponent({
             default: 40,
         },
         /**
-         * 箭头样式单位
+         * 样式单位
          *
          * @type {String}
          */
-        arrowsMarginUnit: {
+        unit: {
             type: String,
             default: 'px',
         },
     },
-    setup(props) {
+    setup(props: any, { emit }) {
         // dom
 
         // tabs-container
@@ -195,12 +199,10 @@ export default defineComponent({
             startX: Number;
             widths: Object;
             resizeTimeout: any;
-            lazyValue: any;
             sliderLeft: Number;
             sliderWidth: Number;
         }>({
             // 激活的tab
-            lazyValue: props.modelValue,
             // tab导航数组
             tabs: [],
             // 导航栏是否需要滚动
@@ -242,14 +244,12 @@ export default defineComponent({
         // tab外层样式
         const tabWrapperStyle = computed(() => {
             return {
-                'margin-left':
-                    hasArrows && data.prevIconVisible
-                        ? `${props.arrowsMargin}${props.arrowsMarginUnit}`
-                        : '0',
-                // 'margin-right':
-                //     hasArrows && data.nextIconVisible
-                //         ? `${props.arrowsMargin}${props.arrowsMarginUnit}`
-                //         : '',
+                'margin-left': hasArrows
+                    ? `${props.arrowsMargin}${props.unit}`
+                    : '',
+                'margin-right': hasArrows
+                    ? `${props.arrowsMargin}${props.unit}`
+                    : '',
             };
         });
 
@@ -278,9 +278,9 @@ export default defineComponent({
         };
 
         // 清除tab导航
-        const unregister = (key) => {
+        const unregister = (name) => {
             data.tabs = data.tabs.filter((o) => {
-                return o.data.key !== key;
+                return o.data.name !== name;
             });
         };
 
@@ -355,8 +355,19 @@ export default defineComponent({
             if (offsetLeft < data.scrollOffset) {
                 data.scrollOffset = Math.max(offsetLeft - additionalOffset, 0);
             } else if (totalWidth < itemOffset) {
-                data.scrollOffset -= totalWidth - itemOffset - additionalOffset;
+                // data.scrollOffset -= totalWidth - itemOffset - additionalOffset;
             }
+
+
+            console.log('totalWidth',totalWidth)
+            console.log('itemOffset',itemOffset)
+
+
+            // console.log(itemOffset)
+            // console.log(additionalOffset)
+            // console.log(offset)
+            // console.log(additionalOffset)
+            // console.log(totalWidth < itemOffset)
         };
 
         // 检查是否有icon
@@ -368,7 +379,11 @@ export default defineComponent({
         // 检查右边按钮
         const checkNextIcon = () => {
             const offset = data.scrollOffset + data.widths.wrapper;
-            console.log(offset);
+
+            if (offset === data.widths.container) {
+                return false;
+            }
+
             return (
                 data.widths.container >
                 (props.showArrows ? offset - props.arrowsMargin : offset)
@@ -390,6 +405,7 @@ export default defineComponent({
             setWidths();
 
             clearTimeout(data.resizeTimeout);
+
             data.resizeTimeout = setTimeout(() => {
                 // 设置滑动条
                 callSlider();
@@ -400,12 +416,73 @@ export default defineComponent({
             }, 300);
         };
 
+        // 导航点击
+        const tabNavClick = (tab) => {
+            // 判断禁用
+            if (tab.disabled) {
+                return;
+            }
+
+            updateValue(tab.data.name);
+        };
+
+        // 更新当前激活的导航
+        const updateValue = (value) => {
+            // updated v-model
+            emit('update:modelValue', value);
+        };
+
+        // watch
+
+        // 监听导航滑动
+        watch(
+            () => data.scrollOffset,
+            () => {
+                // 是否开启按钮
+                if (hasArrows.value) {
+                    data.nextIconVisible = checkNextIcon();
+                    data.prevIconVisible = checkPrevIcon();
+                }
+            }
+        );
+
+        // 监听激活项
+        watch(
+            () => props.modelValue,
+            (value) => {
+                // 滚动导航栏
+                scrollIntoView();
+
+                // callSlider();
+            }
+        );
+
+        // 监听激活的tab
+        watch(
+            () => activeTab.value,
+            () => {
+                setTimeout(() => {
+                    // callSlider();
+                }, 100);
+            }
+        );
+
+        // 监听设置一个较高的最小宽度
+        watch(
+            () => props.fixedTabs,
+            () => {
+                callSlider();
+            }
+        );
+
         // provide
         provide(
             'tabsGroup',
             reactive({
+                props,
                 data,
                 unregister: unregister,
+                tabNavClick: tabNavClick,
             })
         );
 

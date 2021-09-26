@@ -41,15 +41,24 @@ export default defineComponent({
             type: Number,
             default: 0,
         },
+        /**
+         * 样式单位
+         *
+         * @type {String}
+         */
+        unit: {
+            type: String,
+            default: 'px',
+        },
     },
     setup(props: any) {
         // computed
 
         const sliderWrapperStyles = computed(() => {
             return {
-                left: `${props.sliderLeft}px`,
+                left: `${props.sliderLeft}${props.unit}`,
                 transition: props.sliderLeft !== 0 ? null : 'none',
-                width: `${props.sliderWidth}px`,
+                width: `${props.sliderWidth}${props.unit}`,
             };
         });
 

@@ -13,9 +13,9 @@ $name: 'ivue-tabs';
     display: flex;
 
     &--show-arrow {
-      // margin-left: 40px;
+      margin-left: 40px;
       margin-right: 40px;
-      // transition: all .6s cubic-bezier(.86, 0, .07, 1);
+      transition: all .6s cubic-bezier(.86, 0, .07, 1);
     }
   }
 
@@ -99,7 +99,9 @@ $name: 'ivue-tabs';
     text-decoration: none;
     transition: color $ivue-transition-default;
     color: #383D47;
+    opacity: .7;
     font-size: 14px;
+    font-weight: 500;
 
     &-disabled {
       pointer-events: none;
@@ -108,7 +110,6 @@ $name: 'ivue-tabs';
 
     &-active {
       opacity: 1;
-      font-weight: 500;
       color: #383D47;
     }
   }

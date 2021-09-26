@@ -1,5 +1,5 @@
 <template>
-    <div :class="wrapClass" v-ripple="computedRipple" ref="tab">
+    <div :class="wrapClass" v-ripple="computedRipple" ref="tab" @click="handleChange">
         <slot></slot>
     </div>
 </template>
@@ -53,16 +53,16 @@ export default defineComponent({
             default: false,
         },
         /**
-         * key
+         * name
          *
          * @type {String}
          */
-        key: {
+        name: {
             type: String,
             default: '',
         },
     },
-    setup(props) {
+    setup(props: any) {
         // inject
         const tabsGroup: any = inject('tabsGroup');
 
@@ -71,13 +71,10 @@ export default defineComponent({
 
         // data
         const data: any = reactive<{
-            isActive: boolean;
-            key: String | number;
+            name: String | number;
         }>({
-            // 是否激活
-            isActive: false,
-            // 当前key
-            key: props.key || uid,
+            // 当前 name
+            name: props.name || uid,
         });
 
         // computed
@@ -86,7 +83,7 @@ export default defineComponent({
                 {
                     [prefixCls]: true,
                     [`${prefixCls}-disabled`]: props.disabled,
-                    [`${prefixCls}-active`]: data.isActive,
+                    [`${prefixCls}-active`]: isActive.value,
                 },
             ];
         });
@@ -104,6 +101,22 @@ export default defineComponent({
             return true;
         });
 
+        // 激活
+        const isActive = computed(() => {
+            if (tabsGroup.props.modelValue === data.name) {
+                return true;
+            }
+
+            return false;
+        });
+
+        // methods
+
+        // 点击当前项
+        const handleChange = () => {
+            tabsGroup.tabNavClick(proxy);
+        };
+
         // onMounted
         onMounted(() => {
             // 插入dom
@@ -112,7 +125,7 @@ export default defineComponent({
 
         // onBeforeUnmount
         onBeforeUnmount(() => {
-            tabsGroup.unregister(data.key);
+            tabsGroup.unregister(data.name);
         });
 
         return {
@@ -124,6 +137,10 @@ export default defineComponent({
             // computed
             wrapClass,
             computedRipple,
+            isActive,
+
+            // methods
+            handleChange,
         };
     },
 });
