@@ -1,5 +1,6 @@
 <template>
     <div :class="prefixCls">
+        <!-- 头部 -->
         <div class="ivue-tabs-bar" ref="bar">
             <!-- 左边按钮 -->
             <transition name="fade-transition">
@@ -27,7 +28,7 @@
                         :color="sliderColor"
                         :unit="unit"
                     ></slider>
-                    <slot></slot>
+                    <slot name="header"></slot>
                 </div>
             </div>
             <!-- 右边按钮 -->
@@ -39,7 +40,16 @@
                 >{{ nextIcon }}</ivue-icon>
             </transition>
         </div>
-        {{data.prevIconVisible}}
+        <!-- 内容 -->
+        <div
+            class="ivue-tabs-items"
+            v-touch="{
+                    left: e => handleSwipeItem('next'),
+                    right: e => handleSwipeItem('prev'),
+                }"
+        >
+            <slot name="content"></slot>
+        </div>
     </div>
 </template>
 
@@ -192,6 +202,7 @@ export default defineComponent({
         // data
         const data: any = reactive<{
             tabs: Array<any>;
+            tabsItem: Array<any>;
             isOverflowing: Boolean;
             nextIconVisible: Boolean;
             prevIconVisible: Boolean;
@@ -201,10 +212,12 @@ export default defineComponent({
             resizeTimeout: any;
             sliderLeft: Number;
             sliderWidth: Number;
+            isBooted: Boolean;
         }>({
-            // 激活的tab
             // tab导航数组
             tabs: [],
+            // tab内容数组
+            tabsItem: [],
             // 导航栏是否需要滚动
             isOverflowing: false,
             // 下一个按钮显示
@@ -227,6 +240,8 @@ export default defineComponent({
             sliderLeft: 0,
             // 滑动条宽度
             sliderWidth: 0,
+            // 控制内容初始化动画效果
+            isBooted: false,
         });
 
         // computed
@@ -266,11 +281,13 @@ export default defineComponent({
 
         // methods
 
-        const { onTouchStart, onTouchMove, onTouchEnd, newOffset } = tabsTouch(
-            data,
-            container,
-            wrapper
-        );
+        const {
+            onTouchStart,
+            onTouchMove,
+            onTouchEnd,
+            newOffset,
+            handleSwipeItem,
+        } = tabsTouch(data, container, wrapper, activeIndex);
 
         // 是否可以滚动
         const overflowCheck = (e: any, fn: Function) => {
@@ -280,6 +297,13 @@ export default defineComponent({
         // 清除tab导航
         const unregister = (name) => {
             data.tabs = data.tabs.filter((o) => {
+                return o.data.name !== name;
+            });
+        };
+
+        // 清除tab item
+        const unregisterItems = (name) => {
+            data.tabsItem = data.tabsItem.filter((o) => {
                 return o.data.name !== name;
             });
         };
@@ -334,40 +358,51 @@ export default defineComponent({
             if (!data.isOverflowing) {
                 return (data.scrollOffset = 0);
             }
-            // 导航栏总共的宽度
-            const totalWidth = data.widths.wrapper + data.scrollOffset;
-            const { clientWidth, offsetLeft } = _activeTab.$el;
 
-            let additionalOffset = clientWidth * 0.3;
+            const activeTabBounding = _activeTab.$el.getBoundingClientRect();
+            const navScrollBounding = wrapper.value.getBoundingClientRect();
+            const navBounding = container.value.getBoundingClientRect();
 
-            // item偏移宽度
-            const offset = clientWidth + offsetLeft;
-            const itemOffset = props.showArrows
-                ? offset + (props.arrowsMargin + additionalOffset)
-                : offset;
+            const currentOffset = data.scrollOffset;
+            let newOffset = currentOffset;
 
-            // 如果选择最后一个选项卡，请不要添加偏移量
-            if (activeIndex.value === data.tabs.length - 1) {
-                additionalOffset === 0;
+            if (
+                parseInt(navBounding.right) < parseInt(navScrollBounding.right)
+            ) {
+                newOffset =
+                    container.value.offsetWidth -
+                    parseInt(navScrollBounding.width);
             }
 
-            /* istanbul ignore else */
-            if (offsetLeft < data.scrollOffset) {
-                data.scrollOffset = Math.max(offsetLeft - additionalOffset, 0);
-            } else if (totalWidth < itemOffset) {
-                // data.scrollOffset -= totalWidth - itemOffset - additionalOffset;
+            if (
+                parseInt(activeTabBounding.left) <
+                parseInt(navScrollBounding.left)
+            ) {
+                newOffset =
+                    currentOffset -
+                    (parseInt(navScrollBounding.left) -
+                        parseInt(activeTabBounding.left));
+            } else if (
+                parseInt(activeTabBounding.right) >
+                parseInt(navScrollBounding.right)
+            ) {
+                newOffset =
+                    currentOffset +
+                    parseInt(activeTabBounding.right) -
+                    parseInt(navScrollBounding.right);
             }
 
+            if (currentOffset !== newOffset) {
+                const maxOffset = data.widths.container - data.widths.wrapper;
+                const isOffset = newOffset + data.widths.wrapper;
+                const widthsContainer = data.widths.container;
 
-            console.log('totalWidth',totalWidth)
-            console.log('itemOffset',itemOffset)
+                if (isOffset > widthsContainer) {
+                    newOffset = maxOffset;
+                }
 
-
-            // console.log(itemOffset)
-            // console.log(additionalOffset)
-            // console.log(offset)
-            // console.log(additionalOffset)
-            // console.log(totalWidth < itemOffset)
+                data.scrollOffset = newOffset;
+            }
         };
 
         // 检查是否有icon
@@ -432,6 +467,19 @@ export default defineComponent({
             emit('update:modelValue', value);
         };
 
+        // 更新激活的item
+        const updateItems = (reverse) => {
+            for (let index = data.tabsItem.length; --index >= 0; ) {
+                data.tabsItem[index].handleToggle(
+                    activeIndex.value === index,
+                    reverse,
+                    data.isBooted
+                );
+            }
+
+            data.isBooted = true;
+        };
+
         // watch
 
         // 监听导航滑动
@@ -449,21 +497,13 @@ export default defineComponent({
         // 监听激活项
         watch(
             () => props.modelValue,
-            (value) => {
-                // 滚动导航栏
-                scrollIntoView();
-
-                // callSlider();
-            }
-        );
-
-        // 监听激活的tab
-        watch(
-            () => activeTab.value,
             () => {
-                setTimeout(() => {
-                    // callSlider();
-                }, 100);
+                nextTick(() => {
+                    // 滚动导航栏
+                    scrollIntoView();
+                });
+
+                callSlider();
             }
         );
 
@@ -475,6 +515,16 @@ export default defineComponent({
             }
         );
 
+        // 监听激活的index
+        watch(
+            () => activeIndex.value,
+            (current, previous) => {
+                let reverse = current < previous;
+
+                updateItems(reverse);
+            }
+        );
+
         // provide
         provide(
             'tabsGroup',
@@ -483,6 +533,7 @@ export default defineComponent({
                 data,
                 unregister: unregister,
                 tabNavClick: tabNavClick,
+                unregisterItems: unregisterItems,
             })
         );
 
@@ -490,7 +541,7 @@ export default defineComponent({
 
         watch(
             () => data.tabs,
-            (value) => {
+            () => {
                 onResize();
             },
             {
@@ -523,6 +574,7 @@ export default defineComponent({
             onTouchEnd,
             handleScrollTo,
             unregister,
+            handleSwipeItem,
         };
     },
     components: {

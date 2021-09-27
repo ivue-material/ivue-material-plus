@@ -161,7 +161,9 @@ $name: 'ivue-tabs';
 }
 
 .tab-reverse-transition {
-  &-enter {
+  &-enter-from {
+    position: absolute;
+    top: 0;
     transform: translate(-100%, 0);
   }
 
@@ -174,7 +176,7 @@ $name: 'ivue-tabs';
 }
 
 .tab-transition {
-  &-enter {
+  &-enter-from {
     transform: translate(100%, 0);
   }
 
@@ -190,12 +192,14 @@ $name: 'ivue-tabs';
   }
 }
 
+
+
 .fade-transition-enter-active,
 .fade--transition-leave-active {
   transition: opacity .3s cubic-bezier(.25, .8, .50, 1);
 }
 
-.fade-transition-enter,
+.fade-transition-enter-from,
 .fade-transition-leave-to {
   opacity: 0;
 }

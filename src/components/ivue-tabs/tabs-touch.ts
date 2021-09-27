@@ -1,5 +1,5 @@
 
-export default (data: any, container: any, wrapper: any) => {
+export default (data: any, container: any, wrapper: any, activeIndex) => {
       // 手势开始
       const onTouchStart = (e) => {
             data.startX = data.scrollOffset + e.touchstartX;
@@ -40,10 +40,16 @@ export default (data: any, container: any, wrapper: any) => {
             }
       };
 
+      // 内容滑动切换.
+      const handleSwipeItem = () => {
+
+      }
+
       return {
             onTouchStart,
             onTouchMove,
             onTouchEnd,
-            newOffset
+            newOffset,
+            handleSwipeItem
       }
 }
