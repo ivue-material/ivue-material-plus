@@ -45,9 +45,9 @@ export default defineComponent({
     setup(props: any) {
         // data
         const data: any = reactive<{
-            percent: Number;
-            status: String;
-            visible: Boolean;
+            percent: number;
+            status: string;
+            visible: boolean;
         }>({
             /**
              * 百分比

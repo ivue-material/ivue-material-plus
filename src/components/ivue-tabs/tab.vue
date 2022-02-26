@@ -71,7 +71,7 @@ export default defineComponent({
 
         // data
         const data: any = reactive<{
-            name: String | number;
+            name: string | number;
         }>({
             // 当前 name
             name: props.name || uid,

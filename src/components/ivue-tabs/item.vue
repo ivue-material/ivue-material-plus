@@ -41,9 +41,9 @@ export default defineComponent({
 
         // data
         const data: any = reactive<{
-            isActive: Boolean;
-            reverse: Boolean;
-            name: String | number;
+            isActive: boolean;
+            reverse: boolean;
+            name: string | number;
         }>({
             /**
              * 是否激活
@@ -83,7 +83,7 @@ export default defineComponent({
 
             data.isActive = isActive;
 
-             content.value.style.transition = !showTransition ? 'none' : null;
+            content.value.style.transition = !showTransition ? 'none' : null;
         };
 
         // onMounted

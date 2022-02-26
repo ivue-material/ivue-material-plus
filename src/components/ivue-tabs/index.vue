@@ -62,6 +62,8 @@ import {
     ref,
     watch,
     nextTick,
+    onMounted,
+    watchEffect,
 } from 'vue';
 
 import tabsComputed from './tabs-computed';
@@ -203,16 +205,16 @@ export default defineComponent({
         const data: any = reactive<{
             tabs: Array<any>;
             tabsItem: Array<any>;
-            isOverflowing: Boolean;
-            nextIconVisible: Boolean;
-            prevIconVisible: Boolean;
-            scrollOffset: Number;
-            startX: Number;
-            widths: Object;
+            isOverflowing: boolean;
+            nextIconVisible: boolean;
+            prevIconVisible: boolean;
+            scrollOffset: number;
+            startX: number;
+            widths: any;
             resizeTimeout: any;
-            sliderLeft: Number;
-            sliderWidth: Number;
-            isBooted: Boolean;
+            sliderLeft: number;
+            sliderWidth: number;
+            isBooted: boolean;
         }>({
             // tab导航数组
             tabs: [],
@@ -242,6 +244,11 @@ export default defineComponent({
             sliderWidth: 0,
             // 控制内容初始化动画效果
             isBooted: false,
+        });
+
+        // onMounted
+        onMounted(() => {
+            initDate();
         });
 
         // computed
@@ -289,8 +296,18 @@ export default defineComponent({
             handleSwipeItem,
         } = tabsTouch(data, container, wrapper, activeIndex);
 
+        // 初始化
+        const initDate = () => {
+            nextTick(() => {
+                // 滚动导航栏
+                scrollIntoView();
+            });
+
+            callSlider();
+        };
+
         // 是否可以滚动
-        const overflowCheck = (e: any, fn: Function) => {
+        const overflowCheck = (e: any, fn: any) => {
             data.isOverflowing && fn(e);
         };
 
@@ -498,12 +515,7 @@ export default defineComponent({
         watch(
             () => props.modelValue,
             () => {
-                nextTick(() => {
-                    // 滚动导航栏
-                    scrollIntoView();
-                });
-
-                callSlider();
+                initDate();
             }
         );
 
@@ -539,15 +551,22 @@ export default defineComponent({
 
         // watch
 
-        watch(
-            () => data.tabs,
-            () => {
+        // watch(
+        //     () => data.tabs,
+        //     () => {
+        //         onResize();
+        //     },
+        //     {
+        //         deep: true,
+        //     }
+        // );
+
+        // 同步监听 tab导航数组
+        watchEffect(() => {
+            if (data.tabs) {
                 onResize();
-            },
-            {
-                deep: true,
             }
-        );
+        });
 
         return {
             prefixCls,

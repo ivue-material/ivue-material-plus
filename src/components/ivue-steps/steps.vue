@@ -13,6 +13,7 @@ import {
     onMounted,
     watch,
     nextTick,
+    watchEffect
 } from 'vue';
 
 import { oneOf } from '../../utils/assist';
