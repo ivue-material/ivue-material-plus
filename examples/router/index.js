@@ -23,6 +23,7 @@ import Notice from '../components/notice';
 import Message from '../components/message';
 import LoadingBar from '../components/loading-bar';
 import Tabs from '../components/tabs';
+import Badge from '../components/badge';
 
 const routes = [{
     path: "/Affix",
@@ -128,6 +129,11 @@ const routes = [{
     path: "/tabs",
     name: "Tabs",
     component: Tabs,
+  },
+  {
+    path: "/badge",
+    name: "Badge",
+    component: Badge,
   },
 ];
 

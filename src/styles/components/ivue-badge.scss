@@ -1,0 +1,161 @@
+$name: 'ivue-badge';
+
+$colors: (
+  "blue": #1890ff,
+  'green': #52c41a,
+  'red': #f5222d,
+  'yellow': #fadb14,
+  'pink':#eb2f96,
+  'orange': #fa8c16,
+  'gold': #faad14,
+  'lime': #a0d911,
+  'cyan': #13c2c2,
+  'purple': #722ed1,
+);
+
+.#{$name} {
+  position: relative;
+  display: inline-block;
+
+  /*数值*/
+  &-count {
+    position: absolute;
+    transform: translateX(50%);
+    transform-origin: -10% center;
+    top: -10px;
+    right: 0;
+    padding: 0 6px;
+    min-width: 20px;
+    height: 20px;
+    border-radius: 10px;
+    font-size: 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+    flex-wrap: wrap;
+    color: #fff;
+    transition: all $ivue-transition-default;
+    z-index: 10;
+
+    &--custom {
+      background: transparent;
+      padding: 0;
+      color: inherit;
+      border-color: transparent;
+      box-shadow: none;
+
+      .ivue-icon {
+        height: 20px;
+      }
+    }
+
+    &--alone {
+      top: auto;
+      position: relative;
+      transform: translateX(0);
+    }
+  }
+
+  /*小红点*/
+  &-dot {
+    position: absolute;
+    transform: translateX(-50%);
+    transform-origin: 0 center;
+    top: -4px;
+    right: -8px;
+    width: 8px;
+    height: 8px;
+    border-radius: 100%;
+    box-shadow: 0 0 2px 1px rgba(255, 97, 127, .5);
+    transform-origin: 0 center;
+    transition: $ivue-transition-default;
+    z-index: 10;
+  }
+
+  &-status {
+    display: flex;
+    align-items: center;
+
+    &--dot {
+      position: relative;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+    }
+
+    &--text {
+      color: #515a6e;
+      font-size: 14px;
+      margin-left: 6px;
+    }
+
+    // success
+    &--success {
+      background-color: #27E2B2;
+    }
+
+    // error
+    &--error {
+      background-color: #FF617F;
+    }
+
+    // default
+    &--default {
+      background-color: #DEE2E7;
+    }
+
+    // processing
+    &--processing {
+      background-color: #5B8EFF;
+
+      &:after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        border: 1px solid #5B8EFF;
+        animation: aniStatusProcessing 1.2s infinite ease-in-out;
+      }
+    }
+
+    // warning
+    &--warning {
+      background-color: #FFBD3C;
+    }
+
+    @each $name, $color in $colors {
+      .ivue-badge-status--#{$name} {
+        background-color: #{$color}
+      }
+    }
+
+  }
+}
+
+
+.#{$name}-fade-enter-active,
+.#{$name}-fade-leave-active {
+  transition: 0.3s cubic-bezier(0.25, 0.8, 0.5, 1);
+}
+
+.#{$name}-fade-enter,
+.#{$name}-fade-leave-to {
+  // opacity: 0;
+  transform: scale(0) rotate(-45deg);
+}
+
+@keyframes aniStatusProcessing {
+  0% {
+    transform: scale(0.8);
+    opacity: 0.5;
+  }
+
+  100% {
+    transform: scale(2.4);
+    opacity: 0;
+  }
+}
