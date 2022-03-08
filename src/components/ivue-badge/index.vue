@@ -34,14 +34,7 @@ import { oneOf } from '../../utils/assist';
 
 import {
     defineComponent,
-    PropType,
     computed,
-    nextTick,
-    onMounted,
-    onBeforeUnmount,
-    provide,
-    watch,
-    ref,
     getCurrentInstance,
 } from 'vue';
 
@@ -50,8 +43,6 @@ const prefixCls = 'ivue-badge';
 function isCssColor(color) {
     return !!color && !!color.match(/^(#|(rgb|hsl)a?\()/);
 }
-
-type Status = 'success' | 'processing' | 'default' | 'error' | 'warning';
 
 const initColorList = [
     'blue',
@@ -157,10 +148,7 @@ export default defineComponent({
          * @type {String}
          */
         status: {
-            type: String as PropType<Status>,
-            validator(value: string) {
-                return oneOf(value, initColorList);
-            },
+            type: String
         },
     },
     setup(props: any) {

@@ -7,7 +7,7 @@ export default defineComponent({
     name: 'ivue-list-item-default',
     mixins: [IvueListItemMixin],
     setup(props: any, { slots }) {
-        const rippleDisabled = ref(props.rippleDisabled);
+        const rippleDisabled = ref(props.rippleDisabled).value;
 
         return () => h('div', {
             class: 'ivue-list-item-default'

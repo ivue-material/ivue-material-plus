@@ -25,6 +25,7 @@ import IvueMessage from './components/ivue-message';
 import IvueLoadingBar from './components/ivue-loading-bar';
 import IvueTabs from './components/ivue-tabs';
 import IvueBadge from './components/ivue-badge';
+import IvueDatePicker from './components/ivue-date-picker';
 
 // 指令
 import Directives from './utils/directives/index';
@@ -55,7 +56,8 @@ export {
     IvueMessage,
     IvueLoadingBar,
     IvueTabs,
-    IvueBadge
+    IvueBadge,
+    IvueDatePicker
 };
 
 
@@ -94,6 +96,7 @@ const install = (app: App, opt: InstallOptions = defaultInstallOpt): void => {
     IvueLoadingBar(app);
     IvueTabs(app);
     IvueBadge(app);
+    IvueDatePicker(app)
 
     // 全局配置
     app.config.globalProperties.$IVUE = opt;

@@ -24,6 +24,7 @@ import Message from '../components/message';
 import LoadingBar from '../components/loading-bar';
 import Tabs from '../components/tabs';
 import Badge from '../components/badge';
+import DatePicker from '../components/date-picker.vue';
 
 const routes = [{
     path: "/Affix",
@@ -134,6 +135,11 @@ const routes = [{
     path: "/badge",
     name: "Badge",
     component: Badge,
+  },
+  {
+    path: "/date-picker",
+    name: "DatePicker",
+    component: DatePicker,
   },
 ];
 

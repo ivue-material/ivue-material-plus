@@ -20,8 +20,8 @@
                 <span style="font-size:24px">{{ percent }}%</span>
             </ivue-circular>
 
-            <butotn icon="ios-add" @click="add">1</butotn>
-            <butotn icon="ios-remove" @click="minus">2</butotn>
+            <button icon="ios-add" @click="add">1</button>
+            <button icon="ios-remove" @click="minus">2</button>
         </div>
         <h1>自定义更多样式</h1>
         <div>
