@@ -40,23 +40,4 @@ export default {
             */
             noTitle: Boolean
       },
-      // methods: {
-      //       genPickerTitle () { },
-      //       genPickerBody () { },
-      //       genPicker (staticClass) {
-      //             return this.$createElement(IvuePicker, {
-      //                   staticClass,
-      //                   class: this.fullWidth ? ['ivue-picker--fullWidth'] : [],
-      //                   props: {
-      //                         color: this.headerColor || this.color,
-      //                         landscape: this.landscape,
-      //                         width: this.width,
-      //                         fullWidth: this.fullWidth
-      //                   }
-      //             }, [
-      //                   this.noTitle ? null : this.genPickerTitle(),
-      //                   this.genPickerBody()
-      //             ]);
-      //       }
-      // }
 }

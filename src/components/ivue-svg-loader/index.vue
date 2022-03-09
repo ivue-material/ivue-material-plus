@@ -1,5 +1,5 @@
 <template>
-      <i class="ivue-svg-loader" v-html="html"></i>
+    <i class="ivue-svg-loader" v-html="html"></i>
 </template>
 
 <script lang='ts'>
@@ -9,9 +9,9 @@ import { defineComponent } from 'vue';
 export default defineComponent({
     name: 'ivue-svg-loader',
     props: {
-        /*
-            * svg图标的来源
-            */
+        /**
+        * svg图标的来源
+        */
         svgSrc: {
             type: String,
             required: true
@@ -20,16 +20,16 @@ export default defineComponent({
     data () {
         return {
             /**
-                  * html
-                  *
-                  * @type {String}
-                  */
+             * html
+             *
+             * @type {String}
+             */
             html: null,
             /**
-                  * 错误提示
-                  *
-                  * @type {String}
-                  */
+             * 错误提示
+             *
+             * @type {String}
+             */
             error: null
         };
     },

@@ -48,14 +48,40 @@ export default defineComponent({
         landscape: Boolean,
     },
     setup(props: any, { slots }) {
+        // methods
+        // 支持访问内部组件实例
+        const { proxy }: any = getCurrentInstance();
+
+        // 渲染标题
+        const genTitle = () => {
+            return h(
+                'div',
+                proxy.setBackgroundColor(props.color || 'primary', {
+                    class: {
+                        [`${prefixCls}-title`]: true,
+                        [`${prefixCls}-title--landscape`]: proxy.landscape,
+                    },
+                }),
+                slots.title()
+            );
+        };
 
         return () =>
             h(
                 'div',
                 {
-                    class: prefixCls,
+                    class: {
+                        [`${prefixCls} ivue-card`]: true,
+                        [`${prefixCls}--landscape`]: props.landscape,
+                    },
+                    style: props.fullWidth
+                        ? { display: 'block' }
+                        : { display: 'inline-flex' },
                 },
-                [slots.title()]
+                [
+                    // 标题
+                    slots.title ? genTitle() : null,
+                ]
             );
     },
 });
