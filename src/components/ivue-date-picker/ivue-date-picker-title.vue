@@ -11,7 +11,7 @@ import {
     provide,
     watch,
     h,
-    getCurrentInstance,
+    Transition,
 } from 'vue';
 
 import { genPickerButton } from './picker-button';
@@ -80,8 +80,8 @@ export default defineComponent({
             return genPickerButton(
                 emit,
                 props.selectingYear,
-                'selectingYear',
                 true,
+                'selectingYear',
                 [props.year, props.yearIcon ? genYearIcon() : null],
                 false,
                 `${prefixCls}--year`
@@ -93,8 +93,8 @@ export default defineComponent({
             return genPickerButton(
                 emit,
                 props.selectingYear,
-                'selectingYear',
                 false,
+                'selectingYear',
                 genTitleText(),
                 false,
                 `${prefixCls}--date`
@@ -104,19 +104,18 @@ export default defineComponent({
         // 渲染标题
         const genTitleText = () => {
             return h(
-                'transition',
+                Transition,
                 {
-                    props: {
-                        name: data.isReversing
-                            ? 'picker-reverse-transition'
-                            : 'picker-transition',
-                    },
+                    name: data.isReversing
+                        ? 'picker-reverse-transition'
+                        : 'picker-transition',
                 },
-                [
-                    h('div', {
-                        innerHTML: props.date || '&nbsp;',
-                    }),
-                ]
+                {
+                    default: () =>
+                        h('div', {
+                            innerHTML: props.date || '&nbsp;',
+                        }),
+                }
             );
         };
 

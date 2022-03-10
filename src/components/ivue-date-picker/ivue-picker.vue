@@ -7,7 +7,7 @@ import {
     onMounted,
     onBeforeUnmount,
     provide,
-    watch,
+    Transition,
     h,
     getCurrentInstance,
 } from 'vue';
@@ -66,6 +66,33 @@ export default defineComponent({
             );
         };
 
+        // 渲染日期选择body 动画
+        const genBodyTransition = () => {
+            return h(
+                'div',
+                {
+                    name: props.transition,
+                },
+                [slots.default()]
+            );
+        };
+
+        // 渲染日期选择body
+        const genBody = () => {
+            return h(
+                'div',
+                {
+                    class: 'ivue-picker-body',
+                    style: props.fullWidth
+                        ? undefined
+                        : {
+                              width: `${props.width}px`,
+                          },
+                },
+                [genBodyTransition()]
+            );
+        };
+
         return () =>
             h(
                 'div',
@@ -81,6 +108,8 @@ export default defineComponent({
                 [
                     // 标题
                     slots.title ? genTitle() : null,
+                    // body
+                    genBody(),
                 ]
             );
     },

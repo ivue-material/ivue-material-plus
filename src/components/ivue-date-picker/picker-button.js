@@ -12,14 +12,14 @@ export const genPickerButton = (emit, propsValue, value, updateName, content, re
   const click = (event) => {
     event.stopPropagation();
 
-    emit(`update:${prop}`, value);
+    emit(`update:${updateName}`, value);
   }
 
   return h('div', {
     class: {
       [`ivue-picker-title-btn ${staticClass}`]: true
     },
-    onClick: (active || readonly) ? undefined : { click }
+    onClick: (active || readonly) ? undefined : click
   }, {
     default: () => Array.isArray(content) ? content : [content]
   });

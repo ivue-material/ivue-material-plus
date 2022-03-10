@@ -113,6 +113,12 @@ export default defineComponent({
         yearIcon: {
             type: String,
         },
+        /**
+         * 是否只读
+         *
+         * @type {Boolean}
+         */
+        readonly: Boolean,
     },
     setup(props: any, { emit }) {
         // 支持访问内部组件实例
@@ -263,7 +269,21 @@ export default defineComponent({
                 value: props.multiple ? props.modelValue[0] : props.modelValue,
                 selectingYear: data.activeType === 'YEAR',
                 yearIcon: props.yearIcon,
+                'onUpdate:selectingYear': (value) => {
+                    data.activeType = value ? 'YEAR' : props.type.toUpperCase();
+                },
             });
+        };
+
+        // 渲染内容
+        const genPickerBody = () => {
+            return h('div', {
+                style: props.readonly
+                    ? {
+                          'pointer-events': 'none',
+                      }
+                    : undefined,
+            }, ['1']);
         };
 
         return () => {
@@ -287,6 +307,7 @@ export default defineComponent({
                 },
                 {
                     title: props.noTitle ? null : () => genPickerTitle(),
+                    default: () => genPickerBody(),
                 }
             );
         };

@@ -231,7 +231,7 @@ export default defineComponent({
          *
          * @type {Boolean}
          */
-        previewImage:{
+        previewImage: {
             type: Boolean,
             default: true,
         },
@@ -421,7 +421,11 @@ export default defineComponent({
 
             items = reactive(items);
 
-            emit('update:modelValue', [...props.modelValue, ...toArray(items)]);
+            // emit('update:modelValue', [...props.modelValue, ...toArray(items)]);
+            emit(
+                'update:modelValue',
+                [].concat(props.modelValue, toArray(items))
+            );
 
             if (props.afterRead) {
                 props.afterRead(items, getDetail());
