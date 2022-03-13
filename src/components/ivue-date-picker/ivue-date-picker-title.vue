@@ -4,12 +4,6 @@
 import {
     defineComponent,
     reactive,
-    computed,
-    nextTick,
-    onMounted,
-    onBeforeUnmount,
-    provide,
-    watch,
     h,
     Transition,
 } from 'vue';

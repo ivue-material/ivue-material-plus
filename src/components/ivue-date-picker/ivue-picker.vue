@@ -69,11 +69,13 @@ export default defineComponent({
         // 渲染日期选择body 动画
         const genBodyTransition = () => {
             return h(
-                'div',
+                Transition,
                 {
                     name: props.transition,
                 },
-                [slots.default()]
+                {
+                    default: () => slots.default()
+                }
             );
         };
 
