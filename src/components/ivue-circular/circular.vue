@@ -112,15 +112,6 @@ export default defineComponent({
             type: [String, Array],
             default: '#5B8EFF',
         },
-        /**
-         * 一个不确定的进度圆环永远循环动画
-         *
-         * @type {Boolean}
-         */
-        indeterminate: {
-            type: Boolean,
-            default: false,
-        },
     },
     setup(props: any) {
         // ref

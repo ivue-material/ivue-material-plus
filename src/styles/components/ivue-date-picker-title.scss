@@ -41,9 +41,9 @@ $name: 'ivue-date-picker-title';
       transition: $ivue-transition-default;
 }
 
-.picker-transition-enter,
+.picker-transition-enter-from,
 .picker-transition-leave-to,
-.picker-reverse-transition-enter,
+.picker-reverse-transition-enter-from,
 .picker-reverse-transition-leave-to {
       opacity: 0;
 }
@@ -62,7 +62,7 @@ $name: 'ivue-date-picker-title';
       position: absolute !important;
 }
 
-.picker-transition-enter {
+.picker-transition-enter-from {
       transform: translate(0, 100%);
 }
 
@@ -70,7 +70,7 @@ $name: 'ivue-date-picker-title';
       transform: translate(0, -100%);
 }
 
-.picker-reverse-transition-enter {
+.picker-reverse-transition-enter-from {
       transform: translate(0, -100%);
 }
 

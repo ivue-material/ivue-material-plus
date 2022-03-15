@@ -134,6 +134,24 @@ export default defineComponent({
         icon: {
             type: String,
         },
+        /**
+         * 是否为动画进度条
+         *
+         * @type {Boolean}
+         */
+        indeterminate: {
+            type: Boolean,
+            default: false,
+        },
+        /**
+         * 控制动画进度条速度
+         *
+         * @type {Number}
+         */
+        duration: {
+            type: Number,
+            default: 3,
+        },
     },
     setup(props: any, { emit }) {
         // data
@@ -173,7 +191,10 @@ export default defineComponent({
 
         //背景样式
         const bgClasser = computed(() => {
-            return `${prefixCls}-bg`;
+            return {
+                [`${prefixCls}-bg`]: true,
+                [`${prefixCls}-indeterminate`]: props.indeterminate,
+            };
         });
 
         //状态样式
@@ -213,7 +234,7 @@ export default defineComponent({
 
         //背景样式
         const bgStyle = computed(() => {
-            let style = {};
+            let style: any = {};
 
             // 垂直方向
             if (props.vertical) {
@@ -239,6 +260,8 @@ export default defineComponent({
                     ] = `linear-gradient(to right, ${props.strokeColor[0]} 0%, ${props.strokeColor[1]} 100%)`;
                 }
             }
+
+            style.animationDuration = `${props.duration}s`;
 
             return style;
         });

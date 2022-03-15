@@ -30,6 +30,7 @@ $name: 'ivue-progress';
     background-color: $progress-bg;
     border-radius: 100px;
     vertical-align: middle;
+    overflow: hidden;
 
     // 文字
     &-text {
@@ -173,6 +174,11 @@ $name: 'ivue-progress';
     .#{$name}-text {
       margin-left: 0;
     }
+  }
+
+  // 是否为动画进度条
+  &-indeterminate {
+    animation: indeterminate 3s infinite;
 
   }
 }
@@ -182,7 +188,7 @@ $name: 'ivue-progress';
   transition: opacity .3s;
 }
 
-.progress-fade-enter,
+.progress-fade-enter-from,
 .progress-fade-leave-to {
   opacity: 0;
 }
@@ -208,5 +214,15 @@ $name: 'ivue-progress';
   100% {
     opacity: 0;
     height: 100%;
+  }
+}
+
+@keyframes indeterminate {
+  0% {
+    left: -100%;
+  }
+
+  100% {
+    left: 100%;
   }
 }

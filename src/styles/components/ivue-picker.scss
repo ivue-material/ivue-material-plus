@@ -62,7 +62,7 @@ $name:'ivue-picker';
       transition: opacity $ivue-transition-default;
 }
 
-.#{$name}-fade-enter,
+.#{$name}-fade-enter-from,
 .#{$name}-fade-leave-to {
       position: absolute;
       opacity: 0;

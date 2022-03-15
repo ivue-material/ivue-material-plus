@@ -8,6 +8,7 @@ import {
     onBeforeUnmount,
     provide,
     Transition,
+    TransitionGroup,
     h,
     getCurrentInstance,
 } from 'vue';

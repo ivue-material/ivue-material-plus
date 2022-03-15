@@ -247,7 +247,7 @@ export default defineComponent({
             );
 
             const transition = h(
-                TransitionGroup,
+                Transition,
                 {
                     name: data.isReversing
                         ? `tab-reverse-transition`
@@ -273,9 +273,6 @@ export default defineComponent({
         watch(
             () => props.value,
             (newVal, oldVal) => {
-                console.log('newVal', newVal);
-                console.log('oldVal', oldVal);
-                console.log('oldVal', newVal < oldVal);
                 data.isReversing = newVal < oldVal;
             }
         );

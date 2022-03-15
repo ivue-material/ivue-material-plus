@@ -442,6 +442,7 @@ export default defineComponent({
             return h(
                 'div',
                 {
+                    key: data.activeType,
                     style: props.readonly
                         ? {
                               'pointer-events': 'none',

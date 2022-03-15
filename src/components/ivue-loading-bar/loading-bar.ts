@@ -47,9 +47,11 @@ const newInstance = (options: options) => {
         data.percent = options.percent;
       }
 
-      if (options.visible) {
+      // if (options.visible) {
         data.visible = options.visible;
-      }
+
+      // }
+      console.log('??/', options)
 
       if (options.status) {
         data.status = options.status;
@@ -95,7 +97,7 @@ const clearTimer = () => {
 const hide = () => {
   setTimeout(() => {
     update({
-      visible: true
+      visible: false
     });
 
     setTimeout(() => {

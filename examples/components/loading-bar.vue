@@ -14,6 +14,9 @@ export default {
     methods: {
         start() {
             this.$LoadingBar.start();
+            setTimeout(() => {
+                this.$LoadingBar.finish();
+            }, 1000);
         },
         finish() {
             this.$LoadingBar.finish();
@@ -26,8 +29,8 @@ export default {
         },
         config() {
             this.$LoadingBar.config({
-                  color: 'red',
-                  height:100
+                color: 'red',
+                height: 100,
             });
         },
         destroy() {

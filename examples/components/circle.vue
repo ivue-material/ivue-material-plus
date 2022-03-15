@@ -2,11 +2,11 @@
     <div>
         <h1>基础用法</h1>
         <div>
-            <ivue-circular :percent="80">
+            <ivue-circular :percent="80" >
                 <span class="demo-Circle-inner" style="font-size:24px">80%</span>
             </ivue-circular>
 
-            <ivue-circular :percent="100" stroke-color="#27E2B2">
+            <ivue-circular :percent="100" stroke-color="#27E2B2" >
                 <ivue-icon>add</ivue-icon>
             </ivue-circular>
 

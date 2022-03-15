@@ -1,12 +1,7 @@
 
 
 <script lang='ts'>
-import {
-    defineComponent,
-    reactive,
-    h,
-    Transition,
-} from 'vue';
+import { defineComponent, reactive, h, Transition, watch } from 'vue';
 
 import { genPickerButton } from './picker-button';
 import { IvueIcon } from '../ivue-icon';
@@ -108,6 +103,7 @@ export default defineComponent({
                     default: () =>
                         h('div', {
                             innerHTML: props.date || '&nbsp;',
+                            key: props.value,
                         }),
                 }
             );
@@ -117,6 +113,15 @@ export default defineComponent({
         const genYearIcon = () => {
             return h(IvueIcon, props.yearIcon);
         };
+
+        // watch
+        // 监听日期时间
+        watch(
+            () => props.value,
+            (newVal, oldVal) => {
+                data.isReversing = newVal < oldVal;
+            }
+        );
 
         return () =>
             h(
