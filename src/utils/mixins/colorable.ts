@@ -53,7 +53,7 @@ export default {
             return data;
         },
         // 设置文字颜色
-        setTextColor(color: Record<string, any>, data : Record<string, any>) :any {
+        setTextColor(color: Record<string, any>, data: Record<string, any>): any {
 
             // 是否是数组
             if (Array.isArray(color)) {

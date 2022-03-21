@@ -3,13 +3,8 @@ import {
     defineComponent,
     reactive,
     computed,
-    nextTick,
-    onMounted,
-    onBeforeUnmount,
-    provide,
     watch,
     Transition,
-    TransitionGroup,
     h,
     getCurrentInstance,
 } from 'vue';
@@ -151,7 +146,7 @@ export default defineComponent({
         // methods
 
         // 按钮
-        const genBtn = (change) => {
+        const genBtn = (change: number) => {
             let disabled =
                 props.readonly ||
                 (change < 0 &&
@@ -215,7 +210,7 @@ export default defineComponent({
 
         // 头部
         const genHeader = () => {
-            const color = proxy.color;
+            const color = props.color;
 
             // 开始年份
             const startYear = Math.floor(displayedYear.value / 10) * 10;

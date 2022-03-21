@@ -15,14 +15,18 @@ import {
 import Colorable from '../../utils/mixins/colorable';
 import CreateNativeLocaleFormatter from '../../utils/create-native-locale-formatter';
 import Pad from '../../utils/pad';
+import isDateAllowed from '../../utils/is-date-allowed';
 
 import IvuePicker from './ivue-picker.vue';
 import IvueDatePickerTitle from './ivue-date-picker-title.vue';
 import IvueDatePickerHeader from './ivue-date-picker-header.vue';
+import IvueDatePickerDate from './ivue-date-picker-date.vue';
+import IvueDatePickerMonth from './ivue-date-picker-month.vue';
 
 export default defineComponent({
     name: 'ivue-date-picker',
     mixins: [Colorable],
+    emits: ['update:modelValue', 'change'],
     props: {
         /**
          * 日历方向
@@ -79,6 +83,21 @@ export default defineComponent({
          * @type {Function}
          */
         titleDateFormat: {
+            type: Function,
+            default: null,
+        },
+        // Function formatting the tableDate in the day/month table header
+        headerDateFormat: {
+            type: Function,
+            default: null,
+        },
+        // Function formatting the day in date picker table
+        dayFormat: {
+            type: Function,
+            default: null,
+        },
+        // Function formatting month in the months table
+        monthFormat: {
             type: Function,
             default: null,
         },
@@ -157,15 +176,58 @@ export default defineComponent({
             type: String,
             default: 'chevron_left',
         },
-        // Function formatting the tableDate in the day/month table header
-        headerDateFormat: {
-            type: Function,
+        /**
+         * 一周的第一天
+         *
+         * @type {String,Number}
+         */
+        firstDayOfWeek: {
+            type: [String, Number],
+            default: 0,
+        },
+        /**
+         * 设置允许选择日期函数
+         *
+         * @type {Function}
+         */
+        allowedDates: Function,
+        /**
+         * 是否显示当前日期
+         *
+         * @type {String}
+         */
+        showCurrent: {
+            type: [Boolean, String],
+            default: true,
+        },
+        /**
+         * 便签用于标记需要注意的日期
+         *
+         * @type {Array,Function}
+         */
+        note: {
+            type: [Array, Function],
             default: null,
         },
+        /**
+         * 便签用于标记需要注意的日期的颜色
+         *
+         * @type {String, Function, Object}
+         */
+        noteColor: {
+            type: [String, Function, Object],
+            default: 'warning',
+        },
+        /**
+         * 点击月份或者年份时日期月份或年份是否跟随改变
+         *
+         * @type {String}
+         */
+        reactive: Boolean,
     },
     setup(props: any, { emit }) {
         // 支持访问内部组件实例
-        const vm = getCurrentInstance();
+        const { proxy }: any = getCurrentInstance();
 
         // data
         const data = reactive<{
@@ -238,7 +300,7 @@ export default defineComponent({
         // 默认多选日期格式
         const defaultTitleMultipleDateFormatter = computed(() => {
             if (props.modelValue.length < 2) {
-                return (dates) =>
+                return (dates: Array<any>) =>
                     dates.length
                         ? defaultTitleDateFormatter.value(dates[0])
                         : '0 selected';
@@ -263,7 +325,7 @@ export default defineComponent({
                     props.titleDateFormat ||
                     (props.multiple
                         ? defaultTitleMultipleDateFormatter.value
-                        : defaultTitleMultipleDateFormatter.value),
+                        : defaultTitleDateFormatter.value),
             };
         });
 
@@ -297,6 +359,44 @@ export default defineComponent({
             return props.max ? sanitizeDateString(props.max, 'year') : null;
         });
 
+        // 当前日期
+        const current = computed(() => {
+            if (props.showCurrent) {
+                return sanitizeDateString(
+                    `${data.now.getFullYear()}-${
+                        data.now.getMonth() + 1
+                    }-${data.now.getDate()}`,
+                    props.type
+                );
+            } else {
+                return props.showCurrent || null;
+            }
+        });
+
+        // 选择的日期
+        const inputDate = computed(() => {
+            return props.type === 'date'
+                ? `${data.inputYear}-${Pad(Number(data.inputMonth) + 1)}-${Pad(
+                      data.inputDay
+                  )}`
+                : `${data.inputYear}-${Pad(Number(data.inputMonth) + 1)}`;
+        });
+
+        // 选择的日期
+        const selectedMonths = computed(() => {
+            if (
+                !props.modelValue ||
+                !props.modelValue.length ||
+                props.type === 'month'
+            ) {
+                return props.modelValue;
+            } else if (props.multiple) {
+                return props.modelValue.map((val: string) => val.substr(0, 7));
+            } else {
+                return props.modelValue.substr(0, 7);
+            }
+        });
+
         // methods
 
         // 初始化
@@ -326,6 +426,19 @@ export default defineComponent({
             })();
         };
 
+        // 点击日期事件
+        const emitInput = (newInput: string | Array<any>) => {
+            const output = props.multiple
+                ? props.modelValue.indexOf(newInput) === -1
+                    ? props.modelValue.concat([newInput])
+                    : props.modelValue.filter((x) => x !== newInput)
+                : newInput;
+
+            emit('update:modelValue', output);
+
+            props.multiple || emit('change', newInput);
+        };
+
         // Adds leading zero to month/day if necessary, returns 'YYYY' if type = 'year',
         // 'YYYY-MM' if 'month' and 'YYYY-MM-DD' if 'date'
         const sanitizeDateString = (dateString: string, type: string) => {
@@ -339,17 +452,19 @@ export default defineComponent({
 
         // 检查设置为多选后value值是否正确
         const checkMultipleProp = () => {
-            // if (this.value == null) return;
-            // const valueType = this.value.constructor.name;
-            // const expected = this.multiple ? 'Array' : 'String';
-            // if (valueType !== expected) {
-            //     console.warn(
-            //         `Value must be ${
-            //             this.multiple ? 'an' : 'a'
-            //         } ${expected}, got ${valueType}`,
-            //         this
-            //     );
-            // }
+            if (props.modelValue == null) return;
+
+            const valueType = props.modelValue.constructor.name;
+            const expected = props.multiple ? 'Array' : 'String';
+
+            if (valueType !== expected) {
+                console.warn(
+                    `Value must be ${
+                        props.multiple ? 'an' : 'a'
+                    } ${expected}, got ${valueType}`,
+                    this
+                );
+            }
         };
 
         // 设置年，月，日值
@@ -378,6 +493,43 @@ export default defineComponent({
                 // 日
                 data.inputDay = data.inputDay || data.now.getDate();
             }
+        };
+
+        // 日期点击事件
+        const dateClick = (value: string) => {
+            data.inputYear = parseInt(value.split('-')[0], 10);
+            data.inputMonth = parseInt(value.split('-')[1], 10) - 1;
+            data.inputDay = parseInt(value.split('-')[2], 10);
+
+            emitInput(inputDate.value);
+        };
+
+        // 月期点击事件
+        const monthClick = (value) => {
+            data.inputYear = parseInt(value.split('-')[0], 10);
+            data.inputMonth = parseInt(value.split('-')[1], 10) - 1;
+
+            if (props.type === 'date') {
+                data.tableDate = value;
+                data.activeType = 'DATE';
+
+                props.reactive &&
+                    !props.multiple &&
+                    handleIsDateAllowed(inputDate.value) &&
+                    emit('update:modelValue', inputDate.value);
+            } else {
+                emitInput(inputDate.value);
+            }
+        };
+
+        // 是否可以选择日期
+        const handleIsDateAllowed = (value: string) => {
+            return isDateAllowed(
+                value,
+                props.min,
+                props.max,
+                props.allowedDates
+            );
         };
 
         // 渲染标题内容
@@ -426,6 +578,52 @@ export default defineComponent({
             });
         };
 
+        // 渲染日期
+        const genDateTable = () => {
+            return h(IvueDatePickerDate, {
+                tableDate: `${tableYear.value}-${Pad(tableMonth.value + 1)}`,
+                firstDayOfWeek: props.firstDayOfWeek,
+                locale: props.locale,
+                value: props.modelValue,
+                max: props.max,
+                min: props.min,
+                allowedDates: props.allowedDates,
+                readonly: props.readonly,
+                current: current.value,
+                format: props.dayFormat,
+                backgroundColor: proxy.setBackgroundColor,
+                textColor: proxy.setTextColor,
+                note: props.note,
+                noteColor: props.noteColor,
+                color: props.color,
+                onInput: dateClick,
+                onTableDate: (value: string) => (data.tableDate = value),
+            });
+        };
+
+        // 渲染月
+        const genMonthTable = () => {
+            return h(IvueDatePickerMonth, {
+                tableDate: `${tableYear.value}`,
+                color: props.color,
+                locale: props.locale,
+                value: selectedMonths.value,
+                max: maxMonth.value,
+                min: minMonth.value,
+                allowedDates:
+                    props.type === 'month' ? props.allowedDates : null,
+                readonly: props.readonly,
+                current: current.value
+                    ? sanitizeDateString(current.value, 'month')
+                    : null,
+                activeType: data.activeType,
+                format: props.monthFormat,
+                backgroundColor: proxy.setBackgroundColor,
+                textColor: proxy.setTextColor,
+                onInput: monthClick,
+            });
+        };
+
         // 渲染内容
         const genPickerBody = () => {
             const children =
@@ -436,7 +634,9 @@ export default defineComponent({
                       ]
                     : [
                           genTableHeader(),
-                          //   this.activeType === 'DATE' ? this.genDateTable() : this.genMonthTable()
+                          data.activeType === 'DATE'
+                              ? genDateTable()
+                              : genMonthTable(),
                       ];
 
             return h(

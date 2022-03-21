@@ -95,6 +95,5 @@ body {
 }
 
 .ivue-button {
-    margin: 10px !important;
 }
 </style>
