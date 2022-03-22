@@ -111,7 +111,13 @@ export default defineComponent({
 
         // 按钮
         const genYearIcon = () => {
-            return h(IvueIcon, props.yearIcon);
+            return h(
+                IvueIcon,
+                {},
+                {
+                    default: () => props.yearIcon,
+                }
+            );
         };
 
         // watch

@@ -1,4 +1,5 @@
 
+
 <script lang='ts'>
 import {
     defineComponent,
@@ -11,13 +12,12 @@ import {
     resolveDirective,
 } from 'vue';
 
-import Colorable from '../../utils/mixins/colorable';
 import Touch from '../../utils/directives/touch';
-import isDateAllowed from '../../utils/is-date-allowed';
+import Colorable from '../../utils/mixins/colorable';
 import CreateNativeLocaleFormatter from '../../utils/create-native-locale-formatter';
-import Pad from '../../utils/pad';
+import isDateAllowed from '../../utils/is-date-allowed';
 
-const prefixCls = 'ivue-date-picker-month';
+const prefixCls = 'ivue-date-picker-years';
 
 export default defineComponent({
     name: prefixCls,
@@ -26,15 +26,6 @@ export default defineComponent({
     // 声明事件
     emits: ['table-date', 'input'],
     props: {
-        /**
-         * 格式化函数
-         *
-         * @type {Function}
-         */
-        format: {
-            type: Function,
-            default: null,
-        },
         /**
          * 日期 时间
          *
@@ -51,12 +42,6 @@ export default defineComponent({
             required: true,
         },
         /**
-         * 当前激活的type
-         *
-         * @type {String}
-         */
-        activeType: String,
-        /**
          * 语言
          *
          * @type {String}
@@ -65,6 +50,33 @@ export default defineComponent({
             type: String,
             default: 'en-us',
         },
+        /**
+         * 最小年份或月份
+         *
+         * @type {String}
+         */
+        min: String,
+        /**
+         * 最大年份或月份
+         *
+         * @type {String}
+         */
+        max: String,
+        /**
+         * 当前年份
+         *
+         * @type {Number | String}
+         */
+        year: {
+            type: [Number, String],
+            default: '',
+        },
+        /**
+         * 当前激活的type
+         *
+         * @type {String}
+         */
+        activeType: String,
         /**
          * 当前日期
          *
@@ -102,29 +114,31 @@ export default defineComponent({
                 : `tab-transition`;
         });
 
-        // 日期格式
-        const formatter = computed(() => {
-            return (
-                props.format ||
-                CreateNativeLocaleFormatter(
-                    props.locale,
-                    { month: 'short', timeZone: 'UTC' },
-                    { start: 5, length: 2 }
-                )
-            );
-        });
-
         // 显示的年份
         const displayedYear = computed(() => {
             return props.tableDate.split('-')[0] * 1;
         });
 
+        const formatter = computed(() => {
+            return CreateNativeLocaleFormatter(
+                props.locale,
+                { year: 'numeric', timeZone: 'UTC' },
+                { start: 0, length: 4 }
+            );
+        });
+
         // methods
 
         // 计算表日期
-        const calculateTableDate = (dates: number) => {
-            // Math.sign 返回一个数字的符号，表示该数字是正数，负数还是零
-            return `${parseInt(props.tableDate, 10) + Math.sign(dates || 1)}`;
+        const calculateTableDate = (value: any) => {
+            let _value = value;
+            if (value > 0) {
+                _value = value + 9;
+            } else {
+                _value = value - 9;
+            }
+
+            return `${parseInt(props.tableDate) + parseInt(_value)}`;
         };
 
         // 点击
@@ -178,25 +192,32 @@ export default defineComponent({
 
         // 表格内容
         const genTBody = () => {
-            const children = [];
+            let children = [];
             // 一行3个
             const cols = Array(3).fill(null);
             // 4 行
             const rows = 12 / cols.length;
 
+            // 开始年份
+            let startYear = Math.floor(displayedYear.value / 10) * 10;
+
             for (let row = 0; row < rows; row++) {
                 const tds = cols.map((_, col) => {
-                    // 月数
-                    const month = row * cols.length + col;
+                    const _number = row * cols.length + col;
 
                     return h(
                         'td',
                         {
-                            key: month,
+                            key: formatter.value(`${startYear + _number}`),
                         },
-                        [genButton(`${displayedYear.value}-${Pad(month + 1)}`)]
+                        [genButton(`${startYear + _number}`)]
                     );
                 });
+
+                // 删除多余年份
+                if (row === 3) {
+                    tds.splice(1);
+                }
 
                 children.push(
                     h(
@@ -209,7 +230,7 @@ export default defineComponent({
                 );
             }
 
-            return h('tbody', children);
+            return h('tbody', {}, children);
         };
 
         // 按钮样式
@@ -225,9 +246,11 @@ export default defineComponent({
         const genButton = (value) => {
             // 是否选中
             const isSelected =
-                value === props.value ||
-                (Array.isArray(props.value) &&
-                    props.value.indexOf(value) !== -1);
+                props.activeType === 'YEAR'
+                    ? props.year === value
+                    : value === props.value ||
+                      (Array.isArray(props.value) &&
+                          props.value.indexOf(value) !== -1);
 
             // 是否允许选择
             const isAllowed = isDateAllowed(

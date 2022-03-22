@@ -432,7 +432,9 @@ export default defineComponent({
             return h(
                 'div',
                 props.backgroundColor(noteColor || props.color || 'warning', {
-                    class: `${prefixCls}--note`,
+                    class: {
+                        [`${prefixCls}--note`]: true,
+                    },
                 })
             );
         };

@@ -147,6 +147,11 @@ export default defineComponent({
 
         // 按钮
         const genBtn = (change: number) => {
+            // 开始年份
+            const startYear = Math.floor(displayedYear.value / 10) * 10;
+            // 结束年份
+            let endYear = startYear + 9;
+
             let disabled =
                 props.readonly ||
                 (change < 0 &&
@@ -154,7 +159,9 @@ export default defineComponent({
                     calculateChange(change) < props.min) ||
                 (change > 0 &&
                     props.max &&
-                    calculateChange(change) > props.max);
+                    (props.activeType === 'YEAR'
+                        ? endYear >= props.max
+                        : calculateChange(change) > props.max));
 
             if (props.activeType === 'YEAR' || props.activeType === 'MONTH') {
                 if (change > 0 && props.value === props.max) {
@@ -215,7 +222,6 @@ export default defineComponent({
             // 开始年份
             const startYear = Math.floor(displayedYear.value / 10) * 10;
             // 结束年份
-
             let endYear = null;
 
             if (props.max) {

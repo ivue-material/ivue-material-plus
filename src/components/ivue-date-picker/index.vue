@@ -22,11 +22,12 @@ import IvueDatePickerTitle from './ivue-date-picker-title.vue';
 import IvueDatePickerHeader from './ivue-date-picker-header.vue';
 import IvueDatePickerDate from './ivue-date-picker-date.vue';
 import IvueDatePickerMonth from './ivue-date-picker-month.vue';
+import IvueDatePickerYears from './ivue-date-picker-years.vue';
 
 export default defineComponent({
     name: 'ivue-date-picker',
     mixins: [Colorable],
-    emits: ['update:modelValue', 'change'],
+    emits: ['update:modelValue', 'update:pickerDate', 'change'],
     props: {
         /**
          * 日历方向
@@ -63,7 +64,7 @@ export default defineComponent({
          */
         noTitle: Boolean,
         /**
-         * 日期 时间
+         * 日期时间
          *
          * @type {Array, String}
          */
@@ -424,6 +425,10 @@ export default defineComponent({
 
                 return sanitizeDateString(date, type);
             })();
+
+            if (props.pickerDate !== data.tableDate) {
+                emit('update:pickerDate', data.tableDate);
+            }
         };
 
         // 点击日期事件
@@ -505,7 +510,7 @@ export default defineComponent({
         };
 
         // 月期点击事件
-        const monthClick = (value) => {
+        const monthClick = (value: string) => {
             data.inputYear = parseInt(value.split('-')[0], 10);
             data.inputMonth = parseInt(value.split('-')[1], 10) - 1;
 
@@ -520,6 +525,24 @@ export default defineComponent({
             } else {
                 emitInput(inputDate.value);
             }
+        };
+
+        // 年份点击事件
+        const yearClick = (value: string) => {
+            data.inputYear = value;
+
+            if (props.type === 'month') {
+                data.tableDate = `${value}`;
+            } else {
+                data.tableDate = `${value}-${Pad(tableMonth.value + 1)}`;
+            }
+
+            data.activeType = 'MONTH';
+
+            props.reactive &&
+                !props.multiple &&
+                handleIsDateAllowed(inputDate.value) &&
+                emit('update:modelValue', inputDate.value);
         };
 
         // 是否可以选择日期
@@ -597,7 +620,9 @@ export default defineComponent({
                 noteColor: props.noteColor,
                 color: props.color,
                 onInput: dateClick,
-                onTableDate: (value: string) => (data.tableDate = value),
+                onTableDate: (value: string) => {
+                    data.tableDate = value;
+                },
             });
         };
 
@@ -621,6 +646,26 @@ export default defineComponent({
                 backgroundColor: proxy.setBackgroundColor,
                 textColor: proxy.setTextColor,
                 onInput: monthClick,
+                onTableDate: (value: string) => (data.tableDate = value),
+            });
+        };
+
+        // 渲染年
+        const genYears = () => {
+            return h(IvueDatePickerYears, {
+                tableDate: `${tableYear.value}`,
+                color: props.color,
+                max: maxYear.value,
+                min: minYear.value,
+                locale: props.locale,
+                value: `${tableYear.value}`,
+                current: current.value,
+                activeType: data.activeType,
+                year: `${data.inputYear}`,
+                backgroundColor: proxy.setBackgroundColor,
+                textColor: proxy.setTextColor,
+                onInput: yearClick,
+                onTableDate: (value: string) => (data.tableDate = value),
             });
         };
 
@@ -628,10 +673,7 @@ export default defineComponent({
         const genPickerBody = () => {
             const children =
                 data.activeType === 'YEAR'
-                    ? [
-                          genTableHeader(),
-                          // this.genYears()
-                      ]
+                    ? [genTableHeader(), genYears()]
                     : [
                           genTableHeader(),
                           data.activeType === 'DATE'
@@ -655,10 +697,86 @@ export default defineComponent({
             );
         };
 
-        return () => {
-            // 初始化
-            initData();
+        // 监听 tableDate
+        watch(
+            () => data.tableDate,
+            (val, prev) => {
+                // 发送月份或年份改变事件
+                emit('update:pickerDate', val);
+            }
+        );
 
+        // 监听 日期时间
+        watch(
+            () => props.modelValue,
+            (newValue, oldValue) => {
+                // 检查设置为多选后value值是否正确
+                checkMultipleProp();
+                // 设置年，月，日值
+                setInputDate();
+
+                if (!props.multiple && props.modelValue && !props.pickerDate) {
+                    data.tableDate = sanitizeDateString(
+                        inputDate.value,
+                        props.type === 'month' ? 'year' : 'month'
+                    );
+                } else if (
+                    props.multiple &&
+                    props.modelValue.length &&
+                    !oldValue.length &&
+                    !props.pickerDate
+                ) {
+                    data.tableDate = sanitizeDateString(
+                        inputDate.value,
+                        props.type === 'month' ? 'year' : 'month'
+                    );
+                }
+            }
+        );
+
+        //  监听月份或者年份的变化
+        watch(
+            () => props.pickerDate,
+            (value) => {
+                if (value) {
+                    data.tableDate = value;
+                } else if (computedValue.value && props.type === 'date') {
+                    data.tableDate = sanitizeDateString(
+                        computedValue.value,
+                        'month'
+                    );
+                } else if (computedValue.value && props.type === 'month') {
+                    data.tableDate = sanitizeDateString(
+                        computedValue.value,
+                        'year'
+                    );
+                }
+            }
+        );
+
+        // 监听日历类型变化
+        watch(
+            () => props.type,
+            (type) => {
+                data.activeType = type.toUpperCase();
+                if (props.modelValue && props.modelValue.length) {
+                    const output = (
+                        props.multiple ? props.modelValue : [props.modelValue]
+                    )
+                        .map((val) => sanitizeDateString(val, type))
+                        .filter(handleIsDateAllowed);
+                    emit(
+                        'update:modelValue',
+                        props.multiple ? output : output[0]
+                    );
+                }
+            }
+        );
+
+        // 初始化
+        initData();
+
+        return () => {
             return h(
                 IvuePicker,
                 {
