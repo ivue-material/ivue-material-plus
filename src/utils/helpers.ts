@@ -2,7 +2,7 @@ import { CSSProperties } from 'vue';
 import { isDef, isNumeric } from './validate';
 
 // 文件上传类型
-export type UploaderResultType = 'dataUrl' | 'text' | 'file';
+export type UploaderResultType = 'dataUrl' | 'text' | 'file' | 'url';
 
 export type Interceptor = (...args: any[]) => Promise<boolean> | boolean;
 
@@ -24,6 +24,15 @@ export function readFileContent(file: File, resultType: UploaderResultType) {
         // 文件类型
         if (resultType === 'file') {
             resolve();
+            return;
+        }
+
+        // url
+        if (resultType === 'url') {
+            const url = URL.createObjectURL(file)
+
+            resolve(url);
+
             return;
         }
 

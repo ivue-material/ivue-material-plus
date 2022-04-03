@@ -9,12 +9,34 @@
                 accept="image/*"
                 name="123"
                 preview-size="100px"
-            :maxCount="2"
-
+                :maxCount="2"
                 :before-delete="handleDelete"
             ></ivue-upload>
             {{fileList1}}
         </div>
+
+        <h1>拖动</h1>
+        <ivue-upload v-model="fileList3" multiple type="drag"></ivue-upload>
+
+        <h1>accept</h1>
+        <ivue-upload
+            v-model="fileList"
+            multiple
+            :dragAccept="['jpg']"
+            type="drag"
+            @on-upload-error="handleError"
+        ></ivue-upload>
+
+        <h1>resultType</h1>
+        <p>图片返回为链接提升速度</p>
+        <ivue-upload
+            v-model="fileList"
+            multiple
+            resultType="url"
+            :dragAccept="['jpg']"
+            type="drag"
+            @on-upload-error="handleError"
+        ></ivue-upload>
 
         <h1>文件预览</h1>
         <p>通过 v-model 可以绑定已经上传的文件列表，并展示文件列表的预览图。</p>
@@ -238,6 +260,9 @@ export default {
         },
         beforeRead1(file, name) {
             return false;
+        },
+        handleError() {
+            console.log('类型错误');
         },
     },
 };

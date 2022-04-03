@@ -2,6 +2,32 @@
     <div :class="prefixCls">
         <slot></slot>
 
+        <!-- 输入框 -->
+        <div
+            :class="inputWrapClass"
+            @click="handleClickInput"
+            @drop.prevent="handleDrop"
+            @dragover.prevent="handleDragOver"
+            @dragleave.prevent="handleDragleave"
+            v-show="renderUpload"
+        >
+            <input
+                type="file"
+                ref="input"
+                :class="`${prefixCls}-input`"
+                :accept="accept"
+                :multiple="multiple"
+                @change="handleChange"
+            />
+            <slot>
+                <div :class="inputContentClass" :style="getSizeStyle(previewSize)">
+                    <!-- 图标 -->
+                    <ivue-icon :class="`${prefixCls}-content__icon`">cloud_upload</ivue-icon>
+                    <p :class="`${prefixCls}-content__text`">点击上传</p>
+                </div>
+            </slot>
+        </div>
+
         <!-- 列表 -->
         <upload-list
             :files="data.fileList"
@@ -18,30 +44,6 @@
                 <slot name="preview-cover" :file="file"></slot>
             </template>
         </upload-list>
-        <!-- 输入框 -->
-        <div :class="inputWrapClass" @click="handleClickInput" v-show="renderUpload">
-            <input
-                type="file"
-                ref="input"
-                :class="`${prefixCls}-input`"
-                :accept="accept"
-                :multiple="multiple"
-                @change="handleChange"
-            />
-            <slot>
-                <div
-                    :class="{
-                    [`${prefixCls}-content`]: true,
-                    [`${prefixCls}-disabled`]: disabled,
-                }"
-                    :style="getSizeStyle(previewSize)"
-                >
-                    <!-- 图标 -->
-                    <ivue-icon :class="`${prefixCls}-content__icon`">cloud_upload</ivue-icon>
-                    <p :class="`${prefixCls}-content__text`">点击上传</p>
-                </div>
-            </slot>
-        </div>
     </div>
 </template>
 
@@ -88,7 +90,13 @@ export type UploaderBeforeRead = (
 
 export default defineComponent({
     name: prefixCls,
-    emits: ['update:modelValue', 'on-oversize', 'on-delete', 'on-preview'],
+    emits: [
+        'update:modelValue',
+        'on-oversize',
+        'on-delete',
+        'on-preview',
+        'on-upload-error',
+    ],
     props: {
         /**
          * 上传组件类型
@@ -115,6 +123,14 @@ export default defineComponent({
             type: String,
         },
         /**
+         * 拖拽接受的上传类型
+         *
+         * @type {Array}
+         */
+        dragAccept: {
+            type: Array,
+        },
+        /**
          * 是否支持多选文件
          *
          * @type {Boolean}
@@ -133,7 +149,7 @@ export default defineComponent({
             default: false,
         },
         /**
-         * 文件读取结果类型，可选值为 file text dataUrl
+         * 文件读取结果类型，可选值为 file text dataUrl url
          *
          * @type {String}
          */
@@ -252,6 +268,7 @@ export default defineComponent({
         // data
         const data = reactive<{
             fileList: Array<any>;
+            dragOver: Boolean;
         }>({
             /**
              * 当前选择状态
@@ -259,6 +276,12 @@ export default defineComponent({
              * @type {Array}
              */
             fileList: props.modelValue,
+            /**
+             * 拖动是否完成
+             *
+             * @type {Boolean}
+             */
+            dragOver: false,
         });
 
         // computed
@@ -267,9 +290,18 @@ export default defineComponent({
             return [
                 {
                     [`${prefixCls}-select`]: props.type === 'select',
+                },
+            ];
+        });
+
+        const inputContentClass = computed(() => {
+            return [
+                {
+                    [`${prefixCls}-content`]: true,
+                    [`${prefixCls}-disabled`]: props.disabled,
                     [`${prefixCls}-drag`]: props.type === 'drag',
                     [`${prefixCls}-dragOver`]:
-                        props.type === 'drag' && props.dragOver,
+                        props.type === 'drag' && data.dragOver,
                 },
             ];
         });
@@ -303,6 +335,76 @@ export default defineComponent({
             }
 
             input.value.click();
+        };
+
+        // 拖动
+        const handleDrop = (e) => {
+            data.dragOver = false;
+
+            const files = e.dataTransfer.files;
+            const file = files.length === 1 ? files[0] : [].slice.call(files);
+
+            // 只上传文件
+            if (files.length === 1) {
+                // 接受的上传类型
+                if (props.dragAccept) {
+                    const name = file.name.replace(/.*\./g, '').toLowerCase();
+
+                    const findIndex = props.dragAccept.findIndex(
+                        (accept) => accept === name
+                    );
+
+                    if (findIndex > -1) {
+                        uploadFiles(file);
+                    }
+                    // 上传错误提示
+                    else {
+                        emit('on-upload-error');
+                    }
+                }
+                // 没有限制
+                else {
+                    uploadFiles(file);
+                }
+            } else {
+                const arr = [];
+
+                file.forEach((item) => {
+                    // 接受的上传类型
+                    if (props.dragAccept) {
+                        const name = item.name
+                            .replace(/.*\./g, '')
+                            .toLowerCase();
+
+                        const findIndex = props.dragAccept.findIndex(
+                            (accept) => accept === name
+                        );
+
+                        if (findIndex > -1) {
+                            arr.push(item);
+                        }
+                    } else {
+                        arr.push(item);
+                    }
+                });
+
+                // 多选
+                if (arr.length === 0) {
+                    emit('on-upload-error');
+                } else {
+                    uploadFiles(arr);
+                }
+            }
+        };
+
+        // 拖动进入
+        const handleDragOver = () => {
+            data.dragOver = true;
+        };
+
+        // 拖动离开
+        const handleDragleave = () => {
+            data.dragOver = false;
         };
 
         // 输入框数据改变
@@ -477,9 +579,13 @@ export default defineComponent({
 
             // computed
             inputWrapClass,
+            inputContentClass,
 
             // methods
             handleClickInput,
+            handleDrop,
+            handleDragOver,
+            handleDragleave,
             handleChange,
             handleRemove,
             handleFileData,

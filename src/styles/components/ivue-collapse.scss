@@ -1,0 +1,81 @@
+$name: 'ivue-collapse';
+
+.#{$name} {
+  background-color: $primary-color;
+  border-radius: 3px;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+
+  &-panel {
+    border-top: 1px solid rgba(0, 0, 0, 0.12);
+
+    &:first-child {
+      border-top: 0;
+    }
+
+    &--header {
+      position: relative;
+      display: flex;
+      justify-content: space-between;
+      align-content: center;
+      padding: 0 15px;
+      height: 38px;
+      line-height: 38px;
+      color: #ffffff;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all .2s ease-in-out;
+
+      .ivue-icon {
+        margin: 0;
+        display: flex;
+        height: auto;
+        min-width: auto;
+        width: auto;
+        font-size: 25px;
+        transition: all .2s ease-in-out;
+      }
+    }
+
+    &--content {
+      padding: 0 15px;
+      color: #000;
+      background-color: #fff;
+
+      &-box {
+        padding-top: 15px;
+        padding-bottom: 15px;
+      }
+    }
+
+    &--active &--header {
+      border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+    }
+
+    &--active &--header .ivue-icon {
+      transform: rotateZ(90deg);
+    }
+  }
+
+  // 简介模式
+  &-simple {
+    border-left: none;
+    border-right: none;
+    background-color: #fff;
+    border-radius: 0;
+
+    .#{$name}-panel--header {
+      color: #000;
+      border-bottom: 1px solid transparent;
+    }
+
+    .#{$name}-panel--content-box {
+      padding-top: 0;
+    }
+  }
+}
+
+.collapse-transition {
+  transition: .2s height ease-in-out,
+    .2s padding-top ease-in-out,
+    .2s padding-bottom ease-in-out;
+}

@@ -18,8 +18,8 @@ $name: 'ivue-upload';
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    width: 80px;
-    height: 80px;
+    width: 100px;
+    height: 100px;
     margin: 0 8px 8px 0;
     background: $white-color;
     border-radius: 8px;
@@ -51,12 +51,12 @@ $name: 'ivue-upload';
 
   // 列表
   &-list {
-    display: flex;
+    display: contents;
 
     // 图片
     &-image {
-      width: 80px;
-      height: 80px;
+      width: 100px;
+      height: 100px;
       display: block;
       border-radius: 8px;
       overflow: hidden;
@@ -156,7 +156,7 @@ $name: 'ivue-upload';
   &-drag {
     position: relative;
     text-align: center;
-    border: 1px dashed $border-color;
+    border: 2px dashed $border-color;
     border-radius: $border-radius-small;
     background-color: #fff;
     overflow: hidden;
@@ -164,7 +164,7 @@ $name: 'ivue-upload';
     transition: border-color .2s ease;
 
     &:hover {
-      border: 1px dashed $primary-color;
+      border: 2px dashed $primary-color;
     }
   }
 

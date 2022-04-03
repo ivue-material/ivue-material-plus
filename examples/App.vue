@@ -87,12 +87,15 @@
                 <li>
                     <router-link to="/tabs">Tabs</router-link>
                 </li>
-                 <li>
+                <li>
                     <router-link to="/badge">Badge</router-link>
                 </li>
 
-                  <li>
+                <li>
                     <router-link to="/date-picker">DatePicker</router-link>
+                </li>
+                <li>
+                    <router-link to="/collapse">Collapse</router-link>
                 </li>
             </ul>
         </nav>
