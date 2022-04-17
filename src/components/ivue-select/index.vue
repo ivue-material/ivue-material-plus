@@ -53,12 +53,14 @@
                 </select-head>
             </slot>
         </div>
-        <div></div>
         <!-- 下拉菜单 -->
         <transition name="transition-drop">
             <drop-down
                 :transfer="transfer"
                 :data-transfer="transfer"
+                :placement="placement"
+                :eventsEnabled="eventsEnabled"
+                :class="dropdownClass"
                 v-transfer-dom
                 key="IvueSelectDropdown"
                 ref="dropdown"
@@ -121,6 +123,7 @@ import {
 // 注册外部点击事件插件
 import ClickOutside from '../../utils/directives/click-outside';
 import TransferDom from '../../utils/directives/transfer-dom';
+import { oneOf } from '../../utils/assist';
 
 const prefixCls = 'ivue-select';
 
@@ -396,6 +399,41 @@ export default defineComponent({
         transfer: {
             type: Boolean,
             default: false,
+        },
+        /**
+         * 弹窗的展开方向
+         *
+         * @type {String}
+         */
+        placement: {
+            validator(value: string) {
+                return oneOf(value, [
+                    'top',
+                    'bottom',
+                    'top-start',
+                    'bottom-start',
+                    'top-end',
+                    'bottom-end',
+                ]);
+            },
+            default: 'bottom-start',
+        },
+        /**
+         * 是否开启 Popper 的 eventsEnabled 属性，开启可能会牺牲一定的性能
+         *
+         * @type {Boolean}
+         */
+        eventsEnabled: {
+            type: Boolean,
+            default: false,
+        },
+        /**
+         * 开启 transfer 时，给浮层添加额外的 class 名称
+         *
+         * @type {String}
+         */
+        transferClassName: {
+            type: String,
         },
     },
     setup(props: any, { emit, slots }) {
@@ -697,6 +735,15 @@ export default defineComponent({
             }
 
             return state;
+        });
+
+        // 下拉框样式
+        const dropdownClass = computed(() => {
+            return {
+                [`${prefixCls}-dropdown--transfer`]: props.transfer,
+                [`${prefixCls}-multiple`]: props.multiple && props.transfer,
+                [props.transferClassName]: props.transferClassName,
+            };
         });
 
         // methods
@@ -1549,6 +1596,7 @@ export default defineComponent({
             dropVisible,
             canClearable,
             showCreateItem,
+            dropdownClass,
 
             // methods
             handleClickOutside,

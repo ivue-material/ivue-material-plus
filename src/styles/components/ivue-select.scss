@@ -343,7 +343,7 @@ $name: 'ivue-select';
     position: absolute;
     margin: 5px 0;
     padding: 5px 0;
-    width: auto;
+    width: inherit;
     max-height: 200px;
     overflow: auto;
     background-color: #fff;
@@ -352,6 +352,11 @@ $name: 'ivue-select';
     box-shadow: 0 1px 6px rgba(0, 0, 0, .2);
     z-index: 999;
     transform-origin: center top 0px;
+
+    &--transfer {
+      z-index: 1060;
+      width: auto;
+    }
   }
 
   .ivue-auto-complete {
@@ -464,11 +469,11 @@ $name: 'ivue-select';
 /*下拉菜单动画*/
 
 .transition-drop-enter-active {
-  transition: opacity .3s ease-in-out,  transform .3s ease-in-out;
+  transition: opacity .3s ease-in-out, transform .3s ease-in-out;
 }
 
 .transition-drop-leave-active {
-  transition: opacity .3s ease-in-out,  transform .3s ease-in-out;
+  transition: opacity .3s ease-in-out, transform .3s ease-in-out;
 }
 
 .transition-drop-enter-from,

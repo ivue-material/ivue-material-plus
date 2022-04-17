@@ -78,7 +78,6 @@ export default defineComponent({
         // inject
         const select: any = inject('ivue-select');
 
-
         // vm
         const { proxy } = getCurrentInstance();
 
@@ -133,7 +132,9 @@ export default defineComponent({
         });
 
         const minWidth = computed(
-            () => `${getStyle(select.selectWrapper, 'width')}`
+            () =>
+                select &&
+                `${getStyle(select.selectWrapper, 'width')}`
         );
 
         // methdos

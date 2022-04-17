@@ -77,14 +77,14 @@
         </ivue-select>
         {{model9}}
         <p>多选</p>
-        <ivue-select v-model="model10" multiple style="width:200px">
+        <ivue-select v-model="model16" multiple style="width:200px">
             <ivue-option
                 v-for="item in cityList"
                 :value="item.value"
                 :key="item.value"
             >{{ item.label }}</ivue-option>
         </ivue-select>
-        {{model10}}
+        {{model16}}
         <p>prefix</p>
 
         <ivue-select v-model="model10" prefix="catching_pokemon" style="width:200px">
