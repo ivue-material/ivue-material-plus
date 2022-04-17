@@ -21,7 +21,8 @@
   "dependencies": {
     "hex-to-rgba": "^2.0.1",
     "mitt": "^3.0.0",
-    "raf": "^3.4.1"
+    "raf": "^3.4.1",
+    "popper.js": "^1.16.1"
   },
   "peerDependencies": {
     "vue": ">=3.0.0"

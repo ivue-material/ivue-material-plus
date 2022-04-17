@@ -6,6 +6,7 @@
         v-click-outside:[capture].mousedown="handleClickOutside"
     >
         <div
+            ref="reference"
             :class="selectionClasses"
             :tabindex="selectTabindex"
             @blur="handleHeaderFocus"
@@ -52,9 +53,17 @@
                 </select-head>
             </slot>
         </div>
+        <div></div>
         <!-- 下拉菜单 -->
         <transition name="transition-drop">
-            <drop-down key="IvueSelectDropdown" v-show="dropVisible" ref="dropdown">
+            <drop-down
+                :transfer="transfer"
+                :data-transfer="transfer"
+                v-transfer-dom
+                key="IvueSelectDropdown"
+                ref="dropdown"
+                v-show="dropVisible"
+            >
                 <!-- 没有找到数据时的提示 -->
                 <ul :class="`${prefixCls}-not-find`" v-show="showNotFindText && !allowCreate">
                     <li>{{ notFindText }}</li>
@@ -111,13 +120,14 @@ import {
 
 // 注册外部点击事件插件
 import ClickOutside from '../../utils/directives/click-outside';
+import TransferDom from '../../utils/directives/transfer-dom';
 
 const prefixCls = 'ivue-select';
 
 export default defineComponent({
     name: prefixCls,
     // 注册局部指令
-    directives: { ClickOutside },
+    directives: { ClickOutside, TransferDom },
     emits: [
         'update:modelValue',
         'on-change',
@@ -375,13 +385,26 @@ export default defineComponent({
             type: Boolean,
             default: true,
         },
+        /**
+         * 是否将弹层放置于 body 内，在 Tabs、
+         * 带有 fixed 的 Table 列内使用时，
+         * 建议添加此属性，它将不受父级样式影响，
+         * 从而达到更好的效果
+         *
+         * @type {Boolean}
+         */
+        transfer: {
+            type: Boolean,
+            default: false,
+        },
     },
-    setup(props: any, { emit }) {
+    setup(props: any, { emit, slots }) {
         // 事件发射器/发布订阅
         const selectEmitter = mitt();
 
         // dom
         const selectWrapper = ref<HTMLElement | null>(null);
+        const reference = ref<HTMLElement | null>(null);
 
         const dropdown = ref(null);
 
@@ -688,6 +711,14 @@ export default defineComponent({
                     return;
                 }
 
+                // 是否将弹层放置于 body 内
+                if (props.transfer) {
+                    const { $el } = dropdown.value;
+                    if ($el === event.target || $el.contains(event.target)) {
+                        return;
+                    }
+                }
+
                 // 取消焦点
                 data.isFocused = false;
 
@@ -746,6 +777,9 @@ export default defineComponent({
 
                     input.blur();
                 }
+
+                // 更新下拉框
+                dropdown.value.update();
             }
         };
 
@@ -810,6 +844,9 @@ export default defineComponent({
                     input.focus();
                 });
             }
+
+            // 更新下拉框
+            dropdown.value.update();
 
             // 获取焦点项
             data.focusIndex = setFocusIndex(option);
@@ -1157,7 +1194,11 @@ export default defineComponent({
 
         // 创建新列表
         const handleCreateItem = () => {
-            if (props.allowCreate && data.filterQuery !== '' && showCreateItem.value) {
+            if (
+                props.allowCreate &&
+                data.filterQuery !== '' &&
+                showCreateItem.value
+            ) {
                 const filterQuery = data.filterQuery;
 
                 emit('on-create', filterQuery);
@@ -1234,6 +1275,7 @@ export default defineComponent({
             reactive({
                 props,
                 selectWrapper,
+                reference,
                 options: data.options,
                 values: data.values,
                 handleOptionClick,
@@ -1465,6 +1507,23 @@ export default defineComponent({
 
                     data.hasExpectedValue = false;
                 }
+
+                // 更新下拉框
+                dropdown.value.update();
+            }
+        );
+
+        // 监听下拉框
+        watch(
+            () => dropVisible.value,
+            (value) => {
+                if (value) {
+                    // 更新下拉框
+                    dropdown.value.update();
+                } else {
+                    // 销毁下拉框
+                    dropdown.value.destroy();
+                }
             }
         );
 
@@ -1473,6 +1532,7 @@ export default defineComponent({
 
             // dom
             selectWrapper,
+            reference,
             dropdown,
 
             // data

@@ -464,11 +464,11 @@ $name: 'ivue-select';
 /*下拉菜单动画*/
 
 .transition-drop-enter-active {
-  transition: all .3s ease-in-out;
+  transition: opacity .3s ease-in-out,  transform .3s ease-in-out;
 }
 
 .transition-drop-leave-active {
-  transition: all .3s ease-in-out;
+  transition: opacity .3s ease-in-out,  transform .3s ease-in-out;
 }
 
 .transition-drop-enter-from,
