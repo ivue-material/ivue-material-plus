@@ -97,6 +97,9 @@
                 <li>
                     <router-link to="/collapse">Collapse</router-link>
                 </li>
+                <li>
+                    <router-link to="/cascader">Cascader</router-link>
+                </li>
             </ul>
         </nav>
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />

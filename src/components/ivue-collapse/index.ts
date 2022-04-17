@@ -1,5 +1,3 @@
-
-
 import { App } from 'vue';
 import IvueCollapse from './collapse.vue';
 import IvueCollapsePanel from './panel.vue';

@@ -26,6 +26,7 @@ import Tabs from '../components/tabs';
 import Badge from '../components/badge';
 import DatePicker from '../components/date-picker.vue';
 import Collapse from '../components/collapse.vue';
+import Cascader from '../components/cascader.vue';
 
 const routes = [{
   path: "/Affix",
@@ -146,6 +147,11 @@ const routes = [{
   path: "/collapse",
   name: "Collapse",
   component: Collapse,
+},
+{
+  path: "/cascader",
+  name: "Cascader",
+  component: Cascader,
 },
 
 ];

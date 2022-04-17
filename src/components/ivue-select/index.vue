@@ -20,9 +20,9 @@
             @keydown.esc.stop.prevent="handldKeyDown"
             @keydown.tab="handldKeyDown"
         >
-            <slot name="input">
-                <input type="hidden" :name="name" :value="currentSelectValue" />
+            <input type="hidden" :name="name" :value="currentSelectValue" />
 
+            <slot name="input">
                 <!-- 头部 -->
                 <select-head
                     :prefix="prefix"
@@ -405,9 +405,9 @@ export default defineComponent({
         // dom
         const selectWrapper = ref<HTMLElement | null>(null);
         const reference = ref<HTMLElement | null>(null);
-
         const dropdown = ref(null);
 
+        // vm
         const { proxy }: any = getCurrentInstance();
 
         // data
