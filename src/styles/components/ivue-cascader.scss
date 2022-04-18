@@ -51,11 +51,68 @@ $input: 'ivue-input';
   }
 
 
-  .ivue-select-dropdown{
+  .ivue-select-dropdown {
     width: auto;
     padding: 0;
     white-space: nowrap;
     overflow: visible;
+  }
+
+  // 菜单
+  &-menu {
+    display: inline-block;
+    min-width: 100px;
+    height: 180px;
+    margin: 0;
+    padding: 5px 0 !important;
+    vertical-align: top;
+    list-style: none;
+    border-right: 1px solid #e8eaec;
+    overflow: auto;
+
+    &:last-child {
+      border-right-color: transparent;
+      margin-right: -1px;
+    }
+
+
+    // 选项
+    &--item {
+      position: relative;
+      margin: 0;
+      line-height: normal;
+      padding: 7px 16px;
+      clear: both;
+      color: #515a6e;
+      font-size: 14px !important;
+      white-space: nowrap;
+      list-style: none;
+      cursor: pointer;
+      padding-right: 36px;
+      transition: all .2s ease-in-out;
+
+      &:hover {
+        background: $primary-color;
+        color: $white-color;
+      }
+
+      .ivue-icon {
+        position: absolute;
+        top: 0;
+        right: 10px;
+        height: 100%;
+        font-size: 18px;
+        width: auto;
+        min-width: auto;
+        transition: none;
+      }
+
+
+      &-active {
+        background: $primary-color;
+        color: $white-color;
+      }
+    }
   }
 
 }

@@ -1,9 +1,5 @@
 <template>
-    <div
-        :class="classes"
-        v-click-outside[capture]="handleClickOutside"
-        v-click-outside:[capture].mousedown="handleClickOutside"
-    >
+    <div :class="classes" v-outside="handleClickOutside">
         <!-- 输入框 -->
         <div :class="`${prefixCls}-rel`" ref="reference" @click="handleToggleOpen">
             <input type="hidden" :name="name" :value="data.currentValue" />
@@ -36,7 +32,27 @@
         </div>
         <!-- 下拉菜单 -->
         <transition name="transition-drop">
-            <drop-down v-show="data.visibleMenu" ref="dropdown"></drop-down>
+            <drop-down
+                :transfer="transfer"
+                :data-transfer="transfer"
+                :eventsEnabled="eventsEnabled"
+                :class="dropdownClass"
+                v-transfer-dom
+                ref="dropdown"
+                v-show="data.visibleMenu"
+            >
+                <div>
+                    <!-- 菜单 -->
+                    <ivue-cascader-menu
+                        :options="options"
+                        :disabled="disabled"
+                        :changeOnSelect="changeOnSelect"
+                        :trigger="trigger"
+                        ref="menu"
+                        v-show="!filterable || (filterable && query === '')"
+                    ></ivue-cascader-menu>
+                </div>
+            </drop-down>
         </transition>
     </div>
 </template>
@@ -49,28 +65,34 @@ import {
     ref,
     getCurrentInstance,
     provide,
+    watch,
+    nextTick,
     onMounted,
-    onBeforeUnmount,
 } from 'vue';
-import ClickOutside from '../../utils/directives/click-outside';
+
+import { oneOf } from '../../utils/assist';
+import Outside from '../../utils/directives/outside';
+import TransferDom from '../../utils/directives/transfer-dom';
+
 import IvueInput from '../ivue-input/index.vue';
 import IvueIcon from '../ivue-icon/index.vue';
-// 下拉框
 import DropDown from '../ivue-select/drop-down.vue';
+import IvueCascaderMenu from './menu.vue';
 
 const prefixCls = 'ivue-cascader';
 
 export default defineComponent({
     name: prefixCls,
     // 注册局部指令
-    directives: { ClickOutside },
+    directives: { Outside, TransferDom },
+    emits: ['on-change'],
     props: {
         /**
          * 可选项的数据源
          *
          * @type {Array}
          */
-        data: {
+        options: {
             type: Array,
             default() {
                 return [];
@@ -165,12 +187,70 @@ export default defineComponent({
             type: String,
             default: 'cancel',
         },
+        /**
+         * 开启 transfer 时，给浮层添加额外的 class 名称
+         *
+         * @type {String}
+         */
+        transferClassName: {
+            type: String,
+        },
+        /**
+         * 是否开启 Popper 的 eventsEnabled 属性，开启可能会牺牲一定的性能
+         *
+         * @type {Boolean}
+         */
+        eventsEnabled: {
+            type: Boolean,
+            default: false,
+        },
+        /**
+         * 是否将弹层放置于 body 内，在 Tabs、
+         * 带有 fixed 的 Table 列内使用时，
+         * 建议添加此属性，它将不受父级样式影响，
+         * 从而达到更好的效果
+         *
+         * @type {Boolean}
+         */
+        transfer: {
+            type: Boolean,
+            default: false,
+        },
+        /**
+         * 当此项为 true 时，点选每级菜单选项值都会发生变化
+         *
+         * @type {Boolean}
+         */
+        changeOnSelect: {
+            type: Boolean,
+            default: false,
+        },
+        /**
+         * 次级菜单展开方式，可选值为 click 或 hover
+         *
+         * @type {String}
+         */
+        trigger: {
+            validator(value: string) {
+                return oneOf(value, ['click', 'hover']);
+            },
+            default: 'click',
+        },
+        /**
+         * 动态获取数据，数据源需标识 loading
+         *
+         * @type {Function}
+         */
+        loadData: {
+            type: Function,
+        },
     },
-    setup(props: any) {
+    setup(props: any, { emit }) {
         // dom
         const input = ref<HTMLElement | null>(null);
         const reference = ref<HTMLElement | null>(null);
         const dropdown = ref(null);
+        const menu = ref(null);
 
         // vm
         const { proxy }: any = getCurrentInstance();
@@ -182,6 +262,11 @@ export default defineComponent({
             capture: boolean;
             selected: Array<any>;
             query: string;
+            validDataStr: string;
+            isLoadedChildren: boolean;
+            tmpSelected: Array<any>;
+            updatingValue: boolean;
+            isValueNull: boolean
         }>({
             /**
              * 是否显示菜单
@@ -190,7 +275,7 @@ export default defineComponent({
              */
             visibleMenu: false,
             /**
-             * 当前的 value
+             * 当前的value
              *
              * @type {Array}
              */
@@ -213,6 +298,45 @@ export default defineComponent({
              * @type {String}
              */
             query: '',
+            /**
+             * 有效数据流
+             *
+             * @type {String}
+             */
+            validDataStr: '',
+            /**
+             * 加载子项
+             *
+             * @type {Boolean}
+             */
+            isLoadedChildren: false,
+            /**
+             * 临时选择
+             *
+             * @type {Array}
+             */
+            tmpSelected: [],
+            /**
+             * 修复 changeOnSelect 类型中的设置值
+             *
+             * @type {Boolean}
+             */
+            updatingValue: false,
+            /**
+             * 解决 value 置为 null 时，$emit:input [] 而不是 null
+             *
+             * @type {Boolean}
+             */
+            isValueNull: false,
+        });
+
+        // onMounted
+        onMounted(() => {
+            // 有效数据流
+            data.validDataStr = JSON.stringify(getValidData(props.options));
+
+            // 更新选项
+            updateSelected(true);
         });
 
         // computed
@@ -249,11 +373,21 @@ export default defineComponent({
                 : props.placeholder;
         });
 
+        // 下拉框样式
+        const dropdownClass = computed(() => {
+            return {
+                [`${prefixCls}-dropdown--transfer`]: props.transfer,
+                [props.transferClassName]: props.transferClassName,
+            };
+        });
+
         // methods
 
         // 点击外部
-        const handleClickOutside = () => {
-            data.visibleMenu = true;
+        const handleClickOutside = (event) => {
+            console.log('点击外部');
+
+            data.visibleMenu = false;
         };
 
         // 输入框数据改变
@@ -290,14 +424,196 @@ export default defineComponent({
             }
         };
 
+        // 结果变化
+        const handleResultChange = (params) => {
+            // lastValue: 是点击的最终值
+            const lastValue = params.lastValue;
+            // fromInit: 这是从更新值发出的
+            const fromInit = params.fromInit;
+            const changeOnSelect = params.changeOnSelect;
+
+            if (lastValue || changeOnSelect) {
+                const oldVal = JSON.stringify(data.currentValue);
+
+                data.selected = data.tmpSelected;
+
+                let newVal = [];
+                data.selected.forEach((item) => {
+                    newVal.push(item.value);
+                });
+
+                if (!fromInit) {
+                    data.updatingValue = true;
+                    data.currentValue = newVal;
+
+                    // 发送事件
+                    emitValue(data.currentValue, oldVal);
+                }
+            }
+
+            // 选择最后一项
+            if (lastValue && !fromInit) {
+                console.log('??关闭', data.currentValue);
+
+                handleClose();
+            }
+        };
+
         // 获取焦点
         const onFocus = () => {
             data.visibleMenu = true;
+            console.log('获取焦点');
 
             // if (!data.currentValue.length) {
             // this.broadcast('Caspanel', 'on-clear');
             // }
         };
+
+        // 排除 loading 后的 data，避免重复触发 updateSelect
+        const getValidData = (data) => {
+            function deleteData(item) {
+                const new_item = Object.assign({}, item);
+                if ('loading' in new_item) {
+                    delete new_item.loading;
+                }
+
+                if ('__value' in new_item) {
+                    delete new_item.__value;
+                }
+
+                if ('__label' in new_item) {
+                    delete new_item.__label;
+                }
+
+                if ('children' in new_item && new_item.children.length) {
+                    new_item.children = new_item.children.map((i) =>
+                        deleteData(i)
+                    );
+                }
+                return new_item;
+            }
+
+            return data.map((item) => deleteData(item));
+        };
+
+        // 更新选项
+        const updateSelected = (
+            init: boolean = false,
+            changeOnSelectDataChange: boolean = false
+        ) => {
+            // changeOnSelectDataChange 用于在数据更改和设置值时进行 changeOnSelect
+            if (!props.changeOnSelect || init || changeOnSelectDataChange) {
+                menu.value.handleFindSelected({
+                    value: data.currentValue,
+                });
+
+                console.log('更新选项', data.currentValue);
+            }
+        };
+
+        // 更新结果
+        const updateResult = (result) => {
+            data.tmpSelected = result;
+        };
+
+        // 发送事件
+        const emitValue = (val, oldVal) => {
+            if (JSON.stringify(val) !== oldVal) {
+                emit(
+                    'on-change',
+                    data.currentValue,
+                    JSON.parse(JSON.stringify(data.selected))
+                );
+            }
+        };
+
+        // 监听菜单打开
+        watch(
+            () => data.visibleMenu,
+            (value) => {
+                if (value) {
+                    // 有当前数据
+                    if (data.currentValue.length) {
+                        updateSelected();
+                    }
+
+                    // if (this.transfer) {
+                    //     this.$refs.drop.update();
+                    // }
+                    // this.broadcast('Drop', 'on-update-popper');
+                }
+                // else {
+                //     if (this.filterable) {
+                //         this.query = '';
+                //         this.$refs.input.currentValue = '';
+                //     }
+                //     if (this.transfer) {
+                //         this.$refs.drop.destroy();
+                //     }
+                //     this.broadcast('Drop', 'on-destroy-popper');
+                // }
+                // this.$emit('on-visible-change', val);
+            }
+        );
+
+        // 监听 modelValue
+        watch(
+            () => props.modelValue,
+            (value) => {}
+        );
+
+        // 监听当前的value
+        watch(
+            () => data.currentValue,
+            (value) => {
+                // if (this.isValueNull) {
+                //     this.isValueNull = false;
+                //     this.$emit('input', null);
+                // } else {
+                //     this.$emit('input', this.currentValue);
+                // }
+                // if (this.updatingValue) {
+                //     this.updatingValue = false;
+                //     return;
+                // }
+                // this.updateSelected(true);
+            }
+        );
+
+        // 监听可选项的数据源
+        watch(
+            () => props.options,
+            () => {
+                const validDataStr = JSON.stringify(
+                    getValidData(props.options)
+                );
+
+                // 数据流不一样
+                if (validDataStr !== data.validDataStr) {
+                    data.validDataStr = validDataStr;
+
+                    if (!data.isLoadedChildren) {
+                        nextTick(() =>
+                            updateSelected(false, props.changeOnSelect)
+                        );
+                    }
+
+                    // 加载子项
+                    data.isLoadedChildren = false;
+                }
+            },
+            {
+                deep: true,
+            }
+        );
+
+        watch(
+            () => data.visibleMenu,
+            (value) => {
+                console.log('value');
+                console.log(value);
+            }
+        );
 
         // provide
         provide(
@@ -308,6 +624,18 @@ export default defineComponent({
             })
         );
 
+        // provide
+        provide(
+            'ivue-cascader',
+            reactive({
+                props,
+                dropdown,
+                data,
+                updateResult,
+                handleResultChange,
+            })
+        );
+
         return {
             prefixCls,
 
@@ -315,6 +643,7 @@ export default defineComponent({
             input,
             reference,
             dropdown,
+            menu,
 
             // data
             data,
@@ -324,6 +653,7 @@ export default defineComponent({
             displayRender,
             displayInputRender,
             inputPlaceholder,
+            dropdownClass,
 
             // methods
             handleClickOutside,
@@ -336,6 +666,7 @@ export default defineComponent({
         IvueInput,
         IvueIcon,
         DropDown,
+        IvueCascaderMenu,
     },
 });
 </script>

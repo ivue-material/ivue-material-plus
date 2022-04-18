@@ -2,7 +2,7 @@
     <div>
         <h1>基础用法</h1>
         <div>
-            <ivue-cascader :data="data" v-model="value1">
+            <ivue-cascader :options="data" v-model="value1">
             </ivue-cascader>
             {{value1}}
         </div>

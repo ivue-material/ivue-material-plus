@@ -1,0 +1,270 @@
+<template>
+    <span>
+        <ul v-if="options && options.length" :class="prefixCls">
+            <menu-item
+                v-for="(item, index) in options"
+                :item="item"
+                :tmpItem="data.tmpItem"
+                :key="getKey(index)"
+                @click="handleClickItem"
+            ></menu-item>
+        </ul>
+        <ivue-cascader-menu
+            :options="data.sublist"
+            :disabled="disabled"
+            :trigger="trigger"
+            :changeOnSelect="changeOnSelect"
+            v-if="data.sublist && data.sublist.length"
+        ></ivue-cascader-menu>
+    </span>
+</template>
+
+<script lang='ts'>
+import {
+    defineComponent,
+    reactive,
+    computed,
+    ref,
+    getCurrentInstance,
+    provide,
+    watch,
+    nextTick,
+    onMounted,
+    inject,
+} from 'vue';
+import MenuItem from './menu-item.vue';
+
+const prefixCls = 'ivue-cascader-menu';
+
+let key = 1;
+
+export default defineComponent({
+    name: prefixCls,
+    props: {
+        /**
+         * 可选项的数据源
+         *
+         * @type {Array}
+         */
+        options: {
+            type: Array,
+            default() {
+                return [];
+            },
+        },
+        /**
+         * 是否禁用选择组件
+         *
+         * @type {Boolean}
+         */
+        disabled: {
+            type: Boolean,
+            default: false,
+        },
+        /**
+         * 当此项为 true 时，点选每级菜单选项值都会发生变化
+         *
+         * @type {Boolean}
+         */
+        changeOnSelect: {
+            type: Boolean,
+            default: false,
+        },
+        /**
+         * 次级菜单展开方式，可选值为 click 或 hover
+         *
+         * @type {String}
+         */
+        trigger: {
+            type: String,
+        },
+    },
+    setup(props: any) {
+        // inject
+        const cascader: any = inject('ivue-cascader');
+
+        // data
+        const data: any = reactive<{
+            tmpItem: object;
+            sublist: Array<any>;
+        }>({
+            // 临时item
+            tmpItem: {},
+            // 子列表
+            sublist: [],
+        });
+
+        // methods
+
+        // 获取key
+        const getKey = () => {
+            return key++;
+        };
+
+        // 获取基础项
+        const getBaseItem = (item) => {
+            let backItem = Object.assign({}, item);
+
+            if (backItem.children) {
+                delete backItem.children;
+            }
+
+            return backItem;
+        };
+
+        // 发现选择项
+        const handleFindSelected = (params) => {
+            const val = params.value;
+            let value = [...val];
+
+            for (let i = 0; i < value.length; i++) {
+                for (let j = 0; j < props.options.length; j++) {
+                    if (value[i] === props.options[j].value) {
+                        // 点击当前选项
+                        handleTriggerItem(props.options[j], true);
+
+                        value.splice(0, 1);
+
+                        nextTick(() => {
+                            handleFindSelected({
+                                value: value,
+                            });
+                        });
+
+                        return false;
+                    }
+                }
+            }
+        };
+
+        // 当前点击的选项
+        const handleTriggerItem = (
+            item: any,
+            fromInit: boolean = false,
+            fromUser: boolean = false
+        ) => {
+            // 禁用
+            if (item.disabled) {
+                return;
+            }
+
+            // 没有loading 没有子项
+            if (item.loading !== undefined && !item.children.length) {
+                if (cascader.props.loadData) {
+                    cascader.loadData(item, () => {
+                        // 加载子项
+                        if (fromUser) {
+                            cascader.data.isLoadedChildren = true;
+                        }
+
+                        // 有子项
+                        if (item.children.length) {
+                            handleTriggerItem(item);
+                        }
+                    });
+
+                    return;
+                }
+            }
+
+            // return value back recursion  // 向上递归，设置临时选中值（并非真实选中）
+            const backItem = getBaseItem(item);
+
+            // 点选每级菜单选项值都会发生变化
+            if (
+                props.changeOnSelect ||
+                backItem.label !== data.tmpItem.label ||
+                backItem.value !== data.tmpItem.value ||
+                (backItem.label === data.tmpItem.label &&
+                    backItem.value === data.tmpItem.value)
+            ) {
+                data.tmpItem = backItem;
+
+                // 更新结果
+                cascader.updateResult([backItem]);
+            }
+
+            // 有子选项
+            if (item.children && item.children.length) {
+                // 子列表
+                data.sublist = item.children;
+
+                // 结果变化
+                cascader.handleResultChange({
+                    lastValue: false,
+                    changeOnSelect: props.changeOnSelect,
+                    fromInit: fromInit,
+                });
+
+                // 点选每级菜单选项值都会发生变化
+                if (props.changeOnSelect) {
+                    handleClear(true);
+                }
+            } else {
+                // 子列表
+                data.sublist = [];
+
+                // 结果变化
+                cascader.handleResultChange({
+                    lastValue: true,
+                    changeOnSelect: props.changeOnSelect,
+                    fromInit: fromInit,
+                });
+            }
+
+            // 下拉框更新位置
+            cascader.dropdown.update();
+        };
+
+        // 点击选项
+        const handleClickItem = (item) => {
+            // 次级菜单展开方式 hover
+            if (
+                props.trigger !== 'click' &&
+                item.children &&
+                item.children.length
+            ) {
+                return;
+            }
+
+            // 当前点击的选项
+            handleTriggerItem(item, false, true);
+        };
+
+        // 清除数据
+        const handleClear = (deep = false) => {
+            data.sublist = [];
+            data.tmpItem = {};
+
+            if (deep) {
+                handleClear(true);
+            }
+        };
+
+        // 监听可选项的数据源
+        watch(
+            () => props.options,
+            () => {
+                console.log('tmpItem', data.tmpItem)
+                data.sublist = [];
+                // data.tmpItem = {};
+            }
+        );
+
+        return {
+            prefixCls,
+
+            // data
+            data,
+
+            // methods
+            getKey,
+            handleClickItem,
+            handleFindSelected,
+        };
+    },
+    components: {
+        MenuItem,
+    },
+});
+</script>
