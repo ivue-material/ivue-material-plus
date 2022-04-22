@@ -85,7 +85,7 @@ export default defineComponent({
     name: prefixCls,
     // 注册局部指令
     directives: { Outside, TransferDom },
-    emits: ['on-change'],
+    emits: ['on-change', 'update:modelValue'],
     props: {
         /**
          * 可选项的数据源
@@ -266,7 +266,7 @@ export default defineComponent({
             isLoadedChildren: boolean;
             tmpSelected: Array<any>;
             updatingValue: boolean;
-            isValueNull: boolean
+            isValueNull: boolean;
         }>({
             /**
              * 是否显示菜单
@@ -323,7 +323,7 @@ export default defineComponent({
              */
             updatingValue: false,
             /**
-             * 解决 value 置为 null 时，$emit:input [] 而不是 null
+             * 解决 value 置为 null 时，$emit:update:modelValue [] 而不是 null
              *
              * @type {Boolean}
              */
@@ -384,7 +384,7 @@ export default defineComponent({
         // methods
 
         // 点击外部
-        const handleClickOutside = (event) => {
+        const handleClickOutside = () => {
             console.log('点击外部');
 
             data.visibleMenu = false;
@@ -432,9 +432,11 @@ export default defineComponent({
             const fromInit = params.fromInit;
             const changeOnSelect = params.changeOnSelect;
 
+            // 点选每级菜单选项值都会发生变化
             if (lastValue || changeOnSelect) {
                 const oldVal = JSON.stringify(data.currentValue);
 
+                console.log('?点选每级菜单选项值都会发生变化?');
                 data.selected = data.tmpSelected;
 
                 let newVal = [];
@@ -453,8 +455,6 @@ export default defineComponent({
 
             // 选择最后一项
             if (lastValue && !fromInit) {
-                console.log('??关闭', data.currentValue);
-
                 handleClose();
             }
         };
@@ -464,9 +464,10 @@ export default defineComponent({
             data.visibleMenu = true;
             console.log('获取焦点');
 
-            // if (!data.currentValue.length) {
-            // this.broadcast('Caspanel', 'on-clear');
-            // }
+            // 清除带单数据
+            if (!data.currentValue.length) {
+                menu.value.handleClear();
+            }
         };
 
         // 排除 loading 后的 data，避免重复触发 updateSelect
@@ -513,6 +514,7 @@ export default defineComponent({
 
         // 更新结果
         const updateResult = (result) => {
+            console.log(result);
             data.tmpSelected = result;
         };
 
@@ -533,6 +535,7 @@ export default defineComponent({
             (value) => {
                 if (value) {
                     // 有当前数据
+                    console.log('data.currentValue', data.currentValue)
                     if (data.currentValue.length) {
                         updateSelected();
                     }
@@ -566,17 +569,24 @@ export default defineComponent({
         watch(
             () => data.currentValue,
             (value) => {
-                // if (this.isValueNull) {
-                //     this.isValueNull = false;
-                //     this.$emit('input', null);
-                // } else {
-                //     this.$emit('input', this.currentValue);
-                // }
-                // if (this.updatingValue) {
-                //     this.updatingValue = false;
-                //     return;
-                // }
-                // this.updateSelected(true);
+                console.log(value);
+
+                // 解决 value 置为 null 时，$emit:update:modelValue [] 而不是 null
+                if (data.isValueNull) {
+                    data.isValueNull = false;
+
+                    emit('update:modelValue', null);
+                } else {
+                    emit('update:modelValue', value);
+                }
+
+                if (data.updatingValue) {
+                    data.updatingValue = false;
+                    return;
+                }
+
+                // 更新选项
+                updateSelected(true);
             }
         );
 
@@ -660,6 +670,7 @@ export default defineComponent({
             handleInput,
             handleFocus,
             handleToggleOpen,
+            updateResult
         };
     },
     components: {

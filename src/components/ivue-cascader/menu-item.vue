@@ -1,5 +1,5 @@
 <template>
-    <li :class="classes" @click.stop="handleClickItem">
+    <li :class="classes" @click.stop="handleClickItem" @mouseenter.stop="handleHoverItem">
         {{ item.label }}
         <ivue-icon v-show="showArrow">{{ childrenIcon }}</ivue-icon>
     </li>
@@ -23,7 +23,7 @@ const prefixCls = 'ivue-cascader-menu--item';
 
 export default defineComponent({
     name: prefixCls,
-    emits: ['click'],
+    emits: ['click', 'mouseenter'],
     props: {
         /**
          * item
@@ -61,6 +61,7 @@ export default defineComponent({
                 {
                     [`${prefixCls}-active`]:
                         props.tmpItem.value === props.item.value,
+                    [`${prefixCls}-disabled`]: props.item.disabled,
                 },
             ];
         });
@@ -74,8 +75,15 @@ export default defineComponent({
         });
 
         // methods
+
+        // 点击
         const handleClickItem = () => {
             emit('click', props.item);
+        };
+
+        // 鼠标移动
+        const handleHoverItem = () => {
+            emit('mouseenter', props.item);
         };
 
         return {
@@ -87,6 +95,7 @@ export default defineComponent({
 
             // methods
             handleClickItem,
+            handleHoverItem,
         };
     },
 });

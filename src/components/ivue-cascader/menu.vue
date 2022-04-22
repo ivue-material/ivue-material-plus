@@ -7,6 +7,7 @@
                 :tmpItem="data.tmpItem"
                 :key="getKey(index)"
                 @click="handleClickItem"
+                @mouseenter="handleHoverItem"
             ></menu-item>
         </ul>
         <ivue-cascader-menu
@@ -80,6 +81,9 @@ export default defineComponent({
         },
     },
     setup(props: any) {
+        // vm
+        const { ctx }: any = getCurrentInstance();
+
         // inject
         const cascader: any = inject('ivue-cascader');
 
@@ -87,11 +91,14 @@ export default defineComponent({
         const data: any = reactive<{
             tmpItem: object;
             sublist: Array<any>;
+            result: Array<any>;
         }>({
             // 临时item
             tmpItem: {},
             // 子列表
             sublist: [],
+            // 结果
+            result: [],
         });
 
         // methods
@@ -181,7 +188,7 @@ export default defineComponent({
                 data.tmpItem = backItem;
 
                 // 更新结果
-                cascader.updateResult([backItem]);
+                emitUpdate([backItem]);
             }
 
             // 有子选项
@@ -231,6 +238,20 @@ export default defineComponent({
             handleTriggerItem(item, false, true);
         };
 
+        // 鼠标hover
+        const handleHoverItem = (item) => {
+            if (
+                props.trigger !== 'hover' ||
+                !item.children ||
+                !item.children.length
+            ) {
+                return;
+            }
+
+            // 当前点击的选项
+            handleTriggerItem(item, false, true);
+        };
+
         // 清除数据
         const handleClear = (deep = false) => {
             data.sublist = [];
@@ -241,11 +262,28 @@ export default defineComponent({
             }
         };
 
+        // 更新结果
+        const emitUpdate = (result) => {
+            const name = ctx.$parent.$options.name;
+
+            if (name === prefixCls) {
+                ctx.$parent.updateResult(result);
+            } else {
+                cascader.updateResult(result);
+            }
+        };
+
+        // 更新结果
+        const updateResult = (item) => {
+            data.result = [data.tmpItem].concat(item);
+
+            emitUpdate(data.result);
+        };
+
         // 监听可选项的数据源
         watch(
             () => props.options,
             () => {
-                console.log('tmpItem', data.tmpItem)
                 data.sublist = [];
                 // data.tmpItem = {};
             }
@@ -260,7 +298,10 @@ export default defineComponent({
             // methods
             getKey,
             handleClickItem,
+            handleHoverItem,
             handleFindSelected,
+            handleClear,
+            updateResult,
         };
     },
     components: {

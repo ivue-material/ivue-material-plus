@@ -107,11 +107,24 @@ $input: 'ivue-input';
         transition: none;
       }
 
-
+      // 激活
       &-active {
         background: $primary-color;
         color: $white-color;
       }
+
+      // 禁用
+      &-disabled {
+        color: $input-disabled-color;
+        cursor: $cursor-disabled;
+
+        &:hover {
+          color: $input-disabled-color;
+          background-color: $white-color;
+          cursor: $cursor-disabled;
+        }
+      }
+
     }
   }
 
