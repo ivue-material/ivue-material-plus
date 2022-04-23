@@ -53,43 +53,31 @@
                             `${prefixCls}-icon-clear`,
                             showSuffix ? 'is-suffix' : '',
                         ]"
-                    >
-                        {{ clearIcon }}
-                    </ivue-icon>
+                    >{{ clearIcon }}</ivue-icon>
                 </div>
                 <!-- 字数统计 -->
-                <span :class="`${prefixCls}-word-count`" v-if="showWordLimit"
-                    >{{ textLength }}/{{ upperLimit }}</span
-                >
+                <span
+                    :class="`${prefixCls}-word-count`"
+                    v-if="showWordLimit"
+                >{{ textLength }}/{{ upperLimit }}</span>
                 <!-- 是否显示密码 -->
                 <div
                     :class="[`${prefixCls}-suffix`, `${prefixCls}-password`]"
                     v-if="password"
                     @click="handleShowPassword"
                 >
-                    <i class="ivue-icon" v-if="showPassword">
-                        {{ passwordIcon.on }}
-                    </i>
+                    <i class="ivue-icon" v-if="showPassword">{{ passwordIcon.on }}</i>
                     <i class="ivue-icon" v-else>{{ passwordIcon.off }}</i>
                 </div>
                 <!-- 尾部图标 -->
-                <span
-                    :class="[`${prefixCls}-suffix`]"
-                    v-if="showSuffix"
-                    @click.stop="handleSuffix"
-                >
+                <span :class="[`${prefixCls}-suffix`]" v-if="showSuffix" @click.stop="handleSuffix">
                     <slot name="suffix">
                         <i class="ivue-icon">{{ suffix }}</i>
                     </slot>
                 </span>
                 <!-- 搜索型输入框 -->
                 <template v-if="search && enterButton === false">
-                    <i
-                        :class="[`${prefixCls}-icon`, 'ivue-icon']"
-                        @click="handleSearch"
-                    >
-                        search
-                    </i>
+                    <i :class="[`${prefixCls}-icon`, 'ivue-icon']" @click="handleSearch">search</i>
                 </template>
                 <template v-else-if="search && enterButton">
                     <div
@@ -99,9 +87,7 @@
                         ]"
                         @click="handleSearch"
                     >
-                        <i :class="['ivue-icon']" v-if="enterButton === true">
-                            search
-                        </i>
+                        <i :class="['ivue-icon']" v-if="enterButton === true">search</i>
                         <template v-else>{{ enterButton }}</template>
                     </div>
                 </template>
@@ -139,9 +125,10 @@
                 ref="textarea"
             ></textarea>
             <!-- 字数统计 -->
-            <span :class="`${prefixCls}-word-count`" v-if="showWordLimit"
-                >{{ textLength }}/{{ upperLimit }}</span
-            >
+            <span
+                :class="`${prefixCls}-word-count`"
+                v-if="showWordLimit"
+            >{{ textLength }}/{{ upperLimit }}</span>
         </template>
     </div>
 </template>
@@ -449,6 +436,15 @@ export default defineComponent({
             type: Boolean,
             default: true,
         },
+        /**
+         * 是否使用纯value
+         *
+         * @type {Boolean}
+         */
+        isValue: {
+            type: Boolean,
+            default: false,
+        },
     },
     // 组合式 API
     setup(props: any, { emit }) {
@@ -462,9 +458,9 @@ export default defineComponent({
         const showPassword = ref(false);
 
         // ref = textarea
-        const textarea = ref(null);
+        const textarea = ref<HTMLElement | any>(null);
         // ref = input
-        const input = ref(null);
+        const input = ref<HTMLElement | any>(null);
 
         // computed
 
@@ -534,7 +530,7 @@ export default defineComponent({
         };
 
         // 设置当前值
-        const setCurrentValue = (value) => {
+        const setCurrentValue = (value: string) => {
             if (value === currentValue.value) {
                 return;
             }
@@ -545,11 +541,11 @@ export default defineComponent({
 
             currentValue.value = value;
 
-            // ensure native input value is controlled
-            // see: https://github.com/ElemeFE/element/issues/12850
-            nextTick(() => {
-                setNativeInputValue();
-            });
+            if (!props.isValue) {
+                nextTick(() => {
+                    setNativeInputValue();
+                });
+            }
         };
 
         // 自适应内容高度，仅在 textarea 类型下有效，可传入对象，
@@ -606,17 +602,20 @@ export default defineComponent({
 
             setCurrentValue('');
 
-            emit('on-change', { target: { value: '' } });
+            emit('on-change', '');
         };
 
         // 获取焦点
         const focus = (option) => {
             const $el =
                 props.type === 'textarea' ? textarea.value : input.value;
+
+            // 获取焦点
             $el.focus(option);
 
             // 选择内容
             const { cursor } = option || {};
+
             if (cursor) {
                 const len = $el.value.length;
 
@@ -635,15 +634,18 @@ export default defineComponent({
 
         // 是否显示密码
         const handleShowPassword = () => {
+            // 是否禁用
             if (props.disabled) {
                 return false;
             }
 
             showPassword.value = !showPassword.value;
 
+            // 焦点
             focus(null);
 
             const len = currentValue.value.length;
+
             setTimeout(() => {
                 input.value.setSelectionRange(len, len);
             }, 0);
@@ -670,25 +672,26 @@ export default defineComponent({
 
         // native input value is set explicitly
         // do not use v-model / :value in template
-        // see: https://github.com/ElemeFE/element/issues/14521
         watch(nativeInputValue, () => {
             setNativeInputValue();
         });
 
         // when change between <input> and <textarea>,
         // update DOM dependent value and styles
-        // https://github.com/ElemeFE/element/issues/14857
         watch(
             () => props.type,
             () => {
                 nextTick(() => {
+                    // 更新value
                     setNativeInputValue();
+                    // 自适应内容高度，仅在 textarea 类型下有效，可传入对象，
                     resizeTextarea();
                 });
             }
         );
 
         onMounted(() => {
+            // 自适应内容高度，仅在 textarea 类型下有效，可传入对象，
             resizeTextarea();
         });
 
@@ -800,6 +803,7 @@ export default defineComponent({
                     [`${prefixCls}-content--prepend`]: this.prepend,
                     [`${prefixCls}-content--append`]:
                         this.append || (this.search && this.enterButton),
+                    [`${prefixCls}-content-disabled`]: this.disabled,
                 },
             ];
         },

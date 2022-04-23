@@ -2,17 +2,43 @@ $name: 'ivue-cascader';
 $input: 'ivue-input';
 
 .#{$name} {
-  // position: relative;
   line-height: normal;
-  // font-size: $font-small-size;
-  // width: 100%;
+  position: relative;
 
-  &-rel {
+  // 输入框外层
+  &-input {
     display: inline-block;
     width: 100%;
     position: relative;
+    cursor: pointer;
+
+    // 下拉框第一个图标默认显示
+    &:hover {
+      .#{$name}-clearable {
+        display: inline-block;
+      }
+    }
   }
 
+  &-dropdown {
+    &--transfer {
+      width: auto;
+      padding: 0;
+      white-space: nowrap;
+      overflow: visible;
+
+      .#{$name}-menu--item {
+        padding-right: 24px;
+        transition: all .2s ease-in-out;
+      }
+    }
+
+    &-not-found {
+      width: 200px;
+    }
+  }
+
+  // label
   &-label {
     position: absolute;
     left: 0;
@@ -29,11 +55,37 @@ $input: 'ivue-input';
     font-size: 14px;
   }
 
+
+  // 显示清除图片
+  &-show-clear {
+    &:hover {
+      .#{$name}-arrow:nth-of-type(2) {
+        display: none;
+      }
+    }
+  }
+
   // 下拉图标
   &-arrow {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
     font-size: 18px !important;
     height: 100%;
     transition: all .2s ease-in-out;
+  }
+
+  &-clearable {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    font-size: 18px !important;
+    height: 100%;
+    display: none;
   }
 
   // 输入框
@@ -49,7 +101,6 @@ $input: 'ivue-input';
       transform-origin: center center;
     }
   }
-
 
   .ivue-select-dropdown {
     width: auto;
@@ -82,20 +133,20 @@ $input: 'ivue-input';
       margin: 0;
       line-height: normal;
       padding: 7px 16px;
+      padding-right: 16px;
       clear: both;
       color: #515a6e;
       font-size: 14px !important;
       white-space: nowrap;
       list-style: none;
       cursor: pointer;
-      padding-right: 36px;
       transition: all .2s ease-in-out;
 
       &:hover {
         background: $primary-color;
         color: $white-color;
 
-        .ivue-loading-spinner{
+        .ivue-loading-spinner {
           color: $white-color;
         }
       }
@@ -132,19 +183,36 @@ $input: 'ivue-input';
       // loading
       &-loading {
         position: absolute !important;
-        width: 15px;
-        height: 15px;
-        right: 11px;
+        width: 18px;
+        height: 18px;
+        right: 10px;
         top: 0;
         bottom: 0;
         margin: auto 0;
         overflow: hidden;
 
-        .ivue-loading-mask{
+        .ivue-loading-mask {
           background: none;
         }
       }
 
+    }
+  }
+
+  // 搜索空提示
+  &-not-found {
+    .ivue-select-dropdown {
+      right: 0;
+    }
+  }
+
+  &-not-found-tip {
+    padding: 10px 0;
+    text-align: center;
+    color: $disabled-color;
+
+    &-text {
+      font-size: 14px;
     }
   }
 

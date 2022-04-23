@@ -163,7 +163,7 @@ export default defineComponent({
             // 没有loading 没有子项
             if (item.loading !== undefined && !item.children.length) {
                 if (cascader.props.loadData) {
-                    cascader.loadData(item, () => {
+                    cascader.props.loadData(item, () => {
                         // 加载子项
                         if (fromUser) {
                             cascader.data.isLoadedChildren = true;
@@ -208,9 +208,11 @@ export default defineComponent({
                     fromInit: fromInit,
                 });
 
-                // 点选每级菜单选项值都会发生变化
+                // 点选每级菜单选项值都会发生变化 清除选择的数据
                 if (props.changeOnSelect) {
-                    handleClear(true);
+                   nextTick(() =>{
+                        menu.value.handleClear()
+                   })
                 }
             } else {
                 // 子列表
@@ -223,8 +225,6 @@ export default defineComponent({
                     fromInit: fromInit,
                 });
             }
-
-            emit('on-sublist', data.sublist);
 
             // 下拉框更新位置
             cascader.dropdown.update();
@@ -260,13 +260,9 @@ export default defineComponent({
         };
 
         // 清除数据
-        const handleClear = (deep = false) => {
+        const handleClear = () => {
             data.sublist = [];
             data.tmpItem = {};
-
-            if (deep) {
-                handleClear(true);
-            }
         };
 
         // 更新结果
@@ -292,17 +288,8 @@ export default defineComponent({
             () => props.options,
             () => {
                 data.sublist = [];
-
-                // data.tmpItem = {};
             }
         );
-
-        // // onMounted
-        // onMounted(() => {
-        //     console.log('uid', uid)
-        //     // 添加菜单项节点
-        //     cascader.data.menuOptionsDom.push(proxy);
-        // });
 
         return {
             prefixCls,

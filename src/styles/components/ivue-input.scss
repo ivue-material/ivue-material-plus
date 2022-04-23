@@ -187,6 +187,12 @@ $name: 'ivue-input';
       border-top-left-radius: 0 !important;
     }
 
+    &-disabled {
+      &:hover {
+        border-color: $border-color
+      }
+    }
+
   }
 
   // 密码
@@ -224,7 +230,7 @@ $name: 'ivue-input';
   &[disabled] {
     background-color: #F8F9FD;
     opacity: 1;
-    cursor: not-allowed;
+    cursor: $cursor-disabled !important;
     color: $input-disabled-color;
 
     &:hover {

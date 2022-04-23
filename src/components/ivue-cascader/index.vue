@@ -1,32 +1,41 @@
 <template>
     <div :class="classes" v-outside="handleClickOutside">
         <!-- 输入框 -->
-        <div :class="`${prefixCls}-rel`" ref="reference" @click="handleToggleOpen">
+        <div :class="`${prefixCls}-input`" ref="reference" @click.capture="handleToggleOpen">
             <input type="hidden" :name="name" :value="data.currentValue" />
 
             <slot>
                 <ivue-input
                     :id="id"
+                    :isValue="true"
                     :readonly="!filterable"
                     :disabled="disabled"
                     :modelValue="displayInputRender"
                     :placeholder="inputPlaceholder"
-                    @on-change="handleInput"
+                    @on-change="handleChangeInput"
                     ref="input"
                 >
                     <!-- 下拉图标 -->
                     <template #suffix>
                         <slot name="suffix">
-                            <ivue-icon :class="`${prefixCls}-arrow`">{{ arrowDownIcon }}</ivue-icon>
-                            <!-- <ivue-icon :class="`${prefixCls}-arrow`">{{ clearableIcon }}</ivue-icon> -->
+                            <!--  清除按钮 -->
+                            <ivue-icon
+                                :class="`${prefixCls}-clearable ${clearableIconClass}`"
+                                v-show="showCloseIcon"
+                                @click="handleClearSelect"
+                            >{{ clearableIcon }}</ivue-icon>
+                            <!-- 下拉按钮 -->
+                            <ivue-icon
+                                :class="`${prefixCls}-arrow ${arrowDownIconClass}`"
+                            >{{ arrowDownIcon }}</ivue-icon>
                         </slot>
                     </template>
                 </ivue-input>
                 <!-- 是否支持搜索 -->
                 <div
                     :class="`${prefixCls}-label`"
-                    v-show="filterable && data.query === ''"
-                    @click="handleFocus"
+                    v-show="filterable && data.queryData === ''"
+                    @click="handleInputFocus"
                 >{{ displayRender }}</div>
             </slot>
         </div>
@@ -49,8 +58,15 @@
                         :changeOnSelect="changeOnSelect"
                         :trigger="trigger"
                         ref="menu"
-                        v-show="!filterable || (filterable && query === '')"
+                        v-show="!filterable || (filterable && data.queryData === '')"
                     ></ivue-cascader-menu>
+                    <!-- 当搜索列表为空时显示的内容 -->
+                    <ul
+                        :class="`${prefixCls}-not-found-tip`"
+                        v-show="(filterable && data.queryData !== '' && !querySelections.length) || !options.length"
+                    >
+                        <li :class="`${prefixCls}-not-found-tip-text`">{{ notFoundText }}</li>
+                    </ul>
                 </div>
             </drop-down>
         </transition>
@@ -179,6 +195,15 @@ export default defineComponent({
             default: 'keyboard_arrow_down',
         },
         /**
+         * 下拉图标Class
+         *
+         * @type {Boolean}
+         */
+        arrowDownIconClass: {
+            type: String,
+            default: '',
+        },
+        /**
          * 清除按钮图标
          *
          * @type {Boolean}
@@ -186,6 +211,15 @@ export default defineComponent({
         clearableIcon: {
             type: String,
             default: 'cancel',
+        },
+        /**
+         * 清除按钮图标Class
+         *
+         * @type {Boolean}
+         */
+        clearableIconClass: {
+            type: String,
+            default: '',
         },
         /**
          * 开启 transfer 时，给浮层添加额外的 class 名称
@@ -244,6 +278,24 @@ export default defineComponent({
         loadData: {
             type: Function,
         },
+        /**
+         * 清除按钮
+         *
+         * @type {Boolean}
+         */
+        clearable: {
+            type: Boolean,
+            default: true,
+        },
+        /**
+         * 当搜索列表为空时显示的内容
+         *
+         * @type {String}
+         */
+        notFoundText: {
+            type: String,
+            default: '无匹配数据',
+        },
     },
     setup(props: any, { emit }) {
         // dom
@@ -254,7 +306,6 @@ export default defineComponent({
 
         // vm
         const { proxy }: any = getCurrentInstance();
-        const vm: any = getCurrentInstance();
 
         // data
         const data: any = reactive<{
@@ -262,13 +313,12 @@ export default defineComponent({
             currentValue: Array<any>;
             capture: boolean;
             selected: Array<any>;
-            query: string;
+            queryData: string;
             validDataStr: string;
             isLoadedChildren: boolean;
             tmpSelected: Array<any>;
             updatingValue: boolean;
             isValueNull: boolean;
-            menuOptionsDom: Array<any>;
         }>({
             /**
              * 是否显示菜单
@@ -299,7 +349,7 @@ export default defineComponent({
              *
              * @type {String}
              */
-            query: '',
+            queryData: '',
             /**
              * 有效数据流
              *
@@ -330,12 +380,6 @@ export default defineComponent({
              * @type {Boolean}
              */
             isValueNull: false,
-            /**
-             * 菜单项节点
-             *
-             * @type {Array}
-             */
-            menuOptionsDom: [],
         });
 
         // onMounted
@@ -355,6 +399,12 @@ export default defineComponent({
                 `${prefixCls}`,
                 {
                     [`${prefixCls}-visible`]: data.visibleMenu,
+                    [`${prefixCls}-show-clear`]: showCloseIcon.value,
+                    [`${prefixCls}-disabled`]: props.disabled,
+                    [`${prefixCls}-not-found`]:
+                        props.filterable &&
+                        data.queryData !== '' &&
+                        !querySelections.value.length,
                 },
             ];
         });
@@ -384,9 +434,90 @@ export default defineComponent({
         // 下拉框样式
         const dropdownClass = computed(() => {
             return {
+                [`${prefixCls}-dropdown-not-found`]:
+                    props.filterable &&
+                    data.queryData !== '' &&
+                    !querySelections.value.length,
                 [`${prefixCls}-dropdown--transfer`]: props.transfer,
                 [props.transferClassName]: props.transferClassName,
             };
+        });
+
+        // 显示清除按钮
+        const showCloseIcon = computed(() => {
+            return (
+                data.currentValue &&
+                data.currentValue.length &&
+                props.clearable &&
+                !props.disabled
+            );
+        });
+
+        // 获取查询的数据
+        const querySelections = computed(() => {
+            // 是否支持搜索
+            if (!props.filterable) {
+                return;
+            }
+
+            let selections = [];
+
+            function getSelections(
+                arr: Array<any>,
+                label: string,
+                value: string
+            ) {
+                arr.forEach((item) => {
+                    // label
+                    item.__label = label
+                        ? `${label} / ${item.label}`
+                        : item.label;
+
+                    // value
+                    item.__value = value
+                        ? `${value},${item.value}`
+                        : item.value;
+
+                    if (item.children && item.children.length) {
+                        getSelections(
+                            item.children,
+                            item.__label,
+                            item.__value
+                        );
+
+                        delete item.__label;
+                        delete item.__value;
+                    } else {
+                        selections.push({
+                            label: item.__label,
+                            value: item.__value,
+                            display: item.__label,
+                            item: item,
+                            disabled: !!item.disabled,
+                        });
+                    }
+                });
+            }
+
+            // 获取选项
+            getSelections(props.options, null, null);
+
+            // 当前匹配项
+            selections = selections
+                .filter((item) => {
+                    return item.label
+                        ? item.label.indexOf(data.queryData) > -1
+                        : false;
+                })
+                .map((item) => {
+                    item.display = item.display.replace(
+                        new RegExp(data.queryData, 'g'),
+                        `<span>${data.queryData}</span>`
+                    );
+                    return item;
+                });
+
+            return selections;
         });
 
         // methods
@@ -397,16 +528,16 @@ export default defineComponent({
         };
 
         // 输入框数据改变
-        const handleInput = (value: string) => {
-            data.query = value;
+        const handleChangeInput = (value: string) => {
+            data.queryData = value;
         };
 
         // 失去焦点
-        const handleFocus = () => {
+        const handleInputFocus = () => {
             input.value.focus();
         };
 
-        // 关闭
+        // 关闭下拉框
         const handleClose = () => {
             data.visibleMenu = false;
         };
@@ -426,7 +557,7 @@ export default defineComponent({
                 }
             } else {
                 // 获取焦点
-                onFocus();
+                handleFocus();
             }
         };
 
@@ -464,8 +595,31 @@ export default defineComponent({
             }
         };
 
+        // 清除选择数据
+        const handleClearSelect = () => {
+            // 是否禁用选择组件
+            if (props.disabled) {
+                return false;
+            }
+
+            // 当前值
+            const oldVal = JSON.stringify(data.currentValue);
+            data.currentValue = data.selected = data.tmpSelected = [];
+
+            // 发送事件
+            emitValue(data.currentValue, oldVal);
+
+            // 关闭下拉框
+            handleClose();
+
+            setTimeout(() => {
+                // 清除菜单选择数据
+                menu.value.handleClear();
+            }, 300);
+        };
+
         // 获取焦点
-        const onFocus = () => {
+        const handleFocus = () => {
             data.visibleMenu = true;
 
             // 清除带单数据
@@ -547,9 +701,11 @@ export default defineComponent({
                 } else {
                     // 是否支持搜索
                     if (props.filterable) {
-                        // 请求的输入
-                        data.query = '';
-                        input.value.handleClear();
+                        // 请求的输入下拉框动画结束后清除
+                        setTimeout(() => {
+                            data.queryData = '';
+                            input.value.handleClear();
+                        }, 300);
                     }
 
                     // 是否将弹层放置于 body 内，在 Tabs
@@ -639,12 +795,6 @@ export default defineComponent({
             })
         );
 
-        const unregister = (name) => {
-            data.menuDom = data.menuDom.filter((o) => {
-                return o.data.name !== name;
-            });
-        };
-
         // provide
         provide(
             'ivue-cascader',
@@ -654,7 +804,6 @@ export default defineComponent({
                 data,
                 updateResult,
                 handleResultChange,
-                unregister,
             })
         );
 
@@ -676,12 +825,15 @@ export default defineComponent({
             displayInputRender,
             inputPlaceholder,
             dropdownClass,
+            showCloseIcon,
+            querySelections,
 
             // methods
             handleClickOutside,
-            handleInput,
-            handleFocus,
+            handleChangeInput,
+            handleInputFocus,
             handleToggleOpen,
+            handleClearSelect,
             updateResult,
         };
     },
