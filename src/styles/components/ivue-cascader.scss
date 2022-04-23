@@ -94,6 +94,10 @@ $input: 'ivue-input';
       &:hover {
         background: $primary-color;
         color: $white-color;
+
+        .ivue-loading-spinner{
+          color: $white-color;
+        }
       }
 
       .ivue-icon {
@@ -122,6 +126,22 @@ $input: 'ivue-input';
           color: $input-disabled-color;
           background-color: $white-color;
           cursor: $cursor-disabled;
+        }
+      }
+
+      // loading
+      &-loading {
+        position: absolute !important;
+        width: 15px;
+        height: 15px;
+        right: 11px;
+        top: 0;
+        bottom: 0;
+        margin: auto 0;
+        overflow: hidden;
+
+        .ivue-loading-mask{
+          background: none;
         }
       }
 

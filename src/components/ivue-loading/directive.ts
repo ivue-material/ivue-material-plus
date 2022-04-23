@@ -44,7 +44,7 @@ const createInstance = (el, binding) => {
 };
 
 const vLoading = {
-    mounted(el, binding) {
+    beforeMount(el, binding) {
         if (binding.value) {
             createInstance(el, binding);
         }

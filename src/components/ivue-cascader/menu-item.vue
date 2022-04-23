@@ -2,28 +2,24 @@
     <li :class="classes" @click.stop="handleClickItem" @mouseenter.stop="handleHoverItem">
         {{ item.label }}
         <ivue-icon v-show="showArrow">{{ childrenIcon }}</ivue-icon>
+        <!-- loading -->
+        <div :class="`${prefixCls}-loading`" v-ivueloading="true" v-if="showLoading"></div>
     </li>
 </template>
 
 <script lang='ts'>
-import {
-    defineComponent,
-    reactive,
-    computed,
-    ref,
-    getCurrentInstance,
-    provide,
-    watch,
-    nextTick,
-    onMounted,
-} from 'vue';
+import { defineComponent, computed } from 'vue';
 import IvueIcon from '../ivue-icon/index.vue';
+import ivueloading from '../ivue-loading/directive';
 
 const prefixCls = 'ivue-cascader-menu--item';
 
 export default defineComponent({
     name: prefixCls,
     emits: ['click', 'mouseenter'],
+    directives: {
+        ivueloading,
+    },
     props: {
         /**
          * item
@@ -74,6 +70,11 @@ export default defineComponent({
             );
         });
 
+        // loading图标
+        const showLoading = computed(() => {
+            return 'loading' in props.item && props.item.loading;
+        });
+
         // methods
 
         // 点击
@@ -92,11 +93,15 @@ export default defineComponent({
             // computed
             classes,
             showArrow,
+            showLoading,
 
             // methods
             handleClickItem,
             handleHoverItem,
         };
+    },
+    components: {
+        IvueIcon,
     },
 });
 </script>

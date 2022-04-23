@@ -11,6 +11,7 @@
             ></menu-item>
         </ul>
         <ivue-cascader-menu
+            ref="menu"
             :options="data.sublist"
             :disabled="disabled"
             :trigger="trigger"
@@ -20,19 +21,18 @@
     </span>
 </template>
 
+
 <script lang='ts'>
 import {
     defineComponent,
     reactive,
-    computed,
     ref,
     getCurrentInstance,
-    provide,
     watch,
     nextTick,
-    onMounted,
     inject,
 } from 'vue';
+
 import MenuItem from './menu-item.vue';
 
 const prefixCls = 'ivue-cascader-menu';
@@ -41,6 +41,7 @@ let key = 1;
 
 export default defineComponent({
     name: prefixCls,
+    emits: ['on-sublist'],
     props: {
         /**
          * 可选项的数据源
@@ -80,9 +81,11 @@ export default defineComponent({
             type: String,
         },
     },
-    setup(props: any) {
+    setup(props: any, { emit }) {
+        const menu = ref<HTMLElement | any>(null);
+
         // vm
-        const { ctx }: any = getCurrentInstance();
+        const { ctx, proxy, uid }: any = getCurrentInstance();
 
         // inject
         const cascader: any = inject('ivue-cascader');
@@ -133,9 +136,11 @@ export default defineComponent({
                         value.splice(0, 1);
 
                         nextTick(() => {
-                            handleFindSelected({
-                                value: value,
-                            });
+                            if (menu.value) {
+                                menu.value.handleFindSelected({
+                                    value: value,
+                                });
+                            }
                         });
 
                         return false;
@@ -219,6 +224,8 @@ export default defineComponent({
                 });
             }
 
+            emit('on-sublist', data.sublist);
+
             // 下拉框更新位置
             cascader.dropdown.update();
         };
@@ -285,12 +292,22 @@ export default defineComponent({
             () => props.options,
             () => {
                 data.sublist = [];
+
                 // data.tmpItem = {};
             }
         );
 
+        // // onMounted
+        // onMounted(() => {
+        //     console.log('uid', uid)
+        //     // 添加菜单项节点
+        //     cascader.data.menuOptionsDom.push(proxy);
+        // });
+
         return {
             prefixCls,
+            // dom
+            menu,
 
             // data
             data,

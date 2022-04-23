@@ -9,7 +9,7 @@
                     :id="id"
                     :readonly="!filterable"
                     :disabled="disabled"
-                    :value="displayInputRender"
+                    :modelValue="displayInputRender"
                     :placeholder="inputPlaceholder"
                     @on-change="handleInput"
                     ref="input"
@@ -85,7 +85,7 @@ export default defineComponent({
     name: prefixCls,
     // 注册局部指令
     directives: { Outside, TransferDom },
-    emits: ['on-change', 'update:modelValue'],
+    emits: ['on-change', 'update:modelValue', 'on-visible-change'],
     props: {
         /**
          * 可选项的数据源
@@ -247,13 +247,14 @@ export default defineComponent({
     },
     setup(props: any, { emit }) {
         // dom
-        const input = ref<HTMLElement | null>(null);
+        const input = ref<HTMLElement | any>(null);
         const reference = ref<HTMLElement | null>(null);
-        const dropdown = ref(null);
-        const menu = ref(null);
+        const dropdown = ref<HTMLElement | any>(null);
+        const menu = ref<HTMLElement | any>(null);
 
         // vm
         const { proxy }: any = getCurrentInstance();
+        const vm: any = getCurrentInstance();
 
         // data
         const data: any = reactive<{
@@ -267,6 +268,7 @@ export default defineComponent({
             tmpSelected: Array<any>;
             updatingValue: boolean;
             isValueNull: boolean;
+            menuOptionsDom: Array<any>;
         }>({
             /**
              * 是否显示菜单
@@ -328,6 +330,12 @@ export default defineComponent({
              * @type {Boolean}
              */
             isValueNull: false,
+            /**
+             * 菜单项节点
+             *
+             * @type {Array}
+             */
+            menuOptionsDom: [],
         });
 
         // onMounted
@@ -385,8 +393,6 @@ export default defineComponent({
 
         // 点击外部
         const handleClickOutside = () => {
-            console.log('点击外部');
-
             data.visibleMenu = false;
         };
 
@@ -436,7 +442,6 @@ export default defineComponent({
             if (lastValue || changeOnSelect) {
                 const oldVal = JSON.stringify(data.currentValue);
 
-                console.log('?点选每级菜单选项值都会发生变化?');
                 data.selected = data.tmpSelected;
 
                 let newVal = [];
@@ -462,7 +467,6 @@ export default defineComponent({
         // 获取焦点
         const onFocus = () => {
             data.visibleMenu = true;
-            console.log('获取焦点');
 
             // 清除带单数据
             if (!data.currentValue.length) {
@@ -497,7 +501,7 @@ export default defineComponent({
             return data.map((item) => deleteData(item));
         };
 
-        // 更新选项
+        // 更新选项 触发菜单 handleFindSelected 方法
         const updateSelected = (
             init: boolean = false,
             changeOnSelectDataChange: boolean = false
@@ -507,14 +511,11 @@ export default defineComponent({
                 menu.value.handleFindSelected({
                     value: data.currentValue,
                 });
-
-                console.log('更新选项', data.currentValue);
             }
         };
 
         // 更新结果
         const updateResult = (result) => {
-            console.log(result);
             data.tmpSelected = result;
         };
 
@@ -535,42 +536,54 @@ export default defineComponent({
             (value) => {
                 if (value) {
                     // 有当前数据
-                    console.log('data.currentValue', data.currentValue)
                     if (data.currentValue.length) {
                         updateSelected();
                     }
 
-                    // if (this.transfer) {
-                    //     this.$refs.drop.update();
-                    // }
-                    // this.broadcast('Drop', 'on-update-popper');
+                    // 是否将弹层放置于 body 内，在 Tabs
+                    if (props.transfer) {
+                        dropdown.value.update();
+                    }
+                } else {
+                    // 是否支持搜索
+                    if (props.filterable) {
+                        // 请求的输入
+                        data.query = '';
+                        input.value.handleClear();
+                    }
+
+                    // 是否将弹层放置于 body 内，在 Tabs
+                    if (props.transfer) {
+                        dropdown.value.destroy();
+                    }
                 }
-                // else {
-                //     if (this.filterable) {
-                //         this.query = '';
-                //         this.$refs.input.currentValue = '';
-                //     }
-                //     if (this.transfer) {
-                //         this.$refs.drop.destroy();
-                //     }
-                //     this.broadcast('Drop', 'on-destroy-popper');
-                // }
-                // this.$emit('on-visible-change', val);
+
+                emit('on-visible-change', value);
             }
         );
 
         // 监听 modelValue
         watch(
             () => props.modelValue,
-            (value) => {}
+            (value) => {
+                if (value === null) {
+                    data.isValueNull = true;
+                }
+
+                // 有当前数据
+                data.currentValue = value || [];
+
+                // 清除选择的数据
+                if (value === null || !value.length) {
+                    data.selected = [];
+                }
+            }
         );
 
         // 监听当前的value
         watch(
             () => data.currentValue,
             (value) => {
-                console.log(value);
-
                 // 解决 value 置为 null 时，$emit:update:modelValue [] 而不是 null
                 if (data.isValueNull) {
                     data.isValueNull = false;
@@ -617,14 +630,6 @@ export default defineComponent({
             }
         );
 
-        watch(
-            () => data.visibleMenu,
-            (value) => {
-                console.log('value');
-                console.log(value);
-            }
-        );
-
         // provide
         provide(
             'ivue-select',
@@ -633,6 +638,12 @@ export default defineComponent({
                 reference,
             })
         );
+
+        const unregister = (name) => {
+            data.menuDom = data.menuDom.filter((o) => {
+                return o.data.name !== name;
+            });
+        };
 
         // provide
         provide(
@@ -643,6 +654,7 @@ export default defineComponent({
                 data,
                 updateResult,
                 handleResultChange,
+                unregister,
             })
         );
 
@@ -670,7 +682,7 @@ export default defineComponent({
             handleInput,
             handleFocus,
             handleToggleOpen,
-            updateResult
+            updateResult,
         };
     },
     components: {

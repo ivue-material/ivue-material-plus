@@ -2,8 +2,7 @@
     <div>
         <h1>基础用法</h1>
         <div>
-            <ivue-cascader :options="data" v-model="value1">
-            </ivue-cascader>
+            <ivue-cascader :options="data" v-model="value1"></ivue-cascader>
             {{value1}}
         </div>
     </div>
@@ -16,12 +15,18 @@ export default {
             value1: [],
             data: [
                 {
+                    value: 'beijing1',
+                    label: '北京1',
+                    loading: true,
+                },
+                {
                     value: 'beijing',
                     label: '北京',
                     children: [
                         {
                             value: 'gugong',
                             label: '故宫',
+                            disabled: true,
                         },
                         {
                             value: 'tiantan',
@@ -44,6 +49,7 @@ export default {
                                 {
                                     value: 'fuzimiao',
                                     label: '夫子庙',
+                                    disabled: true,
                                 },
                             ],
                         },
@@ -54,10 +60,30 @@ export default {
                                 {
                                     value: 'zhuozhengyuan',
                                     label: '拙政园',
+                                    children: [
+                                        {
+                                            value: '1',
+                                            label: '1',
+                                        },
+                                        {
+                                            value: '2',
+                                            label: '2',
+                                        },
+                                    ],
                                 },
                                 {
                                     value: 'shizilin',
                                     label: '狮子林',
+                                    children: [
+                                        {
+                                            value: '1',
+                                            label: '1',
+                                        },
+                                        {
+                                            value: '2',
+                                            label: '2',
+                                        },
+                                    ],
                                 },
                             ],
                         },

@@ -193,15 +193,6 @@ export default defineComponent({
             default: '',
         },
         /**
-         * 绑定的值，可使用 v-model 双向绑定
-         *
-         * @type {String, Number}
-         */
-        value: {
-            type: [String, Number],
-            default: '',
-        },
-        /*
          * 输入框类型，可选值为 text、password、textarea、url、email、date
          *
          * @type {String}
@@ -462,7 +453,7 @@ export default defineComponent({
     // 组合式 API
     setup(props: any, { emit }) {
         // 当前输入值
-        const currentValue = ref(props.modelValue || props.value);
+        const currentValue = ref(props.modelValue);
 
         // 文本框样式
         const textareaStyles = ref({});
@@ -479,7 +470,7 @@ export default defineComponent({
 
         // 输入的内容
         const nativeInputValue = computed(() => {
-            return props.modelValue || props.value;
+            return props.modelValue;
         });
 
         // 输入上限
@@ -593,7 +584,6 @@ export default defineComponent({
 
             // updated v-model
             emit('update:modelValue', value);
-            emit('input', value);
 
             setCurrentValue(value);
 
@@ -612,7 +602,6 @@ export default defineComponent({
 
         // 清除数据
         const handleClear = () => {
-            emit('input', '');
             emit('update:modelValue', '');
 
             setCurrentValue('');
