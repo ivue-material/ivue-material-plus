@@ -152,8 +152,8 @@ export default defineComponent({
         // 当前点击的选项
         const handleTriggerItem = (
             item: any,
-            fromInit: boolean = false,
-            fromUser: boolean = false
+            fromInit = false,
+            fromUser = false
         ) => {
             // 禁用
             if (item.disabled) {
@@ -210,9 +210,9 @@ export default defineComponent({
 
                 // 点选每级菜单选项值都会发生变化 清除选择的数据
                 if (props.changeOnSelect) {
-                   nextTick(() =>{
-                        menu.value.handleClear()
-                   })
+                    nextTick(() =>{
+                        menu.value.handleClear();
+                    });
                 }
             } else {
                 // 子列表

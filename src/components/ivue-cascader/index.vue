@@ -46,6 +46,7 @@
                 :data-transfer="transfer"
                 :eventsEnabled="eventsEnabled"
                 :class="dropdownClass"
+                :style="dropdownStyle"
                 v-transfer-dom
                 ref="dropdown"
                 v-show="data.visibleMenu"
@@ -60,6 +61,26 @@
                         ref="menu"
                         v-show="!filterable || (filterable && data.queryData === '')"
                     ></ivue-cascader-menu>
+                    <!-- 有数据 -->
+                    <div
+                        :class="`${prefixCls}-dropdown`"
+                        v-show="filterable && data.queryData !== '' && querySelections.length"
+                    >
+                        <ul :class="`${prefixCls}-dropdown--list`">
+                            <li
+                                :class="[
+                                `${prefixCls}-dropdown--item`,
+                                {
+                                    [`${prefixCls}-dropdown--item__disabled`]: item.disabled
+                                }
+                                ]"
+                                v-for="(item, index) in querySelections"
+                                :key="index"
+                                v-html="item.display"
+                                @click="handleSelectItem(item)"
+                            ></li>
+                        </ul>
+                    </div>
                     <!-- 当搜索列表为空时显示的内容 -->
                     <ul
                         :class="`${prefixCls}-not-found-tip`"
@@ -319,6 +340,7 @@ export default defineComponent({
             tmpSelected: Array<any>;
             updatingValue: boolean;
             isValueNull: boolean;
+            filterableSelect: boolean;
         }>({
             /**
              * 是否显示菜单
@@ -380,6 +402,12 @@ export default defineComponent({
              * @type {Boolean}
              */
             isValueNull: false,
+            /**
+             * 过滤选择
+             *
+             * @type {Boolean}
+             */
+            filterableSelect: true,
         });
 
         // onMounted
@@ -440,6 +468,12 @@ export default defineComponent({
                     !querySelections.value.length,
                 [`${prefixCls}-dropdown--transfer`]: props.transfer,
                 [props.transferClassName]: props.transferClassName,
+            };
+        });
+
+        const dropdownStyle = computed(() => {
+            return {
+                display: data.filterableSelect ? 'inline-block' : 'none',
             };
         });
 
@@ -514,6 +548,7 @@ export default defineComponent({
                         new RegExp(data.queryData, 'g'),
                         `<span>${data.queryData}</span>`
                     );
+
                     return item;
                 });
 
@@ -620,12 +655,47 @@ export default defineComponent({
 
         // 获取焦点
         const handleFocus = () => {
+            data.filterableSelect = true;
+
             data.visibleMenu = true;
 
             // 清除带单数据
             if (!data.currentValue.length) {
                 menu.value.handleClear();
             }
+        };
+
+        // 选择搜索选项
+        const handleSelectItem = (item) => {
+            // 禁用
+            if (item.disabled || item.item.disabled) {
+                return false;
+            }
+
+            // 清除搜索内容
+            data.queryData = '';
+
+            // 清除输入框
+            input.value.handleClear();
+
+            const oldVal = JSON.stringify(data.currentValue);
+            data.currentValue = item.value.split(',');
+
+            // 有当前数据
+            if (data.currentValue.length) {
+                updateSelected();
+            }
+
+            // 发送事件
+            emitValue(data.currentValue, oldVal);
+
+            data.filterableSelect = false;
+
+            setTimeout(() => {
+
+                // 关闭弹窗
+                handleClose();
+            });
         };
 
         // 排除 loading 后的 data，避免重复触发 updateSelect
@@ -657,8 +727,8 @@ export default defineComponent({
 
         // 更新选项 触发菜单 handleFindSelected 方法
         const updateSelected = (
-            init: boolean = false,
-            changeOnSelectDataChange: boolean = false
+            init = false,
+            changeOnSelectDataChange = false
         ) => {
             // changeOnSelectDataChange 用于在数据更改和设置值时进行 changeOnSelect
             if (!props.changeOnSelect || init || changeOnSelectDataChange) {
@@ -825,6 +895,7 @@ export default defineComponent({
             displayInputRender,
             inputPlaceholder,
             dropdownClass,
+            dropdownStyle,
             showCloseIcon,
             querySelections,
 
@@ -834,6 +905,7 @@ export default defineComponent({
             handleInputFocus,
             handleToggleOpen,
             handleClearSelect,
+            handleSelectItem,
             updateResult,
         };
     },

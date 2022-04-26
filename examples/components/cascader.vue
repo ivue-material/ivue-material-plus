@@ -5,7 +5,7 @@
             <ivue-cascader :options="data" v-model="value1"></ivue-cascader>
             {{value1}}
         </div>
-        <!-- <h1>默认值</h1>
+        <h1>默认值</h1>
         <div>
             <ivue-cascader :options="data" v-model="value2"></ivue-cascader>
             {{value2}}
@@ -40,7 +40,7 @@
         <div>
             <ivue-cascader :options="data4" v-model="value4" :loadData="loadData"></ivue-cascader>
             {{value4}}
-        </div> -->
+        </div>
         <h1>搜索</h1>
         <div>
             <ivue-cascader :options="data5" v-model="value5" filterable></ivue-cascader>
@@ -232,36 +232,42 @@ export default {
                     loading: false,
                 },
             ],
-            data5: [{
+            data5: [
+                {
                     value: 'beijing',
                     label: '北京',
                     children: [
                         {
                             value: 'gugong',
-                            label: '故宫'
+                            label: '故宫',
+                            disabled: true,
                         },
                         {
                             value: 'tiantan',
-                            label: '天坛'
+                            label: '天坛',
                         },
                         {
                             value: 'wangfujing',
-                            label: '王府井'
-                        }
-                    ]
-                }, {
+                            label: '王府井',
+                        },
+                    ],
+                },
+                {
                     value: 'jiangsu',
                     label: '江苏',
                     children: [
                         {
                             value: 'nanjing',
                             label: '南京',
+                            disabled: true,
+
                             children: [
                                 {
                                     value: 'fuzimiao',
                                     label: '夫子庙',
-                                }
-                            ]
+
+                                },
+                            ],
                         },
                         {
                             value: 'suzhou',
@@ -274,11 +280,12 @@ export default {
                                 {
                                     value: 'shizilin',
                                     label: '狮子林',
-                                }
-                            ]
-                        }
+                                },
+                            ],
+                        },
                     ],
-                }],
+                },
+            ],
         };
     },
     methods: {
@@ -329,7 +336,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.content{
+.content {
     margin-bottom: 300px;
 }
 </style>

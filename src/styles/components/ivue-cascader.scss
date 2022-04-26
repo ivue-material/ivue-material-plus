@@ -1,3 +1,5 @@
+@import "ivue-select";
+
 $name: 'ivue-cascader';
 $input: 'ivue-input';
 
@@ -21,6 +23,8 @@ $input: 'ivue-input';
   }
 
   &-dropdown {
+    padding: 5px 0;
+
     &--transfer {
       width: auto;
       padding: 0;
@@ -30,6 +34,44 @@ $input: 'ivue-input';
       .#{$name}-menu--item {
         padding-right: 24px;
         transition: all .2s ease-in-out;
+      }
+    }
+
+
+    &--list {
+      max-height: 190px;
+      box-sizing: border-box;
+      overflow: auto;
+      min-width: 100%;
+      list-style: none;
+    }
+
+    &--item {
+      display: list-item;
+      position: relative;
+      margin: 0;
+      padding: 7px 16px;
+      clear: both;
+      line-height: normal;
+      font-size: 14px;
+      list-style: none;
+      cursor: pointer;
+      word-break: break-all;
+      align-items: center;
+      color: #4A505E;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+      &:hover {
+        background: $background-color-select-hover;
+      }
+
+      &__disabled {
+        color: $input-disabled-color !important;
+        cursor: $cursor-disabled;
+      }
+
+      span {
+        color: #FF617F;
       }
     }
 
@@ -143,12 +185,11 @@ $input: 'ivue-input';
       transition: all .2s ease-in-out;
 
       &:hover {
-        background: $primary-color;
-        color: $white-color;
+        background: $background-color-select-hover;
 
-        .ivue-loading-spinner {
-          color: $white-color;
-        }
+        // .ivue-loading-spinner {
+        //   color: $white-color;
+        // }
       }
 
       .ivue-icon {
@@ -164,8 +205,8 @@ $input: 'ivue-input';
 
       // 激活
       &-active {
-        background: $primary-color;
-        color: $white-color;
+        color: $primary-color;
+        background: $background-color-select-hover;
       }
 
       // 禁用
