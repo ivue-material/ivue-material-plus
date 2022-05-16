@@ -1,7 +1,4 @@
-import {
-  createWebHashHistory,
-  createRouter
-} from "vue-router";
+import { createWebHashHistory, createRouter } from 'vue-router';
 import Affix from '../components/affix';
 import Input from '../components/input';
 import Icon from '../components/icon';
@@ -27,138 +24,144 @@ import Badge from '../components/badge';
 import DatePicker from '../components/date-picker.vue';
 import Collapse from '../components/collapse.vue';
 import Cascader from '../components/cascader.vue';
+import IvueTooltip from '../components/ivue-tooltip.vue';
 
-const routes = [{
-  path: "/Affix",
-  name: "Affix",
-  component: Affix,
-},
-{
-  path: "/loading-bar",
-  name: "LoadingBar",
-  component: LoadingBar,
-},
-{
-  path: "/Input",
-  name: "Input",
-  component: Input,
-},
-{
-  path: "/Icon",
-  name: "Icon",
-  component: Icon,
-},
-{
-  path: "/Button",
-  name: "Button",
-  component: Button,
-},
-{
-  path: "/Elevation",
-  name: "Elevation",
-  component: Elevation,
-},
-{
-  path: "/Layout",
-  name: "Layout",
-  component: Layout,
-},
-{
-  path: "/List",
-  name: "List",
-  component: List,
-},
-{
-  path: "/Carousel",
-  name: "Carousel",
-  component: Carousel,
-},
-{
-  path: "/Switch",
-  name: "Switch",
-  component: Switch,
-},
-{
-  path: "/bottom-nav",
-  name: "BottomNav",
-  component: BottomNav,
-},
-{
-  path: "/breadcrumb",
-  name: "Breadcrumb",
-  component: Breadcrumb,
-},
-{
-  path: "/select",
-  name: "Select",
-  component: Select,
-},
-{
-  path: "/steps",
-  name: "Steps",
-  component: Steps,
-},
-{
-  path: "/upLoad",
-  name: "UpLoad",
-  component: UpLoad,
-},
-{
-  path: "/progress",
-  name: "Progress",
-  component: Progress,
-},
-{
-  path: "/circle",
-  name: "Circle",
-  component: Circle,
-},
-{
-  path: "/loading",
-  name: "Loading",
-  component: Loading,
-},
-{
-  path: "/notice",
-  name: "Notice",
-  component: Notice,
-},
-{
-  path: "/message",
-  name: "Message",
-  component: Message,
-},
-{
-  path: "/tabs",
-  name: "Tabs",
-  component: Tabs,
-},
-{
-  path: "/badge",
-  name: "Badge",
-  component: Badge,
-},
-{
-  path: "/date-picker",
-  name: "DatePicker",
-  component: DatePicker,
-},
-{
-  path: "/collapse",
-  name: "Collapse",
-  component: Collapse,
-},
-{
-  path: "/cascader",
-  name: "Cascader",
-  component: Cascader,
-},
-
+const routes = [
+  {
+    path: '/Affix',
+    name: 'Affix',
+    component: Affix
+  },
+  {
+    path: '/loading-bar',
+    name: 'LoadingBar',
+    component: LoadingBar
+  },
+  {
+    path: '/Input',
+    name: 'Input',
+    component: Input
+  },
+  {
+    path: '/Icon',
+    name: 'Icon',
+    component: Icon
+  },
+  {
+    path: '/Button',
+    name: 'Button',
+    component: Button
+  },
+  {
+    path: '/Elevation',
+    name: 'Elevation',
+    component: Elevation
+  },
+  {
+    path: '/Layout',
+    name: 'Layout',
+    component: Layout
+  },
+  {
+    path: '/List',
+    name: 'List',
+    component: List
+  },
+  {
+    path: '/Carousel',
+    name: 'Carousel',
+    component: Carousel
+  },
+  {
+    path: '/Switch',
+    name: 'Switch',
+    component: Switch
+  },
+  {
+    path: '/bottom-nav',
+    name: 'BottomNav',
+    component: BottomNav
+  },
+  {
+    path: '/breadcrumb',
+    name: 'Breadcrumb',
+    component: Breadcrumb
+  },
+  {
+    path: '/select',
+    name: 'Select',
+    component: Select
+  },
+  {
+    path: '/steps',
+    name: 'Steps',
+    component: Steps
+  },
+  {
+    path: '/upLoad',
+    name: 'UpLoad',
+    component: UpLoad
+  },
+  {
+    path: '/progress',
+    name: 'Progress',
+    component: Progress
+  },
+  {
+    path: '/circle',
+    name: 'Circle',
+    component: Circle
+  },
+  {
+    path: '/loading',
+    name: 'Loading',
+    component: Loading
+  },
+  {
+    path: '/notice',
+    name: 'Notice',
+    component: Notice
+  },
+  {
+    path: '/message',
+    name: 'Message',
+    component: Message
+  },
+  {
+    path: '/tabs',
+    name: 'Tabs',
+    component: Tabs
+  },
+  {
+    path: '/badge',
+    name: 'Badge',
+    component: Badge
+  },
+  {
+    path: '/date-picker',
+    name: 'DatePicker',
+    component: DatePicker
+  },
+  {
+    path: '/collapse',
+    name: 'Collapse',
+    component: Collapse
+  },
+  {
+    path: '/cascader',
+    name: 'Cascader',
+    component: Cascader
+  },
+  {
+    path: '/tooltip',
+    name: 'Tooltip',
+    component: IvueTooltip
+  }
 ];
 
 const router = createRouter({
   history: createWebHashHistory(),
-  routes,
+  routes
 });
 
 export default router;

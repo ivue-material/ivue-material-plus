@@ -28,6 +28,7 @@ import IvueBadge from './components/ivue-badge';
 import IvueDatePicker from './components/ivue-date-picker';
 import IvueCollapse from './components/ivue-collapse';
 import IvueCascader from './components/ivue-cascader';
+import IvueTooltip from './components/ivue-tooltip';
 
 // 指令
 import Directives from './utils/directives/index';
@@ -61,7 +62,8 @@ export {
     IvueBadge,
     IvueDatePicker,
     IvueCollapse,
-    IvueCascader
+    IvueCascader,
+    IvueTooltip
 };
 
 
@@ -103,6 +105,7 @@ const install = (app: App, opt: InstallOptions = defaultInstallOpt): void => {
     IvueDatePicker(app)
     IvueCollapse(app)
     IvueCascader(app)
+    IvueTooltip(app)
 
     // 全局配置
     app.config.globalProperties.$IVUE = opt;

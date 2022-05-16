@@ -1,0 +1,20 @@
+$name: 'ivue-tooltip';
+
+.#{$name} {
+  display: inline-block;
+
+  &-rel {
+    position: relative;
+    width: inherit;
+  }
+}
+
+.fade-tooltip-enter-active,
+.fade-tooltip-leave-active {
+  transition: opacity .3s cubic-bezier(.25, .8, .50, 1);
+}
+
+.fade-tooltip-enter-from,
+.fade-tooltip-leave-to {
+  opacity: 0;
+}
