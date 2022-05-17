@@ -64,7 +64,7 @@ export default defineComponent({
             default: false,
         },
     },
-    setup(props: any, {}) {
+    setup(props: any) {
         const IvueCollapse: {
             pushExpandable: any;
             removeExpandable: any;
@@ -76,9 +76,9 @@ export default defineComponent({
 
         // data
         const data: any = reactive<{
-            isActive: Boolean;
-            index: Number;
-            mounted: Boolean;
+            isActive: boolean;
+            index: number;
+            mounted: boolean;
         }>({
             /**
              * 是否激活

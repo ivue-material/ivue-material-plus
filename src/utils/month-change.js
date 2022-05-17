@@ -19,4 +19,4 @@ export default (value, sign) => {
       else {
             return `${year}-${Pad(month + sign)}`;
       }
-}
+};

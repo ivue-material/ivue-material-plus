@@ -268,7 +268,7 @@ export default defineComponent({
         // data
         const data = reactive<{
             fileList: Array<any>;
-            dragOver: Boolean;
+            dragOver: boolean;
         }>({
             /**
              * 当前选择状态

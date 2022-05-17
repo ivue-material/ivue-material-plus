@@ -24,7 +24,7 @@ import Badge from '../components/badge';
 import DatePicker from '../components/date-picker.vue';
 import Collapse from '../components/collapse.vue';
 import Cascader from '../components/cascader.vue';
-import IvueTooltip from '../components/ivue-tooltip.vue';
+import Tooltip from '../components/tooltip.vue';
 
 const routes = [
   {
@@ -155,7 +155,7 @@ const routes = [
   {
     path: '/tooltip',
     name: 'Tooltip',
-    component: IvueTooltip
+    component: Tooltip
   }
 ];
 

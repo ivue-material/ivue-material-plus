@@ -14,6 +14,6 @@ const padStart = (string, targetLength, padString) => {
       }
 
       return padString.slice(0, targetLength) + String(string);
-}
+};
 
 export default (n, length = 2) => padStart(n, length, '0');

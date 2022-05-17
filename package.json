@@ -19,6 +19,7 @@
   },
   "author": "qq282126990",
   "dependencies": {
+    "@popperjs/core": "^2.11.5",
     "hex-to-rgba": "^2.0.1",
     "mitt": "^3.0.0",
     "popper.js": "^1.16.1",

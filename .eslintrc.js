@@ -17,9 +17,9 @@ module.exports = {
     "sourceType": "module"
   },
   rules: {
-    "indent": ["error", 4, {
-      "SwitchCase": 1
-    }],
+    // "indent": ["error", 4, {
+    //   "SwitchCase": 1
+    // }],
     "quotes": ["error", "single"],
     "semi": ["error", "always"],
     "vue/jsx-uses-vars": 2,

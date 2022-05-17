@@ -1,11 +1,83 @@
 $name: 'ivue-tooltip';
 
+$bg: #383D47;
+
 .#{$name} {
   display: inline-block;
 
+  // 描述
   &-rel {
     position: relative;
     width: inherit;
+    display: inline-block;
+  }
+
+  // 悬浮框
+  &-popper {
+    // position: absolute;
+    display: block;
+    visibility: visible;
+    font-size: 14px;
+    line-height: 1.5;
+    z-index: 1060;
+
+
+    // top
+    // &[x-placement=top] {
+    //   padding: 5px 0 8px;
+
+    //   .#{$name}-arrow {
+    //     left: 50%;
+    //     margin-left: -5px;
+    //     bottom: 3px;
+    //     border-width: 5px 5px 0;
+    //     border-top-color: $bg;
+    //   }
+    // }
+
+    // bottom
+    &[data-popper-placement=bottom] {
+      padding: 8px 0 5px;
+      bottom: 3px;
+      border-width: 5px 5px 0;
+      border-top-color: $bg;
+
+      .#{$name}-arrow {
+        left: 50%;
+        margin-left: -5px;
+        top: 3px;
+        border-width: 0 5px 5px;
+        border-bottom-color: $bg;
+      }
+    }
+
+  }
+
+  // 内容
+  &-content {}
+
+  // inner
+  &-inner {
+    max-width: 250px;
+    min-height: 34px;
+    padding: 8px 12px;
+    color: #fff;
+    text-align: left;
+    text-decoration: none;
+    background-color: $bg;
+    border-radius: 4px;
+    box-shadow: 0 1px 6px rgb(0 0 0 / 20%);
+    word-break: break-all;
+    overflow: hidden;
+  }
+
+  // arrow
+  &-arrow {
+    position: absolute;
+    width: 0;
+    height: 0;
+    border-color: transparent;
+    border-style: solid;
   }
 }
 

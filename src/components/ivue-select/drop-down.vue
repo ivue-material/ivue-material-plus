@@ -22,13 +22,10 @@ import {
     getCurrentInstance,
     onBeforeUnmount,
 } from 'vue';
-import isServer from '../../utils/isServer';
 import { getStyle } from '../../utils/assist';
 import { transferIndex, transferIncrease } from '../../utils/transfer-queue';
 
-const Popper = isServer
-    ? function () {}
-    : require('popper.js/dist/umd/popper.js'); // eslint-disable-line
+import Popper from 'popper.js/dist/umd/popper.js';
 
 const prefixCls = 'ivue-select-dropdown';
 

@@ -67,13 +67,10 @@ const handle = {
             el.style.paddingTop = el.dataset.oldPaddingTop;
             el.style.paddingBottom = el.dataset.oldPaddingBottom;
       }
-
-
-
-}
+};
 
 const collapseTransition = (props, context) => {
-      return h(Transition, handle, context.slots)
-}
+      return h(Transition, handle, context.slots);
+};
 
-export default collapseTransition
+export default collapseTransition;

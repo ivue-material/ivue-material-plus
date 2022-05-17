@@ -1,5 +1,4 @@
-import IvuePicker from '../../components/ivue-date-picker/ivue-picker';
-import Colorable from './colorable'
+import Colorable from './colorable';
 
 export default {
       name: 'picker',
@@ -40,4 +39,4 @@ export default {
             */
             noTitle: Boolean
       },
-}
+};

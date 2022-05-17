@@ -1,20 +1,11 @@
 import { nextTick } from 'vue';
-import Popper from 'popper.js/dist/umd/popper.js';
+import { createPopper } from '@popperjs/core';
 
 export default {
   emits: ['on-popper-show', 'on-popper-hide', 'on-created', 'update:modelValue'],
   props: {
     reference: Object,
     popper: Object,
-    /**
-    * 是否开启 Popper 的 eventsEnabled 属性，开启可能会牺牲一定的性能
-    *
-    * @type {Boolean}
-    */
-    eventsEnabled: {
-      type: Boolean,
-      default: false,
-    },
     /**
      * 弹窗的展开方向
      *
@@ -56,32 +47,30 @@ export default {
       type: Object,
       default() {
         return {
-          modifiers: {
-            computeStyle: {
-              gpuAcceleration: false,
+          modifiers: [
+            // 这决定了是否使用 GPU 加速样式来定位 popper
+            {
+              name: 'computeStyles',
+              options: {
+                gpuAcceleration: false, // true by default
+              },
             },
-            preventOverflow: {
-              boundariesElement: 'window'
-            }
-          }
+            //检测溢出
+            {
+              name: 'preventOverflow',
+              options: {
+                rootBoundary: 'viewport',
+              },
+            },
+          ],
         };
       }
     },
   },
-  data() {
-    return {
-      /**
-       * 显示隐藏
-       *
-       * @type {Boolean}
-       */
-      visible: this.modelValue
-    }
-  },
   // 在数据更改导致的虚拟 DOM 重新渲染和更新完毕之后被调用。
   updated() {
     nextTick(() => {
-      this.updatePopper()
+      this.updatePopper();
     });
   },
   // 销毁
@@ -109,12 +98,10 @@ export default {
       if (!popper || !reference) return;
 
       // 销毁
+      // eslint-disable-next-line no-prototype-builtins
       if (this.popperJS && this.popperJS.hasOwnProperty('destroy')) {
         this.popperJS.destroy();
       }
-
-      // 是否开启 Popper 的 eventsEnabled 属性，开启可能会牺牲一定的性能
-      options.eventsEnabled = this.eventsEnabled;
 
       // 方向
       options.placement = this.placement;
@@ -123,7 +110,7 @@ export default {
       if (!options.modifiers.offset) {
         options.modifiers.offset = {};
       }
-      options.modifiers.offset.offset = this.offset;
+      // options.modifiers.offset.offset = this.offset;
 
       // 创建
       options.onCreate = () => {
@@ -132,8 +119,8 @@ export default {
         this.$emit('on-created', this);
       };
 
-      this.popperJS = new Popper(reference, popper, options);
 
+      this.popperJS = createPopper(reference, popper, options);
     },
     // 更新
     updatePopper() {
@@ -168,7 +155,8 @@ export default {
       } else {
         this.$emit('on-popper-hide');
       }
+
       this.$emit('update:modelValue', val);
     }
   },
-}
+};
