@@ -18,10 +18,10 @@ export default {
     /**
      * 箭头当前间距
      *
-     * @type {Number}
+     * @type {Array}
      */
     offset: {
-      default: 0
+      default: [0,0]
     },
     /**
      * 显示隐藏
@@ -107,13 +107,17 @@ export default {
       options.placement = this.placement;
 
       // 箭头当前与参考重叠，我们可以使用修改器给它一个距离offset
-      if (!options.modifiers.offset) {
-        options.modifiers.offset = {};
+      if (!options.modifiers[2]) {
+        options.modifiers[2] = {
+          name: 'offset',
+          options: {
+            offset: this.offset,
+          },
+        };
       }
-      // options.modifiers.offset.offset = this.offset;
 
       // 创建
-      options.onCreate = () => {
+      options.onFirstUpdate = () => {
         nextTick(this.updatePopper);
 
         this.$emit('on-created', this);
@@ -128,6 +132,7 @@ export default {
     },
     // 销毁
     popperDestroy() {
+      // 显示
       if (this.visible) {
         return;
       }
@@ -140,15 +145,17 @@ export default {
     // 显示隐藏
     modelValue: {
       immediate: true,
-      handler(val) {
+      handler(val: boolean) {
         this.visible = val;
 
         this.$emit('update:modelValue', val);
       }
     },
     // 显示隐藏
-    visible(val) {
+    visible(val: boolean) {
       if (val) {
+
+        // 更新
         this.updatePopper();
 
         this.$emit('on-popper-show');

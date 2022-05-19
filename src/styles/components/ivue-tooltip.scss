@@ -35,16 +35,155 @@ $bg: #383D47;
     //   }
     // }
 
-    // bottom
-    &[data-popper-placement=bottom] {
-      padding: 8px 0 5px;
-      bottom: 3px;
-      border-width: 5px 5px 0;
-      border-top-color: $bg;
+    // top
+    &[data-popper-placement=top] {
+      padding: 5px 0 8px;
 
       .#{$name}-arrow {
         left: 50%;
         margin-left: -5px;
+        bottom: 3px;
+        border-width: 5px 5px 0;
+        border-top-color: $bg;
+      }
+    }
+
+    // top-start
+    &[data-popper-placement=top-start] {
+      padding: 5px 0 8px;
+
+      .#{$name}-arrow {
+        left: 16px;
+        bottom: 3px;
+        border-width: 5px 5px 0;
+        border-top-color: $bg;
+      }
+    }
+
+    // top-end
+    &[data-popper-placement=top-end] {
+      padding: 5px 0 8px;
+
+      .#{$name}-arrow {
+        right: 16px;
+        bottom: 3px;
+        border-width: 5px 5px 0;
+        border-top-color: $bg;
+      }
+    }
+
+
+
+    // left-start
+    &[data-popper-placement=left-start] {
+      padding: 0 8px 0 5px;
+
+      .#{$name}-arrow {
+        top: 8px;
+        right: 3px;
+        border-width: 5px 0 5px 5px;
+        border-left-color: $bg;
+      }
+    }
+
+
+    // left
+    &[data-popper-placement=left] {
+      padding: 0 8px 0 5px;
+
+      .#{$name}-arrow {
+        top: 50%;
+        margin-top: -5px;
+        right: 3px;
+        border-width: 5px 0 5px 5px;
+        border-left-color: $bg;
+      }
+    }
+
+    // left-end
+    &[data-popper-placement=left-end] {
+      padding: 0 8px 0 5px;
+
+      .#{$name}-arrow {
+        bottom: 8px;
+        right: 3px;
+        border-width: 5px 0 5px 5px;
+        border-left-color: $bg;
+      }
+    }
+
+
+    // right-start
+    &[data-popper-placement=right-start] {
+      padding: 0 5px 0 8px;
+
+      .#{$name}-arrow {
+        top: 8px;
+        left: 3px;
+        border-width: 5px 5px 5px 0;
+        border-right-color: $bg;
+      }
+    }
+
+
+    // right
+    &[data-popper-placement=right] {
+      padding: 0 5px 0 8px;
+
+      .#{$name}-arrow {
+        top: 50%;
+        margin-top: -5px;
+        left: 3px;
+        border-width: 5px 5px 5px 0;
+        border-right-color: $bg;
+      }
+    }
+
+
+    // right
+    &[data-popper-placement=right-end] {
+      padding: 0 5px 0 8px;
+
+      .#{$name}-arrow {
+        bottom: 8px;
+        left: 3px;
+        border-width: 5px 5px 5px 0;
+        border-right-color: $bg;
+      }
+    }
+
+
+    // bottom-start
+    &[data-popper-placement=bottom-start] {
+      padding: 8px 0 5px;
+
+      .#{$name}-arrow {
+        left: 16px;
+        top: 3px;
+        border-width: 0 5px 5px;
+        border-bottom-color: $bg;
+      }
+    }
+
+    // bottom
+    &[data-popper-placement=bottom] {
+      padding: 8px 0 5px;
+
+      .#{$name}-arrow {
+        left: 50%;
+        margin-left: -5px;
+        top: 3px;
+        border-width: 0 5px 5px;
+        border-bottom-color: $bg;
+      }
+    }
+
+    // bottom-end
+    &[data-popper-placement=bottom-end] {
+      padding: 8px 0 5px;
+
+      .#{$name}-arrow {
+        right: 16px;
         top: 3px;
         border-width: 0 5px 5px;
         border-bottom-color: $bg;
