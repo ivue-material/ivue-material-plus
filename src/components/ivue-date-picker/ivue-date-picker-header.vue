@@ -251,8 +251,8 @@ export default defineComponent({
                 Transition,
                 {
                     name: data.isReversing
-                        ? `tab-reverse-transition`
-                        : `tab-transition`,
+                        ? 'tab-reverse-transition'
+                        : 'tab-transition',
                 },
                 {
                     default: () => header,

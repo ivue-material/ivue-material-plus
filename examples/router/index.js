@@ -25,6 +25,7 @@ import DatePicker from '../components/date-picker.vue';
 import Collapse from '../components/collapse.vue';
 import Cascader from '../components/cascader.vue';
 import Tooltip from '../components/tooltip.vue';
+import Chip from '../components/chip.vue';
 
 const routes = [
   {
@@ -156,6 +157,11 @@ const routes = [
     path: '/tooltip',
     name: 'Tooltip',
     component: Tooltip
+  },
+  {
+    path: '/chip',
+    name: 'Chip',
+    component: Chip
   }
 ];
 

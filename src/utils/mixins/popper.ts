@@ -16,7 +16,7 @@ export default {
       default: 'bottom'
     },
     /**
-     * 箭头当前间距
+     * 箭头当前间距 左右 上下
      *
      * @type {Array}
      */

@@ -7,7 +7,6 @@ import {
     watch,
     Transition,
     h,
-    getCurrentInstance,
     withDirectives,
     resolveDirective,
 } from 'vue';
@@ -151,8 +150,8 @@ export default defineComponent({
         // 动画
         const computedTransition = computed(() => {
             return data.isReversing
-                ? `tab-reverse-transition`
-                : `tab-transition`;
+                ? 'tab-reverse-transition'
+                : 'tab-transition';
         });
 
         // 格式化每周日期
@@ -242,7 +241,7 @@ export default defineComponent({
         };
 
         // 内容
-        const genTable = (staticClass: String, children: Array<any>) => {
+        const genTable = (staticClass: string, children: Array<any>) => {
             const transition = h(
                 Transition,
                 {

@@ -5,12 +5,14 @@
             <slot></slot>
         </div>
         <!-- 为封装到组件中来构建 UI -->
-        <!-- <teleport to="body" :disabled="!transfer"> -->
+        <teleport to="body" :disabled="!transfer">
             <transition name="fade-tooltip">
                 <div
                     ref="popper"
                     :class="popperClass"
                     :style="popperStyle"
+                    @mouseenter="handleShowPopper"
+                    @mouseleave="handleClosePopper"
                     v-show="!disabled && (visible || always)"
                 >
                     <div :class="[`${prefixCls}-content`]">
@@ -23,7 +25,7 @@
                     </div>
                 </div>
             </transition>
-        <!-- </teleport> -->
+        </teleport>
     </div>
 </template>
 
