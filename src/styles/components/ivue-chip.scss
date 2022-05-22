@@ -13,6 +13,20 @@ $name: 'ivue-chip';
   background: #e0e0e0;
   color: #383D47;
 
+  &::after {
+    content: '';
+    background: currentColor;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    opacity: 0;
+    border-radius: inherit;
+    transition: inherit;
+    pointer-events: none;
+  }
+
   .ivue-icon {
     margin-left: -6px;
     margin-right: 8px;
@@ -25,16 +39,6 @@ $name: 'ivue-chip';
         0px 1px 5px 0px rgba(0, 0, 0, 0.12);
 
       &::after {
-        background: currentColor;
-        border-radius: inherit;
-        content: '';
-        height: 100%;
-        position: absolute;
-        top: 0;
-        left: 0;
-        transition: inherit;
-        width: 100%;
-        pointer-events: none;
         opacity: 0.13;
       }
     }

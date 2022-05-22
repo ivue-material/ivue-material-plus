@@ -4,9 +4,9 @@
             <!-- 内容 -->
             <slot></slot>
             <!-- 关闭按钮 -->
-            <slot name="icon" >
+            <slot name="icon">
                 <div :class="`${prefixCls}-close`" v-show="close">
-                    <ivue-icon>{{ closeIcon }}</ivue-icon>
+                    <ivue-icon @click.stop="handleClose">{{ closeIcon }}</ivue-icon>
                 </div>
             </slot>
         </span>
@@ -25,6 +25,7 @@ function isCssColor(color) {
 
 export default defineComponent({
     name: prefixCls,
+    emits: ['update:modelValue'],
     props: {
         /**
          * v-modul
@@ -97,11 +98,11 @@ export default defineComponent({
          *
          * @type {Boolean}
          */
-        depressed:{
+        depressed: {
             type: Boolean,
-        }
+        },
     },
-    setup(props: any) {
+    setup(props: any, { emit }) {
         // computed
 
         // 外层样式
@@ -205,12 +206,22 @@ export default defineComponent({
             return style;
         };
 
+        // methods
+
+        // 关闭
+        const handleClose = () => {
+            emit('update:modelValue', false);
+        };
+
         return {
             prefixCls,
 
             // computed
             classes,
             styles,
+
+            // methods
+            handleClose,
         };
     },
     components: {
