@@ -14,7 +14,6 @@ $steps: 'ivue-step';
     }
   }
 
-
   // icon
   &-icon {
     font-size: 20px;
@@ -22,9 +21,6 @@ $steps: 'ivue-step';
     width: 20px;
     height: 20px;
   }
-
-
-
 
   /*横向*/
   &.#{$name}-horizontal {
@@ -133,7 +129,7 @@ $steps: 'ivue-step';
 
   // 下划线
   &-header {
-    background-color: #fff;
+    background-color: $white-color;
   }
 
   // 下划线
@@ -175,7 +171,7 @@ $steps: 'ivue-step';
     font-size: $font-base-size;
     font-weight: bold;
     color: $steps-title-color;
-    background-color: #fff;
+    background-color: $white-color;
     transition: color .4s $ivue-transition-default-timing;
   }
 
@@ -232,7 +228,7 @@ $steps: 'ivue-step';
     // 进度标志
     .#{$steps}-header-content {
       border-color: $primary-color;
-      background-color: #fff;
+      background-color: $white-color;
 
       .#{$steps}-icon {
         color: $primary-color;
@@ -259,7 +255,7 @@ $steps: 'ivue-step';
   /*等待*/
   &-status-wait {
     .#{$steps}-header-content {
-      background-color: #fff;
+      background-color: $white-color;
 
       >.#{$steps}-icon,
       span {
@@ -284,7 +280,7 @@ $steps: 'ivue-step';
 
       >.#{$steps}-icon,
       span {
-        color: #fff;
+        color: $white-color;
       }
     }
 
@@ -301,7 +297,7 @@ $steps: 'ivue-step';
   &-status-error {
     .#{$steps}-header-content {
       border-color: $error-color;
-      background-color: #fff;
+      background-color: $white-color;
 
       >.#{$steps}-icon {
         color: $error-color;
@@ -360,6 +356,7 @@ $steps: 'ivue-step';
 
   // 居中
   &-bottom-center {
+
     // 头部
     .#{$steps}-header {
       background: none;

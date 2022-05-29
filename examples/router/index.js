@@ -26,6 +26,7 @@ import Collapse from '../components/collapse.vue';
 import Cascader from '../components/cascader.vue';
 import Tooltip from '../components/tooltip.vue';
 import Chip from '../components/chip.vue';
+import Radio from '../components/radio.vue';
 
 const routes = [
   {
@@ -162,6 +163,11 @@ const routes = [
     path: '/chip',
     name: 'Chip',
     component: Chip
+  },
+  {
+    path: '/radio',
+    name: 'Radio',
+    component: Radio
   }
 ];
 

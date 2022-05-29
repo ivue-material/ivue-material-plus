@@ -29,7 +29,7 @@ export function readFileContent(file: File, resultType: UploaderResultType) {
 
         // url
         if (resultType === 'url') {
-            const url = URL.createObjectURL(file)
+            const url = URL.createObjectURL(file);
 
             resolve(url);
 
@@ -185,10 +185,15 @@ export const EVENT_CODE = {
     esc: 'Escape',
     delete: 'Delete',
     backspace: 'Backspace',
-}
+};
 
 
 // 创建数组范围
 export function createRange(length) {
     return Array.from({ length }, (v, k) => k);
+}
+
+// 是否是颜色
+export function isCssColor(color) {
+    return !!color && !!color.match(/^(#|(rgb|hsl)a?\()/);
 }

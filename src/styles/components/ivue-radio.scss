@@ -1,0 +1,262 @@
+$name: 'ivue-radio';
+$transition-time: .2s;
+$ease-in-out: ease-in-out;
+
+.#{$name} {
+  display: inline-block;
+  margin-right: 4px;
+  white-space: nowrap;
+  position: relative;
+  line-height: 1;
+  vertical-align: middle;
+  cursor: pointer;
+
+  // 显示边框
+  &-border {
+    border: 1px solid $border-color;
+    border-radius: 4px;
+    height: 32px;
+    line-height: 30px;
+    padding: 0 15px;
+    transition: all $transition-time $ease-in-out;
+  }
+
+  // 最外层
+  &-wrapper {
+    margin-right: 8px;
+    font-size: 14px;
+    vertical-align: middle;
+    display: inline-block;
+    position: relative;
+    white-space: nowrap;
+    cursor: pointer;
+
+    // 显示边框
+    &--checked.#{$name}-border {
+      border-color: $primary-color;
+    }
+
+    // 禁用
+    &--disabled {
+      cursor: not-allowed;
+    }
+
+    &--disabled.#{$name}-border {
+      border-color: $border-color;
+    }
+  }
+
+  // 小圆点
+  &-inner {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    position: relative;
+    top: 0;
+    left: 0;
+    background-color: $white-color;
+    border: 1px solid $border-color;
+    border-radius: 50%;
+    transition: all $transition-time $ease-in-out;
+
+    // 中间圆点
+    &::after {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      left: 2px;
+      top: 2px;
+      border-radius: 6px;
+      display: table;
+      border-top: 0;
+      border-left: 0;
+      content: '';
+      background-color: currentColor;
+      opacity: 0;
+      transition: all $transition-time $ease-in-out;
+      transform: scale(0);
+    }
+  }
+
+  // 输入框
+  &-input {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 1;
+    opacity: 0;
+    cursor: pointer;
+  }
+
+  // 选中
+  &-checked &-inner {
+    border-color: currentColor;
+
+    &::after {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  // 组合
+  &-group {
+    display: inline-block;
+    font-size: 14px;
+    vertical-align: middle;
+
+    // 垂直
+    &--vertical {
+      .#{$name}-wrapper {
+        display: block;
+        height: 30px;
+        line-height: 30px;
+      }
+    }
+
+    // 按钮
+    &--button {
+      font-size: 0;
+      -webkit-text-size-adjust: none;
+
+      .#{$name}-wrapper {
+        display: inline-block;
+        height: 32px;
+        line-height: 30px;
+        margin: 0;
+        padding: 0 15px;
+        font-size: 14px;
+        color: $title-color;
+        transition: all $transition-time $ease-in-out;
+        cursor: pointer;
+        border: 1px solid $border-color;
+        border-left: 0;
+        background: $white-color;
+        position: relative;
+
+        >span {
+          margin-right: 0;
+        }
+
+        &:hover {
+          position: relative;
+          color: $primary-color;
+        }
+
+        // 第一个角度
+        &:first-child {
+          border-radius: 4px 0 0 4px;
+          border: 1px solid $border-color;
+        }
+
+        // 最后一个角度
+        &:last-child {
+          border-radius: 0 4px 4px 0;
+        }
+      }
+
+      // 隐藏小圆点
+      .#{$name} {
+        width: 0;
+        margin-right: 0;
+      }
+
+      .#{$name}-wrapper .#{$name}-inner,
+      input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+      }
+
+
+      // 显示为实色填底
+      &--solid .#{$name}-wrapper--checked:not(.ivue-radio-wrapper-disabled) {
+        background: $primary-color;
+        color: $white-color;
+      }
+
+      // 选中
+      .#{$name}-wrapper--checked {
+        background: $white-color;
+        border-color: $primary-color;
+        color: $primary-color;
+        box-shadow: -1px 0 0 0 $primary-color;
+        z-index: 1;
+
+        &:first-child {
+          border-color: $primary-color;
+          box-shadow: none;
+        }
+      }
+
+      // 禁用
+      .#{$name}-wrapper--disabled {
+        border-color: $border-color;
+        background-color: $background-color-select-hover;
+        color: $disabled-color;
+        cursor: not-allowed;
+
+        &:hover,
+        &:first-child {
+          border-color: $border-color;
+          background-color: $background-color-select-hover;
+          color: $disabled-color;
+        }
+      }
+
+      // 禁用和激活存在
+      .#{$name}-wrapper--disabled.#{$name}-wrapper--checked {
+        color: $white-color;
+        background-color: #e6e6e6;
+        border-color: $border-color;
+        box-shadow: none !important;
+      }
+
+    }
+
+    // large
+    &--large {
+
+      // 外层
+      .#{$name}-wrapper {
+        height: 40px;
+        line-height: 38px;
+        font-size: 16px;
+      }
+    }
+
+    // small
+    &--small {
+      // 外层
+      .#{$name}-wrapper {
+        height: 24px;
+        line-height: 22px;
+        padding: 0 12px;
+        font-size: 14px;
+
+        &:first-child {
+          border-radius: 3px 0 0 3px;
+        }
+      }
+    }
+  }
+
+  // 禁用
+  &-disabled {
+    cursor: not-allowed;
+  }
+
+  &-disabled &-inner {
+    border-color: $border-color;
+    background-color: $background-color-select-hover;
+
+    &::after {
+      background-color: $disabled-color;
+    }
+  }
+
+  &-disabled &-input {
+    cursor: not-allowed;
+  }
+}

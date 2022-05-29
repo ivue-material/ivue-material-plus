@@ -13,7 +13,7 @@ export const genPickerButton = (emit, propsValue, value, updateName, content, re
     event.stopPropagation();
 
     emit(`update:${updateName}`, value);
-  }
+  };
 
   return h('div', {
     class: {

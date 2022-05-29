@@ -1,4 +1,5 @@
 $name:'ivue-picker';
+
 .#{$name} {
       border-radius: 2px;
       contain: layout style;
@@ -8,7 +9,7 @@ $name:'ivue-picker';
             border-top-left-radius: 2px;
             border-top-right-radius: 2px;
             padding: 16px;
-            color: #fff;
+            color: $white-color;
       }
       &-body {
             height: auto;

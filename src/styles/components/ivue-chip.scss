@@ -11,7 +11,7 @@ $name: 'ivue-chip';
   vertical-align: middle;
   transition: $ivue-transition-stand;
   background: #e0e0e0;
-  color: #383D47;
+  color: $title-color;
 
   &::after {
     content: '';

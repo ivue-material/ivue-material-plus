@@ -50,7 +50,7 @@ $emboss-margin: 7px;
     width: $defailt-after-width;
     height: $defailt-after-width;
     border-radius: $defailt-after-width;
-    background: #fff;
+    background: $white-color;
     position: absolute;
     cursor: pointer;
     @include transition;
@@ -90,7 +90,7 @@ $emboss-margin: 7px;
     height: 100%;
     align-items: center;
     display: flex;
-    color: #fff;
+    color: $white-color;
     font-size: $font-base-size;
     transform: translate3d(23px, 0, 0);
     will-change: transform;
@@ -107,16 +107,16 @@ $emboss-margin: 7px;
   /*禁用*/
   &-disabled {
     cursor: $cursor-disabled;
-    border-color: #f3f3f3 !important;
-    background-color: #f3f3f3 !important;
+    border-color: $background-color-select-hover !important;
+    background-color: $background-color-select-hover !important;
 
     &:after {
-      background: #ccc;
+      background: $disabled-color;
       cursor: $cursor-disabled;
     }
 
     .#{$name}-inner {
-      color: #ccc;
+      color: $disabled-color;
     }
   }
 
@@ -322,7 +322,7 @@ $emboss-margin: 7px;
       position: relative;
       width: $emboss-default-height;
       height: $emboss-default-height;
-      color: #ffffff;
+      color: $white-color;
       border-radius: 50%;
       box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2),
         0px 4px 5px 0px rgba(0, 0, 0, 0.14),

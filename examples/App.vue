@@ -101,11 +101,14 @@
                     <router-link to="/cascader">Cascader</router-link>
                 </li>
 
-                 <li>
+                <li>
                     <router-link to="/tooltip">Tooltip</router-link>
                 </li>
-                  <li>
+                <li>
                     <router-link to="/chip">Chip</router-link>
+                </li>
+                <li>
+                    <router-link to="/radio">Radio</router-link>
                 </li>
             </ul>
         </nav>

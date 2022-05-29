@@ -16,7 +16,7 @@ $name: 'ivue-input';
     line-height: 1;
     color: #515a6e;
     text-align: center;
-    border: 1px solid #dcdee2;
+    border: 1px solid $border-color;
     border-radius: 4px;
     display: table-cell;
     width: 1px;
@@ -81,7 +81,7 @@ $name: 'ivue-input';
   }
 
   .is-suffix {
-    background-color: #fff;
+    background-color: $white-color;
     z-index: 2;
   }
 
@@ -200,7 +200,7 @@ $name: 'ivue-input';
     padding: 2px 0;
 
     i {
-      background: #fff;
+      background: $white-color;
     }
   }
 
@@ -328,7 +328,7 @@ $name: 'ivue-input';
   top: 2px;
   bottom: 2px;
   padding-left: 7px;
-  background: #fff;
+  background: $white-color;
   z-index: 1;
   display: inline-flex;
   align-items: center;
@@ -342,7 +342,7 @@ $name: 'ivue-input';
   cursor: pointer;
   padding: 0 16px !important;
   background: #2d8cf0;
-  color: #fff !important;
+  color: $white-color !important;
   border-color: #2d8cf0 !important;
   transition: all .2s ease-in-out;
   position: relative;

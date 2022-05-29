@@ -21,7 +21,7 @@ $name : 'ivue-breadcrumbs';
   .is-link {
     font-weight: 700;
     transition: color .2s cubic-bezier(.645, .045, .355, 1);
-    color: #303133;
+    color: $title-color;
   }
 
   >span {
@@ -52,7 +52,7 @@ $name : 'ivue-breadcrumbs';
       transition: color $ivue-transition-default;
 
       &:hover {
-        color: #4E86FF;
+        color: $primary-color;
       }
 
       .ivue-icon {

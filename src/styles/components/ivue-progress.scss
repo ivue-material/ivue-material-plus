@@ -36,7 +36,7 @@ $name: 'ivue-progress';
     &-text {
       display: inline-block;
       vertical-align: middle;
-      color: #fff;
+      color: $white-color;
       font-size: 12px;
       margin: 0 6px;
     }
@@ -126,7 +126,7 @@ $name: 'ivue-progress';
       left: 0;
       right: 0;
       bottom: 0;
-      background: #fff;
+      background: $white-color;
       border-radius: 10px;
       opacity: 0;
       animation: ivue-progress-active 2s ease infinite;

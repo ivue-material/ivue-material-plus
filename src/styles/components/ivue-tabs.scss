@@ -98,7 +98,7 @@ $name: 'ivue-tabs';
     cursor: pointer;
     text-decoration: none;
     transition: color $ivue-transition-default;
-    color: #383D47;
+    color: $title-color;
     opacity: .7;
     font-size: 14px;
     font-weight: 500;
@@ -110,7 +110,7 @@ $name: 'ivue-tabs';
 
     &-active {
       opacity: 1;
-      color: #383D47;
+      color: $title-color;
     }
   }
 
@@ -147,7 +147,7 @@ $name: 'ivue-tabs';
     user-select: none;
     cursor: pointer;
     width: 32px;
-    color: #000;
+    color: $title-color;
     transition: $ivue-transition-default;
 
     &--prev {

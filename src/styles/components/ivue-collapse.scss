@@ -39,7 +39,7 @@ $name: 'ivue-collapse';
     &--content {
       padding: 0 15px;
       color: #000;
-      background-color: #fff;
+      background-color: $white-color;
 
       &-box {
         padding-top: 15px;
@@ -60,11 +60,11 @@ $name: 'ivue-collapse';
   &-simple {
     border-left: none;
     border-right: none;
-    background-color: #fff;
+    background-color: $white-color;
     border-radius: 0;
 
     .#{$name}-panel--header {
-      color: #000;
+      color: $title-color;
       border-bottom: 1px solid transparent;
     }
 

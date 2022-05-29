@@ -34,7 +34,7 @@ $colors: (
     align-items: center;
     flex-direction: row;
     flex-wrap: wrap;
-    color: #fff;
+    color: $white-color;
     transition: all $ivue-transition-default;
     z-index: 10;
 

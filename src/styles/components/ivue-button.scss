@@ -54,7 +54,6 @@ $name: 'ivue-button';
     position: relative;
     z-index: 10;
     overflow: hidden;
-    -webkit-mask-image: radial-gradient(circle, #fff 100%, #000 0);
     box-sizing: border-box;
   }
 
@@ -128,8 +127,8 @@ $name: 'ivue-button';
   }
 
   &.ivue-button--raised[disabled] {
-    background-color: #F8F9FD;
-    color: #4A505E;
+    background-color: $ivue-button--raised;
+    color: $text-color;
   }
 
   +.ivue-button {
@@ -144,7 +143,7 @@ $name: 'ivue-button';
   }
 
   &--selected {
-    color: #fff !important;
+    color: $white-color !important;
     background: currentColor;
   }
 
@@ -159,7 +158,7 @@ $name: 'ivue-button';
     box-shadow: none;
 
     .ivue-button-content {
-      color: #4A505E;
+      color: $text-color;
     }
   }
 

@@ -30,6 +30,8 @@ import IvueCollapse from './components/ivue-collapse';
 import IvueCascader from './components/ivue-cascader';
 import IvueTooltip from './components/ivue-tooltip';
 import IvueChip from './components/ivue-chip';
+import IvueRadio from './components/ivue-radio';
+import IvueRadioGroup from './components/ivue-radio-group';
 
 // 指令
 import Directives from './utils/directives/index';
@@ -65,7 +67,9 @@ export {
     IvueCollapse,
     IvueCascader,
     IvueTooltip,
-    IvueChip
+    IvueChip,
+    IvueRadio,
+    IvueRadioGroup
 };
 
 
@@ -109,6 +113,8 @@ const install = (app: App, opt: InstallOptions = defaultInstallOpt): void => {
     IvueCascader(app);
     IvueTooltip(app);
     IvueChip(app);
+    IvueRadio(app);
+    IvueRadioGroup(app);
 
     // 全局配置
     app.config.globalProperties.$IVUE = opt;
