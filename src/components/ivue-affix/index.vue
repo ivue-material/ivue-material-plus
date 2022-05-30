@@ -14,7 +14,7 @@ import {
     onBeforeUnmount,
     ref,
     computed,
-    reactive
+    reactive,
 } from 'vue';
 import { on, off } from '../../utils/dom';
 
@@ -22,46 +22,45 @@ const prefixCls = 'ivue-affix';
 
 export default defineComponent({
     name: prefixCls,
-    props: {
-        /*
-        * 距离窗口顶部达到指定偏移量后触发
-        *
-        * @type {Number}
-        */
-        offsetTop: {
-            type: Number,
-            default: 0
-        },
-        /*
-        * 距离窗口底部达到指定偏移量后触发
-        *
-        * @type {Number}
-        */
-        offsetBottom: {
-            type: Number,
-            default: -1
-        },
-        /*
-        * addEventListener 原生的 useCapture 选项
-        *
-        * @type {Boolean}
-        */
-        useCapture: {
-            type: Boolean,
-            default: false
-        }
-    },
     // 声明事件
     emits: ['on-change'],
+    props: {
+        /**
+         * 距离窗口顶部达到指定偏移量后触发
+         *
+         * @type {Number}
+         */
+        offsetTop: {
+            type: Number,
+            default: 0,
+        },
+        /**
+         * 距离窗口底部达到指定偏移量后触发
+         *
+         * @type {Number}
+         */
+        offsetBottom: {
+            type: Number,
+            default: -1,
+        },
+        /**
+         * addEventListener 原生的 useCapture 选项
+         *
+         * @type {Boolean}
+         */
+        useCapture: {
+            type: Boolean,
+            default: false,
+        },
+    },
     // 组合式 API
     setup(props, { emit }) {
-
         // data
         const data = reactive<{
-            affix: boolean
-            slot: boolean
-            styles: Record<string, any>
-            slotStyle: Record<string, any>
+            affix: boolean;
+            slot: boolean;
+            styles: Record<string, any>;
+            slotStyle: Record<string, any>;
         }>({
             // 组件状态是否开启固定
             affix: false,
@@ -70,7 +69,7 @@ export default defineComponent({
             // styles
             styles: {},
             // slotStyle
-            slotStyle: {}
+            slotStyle: {},
         });
 
         // ref = wrapper
@@ -96,8 +95,8 @@ export default defineComponent({
         const classes = computed(() => {
             return [
                 {
-                    [`${prefixCls}`]: data.affix
-                }
+                    [`${prefixCls}`]: data.affix,
+                },
             ];
         });
 
@@ -140,7 +139,7 @@ export default defineComponent({
                 // 元素上边到视窗上边的距离 + 滚动条的垂直位置 - 顶部边框的宽度(顶部边框的宽度)
                 top: rect.top + scrollTop - clientTop,
                 // 元素左边到视窗左边的距离 + 滚动条的水平位置 - 元素的左边框的宽度(不包括左外边距和左内边距)
-                left: rect.left + scrollLeft - clientLeft
+                left: rect.left + scrollLeft - clientLeft,
             };
         };
 
@@ -160,15 +159,18 @@ export default defineComponent({
 
             // 固定在头部 Top
             // 元素的顶部 减去 需要到达指定位置的数值   < windo 的滚动高度 向上滚动 没有开启固定状态
-            if ((elOffset.top - props.offsetTop) < scrollTop && offsetType.value === 'top' && !data.affix) {
+            if (
+                elOffset.top - props.offsetTop < scrollTop &&
+                offsetType.value === 'top' &&
+                !data.affix
+            ) {
                 // 开启固定状态
                 data.affix = true;
-
 
                 // slot样式
                 data.slotStyle = {
                     width: `${content.value.clientWidth}px`,
-                    height: `${content.value.clientHeight}px`
+                    height: `${content.value.clientHeight}px`,
                 };
 
                 data.slot = true;
@@ -177,13 +179,16 @@ export default defineComponent({
                 data.styles = {
                     top: `${props.offsetTop}px`,
                     left: `${elOffset.left}px`,
-                    width: `${wrapper.value.offsetWidth}px`
+                    width: `${wrapper.value.offsetWidth}px`,
                 };
 
                 // 在固定状态发生改变时触发
                 emit('on-change', true);
-            }
-            else if ((elOffset.top - props.offsetTop) > scrollTop && offsetType.value == 'top' && data.affix) {
+            } else if (
+                elOffset.top - props.offsetTop > scrollTop &&
+                offsetType.value == 'top' &&
+                data.affix
+            ) {
                 data.slot = false;
                 data.slotStyle = {};
                 data.affix = false;
@@ -193,20 +198,28 @@ export default defineComponent({
                 emit('on-change', false);
             }
 
-
             // 固定在底部 Bottom
-            if ((elOffset.top + props.offsetBottom + elHeight) > (scrollTop + windowHeight) && offsetType.value == 'bottom' && !data.affix) {
+            if (
+                elOffset.top + props.offsetBottom + elHeight >
+                    scrollTop + windowHeight &&
+                offsetType.value == 'bottom' &&
+                !data.affix
+            ) {
                 data.affix = true;
                 data.styles = {
                     bottom: `${props.offsetBottom}px`,
                     left: `${elOffset.left}px`,
-                    width: `${elOffset.top}px`
+                    width: `${elOffset.top}px`,
                 };
 
                 // 在固定状态发生改变时触发
                 emit('on-change', true);
-            }
-            else if ((elOffset.top + props.offsetBottom + elHeight) < (scrollTop + windowHeight) && offsetType.value == 'bottom' && data.affix) {
+            } else if (
+                elOffset.top + props.offsetBottom + elHeight <
+                    scrollTop + windowHeight &&
+                offsetType.value == 'bottom' &&
+                data.affix
+            ) {
                 data.affix = false;
                 data.styles = null;
 
@@ -233,9 +246,8 @@ export default defineComponent({
             classes,
             offsetType,
             wrapper,
-            content
+            content,
         };
     },
-
 });
 </script>
