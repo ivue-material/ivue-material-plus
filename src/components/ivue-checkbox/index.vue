@@ -1,21 +1,40 @@
 <template>
     <label :class="wrapperClass">
-        <!-- 圆点 -->
+        <!-- 方框外层 -->
         <span :class="contentClass">
+            <!-- 方框 -->
             <span :class="innerClass" :style="innerStyles"></span>
-            <!-- 输入框 -->
+            <!-- input 有组合 -->
             <input
-                type="radio"
+                v-if="isGroup"
+                type="checkbox"
                 :class="inputClass"
-                :name="data.groupName"
                 :disabled="disabled"
+                :value="label"
+                v-model="data.groupModel"
+                :name="name"
+                @change="handleChange"
+                @focus="handleFocus"
+                @blur="handleBlur"
+            />
+            <!-- input 没有组合 -->
+            <input
+                v-else
+                type="checkbox"
+                :class="inputClass"
+                :disabled="disabled"
+                :name="name"
+                :checked="currentValue"
                 @change="handleChange"
                 @focus="handleFocus"
                 @blur="handleBlur"
             />
         </span>
         <!-- 内容 -->
-        <slot>{{ label }}</slot>
+        <span :class="`${prefixCls}-label-text`">
+            <slot>{{ label }}</slot>
+        </span>
+        {{currentValueccc}}
     </label>
 </template>
 
@@ -26,15 +45,19 @@ import {
     reactive,
     watch,
     inject,
-    onMounted,
 } from 'vue';
-import { isCssColor , setTextColor} from '../../utils/helpers';
+import { isCssColor, setTextColor } from '../../utils/helpers';
 
-const prefixCls = 'ivue-radio';
+const prefixCls = 'ivue-checkbox';
 
 export default defineComponent({
     name: prefixCls,
     emits: ['update:modelValue', 'on-change'],
+    inject: {
+        IvueCheckboxGroup: {
+            default: null,
+        },
+    },
     props: {
         /**
          * 只在单独使用时有效。可以使用 v-model 双向绑定数据
@@ -44,6 +67,22 @@ export default defineComponent({
         modelValue: {
             type: [String, Number, Boolean],
             default: false,
+        },
+        /**
+         * 是否禁用当前项
+         *
+         * @type {Boolean}
+         */
+        disabled: {
+            type: Boolean,
+        },
+        /**
+         * name 属性
+         *
+         * @type {String}
+         */
+        name: {
+            type: String,
         },
         /**
          * 选中时的值，当使用类似 1 和 0 来判断是否选中时会很有用
@@ -64,22 +103,6 @@ export default defineComponent({
             default: false,
         },
         /**
-         * 指定当前选项的 value 值，组合会自动判断当前选择的项目
-         *
-         * @type {String, Number}
-         */
-        label: {
-            type: [String, Number],
-        },
-        /**
-         * 是否禁用当前项
-         *
-         * @type {Boolean}
-         */
-        disabled: {
-            type: Boolean,
-        },
-        /**
          * 颜色
          *
          * @type {String}
@@ -89,27 +112,30 @@ export default defineComponent({
             default: 'primary',
         },
         /**
-         * name 属性
+         * 指定当前选项的 value 值，组合会自动判断当前选择的项目
          *
-         * @type {String}
+         * @type {String, Number, Boolean}
          */
-        name: {
-            type: String,
+        label: {
+            type: [String, Number, Boolean],
         },
-        /**
-         * 是否显示边框
-         *
-         * @type {Boolean}
-         */
-        border: {
-            type: Boolean,
-            default: false,
+    },
+    computed: {
+        currentValueccc() {
+          console.log('this.IvueCheckboxGroup', this.IvueCheckboxGroup);
+            // if (this.IvueCheckboxGroup) {
+            //     return (
+            //         this.IvueCheckboxGroup.modelValue.indexOf(this.label) >=
+            //         0
+            //     );
+            // } else {
+            //     return this.modelValue === this.trueValue;
+            // }
         },
     },
     setup(props: any, { emit }) {
-
         // 组合
-        const IvueRadioGroup: any = inject('IvueRadioGroup', {
+        const IvueCheckboxGroup: any = inject('IvueCheckboxGroup', {
             default: null,
         });
 
@@ -117,6 +143,7 @@ export default defineComponent({
         const data: any = reactive<{
             focusInner: boolean;
             groupName: string;
+            groupModel: Array<any>;
         }>({
             /**
              * input 焦点
@@ -130,21 +157,12 @@ export default defineComponent({
              * @type {String}
              */
             groupName: props.name,
-        });
-
-        // onMounted
-        onMounted(() => {
-            // 是否有组合
-            if (IvueRadioGroup.name) {
-                if (props.name && props.name !== IvueRadioGroup.name) {
-                    /* eslint-disable no-console */
-                    if (console.warn) {
-                        console.warn('Name does not match Radio Group name.');
-                    }
-                } else {
-                    data.groupName = IvueRadioGroup.name;
-                }
-            }
+            /**
+             * 组合的 v-model
+             *
+             * @type {Array}
+             */
+            groupModel: [],
         });
 
         // computed
@@ -154,10 +172,8 @@ export default defineComponent({
             return [
                 `${prefixCls}-wrapper`,
                 {
-                    [`${prefixCls}-group--item`]: IvueRadioGroup.name,
                     [`${prefixCls}-wrapper--checked`]: currentValue.value,
-                    [`${prefixCls}-wrapper--disabled`]: props.disabled,
-                    [`${prefixCls}-border`]: props.border,
+                    [`${prefixCls}-group--item`]: isGroup.value,
                 },
             ];
         });
@@ -168,12 +184,11 @@ export default defineComponent({
                 `${prefixCls}`,
                 {
                     [`${prefixCls}-checked`]: currentValue.value,
-                    [`${prefixCls}-disabled`]: props.disabled,
                 },
             ];
         });
 
-        // 圆点 class
+        // 方框 class
         const innerClass = computed(() => {
             let obj = {
                 [`${prefixCls}-focus`]: data.focusInner,
@@ -189,13 +204,12 @@ export default defineComponent({
             return [`${prefixCls}-inner`, obj];
         });
 
-        // 圆点 style
+        // 方框 style
         const innerStyles = computed(() => {
             let obj: any = {};
 
             // 文字样式
             const isTextColor: any = setTextColor(props.color);
-
             if (isTextColor.color && isCssColor(isTextColor.color)) {
                 obj.color = isTextColor.color;
             }
@@ -210,17 +224,24 @@ export default defineComponent({
 
         // 当前值
         const currentValue = computed(() => {
-            // 有组合
-            if (IvueRadioGroup.name) {
-                return IvueRadioGroup.data.currentValue === props.label;
-            }
-            // 没有组合
-            else {
+            if (isGroup.value) {
+                // return IvueCheckboxGroup.modelValue.indexOf(props.label) >= 0;
+            } else {
+                // 没有组合
                 return props.modelValue === props.trueValue;
             }
         });
 
-        // methods
+        // 是否有组合
+        const isGroup = computed(() => {
+            if (IvueCheckboxGroup) {
+                return true;
+            }
+
+            return false;
+        });
+
+        // method
 
         // 改变
         const handleChange = (event) => {
@@ -236,15 +257,11 @@ export default defineComponent({
             const value = checked ? props.trueValue : props.falseValue;
             emit('update:modelValue', value);
 
-            // 组合
-            if (IvueRadioGroup.name) {
-                // 是否有当前选项值
-                if (props.label !== undefined) {
-                    IvueRadioGroup.change(props.label);
-                }
-            }
-            // 没有组合
-            else {
+            // 有组合
+            if (isGroup.value) {
+                console.log(data.groupModel);
+                IvueCheckboxGroup.change(data.groupModel);
+            } else {
                 // 发送事件
                 emit('on-change', value);
             }
@@ -277,9 +294,23 @@ export default defineComponent({
             }
         );
 
+        // 监听组合 v-model
+        watch(
+            () => IvueCheckboxGroup.modelValue,
+            (value) => {
+                data.groupModel = value || [];
+
+                console.log('监听组合 v-model');
+            },
+            {
+                // 同步监听
+                immediate: true,
+            }
+        );
+
         return {
             prefixCls,
-
+            // data
             data,
 
             // computed
@@ -289,12 +320,22 @@ export default defineComponent({
             innerStyles,
             inputClass,
             currentValue,
+            isGroup,
 
             // methods
             handleChange,
             handleFocus,
             handleBlur,
+            IvueCheckboxGroup,
         };
+    },
+    watch: {
+        'IvueCheckboxGroup.modelValue': {
+            handler(val) {
+                console.log('val', val);
+            },
+            immediate: true,
+        },
     },
 });
 </script>

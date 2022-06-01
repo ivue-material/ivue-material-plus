@@ -81,18 +81,18 @@ export default defineComponent({
             type: String,
         },
     },
-    setup(props: any, { emit }) {
+    setup(props: any) {
         const menu = ref<HTMLElement | any>(null);
 
         // vm
-        const { ctx, proxy, uid }: any = getCurrentInstance();
+        const { ctx }: any = getCurrentInstance();
 
         // inject
         const cascader: any = inject('ivue-cascader');
 
         // data
         const data: any = reactive<{
-            tmpItem: object;
+            tmpItem: any;
             sublist: Array<any>;
             result: Array<any>;
         }>({
@@ -210,7 +210,7 @@ export default defineComponent({
 
                 // 点选每级菜单选项值都会发生变化 清除选择的数据
                 if (props.changeOnSelect) {
-                    nextTick(() =>{
+                    nextTick(() => {
                         menu.value.handleClear();
                     });
                 }

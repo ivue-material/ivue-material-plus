@@ -27,6 +27,7 @@ import Cascader from '../components/cascader.vue';
 import Tooltip from '../components/tooltip.vue';
 import Chip from '../components/chip.vue';
 import Radio from '../components/radio.vue';
+import Checkbox from '../components/checkbox';
 
 const routes = [
   {
@@ -168,6 +169,11 @@ const routes = [
     path: '/radio',
     name: 'Radio',
     component: Radio
+  },
+  {
+    path: '/checkbox',
+    name: 'Checkbox',
+    component: Checkbox
   }
 ];
 

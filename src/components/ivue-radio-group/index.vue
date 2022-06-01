@@ -26,6 +26,11 @@ type Size = 'large' | 'small' | 'default';
 export default defineComponent({
     name: prefixCls,
     emits: ['update:modelValue', 'on-change'],
+    provide() {
+        return {
+            IvueCheckboxGroup: this,
+        };
+    },
     props: {
         /**
          * 指定当前选中的项目数据。可以使用 v-model 双向绑定数据
@@ -108,7 +113,7 @@ export default defineComponent({
             return [
                 `${prefixCls}`,
                 {
-                  // 单选框的尺寸
+                    // 单选框的尺寸
                     [`${prefixCls}--${props.size}`]: !!props.size,
                     // 单选框的尺寸
                     [`${prefixCls}--${props.size}`]: !!props.size,
@@ -149,11 +154,11 @@ export default defineComponent({
 
         // provide
 
-        provide('IvueRadioGroup', {
-            name: props.name,
-            data,
-            change: handleChange,
-        });
+        // provide('IvueRadioGroup', {
+        //     name: props.name,
+        //     data,
+        //     change: handleChange,
+        // });
 
         return {
             prefixCls,

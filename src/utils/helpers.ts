@@ -197,3 +197,27 @@ export function createRange(length) {
 export function isCssColor(color) {
     return !!color && !!color.match(/^(#|(rgb|hsl)a?\()/);
 }
+
+// 设置文字颜色
+export function setTextColor(color: Record<string, any>) {
+    let style = {};
+
+    // 是否是数组
+    if (Array.isArray(color)) {
+        style = {
+            color: `${color[0]}`,
+        };
+    } else if (isCssColor(color)) {
+        style = {
+            color: `${color}`,
+        };
+    } else if (color) {
+        const [colorName] = color.toString().trim().split(' ', 2);
+
+        style = {
+            color: `${colorName}--text`,
+        };
+    }
+
+    return style;
+}

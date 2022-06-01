@@ -32,6 +32,8 @@ import IvueTooltip from './components/ivue-tooltip';
 import IvueChip from './components/ivue-chip';
 import IvueRadio from './components/ivue-radio';
 import IvueRadioGroup from './components/ivue-radio-group';
+import IvueCheckbox from './components/ivue-checkbox';
+import IvueCheckboxGroup from './components/ivue-checkbox-group';
 
 // 指令
 import Directives from './utils/directives/index';
@@ -69,7 +71,9 @@ export {
     IvueTooltip,
     IvueChip,
     IvueRadio,
-    IvueRadioGroup
+    IvueRadioGroup,
+    IvueCheckbox,
+    IvueCheckboxGroup
 };
 
 
@@ -115,6 +119,8 @@ const install = (app: App, opt: InstallOptions = defaultInstallOpt): void => {
     IvueChip(app);
     IvueRadio(app);
     IvueRadioGroup(app);
+    IvueCheckbox(app);
+    IvueCheckboxGroup(app);
 
     // 全局配置
     app.config.globalProperties.$IVUE = opt;
