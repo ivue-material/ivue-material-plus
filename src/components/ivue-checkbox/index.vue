@@ -34,18 +34,11 @@
         <span :class="`${prefixCls}-label-text`">
             <slot>{{ label }}</slot>
         </span>
-        {{currentValueccc}}
     </label>
 </template>
 
 <script lang='ts'>
-import {
-    computed,
-    defineComponent,
-    reactive,
-    watch,
-    inject,
-} from 'vue';
+import { computed, defineComponent, reactive, watch, inject } from 'vue';
 import { isCssColor, setTextColor } from '../../utils/helpers';
 
 const prefixCls = 'ivue-checkbox';
@@ -53,11 +46,6 @@ const prefixCls = 'ivue-checkbox';
 export default defineComponent({
     name: prefixCls,
     emits: ['update:modelValue', 'on-change'],
-    inject: {
-        IvueCheckboxGroup: {
-            default: null,
-        },
-    },
     props: {
         /**
          * 只在单独使用时有效。可以使用 v-model 双向绑定数据
@@ -118,19 +106,6 @@ export default defineComponent({
          */
         label: {
             type: [String, Number, Boolean],
-        },
-    },
-    computed: {
-        currentValueccc() {
-          console.log('this.IvueCheckboxGroup', this.IvueCheckboxGroup);
-            // if (this.IvueCheckboxGroup) {
-            //     return (
-            //         this.IvueCheckboxGroup.modelValue.indexOf(this.label) >=
-            //         0
-            //     );
-            // } else {
-            //     return this.modelValue === this.trueValue;
-            // }
         },
     },
     setup(props: any, { emit }) {
@@ -224,17 +199,21 @@ export default defineComponent({
 
         // 当前值
         const currentValue = computed(() => {
+            // 有组合
             if (isGroup.value) {
-                // return IvueCheckboxGroup.modelValue.indexOf(props.label) >= 0;
-            } else {
-                // 没有组合
+                return (
+                    IvueCheckboxGroup.props.modelValue.indexOf(props.label) >= 0
+                );
+            }
+            // 没有组合
+            else {
                 return props.modelValue === props.trueValue;
             }
         });
 
         // 是否有组合
         const isGroup = computed(() => {
-            if (IvueCheckboxGroup) {
+            if (IvueCheckboxGroup.name) {
                 return true;
             }
 
@@ -259,8 +238,7 @@ export default defineComponent({
 
             // 有组合
             if (isGroup.value) {
-                console.log(data.groupModel);
-                IvueCheckboxGroup.change(data.groupModel);
+                IvueCheckboxGroup.handleChange(data.groupModel);
             } else {
                 // 发送事件
                 emit('on-change', value);
@@ -295,18 +273,18 @@ export default defineComponent({
         );
 
         // 监听组合 v-model
-        watch(
-            () => IvueCheckboxGroup.modelValue,
-            (value) => {
-                data.groupModel = value || [];
-
-                console.log('监听组合 v-model');
-            },
-            {
-                // 同步监听
-                immediate: true,
-            }
-        );
+        if (IvueCheckboxGroup.props) {
+            watch(
+                () => IvueCheckboxGroup.props.modelValue,
+                (value) => {
+                    data.groupModel = value || [];
+                },
+                {
+                    // 同步监听
+                    immediate: true,
+                }
+            );
+        }
 
         return {
             prefixCls,
@@ -328,14 +306,6 @@ export default defineComponent({
             handleBlur,
             IvueCheckboxGroup,
         };
-    },
-    watch: {
-        'IvueCheckboxGroup.modelValue': {
-            handler(val) {
-                console.log('val', val);
-            },
-            immediate: true,
-        },
     },
 });
 </script>

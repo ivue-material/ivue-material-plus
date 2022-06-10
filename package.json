@@ -8,7 +8,7 @@
     "src"
   ],
   "scripts": {
-    "dev": "webpack-dev-server --config build/webpack.dev.config.js",
+    "serve": "webpack-dev-server --config build/webpack.dev.config.js",
     "dist": "npm run dist:dev",
     "dist:dev": "webpack --config build/webpack.dist.dev.config.js",
     "dist:prod": "webpack --config build/webpack.dist.prod.config.js"

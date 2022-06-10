@@ -23,11 +23,6 @@ export default defineComponent({
             default: () => [],
         },
     },
-    provide() {
-        return {
-            CheckboxGroupInstance: this,
-        };
-    },
     setup(props: any, { emit }) {
         // data
         const data: any = reactive<{
@@ -60,11 +55,11 @@ export default defineComponent({
 
         // provide
 
-        // provide('IvueCheckboxGroup', {
-        //     name: prefixCls,
-        //     modelValue: props.modelValue,
-        //     change: handleChange,
-        // });
+        provide('IvueCheckboxGroup', {
+            name: prefixCls,
+            props,
+            handleChange,
+        });
 
         return {
             // data
