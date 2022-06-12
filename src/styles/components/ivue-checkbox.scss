@@ -20,6 +20,43 @@ $ease-in-out: ease-in-out;
       padding-left: 4px;
 
     }
+
+    // 禁用
+    &--disabled {
+      cursor: not-allowed;
+    }
+
+    // 激活边框
+    &--checked.#{$name}-border {
+      border-color: $primary-color;
+    }
+
+    // 禁用边框
+    &--disabled.#{$name}-border {
+      border-color: $border-color;
+    }
+  }
+
+  // 禁用
+  &-disabled {
+    cursor: not-allowed;
+  }
+
+
+  // 禁用选择
+  &-disabled.#{$name}-checked &-inner {
+    border-color: $border-color;
+    background-color: $background-color-select-hover;
+
+    &::after {
+      border-color: $disabled-color;
+    }
+  }
+
+  // 禁用未选择
+  &-disabled &-inner {
+    border-color: $border-color;
+    background-color: $background-color-select-hover;
   }
 
   // 方框
@@ -35,7 +72,7 @@ $ease-in-out: ease-in-out;
     background-color: $white-color;
     transition: border-color $transition-time $ease-in-out, background-color $transition-time $ease-in-out, box-shadow $transition-time $ease-in-out;
 
-    // 中间圆点
+    // 中间样式
     &::after {
       content: '';
       display: table;
@@ -49,6 +86,17 @@ $ease-in-out: ease-in-out;
       border-left: 0;
       transform: rotate(45deg) scale(0);
       transition: all $transition-time $ease-in-out;
+    }
+
+    // indeterminate
+    &::before {
+      content: '';
+      display: none;
+      width: 10px;
+      height: 2px;
+      position: absolute;
+      left: 2px;
+      top: 6px;
     }
   }
 
@@ -64,12 +112,21 @@ $ease-in-out: ease-in-out;
     z-index: 1;
     cursor: pointer;
     opacity: 0;
+
+    &[disabled] {
+      cursor: not-allowed;
+    }
   }
 
   // 内容
   &-label-text {
     margin-right: 4px;
     padding-left: 4px;
+
+    // 禁用
+    &--disabled {
+      color: $disabled-color;
+    }
   }
 
   // 选中
@@ -83,6 +140,7 @@ $ease-in-out: ease-in-out;
     }
   }
 
+
   // 组合
   &-group {
     font-size: 14px;
@@ -91,4 +149,31 @@ $ease-in-out: ease-in-out;
       display: inline-block;
     }
   }
+
+  // 边框
+  &-border {
+    border: 1px solid $border-color;
+    border-radius: 4px;
+    height: 32px;
+    line-height: 30px;
+    padding: 0 15px;
+    transition: border $transition-time $ease-in-out;
+  }
+
+  // indeterminate
+  &-indeterminate &-inner {
+    border-color: currentColor;
+    background-color: currentColor;
+
+    &::after {
+      display: none;
+    }
+
+    &::before {
+      content: '';
+      display: table;
+      background-color: $white-color;
+    }
+  }
+
 }

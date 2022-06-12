@@ -31,7 +31,7 @@
             />
         </span>
         <!-- 内容 -->
-        <span :class="`${prefixCls}-label-text`">
+        <span :class="textClass">
             <slot>{{ label }}</slot>
         </span>
     </label>
@@ -107,6 +107,24 @@ export default defineComponent({
         label: {
             type: [String, Number, Boolean],
         },
+        /**
+         * 是否显示边框
+         *
+         * @type {Boolean}
+         */
+        border: {
+            type: Boolean,
+            default: false,
+        },
+        /**
+         * 设置 indeterminate 状态，只负责样式控制
+         *
+         * @type {Boolean}
+         */
+        indeterminate: {
+            type: Boolean,
+            default: false,
+        },
     },
     setup(props: any, { emit }) {
         // 组合
@@ -148,7 +166,9 @@ export default defineComponent({
                 `${prefixCls}-wrapper`,
                 {
                     [`${prefixCls}-wrapper--checked`]: currentValue.value,
+                    [`${prefixCls}-wrapper--disabled`]: props.disabled,
                     [`${prefixCls}-group--item`]: isGroup.value,
+                    [`${prefixCls}-border`]: props.border,
                 },
             ];
         });
@@ -159,6 +179,8 @@ export default defineComponent({
                 `${prefixCls}`,
                 {
                     [`${prefixCls}-checked`]: currentValue.value,
+                    [`${prefixCls}-disabled`]: props.disabled,
+                    [`${prefixCls}-indeterminate`]: props.indeterminate,
                 },
             ];
         });
@@ -195,6 +217,16 @@ export default defineComponent({
         // 输入框
         const inputClass = computed(() => {
             return `${prefixCls}-input`;
+        });
+
+        // 文字 class
+        const textClass = computed(() => {
+            return [
+                `${prefixCls}-label-text`,
+                {
+                    [`${prefixCls}-label-text--disabled`]: props.disabled,
+                },
+            ];
         });
 
         // 当前值
@@ -297,6 +329,7 @@ export default defineComponent({
             innerClass,
             innerStyles,
             inputClass,
+            textClass,
             currentValue,
             isGroup,
 
