@@ -28,6 +28,8 @@ import Tooltip from '../components/tooltip.vue';
 import Chip from '../components/chip.vue';
 import Radio from '../components/radio.vue';
 import Checkbox from '../components/checkbox';
+import Avatar from '../components/avatar';
+import Page from '../components/page';
 
 const routes = [
   {
@@ -174,6 +176,16 @@ const routes = [
     path: '/checkbox',
     name: 'Checkbox',
     component: Checkbox
+  },
+  {
+    path: '/avatar',
+    name: 'Avatar',
+    component: Avatar
+  },
+  {
+    path: '/page',
+    name: 'Page',
+    component: Page
   }
 ];
 

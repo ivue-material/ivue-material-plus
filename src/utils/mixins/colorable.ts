@@ -26,7 +26,7 @@ export default {
     },
     methods: {
         // 设置背景颜色
-        setBackgroundColor(color: string | any[], data: Record<string, any>): any {
+        setBackgroundColor(color: string | any[], data: Record<string, any> = {}): any {
 
             // 是否是数组
             if (Array.isArray(color)) {
