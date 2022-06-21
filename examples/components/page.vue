@@ -1,7 +1,11 @@
 <template>
     <div>
         <h1>基本</h1>
-        <ivue-page :total="100"></ivue-page>
+        <ivue-page :total="100" showTotal>
+
+        </ivue-page>
+        <span>showTotal</span>
+        <ivue-page :total="100" showTotal></ivue-page>
     </div>
 </template>
 
