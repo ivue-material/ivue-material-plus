@@ -16,7 +16,8 @@ $name: 'ivue-page';
   // 上一页
   &-prev {
     i {
-      transition: all .2s ease-in-out;
+      transition: color .2s ease-in-out;
+      font-size: 20px;
     }
   }
 
@@ -32,13 +33,19 @@ $name: 'ivue-page';
     list-style: none;
     cursor: pointer;
     color: $arrow-color;
-    border: 2px solid $border-color;
+    border: 1px solid $border-color;
     border-radius: 4px;
-    transition: all .2s ease-in-out;
+    transition: border .2s ease-in-out;
 
     &:hover {
       color: $primary-color;
       border-color: $primary-color;
     }
   }
+
+  // slot
+  &-slot {
+    border-color: transparent;
+  }
+
 }

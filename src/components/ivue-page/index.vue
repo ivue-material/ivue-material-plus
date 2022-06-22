@@ -4,9 +4,11 @@
         <span :class="`${prefixCls}-total`" v-if="showTotal">
             <slot name="total">{{ `共 ${total} 条` }}</slot>
         </span>
-        <!-- 左边按钮 -->
+        <!-- 上一页按钮 -->
         <li :class="prevClass">
-            <ivue-icon>{{ prevIcon }}</ivue-icon>
+            <slot name="prev">
+                <ivue-icon>{{ prevIcon }}</ivue-icon>
+            </slot>
         </li>
     </ul>
 </template>
@@ -20,6 +22,15 @@ const prefixCls = 'ivue-page';
 export default defineComponent({
     name: prefixCls,
     props: {
+        /**
+         * v-model
+         *
+         * @type {Number}
+         */
+        modelValue: {
+            type: Number,
+            default: 1,
+        },
         /**
          * 显示总条数
          *
@@ -57,7 +68,13 @@ export default defineComponent({
             default: 'keyboard_arrow_right',
         },
     },
-    setup() {
+    setup(props: any, { slots }) {
+        // data
+        const data = reactive({
+            // 当前页数
+            currentPage: props.modelValue,
+        });
+
         // 外层样式
         const wrapClass = computed(() => {
             return [prefixCls];
@@ -65,7 +82,13 @@ export default defineComponent({
 
         // 上一页样式
         const prevClass = computed(() => {
-            return [`${prefixCls}-prev`, itemClass.value];
+            return [
+                `${prefixCls}-prev`,
+                itemClass.value,
+                {
+                    [`${prefixCls}-slot`]: slots.prev,
+                },
+            ];
         });
 
         // 选项样式
@@ -77,7 +100,8 @@ export default defineComponent({
 
         return {
             prefixCls,
-
+            // data
+            data,
             // computed
             wrapClass,
             prevClass,
