@@ -40,7 +40,6 @@ import IvuePage from './components/ivue-page';
 // 指令
 import Directives from './utils/directives/index';
 
-
 export {
     IvueAffix,
     IvueInput,

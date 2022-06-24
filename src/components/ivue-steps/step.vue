@@ -12,7 +12,7 @@
             <!-- 下划线 -->
             <div
                 :class="[`${prefixCls}-divider`]"
-                v-if="data.textDirection === 'bottom'|| data.direction === 'vertical' "
+                v-if="data.textDirection === 'bottom'|| data.direction === 'vertical'"
             >
                 <i></i>
             </div>

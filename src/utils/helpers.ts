@@ -221,3 +221,8 @@ export function setTextColor(color: Record<string, any>) {
 
     return style;
 }
+
+// 是否是纯数字
+export function isValueNumber(value) {
+    return (/^[1-9][0-9]*$/).test(value + '');
+}

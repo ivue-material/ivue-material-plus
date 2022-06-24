@@ -121,7 +121,7 @@
                 </li>
             </ul>
         </nav>
-        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+
         <router-view />
     </div>
 </template>

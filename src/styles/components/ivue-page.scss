@@ -11,41 +11,290 @@ $name: 'ivue-page';
     height: 32px;
     line-height: 32px;
     margin-right: 10px;
+    font-size: 14px;
   }
 
-  // 上一页
-  &-prev {
+  // 选项
+  &-item {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    user-select: none;
+    margin-right: 5px;
+    min-width: 32px;
+    height: 32px;
+    line-height: 30px;
+    list-style: none;
+    cursor: pointer;
+    border: 1px solid $border-color;
+    border-radius: 4px;
+    transition: all .2s ease-in-out;
+    color: $text-color;
+
+    &:hover {
+      color: $primary-color;
+      border-color: $primary-color;
+    }
+
+
+    // 文字
+    &--text {
+      padding: 0 6px;
+      font-size: 14px;
+    }
+
+    // 激活
+    &--active {
+      color: $primary-color;
+      border-color: $primary-color;
+    }
+  }
+
+  // 上一页 下一页
+  &-prev,
+  &-next {
+    color: $arrow-color;
+
     i {
       transition: color .2s ease-in-out;
       font-size: 20px;
     }
   }
 
-  // 选项
-  &-item {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    user-select: none;
-    min-width: 32px;
-    height: 32px;
-    line-height: 30px;
-    list-style: none;
-    cursor: pointer;
-    color: $arrow-color;
-    border: 1px solid $border-color;
-    border-radius: 4px;
-    transition: border .2s ease-in-out;
+  // 下一页
+  &-next {
+    margin-right: 0;
+  }
+
+  // 缩略号
+  &-abbreviation {
+    border-color: transparent;
+    background: none;
+    transition: none;
+    box-shadow: none;
+    overflow: hidden;
+    font-size: 12px;
+
+    i {
+      font-size: 20px;
+    }
+
+    // 缩略号
+    .abbreviation {
+      letter-spacing: 1px;
+      color: $disabled-color;
+      text-align: center;
+    }
+
+    // 箭头
+    .arrow {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      display: none;
+
+      .ivue-icon {
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        margin-left: 5px;
+        // display: none;
+        color: $primary-color;
+        font-size: 20px;
+
+        &:first-child {
+          margin-left: -1px;
+        }
+      }
+    }
+
 
     &:hover {
-      color: $primary-color;
-      border-color: $primary-color;
+      border-color: transparent;
+      // &::after {
+      //   display: none;
+      // }
+
+      .abbreviation {
+        display: none;
+      }
+
+      .arrow {
+        display: flex;
+        color: $primary-color;
+      }
+    }
+  }
+
+  // 小型分页样式
+  &-small {
+
+    // 上一页 下一页
+    .#{$name}-prev,
+    .#{$name}-next {
+      margin: 0;
+      min-width: 24px;
+      height: 24px;
+      line-height: 22px;
+      border: 0;
+    }
+
+    // 选项
+    .#{$name}-item {
+      border: 0;
+      margin: 0;
+      min-width: 24px;
+      height: 24px;
+      line-height: 24px;
+    }
+
+    // 省略号
+    .#{$name}-abbreviation .arrow .ivue-icon {
+      font-size: 14px;
+      margin-left: 2px;
+
+      &:first-child {
+        margin-left: -2px;
+      }
+    }
+
+    // 选择页数
+    .#{$name}-options--sizer {
+      .ivue-select-default .ivue-select-selection {
+        height: 24px;
+        min-height: 24px;
+      }
+
+      .ivue-select-selection-value {
+        height: 24px;
+        line-height: 24px;
+      }
+    }
+
+
+    // 跳转页数
+    .#{$name}-options--elevator__input {
+      height: 24px;
+    }
+  }
+
+  // 简洁版
+  &-simple {
+
+    // 上一页 下一页
+    .#{$name}-prev,
+    .#{$name}-next {
+      margin: 0;
+      border: 0;
+      height: 24px;
+      line-height: normal;
+      font-size: 18px;
+    }
+  }
+
+  // 禁用
+  &-disabled {
+    cursor: not-allowed;
+    color: $disabled-color;
+
+    &:hover {
+      color: $disabled-color;
+      border-color: $border-color;
     }
   }
 
   // slot
   &-slot {
     border-color: transparent;
+
+    &:hover {
+      border-color: transparent;
+    }
   }
 
+  // 选项
+  &-options {
+    display: inline-block;
+    vertical-align: middle;
+    margin-left: 15px;
+
+    // 显示分页
+    &--sizer {
+      display: inline-block;
+      margin-right: 10px;
+
+      // 下拉框样式
+      &__dropdown {
+        width: auto;
+      }
+
+      // 下拉框样式
+      .ivue-select-default .ivue-select-selection {
+        height: 32px;
+        min-height: 32px;
+      }
+
+      // 下拉框样式
+      .ivue-select-selection-value {
+        height: 30px;
+        line-height: 30px;
+        font-size: 14px;
+      }
+    }
+
+    // 电梯
+    &--elevator {
+      display: inline-block;
+      vertical-align: middle;
+      height: 32px;
+      line-height: 32px;
+      font-size: 14px;
+      color: $text-color;
+
+      // 输入框
+      &__input {
+        display: inline-block;
+        height: 32px;
+        line-height: 1;
+        padding: 4px 7px;
+        font-size: 14px;
+        border: 1px solid $border-color;
+        color: $text-color;
+        background-color: $white-color;
+        background-image: none;
+        position: relative;
+        cursor: text;
+        transition: all .2s ease-in-out;
+        border-radius: 4px;
+        margin: 0 8px;
+        width: 50px;
+
+        &:focus {
+          outline: 0;
+          box-shadow: 0 0 0 2px transparentize($primary-color, 0.8);
+        }
+
+        &:focus,
+        &:hover {
+          border-color: $primary-color;
+        }
+
+        &[disabled] {
+          background-color: #F8F9FD;
+          opacity: 1;
+          cursor: $cursor-disabled !important;
+          color: $input-disabled-color;
+
+          &:hover {
+            border-color: $border-color;
+          }
+        }
+      }
+    }
+  }
 }
