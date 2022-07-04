@@ -57,7 +57,7 @@ $name: 'ivue-page';
     color: $arrow-color;
 
     i {
-      transition: color .2s ease-in-out;
+      transition: none;
       font-size: 20px;
     }
   }
@@ -195,6 +195,59 @@ $name: 'ivue-page';
       line-height: normal;
       font-size: 18px;
     }
+
+    // 页数
+    &-page {
+      display: inline-block;
+      margin-right: 8px;
+      vertical-align: middle;
+    }
+
+    // 符号
+    &-sign {
+      padding: 0 8px 0 2px;
+    }
+
+    // 输入框
+    &-input {
+      display: inline-block;
+      width: 30px;
+      height: 24px;
+      padding: 4px 7px;
+      font-size: 14px;
+      border: 1px solid $border-color;
+      color: $text-color;
+      background-color: $white-color;
+      background-image: none;
+      position: relative;
+      cursor: text;
+      transition: all .2s ease-in-out;
+      border-radius: 4px;
+      margin: 0 8px;
+      text-align: center;
+
+
+      &:focus {
+        outline: 0;
+        box-shadow: 0 0 0 2px transparentize($primary-color, 0.8);
+      }
+
+      &:focus,
+      &:hover {
+        border-color: $primary-color;
+      }
+
+      &[disabled] {
+        background-color: #F8F9FD;
+        opacity: 1;
+        cursor: $cursor-disabled !important;
+        color: $input-disabled-color;
+
+        &:hover {
+          border-color: $border-color;
+        }
+      }
+    }
   }
 
   // 禁用
@@ -259,8 +312,6 @@ $name: 'ivue-page';
       // 输入框
       &__input {
         display: inline-block;
-        height: 32px;
-        line-height: 1;
         padding: 4px 7px;
         font-size: 14px;
         border: 1px solid $border-color;
@@ -273,6 +324,7 @@ $name: 'ivue-page';
         border-radius: 4px;
         margin: 0 8px;
         width: 50px;
+        height: 32px;
 
         &:focus {
           outline: 0;

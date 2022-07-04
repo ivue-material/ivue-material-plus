@@ -4,7 +4,7 @@
 
         <h1>普通条数</h1>
 
-        <!-- <p>没有更多</p>
+        <p>没有更多</p>
         <ivue-page :total="50"></ivue-page>
         <p>有更多</p>
         <ivue-page :total="1000"></ivue-page>
@@ -26,7 +26,7 @@
         <ivue-page :total="100" showElevator></ivue-page>
         <ivue-page :total="100" showElevator :elevatorText="['第一个', '第二个']"></ivue-page>
         <h1>迷你型</h1>
-        <ivue-page :total="100" small showTotal  showSizer showElevator></ivue-page> -->
+        <ivue-page :total="100" small showTotal  showSizer showElevator></ivue-page>
         <h1>简洁</h1>
         <ivue-page :total="100" simple></ivue-page>
 

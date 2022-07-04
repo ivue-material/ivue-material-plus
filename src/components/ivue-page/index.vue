@@ -8,6 +8,25 @@
             </slot>
         </li>
 
+        <!-- 输入框 -->
+        <div :class="simplePageClasses">
+            <!-- 输入框 -->
+            <input
+                :class="`${prefixCls}-simple-input`"
+                type="text"
+                autocomplete="off"
+                spellcheck="false"
+                :value="data.currentPage"
+                :disabled="disabled"
+                @keydown="handleKeyDown"
+                @keyup="handleKeyUp"
+                @change="handleKeyUp"
+            />
+            <!-- 符号 -->
+            <span :class="`${prefixCls}-simple-sign`">/</span>
+            <!-- 所有页数 -->
+            <span>{{ allPages }}</span>
+        </div>
 
         <!-- 下一页按钮 -->
         <li :class="nextClass" @click="handleNext">
@@ -395,6 +414,11 @@ export default defineComponent({
             return [prefixCls, `${prefixCls}-simple`];
         });
 
+        // 输入框
+        const simplePageClasses = computed(() => {
+            return `${prefixCls}-simple-page`;
+        });
+
         // 获取所有页数
         const allPages = computed(() => {
             // 总条数 / 当前每页条数 (100 / 10) = 10
@@ -624,6 +648,59 @@ export default defineComponent({
             handleCangePage(value);
         };
 
+        // 键盘按下
+        const handleKeyDown = (event) => {
+            const key = event.keyCode;
+
+            const condition =
+                (key >= 48 && key <= 57) ||
+                (key >= 96 && key <= 105) ||
+                key === 8 ||
+                key === 37 ||
+                key === 39;
+
+            if (!condition) {
+                event.preventDefault();
+            }
+        };
+
+        // 键盘弹起
+        const handleKeyUp = (event) => {
+            const key = event.keyCode;
+            const value = parseInt(event.target.value);
+
+            // 上一页
+            if (key === 38) {
+                handlePrev();
+            }
+            // 下一页
+            else if (key === 40) {
+                handleNext();
+            }
+            // 确认
+            else if (key === 13) {
+                let page = 1;
+
+                // 超过最大页数
+                if (value > allPages.value) {
+                    page = allPages.value;
+                }
+                // 小于0
+                else if (value <= 0 || !value) {
+                    page = 1;
+                }
+                // 当前页数
+                else {
+                    page = value;
+                }
+
+                event.target.value = page;
+
+                // 改变页数
+                handleCangePage(page);
+            }
+        };
+
         // watch
 
         // 监听总数
@@ -673,6 +750,7 @@ export default defineComponent({
             abbreviationClass,
             pagerList,
             simpleWrapperClasses,
+            simplePageClasses,
 
             // methods
             handlePrev,
@@ -682,6 +760,8 @@ export default defineComponent({
             handleFastNext,
             handleChangeSize,
             handleChangePage,
+            handleKeyDown,
+            handleKeyUp,
         };
     },
     components: {
