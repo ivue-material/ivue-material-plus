@@ -187,7 +187,6 @@ export default defineComponent({
                 const fatherWidth = wrapper.value.getBoundingClientRect().width;
 
                 // 计算缩放大小
-                console.log(data.slotWidth);
                 if (fatherWidth - 8 < data.slotWidth) {
                     data.slotScale = (fatherWidth - 8) / data.slotWidth;
                 } else {
@@ -204,7 +203,7 @@ export default defineComponent({
             () => {
                 nextTick(() => {
                   setTextScale();
-                })
+                });
             }
         );
 

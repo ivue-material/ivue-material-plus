@@ -30,6 +30,7 @@ import Radio from '../components/radio.vue';
 import Checkbox from '../components/checkbox';
 import Avatar from '../components/avatar';
 import Page from '../components/page';
+import Spin from '../components/spin';
 
 const routes = [
   {
@@ -186,6 +187,11 @@ const routes = [
     path: '/page',
     name: 'Page',
     component: Page
+  },
+  {
+    path: '/spin',
+    name: 'Spin',
+    component: Spin
   }
 ];
 

@@ -110,14 +110,17 @@
                 <li>
                     <router-link to="/radio">Radio</router-link>
                 </li>
-                 <li>
+                <li>
                     <router-link to="/checkbox">Checkbox</router-link>
                 </li>
-                  <li>
+                <li>
                     <router-link to="/avatar">Avatar</router-link>
                 </li>
-                   <li>
+                <li>
                     <router-link to="/page">Page</router-link>
+                </li>
+                <li>
+                    <router-link to="/spin">Spin</router-link>
                 </li>
             </ul>
         </nav>

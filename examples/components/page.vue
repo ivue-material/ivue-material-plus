@@ -7,7 +7,7 @@
         <p>没有更多</p>
         <ivue-page :total="50"></ivue-page>
         <p>有更多</p>
-        <ivue-page :total="1000"></ivue-page>
+        <ivue-page :total="1000" :pagerCount="5"></ivue-page>
         <p>slot 左 有 页数</p>
         <ivue-page :total="1000">
             <template #prev>上一页</template>
