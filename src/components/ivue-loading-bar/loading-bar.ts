@@ -47,11 +47,7 @@ const newInstance = (options: options) => {
         data.percent = options.percent;
       }
 
-      // if (options.visible) {
-        data.visible = options.visible;
-
-      // }
-      console.log('??/', options)
+      data.visible = options.visible;
 
       if (options.status) {
         data.status = options.status;
@@ -64,7 +60,7 @@ const newInstance = (options: options) => {
     }
   };
 
-}
+};
 
 
 // 获取组件实例
@@ -76,14 +72,14 @@ const getIvueLoadingBarInstance = () => {
   });
 
   return instances;
-}
+};
 
 // 更新组件
 const update = (options: options) => {
-  let instance = getIvueLoadingBarInstance();
+  const instance = getIvueLoadingBarInstance();
 
   instance.update(options);
-}
+};
 
 // 清除定时器
 const clearTimer = () => {
@@ -91,7 +87,7 @@ const clearTimer = () => {
     clearInterval(timer);
     timer = null;
   }
-}
+};
 
 // 隐藏组件
 const hide = () => {
@@ -103,10 +99,10 @@ const hide = () => {
     setTimeout(() => {
       update({
         percent: 0
-      })
+      });
     }, 200);
   }, 800);
-}
+};
 
 
 export default {
@@ -134,7 +130,7 @@ export default {
         percent: percent,
         status: 'success',
         visible: true
-      })
+      });
     }, 200);
 
   },
@@ -188,10 +184,10 @@ export default {
   // 销毁
   destroy() {
     clearTimer();
-    let _instance = getIvueLoadingBarInstance();
+    const _instance = getIvueLoadingBarInstance();
 
     instances = null;
 
     _instance.destroy();
   }
-}
+};

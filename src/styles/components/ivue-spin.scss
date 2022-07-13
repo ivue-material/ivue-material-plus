@@ -1,5 +1,7 @@
 $name: 'ivue-spin';
 
+
+
 .#{$name} {
   display: inline-block;
   color: $primary-color;
@@ -37,11 +39,43 @@ $name: 'ivue-spin';
   &-text {
     display: block;
   }
+
+  // 固定
+  &-fix {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 8;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, .9);
+
+    .#{$name}-content {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100%;
+    }
+  }
+
+  // 全屏显示
+  &-fullscreen {
+    z-index: 2010;
+
+    &--wrapper {
+      position: fixed;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+    }
+  }
 }
+
 
 .#{$name}-fade-enter-active,
 .#{$name}-fade-leave-active {
-  transition: opacity .3s cubic-bezier(.25, .8, .50, 1);
+  transition: opacity .3s ease-in-out;
 }
 
 .#{$name}-fade-enter-from,

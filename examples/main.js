@@ -25,9 +25,10 @@ if (window.__VUE_DEVTOOLS_GLOBAL_HOOK__) {
 // // then had to add in ./store.js as well.
 // Vue.config.devtools = process.env.NODE_ENV === 'development'
 
-
 app.use(router)
-app.use(IVue)
+app.use(IVue, {
+  capture: false,
+})
 
 
 app.mount('#app')

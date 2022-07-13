@@ -84,14 +84,13 @@ export {
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface InstallOptions {
+    capture: boolean,
+    fix: boolean
 }
-
-const defaultInstallOpt = {
-};
 
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-const install = (app: App, opt: InstallOptions = defaultInstallOpt): void => {
+const install = (app: App, opts: InstallOptions): void => {
     IvueAffix(app);
     IvueInput(app);
     IvueIcon(app);
@@ -131,7 +130,12 @@ const install = (app: App, opt: InstallOptions = defaultInstallOpt): void => {
     IvueSpin(app);
 
     // 全局配置
-    app.config.globalProperties.$IVUE = opt;
+    app.config.globalProperties.$IVUE = {
+        // 是否开启 capture 模式
+        capture: 'capture' in opts ? opts.capture : true,
+        // 是否固定 需要父级有relative或absolute
+        fix: 'fix' in opts ? opts.fix : false,
+    };
 
     // 注册全局指令
     // ripple resize touch click-outside

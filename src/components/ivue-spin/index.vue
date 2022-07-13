@@ -1,10 +1,10 @@
 <template>
-    <transition name="ivue-spin-fade">
-        <div :class="wrapperClass">
+    <transition :name="`${prefixCls}-fade`">
+        <div :class="wrapperClass" v-if="fullscreenVisible && show">
             <!-- 内容 -->
             <div :class="`${prefixCls}-content`">
                 <!-- dot -->
-                <div :class="`${prefixCls}-dot`" :style="dotStyle"></div>
+                <div :class="`${prefixCls}-dot`" :style="dotStyle" v-show="!$slots.default"></div>
                 <!-- 提示文字 -->
                 <div :class="`${prefixCls}-text`" v-show="$slots.default">
                     <slot></slot>
@@ -15,14 +15,18 @@
 </template>
 
 <script lang='ts'>
-import { defineComponent, computed, reactive, getCurrentInstance } from 'vue';
-import Colorable from '../../utils/mixins/colorable';
+import {
+    defineComponent,
+    computed,
+    reactive,
+    watch,
+    getCurrentInstance,
+} from 'vue';
 
 const prefixCls = 'ivue-spin';
 
 export default defineComponent({
     name: prefixCls,
-    mixins: [Colorable],
     props: {
         /**
          * 显示
@@ -41,24 +45,55 @@ export default defineComponent({
         size: {
             type: [Number, String],
         },
+        /**
+         * 是否固定 需要父级有relative或absolute
+         *
+         * @type {Boolean}
+         */
+        fix: {
+            type: Boolean,
+            default() {
+                // 获取全局配置
+                const global =
+                    getCurrentInstance().appContext.config.globalProperties;
+
+                return !global.$IVUE || global.$IVUE.fix === false
+                    ? false
+                    : global.$IVUE.fix;
+            },
+        },
+        /**
+         * 全屏显示
+         *
+         * @type {Boolean}
+         */
+        fullscreen: {
+            type: Boolean,
+            default: false,
+        },
     },
     setup(props: any) {
-        // 当前实例
-        const { proxy }: any = getCurrentInstance();
-
         // data
         const data = reactive<{
             visible: boolean;
+            showText: boolean;
         }>({
             // 使用 $IvueSpin 时显示
             visible: false,
+            // 是否显示文本
+            showText: false,
         });
 
         // computed
 
         // 外层样式
         const wrapperClass = computed(() => {
-            return [`${prefixCls}`];
+            return [
+                `${prefixCls}`,
+                {
+                    [`${prefixCls}-fix`]: props.fix,
+                },
+            ];
         });
 
         // dot样式
@@ -85,13 +120,40 @@ export default defineComponent({
             return sizeStyle;
         });
 
+        // 是否全屏显示
+        const fullscreenVisible = computed(() => {
+            if (props.fullscreen) {
+                return data.visible;
+            } else {
+                return true;
+            }
+        });
+
+        // watch
+
+        // 监听显示
+        watch(
+            () => data.visible,
+            (value) => {
+                // overflow
+                if (value) {
+                    document.body.style.overflow = 'hidden';
+                }
+                // 取消overflow
+                else {
+                    document.body.style.overflow = '';
+                }
+            }
+        );
+
         return {
             prefixCls,
             // data
             data,
             // computed
             wrapperClass,
-            dotStyle
+            dotStyle,
+            fullscreenVisible,
         };
     },
 });
