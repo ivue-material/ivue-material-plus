@@ -1,4 +1,7 @@
-import { createWebHashHistory, createRouter } from 'vue-router';
+import {
+  createWebHashHistory,
+  createRouter
+} from 'vue-router';
 import Affix from '../components/affix';
 import Input from '../components/input';
 import Icon from '../components/icon';
@@ -31,9 +34,9 @@ import Checkbox from '../components/checkbox';
 import Avatar from '../components/avatar';
 import Page from '../components/page';
 import Spin from '../components/spin';
+import Table from '../components/table';
 
-const routes = [
-  {
+const routes = [{
     path: '/Affix',
     name: 'Affix',
     component: Affix
@@ -192,6 +195,11 @@ const routes = [
     path: '/spin',
     name: 'Spin',
     component: Spin
+  },
+  {
+    path: '/table',
+    name: 'Table',
+    component: Table
   }
 ];
 

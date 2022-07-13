@@ -122,6 +122,9 @@
                 <li>
                     <router-link to="/spin">Spin</router-link>
                 </li>
+                <li>
+                    <router-link to="/table">Table</router-link>
+                </li>
             </ul>
         </nav>
 
