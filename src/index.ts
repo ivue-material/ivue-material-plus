@@ -82,15 +82,7 @@ export {
 };
 
 
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
-interface InstallOptions {
-    capture: boolean,
-    fix: boolean
-}
-
-
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const install = (app: App, opts: InstallOptions): void => {
+const install = (app: App, opts: any = {}): void => {
     IvueAffix(app);
     IvueInput(app);
     IvueIcon(app);

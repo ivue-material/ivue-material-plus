@@ -132,6 +132,7 @@
     </div>
 </template>
 <script>
+
 module.exports = {
     data() {
         return {};

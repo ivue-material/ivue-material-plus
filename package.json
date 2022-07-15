@@ -1,6 +1,6 @@
 {
-  "name": "ivue-material",
-  "version": "0.8.5",
+  "name": "ivue-material-plus",
+  "version": "0.0.1",
   "description": "A high quality UI components Library with Vue.js",
   "main": "dist/ivue.js",
   "files": [
@@ -9,9 +9,10 @@
   ],
   "scripts": {
     "serve": "webpack-dev-server --config build/webpack.dev.config.js",
-    "dist": "npm run dist:dev",
-    "dist:dev": "webpack --config build/webpack.dist.dev.config.js",
-    "dist:prod": "webpack --config build/webpack.dist.prod.config.js"
+    "build": "npm run build:style && npm run build:dev && npm run build:prod",
+    "build:dev": "webpack --config build/webpack.dist.dev.config.js",
+    "build:prod": "webpack --config build/webpack.dist.prod.config.js",
+    "build:style": "gulp --gulpfile build/build-style.js"
   },
   "repository": {
     "type": "git",
@@ -23,6 +24,7 @@
     "@popperjs/core": "^2.11.5",
     "eslint-plugin-html": "^6.2.0",
     "g": "^2.0.1",
+    "gulp-sass-import": "^1.0.0",
     "hex-to-rgba": "^2.0.1",
     "material-icons": "^1.11.2",
     "mitt": "^3.0.0",
@@ -117,7 +119,12 @@
     "webpack": "^4.44.1",
     "webpack-cli": "^3.3.12",
     "webpack-dev-server": "^3.11.0",
-    "webpack-merge": "^5.3.0"
+    "webpack-merge": "^5.3.0",
+    "gulp": "^4.0.2",
+    "gulp-autoprefixer": "^8.0.0",
+    "gulp-clean-css": "^4.3.0",
+    "gulp-sass": "^5.1.0",
+    "gulp-rename": "^2.0.0"
   },
   "engines": {
     "node": ">=8.9.1",

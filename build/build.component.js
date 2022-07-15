@@ -89,7 +89,6 @@ const runBuild = async () => {
 
     // 打包
     const bundle = await rollup.rollup(rollupOptions);
-    console.log(name, 'done');
 
     await bundle.write(outOptions);
 
