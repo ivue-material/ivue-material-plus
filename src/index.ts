@@ -37,6 +37,7 @@ import IvueCheckboxGroup from './components/ivue-checkbox-group';
 import IvueAvatar from './components/ivue-avatar';
 import IvuePage from './components/ivue-page';
 import IvueSpin from './components/ivue-spin';
+import IvueTable from './components/ivue-table';
 
 // 指令
 import Directives from './utils/directives/index';
@@ -78,7 +79,8 @@ export {
     IvueCheckboxGroup,
     IvueAvatar,
     IvuePage,
-    IvueSpin
+    IvueSpin,
+    IvueTable
 };
 
 
@@ -120,6 +122,7 @@ const install = (app: App, opts: any = {}): void => {
     IvueAvatar(app);
     IvuePage(app);
     IvueSpin(app);
+    IvueTable(app);
 
     // 全局配置
     app.config.globalProperties.$IVUE = {

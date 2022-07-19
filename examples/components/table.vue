@@ -1,5 +1,6 @@
 <template>
   <div>
+    <h1>基础表格</h1>
     <ivue-table></ivue-table>
   </div>
 </template>
