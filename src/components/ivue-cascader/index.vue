@@ -108,8 +108,7 @@ import {
 } from 'vue';
 
 import { oneOf } from '../../utils/assist';
-import Outside from '../../utils/directives/outside';
-import TransferDom from '../../utils/directives/transfer-dom';
+import { Outside, TransferDom } from '../../utils/directives';
 
 import IvueInput from '../ivue-input/index.vue';
 import IvueIcon from '../ivue-icon/index.vue';
@@ -692,7 +691,6 @@ export default defineComponent({
             data.filterableSelect = false;
 
             setTimeout(() => {
-
                 // 关闭弹窗
                 handleClose();
             });

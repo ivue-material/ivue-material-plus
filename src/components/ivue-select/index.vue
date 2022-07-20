@@ -121,8 +121,8 @@ import {
 } from 'vue';
 
 // 注册外部点击事件插件
-import ClickOutside from '../../utils/directives/click-outside';
-import TransferDom from '../../utils/directives/transfer-dom';
+import { ClickOutside, TransferDom } from '../../utils/directives';
+
 import { oneOf } from '../../utils/assist';
 
 const prefixCls = 'ivue-select';

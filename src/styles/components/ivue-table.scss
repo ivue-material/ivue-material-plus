@@ -10,10 +10,74 @@ $name:'ivue-table';
   background-color: $white-color;
   font-size: 14px;
   color: $text-color;
-  background: red;
+  background-color: #5B8EFF;
 
+  &-hidden {
+    visibility: hidden;
+    position: absolute;
+    z-index: -1;
+  }
+
+  // 100%宽度
   &-fullWidth {
     border-right: 0;
     border-bottom: 0;
+  }
+
+  // 内容
+  &-content {
+    position: relative;
+  }
+
+  // 头部
+  &-header {
+    table-layout: fixed;
+    border-collapse: separate;
+
+    &--wrapper {
+      overflow: hidden;
+      width: 100%
+    }
+  }
+
+  // border
+  &-border {
+    &::before {
+      content: "";
+      position: absolute;
+      top: -1px;
+      left: 0;
+      width: 1px;
+      height: 100%;
+      background-color: $border-color;
+      z-index: 3;
+    }
+
+    &::after {
+      content: "";
+      position: absolute;
+      top: -1px;
+      right: 0;
+      width: 1px;
+      height: 100%;
+      background-color: $border-color;
+      z-index: 3;
+    }
+  }
+
+  // 列
+  &-column {
+
+    // 拖拽时的虚线
+    &-resize-proxy {
+      position: absolute;
+      left: 200px;
+      top: 0;
+      bottom: 0;
+      width: 0;
+      border-left: 1px solid $border-color;
+      z-index: 10;
+    }
+
   }
 }
