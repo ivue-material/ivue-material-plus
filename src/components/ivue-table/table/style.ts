@@ -98,13 +98,9 @@ function useStyle<T>(
 
 
   // onMounted
-  onMounted(async () => {
-    // nextTick
-    await nextTick();
-
+  onMounted(() => {
     // 更新列
     store.updateColumns();
-
 
     // 初始化完成
     table.$ready = true;

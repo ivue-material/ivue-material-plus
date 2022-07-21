@@ -11,6 +11,17 @@ $name:'ivue-table';
   font-size: 14px;
   color: $text-color;
 
+  // 行
+  .cell {
+    box-sizing: border-box;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: normal;
+    word-break: break-all;
+    line-height: 23px;
+    padding: 0 12px;
+  }
+
   // 没有border
   &:not(.ivue-table-border) {
     .#{$name}-cell {
@@ -60,6 +71,14 @@ $name:'ivue-table';
     position: relative;
     text-align: left;
     z-index: 1;
+
+    &>.cell {
+      display: inline-block;
+      box-sizing: border-box;
+      position: relative;
+      vertical-align: middle;
+      width: 100%;
+    }
   }
 
   th.#{$name}-cell {

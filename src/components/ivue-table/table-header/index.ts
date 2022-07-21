@@ -71,12 +71,13 @@ export default defineComponent({
       getHeaderCellClass,
     } = useStyle(props as TableHeaderProps<unknown>);
 
-
     // methods
 
     // 渲染 th
     const renderTh = (list, rowSpan, rowIndex) => {
       return list.map((column, cellIndex) => {
+
+        // 规定单元格可横跨的行数
         if (column.rowSpan > rowSpan) {
           rowSpan = column.rowSpan;
         }
@@ -88,9 +89,11 @@ export default defineComponent({
             list,
             column
           ),
+          // 规定单元格可横跨的列数。
           colspan: column.colSpan,
-          key: `${column.id}-thead`,
+          // 规定单元格可横跨的行数
           rowspan: column.rowSpan,
+          key: `${column.id}-thead`,
         }, [
           // cell
           h('div',
