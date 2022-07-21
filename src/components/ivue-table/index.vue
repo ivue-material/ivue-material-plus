@@ -74,6 +74,7 @@ import type { Table } from './table/defaults';
 import defaultProps from './table/defaults';
 
 const prefixCls = 'ivue-table';
+let tableIdSeed = 1;
 
 export default defineComponent({
     name: prefixCls,
@@ -86,6 +87,10 @@ export default defineComponent({
 
         // vm
         const table = getCurrentInstance() as Table<Row>;
+
+        // 设置id
+        const tableId = `${prefixCls}-${tableIdSeed++}`;
+        table.tableId = tableId;
 
         // provide
         provide(prefixCls, table);
@@ -109,14 +114,20 @@ export default defineComponent({
 
         // 表格样式
         const {
-            tableLayout,
+            // data
             dragging,
+            renderExpanded,
+
+            // computed
+            tableLayout,
             contentStyles,
             tableStyles,
+
+            // methods
             handleMouseLeave,
             handleMousewheel,
             handleDragVisible,
-        } = useStyle<Row>(props, layout, table);
+        } = useStyle<Row>(props, layout, store, table);
 
         // data
 
@@ -169,6 +180,7 @@ export default defineComponent({
             // data
             data,
             dragging,
+            renderExpanded,
 
             // layout
             layout,

@@ -53,7 +53,6 @@ function proxyTableProps<T>(store: Store<T>, props: TableProps<T>) {
     watch(
       () => getArrKeysValue(props, key),
       (value) => {
-        console.log('监听表格props');
         setStatesValue(value, key, store);
       }
     );

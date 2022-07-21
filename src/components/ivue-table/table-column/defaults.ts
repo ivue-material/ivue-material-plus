@@ -1,5 +1,6 @@
 
-import type { VNode } from 'vue';
+import type { VNode, ComponentInternalInstance, Ref, PropType } from 'vue';
+import type { Table, DefaultRow } from '../table/defaults';
 
 // 插槽内容 slots
 type SlotsContent<T> = { column: TableColumnCtx<T>; $index: number }
@@ -14,58 +15,239 @@ type Filters = {
   value: string
 }[]
 
-// 列表行
+// 列参数
 interface TableColumnCtx<T> {
   id: string
-  realWidth: number
-  type: string
-  label: string
-  className: string
-  labelClassName: string
-  property: string
   prop: string
+  label: string
   width: string | number
   minWidth: string | number
-  renderHeader: (data: SlotsContent<T>) => VNode
+  children: TableColumnCtx<T>[]
+  isSubColumn: boolean,
+  type: string
   sortable: boolean | string
-  sortMethod: (a: T, b: T) => number
-  sortBy: string | ((row: T, index: number) => string) | string[]
-  resizable: boolean
-  columnKey: string
-  rawColumnKey: string
+  property: string
   align: string
   headerAlign: string
-  showTooltipWhenOverflow: boolean
   showOverflowTooltip: boolean
-  fixed: boolean | string
+  filters: Filters
+  filterMethod: FilterMethods<T>
+  filterValue: string[]
+  filterPlacement: string
+  isColumnGroup: boolean
+  filterOpened?: boolean
+  index: number | ((index: number) => number)
+  rawColumnKey: string
+  renderHeader: (data: SlotsContent<T>) => VNode
+  renderCell: (data: any) => void
   formatter: (
     row: T,
     column: TableColumnCtx<T>,
     cellValue,
     index: number
-  ) => VNode | string
-  selectable: (row: T, index: number) => boolean
-  reserveSelection: boolean
-  filterMethod: FilterMethods<T>
-  filteredValue: string[]
-  filters: Filters
-  filterPlacement: string
-  filterMultiple: boolean
-  index: number | ((index: number) => number)
-  sortOrders: ('ascending' | 'descending' | null)[]
-  renderCell: (data: any) => void
-  colSpan: number
-  rowSpan: number
-  children: TableColumnCtx<T>[]
-  level: number
-  filterable: boolean | FilterMethods<T> | Filters
-  order: string
-  isColumnGroup: boolean
-  isSubColumn: boolean
-  columns: TableColumnCtx<T>[]
+  ) => VNode | string,
+  columnWidth: number
+  className: string
+  fixed: boolean | string
   getColumnIndex: () => number
-  no: number
-  filterOpened?: boolean
+  currentIndex: number
+  level: number
+  rowSpan: number
+  colSpan: number
+  order: string
+  labelClassName: string
 }
 
-export type { TableColumnCtx };
+// 列节点内容
+interface TableColumn<T> extends ComponentInternalInstance {
+  vnode: {
+    vParent: TableColumn<T> | Table<T>
+  } & VNode
+  vParent: TableColumn<T> | Table<T>
+  columnId: string
+  columnConfig: Ref<Partial<TableColumnCtx<T>>>
+}
+
+export type { TableColumnCtx, TableColumn };
+
+export default {
+  /**
+   * 对应列的类型
+   *
+   * selection / index / expand
+   *
+   * @type {String}
+   */
+  type: {
+    type: String,
+    default: 'default',
+  },
+  /**
+   * 字段名称 对应列内容的字段名
+   *
+   * @type {String}
+   */
+  prop: {
+    type: String,
+  },
+  /**
+  * column 的 key
+  *
+  * @type {String}
+  */
+  label: {
+    type: String,
+  },
+  /**
+   * 对应列的宽度
+   *
+   * @type {String | Number}
+   */
+  width: {
+    type: [String, Number],
+    default: '',
+  },
+  /**
+   * 对应列的最小宽度
+   *
+   * @type {String | Number}
+   */
+  minWidth: {
+    type: [String, Number],
+    default: '',
+  },
+  /**
+   * 对应列是否可以排序
+   *
+   * @type {Boolean | String}
+   */
+  sortable: {
+    type: [Boolean, String],
+    default: false,
+  },
+  /**
+   * 字段名称 对应列内容的字段名
+   *
+   * @type {String}
+   */
+  property: String,
+  /**
+   * 对齐方式
+   *
+   * left / center / right
+   *
+   * @type {String}
+   */
+  align: {
+    type: String,
+    default: 'left',
+  },
+  /**
+   * 表头对齐方式
+   *
+   * left / center / right
+   *
+   * @type {String}
+   */
+  headerAlign: {
+    type: String,
+    default: '',
+  },
+  /**
+   * 当内容过长被隐藏时显示 tooltip
+   *
+   * @type {Boolean}
+   */
+  showOverflowTooltip: {
+    type: Boolean,
+    default: false,
+  },
+  /**
+   * 数据过滤的选项
+   * 数组格式，数组中的元素需要有 text 和 value 属性
+   * 数组中的每个元素都需要有 text 和 value 属性。
+   *
+   * @type {Array}
+   */
+  filters: {
+    type: Array as PropType<TableColumnCtx<DefaultRow>['filters']>,
+  },
+  /**
+   * 数据过滤使用的方法
+   * 如果是多选的筛选项
+   * 对每一条数据会执行多次
+   * 任意一次返回 true 就会显示。
+   *
+   * @type {Function}
+   */
+  filterMethod: {
+    type: Function as PropType<TableColumnCtx<DefaultRow>['filterMethod']>,
+  },
+  /**
+   * 选中的数据过滤项
+   * 如果需要自定义表头过滤的渲染方式
+   * 可能会需要此属性。
+   *
+   * @type {Array}
+   */
+  filterValue: {
+    type: Array as PropType<TableColumnCtx<DefaultRow>['filterValue']>,
+  },
+  /**
+  * 过滤弹出框的定位
+  *
+  * @type {String}
+  */
+  filterPlacement: {
+    type: String,
+    default: ''
+  },
+  /**
+   * 如果设置了 type=index，可以通过传递 index 属性来自定义索引
+   *
+   * @type {Number, Function}
+   */
+  index: {
+    type: [Number, Function] as PropType<TableColumnCtx<DefaultRow>['index']>,
+  },
+  /**
+   * 列标题 Label 区域渲染使用的 Function
+   *
+   * @type {Function}
+   */
+  renderHeader: {
+    type: Function as PropType<TableColumnCtx<DefaultRow>['renderHeader']>,
+  },
+  /**
+   * 用来格式化内容
+   *
+   * @type {Function}
+   */
+  formatter: {
+    type: Function as PropType<TableColumnCtx<DefaultRow>['formatter']>,
+  },
+  /**
+   * 列的 className
+   *
+   * @type {String}
+   */
+  className: {
+    type: String,
+  },
+  /**
+   * 列是否固定在左侧或者右侧。
+   *
+   * @type {Boolean | String}
+   */
+  fixed: {
+    type: [Boolean, String]
+  },
+  /**
+   * 当前列标题的自定义类名
+   *
+   * @type {String}
+   */
+  labelClassName: {
+    type: String,
+  }
+};

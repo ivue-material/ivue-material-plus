@@ -2,7 +2,8 @@
     <div>
         <h1>基础表格</h1>
         <ivue-table :data="tableData" style="width: 100%">
-212
+            <ivue-table-column prop="date" label="Date" width="180"></ivue-table-column>
+            <ivue-table-column prop="name" label="Name" width="180"></ivue-table-column>
         </ivue-table>
     </div>
 </template>

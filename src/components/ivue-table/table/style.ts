@@ -1,23 +1,30 @@
 
 import {
   computed,
-  ref
+  ref,
+  onMounted,
+  nextTick
 } from 'vue';
 
 
 // ts
 import type { Table, TableProps } from './defaults';
 import type TableLayout from '../table-layout';
+import type { Store } from '../store';
 
 function useStyle<T>(
   props: TableProps<T>,
   layout: TableLayout<T>,
+  store: Store<T>,
   table: Table<T>
 ) {
   // data
 
   // 拖动中
   const dragging = ref(false);
+
+  // 是否可以展开
+  const renderExpanded = ref(null);
 
   // computed
 
@@ -90,9 +97,23 @@ function useStyle<T>(
   };
 
 
+  // onMounted
+  onMounted(async () => {
+    // nextTick
+    await nextTick();
+
+    // 更新列
+    store.updateColumns();
+
+
+    // 初始化完成
+    table.$ready = true;
+  });
+
   return {
     // data
     dragging,
+    renderExpanded,
 
     // computed
     tableLayout,

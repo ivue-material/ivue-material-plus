@@ -5,12 +5,38 @@ import useExpand from './expand';
 // 嵌套数据
 import useTree from './tree';
 
+import {
+  getKeysMap,
+  getRowIdentity,
+} from '../utils';
+
 // ts
 import type { Ref } from 'vue';
 import type { TableColumnCtx } from '../table-column/defaults';
 
 
+// 扁平化数组
+const flattenColumns = (columns) => {
+  const result = [];
+
+  columns.forEach((column) => {
+    // 有子项
+    if (column.children) {
+      // eslint-disable-next-line prefer-spread
+      result.push.apply(result, flattenColumns(column.children));
+    }
+    // 没有子项
+    else {
+      result.push(column);
+    }
+  });
+
+  return result;
+};
+
 function useWatcher<T>() {
+
+  // data
 
   // 显示的数据
   const data: Ref<T[]> = ref([]);
@@ -30,36 +56,80 @@ function useWatcher<T>() {
   const originColumns: Ref<TableColumnCtx<T>[]> = ref([]);
   // 列
   const columns: Ref<TableColumnCtx<T>[]> = ref([]);
+  // 备份列
+  const _columns: Ref<TableColumnCtx<T>[]> = ref([]);
+
+
+  // methods
 
   // 用于多选表格，切换全选和全不选
   const _toggleAllSelection = () => {
-    // // 当只选择了一些行（但不是全部）时，选择或取消选择所有行
-    // // 取决于 selectOnIndeterminate 的值
-    // const value = selectOnIndeterminate.value ? !isAllSelected.value : !(isAllSelected.value || selection.value.length);
-    // // 设置是否选择全部
-    // isAllSelected.value = value;
-
   };
 
   // 展开行数据
-  const {
-    states: expandStates,
-  } = useExpand({
+  const { states: expandStates } = useExpand({
     data,
     rowKey,
   });
 
   // 嵌套数据
-  const {
-    states: treeStates,
-  } = useTree({
+  const { loadOrToggle, states: treeStates, } = useTree({
     data,
     rowKey,
   });
 
+
+  // 检查 rowKey 是否存在
+  const isRowKey = () => {
+    if (!rowKey.value) throw new Error('[ElTable] prop row-key is required');
+  };
+
+  // 更新多选框key
+  const updateSelectionByRowKey = () => {
+    // 获取多选框标志
+    const selectedMap = getKeysMap(selection.value, rowKey.value);
+
+    data.value.forEach((row) => {
+      const rowId = getRowIdentity(row, rowKey.value);
+
+      const rowInfo = selectedMap[rowId];
+
+      if (rowInfo) {
+        selection.value[rowInfo.index] = row;
+      }
+    });
+  };
+
+  // 更新列数据
+  const updateColumns = () => {
+    // 不是固定列
+    const notFixedColumns = _columns.value.filter((column) => !column.fixed);
+
+    // 未扁平化列数据
+    originColumns.value = []
+      // .concat(fixedColumns.value)
+      .concat(notFixedColumns);
+    // .concat(rightFixedColumns.value)
+
+
+    // 扁平化不是固定列
+    const _flattenColumns = flattenColumns(notFixedColumns);
+
+    // 扁平化后的列数据
+    columns.value = []
+      // .concat(fixedLeafColumns)
+      .concat(_flattenColumns);
+      // .concat(rightFixedLeafColumns);
+  };
+
+
   return {
     _toggleAllSelection,
     toggleAllSelection: null,
+    isRowKey,
+    loadOrToggle,
+    updateSelectionByRowKey,
+    updateColumns,
     // 状态
     states: {
       data,
@@ -68,6 +138,7 @@ function useWatcher<T>() {
       isFixedColumns,
       hoverRow,
       columns,
+      _columns,
       originColumns,
       ...expandStates,
       ...treeStates

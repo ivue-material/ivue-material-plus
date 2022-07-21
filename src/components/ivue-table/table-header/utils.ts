@@ -69,6 +69,7 @@ const convertToRows = <T>(
   // 列数据
   originColumns.forEach((item) => {
     item.level = 1;
+
     traverse(item, undefined);
   });
 
@@ -102,15 +103,13 @@ const convertToRows = <T>(
 
 
 function useUtils<T>(props: TableHeaderProps<T>) {
-
   // inject
   const parent = inject('ivue-table');
 
+  // 获取当前列的行数
   const columnRows = computed(() => {
     return convertToRows(props.store.states.originColumns.value);
   });
-
-  console.log('columparentnRows', parent);
 
   // 是否拥有多级表头
   // const isGroup = computed(() => {
@@ -123,9 +122,10 @@ function useUtils<T>(props: TableHeaderProps<T>) {
   // });
 
 
-  // return {
-  //   isGroup
-  // };
+  return {
+    // isGroup,
+    columnRows,
+  };
 }
 
 export default useUtils;

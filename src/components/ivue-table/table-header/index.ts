@@ -3,7 +3,8 @@ import {
   defineComponent
 } from 'vue';
 
-import useUtils from './utils-helper';
+import useUtils from './utils';
+import useStyle from './style';
 
 // ts
 import type { PropType, Ref } from 'vue';
@@ -16,7 +17,6 @@ export interface TableHeaderProps<T> {
   border: boolean
   defaultSort: Sort
 }
-
 
 export default defineComponent({
   props: {
@@ -63,13 +63,80 @@ export default defineComponent({
     },
   },
   setup(props) {
-    useUtils(
-      props as TableHeaderProps<unknown>
-    );
+    const {
+      columnRows
+    } = useUtils(props as TableHeaderProps<unknown>);
+
+    const {
+      getHeaderCellClass,
+    } = useStyle(props as TableHeaderProps<unknown>);
+
+
+    // methods
+
+    // 渲染 th
+    const renderTh = (list, rowSpan, rowIndex) => {
+      return list.map((column, cellIndex) => {
+        if (column.rowSpan > rowSpan) {
+          rowSpan = column.rowSpan;
+        }
+
+        return h('th', {
+          class: getHeaderCellClass(
+            rowIndex,
+            cellIndex,
+            list,
+            column
+          ),
+          colspan: column.colSpan,
+          key: `${column.id}-thead`,
+          rowspan: column.rowSpan,
+        }, [
+          // cell
+          h('div',
+            {
+              class: [
+                'cell'
+              ]
+            },
+            [
+              column.label
+            ]
+          )
+        ]);
+      });
+    };
+
+
+    return {
+      columnRows,
+      renderTh
+    };
+
   },
   render() {
-    console.log('///');
 
-    return h('thead', '1221');
+    const {
+      columnRows,
+      renderTh
+    } = this;
+
+    const rowSpan = 1;
+
+    return h(
+      'thead',
+      {
+        class: {
+        }
+      },
+      columnRows.map((item, rowIndex) => {
+        return h('tr',
+          {
+            key: rowIndex
+          },
+          renderTh(item, rowSpan, rowIndex)
+        );
+      })
+    );
   }
 });

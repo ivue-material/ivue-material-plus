@@ -15,8 +15,8 @@ function colgroup(props) {
     }
   }
 
+  // 渲染行 col
   const getPropsData = (column) => {
-
     const propsData = {
       key: `${props.tableLayout}-${column.id}`,
       style: {},

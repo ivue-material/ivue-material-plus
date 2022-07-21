@@ -1,14 +1,31 @@
-import { getCurrentInstance, } from 'vue';
+import { getCurrentInstance, unref } from 'vue';
 import useWatcher from './watcher';
 
 // ts
 import type { Ref } from 'vue';
 import type { Table } from '../table/defaults';
+import type { TableColumnCtx, } from '../table-column/defaults';
 
 // 监听props的数据
 interface WatcherPropsData<T> {
   data: Ref<T[]>
   rowKey: Ref<string>
+}
+
+// 排序列
+function sortColumn<T>(array: TableColumnCtx<T>[]) {
+  array.forEach((item) => {
+
+    // 当前index
+    item.currentIndex = item.getColumnIndex?.();
+
+    // 有子节点
+    if (item.children?.length) {
+      sortColumn(item.children);
+    }
+  });
+
+  array.sort((cur, pre) => cur.currentIndex - pre.currentIndex);
 }
 
 function useStore<T>() {
@@ -40,9 +57,46 @@ function useStore<T>() {
     // 设置当前行hover
     setHoverRow(states: states, row: T) {
       states.hoverRow.value = row;
+    },
+    // 插入列
+    insertColumn(
+      states: states,
+      column: TableColumnCtx<T>,
+      parent: TableColumnCtx<T>
+    ) {
+      const array = unref(states._columns);
+
+      let newColumns = [];
+
+      // 不是组合头部
+      if (!parent) {
+        array.push(column);
+
+        newColumns = array;
+      }
+      // 组合头部
+      else {
+      }
+
+      // 排序列
+      sortColumn(newColumns);
+
+      // 记录当前列
+      states._columns.value = newColumns;
+
+      // 多选框
+      if (column.type === 'selection') {
+      }
+
+      // 用于动态插入列
+      if (vm.$ready) {
+        vm.store.updateColumns();
+        // vm.store.scheduleLayout();
+      }
+
+
     }
   };
-
 
   // 调用数据
   const commit = (name: keyof typeof mutations, ...args) => {

@@ -44,6 +44,8 @@ interface TableRefs {
 // 树节点
 interface TreeNode {
   indent?: number
+  expanded?: boolean
+  noLazyChildren?: boolean
 }
 
 // 设置表格单元、行和列的布局方式
@@ -52,6 +54,7 @@ type Layout = 'fixed' | 'auto'
 // 渲染行数据
 interface RenderRowData<T> {
   treeNode?: TreeNode
+  store: Store<T>
 }
 
 // 表格状态
