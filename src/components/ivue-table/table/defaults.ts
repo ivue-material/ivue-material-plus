@@ -3,7 +3,8 @@ import type {
   ComponentInternalInstance,
   VNode,
   Ref,
-  PropType
+  PropType,
+  CSSProperties
 } from 'vue';
 import type { TableColumnCtx } from '../table-column/defaults';
 import type { Store } from '../store/index';
@@ -64,8 +65,8 @@ interface TableState {
     width: any
     height: any
   }>
-  doLayout: () => void
-  debouncedUpdateLayout: () => void
+  handleLayout: () => void
+  // debouncedUpdateLayout: () => void
 }
 
 interface Sort {
@@ -132,6 +133,9 @@ interface TableProps<T> {
   defaultSort?: Sort
 }
 
+// 行样式
+type rowClass<T> = string | ((data: { row: T; rowIndex: number }) => string)
+type rowStyle<T> = | CSSProperties | ((data: { row: T; rowIndex: number }) => CSSProperties)
 
 export default {
   /**
@@ -281,6 +285,15 @@ export default {
    */
   defaultSort: {
     type: Object as PropType<TableProps<DefaultRow>['defaultSort']>,
+  },
+  /**
+   * 提示
+   *
+   * @type {String}
+   */
+  placeholder: {
+    type: String,
+    default: 'No Data'
   }
 };
 
@@ -289,5 +302,7 @@ export type {
   TableProps,
   TreeNode,
   RenderRowData,
-  Sort
+  Sort,
+  rowClass,
+  rowStyle
 };

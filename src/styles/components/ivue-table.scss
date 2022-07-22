@@ -85,6 +85,10 @@ $name:'ivue-table';
     user-select: none;
   }
 
+  th.#{$name}-cell.is-leaf {
+    border-bottom: 1px solid $border-color;
+  }
+
   // 头部
   &-header {
     table-layout: fixed;
@@ -136,4 +140,33 @@ $name:'ivue-table';
     }
 
   }
+
+  // body
+  &-body-wrapper {
+    overflow: hidden;
+    width: 100%;
+    position: relative;
+  }
+
+  // 提示
+  &-placeholder {
+    position: sticky;
+    left: 0;
+    right: 0;
+    min-height: 60px;
+    text-align: center;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    &--text {
+      line-height: 60px;
+      width: 50%;
+      color: #9AB0C6;
+    }
+  }
+
+  // 行
+  &-row {}
 }

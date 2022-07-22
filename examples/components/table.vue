@@ -4,6 +4,8 @@
         <ivue-table :data="tableData" style="width: 100%">
             <ivue-table-column prop="date" label="Date" width="180"></ivue-table-column>
             <ivue-table-column prop="name" label="Name" width="180"></ivue-table-column>
+            <ivue-table-column prop="address" label="Address1"></ivue-table-column>
+            <ivue-table-column prop="address" label="Address1"></ivue-table-column>
         </ivue-table>
     </div>
 </template>

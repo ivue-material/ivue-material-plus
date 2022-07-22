@@ -1,15 +1,25 @@
 import {
   h,
-  defineComponent
+  defineComponent,
+  inject,
+  getCurrentInstance
 } from 'vue';
 
 import useUtils from './utils';
 import useStyle from './style';
+import useTableLayoutObserver from '../table-layout-observer';
 
 // ts
-import type { PropType, Ref } from 'vue';
+import type { PropType, ComponentInternalInstance, Ref } from 'vue';
 import type { Store } from '../store';
 import type { DefaultRow, Sort } from '../table/defaults';
+
+export interface TableHeader extends ComponentInternalInstance {
+  state: {
+    handleColumnsChange
+  }
+  filterPanels: Ref<unknown>
+}
 
 export interface TableHeaderProps<T> {
   fixed: string
@@ -63,13 +73,29 @@ export default defineComponent({
     },
   },
   setup(props) {
+    // vm
+    const vm = getCurrentInstance() as TableHeader;
+
+    // inject
+    const IvueTable: any = inject('ivue-table');
+
     const {
+      // 获取当前列的行数
       columnRows
     } = useUtils(props as TableHeaderProps<unknown>);
 
     const {
+      // 头部行样式
       getHeaderCellClass,
     } = useStyle(props as TableHeaderProps<unknown>);
+
+
+    // 布局改变监听
+    const { handleColumnsChange } = useTableLayoutObserver(IvueTable);
+
+    vm.state = {
+      handleColumnsChange,
+    };
 
     // methods
 
@@ -83,6 +109,7 @@ export default defineComponent({
         }
 
         return h('th', {
+          // 合并样式s
           class: getHeaderCellClass(
             rowIndex,
             cellIndex,
@@ -98,9 +125,7 @@ export default defineComponent({
           // cell
           h('div',
             {
-              class: [
-                'cell'
-              ]
+              class: 'cell'
             },
             [
               column.label
@@ -113,6 +138,7 @@ export default defineComponent({
 
     return {
       columnRows,
+      handleColumnsChange,
       renderTh
     };
 

@@ -75,8 +75,8 @@ function useStore<T>() {
         newColumns = array;
       }
       // 组合头部
-      else {
-      }
+      // else {
+      // }
 
       // 排序列
       sortColumn(newColumns);
@@ -85,16 +85,14 @@ function useStore<T>() {
       states._columns.value = newColumns;
 
       // 多选框
-      if (column.type === 'selection') {
-      }
+      // if (column.type === 'selection') {
+      // }
 
       // 用于动态插入列
       if (vm.$ready) {
         vm.store.updateColumns();
         // vm.store.scheduleLayout();
       }
-
-
     }
   };
 

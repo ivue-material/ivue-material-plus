@@ -35,7 +35,6 @@ const convertToRows = <T>(
 ): TableColumnCtx<T>[] => {
   let maxLevel = 1;
 
-
   // 遍历
   const traverse = (column: TableColumnCtx<T>, parent: TableColumnCtx<T>) => {
 
@@ -55,13 +54,16 @@ const convertToRows = <T>(
       column.children.forEach((subColumn) => {
         traverse(subColumn, column);
 
+        // 单元格可横跨的列数
         colSpan += subColumn.colSpan;
       });
 
+      // 单元格可横跨的列数
       column.colSpan = colSpan;
     }
     // 没有子项
     else {
+      // 单元格可横跨的列数
       column.colSpan = 1;
     }
   };
@@ -72,7 +74,6 @@ const convertToRows = <T>(
 
     traverse(item, undefined);
   });
-
 
   // 行数据
   const rows = [];
@@ -87,11 +88,14 @@ const convertToRows = <T>(
   allColumns.forEach((item) => {
     // 没有子项
     if (!item.children) {
+      // 单元格可横跨的行数
       item.rowSpan = maxLevel - item.level + 1;
     }
     // 有子项
     else {
+      // 单元格可横跨的行数
       item.rowSpan = 1;
+      // 设置是否是子项
       item.children.forEach((col) => (col.isSubColumn = true));
     }
 

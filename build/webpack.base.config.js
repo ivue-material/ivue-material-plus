@@ -123,6 +123,11 @@ module.exports = {
         exclude: /node_modules/,
       },
       {
+        test: /\.mjs$/,
+        include: /node_modules/,
+        type: 'javascript/auto',
+      },
+      {
         test: /\.css$/,
         use: ['style-loader', 'postcss-loader'],
         // loaders: [

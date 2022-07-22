@@ -38,7 +38,40 @@
                 </table>
             </div>
             <!-- 内容 -->
-            <div ref="bodyWrapper"></div>
+            <div :class="`${prefixCls}-body-wrapper`" ref="bodyWrapper">
+                <ivue-scrollbar
+                    :wrapperStyle="scrollbarWrapperStyle"
+                    :contentStyle="scrollbarContentStyle"
+                >
+                    <!-- 表格 -->
+                    <table
+                        cellspacing="0"
+                        cellpadding="0"
+                        border="0"
+                        :style="tableBodyStyle"
+                        ref="tableBody"
+                    >
+                        <!-- colgroup -->
+                        <ivue-colgroup
+                            :columns="store.states.columns.value"
+                            :table-layout="tableLayout"
+                        ></ivue-colgroup>
+                        <!-- 内容 -->
+                        <table-body :store="store"></table-body>
+                    </table>
+                    <!-- 没有数据 -->
+                    <div
+                        v-if="isData"
+                        :class="`${prefixCls}-placeholder`"
+                        :style="placeholderStyle"
+                        ref="placeholder"
+                    >
+                        <slot name="placeholder">
+                            <span :class="`${prefixCls}-placeholder--text`">{{ placeholder }}</span>
+                        </slot>
+                    </div>
+                </ivue-scrollbar>
+            </div>
         </div>
         <!-- 拖拽时的虚线 -->
         <div :class="`${prefixCls}-column-resize-proxy`" ref="resizeProxy" v-show="dragging"></div>
@@ -50,8 +83,8 @@ import {
     computed,
     defineComponent,
     getCurrentInstance,
-    reactive,
     provide,
+    onMounted,
 } from 'vue';
 
 // 表格改变
@@ -68,6 +101,8 @@ import useStyle from './table/style';
 // components
 import IvueColgroup from './colgroup';
 import TableHeader from './table-header';
+import TableBody from './table-body';
+import IvueScrollbar from '../ivue-scrollbar/index.vue';
 
 // ts
 import type { Table } from './table/defaults';
@@ -92,13 +127,11 @@ export default defineComponent({
         const tableId = `${prefixCls}-${tableIdSeed++}`;
         table.tableId = tableId;
 
-        // provide
-        provide(prefixCls, table);
-
+        // store
         const store = createStore<Row>(table, props);
-
         table.store = store;
 
+        // 表格布局
         const layout = new TableLayout<Row>({
             // table store
             store: table.store,
@@ -109,7 +142,6 @@ export default defineComponent({
             // 显示头部
             showHeader: props.showHeader,
         });
-
         table.layout = layout;
 
         // 表格样式
@@ -117,30 +149,33 @@ export default defineComponent({
             // data
             dragging,
             renderExpanded,
+            resizeState,
+            tableWidth,
+            isGroup,
 
             // computed
             tableLayout,
             contentStyles,
             tableStyles,
+            placeholderStyle,
+            tableBodyStyle,
+            scrollbarWrapperStyle,
+            scrollbarContentStyle,
 
             // methods
             handleMouseLeave,
             handleMousewheel,
             handleDragVisible,
+            handleLayout,
+            handleBindEvents,
         } = useStyle<Row>(props, layout, store, table);
 
-        // data
-
-        const data = reactive<{
-            isGroup: boolean;
-        }>({
-            /**
-             * 是否拥有多级表头
-             *
-             * @type {Boolean}
-             */
-            isGroup: false,
-        });
+        // 表格状态
+        table.state = {
+            resizeState,
+            isGroup,
+            handleLayout,
+        };
 
         // computed
 
@@ -155,7 +190,7 @@ export default defineComponent({
                     // 	是否带有纵向边框
                     [`${prefixCls}-border`]: props.border,
                     // 是否拥有多级表头
-                    [`${prefixCls}-group`]: data.isGroup,
+                    [`${prefixCls}-group`]: isGroup,
                     // Table 的最大高度
                     [`${prefixCls}-max-height`]: props.maxHeight,
                     // 滚动x
@@ -175,12 +210,52 @@ export default defineComponent({
             ];
         });
 
+        // 是否有数据
+        const isData = computed(() => {
+            return (store.states.data.value || []).length === 0;
+        });
+
+        // onMounted
+        onMounted(() => {
+            // 更新列
+            store.updateColumns();
+
+            // 表格宽度
+            const el: HTMLElement = table.vnode.el as HTMLElement;
+            // 表格头部
+            const header: HTMLElement = table.refs.header;
+
+            // 设置宽度
+            tableWidth.value = el.offsetWidth;
+
+            // 表格缩放
+            resizeState.value = {
+                width: tableWidth.value,
+                height: el.offsetHeight,
+                headerHeight:
+                    props.showHeader && header ? header.offsetHeight : null,
+            };
+
+            // 初始化完成
+            table.$ready = true;
+
+            // 更新布局
+            handleLayout();
+            // 绑定事件
+            handleBindEvents();
+        });
+
+        // provide
+        provide('ivue-table', table);
+
         return {
             prefixCls,
+
             // data
-            data,
             dragging,
             renderExpanded,
+            resizeState,
+            isGroup,
 
             // layout
             layout,
@@ -188,10 +263,15 @@ export default defineComponent({
             store,
 
             // computed
+            isData,
             wrapperClass,
             contentStyles,
             tableLayout,
             tableStyles,
+            placeholderStyle,
+            tableBodyStyle,
+            scrollbarWrapperStyle,
+            scrollbarContentStyle,
 
             // methods
             handleMouseLeave,
@@ -201,6 +281,8 @@ export default defineComponent({
     },
     components: {
         IvueColgroup,
+        TableBody,
+        IvueScrollbar,
         TableHeader,
     },
 });

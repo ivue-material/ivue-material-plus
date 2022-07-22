@@ -26,11 +26,11 @@ function useStyle<T>(props: TableHeaderProps<T>) {
       column.labelClassName,
     ];
 
+
     // 没有子项
     if (!column.children) {
       classes.push('is-leaf');
     }
-
 
     // cell
     classes.push(`${prefixCls}-cell`);

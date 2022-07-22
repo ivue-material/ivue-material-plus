@@ -56,6 +56,7 @@ interface TableColumnCtx<T> {
   colSpan: number
   order: string
   labelClassName: string
+  columns: TableColumnCtx<T>[]
 }
 
 // 列节点内容

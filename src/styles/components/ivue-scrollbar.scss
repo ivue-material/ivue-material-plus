@@ -1,0 +1,17 @@
+$name: 'ivue-scrollbar';
+
+.#{$name} {
+  position: relative;
+  height: 100%;
+  overflow: hidden;
+
+  &-wrapper {
+    overflow: auto;
+    height: 100%;
+  }
+
+  // 因此默认滚动条样式
+  &-hidden-default {
+    scrollbar-width: none;
+  }
+}

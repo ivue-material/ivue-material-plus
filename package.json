@@ -22,20 +22,21 @@
   "dependencies": {
     "-": "0.0.1",
     "@popperjs/core": "^2.11.5",
+    "@types/lodash-es": "^4.17.6",
+    "@vue/shared": "^3.2.37",
+    "@vueuse/core": "^8.9.4",
     "eslint-plugin-html": "^6.2.0",
     "g": "^2.0.1",
     "gulp-sass-import": "^1.0.0",
     "hex-to-rgba": "^2.0.1",
+    "lodash-es": "^4.17.21",
+    "lodash-unified": "^1.0.2",
     "material-icons": "^1.11.2",
     "mitt": "^3.0.0",
+    "normalize-wheel-es": "^1.2.0",
     "popper.js": "^1.16.1",
     "raf": "^3.4.1",
-    "tslib": "^2.3.1",
-    "lodash-unified": "^1.0.2",
-    "lodash-es": "^4.17.21",
-    "@types/lodash-es": "^4.17.6",
-    "@vue/shared": "^3.2.37",
-    "normalize-wheel-es": "^1.2.0"
+    "tslib": "^2.3.1"
   },
   "peerDependencies": {
     "vue": ">=3.0.0"
