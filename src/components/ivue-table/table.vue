@@ -45,10 +45,11 @@
                 >
                     <!-- 表格 -->
                     <table
+                        :class="`${prefixCls}-body`"
+                        :style="tableBodyStyle"
                         cellspacing="0"
                         cellpadding="0"
                         border="0"
-                        :style="tableBodyStyle"
                         ref="tableBody"
                     >
                         <!-- colgroup -->

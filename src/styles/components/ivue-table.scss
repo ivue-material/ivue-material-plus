@@ -72,6 +72,13 @@ $name:'ivue-table';
     text-align: left;
     z-index: 1;
 
+
+  }
+
+
+  th.#{$name}-cell {
+    user-select: none;
+
     &>.cell {
       display: inline-block;
       box-sizing: border-box;
@@ -81,11 +88,11 @@ $name:'ivue-table';
     }
   }
 
-  th.#{$name}-cell {
-    user-select: none;
+  th.#{$name}-cell.is-leaf {
+    border-bottom: 1px solid $border-color;
   }
 
-  th.#{$name}-cell.is-leaf {
+  td.#{$name}-cell {
     border-bottom: 1px solid $border-color;
   }
 
@@ -148,6 +155,10 @@ $name:'ivue-table';
     position: relative;
   }
 
+  &-body {
+    border-collapse: separate;
+  }
+
   // 提示
   &-placeholder {
     position: sticky;
@@ -169,4 +180,17 @@ $name:'ivue-table';
 
   // 行
   &-row {}
+
+  // 行hover
+  &-nofixed-row-hover {
+    .#{$name}-body tr:hover>td.#{$name}-cell {
+      background-color: #f8f8f9;
+    }
+  }
+
+  &-nofixed-row-transition {
+    .#{$name}-body td.#{$name}-cell {
+      transition: background-color .25s ease;
+    }
+  }
 }

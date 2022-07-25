@@ -4,21 +4,45 @@
             :class="wrapperClasses"
             :style="wrapperStyles"
             @scroll="handleScroll"
-            ref="scrollbarContent"
+            ref="scrollbarWrapper"
         >
             <component :is="tag" :class="contentClasses" :style="contentStyle" ref="resize">
                 <slot></slot>
             </component>
         </div>
+        <!-- 是否使用原生滚动条样式 -->
+        <template v-if="!native">
+            <bar
+                :barHeight="data.barHeight"
+                :barWidth="data.barWidth"
+                :always="always"
+                :ratioX="data.ratioX"
+                :ratioY="data.ratioY"
+                ref="bar"
+            ></bar>
+        </template>
     </div>
 </template>
 
-<script  lang="ts">
-import { computed, defineComponent, ref } from 'vue';
+<script lang="ts">
+import {
+    computed,
+    defineComponent,
+    ref,
+    reactive,
+    onMounted,
+    nextTick,
+    onUpdated,
+    provide,
+} from 'vue';
 import { addUnit } from '../../utils/helpers';
+import Bar from './bar.vue';
 
 // ts
 import type { CSSProperties } from 'vue';
+
+// top 2 + bottom 2
+const GAP = 4;
 
 const prefixCls = 'ivue-scrollbar';
 
@@ -96,10 +120,53 @@ export default defineComponent({
             type: String,
             default: 'div',
         },
+        /**
+         * 滚动条总是显示
+         *
+         * @type {Boolean}
+         */
+        always: {
+            type: Boolean,
+            default: false,
+        },
     },
     setup(props: any, { emit }) {
         // dom
-        const scrollbarContent = ref<HTMLDivElement>(null);
+        const scrollbarWrapper = ref<HTMLDivElement>(null);
+        const scrollbar = ref<HTMLDivElement>(null);
+        const bar = ref(null);
+
+        const data: any = reactive<{
+            barHeight: string;
+            barWidth: string;
+            ratioX: number;
+            ratioY: number;
+        }>({
+            /**
+             * 滚动条高度
+             *
+             * @type {String}
+             */
+            barHeight: '0',
+            /**
+             * 滚动条宽度
+             *
+             * @type {String}
+             */
+            barWidth: '0',
+            /**
+             * x轴滚动比率
+             *
+             * @type {Number}
+             */
+            ratioX: 1,
+            /**
+             * y轴滚动比率
+             *
+             * @type {Number}
+             */
+            ratioY: 1,
+        });
 
         // computed
 
@@ -140,17 +207,88 @@ export default defineComponent({
 
         // 滚动
         const handleScroll = () => {
-            if (scrollbarContent.value) {
+            if (scrollbarWrapper.value) {
+                bar.value.handleScroll(scrollbarWrapper.value);
+
                 emit('scroll', {
-                    scrollTop: scrollbarContent.value.scrollTop,
-                    scrollLeft: scrollbarContent.value.scrollLeft,
+                    scrollTop: scrollbarWrapper.value.scrollTop,
+                    scrollLeft: scrollbarWrapper.value.scrollLeft,
                 });
             }
         };
 
+        // 更新状态
+        const update = () => {
+            if (!scrollbarWrapper.value) {
+                return;
+            }
+
+            // 表格高度
+            const offsetHeight = scrollbarWrapper.value.offsetHeight - GAP;
+            // 可滚动高度
+            const originalHeight =
+                offsetHeight ** 2 / scrollbarWrapper.value.scrollHeight;
+            // 滚动条高度
+            const height = Math.max(originalHeight, 20);
+            // 滚动条高度
+            data.barHeight = height + GAP < offsetHeight ? `${height}px` : '';
+
+            // 表格宽度
+            const offsetWidth = scrollbarWrapper.value.offsetWidth - GAP;
+            // 滚动条宽度
+            const originalWidth =
+                offsetWidth ** 2 / scrollbarWrapper.value.scrollWidth;
+
+            // 表格宽度
+            const width = Math.max(originalWidth, 20);
+            // 滚动条宽度
+            data.barWidth = width + GAP < offsetWidth ? `${width}px` : '';
+
+            // x轴滚动比率
+            data.ratioX =
+                originalWidth /
+                (offsetWidth - originalWidth) /
+                (width / (offsetWidth - width));
+
+            // y轴滚动比率
+            data.ratioY =
+                originalHeight /
+                (offsetHeight - originalHeight) /
+                (height / (offsetHeight - height));
+        };
+
+        // onMounted
+        onMounted(() => {
+            if (!props.native) {
+                nextTick(() => {
+                    update();
+                });
+            }
+        });
+
+        // 数据更改导致的虚拟 DOM 重新渲染和更新完毕之后被调用
+        onUpdated(() => {
+            update();
+        });
+
+        // provide
+        provide(
+            prefixCls,
+            reactive({
+                scrollbar: scrollbar,
+                scrollbarWrapper: scrollbarWrapper,
+            })
+        );
+
         return {
             prefixCls,
+            // dom
+            scrollbarWrapper,
+            scrollbar,
+            bar,
 
+            // data
+            data,
             // computed
             wrapperClasses,
             wrapperStyles,
@@ -159,6 +297,9 @@ export default defineComponent({
             // methods
             handleScroll,
         };
+    },
+    components: {
+        Bar,
     },
 });
 </script>

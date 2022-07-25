@@ -56,6 +56,12 @@ type Layout = 'fixed' | 'auto'
 interface RenderRowData<T> {
   treeNode?: TreeNode
   store: Store<T>
+  _self: Table<T>
+  expanded: boolean
+  column: TableColumnCtx<T>
+  row: T
+  $index: number
+  cellIndex: number
 }
 
 // 表格状态
@@ -131,6 +137,7 @@ interface TableProps<T> {
   // 默认的排序列的 prop 和顺序。
   // 它的 prop 属性指定默认的排序的列，order 指定默认排序的顺序
   defaultSort?: Sort
+  context?: Table<T>
 }
 
 // 行样式

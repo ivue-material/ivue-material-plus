@@ -13,5 +13,52 @@ $name: 'ivue-scrollbar';
   // 因此默认滚动条样式
   &-hidden-default {
     scrollbar-width: none;
+
+    // 隐藏滚动条
+    &::-webkit-scrollbar {
+      display: none
+    }
+  }
+
+  // bar高度
+  &-bar {
+    position: absolute;
+    right: 2px;
+    bottom: 2px;
+    z-index: 1;
+    border-radius: 4px;
+  }
+
+  // 横向
+  &-bar.is-horizontal {
+    height: 6px;
+    left: 2px;
+
+    .#{$name}-thumb {
+      height: 100%;
+    }
+  }
+
+  &-thumb {
+    position: relative;
+    display: block;
+    width: 0;
+    height: 0;
+    cursor: pointer;
+    border-radius: inherit;
+    background-color: #909399;
+    transition: 0.3s background-color;
+    opacity: 0.3
+  }
+
+  // fade
+  &-fade-enter-active,
+  &-fade-leave-active {
+    transition: opacity .3s ease-out
+  }
+
+  &-fade-enter-from,
+  &-fade-leave-active {
+    opacity: 0
   }
 }
