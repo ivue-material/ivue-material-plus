@@ -6,20 +6,58 @@ import { inject } from 'vue';
 import type { TableBodyProps } from './defaults';
 import type { TableColumnCtx } from '../table-column/defaults';
 
+
+const prefixCls = 'ivue-table';
+
 function useStyles<T>(props: Partial<TableBodyProps<T>>) {
 
   // inject
   const IvueTable: any = inject('ivue-table');
 
 
+  // 行样式
+  const getRowStyle = (row: T, rowIndex: number) => {
+    const rowStyle = IvueTable?.props.rowStyle;
+
+    // function
+    if (typeof rowStyle === 'function') {
+      return rowStyle.call(null, {
+        row,
+        rowIndex,
+      });
+    }
+
+    return rowStyle || null;
+  };
+
 
   // 行样式
   const getRowClass = (row: T, rowIndex: number) => {
     const classes = [
-      'ivue-table-row'
+      `${prefixCls}-row`,
+      {
+        // 斑马纹
+        [`${prefixCls}-row--stripe`]: props.stripe && (rowIndex % 2 === 1)
+      }
     ];
 
+    // 行的 className 的回调方法，也可以使用字符串为所有行设置一个固定的 className。
+    const rowClassName = IvueTable?.props.rowClassName;
 
+    // 字符串
+    if (typeof rowClassName === 'string') {
+      classes.push(rowClassName);
+    }
+    // function
+    else if (typeof rowClassName === 'function') {
+      classes.push(
+        // 执行方法
+        rowClassName.call(null, {
+          row,
+          rowIndex,
+        })
+      );
+    }
 
     return classes;
   };
@@ -35,7 +73,6 @@ function useStyles<T>(props: Partial<TableBodyProps<T>>) {
     const rowspan = 1;
     // 单元格可横跨的列数
     const colspan = 1;
-
 
     return { rowspan, colspan };
   };
@@ -57,7 +94,8 @@ function useStyles<T>(props: Partial<TableBodyProps<T>>) {
   return {
     getRowClass,
     getTableSpan,
-    getCellClass
+    getCellClass,
+    getRowStyle
   };
 }
 

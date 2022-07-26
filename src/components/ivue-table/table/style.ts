@@ -2,10 +2,12 @@
 import {
   computed,
   ref,
+  watch,
+  unref,
   onMounted,
   nextTick
 } from 'vue';
-import { useResizeObserver } from '@vueuse/core';
+import { useResizeObserver, useEventListener } from '@vueuse/core';
 
 // ts
 import type { Table, TableProps } from './defaults';
@@ -140,10 +142,28 @@ function useStyle<T>(
 
   // 绑定事件
   const handleBindEvents = () => {
+    const scrollbar = table.refs.scrollbar;
+
+    // 没有滚动条
+    if (!scrollbar) {
+      return;
+    }
+
+    // 有滚动条
+    if (scrollbar.scrollbarWrapper) {
+      useEventListener(scrollbar.scrollbarWrapper, 'scroll', handleScrollbarScroll, {
+        passive: true,
+      });
+    }
+
     // 列的宽度自撑开
     if (props.fit) {
       // 绑定resize
       useResizeObserver(table.vnode.el as HTMLElement, handleResizeListener);
+    }
+    // 全局滚动
+    else {
+      useEventListener(window, 'resize', handleResizeListener);
     }
   };
 
@@ -160,12 +180,12 @@ function useStyle<T>(
 
   // 鼠标滚轮
   const handleMousewheel = (event, data) => {
-    // const { pixelX, pixelY } = data;
+    const { pixelX, pixelY } = data;
 
-    // // x 大于 y
-    // if (Math.abs(pixelX) >= Math.abs(pixelY)) {
-    //   table.refs.bodyWrapper.scrollLeft += data.pixelX / 5;
-    // }
+    // x 大于 y table横向滚动
+    if (Math.abs(pixelX) >= Math.abs(pixelY)) {
+      table.refs.bodyWrapper.scrollLeft += data.pixelX / 5;
+    }
   };
 
   // 拖拽显示
@@ -177,6 +197,9 @@ function useStyle<T>(
   const handleLayout = () => {
     // 更新列的宽度
     layout.updateColumnsWidth();
+
+    // 滚动条滚动
+    requestAnimationFrame(handleScrollbarScroll);
   };
 
   // 大小改变
@@ -232,6 +255,108 @@ function useStyle<T>(
     }
 
   };
+
+  // 滚动条滚动
+  const handleScrollbarScroll = () => {
+    const scrollbar = table.refs.scrollbar;
+
+    // 没有滚动
+    if (!scrollbar) {
+      return;
+    }
+
+    // 是否可以滚动
+    if (!layout.scrollX.value) {
+      const scrollingNoneClass = 'is-scrolling-none';
+
+      if (!hasClass(scrollingNoneClass)) {
+        setTableClass(scrollingNoneClass);
+      }
+    }
+
+    const scrollContainer = scrollbar.scrollbarWrapper;
+
+    // 没有滚动条
+    if (!scrollContainer) {
+      return;
+    }
+
+    const { scrollLeft, offsetWidth, scrollWidth } = scrollContainer;
+    const { header } = table.refs;
+
+    // 设置头部滚动位置
+    if (header) {
+      header.scrollLeft = scrollLeft;
+    }
+
+    // 最大滚动位置
+    const maxScrollLeftPosition = scrollWidth - offsetWidth - 1;
+
+    // 最右边
+    if (scrollLeft >= maxScrollLeftPosition) {
+      setTableClass('is-scrolling-right');
+    }
+    // 滚动到最左边
+    else if (scrollLeft === 0) {
+      setTableClass('is-scrolling-left');
+    }
+    // 滚动到中间
+    else {
+      setTableClass('is-scrolling-middle');
+    }
+
+  };
+
+  // 是否有当前样式
+  const hasClass = (className: string) => {
+    const { tableWrapper } = table.refs;
+
+    return !!(tableWrapper && tableWrapper.classList.contains(className));
+  };
+
+  // 设置表格样式
+  const setTableClass = (className: string) => {
+    const { tableWrapper } = table.refs;
+
+    if (!tableWrapper) {
+      return;
+    }
+
+    const classList = Array.from(tableWrapper.classList).filter(
+      (item) => !item.startsWith('is-scrolling-')
+    );
+
+    classList.push(layout.scrollX.value ? className : 'is-scrolling-none');
+
+    tableWrapper.className = classList.join(' ');
+
+  };
+
+  // 监听数据变化
+  watch(
+    () => props.data,
+    (data) => {
+      table.store.commit('setData', data);
+    },
+    {
+      immediate: true,
+      deep: true,
+    }
+  );
+
+  // 监听行key
+  watch(
+    () => [store.states.rowKey],
+    ([currentRowKey, rowKey]) => {
+      if (!unref(rowKey)) {
+        return;
+      }
+      // store.setCurrentRowKey(`${currentRowKey}`);
+    },
+    {
+      immediate: true,
+    }
+  );
 
   return {
     // data

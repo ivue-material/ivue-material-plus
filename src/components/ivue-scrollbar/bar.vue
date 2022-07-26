@@ -1,5 +1,8 @@
 <template>
-    <thumb :moveX="data.moveX" :ratioX="ratioX" :barWidth="barWidth" :always="always"></thumb>
+    <!-- 左右滚动 -->
+    <thumb :move="data.moveX" :ratio="ratioX" :barSize="barWidth" :always="always"></thumb>
+    <!-- 上下滚动 -->
+    <thumb :move="data.moveY" :ratio="ratioY" :barSize="barHeight" :always="always" vertical></thumb>
 </template>
 
 <script lang="ts">

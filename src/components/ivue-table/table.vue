@@ -42,6 +42,8 @@
                 <ivue-scrollbar
                     :wrapperStyle="scrollbarWrapperStyle"
                     :contentStyle="scrollbarContentStyle"
+                    :always="scrollbarAlways"
+                    ref="scrollbar"
                 >
                     <!-- 表格 -->
                     <table
@@ -58,7 +60,12 @@
                             :table-layout="tableLayout"
                         ></ivue-colgroup>
                         <!-- 内容 -->
-                        <table-body :store="store"></table-body>
+                        <table-body
+                            :store="store"
+                            :stripe="stripe"
+                            :rowClassName="rowClassName"
+                            :rowStyle="rowStyle"
+                        ></table-body>
                     </table>
                     <!-- 没有数据 -->
                     <div
@@ -143,6 +150,7 @@ export default defineComponent({
             // 显示头部
             showHeader: props.showHeader,
         });
+
         table.layout = layout;
 
         // 表格样式
@@ -207,6 +215,8 @@ export default defineComponent({
                         (store.states.data.value || []).length < 100,
                     // 是否在表尾显示合计行
                     ['has-footer']: props.showSummary,
+                    // 是否为斑马纹 table
+                    [`${prefixCls}-stripe`]: props.stripe,
                 },
             ];
         });
@@ -242,6 +252,7 @@ export default defineComponent({
 
             // 更新布局
             handleLayout();
+
             // 绑定事件
             handleBindEvents();
         });

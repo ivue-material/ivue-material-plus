@@ -1,7 +1,12 @@
 <template>
     <transition :name="`${prefixCls}-fade`">
         <!-- v-show="always || visible" -->
-        <div :class="wrapperClass" @mousedown="handleThumbWrapperMousedown" ref="thumbWrapper">
+        <div
+            :class="wrapperClass"
+            @mousedown="handleThumbWrapperMousedown"
+            ref="thumbWrapper"
+            v-show="always || data.visible"
+        >
             <div
                 :class="`${prefixCls}-thumb`"
                 :style="thumbStyle"
@@ -13,13 +18,25 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, ref, reactive, inject } from 'vue';
+import {
+    computed,
+    defineComponent,
+    ref,
+    reactive,
+    inject,
+    onBeforeUnmount,
+    onMounted,
+} from 'vue';
+import { useEventListener } from '@vueuse/core';
+
 import { on, off } from '../../utils/dom';
 
 const prefixCls = 'ivue-scrollbar';
 
 // 鼠标按下
 let mousedown = false;
+// 鼠标离开
+let mouseLeave = false;
 
 // 开始选择任意文本内容时触发
 let originalOnSelectStart = document.onselectstart;
@@ -31,15 +48,15 @@ export default defineComponent({
          *
          * @type {Number}
          */
-        moveX: {
+        move: {
             type: Number,
         },
         /**
-         * x轴滚动比率
+         * 轴滚动比率
          *
          * @type {Number}
          */
-        ratioX: {
+        ratio: {
             type: Number,
             default: 1,
         },
@@ -53,11 +70,11 @@ export default defineComponent({
             default: false,
         },
         /**
-         * 滚动条宽度
+         * 滚动条大小
          *
          * @type {String}
          */
-        barWidth: {
+        barSize: {
             type: String,
             default: '',
         },
@@ -82,13 +99,20 @@ export default defineComponent({
         // data
         const data: any = reactive<{
             thumbState: Partial<Record<'X' | 'Y', number>>;
+            visible: boolean;
         }>({
             /**
              * 状态
              *
-             * @type {String}
+             * @type {Object}
              */
             thumbState: {},
+            /**
+             * 显示
+             *
+             * @type {Boolean}
+             */
+            visible: false,
         });
 
         // wrapperClass
@@ -106,15 +130,15 @@ export default defineComponent({
             // 垂直
             if (props.vertical) {
                 obj = {
-                    height: props.barWidth,
-                    transform: `translateY(${props.moveX}%)`,
+                    height: props.barSize,
+                    transform: `translateY(${props.move}%)`,
                 };
             }
             // 横向
             else {
                 obj = {
-                    width: props.barWidth,
-                    transform: `translateX(${props.moveX}%)`,
+                    width: props.barSize,
+                    transform: `translateX(${props.move}%)`,
                 };
             }
 
@@ -131,7 +155,7 @@ export default defineComponent({
                 return (
                     thumbWrapper.value.offsetHeight ** 2 /
                     IvueScrollbar.scrollbarWrapper.scrollHeight /
-                    props.ratioX /
+                    props.ratio /
                     thumb.value.offsetHeight
                 );
             }
@@ -142,7 +166,7 @@ export default defineComponent({
                 return (
                     thumbWrapper.value.offsetWidth ** 2 /
                     IvueScrollbar.scrollbarWrapper.scrollWidth /
-                    props.ratioX /
+                    props.ratio /
                     thumb.value.offsetWidth
                 );
             }
@@ -311,6 +335,11 @@ export default defineComponent({
 
             // 恢复选择任意文本内容时触发
             handleRestoreSelectStart();
+
+            // 鼠标离开
+            if (mouseLeave) {
+                data.visible = false;
+            }
         };
 
         // 恢复选择
@@ -330,27 +359,95 @@ export default defineComponent({
                 return;
             }
 
+            // 视口到鼠标点击的位置
             let offset = 0;
+            // 滚动块的一半
+            let thumbHalf = 0;
 
             // 元素的大小及其相对于视口的位置。
             const boundingClientRect = (
                 event.target as HTMLElement
             ).getBoundingClientRect();
 
-            // 垂直
-            // if (props.vertical) {
-            //     offset = Math.abs(boundingClientRect.top - e[bar.value.client]);
-            // }
+            // 滚动块的位置
+            let thumbPositionPercentage = 0;
 
-            // // 横向
-            // if (!props.vertical) {
-            //     offset = Math.abs(
-            //         (event.target as HTMLElement).getBoundingClientRect()[
-            //             bar.value.direction
-            //         ] - e[bar.value.client]
-            //     );
-            // }
+            // 垂直
+            if (props.vertical) {
+                // 视口到鼠标点击的位置
+                offset = Math.abs(boundingClientRect.top - event.clientY);
+
+                thumbHalf = thumb.value.offsetHeight / 2;
+
+                thumbPositionPercentage =
+                    ((offset - thumbHalf) * 100 * offsetRatio.value) /
+                    thumbWrapper.value.offsetHeight;
+
+                IvueScrollbar.scrollbarWrapper.scrollTop =
+                    (thumbPositionPercentage *
+                        IvueScrollbar.scrollbarWrapper.scrollHeight) /
+                    100;
+            }
+
+            // 横向
+            if (!props.vertical) {
+                // 视口到鼠标点击的位置
+                offset = Math.abs(boundingClientRect.left - event.clientX);
+
+                thumbHalf = thumb.value.offsetWidth / 2;
+
+                thumbPositionPercentage =
+                    ((offset - thumbHalf) * 100 * offsetRatio.value) /
+                    thumbWrapper.value.offsetWidth;
+
+                IvueScrollbar.scrollbarWrapper.scrollLeft =
+                    (thumbPositionPercentage *
+                        IvueScrollbar.scrollbarWrapper.scrollWidth) /
+                    100;
+            }
         };
+
+        // 鼠标移动到表格
+        const handleMousemoveTable = () => {
+            mouseLeave = false;
+
+            data.visible = !!props.barSize;
+        };
+
+        // 鼠标移出到表格
+        const handleMouseleaveTable = () => {
+            mouseLeave = true;
+
+            data.visible = mousedown;
+        };
+
+        // onBeforeUnmount
+        onBeforeUnmount(() => {
+            handleRestoreSelectStart();
+
+            // 鼠标移动
+            off(document, 'mousemove', handleMousemove);
+
+            // 鼠标按下
+            off(document, 'mouseup', handleMouseup);
+        });
+
+        // onMounted
+        onMounted(() => {
+            // mousemove
+            useEventListener(
+                IvueScrollbar.scrollbar,
+                'mousemove',
+                handleMousemoveTable
+            );
+
+            // mouseleave
+            useEventListener(
+                IvueScrollbar.scrollbar,
+                'mouseleave',
+                handleMouseleaveTable
+            );
+        });
 
         return {
             prefixCls,

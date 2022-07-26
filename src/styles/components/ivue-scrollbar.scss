@@ -39,6 +39,16 @@ $name: 'ivue-scrollbar';
     }
   }
 
+  // 竖向
+  &-bar.is-vertical {
+    width: 6px;
+    top: 2px;
+
+    .#{$name}-thumb {
+      width: 100%;
+    }
+  }
+
   &-thumb {
     position: relative;
     display: block;
@@ -47,8 +57,12 @@ $name: 'ivue-scrollbar';
     cursor: pointer;
     border-radius: inherit;
     background-color: #909399;
-    transition: 0.3s background-color;
-    opacity: 0.3
+    transition: 0.3s opacity;
+    opacity: 0.3;
+
+    &:hover {
+      opacity: .5;
+    }
   }
 
   // fade

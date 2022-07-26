@@ -144,7 +144,6 @@ export default defineComponent({
 
   },
   render() {
-
     const {
       columnRows,
       renderTh

@@ -15,7 +15,8 @@ function useRender<T>(props: Partial<TableBodyProps<T>>) {
   const {
     getRowClass,
     getTableSpan,
-    getCellClass
+    getCellClass,
+    getRowStyle
   } = useStyles(props);
 
 
@@ -47,9 +48,9 @@ function useRender<T>(props: Partial<TableBodyProps<T>>) {
     // 行样式
     const rowClasses = getRowClass(row, $index);
 
-
     return h('tr', {
       class: rowClasses,
+      style: [getRowStyle(row, $index)],
       key: getRowKey(row, $index)
     },
       columns.value.map((column, cellIndex) => {

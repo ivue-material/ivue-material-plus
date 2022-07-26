@@ -4,6 +4,8 @@ import { ref } from 'vue';
 import useExpand from './expand';
 // 嵌套数据
 import useTree from './tree';
+// 当前数据
+import useCurrent from './current';
 
 import {
   getKeysMap,
@@ -40,6 +42,7 @@ function useWatcher<T>() {
 
   // 显示的数据
   const data: Ref<T[]> = ref([]);
+  const _data: Ref<T[]> = ref([]);
   // 行数据的 Key
   const rowKey: Ref<string> = ref(null);
   // 选择或取消选择所有行的值
@@ -119,9 +122,16 @@ function useWatcher<T>() {
     columns.value = []
       // .concat(fixedLeafColumns)
       .concat(_flattenColumns);
-      // .concat(rightFixedLeafColumns);
+    // .concat(rightFixedLeafColumns);
   };
 
+  // 更新当前数据
+  const {
+    updateCurrentRowData,
+  } = useCurrent({
+    data,
+    rowKey,
+  });
 
   return {
     _toggleAllSelection,
@@ -130,9 +140,11 @@ function useWatcher<T>() {
     loadOrToggle,
     updateSelectionByRowKey,
     updateColumns,
+    updateCurrentRowData,
     // 状态
     states: {
       data,
+      _data,
       rowKey,
       selectOnIndeterminate,
       isFixedColumns,

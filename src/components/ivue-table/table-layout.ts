@@ -69,7 +69,6 @@ class TableLayout<T> {
       }
     });
 
-
     return flattenColumns;
   }
 
@@ -170,12 +169,13 @@ class TableLayout<T> {
       }
       // 是滚动表格
       else {
+        this.scrollX.value = true;
+
         // 设置列宽度为最小宽度
         flexColumns.forEach((item) => {
           item.columnWidth = Number(item.minWidth);
         });
 
-        this.bodyWidth.value = Math.max(bodyMinWidth, bodyWidth);
       }
 
 

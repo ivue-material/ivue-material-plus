@@ -34,8 +34,11 @@ import {
     nextTick,
     onUpdated,
     provide,
+    watch,
 } from 'vue';
-import { addUnit } from '../../utils/helpers';
+import { useEventListener, useResizeObserver } from '@vueuse/core';
+
+import { addUnit, isValueNumber } from '../../utils/helpers';
 import Bar from './bar.vue';
 
 // ts
@@ -129,11 +132,22 @@ export default defineComponent({
             type: Boolean,
             default: false,
         },
+        /**
+         * 不响应容器尺寸变化，如果容器尺寸不会发生变化，最好设置它可以优化性能
+         *
+         * @type {Boolean}
+         */
+        noresize: {
+            type: Boolean,
+            default: false,
+        },
     },
     setup(props: any, { emit }) {
         // dom
         const scrollbarWrapper = ref<HTMLDivElement>(null);
         const scrollbar = ref<HTMLDivElement>(null);
+        const resize = ref<HTMLDivElement>(null);
+
         const bar = ref(null);
 
         const data: any = reactive<{
@@ -257,6 +271,60 @@ export default defineComponent({
                 (height / (offsetHeight - height));
         };
 
+        // 设置滚动高度
+        const setScrollTop = (value: number) => {
+            if (!isValueNumber(value)) {
+                return;
+            }
+
+            scrollbarWrapper.value.scrollTop = value;
+        };
+
+        // 设置滚动左右
+        const setScrollLeft = (value: number) => {
+            if (!isValueNumber(value)) {
+                return;
+            }
+
+            scrollbarWrapper.value.scrollLeft = value;
+        };
+
+        // watch
+
+        // 滚动条高度
+        watch(
+            () => props.height,
+            () => {
+                if (!props.native) {
+                    nextTick(() => {
+                        update();
+
+                        if (scrollbarWrapper.value) {
+                            bar.value?.handleScroll(scrollbarWrapper.value);
+                        }
+                    });
+                }
+            }
+        );
+
+        // 不响应容器尺寸变化，如果容器尺寸不会发生变化，最好设置它可以优化性能
+        watch(
+            () => props.noresize,
+            (value) => {
+                // 不响应
+                if (!value) {
+                    // 元素内容或边框尺寸的变化
+                    useResizeObserver(resize.value, update);
+
+                    // window resize
+                    useEventListener('resize', update);
+                }
+            },
+            {
+                immediate: true,
+            }
+        );
+
         // onMounted
         onMounted(() => {
             if (!props.native) {
@@ -286,6 +354,7 @@ export default defineComponent({
             scrollbarWrapper,
             scrollbar,
             bar,
+            resize,
 
             // data
             data,
@@ -296,6 +365,8 @@ export default defineComponent({
 
             // methods
             handleScroll,
+            setScrollTop,
+            setScrollLeft,
         };
     },
     components: {

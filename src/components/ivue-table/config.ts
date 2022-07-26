@@ -67,7 +67,7 @@ export function mergeOptions<T, K>(defaults: T, config: K): T & K {
 }
 
 // https://github.com/reduxjs/redux/blob/master/src/compose.js
-// 中函数执行的顺序是从右到左
+// 函数执行的顺序是从右到左
 export function compose(...funcs) {
   if (funcs.length === 0) {
     return (arg) => arg;

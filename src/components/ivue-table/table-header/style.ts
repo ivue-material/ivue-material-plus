@@ -10,7 +10,6 @@ function useStyle<T>(props: TableHeaderProps<T>) {
   // inject
   const parent: any = inject('ivue-table');
 
-
   // 头部行样式
   const getHeaderCellClass = (
     rowIndex: number,

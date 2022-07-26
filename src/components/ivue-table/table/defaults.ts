@@ -31,6 +31,13 @@ type RenderExpanded<T> = ({
 // 列表行
 type Column<T> = { row: T; $index: number; store: Store<T>; expanded: boolean }
 
+// 列表行样式
+type ColumnCls<T> = string | ((data: { row: T; rowIndex: number }) => string)
+
+type ColumnStyle<T> =
+  | CSSProperties
+  | ((data: { row: T; rowIndex: number }) => CSSProperties)
+
 // refs
 interface TableRefs {
   tableWrapper: HTMLElement
@@ -137,11 +144,20 @@ interface TableProps<T> {
   // 默认的排序列的 prop 和顺序。
   // 它的 prop 属性指定默认的排序的列，order 指定默认排序的顺序
   defaultSort?: Sort
+  // 内容
   context?: Table<T>
+  // 是否为斑马纹 table
+  stripe?: boolean
+  // 行的 className 的回调方法，也可以使用字符串为所有行设置一个固定的 className。
+  rowClassName?: ColumnCls<T>
+  // 行的 style 的回调方法，也可以使用一个固定的 Object 为所有行设置一样的 Style
+  rowStyle?: ColumnStyle<T>
 }
 
 // 行样式
 type rowClass<T> = string | ((data: { row: T; rowIndex: number }) => string)
+
+// 行的 style 的回调方法，也可以使用一个固定的 Object 为所有行设置一样的 Style。
 type rowStyle<T> = | CSSProperties | ((data: { row: T; rowIndex: number }) => CSSProperties)
 
 export default {
@@ -301,6 +317,40 @@ export default {
   placeholder: {
     type: String,
     default: 'No Data'
+  },
+  /**
+   * 滚动条总是显示
+   *
+   * @type {Boolean}
+   */
+  scrollbarAlways: {
+    type: Boolean,
+    default: false,
+  },
+  /**
+   * 是否为斑马纹 table
+   *
+   * @type {Boolean}
+   */
+  stripe: {
+    type: Boolean,
+    default: false,
+  },
+  /**
+   * 行的 className 的回调方法，也可以使用字符串为所有行设置一个固定的 className。
+   *
+   * @type {String | Function}
+   */
+  rowClassName: {
+    type: [String, Function] as PropType<TableProps<DefaultRow>['rowClassName']>,
+  },
+  /**
+   * 行的 style 的回调方法，也可以使用一个固定的 Object 为所有行设置一样的 Style。
+   *
+   * @type {Object, Function}
+   */
+  rowStyle: {
+    type: [Object, Function] as PropType<TableProps<DefaultRow>['rowStyle']>,
   }
 };
 
@@ -311,5 +361,6 @@ export type {
   RenderRowData,
   Sort,
   rowClass,
-  rowStyle
+  rowStyle,
+  ColumnCls
 };

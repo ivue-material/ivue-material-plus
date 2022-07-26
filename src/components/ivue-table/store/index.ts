@@ -42,13 +42,18 @@ function useStore<T>() {
   // 同步
   const mutations = {
 
-    // setData(states, data) {
-    //   // 如果参数是一个 ref，则返回内部值，否则返回参数本身
-    //   const dataInstanceChanged = unref(states._data) !== data;
+    setData(states, data) {
+      // 数据是否有改变
+      // const dataInstanceChanged = unref(states._data) !== data;
 
-    //   states.data.value = data;
-    //   states._data.value = data;
-    // }
+      // states.data.value = data;
+      // states._data.value = data;
+
+
+      // 数据变化，更新部分数据。
+      // 没有使用 computed，而是手动更新部分数据 https://github.com/vuejs/vue/issues/6660#issuecomment-331417140
+      // vm.store.updateCurrentRowData();
+    },
 
     // 用于多选表格，切换全选和全不选
     toggleAllSelection() {

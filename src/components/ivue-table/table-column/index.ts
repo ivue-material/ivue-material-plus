@@ -49,8 +49,10 @@ export default defineComponent({
       isSubColumn,
       alignDirection,
       headerAlign,
+
       // computed
       columnParent,
+
       // methods
       getPropsData,
       getColumnDomIndex,
@@ -59,13 +61,11 @@ export default defineComponent({
       setColumnProps,
     } = useRender(props as unknown as TableColumnCtx<unknown>, slots, parentDom);
 
-
     // 获取父级
     const parent = columnParent.value;
 
     // 设置列id
     columnId.value = `${parent.tableId || parent.columnId}-column-${columnIdSeed++}`;
-
 
     // onBeforeMount 在挂载开始之前被调用
     onBeforeMount(() => {
@@ -142,14 +142,19 @@ export default defineComponent({
         'filterPlacement',
       ];
 
+      // 获取props值
       let column = getPropsData(basicProps, sortProps, selectProps, filterProps);
 
+      // 合并props值
       column = mergeOptions(defaults, column);
 
-
+      // 合并函数
       const chains = compose(
+        // 列渲染函数
         columnRender,
+        // 设置列宽度
         setColumnWidth,
+        // 设置列 props
         setColumnProps
       );
 
