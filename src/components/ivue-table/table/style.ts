@@ -4,6 +4,7 @@ import {
   ref,
   watch,
   unref,
+  watchEffect,
   onMounted,
   nextTick
 } from 'vue';
@@ -95,8 +96,8 @@ function useStyle<T>(
   // 高度是否有变化
   const shouldUpdateHeight = computed(() => {
     return (
-      props.height ||
-      props.maxHeight
+      props.height
+      // ||  props.maxHeight
       // store.states.fixedColumns.value.length > 0 ||
       // store.states.rightFixedColumns.value.length > 0
     );
@@ -357,6 +358,13 @@ function useStyle<T>(
       immediate: true,
     }
   );
+
+  // watchEffect
+
+  // 监听高度变化设置表格高度
+  watchEffect(() => {
+    layout.setHeight(props.height);
+  });
 
   return {
     // data

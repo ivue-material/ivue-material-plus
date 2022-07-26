@@ -191,6 +191,11 @@ class TableLayout<T> {
     // 通知观察者
     this.notifyObservers('columns');
   }
+
+  // 设置高度
+  setHeight(value: string | number, prop = 'height') {
+    console.log('??', value);
+  }
 }
 
 export default TableLayout;
