@@ -217,7 +217,7 @@ export default defineComponent({
             if (props.vertical) {
                 // 可偏移高度
                 data.thumbState['Y'] =
-                    target.offsetWidth -
+                    target.offsetHeight -
                     (event.clientY - target.getBoundingClientRect().top);
             }
 

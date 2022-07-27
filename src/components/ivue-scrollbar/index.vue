@@ -222,7 +222,7 @@ export default defineComponent({
         // 滚动
         const handleScroll = () => {
             if (scrollbarWrapper.value) {
-                bar.value.handleScroll(scrollbarWrapper.value);
+                bar.value?.handleScroll(scrollbarWrapper.value);
 
                 emit('scroll', {
                     scrollTop: scrollbarWrapper.value.scrollTop,

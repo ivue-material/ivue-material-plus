@@ -17,6 +17,7 @@ import type { DefaultRow, Sort } from '../table/defaults';
 export interface TableHeader extends ComponentInternalInstance {
   state: {
     handleColumnsChange
+    handleScrollableWidthChange
   }
   filterPanels: Ref<unknown>
 }
@@ -87,14 +88,16 @@ export default defineComponent({
     const {
       // 头部行样式
       getHeaderCellClass,
+      getHeaderCellStyle
     } = useStyle(props as TableHeaderProps<unknown>);
 
 
     // 布局改变监听
-    const { handleColumnsChange } = useTableLayoutObserver(IvueTable);
+    const { handleColumnsChange, handleScrollableWidthChange } = useTableLayoutObserver(IvueTable);
 
     vm.state = {
       handleColumnsChange,
+      handleScrollableWidthChange
     };
 
     // methods
@@ -111,6 +114,12 @@ export default defineComponent({
         return h('th', {
           // 合并样式s
           class: getHeaderCellClass(
+            rowIndex,
+            cellIndex,
+            list,
+            column
+          ),
+          style: getHeaderCellStyle(
             rowIndex,
             cellIndex,
             list,

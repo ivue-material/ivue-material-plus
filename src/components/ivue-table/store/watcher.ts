@@ -61,7 +61,17 @@ function useWatcher<T>() {
   const columns: Ref<TableColumnCtx<T>[]> = ref([]);
   // 备份列
   const _columns: Ref<TableColumnCtx<T>[]> = ref([]);
+  // 固定列
+  const fixedColumns: Ref<TableColumnCtx<T>[]> = ref([]);
+  // 右边固定列
+  const rightFixedColumns: Ref<TableColumnCtx<T>[]> = ref([]);
 
+  // 固定列长度
+  const leafColumnsLength = ref(0);
+  // 固定列长度
+  const fixedLeafColumnsLength = ref(0);
+  // 右边固定列长度
+  const rightFixedLeafColumnsLength = ref(0);
 
   // methods
 
@@ -108,21 +118,43 @@ function useWatcher<T>() {
     // 不是固定列
     const notFixedColumns = _columns.value.filter((column) => !column.fixed);
 
+    // 固定列
+    fixedColumns.value = _columns.value.filter(
+      (column) => column.fixed === true || column.fixed === 'left'
+    );
+
+    // 右边固定列
+    rightFixedColumns.value = _columns.value.filter(
+      (column) => column.fixed === 'right'
+    );
+
     // 未扁平化列数据
     originColumns.value = []
-      // .concat(fixedColumns.value)
-      .concat(notFixedColumns);
-    // .concat(rightFixedColumns.value)
+      .concat(fixedColumns.value)
+      .concat(notFixedColumns)
+      .concat(rightFixedColumns.value);
 
 
     // 扁平化不是固定列
-    const _flattenColumns = flattenColumns(notFixedColumns);
+    const leafColumns = flattenColumns(notFixedColumns);
+    // 扁平化固定列
+    const fixedLeafColumns = flattenColumns(fixedColumns.value);
+    // 扁平化右边固定列
+    const rightFixedLeafColumns = flattenColumns(rightFixedColumns.value);
+
+    leafColumnsLength.value = leafColumns.length;
+    fixedLeafColumnsLength.value = fixedLeafColumns.length;
+    rightFixedLeafColumnsLength.value = rightFixedLeafColumns.length;
 
     // 扁平化后的列数据
     columns.value = []
-      // .concat(fixedLeafColumns)
-      .concat(_flattenColumns);
-    // .concat(rightFixedLeafColumns);
+      .concat(fixedLeafColumns)
+      .concat(leafColumns)
+      .concat(rightFixedLeafColumns);
+
+    // 是否有固定列
+    isFixedColumns.value =
+      fixedColumns.value.length > 0 || rightFixedColumns.value.length > 0;
   };
 
   // 更新当前数据
@@ -152,6 +184,8 @@ function useWatcher<T>() {
       columns,
       _columns,
       originColumns,
+      rightFixedLeafColumnsLength,
+      fixedLeafColumnsLength,
       ...expandStates,
       ...treeStates
     }

@@ -62,6 +62,17 @@ function useLayoutObserver<T>(root: Table<T>) {
     }
   };
 
+  // 设置滚动宽度
+  const handleScrollableWidthChange = () => {
+    const cols =
+      root.vnode.el?.querySelectorAll('colgroup > col[name=gutter]') || [];
+
+    console.log('root', cols);
+    const ths = root.vnode.el?.querySelectorAll('th.gutter') || [];
+    console.log('ths', ths);
+
+  };
+
 
   // 在实例初始化之后、进行数据侦听和事件/侦听器的配置之前同步调用。
   onBeforeMount(() => {
@@ -86,7 +97,8 @@ function useLayoutObserver<T>(root: Table<T>) {
   });
 
   return {
-    handleColumnsChange
+    handleColumnsChange,
+    handleScrollableWidthChange
   };
 
 }

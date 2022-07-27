@@ -6,6 +6,7 @@ import {
   computed,
   onMounted,
   onBeforeMount,
+  Fragment
 } from 'vue';
 import defaultProps from './defaults';
 
@@ -203,6 +204,48 @@ export default defineComponent({
     });
   },
   render() {
+    const slotsList = this.$slots.default?.({
+      row: {},
+      column: {},
+      $index: -1,
+    });
+
+    const slot = [];
+
+    // 有插槽
+    // if (Array.isArray(slotsList)) {
+    //   for (const childNode of slotsList) {
+    //     console.log('childNode', childNode);
+    //     console.log('childNode', childNode.type.name);
+    //     // 嵌列组件
+    //     if (
+    //       childNode.type?.name === 'IvueTableColumn' || childNode.shapeFlag & 2
+    //     ) {
+    //       slot.push(childNode);
+    //     }
+    //     // 是否是片段 Fragment 多个根节点
+    //     else if (
+    //       childNode.type === Fragment &&
+    //       Array.isArray(childNode.children)
+    //     ) {
+
+    //       console.log('/??');
+    //       // childNode.children.forEach((vnode) => {
+    //       //   // No rendering when vnode is dynamic slot or text
+    //       //   if (vnode?.patchFlag !== 1024 && !isString(vnode?.children)) {
+    //       //     children.push(vnode);
+    //       //   }
+    //       // });
+    //     }
+    //   }
+
+    //   console.log('childNode', slot);
+    //   return h('div', slot);
+    // }
+    // else {
+    //   return h('div', []);
+    // }
     return h('div', []);
+
   }
 });

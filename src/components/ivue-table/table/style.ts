@@ -72,7 +72,7 @@ function useStyle<T>(
     // 有固定高度
     if (props.height) {
       obj = {
-        // height: !Number.isNaN(Number(props.height)) ? `${props.height}px` : props.height,
+        height: !Number.isNaN(Number(props.height)) ? `${props.height}px` : props.height,
       };
     }
 

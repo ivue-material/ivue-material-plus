@@ -1,5 +1,5 @@
 
-import { isRef, ref } from 'vue';
+import { isRef, ref, nextTick } from 'vue';
 import { hasOwn } from '@vue/shared';
 
 // ts
@@ -18,6 +18,7 @@ class TableLayout<T> {
   scrollY: Ref<boolean>
   bodyWidth: Ref<null | number>
   observers: TableHeader[]
+  height: Ref<null | number>
 
   constructor(options: Record<string, any>) {
 
@@ -29,6 +30,9 @@ class TableLayout<T> {
 
     // 内容宽度
     this.bodyWidth = ref(null);
+
+    // 表格高度
+    this.height = ref(null);
 
     // 观察者列表
     this.observers = [];
@@ -94,6 +98,11 @@ class TableLayout<T> {
       // 设置列的宽度
       if (event === 'columns') {
         item.state?.handleColumnsChange(this);
+      }
+
+      // 设置滚动宽度
+      if (event === 'scrollable') {
+        item.state?.handleScrollableWidthChange(this);
       }
     });
   }
@@ -178,15 +187,31 @@ class TableLayout<T> {
 
       }
 
-
       // 设置表格快读
       this.bodyWidth.value = Math.max(bodyMinWidth, bodyWidth);
       // 调整表格大小
       this.table.state.resizeState.value.width = this.bodyWidth.value;
     }
     // 不是自动撑开
-    // else {
-    // }
+    else {
+      flattenColumns.forEach((item) => {
+
+        // 没有宽度
+        if (!item.width && !item.minWidth) {
+          item.columnWidth = 80;
+        }
+        // 有宽度
+        else {
+          item.columnWidth = Number(item.width || item.minWidth);
+        }
+
+        bodyMinWidth += item.columnWidth;
+      });
+
+      this.scrollX.value = bodyMinWidth > bodyWidth;
+
+      this.bodyWidth.value = bodyMinWidth;
+    }
 
     // 通知观察者
     this.notifyObservers('columns');
@@ -194,7 +219,100 @@ class TableLayout<T> {
 
   // 设置高度
   setHeight(value: string | number, prop = 'height') {
-    console.log('??', value);
+    const el = this.table.vnode.el;
+
+    value = this.parseHeight(value);
+
+    this.height.value = Number(value);
+
+    // 没有节点下个线程执行
+    if (!el && (value || value === 0)) {
+      return nextTick(() => {
+        this.setHeight(value, prop);
+      });
+    }
+
+    // number
+    if (typeof value === 'number') {
+      el.style[prop] = `${value}px`;
+
+      // 更新表格高度
+      this.updateTableContentHeight();
+    }
+    // string
+    else if (typeof value === 'string') {
+      el.style[prop] = value;
+
+      // 更新表格高度
+      this.updateTableContentHeight();
+    }
+  }
+
+  // 设置高度
+  parseHeight(height: number | string) {
+
+    // number
+    if (typeof height === 'number') {
+      return height;
+    }
+
+    // string
+    if (typeof height === 'string') {
+
+      // 是否有px
+      if (/^\d+(?:px)?$/.test(height)) {
+        return Number.parseInt(height, 10);
+      }
+      // 其他
+      else {
+        return height;
+      }
+    }
+
+    return null;
+  }
+
+  // 更新表格高度
+  updateTableContentHeight() {
+    // 更新y轴滚动高度
+    this.updateScrollY();
+
+    // 设置滚动高度
+    this.notifyObservers('scrollable');
+  }
+
+  // 更新y轴滚动高度
+  updateScrollY() {
+    const height = this.height.value;
+
+    // 高度未初始化时为空
+    // 表格初始化后，未配置高度时，高度为0
+
+    if (!height) {
+      return false;
+    }
+
+    const scrollbar = this.table.refs.scrollbar;
+
+    // 是否渲染完成
+    if (this.table.vnode.el && scrollbar) {
+      let scrollY = true;
+
+      // 之前的值
+      const prevScrollY = this.scrollY.value;
+
+      // 是否可以滚动
+      scrollY = scrollbar.scrollbarWrapper.scrollHeight > scrollbar.scrollbarWrapper.clientHeight;
+
+      // 是否可以滚动
+      this.scrollY.value = scrollY;
+
+      // 是否相等 是否有滚动过
+      return prevScrollY !== scrollY;
+    }
+
+
+    return false;
   }
 }
 

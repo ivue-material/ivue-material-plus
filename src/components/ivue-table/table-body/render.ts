@@ -33,8 +33,6 @@ function useRender<T>(props: Partial<TableBodyProps<T>>) {
     return index;
   };
 
-
-
   // 渲染行
   const rowRender = (
     row: T,

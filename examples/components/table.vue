@@ -5,7 +5,7 @@
             <ivue-table-column prop="date" label="Date" width="180"></ivue-table-column>
             <ivue-table-column prop="name" label="Name" width="180"></ivue-table-column>
             <ivue-table-column prop="address" label="Address"></ivue-table-column>
-        </ivue-table>-->
+        </ivue-table> -->
         <!-- <h1>带斑马纹表格</h1>
         <ivue-table :data="tableData" stripe style="width: 100%">
             <ivue-table-column prop="date" label="Date" width="180"></ivue-table-column>
@@ -29,11 +29,25 @@
             <ivue-table-column prop="name" label="Name" width="180"></ivue-table-column>
             <ivue-table-column prop="address" label="Address"></ivue-table-column>
         </ivue-table>-->
-        <h1>固定表头</h1>
+        <!-- <h1>固定表头</h1>
         <ivue-table :data="tableData" height="250" style="width: 100%">
             <ivue-table-column prop="date" label="Date" width="180"></ivue-table-column>
             <ivue-table-column prop="name" label="Name" width="180"></ivue-table-column>
             <ivue-table-column prop="address" label="Address"></ivue-table-column>
+        </ivue-table>-->
+        <h1>固定列</h1>
+        <ivue-table :data="tableData2" style="width: 100%">
+            <ivue-table-column fixed prop="date" label="Date" width="150"></ivue-table-column>
+            <ivue-table-column prop="name" label="Name" width="120"></ivue-table-column>
+            <ivue-table-column prop="state" label="State" width="120"></ivue-table-column>
+            <ivue-table-column prop="city" label="City" width="120"></ivue-table-column>
+            <ivue-table-column prop="address" label="Address" width="600"></ivue-table-column>
+            <ivue-table-column fixed="right" prop="zip" label="Zip" width="120"></ivue-table-column>
+            <ivue-table-column fixed="right" label="Operations" width="120">
+                <template #default>
+                 12121
+                </template>
+            </ivue-table-column>
         </ivue-table>
     </div>
 </template>
@@ -77,6 +91,44 @@ export default {
                     date: '2016-05-07',
                     name: 'Tom',
                     address: 'No. 189, Grove St, Los Angeles',
+                },
+            ],
+            tableData2: [
+                {
+                    date: '2016-05-03',
+                    name: 'Tom',
+                    state: 'California',
+                    city: 'Los Angeles',
+                    address: 'No. 189, Grove St, Los Angeles',
+                    zip: 'CA 90036',
+                    tag: 'Home',
+                },
+                {
+                    date: '2016-05-02',
+                    name: 'Tom',
+                    state: 'California',
+                    city: 'Los Angeles',
+                    address: 'No. 189, Grove St, Los Angeles',
+                    zip: 'CA 90036',
+                    tag: 'Office',
+                },
+                {
+                    date: '2016-05-04',
+                    name: 'Tom',
+                    state: 'California',
+                    city: 'Los Angeles',
+                    address: 'No. 189, Grove St, Los Angeles',
+                    zip: 'CA 90036',
+                    tag: 'Home',
+                },
+                {
+                    date: '2016-05-01',
+                    name: 'Tom',
+                    state: 'California',
+                    city: 'Los Angeles',
+                    address: 'No. 189, Grove St, Los Angeles',
+                    zip: 'CA 90036',
+                    tag: 'Office',
                 },
             ],
         };

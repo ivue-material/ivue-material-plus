@@ -24,19 +24,19 @@ export const cellStyles = {
   selection: {
     width: 48,
     minWidth: 48,
-    realWidth: 48,
+    columnWidth: 48,
     order: '',
   },
   expand: {
     width: 48,
     minWidth: 48,
-    realWidth: 48,
+    columnWidth: 48,
     order: '',
   },
   index: {
     width: 48,
     minWidth: 48,
-    realWidth: 48,
+    columnWidth: 48,
     order: '',
   },
 };

@@ -42,7 +42,7 @@
                 <ivue-scrollbar
                     :wrapperStyle="scrollbarWrapperStyle"
                     :contentStyle="scrollbarContentStyle"
-                    :always="scrollbarAlways"
+                    :always="true"
                     ref="scrollbar"
                 >
                     <!-- 表格 -->

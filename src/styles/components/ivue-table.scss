@@ -11,6 +11,10 @@ $name:'ivue-table';
   font-size: 14px;
   color: $text-color;
 
+  thead {
+    font-weight: 500;
+  }
+
   // 行
   .cell {
     box-sizing: border-box;
@@ -44,6 +48,8 @@ $name:'ivue-table';
   // 内容
   &-content {
     position: relative;
+    display: flex;
+    flex-direction: column;
 
     &::before {
       content: "";
@@ -79,10 +85,7 @@ $name:'ivue-table';
     position: relative;
     text-align: left;
     z-index: 1;
-
-
   }
-
 
   th.#{$name}-cell {
     user-select: none;
@@ -91,8 +94,9 @@ $name:'ivue-table';
       display: inline-block;
       box-sizing: border-box;
       position: relative;
-      vertical-align: middle;
       width: 100%;
+      display: flex;
+      align-items: center;
     }
   }
 
@@ -111,7 +115,8 @@ $name:'ivue-table';
 
     &--wrapper {
       overflow: hidden;
-      width: 100%
+      width: 100%;
+      flex-shrink: 0;
     }
   }
 
@@ -224,4 +229,62 @@ $name:'ivue-table';
     }
   }
 
+  // 固定列右边, 固定列左边
+  &-fixed-column--right,
+  &-fixed-column--left {
+    position: sticky !important;
+    z-index: 2;
+    background-color: $white-color;
+
+  }
+
+  // 固定列右边
+  &-fixed-column--right.is-first-column::before {
+    left: -10px;
+  }
+
+  // 固定列左边
+  &-fixed-column--left.is-last-column::before {
+    right: -10px;
+  }
+}
+
+// 固定列右边
+.#{$name}.is-scrolling-left,
+.#{$name}.is-scrolling-middle {
+  .#{$name}-fixed-column--right.is-first-column {
+    &::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      width: 10px;
+      bottom: -1px;
+      overflow-x: hidden;
+      overflow-y: hidden;
+      box-shadow: none;
+      touch-action: none;
+      pointer-events: none;
+      box-shadow: inset -10px 0 10px -10px rgba(0, 0, 0, 0.15);
+    }
+  }
+}
+
+// 固定列左边
+.#{$name}.is-scrolling-right,
+.#{$name}.is-scrolling-middle {
+  .#{$name}-fixed-column--left.is-last-column {
+    &::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      width: 10px;
+      bottom: -1px;
+      overflow-x: hidden;
+      overflow-y: hidden;
+      box-shadow: none;
+      touch-action: none;
+      pointer-events: none;
+      box-shadow: inset 10px 0 10px -10px rgba(0, 0, 0, 0.15);
+    }
+  }
 }

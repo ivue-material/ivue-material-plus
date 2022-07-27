@@ -158,7 +158,7 @@ nav {
     }
 }
 .container {
-    padding: 10px 40px 0;
+    padding: 10px 8px 0;
 }
 .v-link-active {
     color: #bbb;

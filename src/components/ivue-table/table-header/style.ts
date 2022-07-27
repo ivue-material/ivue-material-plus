@@ -1,5 +1,7 @@
 import { inject } from 'vue';
 
+import { getFixedColumnsClass, getFixedColumnOffset, ensurePosition } from '../utils';
+
 // ts
 import type { TableHeaderProps } from './index';
 import type { TableColumnCtx } from '../table-column/defaults';
@@ -10,6 +12,33 @@ function useStyle<T>(props: TableHeaderProps<T>) {
   // inject
   const parent: any = inject('ivue-table');
 
+
+  // 头部行样式
+  const getHeaderCellStyle = (
+    rowIndex: number,
+    columnIndex: number,
+    row: T,
+    column: TableColumnCtx<T>
+  ) => {
+
+    // fixedStyle
+    const fixedStyle = column.isSubColumn
+      ? null
+      : getFixedColumnOffset<T>(
+        columnIndex,
+        column.fixed,
+        props.store,
+        row as unknown as TableColumnCtx<T>[]
+      );
+
+    // 左边
+    ensurePosition(fixedStyle, 'left');
+    // 右边
+    ensurePosition(fixedStyle, 'right');
+
+    return Object.assign({}, fixedStyle);
+  };
+
   // 头部行样式
   const getHeaderCellClass = (
     rowIndex: number,
@@ -17,12 +46,25 @@ function useStyle<T>(props: TableHeaderProps<T>) {
     row: T,
     column: TableColumnCtx<T>
   ) => {
+
+    // 固定列样式
+    const fixedClasses = column.isSubColumn
+      ? []
+      : getFixedColumnsClass<T>(
+        prefixCls,
+        columnIndex,
+        column.fixed,
+        props.store,
+        row as unknown as TableColumnCtx<T>[]
+      );
+
     const classes = [
       column.id,
       column.order,
       column.headerAlign,
       column.className,
       column.labelClassName,
+      ...fixedClasses,
     ];
 
 
@@ -40,7 +82,8 @@ function useStyle<T>(props: TableHeaderProps<T>) {
 
 
   return {
-    getHeaderCellClass
+    getHeaderCellClass,
+    getHeaderCellStyle,
   };
 }
 
