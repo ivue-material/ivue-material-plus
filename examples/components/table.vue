@@ -36,7 +36,7 @@
             <ivue-table-column prop="address" label="Address"></ivue-table-column>
         </ivue-table>-->
         <h1>固定列</h1>
-        <ivue-table :data="tableData2" style="width: 100%">
+        <ivue-table border  height="250" :data="tableData2" style="width: 100%">
             <ivue-table-column fixed prop="date" label="Date" width="150"></ivue-table-column>
             <ivue-table-column prop="name" label="Name" width="120"></ivue-table-column>
             <ivue-table-column prop="state" label="State" width="120"></ivue-table-column>
@@ -122,6 +122,33 @@ export default {
                     tag: 'Home',
                 },
                 {
+                    date: '2016-05-01',
+                    name: 'Tom',
+                    state: 'California',
+                    city: 'Los Angeles',
+                    address: 'No. 189, Grove St, Los Angeles',
+                    zip: 'CA 90036',
+                    tag: 'Office',
+                },
+                 {
+                    date: '2016-05-01',
+                    name: 'Tom',
+                    state: 'California',
+                    city: 'Los Angeles',
+                    address: 'No. 189, Grove St, Los Angeles',
+                    zip: 'CA 90036',
+                    tag: 'Office',
+                },
+                 {
+                    date: '2016-05-01',
+                    name: 'Tom',
+                    state: 'California',
+                    city: 'Los Angeles',
+                    address: 'No. 189, Grove St, Los Angeles',
+                    zip: 'CA 90036',
+                    tag: 'Office',
+                },
+                 {
                     date: '2016-05-01',
                     name: 'Tom',
                     state: 'California',

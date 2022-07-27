@@ -51,6 +51,11 @@ $name:'ivue-table';
     display: flex;
     flex-direction: column;
 
+    // 滚动条
+    .ivue-scrollbar-bar {
+      z-index: 2;
+    }
+
     &::before {
       content: "";
       position: absolute;
@@ -252,6 +257,10 @@ $name:'ivue-table';
 // 固定列右边
 .#{$name}.is-scrolling-left,
 .#{$name}.is-scrolling-middle {
+  .#{$name}-fixed-column--right.ivue-table-cell {
+    border-left: none;
+  }
+
   .#{$name}-fixed-column--right.is-first-column {
     &::before {
       content: "";
@@ -272,6 +281,10 @@ $name:'ivue-table';
 // 固定列左边
 .#{$name}.is-scrolling-right,
 .#{$name}.is-scrolling-middle {
+  .#{$name}-fixed-column--left.ivue-table-cell {
+    border-right: none;
+  }
+
   .#{$name}-fixed-column--left.is-last-column {
     &::before {
       content: "";

@@ -5,7 +5,7 @@ import { inject } from 'vue';
 // ts
 import type { TableBodyProps } from './defaults';
 import type { TableColumnCtx } from '../table-column/defaults';
-
+import { getFixedColumnsClass, getFixedColumnOffset, ensurePosition } from '../utils';
 
 const prefixCls = 'ivue-table';
 
@@ -13,7 +13,6 @@ function useStyles<T>(props: Partial<TableBodyProps<T>>) {
 
   // inject
   const IvueTable: any = inject('ivue-table');
-
 
   // 行样式
   const getRowStyle = (row: T, rowIndex: number) => {
@@ -85,17 +84,44 @@ function useStyles<T>(props: Partial<TableBodyProps<T>>) {
     row: T,
     column: TableColumnCtx<T>
   ) => {
-    const classes = [column.id, column.align, column.className, 'ivue-table-cell'];
+    const fixedClasses = column.isSubColumn
+      ? []
+      : getFixedColumnsClass(prefixCls, columnIndex, props?.fixed, props.store);
+
+
+    const classes = [column.id, column.align, column.className, 'ivue-table-cell', ...fixedClasses];
 
     return classes.filter((className) => Boolean(className)).join(' ');
+  };
+
+  // 单元格样式
+  const getCellStyle = (
+    rowIndex: number,
+    columnIndex: number,
+    row: T,
+    column: TableColumnCtx<T>
+  ) => {
+
+    // fixedStyle
+    const fixedStyle = column.isSubColumn
+      ? null
+      : getFixedColumnOffset(columnIndex, props?.fixed, props.store);
+
+    // 左边
+    ensurePosition(fixedStyle, 'left');
+    // 右边
+    ensurePosition(fixedStyle, 'right');
+
+    return Object.assign({}, fixedStyle);
   };
 
 
   return {
     getRowClass,
+    getRowStyle,
     getTableSpan,
     getCellClass,
-    getRowStyle
+    getCellStyle,
   };
 }
 

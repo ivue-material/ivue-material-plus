@@ -14,9 +14,10 @@ function useRender<T>(props: Partial<TableBodyProps<T>>) {
 
   const {
     getRowClass,
+    getRowStyle,
     getTableSpan,
     getCellClass,
-    getRowStyle
+    getCellStyle,
   } = useStyles(props);
 
 
@@ -79,6 +80,7 @@ function useRender<T>(props: Partial<TableBodyProps<T>>) {
         return h(
           'td',
           {
+            style: getCellStyle($index, cellIndex, row, column),
             class: getCellClass($index, cellIndex, row, column),
             rowspan,
             colspan,
