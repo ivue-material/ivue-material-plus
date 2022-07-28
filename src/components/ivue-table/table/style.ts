@@ -79,7 +79,7 @@ function useStyle<T>(
     // 有最大高度
     if (props.maxHeight) {
       obj = {
-        // maxHeight: !Number.isNaN(Number(props.maxHeight)) ? `${props.maxHeight}px` : props.maxHeight,
+        maxHeight: !Number.isNaN(Number(props.maxHeight)) ? `${props.maxHeight}px` : props.maxHeight,
       };
     }
 
@@ -97,7 +97,7 @@ function useStyle<T>(
   const shouldUpdateHeight = computed(() => {
     return (
       props.height
-      // ||  props.maxHeight
+      ||  props.maxHeight
       // store.states.fixedColumns.value.length > 0 ||
       // store.states.rightFixedColumns.value.length > 0
     );

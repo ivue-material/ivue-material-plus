@@ -5,7 +5,7 @@
             <ivue-table-column prop="date" label="Date" width="180"></ivue-table-column>
             <ivue-table-column prop="name" label="Name" width="180"></ivue-table-column>
             <ivue-table-column prop="address" label="Address"></ivue-table-column>
-        </ivue-table> -->
+        </ivue-table>-->
         <!-- <h1>带斑马纹表格</h1>
         <ivue-table :data="tableData" stripe style="width: 100%">
             <ivue-table-column prop="date" label="Date" width="180"></ivue-table-column>
@@ -35,7 +35,7 @@
             <ivue-table-column prop="name" label="Name" width="180"></ivue-table-column>
             <ivue-table-column prop="address" label="Address"></ivue-table-column>
         </ivue-table>-->
-        <h1>固定列</h1>
+        <!-- <h1>固定列</h1>
         <ivue-table border  height="250" :data="tableData2" style="width: 100%">
             <ivue-table-column fixed prop="date" label="Date" width="150"></ivue-table-column>
             <ivue-table-column prop="name" label="Name" width="120"></ivue-table-column>
@@ -47,6 +47,18 @@
                 <template #default>
                  12121
                 </template>
+            </ivue-table-column>
+        </ivue-table>-->
+        <h1>流体高度</h1>
+        <ivue-table maxHeight="250" :data="tableData2" style="width: 100%">
+            <ivue-table-column fixed prop="date" label="Date" width="150"></ivue-table-column>
+            <ivue-table-column prop="name" label="Name" width="120"></ivue-table-column>
+            <ivue-table-column prop="state" label="State" width="120"></ivue-table-column>
+            <ivue-table-column prop="city" label="City" width="120"></ivue-table-column>
+            <ivue-table-column prop="address" label="Address" width="600"></ivue-table-column>
+            <ivue-table-column fixed="right" prop="zip" label="Zip" width="120"></ivue-table-column>
+            <ivue-table-column fixed="right" label="Operations" width="120">
+                <template #default>12121</template>
             </ivue-table-column>
         </ivue-table>
     </div>
@@ -130,7 +142,7 @@ export default {
                     zip: 'CA 90036',
                     tag: 'Office',
                 },
-                 {
+                {
                     date: '2016-05-01',
                     name: 'Tom',
                     state: 'California',
@@ -139,7 +151,7 @@ export default {
                     zip: 'CA 90036',
                     tag: 'Office',
                 },
-                 {
+                {
                     date: '2016-05-01',
                     name: 'Tom',
                     state: 'California',
@@ -148,7 +160,7 @@ export default {
                     zip: 'CA 90036',
                     tag: 'Office',
                 },
-                 {
+                {
                     date: '2016-05-01',
                     name: 'Tom',
                     state: 'California',

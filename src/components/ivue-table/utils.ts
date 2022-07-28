@@ -224,8 +224,6 @@ export const getFixedColumnOffset = <T>(
   const isLeft = direction === 'left';
 
   const columns = store.states.columns.value;
-  console.log('column', columns);
-  console.log('column', isLeft);
 
   // 左边
   if (isLeft) {
