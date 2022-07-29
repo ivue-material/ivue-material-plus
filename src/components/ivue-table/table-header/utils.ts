@@ -108,7 +108,7 @@ const convertToRows = <T>(
 
 function useUtils<T>(props: TableHeaderProps<T>) {
   // inject
-  const parent = inject('ivue-table');
+  const IvueTable: any = inject('ivue-table');
 
   // 获取当前列的行数
   const columnRows = computed(() => {
@@ -116,18 +116,19 @@ function useUtils<T>(props: TableHeaderProps<T>) {
   });
 
   // 是否拥有多级表头
-  // const isGroup = computed(() => {
-  //   const result = columnRows.value.length > 1;
+  const isGroup = computed(() => {
+    const result = columnRows.value.length > 1;
 
-  //   if (result && parent) {
-  //     parent.state.isGroup.value = true;
-  //   }
-  //   return result;
-  // });
+    if (result && IvueTable) {
+      IvueTable.state.isGroup.value = true;
+    }
+
+    return result;
+  });
 
 
   return {
-    // isGroup,
+    isGroup,
     columnRows,
   };
 }

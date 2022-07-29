@@ -79,7 +79,7 @@ interface TableState {
     height: any
   }>
   handleLayout: () => void
-  // debouncedUpdateLayout: () => void
+  debouncedUpdateLayout: () => void
 }
 
 interface Sort {
@@ -152,6 +152,8 @@ interface TableProps<T> {
   rowClassName?: ColumnCls<T>
   // 行的 style 的回调方法，也可以使用一个固定的 Object 为所有行设置一样的 Style
   rowStyle?: ColumnStyle<T>
+  // 是否要高亮当前行
+  highlightCurrentRow?: boolean
 }
 
 // 行样式
@@ -351,6 +353,15 @@ export default {
    */
   rowStyle: {
     type: [Object, Function] as PropType<TableProps<DefaultRow>['rowStyle']>,
+  },
+  /**
+   * 是否要高亮当前行
+   *
+   * @type {Boolean}
+   */
+  highlightCurrentRow: {
+    type: Boolean,
+    default: false,
   }
 };
 

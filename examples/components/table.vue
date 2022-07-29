@@ -2,7 +2,7 @@
     <div>
         <!-- <h1>基础表格</h1>
         <ivue-table :data="tableData" style="width: 100%">
-            <ivue-table-column prop="date" label="Date" width="180"></ivue-table-column>
+            <ivue-table-column prop="date" label="Date" minWidth="180"></ivue-table-column>
             <ivue-table-column prop="name" label="Name" width="180"></ivue-table-column>
             <ivue-table-column prop="address" label="Address"></ivue-table-column>
         </ivue-table>-->
@@ -49,8 +49,8 @@
                 </template>
             </ivue-table-column>
         </ivue-table>-->
-        <h1>流体高度</h1>
-        <ivue-table maxHeight="250" :data="tableData2" style="width: 100%">
+        <!-- <h1>流体高度</h1>
+        <ivue-table maxHeight="250" :data="tableData3" style="width: 100%">
             <ivue-table-column fixed prop="date" label="Date" width="150"></ivue-table-column>
             <ivue-table-column prop="name" label="Name" width="120"></ivue-table-column>
             <ivue-table-column prop="state" label="State" width="120"></ivue-table-column>
@@ -58,9 +58,40 @@
             <ivue-table-column prop="address" label="Address" width="600"></ivue-table-column>
             <ivue-table-column fixed="right" prop="zip" label="Zip" width="120"></ivue-table-column>
             <ivue-table-column fixed="right" label="Operations" width="120">
-                <template #default>12121</template>
+                <template #default="scope">
+                    <ivue-button @click="deleteRow(scope.$index)">delete</ivue-button>
+                </template>
             </ivue-table-column>
         </ivue-table>
+        <ivue-button @click="onAddItem">Add</ivue-button>-->
+        <!-- <h1>多级表头</h1>
+        <ivue-table :data="tableData4" style="width: 100%">
+            <ivue-table-column prop="date" label="Date" width="150"></ivue-table-column>
+            <ivue-table-column label="Delivery Info">
+                <ivue-table-column prop="name" label="Name" width="120" />
+                <ivue-table-column label="Address Info">
+                    <ivue-table-column prop="state" label="State" width="120" />
+                    <ivue-table-column prop="city" label="City" width="120" />
+                    <ivue-table-column prop="address" label="Address" />
+                    <ivue-table-column prop="zip" label="Zip" width="120" />
+                </ivue-table-column>
+            </ivue-table-column>
+        </ivue-table>-->
+        <h1>单选</h1>
+        <ivue-table
+            ref="singleTableRef"
+            highlight-current-row
+            :data="tableData"
+            style="width: 100%"
+            @on-current-change="handleCurrentChange"
+        >
+            <ivue-table-column  type="index" width="50"></ivue-table-column>
+            <ivue-table-column prop="date" label="Date" minWidth="180"></ivue-table-column>
+            <ivue-table-column prop="name" label="Name" width="180"></ivue-table-column>
+            <ivue-table-column prop="address" label="Address"></ivue-table-column>
+        </ivue-table>
+        <ivue-button @click="setCurrent(tableData[1])">Select second row</ivue-button>
+        <ivue-button @click="setCurrent()">Clear selection</ivue-button>
     </div>
 </template>
 
@@ -170,6 +201,90 @@ export default {
                     tag: 'Office',
                 },
             ],
+            tableData3: [
+                {
+                    date: '2016-05-01',
+                    name: 'Tom',
+                    state: 'California',
+                    city: 'Los Angeles',
+                    address: 'No. 189, Grove St, Los Angeles',
+                    zip: 'CA 90036',
+                },
+                {
+                    date: '2016-05-02',
+                    name: 'Tom',
+                    state: 'California',
+                    city: 'Los Angeles',
+                    address: 'No. 189, Grove St, Los Angeles',
+                    zip: 'CA 90036',
+                },
+                {
+                    date: '2016-05-03',
+                    name: 'Tom',
+                    state: 'California',
+                    city: 'Los Angeles',
+                    address: 'No. 189, Grove St, Los Angeles',
+                    zip: 'CA 90036',
+                },
+            ],
+            tableData4: [
+                {
+                    date: '2016-05-03',
+                    name: 'Tom',
+                    state: 'California',
+                    city: 'Los Angeles',
+                    address: 'No. 189, Grove St, Los Angeles',
+                    zip: 'CA 90036',
+                },
+                {
+                    date: '2016-05-02',
+                    name: 'Tom',
+                    state: 'California',
+                    city: 'Los Angeles',
+                    address: 'No. 189, Grove St, Los Angeles',
+                    zip: 'CA 90036',
+                },
+                {
+                    date: '2016-05-04',
+                    name: 'Tom',
+                    state: 'California',
+                    city: 'Los Angeles',
+                    address: 'No. 189, Grove St, Los Angeles',
+                    zip: 'CA 90036',
+                },
+                {
+                    date: '2016-05-01',
+                    name: 'Tom',
+                    state: 'California',
+                    city: 'Los Angeles',
+                    address: 'No. 189, Grove St, Los Angeles',
+                    zip: 'CA 90036',
+                },
+                {
+                    date: '2016-05-08',
+                    name: 'Tom',
+                    state: 'California',
+                    city: 'Los Angeles',
+                    address: 'No. 189, Grove St, Los Angeles',
+                    zip: 'CA 90036',
+                },
+                {
+                    date: '2016-05-06',
+                    name: 'Tom',
+                    state: 'California',
+                    city: 'Los Angeles',
+                    address: 'No. 189, Grove St, Los Angeles',
+                    zip: 'CA 90036',
+                },
+                {
+                    date: '2016-05-07',
+                    name: 'Tom',
+                    state: 'California',
+                    city: 'Los Angeles',
+                    address: 'No. 189, Grove St, Los Angeles',
+                    zip: 'CA 90036',
+                },
+            ],
         };
     },
     methods: {
@@ -188,6 +303,25 @@ export default {
                 };
             }
         },
+        onAddItem() {
+            this.tableData3.push({
+                date: 1,
+                name: 'Tom',
+                state: 'California',
+                city: 'Los Angeles',
+                address: 'No. 189, Grove St, Los Angeles',
+                zip: 'CA 90036',
+            });
+        },
+        deleteRow(index) {
+            this.tableData3.splice(index, 1);
+        },
+        handleCurrentChange(currentRow, oldCurrentRow) {
+            console.log('val', currentRow, oldCurrentRow)
+        },
+        setCurrent(row) {
+           this.$refs.singleTableRef.setCurrentRow(row)
+        }
     },
 };
 </script>

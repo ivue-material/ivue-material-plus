@@ -103,7 +103,6 @@ export function defaultRenderCell<T>({
 
   // 普通渲染
   return value?.toString?.() || '';
-
 }
 
 // 获取props
@@ -182,7 +181,33 @@ export function treeCellPrefix<T>(
 // 不允许覆盖的值
 export const cellForced = {
   selection: {},
-  index: {},
+  // 索引
+  index: {
+    renderHeader<T>({ column }: { column: TableColumnCtx<T> }) {
+      console.log('///', column);
+      // return column.label || '#';
+    },
+    // 渲染单元格
+    renderCell<T>({ column, $index, }: {
+      column: TableColumnCtx<T>
+      $index: number
+    }) {
+      let i = $index + 1;
+
+      const index = column.index;
+
+      // number
+      if (typeof index === 'number') {
+        i = $index + index;
+      }
+      // function
+      else if (typeof index === 'function') {
+        i = index($index);
+      }
+
+      return h('div', {}, [i]);
+    },
+  },
   expand: {}
 };
 

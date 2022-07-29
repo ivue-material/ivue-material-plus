@@ -1,6 +1,7 @@
 
 import { h, inject } from 'vue';
 import useStyles from './style';
+import useEvents from './events';
 
 // ts
 import type { TableProps, TreeNode, RenderRowData } from '../table/defaults';
@@ -11,7 +12,7 @@ function useRender<T>(props: Partial<TableBodyProps<T>>) {
   // inject
   const IvueTable: any = inject('ivue-table');
 
-
+  // 样式
   const {
     getRowClass,
     getRowStyle,
@@ -20,6 +21,10 @@ function useRender<T>(props: Partial<TableBodyProps<T>>) {
     getCellStyle,
   } = useStyles(props);
 
+  // 事件
+  const {
+    handleClickTr,
+  } = useEvents(props);
 
   // methods
 
@@ -50,7 +55,10 @@ function useRender<T>(props: Partial<TableBodyProps<T>>) {
     return h('tr', {
       class: rowClasses,
       style: [getRowStyle(row, $index)],
-      key: getRowKey(row, $index)
+      key: getRowKey(row, $index),
+      onClick: ($event) => {
+        handleClickTr($event, row);
+      }
     },
       columns.value.map((column, cellIndex) => {
 

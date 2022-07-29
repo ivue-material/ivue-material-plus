@@ -82,7 +82,8 @@ export default defineComponent({
 
     const {
       // 获取当前列的行数
-      columnRows
+      columnRows,
+      isGroup
     } = useUtils(props as TableHeaderProps<unknown>);
 
     const {
@@ -111,6 +112,8 @@ export default defineComponent({
           rowSpan = column.rowSpan;
         }
 
+        console.log(' column.renderHeader',  column.renderHeader());
+
         return h('th', {
           // 合并样式s
           class: getHeaderCellClass(
@@ -137,6 +140,7 @@ export default defineComponent({
               class: 'cell'
             },
             [
+              '1',
               column.label
             ]
           )
@@ -147,6 +151,7 @@ export default defineComponent({
 
     return {
       columnRows,
+      isGroup,
       handleColumnsChange,
       renderTh
     };
@@ -155,7 +160,8 @@ export default defineComponent({
   render() {
     const {
       columnRows,
-      renderTh
+      renderTh,
+      isGroup
     } = this;
 
     const rowSpan = 1;
@@ -164,6 +170,7 @@ export default defineComponent({
       'thead',
       {
         class: {
+          ['is-group']: isGroup
         }
       },
       columnRows.map((item, rowIndex) => {

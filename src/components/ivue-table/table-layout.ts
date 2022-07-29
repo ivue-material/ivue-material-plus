@@ -248,6 +248,11 @@ class TableLayout<T> {
     }
   }
 
+  // 设置最大高度
+  setMaxHeight(value: string | number) {
+    this.setHeight(value, 'max-height');
+  }
+
   // 设置高度
   parseHeight(height: number | string) {
 

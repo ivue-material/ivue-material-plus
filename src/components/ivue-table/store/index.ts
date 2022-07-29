@@ -28,6 +28,26 @@ function sortColumn<T>(array: TableColumnCtx<T>[]) {
   array.sort((cur, pre) => cur.currentIndex - pre.currentIndex);
 }
 
+// 设置列数
+function replaceColumn<T>(
+  array: TableColumnCtx<T>[],
+  column: TableColumnCtx<T>
+) {
+  return array.map((item) => {
+    // id是否相同返回当前列
+    if (item.id === column.id) {
+      return column;
+    }
+    // 有子列 获取子列的数据
+    else if (item.children?.length) {
+      item.children = replaceColumn(item.children, column);
+    }
+
+    return item;
+  });
+}
+
+
 function useStore<T>() {
   // 获取当前实例
   const vm = getCurrentInstance() as Table<T>;
@@ -44,15 +64,15 @@ function useStore<T>() {
 
     setData(states, data) {
       // 数据是否有改变
-      // const dataInstanceChanged = unref(states._data) !== data;
+      const dataInstanceChanged = unref(states._data) !== data;
 
-      // states.data.value = data;
-      // states._data.value = data;
+      states.data.value = data;
+      states._data.value = data;
 
 
       // 数据变化，更新部分数据。
       // 没有使用 computed，而是手动更新部分数据 https://github.com/vuejs/vue/issues/6660#issuecomment-331417140
-      // vm.store.updateCurrentRowData();
+      vm.store.updateCurrentRowData();
     },
 
     // 用于多选表格，切换全选和全不选
@@ -80,8 +100,17 @@ function useStore<T>() {
         newColumns = array;
       }
       // 组合头部
-      // else {
-      // }
+      else {
+        if (parent && !parent.children) {
+          parent.children = [];
+        }
+
+        // 设置子列
+        parent.children.push(column);
+
+        // 设置为新的列
+        newColumns = replaceColumn(array, parent);
+      }
 
       // 排序列
       sortColumn(newColumns);
@@ -98,7 +127,11 @@ function useStore<T>() {
         vm.store.updateColumns();
         // vm.store.scheduleLayout();
       }
-    }
+    },
+    // 选择当前行
+    setCurrentRow(_states, row: T) {
+      vm.store.updateCurrentRow(row);
+    },
   };
 
   // 调用数据

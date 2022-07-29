@@ -209,7 +209,7 @@ export default defineComponent({
                 style.maxHeight = addUnit(props.maxHeight);
             }
 
-            return [props.wrapStyle, style];
+            return [props.wrapperStyle, style];
         });
 
         // 内容样式

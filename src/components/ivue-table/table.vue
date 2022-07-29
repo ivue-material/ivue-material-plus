@@ -94,6 +94,7 @@ import {
     provide,
     onMounted,
 } from 'vue';
+import { debounce } from 'lodash-unified';
 
 // 表格改变
 import TableLayout from './table-layout';
@@ -105,6 +106,7 @@ import { createStore } from './store/helper';
 
 // 表格style
 import useStyle from './table/style';
+import useUtils from './table/utils';
 
 // components
 import IvueColgroup from './colgroup';
@@ -179,12 +181,20 @@ export default defineComponent({
             handleBindEvents,
         } = useStyle<Row>(props, layout, store, table);
 
+        // 去抖更新布局
+        const debouncedUpdateLayout = debounce(handleLayout, 50);
+
         // 表格状态
         table.state = {
             resizeState,
             isGroup,
             handleLayout,
+            debouncedUpdateLayout
         };
+
+        const {
+            setCurrentRow,
+        } = useUtils<Row>(store);
 
         // computed
 
@@ -197,9 +207,9 @@ export default defineComponent({
                     // 列的宽度是否自撑开
                     [`${prefixCls}-fit`]: props.fit,
                     // 	是否带有纵向边框
-                    [`${prefixCls}-border`]: props.border,
+                    [`${prefixCls}-border`]: props.border || isGroup.value,
                     // 是否拥有多级表头
-                    [`${prefixCls}-group`]: isGroup,
+                    [`${prefixCls}-group`]: isGroup.value,
                     // Table 的最大高度
                     [`${prefixCls}-max-height`]: props.maxHeight,
                     // 滚动x
@@ -289,6 +299,7 @@ export default defineComponent({
             handleMouseLeave,
             handleMousewheel,
             handleDragVisible,
+            setCurrentRow
         };
     },
     components: {

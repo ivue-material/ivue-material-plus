@@ -36,7 +36,9 @@ function useStyles<T>(props: Partial<TableBodyProps<T>>) {
       `${prefixCls}-row`,
       {
         // 斑马纹
-        [`${prefixCls}-row--stripe`]: props.stripe && (rowIndex % 2 === 1)
+        [`${prefixCls}-row--stripe`]: props.stripe && (rowIndex % 2 === 1),
+        // 高亮当前行
+        ['highlight-current-row']: IvueTable?.props.highlightCurrentRow && (row === props.store.states.currentRow.value)
       }
     ];
 

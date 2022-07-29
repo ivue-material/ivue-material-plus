@@ -137,6 +137,7 @@ $name:'ivue-table';
 
     .#{$name}-cell {
       border-right: 1px solid $border-color;
+      border-bottom: 1px solid $border-color;
     }
 
     &::before {
@@ -187,6 +188,10 @@ $name:'ivue-table';
 
   &-body {
     border-collapse: separate;
+
+    .highlight-current-row>.ivue-table-cell {
+      background-color: rgba(91, 142, 255, .3);;
+    }
   }
 
   // 提示
@@ -251,6 +256,15 @@ $name:'ivue-table';
   // 固定列左边
   &-fixed-column--left.is-last-column::before {
     right: -10px;
+  }
+
+  // 多行表头
+  &-group {
+    .is-group {
+      th.ivue-table-cell {
+        background: #f5f7fa;
+      }
+    }
   }
 }
 

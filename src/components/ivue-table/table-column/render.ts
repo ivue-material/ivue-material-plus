@@ -89,7 +89,6 @@ function useRender<T>(
 
   // 检查子列表
   const checkSubColumn = (children: TableColumn<T> | TableColumn<T>[]) => {
-
     // 数组
     if (Array.isArray(children)) {
       children.forEach((child) => check(child));
@@ -101,7 +100,7 @@ function useRender<T>(
 
     // 检查是否是列表组件
     function check(item: TableColumn<T>) {
-      if (item?.type?.name === 'IvueTableColumn') {
+      if (item?.type?.name === 'ivue-table-column') {
         item.vParent = vm;
       }
     }
@@ -117,6 +116,8 @@ function useRender<T>(
 
         // 是否有头部插槽
         const renderHeader = slots.header;
+
+        console.log('slots.header', slots.header);
 
         return renderHeader ? renderHeader(scope) : column.label;
       };
@@ -151,7 +152,6 @@ function useRender<T>(
       column.renderCell = (data) => {
         let children = null;
 
-
         // 有默认插槽
         if (slots.default) {
           // 设置vnode
@@ -179,9 +179,10 @@ function useRender<T>(
         };
 
         // 当内容过长被隐藏时显示 tooltip
-        if (column.showOverflowTooltip) {
-        }
+        // if (column.showOverflowTooltip) {
+        // }
 
+        // 检查子列表
         checkSubColumn(children);
 
         return h('div', props, [prefix, children]);
@@ -225,6 +226,12 @@ function useRender<T>(
     // 不应覆盖的值
     const source = cellForced[type] || {};
 
+    if(type === 'index') {
+      console.log('source', source.renderHeader(column));
+
+    }
+    console.log('type', type);
+
     Object.keys(source).forEach((prop) => {
       // 获取值
       const value = source[prop];
@@ -249,7 +256,6 @@ function useRender<T>(
   const getColumnDomIndex = (children, el) => {
     return Array.prototype.indexOf.call(children, el);
   };
-
 
   // watch
 

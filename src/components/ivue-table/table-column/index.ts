@@ -8,9 +8,15 @@ import {
   onBeforeMount,
   Fragment
 } from 'vue';
+import {
+  isString,
+} from '@vue/shared';
+
 import defaultProps from './defaults';
 
 import useRender from './render';
+import useWatcher from './watcher';
+
 import { cellStyles, mergeOptions, compose } from '../config';
 
 // ts
@@ -25,6 +31,9 @@ export default defineComponent({
   props: defaultProps,
   setup(props, { slots }) {
     const vm = getCurrentInstance() as TableColumn<DefaultRow>;
+
+    // data
+
     // 列参数
     const columnConfig = ref<Partial<TableColumnCtx<DefaultRow>>>({});
 
@@ -62,14 +71,42 @@ export default defineComponent({
       setColumnProps,
     } = useRender(props as unknown as TableColumnCtx<unknown>, slots, parentDom);
 
-    // 获取父级
-    const parent = columnParent.value;
+    const { registerNormalWatchers, registerComplexWatchers } = useWatcher(
+      parentDom,
+      props
+    );
 
-    // 设置列id
-    columnId.value = `${parent.tableId || parent.columnId}-column-${columnIdSeed++}`;
+    // methods
 
-    // onBeforeMount 在挂载开始之前被调用
-    onBeforeMount(() => {
+    // 初始化
+    const initData = () => {
+      // 是否是嵌套的子列 获取 hiddenColumns 节点
+      const children = isSubColumn.value ? parent.vnode.el.children : parent.refs.hiddenColumns?.children;
+
+      // 获取当前行index
+      const getColumnIndex = () => {
+        return getColumnDomIndex(children || [], vm.vnode.el);
+      };
+
+      // 列参数
+      columnConfig.value.getColumnIndex = getColumnIndex;
+
+      // 插入列
+      const columnIndex = getColumnIndex();
+
+      // 存在列组件插入列节点
+      if (columnIndex > -1) {
+        parentDom.value.store.commit(
+          'insertColumn',
+          columnConfig.value,
+          isSubColumn.value ? parent.columnConfig.value : null
+        );
+      }
+
+    };
+
+    // 在挂载开始之前被调用
+    const initBeforeMount = () => {
       // 是否是嵌套的子列 父级不相等
       isSubColumn.value = parentDom.value !== parent;
 
@@ -161,91 +198,83 @@ export default defineComponent({
 
       column = chains(column);
 
+      console.log('0-----', column);
+      console.log('0-----', column.renderHeader());
+
       // 列参数
       columnConfig.value = column;
-    });
 
+      // 注册 watcher
 
-    // methods
-
-    // 初始化
-    const initData = () => {
-      // 是否是嵌套的子列 获取 hiddenColumns 节点
-      const children = isSubColumn.value ? parent.vnode.el.children : parent.refs.hiddenColumns?.children;
-
-      // 获取当前行index
-      const getColumnIndex = () => {
-        return getColumnDomIndex(children || [], vm.vnode.el);
-      };
-
-      // 列参数
-      columnConfig.value.getColumnIndex = getColumnIndex;
-
-      // 插入列
-      const columnIndex = getColumnIndex();
-
-      // 存在列组件插入列节点
-      if (columnIndex > -1) {
-        parentDom.value.store.commit(
-          'insertColumn',
-          columnConfig.value,
-          isSubColumn.value ? parent.columnConfig.value : null
-        );
-      }
-
+      // 注册普通观察者
+      registerNormalWatchers();
+      registerComplexWatchers();
     };
+
+    // onBeforeMount
+    onBeforeMount(() => {
+      // 在挂载开始之前被调用
+      initBeforeMount();
+    });
 
     // onMounted
     onMounted(() => {
-      // const parent = columnParent.value;
-
       // 初始化
       initData();
     });
+
+    // 获取父级
+    const parent = columnParent.value;
+    // 设置列id
+    columnId.value = `${parent.tableId || parent.columnId}-column-${columnIdSeed++}`;
+
+    // 设置列id
+    vm.columnId = columnId.value;
+
+    // 列参数
+    vm.columnConfig = columnConfig;
   },
   render() {
-    const slotsList = this.$slots.default?.({
-      row: {},
-      column: {},
-      $index: -1,
-    });
+    try {
+      const slotsList = this.$slots.default?.({
+        row: {},
+        column: {},
+        $index: -1,
+      });
 
-    const slot = [];
+      const slot = [];
 
-    // 有插槽
-    // if (Array.isArray(slotsList)) {
-    //   for (const childNode of slotsList) {
-    //     console.log('childNode', childNode);
-    //     console.log('childNode', childNode.type.name);
-    //     // 嵌列组件
-    //     if (
-    //       childNode.type?.name === 'IvueTableColumn' || childNode.shapeFlag & 2
-    //     ) {
-    //       slot.push(childNode);
-    //     }
-    //     // 是否是片段 Fragment 多个根节点
-    //     else if (
-    //       childNode.type === Fragment &&
-    //       Array.isArray(childNode.children)
-    //     ) {
+      // 有插槽
+      if (Array.isArray(slotsList)) {
+        for (const childNode of slotsList) {
+          // 嵌列组件
+          if (
+            childNode.type?.name === 'ivue-table-column' || childNode.shapeFlag & 2
+          ) {
+            slot.push(childNode);
+          }
+          // 是否是片段 Fragment 多个根节点
+          else if (
+            childNode.type === Fragment &&
+            Array.isArray(childNode.children)
+          ) {
+            childNode.children.forEach((vnode) => {
+              // vnode为动态槽或文本时不渲染
+              if (vnode?.patchFlag !== 1024 && !isString(vnode?.children)) {
+                slot.push(vnode);
+              }
+            });
+          }
+        }
+      }
 
-    //       console.log('/??');
-    //       // childNode.children.forEach((vnode) => {
-    //       //   // No rendering when vnode is dynamic slot or text
-    //       //   if (vnode?.patchFlag !== 1024 && !isString(vnode?.children)) {
-    //       //     children.push(vnode);
-    //       //   }
-    //       // });
-    //     }
-    //   }
+      const vnode = h('div', slot);
 
-    //   console.log('childNode', slot);
-    //   return h('div', slot);
-    // }
-    // else {
-    //   return h('div', []);
-    // }
-    return h('div', []);
+      return vnode;
+    }
+    catch {
+      return h('div', []);
+    }
 
   }
 });

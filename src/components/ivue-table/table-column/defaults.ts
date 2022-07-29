@@ -15,6 +15,9 @@ type Filters = {
   value: string
 }[]
 
+// ValueOf
+type ValueOf<T> = T[keyof T]
+
 // 列参数
 interface TableColumnCtx<T> {
   id: string
@@ -69,7 +72,7 @@ interface TableColumn<T> extends ComponentInternalInstance {
   columnConfig: Ref<Partial<TableColumnCtx<T>>>
 }
 
-export type { TableColumnCtx, TableColumn };
+export type { TableColumnCtx, TableColumn, ValueOf };
 
 export default {
   /**

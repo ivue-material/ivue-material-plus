@@ -1,4 +1,4 @@
-import { ref } from 'vue';
+import { ref, getCurrentInstance } from 'vue';
 
 // 展开行
 import useExpand from './expand';
@@ -15,6 +15,7 @@ import {
 // ts
 import type { Ref } from 'vue';
 import type { TableColumnCtx } from '../table-column/defaults';
+import type { Table, } from '../table/defaults';
 
 
 // 扁平化数组
@@ -37,6 +38,8 @@ const flattenColumns = (columns) => {
 };
 
 function useWatcher<T>() {
+  // vm
+  const vm = getCurrentInstance() as Table<T>;
 
   // data
 
@@ -134,7 +137,6 @@ function useWatcher<T>() {
       .concat(notFixedColumns)
       .concat(rightFixedColumns.value);
 
-
     // 扁平化不是固定列
     const leafColumns = flattenColumns(notFixedColumns);
     // 扁平化固定列
@@ -160,10 +162,27 @@ function useWatcher<T>() {
   // 更新当前数据
   const {
     updateCurrentRowData,
+    updateCurrentRow,
+    states: currentData,
   } = useCurrent({
     data,
     rowKey,
   });
+
+  // 更新 DOM
+  const scheduleLayout = (needUpdateColumns?: boolean, immediate = false) => {
+    // 更新行
+    if (needUpdateColumns) {
+      updateColumns();
+    }
+
+    // 立即执行
+    if (immediate) {
+      vm.state.handleLayout();
+    } else {
+      vm.state.debouncedUpdateLayout();
+    }
+  };
 
   return {
     _toggleAllSelection,
@@ -172,7 +191,9 @@ function useWatcher<T>() {
     loadOrToggle,
     updateSelectionByRowKey,
     updateColumns,
+    scheduleLayout,
     updateCurrentRowData,
+    updateCurrentRow,
     // 状态
     states: {
       data,
@@ -186,8 +207,11 @@ function useWatcher<T>() {
       originColumns,
       rightFixedLeafColumnsLength,
       fixedLeafColumnsLength,
+      fixedColumns,
+      rightFixedColumns,
       ...expandStates,
-      ...treeStates
+      ...treeStates,
+      ...currentData
     }
   };
 }

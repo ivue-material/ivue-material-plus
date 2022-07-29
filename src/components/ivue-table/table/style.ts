@@ -29,6 +29,12 @@ function useStyle<T>(
   // 是否可以展开
   const renderExpanded = ref(null);
 
+  // 表格可滚动高度
+  const tableScrollHeight = ref(0);
+
+  // 表格头部滚动高度
+  const headerScrollHeight = ref(0);
+
   // 表格缩放
   const resizeState = ref<{
     width: null | number
@@ -97,9 +103,9 @@ function useStyle<T>(
   const shouldUpdateHeight = computed(() => {
     return (
       props.height
-      ||  props.maxHeight
-      // store.states.fixedColumns.value.length > 0 ||
-      // store.states.rightFixedColumns.value.length > 0
+      || props.maxHeight
+      || store.states.fixedColumns.value.length > 0
+      || store.states.rightFixedColumns.value.length > 0
     );
   });
 
@@ -136,6 +142,39 @@ function useStyle<T>(
 
   // 滚动组件样式
   const scrollbarWrapperStyle = computed(() => {
+    // 有设置高度
+    if (props.height) {
+      return {
+        height: '100%',
+      };
+    }
+
+    // 有最大高度
+    if (props.maxHeight) {
+
+      // number
+      if (!Number.isNaN(Number(props.maxHeight))) {
+        const headerHeight = table.refs.header?.scrollHeight || 0;
+        const maxHeight = props.maxHeight;
+
+        // 超过最大高度
+        const reachMaxHeight = tableScrollHeight.value >= Number(maxHeight);
+
+        // 表格内容高度
+        if (reachMaxHeight) {
+          return {
+            maxHeight: `${tableScrollHeight.value - headerHeight}px`,
+          };
+        }
+      }
+      // string
+      else {
+        return {
+          maxHeight: `calc(${props.maxHeight} - ${headerScrollHeight.value}px)`,
+        };
+      }
+    }
+
     return {};
   });
 
@@ -243,6 +282,11 @@ function useStyle<T>(
       shouldUpdateLayout = true;
     }
 
+    // 表格可滚动高度
+    tableScrollHeight.value = table.refs.tableWrapper.scrollHeight;
+
+    // 表格头部滚动高度
+    headerScrollHeight.value = table.refs.header?.scrollHeight || 0;
 
     if (shouldUpdateLayout) {
       resizeState.value = {
@@ -352,6 +396,7 @@ function useStyle<T>(
       if (!unref(rowKey)) {
         return;
       }
+
       // store.setCurrentRowKey(`${currentRowKey}`);
     },
     {
@@ -364,6 +409,11 @@ function useStyle<T>(
   // 监听高度变化设置表格高度
   watchEffect(() => {
     layout.setHeight(props.height);
+  });
+
+  // 监听高度变化设置表格最大高度
+  watchEffect(() => {
+    layout.setMaxHeight(props.maxHeight);
   });
 
   return {
