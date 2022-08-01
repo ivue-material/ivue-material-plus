@@ -1,11 +1,11 @@
 <template>
     <div>
-        <h1>基础表格</h1>
+        <!-- <h1>基础表格</h1>
         <ivue-table :data="tableData" style="width: 100%">
             <ivue-table-column prop="date" label="Date" width="180" align="center"></ivue-table-column>
             <ivue-table-column prop="name" label="Name" width="180" align="right"  header-align="center"></ivue-table-column>
             <ivue-table-column prop="address" label="Address"></ivue-table-column>
-        </ivue-table>
+        </ivue-table>-->
         <!-- <h1>带斑马纹表格</h1>
         <ivue-table :data="tableData" stripe style="width: 100%">
             <ivue-table-column prop="date" label="Date" width="180"></ivue-table-column>
@@ -92,6 +92,20 @@
         </ivue-table>
         <ivue-button @click="setCurrent(tableData[1])">Select second row</ivue-button>
         <ivue-button @click="setCurrent()">Clear selection</ivue-button>-->
+        <h1>多选</h1>
+        <ivue-table
+            ref="table"
+            :data="tableData"
+            style="width: 100%"
+            @on-selection-change="handleonSelectionChange"
+        >
+            <ivue-table-column type="selection"></ivue-table-column>
+            <ivue-table-column prop="date" label="date"></ivue-table-column>
+            <ivue-table-column prop="address" label="Address"></ivue-table-column>
+        </ivue-table>
+
+        <ivue-button @click="toggleSelection([tableData[1], tableData[2]])">Select second row</ivue-button>
+        <ivue-button @click="toggleSelection()">Clear selection</ivue-button>
     </div>
 </template>
 
@@ -321,6 +335,19 @@ export default {
         },
         setCurrent(row) {
             this.$refs.singleTableRef.setCurrentRow(row);
+        },
+        handleonSelectionChange(value) {
+            console.log('handleonSelectionChange', value);
+        },
+        toggleSelection(rows) {
+            if (rows) {
+                rows.forEach((row) => {
+                    this.$refs.table.toggleRowSelection(row, undefined);
+                });
+            }
+            else {
+                this.$refs.table.clearSelection();
+            }
         },
     },
 };

@@ -77,7 +77,7 @@ function useStore<T>() {
 
     // 用于多选表格，切换全选和全不选
     toggleAllSelection() {
-
+      vm.store.toggleAllSelection();
     },
     // 设置当前行hover
     setHoverRow(states: states, row: T) {
@@ -119,19 +119,31 @@ function useStore<T>() {
       states._columns.value = newColumns;
 
       // 多选框
-      // if (column.type === 'selection') {
-      // }
+      if (column.type === 'selection') {
+        // 仅对 type=selection 的列有效，类型为 Function，
+        // Function 的返回值用来决定这一行的 CheckBox 是否可以勾选
+        states.selectable.value = column.selectable;
+        // 仅对  type=selection 的列有效 需指定 row-key 来让这个功能生效
+        states.reserveSelection.value = column.reserveSelection;
+      }
 
       // 用于动态插入列
       if (vm.$ready) {
+        // 更新列数据
         vm.store.updateColumns();
-        // vm.store.scheduleLayout();
+        // 更新 DOM
+        vm.store.scheduleLayout();
       }
     },
     // 选择当前行
     setCurrentRow(_states, row: T) {
       vm.store.updateCurrentRow(row);
     },
+    // 多选
+    rowSelectedChanged(_states, row: T) {
+      vm.store.toggleRowSelection(row);
+      vm.store.updateAllSelected();
+    }
   };
 
   // 调用数据

@@ -262,3 +262,53 @@ export const ensurePosition = (style, key: string) => {
     style[key] = `${style[key]}px`;
   }
 };
+
+
+// 修改当前行的状态
+export function toggleRowStatus<T>(
+  statusArr: T[],
+  row: T,
+  newVal: boolean
+): boolean {
+  let changed = false;
+
+  // 当前选择的行列表中是否存在当前行
+  const index = statusArr.indexOf(row);
+
+  const included = index !== -1;
+
+  // 添加行
+  const addRow = () => {
+    statusArr.push(row);
+    changed = true;
+  };
+
+  // 删除行
+  const removeRow = () => {
+    statusArr.splice(index, 1);
+    changed = true;
+  };
+
+  // boolean
+  if (typeof newVal === 'boolean') {
+    // 添加行
+    if (newVal && !included) {
+      addRow();
+    }
+    // 删除行
+    else if (!newVal && included) {
+      removeRow();
+    }
+  }
+  // 不是 boolean
+  else {
+    if (included) {
+      removeRow();
+    } else {
+      addRow();
+    }
+  }
+
+  return changed;
+
+}

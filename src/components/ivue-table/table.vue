@@ -194,6 +194,8 @@ export default defineComponent({
 
         const {
             setCurrentRow,
+            toggleRowSelection,
+            clearSelection
         } = useUtils<Row>(store);
 
         // computed
@@ -299,7 +301,9 @@ export default defineComponent({
             handleMouseLeave,
             handleMousewheel,
             handleDragVisible,
-            setCurrentRow
+            setCurrentRow,
+            toggleRowSelection,
+            clearSelection
         };
     },
     components: {

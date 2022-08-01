@@ -31,7 +31,7 @@
             />
         </span>
         <!-- 内容 -->
-        <span :class="textClass">
+        <span :class="textClass" v-show="label">
             <slot>{{ label }}</slot>
         </span>
     </label>
@@ -106,6 +106,7 @@ export default defineComponent({
          */
         label: {
             type: [String, Number, Boolean],
+            default: '',
         },
         /**
          * 是否显示边框

@@ -1,6 +1,7 @@
 import { h } from 'vue';
 import { hasOwn } from '@vue/shared';
 import { get, set } from 'lodash-unified';
+import IvueCheckbox from '../ivue-checkbox/index.vue';
 
 // ts
 import type { VNode } from 'vue';
@@ -178,11 +179,55 @@ export function treeCellPrefix<T>(
 }
 
 
-// 不允许覆盖的值
+// 需要替换的渲染函数
 export const cellForced = {
-  selection: {},
+  // 多选
+  selection: {
+    // 渲染头部
+    renderHeader<T>({ store }: { store: Store<T> }) {
+      return h(IvueCheckbox, {
+        // 没有数据禁用
+        disabled: store.states.data.value && store.states.data.value.length === 0,
+        // 是否选择了全部
+        modelValue: store.states.isAllSelected.value,
+        // 更新modelValue
+        'onUpdate:modelValue': store.toggleAllSelection,
+        // 中间状态
+        indeterminate: store.states.selection.value.length > 0 && !store.states.isAllSelected.value,
+      });
+    },
+    // 渲染单元格
+    renderCell<T>({
+      row,
+      column,
+      store,
+      $index
+    }: {
+      row: T
+      column: TableColumnCtx<T>
+      store: Store<T>
+      $index: string
+    }) {
+      return h(IvueCheckbox, {
+        disabled: column.selectable
+          ? !column.selectable.call(null, row, $index)
+          : false,
+        modelValue: store.isSelected(row),
+        onChange: () => {
+          store.commit('rowSelectedChanged', row);
+        },
+        // 阻止捕获和冒泡阶段中当前事件
+        onClick: (event: Event) => event.stopPropagation(),
+      });
+    },
+    // 对应列是否可以排序
+    sortable: false,
+    // 对应列是否可以通过拖动改变宽度
+    resizable: false,
+  },
   // 索引
   index: {
+    // 渲染头部
     renderHeader<T>({ column }: { column: TableColumnCtx<T> }) {
       return column.label || '#';
     },

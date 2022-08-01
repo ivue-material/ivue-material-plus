@@ -60,6 +60,9 @@ interface TableColumnCtx<T> {
   order: string
   labelClassName: string
   columns: TableColumnCtx<T>[]
+  resizable: boolean
+  selectable: (row: T, index: number) => boolean
+  reserveSelection: boolean
 }
 
 // 列节点内容
@@ -253,5 +256,31 @@ export default {
    */
   labelClassName: {
     type: String,
-  }
+  },
+  /**
+   * 对应列是否可以通过拖动改变宽度（需要在设置 border 属性为真）
+   *
+   * @type {Boolean}
+   */
+  resizable: {
+    type: Boolean,
+    default: true,
+  },
+  /**
+   * 仅对 type=selection 的列有效，
+   * 类型为 Function，
+   * Function 的返回值用来决定这一行的 CheckBox 是否可以勾选
+   *
+   * @type {Function}
+   */
+  selectable: Function as PropType<TableColumnCtx<DefaultRow>['selectable']>,
+  /**
+   * 仅对 type=selection 的列有效，需指定 row-key 来让这个功能生效
+   *
+   * @type {Boolean}
+   */
+  reserveSelection: {
+    type: Boolean,
+    default: false,
+  },
 };
