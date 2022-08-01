@@ -92,8 +92,8 @@ function useWatcher<T>(
     // aliases
     const aliases = {
       property: 'prop',
-      align: 'realAlign',
-      headerAlign: 'realHeaderAlign',
+      align: 'align',
+      headerAlign: 'headerAlign',
     };
 
     // 获取所有别名

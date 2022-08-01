@@ -57,7 +57,7 @@ export default defineComponent({
       // data
       columnId,
       isSubColumn,
-      alignDirection,
+      align,
       headerAlign,
 
       // computed
@@ -127,7 +127,7 @@ export default defineComponent({
         // 对应列内容的字段名
         property: props.prop || props.property,
         // 对齐方式
-        align: alignDirection,
+        align: align,
         // 表头对齐方式
         headerAlign: headerAlign,
         // 表头对齐方式

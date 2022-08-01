@@ -92,6 +92,16 @@ $name:'ivue-table';
     z-index: 1;
   }
 
+  // 行居中
+  &-cell.is-center {
+    text-align: center;
+  }
+
+  // 行右对齐
+  &-cell.is-right {
+    text-align: right;
+  }
+
   th.#{$name}-cell {
     user-select: none;
 
@@ -100,8 +110,8 @@ $name:'ivue-table';
       box-sizing: border-box;
       position: relative;
       width: 100%;
-      display: flex;
-      align-items: center;
+      vertical-align: middle;
+
     }
   }
 
@@ -190,7 +200,8 @@ $name:'ivue-table';
     border-collapse: separate;
 
     .highlight-current-row>.ivue-table-cell {
-      background-color: rgba(91, 142, 255, .3);;
+      background-color: rgba(91, 142, 255, .3);
+      ;
     }
   }
 

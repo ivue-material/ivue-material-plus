@@ -75,7 +75,7 @@ export default defineComponent({
   },
   setup(props) {
     // vm
-    const vm = getCurrentInstance() as TableHeader;
+    const vm: any = getCurrentInstance() as TableHeader;
 
     // inject
     const IvueTable: any = inject('ivue-table');
@@ -105,8 +105,6 @@ export default defineComponent({
 
     // 渲染 th
     const renderTh = (list, rowSpan, rowIndex) => {
-
-      console.log('vm.$parent', vm.$parent);
       return list.map((column, cellIndex) => {
 
         // 规定单元格可横跨的行数
@@ -148,7 +146,6 @@ export default defineComponent({
                   _self: vm.$parent,
                 })
                 : column.label,
-              column.label
             ]
           )
         ]);

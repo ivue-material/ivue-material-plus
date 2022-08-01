@@ -32,7 +32,7 @@ function useRender<T>(
   // 是否是嵌套的子列
   const isSubColumn = ref(false);
   // 对齐方向
-  const alignDirection = ref<string>();
+  const align = ref<string>();
   // 表头对齐方式
   const headerAlign = ref<string>();
   // 对应列的宽度
@@ -116,8 +116,6 @@ function useRender<T>(
 
         // 是否有头部插槽
         const renderHeader = slots.header;
-
-        console.log('slots.是否有头部插槽', slots.header);
 
         return renderHeader ? renderHeader(scope) : column.label;
       };
@@ -255,16 +253,24 @@ function useRender<T>(
 
   // 同步监听 对齐方向
   watchEffect(() => {
-    alignDirection.value = props.align ? `is-${props.align}` : null;
+    align.value = props.align ? `is-${props.align}` : null;
     // nextline help render
-    alignDirection.value;
+    align.value;
+  });
+
+  // 同步监听 表头对齐方式
+  watchEffect(() => {
+    headerAlign.value = props.headerAlign ? `is-${props.headerAlign}` : align.value;
+
+    // nextline help render
+    headerAlign.value;
   });
 
   return {
     // data
     columnId,
     isSubColumn,
-    alignDirection,
+    align,
     headerAlign,
 
     // computed

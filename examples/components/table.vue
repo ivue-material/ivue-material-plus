@@ -1,11 +1,11 @@
 <template>
     <div>
-        <!-- <h1>基础表格</h1>
+        <h1>基础表格</h1>
         <ivue-table :data="tableData" style="width: 100%">
-            <ivue-table-column prop="date" label="Date" minWidth="180"></ivue-table-column>
-            <ivue-table-column prop="name" label="Name" width="180"></ivue-table-column>
+            <ivue-table-column prop="date" label="Date" width="180" align="center"></ivue-table-column>
+            <ivue-table-column prop="name" label="Name" width="180" align="right"  header-align="center"></ivue-table-column>
             <ivue-table-column prop="address" label="Address"></ivue-table-column>
-        </ivue-table>-->
+        </ivue-table>
         <!-- <h1>带斑马纹表格</h1>
         <ivue-table :data="tableData" stripe style="width: 100%">
             <ivue-table-column prop="date" label="Date" width="180"></ivue-table-column>
@@ -77,7 +77,7 @@
                 </ivue-table-column>
             </ivue-table-column>
         </ivue-table>-->
-        <h1>单选</h1>
+        <!-- <h1>单选</h1>
         <ivue-table
             ref="singleTableRef"
             highlight-current-row
@@ -85,13 +85,13 @@
             style="width: 100%"
             @on-current-change="handleCurrentChange"
         >
-            <ivue-table-column  type="index" width="50"></ivue-table-column>
+            <ivue-table-column type="index" width="50"></ivue-table-column>
             <ivue-table-column prop="date" label="Date" minWidth="180"></ivue-table-column>
             <ivue-table-column prop="name" label="Name" width="180"></ivue-table-column>
             <ivue-table-column prop="address" label="Address"></ivue-table-column>
         </ivue-table>
         <ivue-button @click="setCurrent(tableData[1])">Select second row</ivue-button>
-        <ivue-button @click="setCurrent()">Clear selection</ivue-button>
+        <ivue-button @click="setCurrent()">Clear selection</ivue-button>-->
     </div>
 </template>
 
@@ -317,11 +317,11 @@ export default {
             this.tableData3.splice(index, 1);
         },
         handleCurrentChange(currentRow, oldCurrentRow) {
-            console.log('val', currentRow, oldCurrentRow)
+            console.log('val', currentRow, oldCurrentRow);
         },
         setCurrent(row) {
-           this.$refs.singleTableRef.setCurrentRow(row)
-        }
+            this.$refs.singleTableRef.setCurrentRow(row);
+        },
     },
 };
 </script>
