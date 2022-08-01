@@ -110,14 +110,14 @@ function useRender<T>(
   // 列渲染
   const columnRender = (column: TableColumnCtx<T>) => {
     // 不是多选框
-    if (column.type !== 'selection') {
+    if ((column.type !== 'selection') && (column.type !== 'index')) {
       column.renderHeader = (scope) => {
         vm.columnConfig.value['label'];
 
         // 是否有头部插槽
         const renderHeader = slots.header;
 
-        console.log('slots.header', slots.header);
+        console.log('slots.是否有头部插槽', slots.header);
 
         return renderHeader ? renderHeader(scope) : column.label;
       };
@@ -225,12 +225,6 @@ function useRender<T>(
 
     // 不应覆盖的值
     const source = cellForced[type] || {};
-
-    if(type === 'index') {
-      console.log('source', source.renderHeader(column));
-
-    }
-    console.log('type', type);
 
     Object.keys(source).forEach((prop) => {
       // 获取值

@@ -198,9 +198,6 @@ export default defineComponent({
 
       column = chains(column);
 
-      console.log('0-----', column);
-      console.log('0-----', column.renderHeader());
-
       // 列参数
       columnConfig.value = column;
 

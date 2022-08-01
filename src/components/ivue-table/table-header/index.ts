@@ -105,14 +105,14 @@ export default defineComponent({
 
     // 渲染 th
     const renderTh = (list, rowSpan, rowIndex) => {
+
+      console.log('vm.$parent', vm.$parent);
       return list.map((column, cellIndex) => {
 
         // 规定单元格可横跨的行数
         if (column.rowSpan > rowSpan) {
           rowSpan = column.rowSpan;
         }
-
-        console.log(' column.renderHeader',  column.renderHeader());
 
         return h('th', {
           // 合并样式s
@@ -140,7 +140,14 @@ export default defineComponent({
               class: 'cell'
             },
             [
-              '1',
+              column.renderHeader
+                ? column.renderHeader({
+                  column,
+                  $index: cellIndex,
+                  store: props.store,
+                  _self: vm.$parent,
+                })
+                : column.label,
               column.label
             ]
           )

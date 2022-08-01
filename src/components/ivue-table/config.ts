@@ -184,8 +184,8 @@ export const cellForced = {
   // 索引
   index: {
     renderHeader<T>({ column }: { column: TableColumnCtx<T> }) {
-      console.log('///', column);
-      // return column.label || '#';
+      console.log('/索引//', column);
+      return column.label || '#';
     },
     // 渲染单元格
     renderCell<T>({ column, $index, }: {
