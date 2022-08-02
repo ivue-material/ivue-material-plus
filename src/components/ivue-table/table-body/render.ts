@@ -24,6 +24,7 @@ function useRender<T>(props: Partial<TableBodyProps<T>>) {
   // 事件
   const {
     handleClickTr,
+    handleCellMouseEnter
   } = useEvents(props);
 
   // methods
@@ -93,6 +94,9 @@ function useRender<T>(props: Partial<TableBodyProps<T>>) {
             rowspan,
             colspan,
             key: `${patchKey}${baseKey}`,
+            onMouseenter: ($event) => {
+              handleCellMouseEnter($event, row);
+            }
           },
           [
             column.renderCell(data)

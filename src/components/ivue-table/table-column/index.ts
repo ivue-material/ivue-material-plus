@@ -6,7 +6,8 @@ import {
   computed,
   onMounted,
   onBeforeMount,
-  Fragment
+  Fragment,
+  onBeforeUnmount
 } from 'vue';
 import {
   isString,
@@ -220,6 +221,15 @@ export default defineComponent({
       initData();
     });
 
+    // onBeforeUnmount
+    onBeforeUnmount(() => {
+      parentDom.value.store.commit(
+        'removeColumn',
+        columnConfig.value,
+        isSubColumn.value ? parent.columnConfig.value : null
+      );
+    });
+
     // 获取父级
     const parent = columnParent.value;
     // 设置列id
@@ -244,7 +254,7 @@ export default defineComponent({
       // 有插槽
       if (Array.isArray(slotsList)) {
         for (const childNode of slotsList) {
-          // 嵌列组件
+          // ivue-table-column 或者 函数组件 ((FUNCTIONAL_COMPONENT = 1 << 1) = 2) & 2 === 1
           if (
             childNode.type?.name === 'ivue-table-column' || childNode.shapeFlag & 2
           ) {
@@ -256,7 +266,14 @@ export default defineComponent({
             Array.isArray(childNode.children)
           ) {
             childNode.children.forEach((vnode) => {
-              // vnode为动态槽或文本时不渲染
+              /**
+               * vnode为动态槽或文本时不渲染
+               *
+               * 1024
+               * 表示具有动态插槽的组件（例如，引用 v-for 的插槽
+               * 迭代值或动态插槽名称）。
+               * 带有这个标志的组件总是被强制更新。
+               */
               if (vnode?.patchFlag !== 1024 && !isString(vnode?.children)) {
                 slot.push(vnode);
               }

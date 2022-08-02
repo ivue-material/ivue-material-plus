@@ -99,9 +99,9 @@
             style="width: 100%"
             @on-selection-change="handleonSelectionChange"
         >
-            <ivue-table-column type="selection"></ivue-table-column>
+            <ivue-table-column type="selection" :selectable="selectable"></ivue-table-column>
             <ivue-table-column prop="date" label="date"></ivue-table-column>
-            <ivue-table-column prop="address" label="Address"></ivue-table-column>
+            <ivue-table-column prop="address" label="Address" showOverflowTooltip></ivue-table-column>
         </ivue-table>
 
         <ivue-button @click="toggleSelection([tableData[1], tableData[2]])">Select second row</ivue-button>
@@ -344,10 +344,21 @@ export default {
                 rows.forEach((row) => {
                     this.$refs.table.toggleRowSelection(row, undefined);
                 });
-            }
-            else {
+            } else {
                 this.$refs.table.clearSelection();
             }
+        },
+        selectable(row, index) {
+            if (index === 2) {
+                return true;
+            }
+
+            if (index === 3) {
+                return true;
+            }
+
+
+            return false;
         },
     },
 };

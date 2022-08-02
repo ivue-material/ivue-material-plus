@@ -135,6 +135,48 @@ function useStore<T>() {
         vm.store.scheduleLayout();
       }
     },
+    // 删除行
+    removeColumn(
+      states: states,
+      column: TableColumnCtx<T>,
+      parent: TableColumnCtx<T>
+    ) {
+      const array = unref(states._columns) || [];
+
+      // 有父节点
+      if (parent) {
+        const findIndex = parent.children.findIndex((item) => item.id === column.id);
+
+        // 移除当前行
+        parent.children.splice(findIndex, 1);
+
+        // 清空列表
+        if (parent.children.length === 0) {
+          delete parent.children;
+        }
+
+        states._columns.value = replaceColumn(array, parent);
+      }
+      // 没有父节点
+      else {
+        const index = array.indexOf(column);
+
+        if (index > -1) {
+          array.splice(index, 1);
+
+          states._columns.value = array;
+        }
+      }
+
+      // 用于动态插入列
+      if (vm.$ready) {
+        // 更新列数据
+        vm.store.updateColumns();
+        // 更新 DOM
+        vm.store.scheduleLayout();
+      }
+
+    },
     // 选择当前行
     setCurrentRow(_states, row: T) {
       vm.store.updateCurrentRow(row);

@@ -312,3 +312,21 @@ export function toggleRowStatus<T>(
   return changed;
 
 }
+
+// 获取当前单元格元素
+export const getCell = function (event: Event): HTMLElement {
+  let cell = event.target as HTMLElement;
+
+  while (cell && cell.tagName.toUpperCase() !== 'HTML') {
+
+    // td
+    if (cell.tagName.toUpperCase() === 'TD') {
+      return cell;
+    }
+
+    // 返回父节点
+    cell = cell.parentNode as HTMLElement;
+  }
+
+  return null;
+};

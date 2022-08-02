@@ -13,7 +13,6 @@ import {
   cellForced,
   getDefaultClassName
 } from '../config';
-
 import { parseWidth, parseMinWidth } from '../utils';
 
 // ts
@@ -177,8 +176,12 @@ function useRender<T>(
         };
 
         // 当内容过长被隐藏时显示 tooltip
-        // if (column.showOverflowTooltip) {
-        // }
+        if (column.showOverflowTooltip) {
+          props.class = `${props.class} ivue-table-tooltip`;
+          props.style = {
+            width: `${(data.column.columnWidth || Number(data.column.width)) - 1}px`,
+          };
+        }
 
         // 检查子列表
         checkSubColumn(children);
