@@ -139,7 +139,7 @@ function useWatcher<T>() {
     }
 
     // 选择全部
-    vm.emit('select-all', selection.value);
+    vm.emit('on-select-all', selection.value);
   };
 
   // 展开行数据

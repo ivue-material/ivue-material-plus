@@ -1,4 +1,4 @@
-import { CSSProperties } from 'vue';
+import { CSSProperties, computed, ref, getCurrentInstance } from 'vue';
 import { isDef, isNumeric } from './validate';
 
 // 文件上传类型
@@ -267,3 +267,23 @@ export function getScrollBarSize(fresh) {
 
     return cached;
 }
+
+
+const zIndex = ref(0);
+
+// 创建zindex
+export const useZIndex = () => {
+    const currentZIndex = computed(() => 2000 + zIndex.value);
+
+    // 下一个数值
+    const nextZIndex = () => {
+        zIndex.value++;
+
+        return currentZIndex.value;
+    };
+
+    return {
+        currentZIndex,
+        nextZIndex,
+    };
+};

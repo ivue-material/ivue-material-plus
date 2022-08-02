@@ -97,7 +97,7 @@ function useCurrent<T>(watcherData: WatcherPropsData<T>) {
       currentRow.value = null;
 
       // 当表格的当前行发生变化的时候会触发该事件
-      vm.emit('current-change', null, oldCurrentRow);
+      vm.emit('on-current-change', null, oldCurrentRow);
     }
   };
 

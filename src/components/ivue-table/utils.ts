@@ -1,7 +1,8 @@
 
+import {useZIndex} from '../../utils/helpers';
+
 // ts
 import type { TableColumnCtx } from './table-column/defaults';
-
 
 // 获取数组的key
 export const getKeysMap = function <T>(
@@ -314,7 +315,7 @@ export function toggleRowStatus<T>(
 }
 
 // 获取当前单元格元素
-export const getCell = function (event: Event): HTMLElement {
+export const getCell = (event: Event): HTMLElement => {
   let cell = event.target as HTMLElement;
 
   while (cell && cell.tagName.toUpperCase() !== 'HTML') {
@@ -329,4 +330,64 @@ export const getCell = function (event: Event): HTMLElement {
   }
 
   return null;
+};
+
+// 单元格
+export const getColumnByCell = <T>(
+  table: {
+    columns: TableColumnCtx<T>[]
+  },
+  cell: HTMLElement,
+  namespace: string
+): null | TableColumnCtx<T> => {
+
+  // 获取列id
+  const matches = (cell.className || '').match(
+    new RegExp(`${namespace}-[^\\s]+`, 'gm')
+  );
+
+  // ['ivue-table-1-column-3', 'ivue-table-cell']
+  // 是否有列id
+  if (matches) {
+    return getColumnById(table, matches[0]);
+  }
+  return null;
+};
+
+// 寻找当前单元格
+export const getColumnById = <T>(
+  // 列数组
+  table: {
+    columns: TableColumnCtx<T>[]
+  },
+  // 列id
+  columnId: string
+): null | TableColumnCtx<T> => {
+  let column = null;
+
+  // 根据id获取当前列
+  table.columns.forEach((item) => {
+    // 是否相同
+    if (item.id === columnId) {
+      column = item;
+    }
+  });
+
+  return column;
+};
+
+
+// 创建pooper
+export const createTablePopper = (
+  parentNode: HTMLElement | undefined,
+  trigger: HTMLElement,
+  popperContent: string,
+  popperOptions: any,
+) => {
+  // 下一个zindex数值
+  const { nextZIndex } = useZIndex();
+
+  const scrollContainer = parentNode?.querySelector('.ivue-scrollbar-wrapper');
+
+  console.log('scrollContainer', scrollContainer);
 };

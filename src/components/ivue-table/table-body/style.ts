@@ -12,7 +12,7 @@ const prefixCls = 'ivue-table';
 function useStyles<T>(props: Partial<TableBodyProps<T>>) {
 
   // inject
-  const IvueTable: any = inject('ivue-table');
+  const IvueTable: any = inject(prefixCls);
 
   // 行样式
   const getRowStyle = (row: T, rowIndex: number) => {

@@ -256,7 +256,7 @@ export default defineComponent({
         for (const childNode of slotsList) {
           // ivue-table-column 或者 函数组件 ((FUNCTIONAL_COMPONENT = 1 << 1) = 2) & 2 === 1
           if (
-            childNode.type?.name === 'ivue-table-column' || childNode.shapeFlag & 2
+            childNode.type?.name === prefixCls || childNode.shapeFlag & 2
           ) {
             slot.push(childNode);
           }

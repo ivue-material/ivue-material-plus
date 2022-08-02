@@ -210,12 +210,12 @@ function useStyle<T>(
   // 鼠标离开
   const handleMouseLeave = () => {
     // 清除列hover
-    // table.store.commit('setHoverRow', null);
+    table.store.commit('setHoverRow', null);
 
-    // // 清除列hover
-    // if (table.hoverState) {
-    //   table.hoverState = null;
-    // }
+    // 清除列hover
+    if (table.hoverState) {
+      table.hoverState = null;
+    }
   };
 
   // 鼠标滚轮

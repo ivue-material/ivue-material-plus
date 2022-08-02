@@ -127,6 +127,13 @@ export default defineComponent({
     directives: {
         Mousewheel,
     },
+    emits: [
+        'on-cell-mouse-enter',
+        'on-selection-change',
+        'on-select-all',
+        'on-select',
+        'on-current-change'
+    ],
     setup(props) {
         type Row = typeof props.data[number];
 
@@ -189,14 +196,11 @@ export default defineComponent({
             resizeState,
             isGroup,
             handleLayout,
-            debouncedUpdateLayout
+            debouncedUpdateLayout,
         };
 
-        const {
-            setCurrentRow,
-            toggleRowSelection,
-            clearSelection
-        } = useUtils<Row>(store);
+        const { setCurrentRow, toggleRowSelection, clearSelection } =
+            useUtils<Row>(store);
 
         // computed
 
@@ -303,7 +307,7 @@ export default defineComponent({
             handleDragVisible,
             setCurrentRow,
             toggleRowSelection,
-            clearSelection
+            clearSelection,
         };
     },
     components: {

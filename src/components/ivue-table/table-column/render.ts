@@ -19,6 +19,8 @@ import { parseWidth, parseMinWidth } from '../utils';
 import type { TableColumn, TableColumnCtx } from './defaults';
 import type { ComputedRef } from 'vue';
 
+const prefixCls = 'ivue-table';
+
 function useRender<T>(
   props: TableColumnCtx<T>,
   slots,
@@ -99,7 +101,7 @@ function useRender<T>(
 
     // 检查是否是列表组件
     function check(item: TableColumn<T>) {
-      if (item?.type?.name === 'ivue-table-column') {
+      if (item?.type?.name === `${prefixCls}-column`) {
         item.vParent = vm;
       }
     }
@@ -169,7 +171,7 @@ function useRender<T>(
         // 列的占位符-用于展示树形数据时，树节点的缩进
         const prefix = treeCellPrefix(data, shouldCreatePlaceholder);
 
-
+        // props
         const props = {
           class: 'cell',
           style: {},
@@ -177,7 +179,7 @@ function useRender<T>(
 
         // 当内容过长被隐藏时显示 tooltip
         if (column.showOverflowTooltip) {
-          props.class = `${props.class} ivue-table-tooltip`;
+          props.class = `${props.class} ${prefixCls}-tooltip`;
           props.style = {
             width: `${(data.column.columnWidth || Number(data.column.width)) - 1}px`,
           };
@@ -211,6 +213,7 @@ function useRender<T>(
       column.minWidth = 80;
     }
 
+    // 列宽度 minWidth 或者 width
     column.columnWidth = Number(
       column.width === undefined ? column.minWidth : column.width
     );
@@ -227,6 +230,7 @@ function useRender<T>(
     // 不应覆盖的值
     const source = cellForced[type] || {};
 
+    // 替换列 column 对象的参数
     Object.keys(source).forEach((prop) => {
       // 获取值
       const value = source[prop];
