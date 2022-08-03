@@ -99,8 +99,8 @@
             style="width: 100%"
             @on-selection-change="handleonSelectionChange"
         >
-            <ivue-table-column type="selection" :selectable="selectable"></ivue-table-column>
-            <ivue-table-column prop="date" label="date"></ivue-table-column>
+            <ivue-table-column type="selection" :selectable="selectable"  width="55"></ivue-table-column>
+            <ivue-table-column prop="date" label="date" width="120"></ivue-table-column>
             <ivue-table-column prop="address" label="Address" showOverflowTooltip></ivue-table-column>
         </ivue-table>
 

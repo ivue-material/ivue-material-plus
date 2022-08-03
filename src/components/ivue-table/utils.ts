@@ -1,5 +1,6 @@
-
-import {useZIndex} from '../../utils/helpers';
+import { nextTick } from 'vue';
+import { createPopper } from '@popperjs/core';
+import { useZIndex } from '../../utils/helpers';
 
 // ts
 import type { TableColumnCtx } from './table-column/defaults';
@@ -377,6 +378,8 @@ export const getColumnById = <T>(
 };
 
 
+export let removePopper;
+
 // 创建pooper
 export const createTablePopper = (
   parentNode: HTMLElement | undefined,
@@ -387,7 +390,121 @@ export const createTablePopper = (
   // 下一个zindex数值
   const { nextZIndex } = useZIndex();
 
+  // 获取滚动dom
   const scrollContainer = parentNode?.querySelector('.ivue-scrollbar-wrapper');
 
-  console.log('scrollContainer', scrollContainer);
+  // 渲染三角形
+  const renderArrow = (): HTMLDivElement => {
+    // arrow
+    const arrow = document.createElement('div');
+    arrow.className = 'ivue-tooltip-arrow';
+
+    return arrow;
+  };
+
+  // 渲染三角形
+  const arrow = renderArrow();
+
+  // 渲染内容
+  const renderContent = (): HTMLDivElement => {
+    // wrapper
+    const wrapper = document.createElement('div');
+    wrapper.className = 'ivue-tooltip-popper';
+    wrapper.style.zIndex = String(nextZIndex());
+
+    // content
+    const content = document.createElement('div');
+    content.className = 'ivue-tooltip-content';
+
+    // arrow
+    // const arrow = document.createElement('div');
+    // arrow.className = 'ivue-tooltip-arrow';
+
+    const inner = document.createElement('div');
+    inner.className = 'ivue-tooltip-inner';
+    inner.innerHTML = popperContent;
+
+
+    content.appendChild(arrow);
+    content.appendChild(inner);
+
+    wrapper.appendChild(content);
+
+    // Avoid side effects caused by append to body
+    parentNode?.appendChild(wrapper);
+
+    return wrapper;
+  };
+
+
+  // 渲染内容
+  const content = renderContent();
+
+  let popperInstance = null;
+
+  popperInstance = createPopper(trigger, content, {
+    strategy: 'absolute',
+    modifiers: [
+      {
+        name: 'offset',
+        options: {
+          offset: [0, 0],
+        },
+      },
+      {
+        name: 'arrow',
+        options: {
+          element: arrow,
+          padding: 10,
+        },
+      },
+    ],
+    ...popperOptions,
+  });
+
+  // 显示popper
+  const showPopper = () => {
+    popperInstance && popperInstance.update();
+  };
+
+  // 删除popper
+  removePopper = () => {
+    setTimeout(() => {
+      console.log('popperInstance.stop', popperInstance.stop);
+      if (popperInstance.stop) {
+        return;
+      }
+      // 销毁popper
+      popperInstance && popperInstance.destroy();
+
+      // 删除节点
+      content && parentNode?.removeChild(content);
+
+      // 删除事件
+      trigger.removeEventListener('mouseenter', showPopper);
+      trigger.removeEventListener('mouseleave', removePopper);
+      scrollContainer?.removeEventListener('scroll', removePopper);
+
+      removePopper = undefined;
+    }, 300);
+  };
+
+  // 当前trigger移动
+  trigger.addEventListener('mouseenter', showPopper);
+  trigger.addEventListener('mouseleave', removePopper);
+  scrollContainer?.addEventListener('scroll', removePopper);
+
+  // 移动到 popper
+  nextTick(() => {
+    const popper = popperInstance.state.elements.popper;
+    popper.addEventListener('mouseenter', () => {
+      popperInstance.stop = true;
+    });
+
+    popper.addEventListener('mouseleave', () => {
+      popperInstance.stop = false;
+    });
+  });
+
+  return popperInstance;
 };

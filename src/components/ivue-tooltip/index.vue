@@ -130,6 +130,14 @@ export default defineComponent({
         maxWidth: {
             type: [String, Number],
         },
+        /**
+         * 显示前执行
+         *
+         * @type {Function}
+         */
+        beforeShowPopper: {
+            type: Function,
+        },
     },
     setup(props) {
         // dom
@@ -222,7 +230,17 @@ export default defineComponent({
         // methods
 
         // 显示
-        const handleShowPopper = () => {
+        const handleShowPopper = (event) => {
+            // 显示前执行
+            if (props.beforeShowPopper) {
+                const beforeShowPopper = props.beforeShowPopper(event);
+
+                // 是否执行下一步
+                if (!beforeShowPopper) {
+                    return;
+                }
+            }
+
             if (data.timeout) {
                 clearTimeout(data.timeout);
             }

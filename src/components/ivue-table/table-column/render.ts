@@ -14,6 +14,8 @@ import {
   getDefaultClassName
 } from '../config';
 import { parseWidth, parseMinWidth } from '../utils';
+import IvueTooltip from '../../ivue-tooltip/index.vue';
+import { hasClass, getStyle } from '../../../utils/assist';
 
 // ts
 import type { TableColumn, TableColumnCtx } from './defaults';
@@ -129,7 +131,6 @@ function useRender<T>(
 
     // 可展开行
     if (column.type === 'expand') {
-
       // 渲染行
       column.renderCell = (data) => {
         return h('div', {

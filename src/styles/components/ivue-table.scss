@@ -1,3 +1,5 @@
+@import "ivue-tooltip";
+
 $name:'ivue-table';
 
 .#{$name} {
@@ -281,6 +283,10 @@ $name:'ivue-table';
   .cell.#{$name}-tooltip {
     white-space: nowrap;
     min-width: 50px;
+  }
+
+  .ivue-tooltip{
+    display: flex;
   }
 }
 
