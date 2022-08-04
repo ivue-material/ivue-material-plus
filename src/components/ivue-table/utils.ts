@@ -1,9 +1,16 @@
 import { nextTick } from 'vue';
 import { createPopper } from '@popperjs/core';
+import { get } from 'lodash-unified';
+
 import { useZIndex } from '../../utils/helpers';
 
 // ts
 import type { TableColumnCtx } from './table-column/defaults';
+
+// 是否是对象
+const isObject = function (obj: unknown): boolean {
+  return obj !== null && typeof obj === 'object';
+};
 
 // 获取数组的key
 export const getKeysMap = function <T>(
@@ -416,16 +423,14 @@ export const createTablePopper = (
     const content = document.createElement('div');
     content.className = 'ivue-tooltip-content';
 
-    // arrow
-    // const arrow = document.createElement('div');
-    // arrow.className = 'ivue-tooltip-arrow';
-
+    // 文本内容
     const inner = document.createElement('div');
     inner.className = 'ivue-tooltip-inner';
     inner.innerHTML = popperContent;
 
-
+    // arrow
     content.appendChild(arrow);
+    // inner
     content.appendChild(inner);
 
     wrapper.appendChild(content);
@@ -469,24 +474,18 @@ export const createTablePopper = (
 
   // 删除popper
   removePopper = () => {
-    setTimeout(() => {
-      console.log('popperInstance.stop', popperInstance.stop);
-      if (popperInstance.stop) {
-        return;
-      }
-      // 销毁popper
-      popperInstance && popperInstance.destroy();
+    // 销毁popper
+    popperInstance && popperInstance.destroy();
 
-      // 删除节点
-      content && parentNode?.removeChild(content);
+    // 删除节点
+    content && parentNode && parentNode?.removeChild(content);
 
-      // 删除事件
-      trigger.removeEventListener('mouseenter', showPopper);
-      trigger.removeEventListener('mouseleave', removePopper);
-      scrollContainer?.removeEventListener('scroll', removePopper);
+    // 删除事件
+    trigger.removeEventListener('mouseenter', showPopper);
+    trigger.removeEventListener('mouseleave', removePopper);
+    scrollContainer?.removeEventListener('scroll', removePopper);
 
-      removePopper = undefined;
-    }, 300);
+    removePopper = undefined;
   };
 
   // 当前trigger移动
@@ -494,17 +493,119 @@ export const createTablePopper = (
   trigger.addEventListener('mouseleave', removePopper);
   scrollContainer?.addEventListener('scroll', removePopper);
 
-  // 移动到 popper
-  nextTick(() => {
-    const popper = popperInstance.state.elements.popper;
-    popper.addEventListener('mouseenter', () => {
-      popperInstance.stop = true;
-    });
-
-    popper.addEventListener('mouseleave', () => {
-      popperInstance.stop = false;
-    });
-  });
-
   return popperInstance;
+};
+
+
+// 排序数据
+export const orderBy = (
+  array: T[],
+  sortKey: string,
+  reverse: string | number,
+  sortMethod,
+  sortBy: string | (string | ((a: T, b: T, array?: T[]) => number))[]
+) => {
+
+  // 没有排序的key 对应列内容的字段名
+  // 没有自定义排序方法
+  // 没有指定数据按照哪个属性进行排序
+  if (
+    !sortKey &&
+    !sortMethod &&
+    (!sortBy || (Array.isArray(sortBy) && !sortBy.length))
+  ) {
+    return array;
+  }
+
+  console.log('reverse', reverse);
+  if (typeof reverse === 'string') {
+    reverse = reverse === 'descending' ? -1 : 1;
+  } else {
+    reverse = reverse && reverse < 0 ? -1 : 1;
+  }
+
+  // 获取key
+  let getKey = null;
+
+  // 没有自定义排序方法
+  if (!sortMethod) {
+    getKey = (value, index) => {
+
+      // 指定数据按照哪个属性进行排序
+      if (sortBy) {
+        if (!Array.isArray(sortBy)) {
+          sortBy = [sortBy];
+        }
+
+        return sortBy.map((by) => {
+          // string
+          if (typeof by === 'string') {
+            return get(value, by);
+          }
+          // 函数
+          else {
+            return by(value, index, array);
+          }
+        });
+      }
+
+      // 排序的key对应列内容的字段名
+      if (sortKey !== '$key') {
+        if (isObject(value) && '$value' in value) {
+          value = value.$value;
+        }
+      }
+
+      // 对象 ？对象值 ｜ 当前值
+      return [isObject(value) ? get(value, sortKey) : value];
+    };
+  }
+
+  // 排序方法
+  const sort = (a, b) => {
+    // 是否有自定义排序方法
+    if (sortMethod) {
+      return sortMethod(a.value, b.value);
+    }
+
+    for (let i = 0, length = a.key.length; i < length; i++) {
+
+      // 第一个小于第二个
+      if (a.key[i] < b.key[i]) {
+        return -1;
+      }
+
+      // 第一个大于第二个
+      if (a.key[i] > b.key[i]) {
+        return 1;
+      }
+    }
+
+    // 两个相等返回 0
+    return 0;
+  };
+
+
+  return array.map((value, index) => {
+    return {
+      value,
+      index,
+      // 当前行的数据 date
+      key: getKey ? getKey(value, index) : null,
+    };
+  })
+  // 排序
+  .sort((a, b) => {
+    let order = sort(a, b);
+
+    // 是否需要排序
+    if (!order) {
+      // make stable https://en.wikipedia.org/wiki/Sorting_algorithm#Stability
+      order = a.index - b.index;
+    }
+
+    return order * +reverse;
+  })
+  // 返回当前行值
+  .map((item) => item.value);
 };

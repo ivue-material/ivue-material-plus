@@ -3,7 +3,7 @@ import useWatcher from './watcher';
 
 // ts
 import type { Ref } from 'vue';
-import type { Table } from '../table/defaults';
+import type { Table, Sort } from '../table/defaults';
 import type { TableColumnCtx, } from '../table-column/defaults';
 
 // 监听props的数据
@@ -185,6 +185,23 @@ function useStore<T>() {
     rowSelectedChanged(_states, row: T) {
       vm.store.toggleRowSelection(row);
       vm.store.updateAllSelected();
+    },
+    // 改变排序
+    changeSortCondition(states: states, options: Sort) {
+      const { sortingColumn, sortProp, sortOrder } = states;
+
+      console.log('改变排序');
+      // 没有排序
+      if (unref(sortOrder) === null) {
+        // 初始化需要排序的列
+        states.sortingColumn.value = null;
+
+        // 排序的key 对应列内容的字段名
+        states.sortProp.value = null;
+      }
+
+      //  根据 filters 与 sort 去过滤 data
+      vm.store.handleExecQueryData(false);
     }
   };
 

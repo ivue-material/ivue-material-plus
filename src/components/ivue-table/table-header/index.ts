@@ -4,15 +4,19 @@ import {
   inject,
   getCurrentInstance
 } from 'vue';
+import IvueIcon from '../../ivue-icon/index.vue';
 
 import useUtils from './utils';
 import useStyle from './style';
+import useEvent from './events';
 import useTableLayoutObserver from '../table-layout-observer';
 
 // ts
 import type { PropType, ComponentInternalInstance, Ref } from 'vue';
 import type { Store } from '../store';
 import type { DefaultRow, Sort } from '../table/defaults';
+
+const prefixCls = 'ivue-table';
 
 export interface TableHeader extends ComponentInternalInstance {
   state: {
@@ -73,12 +77,12 @@ export default defineComponent({
       },
     },
   },
-  setup(props) {
+  setup(props, { emit }) {
     // vm
     const vm: any = getCurrentInstance() as TableHeader;
 
     // inject
-    const IvueTable: any = inject('ivue-table');
+    const IvueTable: any = inject(prefixCls);
 
     const {
       // 获取当前列的行数
@@ -92,6 +96,10 @@ export default defineComponent({
       getHeaderCellStyle
     } = useStyle(props as TableHeaderProps<unknown>);
 
+    // 事件
+    const {
+      handleSortClick,
+    } = useEvent(props as TableHeaderProps<unknown>, emit);
 
     // 布局改变监听
     const { handleColumnsChange, handleScrollableWidthChange } = useTableLayoutObserver(IvueTable);
@@ -138,14 +146,47 @@ export default defineComponent({
               class: 'cell'
             },
             [
+              // 渲染头部
               column.renderHeader
-                ? column.renderHeader({
-                  column,
-                  $index: cellIndex,
-                  store: props.store,
-                  _self: vm.$parent,
-                })
+                ? h('span', {}, [
+                  column.renderHeader({
+                    column,
+                    $index: cellIndex,
+                    store: props.store,
+                    _self: vm.$parent,
+                  })
+                ])
                 : column.label,
+              // 排序
+              column.sortable &&
+              h(
+                'span',
+                {
+                  class: `${prefixCls}-header--sortable`
+                },
+                [
+                  h(IvueIcon, {
+                    class: `${prefixCls}-header--ascending`,
+                    onClick: ($event) => {
+                      handleSortClick($event, column, 'ascending');
+                    }
+                  },
+                    {
+                      default: () => 'arrow_drop_up'
+                    }
+                  ),
+                  h(IvueIcon, {
+                    class: `${prefixCls}-header--descending`,
+                    onClick: ($event) => {
+                      handleSortClick($event, column, 'descending');
+                    }
+                  },
+                    {
+                      default: () => 'arrow_drop_down'
+                    }
+                  ),
+                ]
+              )
             ]
           )
         ]);

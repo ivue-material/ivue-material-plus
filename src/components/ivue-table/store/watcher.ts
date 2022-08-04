@@ -1,4 +1,4 @@
-import { ref, getCurrentInstance } from 'vue';
+import { ref, getCurrentInstance, unref } from 'vue';
 
 // 展开行
 import useExpand from './expand';
@@ -10,7 +10,8 @@ import useCurrent from './current';
 import {
   getKeysMap,
   getRowIdentity,
-  toggleRowStatus
+  toggleRowStatus,
+  orderBy
 } from '../utils';
 
 // ts
@@ -36,6 +37,28 @@ const flattenColumns = (columns) => {
   });
 
   return result;
+};
+
+// 排序数据
+const sortData = (data, states) => {
+  // 排序列
+  const sortingColumn = states.sortingColumn;
+
+  // 没有排序
+  if (!sortingColumn || typeof sortingColumn.sortable === 'string') {
+    return data;
+  }
+
+
+  // 对数据进行排序
+  return orderBy(
+    data,
+    // 排序的key 对应列内容的字段名
+    states.sortProp,
+    states.sortOrder,
+    sortingColumn.sortMethod,
+    sortingColumn.sortBy
+  );
 };
 
 function useWatcher<T>() {
@@ -83,6 +106,18 @@ function useWatcher<T>() {
 
   // 仅对  type=selection 的列有效 需指定 row-key 来让这个功能生效。
   const reserveSelection = ref(false);
+
+  // 排序的key 对应列内容的字段名
+  const sortProp = ref(null);
+
+  // 需要排序的列
+  const sortingColumn = ref(null);
+
+  // 排序
+  const sortOrder = ref(null);
+
+  // 过滤的数据
+  const filteredData = ref(null);
 
   // methods
 
@@ -380,6 +415,56 @@ function useWatcher<T>() {
     }
   };
 
+  // 根据 filters 与 sort 去过滤 data
+  const handleExecQueryData = (filter = true) => {
+    filteredData.value = unref(_data);
+
+    // 过滤数据
+    if (filter) {
+      handleFilter();
+    }
+
+    // 排序数据
+    handleSortData();
+  };
+
+  // 排序数据
+  const handleSortData = () => {
+    data.value = sortData(filteredData.value, {
+      // 需要排序的列
+      sortingColumn: sortingColumn.value,
+      // 排序的key 对应列内容的字段名
+      sortProp: sortProp.value,
+      // 排序顺序
+      sortOrder: sortOrder.value,
+    });
+  };
+
+  // 过滤数据
+  const handleFilter = () => {
+    const sourceData = unref(_data);
+
+    // Object.keys(filters.value).forEach((columnId) => {
+    //   const values = filters.value[columnId];
+    //   if (!values || values.length === 0) return;
+    //   const column = getColumnById(
+    //     {
+    //       columns: columns.value,
+    //     },
+    //     columnId
+    //   );
+    //   if (column && column.filterMethod) {
+    //     sourceData = sourceData.filter((row) => {
+    //       return values.some((value) =>
+    //         column.filterMethod.call(null, value, row, column)
+    //       );
+    //     });
+    //   }
+    // });
+
+    filteredData.value = sourceData;
+  };
+
 
   return {
     _toggleAllSelection,
@@ -395,6 +480,7 @@ function useWatcher<T>() {
     toggleRowSelection,
     updateAllSelected,
     clearSelection,
+    handleExecQueryData,
     // 状态
     states: {
       data,
@@ -414,6 +500,9 @@ function useWatcher<T>() {
       selectable,
       reserveSelection,
       selection,
+      sortProp,
+      sortingColumn,
+      sortOrder,
       ...expandStates,
       ...treeStates,
       ...currentData

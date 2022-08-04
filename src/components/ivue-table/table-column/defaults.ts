@@ -63,6 +63,7 @@ interface TableColumnCtx<T> {
   resizable: boolean
   selectable: (row: T, index: number) => boolean
   reserveSelection: boolean
+  sortOrders: ('ascending' | 'descending' | null)[]
 }
 
 // 列节点内容
@@ -273,7 +274,9 @@ export default {
    *
    * @type {Function}
    */
-  selectable: Function as PropType<TableColumnCtx<DefaultRow>['selectable']>,
+  selectable: {
+    type: Function as PropType<TableColumnCtx<DefaultRow>['selectable']>,
+  },
   /**
    * 仅对 type=selection 的列有效，需指定 row-key 来让这个功能生效
    *
@@ -282,5 +285,16 @@ export default {
   reserveSelection: {
     type: Boolean,
     default: false,
+  },
+  /**
+   * 数据在排序时所使用排序策略的轮转顺序
+   *
+   * @type {Array}
+   */
+  sortOrders: {
+    type: Array as PropType<TableColumnCtx<DefaultRow>['sortOrders']>,
+    default: () => {
+      return ['ascending', 'descending', null];
+    },
   },
 };

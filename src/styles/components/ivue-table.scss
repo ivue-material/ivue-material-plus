@@ -108,7 +108,8 @@ $name:'ivue-table';
     user-select: none;
 
     &>.cell {
-      display: inline-block;
+      display: flex;
+      // display: inline-block;
       box-sizing: border-box;
       position: relative;
       width: 100%;
@@ -134,6 +135,47 @@ $name:'ivue-table';
       overflow: hidden;
       width: 100%;
       flex-shrink: 0;
+    }
+
+    &--sortable {
+      position: relative;
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      width: 24px;
+      padding-left: 2px;
+      cursor: pointer;
+
+      .ivue-icon {
+        width: auto;
+        min-width: auto;
+        height: auto;
+        line-height: 1;
+        font-size: 24px;
+        color: $arrow-color;
+        margin: initial;
+        height: 8px;
+        overflow: hidden;
+      }
+    }
+
+    .is-sortable {
+      cursor: pointer;
+    }
+
+    // 升序
+    .ascending {
+      .#{$name}-header--ascending {
+        color: $primary-color;
+      }
+    }
+
+    // 降序
+    .descending {
+      .#{$name}-header--descending {
+        color: $primary-color;
+      }
     }
   }
 
@@ -285,7 +327,7 @@ $name:'ivue-table';
     min-width: 50px;
   }
 
-  .ivue-tooltip{
+  .ivue-tooltip {
     display: flex;
   }
 }

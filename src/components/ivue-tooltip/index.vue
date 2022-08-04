@@ -17,7 +17,7 @@
                 >
                     <div :class="[`${prefixCls}-content`]">
                         <!-- arrow -->
-                        <div :class="[`${prefixCls}-arrow`]"></div>
+                        <div :class="[`${prefixCls}-arrow`]" ref="arrow"></div>
                         <!-- 内容 -->
                         <div :class="innerClass" :style="innerStyles">
                             <slot name="content">{{ content }}</slot>

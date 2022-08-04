@@ -21,7 +21,7 @@ export default {
      * @type {Array}
      */
     offset: {
-      default: [0,0]
+      default: [0, 0]
     },
     /**
      * 显示隐藏
@@ -107,8 +107,8 @@ export default {
       options.placement = this.placement;
 
       // 箭头当前与参考重叠，我们可以使用修改器给它一个距离offset
-      if (!options.modifiers[2]) {
-        options.modifiers[2] = {
+      if (!options.modifiers[3]) {
+        options.modifiers[3] = {
           name: 'offset',
           options: {
             offset: this.offset,

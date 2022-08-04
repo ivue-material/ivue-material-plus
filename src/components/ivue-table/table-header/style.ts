@@ -73,6 +73,11 @@ function useStyle<T>(props: TableHeaderProps<T>) {
       classes.push('is-leaf');
     }
 
+    // 排序
+    if (column.sortable) {
+      classes.push('is-sortable');
+    }
+
     // cell
     classes.push(`${prefixCls}-cell`);
 

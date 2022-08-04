@@ -92,7 +92,7 @@
         </ivue-table>
         <ivue-button @click="setCurrent(tableData[1])">Select second row</ivue-button>
         <ivue-button @click="setCurrent()">Clear selection</ivue-button>-->
-        <h1>多选</h1>
+        <!-- <h1>多选</h1>
         <ivue-table
             ref="table"
             :data="tableData"
@@ -105,7 +105,19 @@
         </ivue-table>
 
         <ivue-button @click="toggleSelection([tableData[1], tableData[2]])">Select second row</ivue-button>
-        <ivue-button @click="toggleSelection()">Clear selection</ivue-button>
+        <ivue-button @click="toggleSelection()">Clear selection</ivue-button>-->
+
+        <h1>排序</h1>
+        <ivue-table
+            ref="table"
+            :data="tableData"
+            style="width: 100%"
+            @on-selection-change="handleonSelectionChange"
+        >
+            <ivue-table-column prop="date" label="Date" sortable width="180"></ivue-table-column>
+            <ivue-table-column prop="name" label="Name" width="180"></ivue-table-column>
+            <ivue-table-column prop="address" label="Address" :formatter="formatter"></ivue-table-column>
+        </ivue-table>
     </div>
 </template>
 
@@ -357,9 +369,11 @@ export default {
                 return true;
             }
 
-
             return false;
         },
+        formatter(row) {
+            return `22${row.address}`
+        }
     },
 };
 </script>

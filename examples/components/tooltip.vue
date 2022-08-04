@@ -7,7 +7,7 @@
             balloon appears when the mouse passes over this text
         </ivue-tooltip>
         <h1>位置</h1>
-        <ivue-tooltip class="button" content="Top Left text" placement="top-start">
+        <ivue-tooltip class="button" content="Top Left text" >
             <ivue-button>Top Left</ivue-button>
         </ivue-tooltip>
 
