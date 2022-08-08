@@ -78,7 +78,7 @@ interface TableState {
     width: any
     height: any
   }>
-  handleLayout: () => void
+  updateLayout: () => void
   debouncedUpdateLayout: () => void
 }
 

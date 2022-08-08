@@ -1,4 +1,4 @@
-import { getCurrentInstance, unref } from 'vue';
+import { getCurrentInstance, unref, nextTick } from 'vue';
 import useWatcher from './watcher';
 
 // ts
@@ -25,6 +25,7 @@ function sortColumn<T>(array: TableColumnCtx<T>[]) {
     }
   });
 
+  // 排序
   array.sort((cur, pre) => cur.currentIndex - pre.currentIndex);
 }
 
@@ -73,6 +74,25 @@ function useStore<T>() {
       // 数据变化，更新部分数据。
       // 没有使用 computed，而是手动更新部分数据 https://github.com/vuejs/vue/issues/6660#issuecomment-331417140
       vm.store.updateCurrentRowData();
+
+
+      // 保存数据更新前选中的值
+      if (unref(states.reserveSelection)) {
+        // 检查 rowKey 是否存在
+        vm.store.assertRowKey();
+        // 更新多选框key
+        vm.store.updateSelectionByRowKey();
+      }
+
+      // 更新是否选择全部行
+      vm.store.updateAllSelected();
+
+      // 初始化完成
+      if (vm.$ready) {
+        // 更新布局
+        vm.store.scheduleLayout();
+      }
+
     },
 
     // 用于多选表格，切换全选和全不选
@@ -123,7 +143,7 @@ function useStore<T>() {
         // 仅对 type=selection 的列有效，类型为 Function，
         // Function 的返回值用来决定这一行的 CheckBox 是否可以勾选
         states.selectable.value = column.selectable;
-        // 仅对  type=selection 的列有效 需指定 row-key 来让这个功能生效
+        // 保存数据更新前选中的值
         states.reserveSelection.value = column.reserveSelection;
       }
 
@@ -177,7 +197,7 @@ function useStore<T>() {
       }
 
     },
-    // 选择当前行
+    // 单选选择当前行
     setCurrentRow(_states, row: T) {
       vm.store.updateCurrentRow(row);
     },
@@ -190,7 +210,6 @@ function useStore<T>() {
     changeSortCondition(states: states, options: Sort) {
       const { sortingColumn, sortProp, sortOrder } = states;
 
-      console.log('改变排序');
       // 没有排序
       if (unref(sortOrder) === null) {
         // 初始化需要排序的列
@@ -202,7 +221,42 @@ function useStore<T>() {
 
       //  根据 filters 与 sort 去过滤 data
       vm.store.handleExecQueryData(false);
-    }
+
+      // 没有选项不是初始化
+      if (!options || !(options.silent || options.init)) {
+        vm.emit('on-sort-change', {
+          column: unref(sortingColumn),
+          prop: unref(sortProp),
+          order: unref(sortOrder),
+        });
+      }
+
+      // 更新y轴滚动高度
+      vm.store.updateTableScrollY();
+    },
+    // 初始化排序
+    sort(states: states, options: Sort) {
+      // 排序的key 对应列内容的字段名 | 排序顺序 ｜ 是否初始化
+      const { prop, order, init } = options;
+
+      // 排序的key 对应列内容的字段名
+      if (prop) {
+
+        // 找到需要排序的列
+        const column = unref(states.columns).find(
+          (column) => column.property === prop
+        );
+
+        // 有需要排序的列
+        if (column) {
+          // 排序顺序
+          column.order = order;
+
+          vm.store.updateSort(column, prop, order);
+          vm.store.commit('changeSortCondition', { init });
+        }
+      }
+    },
   };
 
   // 调用数据
@@ -220,10 +274,18 @@ function useStore<T>() {
 
   };
 
+  // 更新y轴滚动高度
+  const updateTableScrollY = () => {
+    nextTick(() => {
+      vm.layout.updateScrollY.apply(vm.layout);
+    });
+  };
+
   return {
     ...watcher,
     mutations,
     commit,
+    updateTableScrollY
   };
 }
 

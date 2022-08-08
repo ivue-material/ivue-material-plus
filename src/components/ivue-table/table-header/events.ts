@@ -112,8 +112,21 @@ function useEvent<T>(props: TableHeaderProps<T>, emit) {
   };
 
 
+  // 头部点击
+  const handleHeaderClick = (event: Event, column: TableColumnCtx<T>) => {
+
+    // 没有过滤筛选数据，只有排序
+    if (!column.filters && column.sortable) {
+      handleSortClick(event, column, false);
+    }
+
+    IvueTable?.emit('on-header-click', column, event);
+  };
+
+
   return {
-    handleSortClick
+    handleSortClick,
+    handleHeaderClick
   };
 }
 

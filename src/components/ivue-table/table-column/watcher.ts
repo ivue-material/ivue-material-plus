@@ -15,6 +15,7 @@ function getAllAliases(props, aliases) {
   }, aliases);
 }
 
+// useWatcher
 function useWatcher<T>(
   parentDom: ComputedRef<any>,
   _props: any
@@ -29,15 +30,17 @@ function useWatcher<T>(
     // 固定
     const props = ['fixed'];
 
+    // aliases
     const aliases = {
       columnWidth: 'width',
       columnMinWidth: 'minWidth',
     };
 
+    // fixed | width | minWidth
     const allAliases = getAllAliases(props, aliases);
 
+    // fixed | width | minWidth
     Object.keys(allAliases).forEach((key) => {
-
       // 行key
       const columnKey = aliases[key];
 
@@ -62,7 +65,6 @@ function useWatcher<T>(
             // 更新行的porps
             vm.columnConfig.value[columnKey as any] = value;
             vm.columnConfig.value[key] = value;
-
 
             // 如果是固定列 更新 DOM
             const updateColumns = columnKey === 'fixed';

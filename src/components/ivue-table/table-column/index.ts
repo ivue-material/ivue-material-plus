@@ -289,6 +289,5 @@ export default defineComponent({
     catch {
       return h('div', []);
     }
-
   }
 });

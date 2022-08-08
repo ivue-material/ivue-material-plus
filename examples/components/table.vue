@@ -3,7 +3,7 @@
         <!-- <h1>基础表格</h1>
         <ivue-table :data="tableData" style="width: 100%">
             <ivue-table-column prop="date" label="Date" width="180" align="center"></ivue-table-column>
-            <ivue-table-column prop="name" label="Name" width="180" align="right"  header-align="center"></ivue-table-column>
+            <ivue-table-column prop="name" label="Name" width="180" align="right"  headerAlign="center"></ivue-table-column>
             <ivue-table-column prop="address" label="Address"></ivue-table-column>
         </ivue-table>-->
         <!-- <h1>带斑马纹表格</h1>
@@ -92,32 +92,37 @@
         </ivue-table>
         <ivue-button @click="setCurrent(tableData[1])">Select second row</ivue-button>
         <ivue-button @click="setCurrent()">Clear selection</ivue-button>-->
-        <!-- <h1>多选</h1>
+        <h1>多选</h1>
         <ivue-table
             ref="table"
             :data="tableData"
+            :rowKey="getRowKey"
             style="width: 100%"
             @on-selection-change="handleonSelectionChange"
         >
-            <ivue-table-column type="selection" :selectable="selectable"  width="55"></ivue-table-column>
+            <ivue-table-column type="selection" width="55" reserveSelection></ivue-table-column>
             <ivue-table-column prop="date" label="date" width="120"></ivue-table-column>
-            <ivue-table-column prop="address" label="Address" showOverflowTooltip></ivue-table-column>
+            <ivue-table-column prop="name" label="name" showOverflowTooltip></ivue-table-column>
         </ivue-table>
 
         <ivue-button @click="toggleSelection([tableData[1], tableData[2]])">Select second row</ivue-button>
-        <ivue-button @click="toggleSelection()">Clear selection</ivue-button>-->
+        <ivue-button @click="toggleSelection()">Clear selection</ivue-button>
+        <ivue-button @click="updata()">Updata</ivue-button>
+        <ivue-button @click="updata1()">Updata1</ivue-button>
+        <ivue-button @click="updata2()">Updata2</ivue-button>
 
-        <h1>排序</h1>
+        <!-- <h1>排序</h1>
         <ivue-table
             ref="table"
-            :data="tableData"
+            :data="tableData5"
             style="width: 100%"
-            @on-selection-change="handleonSelectionChange"
+            :defaultSort="{ prop: 'date', order: 'descending' }"
+            @on-header-click="onHeaderClick"
         >
-            <ivue-table-column prop="date" label="Date" sortable width="180"></ivue-table-column>
-            <ivue-table-column prop="name" label="Name" width="180"></ivue-table-column>
+            <ivue-table-column prop="date" label="Date" sortable width="180" align="center" headerAlign="center"></ivue-table-column>
+            <ivue-table-column prop="name" label="Name" width="180" headerAlign="center"></ivue-table-column>
             <ivue-table-column prop="address" label="Address" :formatter="formatter"></ivue-table-column>
-        </ivue-table>
+        </ivue-table>-->
     </div>
 </template>
 
@@ -128,103 +133,15 @@ export default {
             tableData: [
                 {
                     date: '2016-05-03',
-                    name: 'Tom',
+                    name: '1',
                     address: 'No. 189, Grove St, Los Angeles1',
-                },
-                {
-                    date: '2016-05-02',
-                    name: 'Tom',
-                    address: 'No. 189, Grove St, Los Angeles2',
-                },
-                {
-                    date: '2016-05-04',
-                    name: 'Tom',
-                    address: 'No. 189, Grove St, Los Angeles3',
-                },
-                {
-                    date: '2016-05-01',
-                    name: 'Tom',
-                    address: 'No. 189, Grove St, Los Angeles4',
-                },
-                {
-                    date: '2016-05-08',
-                    name: 'Tom',
-                    address: 'No. 189, Grove St, Los Angeles5',
-                },
-                {
-                    date: '2016-05-06',
-                    name: 'Tom',
-                    address: 'No. 189, Grove St, Los Angeles6',
-                },
-                {
-                    date: '2016-05-07',
-                    name: 'Tom',
-                    address: 'No. 189, Grove St, Los Angeles7',
                 },
             ],
             tableData2: [
                 {
                     date: '2016-05-03',
-                    name: 'Tom',
-                    state: 'California',
-                    city: 'Los Angeles',
-                    address: 'No. 189, Grove St, Los Angeles',
-                    zip: 'CA 90036',
-                    tag: 'Home',
-                },
-                {
-                    date: '2016-05-02',
-                    name: 'Tom',
-                    state: 'California',
-                    city: 'Los Angeles',
-                    address: 'No. 189, Grove St, Los Angeles',
-                    zip: 'CA 90036',
-                    tag: 'Office',
-                },
-                {
-                    date: '2016-05-04',
-                    name: 'Tom',
-                    state: 'California',
-                    city: 'Los Angeles',
-                    address: 'No. 189, Grove St, Los Angeles',
-                    zip: 'CA 90036',
-                    tag: 'Home',
-                },
-                {
-                    date: '2016-05-01',
-                    name: 'Tom',
-                    state: 'California',
-                    city: 'Los Angeles',
-                    address: 'No. 189, Grove St, Los Angeles',
-                    zip: 'CA 90036',
-                    tag: 'Office',
-                },
-                {
-                    date: '2016-05-01',
-                    name: 'Tom',
-                    state: 'California',
-                    city: 'Los Angeles',
-                    address: 'No. 189, Grove St, Los Angeles',
-                    zip: 'CA 90036',
-                    tag: 'Office',
-                },
-                {
-                    date: '2016-05-01',
-                    name: 'Tom',
-                    state: 'California',
-                    city: 'Los Angeles',
-                    address: 'No. 189, Grove St, Los Angeles',
-                    zip: 'CA 90036',
-                    tag: 'Office',
-                },
-                {
-                    date: '2016-05-01',
-                    name: 'Tom',
-                    state: 'California',
-                    city: 'Los Angeles',
-                    address: 'No. 189, Grove St, Los Angeles',
-                    zip: 'CA 90036',
-                    tag: 'Office',
+                    name: '2',
+                    address: 'No. 189, Grove St, Los Angeles1',
                 },
             ],
             tableData3: [
@@ -311,6 +228,18 @@ export default {
                     zip: 'CA 90036',
                 },
             ],
+            tableData5: [
+                {
+                    date: '2016-05-03',
+                    name: '3',
+                    address: 'No. 189, Grove St, Los Angeles',
+                },
+                {
+                    date: '2016-05-02',
+                    name: '4',
+                    address: 'No. 189, Grove St, Los Angeles',
+                },
+            ],
         };
     },
     methods: {
@@ -372,8 +301,46 @@ export default {
             return false;
         },
         formatter(row) {
-            return `22${row.address}`
-        }
+            return `22${row.address}`;
+        },
+        onHeaderClick(column, event) {
+            console.log('e', column.order);
+        },
+        updata() {
+            this.tableData = [
+                {
+                    date: '2016-05-03',
+                    name: '1',
+                    address: 'No. 189, Grove St, Los Angeles1',
+                },
+            ];
+        },
+        updata1() {
+            this.tableData = [
+                {
+                    date: '2016-05-03',
+                    name: '2',
+                    address: 'No. 189, Grove St, Los Angeles1',
+                },
+            ];
+        },
+        updata2() {
+            this.tableData = [
+                {
+                    date: '2016-05-03',
+                    name: '3',
+                    address: 'No. 189, Grove St, Los Angeles',
+                },
+                {
+                    date: '2016-05-02',
+                    name: '4',
+                    address: 'No. 189, Grove St, Los Angeles',
+                },
+            ];
+        },
+        getRowKey(row) {
+            return row.name;
+        },
     },
 };
 </script>

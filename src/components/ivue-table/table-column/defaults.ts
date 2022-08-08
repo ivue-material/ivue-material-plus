@@ -64,6 +64,7 @@ interface TableColumnCtx<T> {
   selectable: (row: T, index: number) => boolean
   reserveSelection: boolean
   sortOrders: ('ascending' | 'descending' | null)[]
+  sortBy: string | ((row: T, index: number) => string) | string[]
 }
 
 // 列节点内容
@@ -278,7 +279,7 @@ export default {
     type: Function as PropType<TableColumnCtx<DefaultRow>['selectable']>,
   },
   /**
-   * 仅对 type=selection 的列有效，需指定 row-key 来让这个功能生效
+   * 保存数据更新前选中的值
    *
    * @type {Boolean}
    */
@@ -297,4 +298,12 @@ export default {
       return ['ascending', 'descending', null];
     },
   },
+  /**
+   * 没有指定数据按照哪个属性进行排序
+   *
+   * @type {String, Function, Array}
+   */
+  sortBy: {
+    type: [String, Function, Array] as PropType<TableColumnCtx<DefaultRow>['sortBy']>,
+  }
 };

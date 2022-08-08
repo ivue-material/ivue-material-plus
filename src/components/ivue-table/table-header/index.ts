@@ -2,7 +2,9 @@ import {
   h,
   defineComponent,
   inject,
-  getCurrentInstance
+  getCurrentInstance,
+  onMounted,
+  nextTick
 } from 'vue';
 import IvueIcon from '../../ivue-icon/index.vue';
 
@@ -99,6 +101,7 @@ export default defineComponent({
     // 事件
     const {
       handleSortClick,
+      handleHeaderClick
     } = useEvent(props as TableHeaderProps<unknown>, emit);
 
     // 布局改变监听
@@ -139,6 +142,9 @@ export default defineComponent({
           // 规定单元格可横跨的行数
           rowspan: column.rowSpan,
           key: `${column.id}-thead`,
+          onClick: ($event) => {
+            handleHeaderClick($event, column);
+          }
         }, [
           // cell
           h('div',
@@ -193,6 +199,15 @@ export default defineComponent({
       });
     };
 
+
+    // onMounted
+    onMounted(() => {
+      nextTick(() => {
+        const { prop, order } = props.defaultSort;
+
+        IvueTable?.store.commit('sort', { prop, order, init: true });
+      });
+    });
 
     return {
       columnRows,

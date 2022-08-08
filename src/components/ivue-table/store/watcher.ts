@@ -49,14 +49,16 @@ const sortData = (data, states) => {
     return data;
   }
 
-
   // 对数据进行排序
   return orderBy(
     data,
     // 排序的key 对应列内容的字段名
     states.sortProp,
+    // 数据在排序时所使用排序策略的轮转顺序
     states.sortOrder,
+    // 自定义排序方法
     sortingColumn.sortMethod,
+    // 指定数据按照哪个属性进行排序
     sortingColumn.sortBy
   );
 };
@@ -104,7 +106,7 @@ function useWatcher<T>() {
   // 类型为 Function，Function 的返回值用来决定这一行的 CheckBox 是否可以勾选
   const selectable: Ref<(row: T, index: number) => boolean> = ref(null);
 
-  // 仅对  type=selection 的列有效 需指定 row-key 来让这个功能生效。
+  // 保存数据更新前选中的值
   const reserveSelection = ref(false);
 
   // 排序的key 对应列内容的字段名
@@ -232,6 +234,7 @@ function useWatcher<T>() {
       .concat(notFixedColumns)
       .concat(rightFixedColumns.value);
 
+
     // 扁平化不是固定列
     const leafColumns = flattenColumns(notFixedColumns);
     // 扁平化固定列
@@ -264,17 +267,19 @@ function useWatcher<T>() {
     rowKey,
   });
 
-  // 更新 DOM
+  // 更新 DOM 更新列数据
   const scheduleLayout = (needUpdateColumns?: boolean, immediate = false) => {
-    // 更新行
+    // 更新列数据 未扁平化列数据 | 扁平化后的列数据 | 是否有固定列
     if (needUpdateColumns) {
       updateColumns();
     }
 
-    // 立即执行
+    // 立即执行更新布局
     if (immediate) {
-      vm.state.handleLayout();
-    } else {
+      vm.state.updateLayout();
+    }
+    // 延迟50毫秒更新布局
+    else {
       vm.state.debouncedUpdateLayout();
     }
   };
@@ -284,7 +289,7 @@ function useWatcher<T>() {
     return selection.value.includes(row);
   };
 
-  // 当前选择的选项
+  // 多选选择的行
   const toggleRowSelection = (
     row: T,
     selected = undefined,
@@ -400,7 +405,7 @@ function useWatcher<T>() {
     return count;
   };
 
-  // 清除选择行
+  // 清除多选选择行
   const clearSelection = () => {
 
     isAllSelected.value = false;
@@ -465,6 +470,31 @@ function useWatcher<T>() {
     filteredData.value = sourceData;
   };
 
+  // 更新排序属性
+  const updateSort = (column, prop, order) => {
+
+    // 重置排序排序顺序
+    if (sortingColumn.value && sortingColumn.value !== column) {
+      sortingColumn.value.order = null;
+    }
+
+    // 重新设置排序顺序
+    sortingColumn.value = column;
+
+    // 排序的key 对应列内容的字段名
+    sortProp.value = prop;
+
+    // 排序方向
+    sortOrder.value = order;
+  };
+
+  // 检查 rowKey 是否存在
+  const assertRowKey = () => {
+    if (!rowKey.value) {
+      throw new Error('prop row-key is required');
+    }
+  };
+
 
   return {
     _toggleAllSelection,
@@ -481,6 +511,8 @@ function useWatcher<T>() {
     updateAllSelected,
     clearSelection,
     handleExecQueryData,
+    updateSort,
+    assertRowKey,
     // 状态
     states: {
       data,

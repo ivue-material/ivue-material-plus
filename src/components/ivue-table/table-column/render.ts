@@ -14,8 +14,6 @@ import {
   getDefaultClassName
 } from '../config';
 import { parseWidth, parseMinWidth } from '../utils';
-import IvueTooltip from '../../ivue-tooltip/index.vue';
-import { hasClass, getStyle } from '../../../utils/assist';
 
 // ts
 import type { TableColumn, TableColumnCtx } from './defaults';
@@ -107,7 +105,6 @@ function useRender<T>(
         item.vParent = vm;
       }
     }
-
   };
 
   // 列渲染
@@ -140,6 +137,7 @@ function useRender<T>(
         ]);
       };
 
+      // 展开的内容
       parentDom.value.renderExpanded = (data) => {
         return slots.default ? slots.default(data) : slots.default;
       };
@@ -164,7 +162,6 @@ function useRender<T>(
         else {
           children = originRenderCell(data);
         }
-
 
         // 列数据
         const shouldCreatePlaceholder = hasTreeColumnValue && data.cellIndex === 0;
@@ -208,7 +205,6 @@ function useRender<T>(
       column.minWidth = columnMinWidth.value;
     }
 
-
     // 没有设置最小宽度，默认最小宽度 80
     if (!column.minWidth) {
       column.minWidth = 80;
@@ -241,6 +237,7 @@ function useRender<T>(
       }
     });
 
+    // 有对应的class 多选 ｜ 展开
     const className = getDefaultClassName(type);
 
     // 有对应的class
@@ -262,16 +259,15 @@ function useRender<T>(
   // 同步监听 对齐方向
   watchEffect(() => {
     align.value = props.align ? `is-${props.align}` : null;
-    // nextline help render
-    align.value;
+
+    return align.value;
   });
 
   // 同步监听 表头对齐方式
   watchEffect(() => {
     headerAlign.value = props.headerAlign ? `is-${props.headerAlign}` : align.value;
 
-    // nextline help render
-    headerAlign.value;
+    return headerAlign.value;
   });
 
   return {

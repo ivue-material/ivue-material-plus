@@ -42,6 +42,7 @@ export function createStore<T>(table: Table<T>, props: TableProps<T>) {
     setStatesValue(getArrKeysValue(props, key), key, store);
   });
 
+  // 监听表格props
   proxyTableProps(store, props);
 
   return store;

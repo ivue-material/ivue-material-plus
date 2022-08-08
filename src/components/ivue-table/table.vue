@@ -30,7 +30,7 @@
                     <!-- header -->
                     <table-header
                         :border="border"
-                        :default-sort="defaultSort"
+                        :defaultSort="defaultSort"
                         :store="store"
                         @on-drag-visible="handleDragVisible"
                         ref="tableHeaderRef"
@@ -132,7 +132,9 @@ export default defineComponent({
         'on-selection-change',
         'on-select-all',
         'on-select',
-        'on-current-change'
+        'on-current-change',
+        'on-header-click',
+        'on-sort-change',
     ],
     setup(props) {
         type Row = typeof props.data[number];
@@ -181,26 +183,32 @@ export default defineComponent({
             scrollbarContentStyle,
 
             // methods
+            updateLayout,
             handleMouseLeave,
             handleMousewheel,
             handleDragVisible,
-            handleLayout,
             handleBindEvents,
         } = useStyle<Row>(props, layout, store, table);
 
         // 去抖更新布局
-        const debouncedUpdateLayout = debounce(handleLayout, 50);
+        const debouncedUpdateLayout = debounce(updateLayout, 50);
 
         // 表格状态
         table.state = {
             resizeState,
             isGroup,
-            handleLayout,
+            updateLayout,
             debouncedUpdateLayout,
         };
 
-        const { setCurrentRow, toggleRowSelection, clearSelection } =
-            useUtils<Row>(store);
+        const {
+            // 单选选择当前行
+            setCurrentRow,
+            // 多选选择的行
+            toggleRowSelection,
+            // 清除多选选择行
+            clearSelection,
+        } = useUtils<Row>(store);
 
         // computed
 
@@ -244,7 +252,7 @@ export default defineComponent({
 
         // onMounted
         onMounted(() => {
-            // 更新列
+            // 设置整理后的列设置数据 未扁平化列数据 | 扁平化后的列数据 | 是否有固定列
             store.updateColumns();
 
             // 表格宽度
@@ -255,7 +263,7 @@ export default defineComponent({
             // 设置宽度
             tableWidth.value = el.offsetWidth;
 
-            // 表格缩放
+            // 初始化表格大小
             resizeState.value = {
                 width: tableWidth.value,
                 height: el.offsetHeight,
@@ -267,9 +275,9 @@ export default defineComponent({
             table.$ready = true;
 
             // 更新布局
-            handleLayout();
+            updateLayout();
 
-            // 绑定事件
+            // 绑定事件 滚动 | 列的宽度自撑开 | 表格大小改变
             handleBindEvents();
         });
 

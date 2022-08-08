@@ -19,6 +19,7 @@ $name:'ivue-table';
 
   // 行
   .cell {
+    display: flex;
     box-sizing: border-box;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -96,12 +97,23 @@ $name:'ivue-table';
 
   // 行居中
   &-cell.is-center {
-    text-align: center;
+    .cell {
+      justify-content: center;
+    }
   }
 
   // 行右对齐
   &-cell.is-right {
-    text-align: right;
+    .cell {
+      justify-content: right;
+    }
+  }
+
+   // 行左对齐
+   &-cell.is-left {
+    .cell {
+      justify-content: left;
+    }
   }
 
   th.#{$name}-cell {

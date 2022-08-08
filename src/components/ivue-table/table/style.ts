@@ -201,7 +201,7 @@ function useStyle<T>(
       // 绑定resize
       useResizeObserver(table.vnode.el as HTMLElement, handleResizeListener);
     }
-    // 全局滚动
+    // 表格大小改变
     else {
       useEventListener(window, 'resize', handleResizeListener);
     }
@@ -234,7 +234,7 @@ function useStyle<T>(
   };
 
   // 更新布局
-  const handleLayout = () => {
+  const updateLayout = () => {
     // 更新列的宽度
     layout.updateColumnsWidth();
 
@@ -242,7 +242,7 @@ function useStyle<T>(
     requestAnimationFrame(handleScrollbarScroll);
   };
 
-  // 大小改变
+  // 表格大小改变
   const handleResizeListener = () => {
     // 表格是否渲染完成
     if (!table.$ready) {
@@ -296,7 +296,7 @@ function useStyle<T>(
       };
 
       // 更新布局
-      handleLayout();
+      updateLayout();
     }
 
   };
@@ -437,7 +437,7 @@ function useStyle<T>(
     handleMouseLeave,
     handleMousewheel,
     handleDragVisible,
-    handleLayout,
+    updateLayout,
     handleBindEvents,
   };
 }

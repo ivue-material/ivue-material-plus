@@ -498,7 +498,7 @@ export const createTablePopper = (
 
 
 // 排序数据
-export const orderBy = (
+export const orderBy = <T>(
   array: T[],
   sortKey: string,
   reverse: string | number,
@@ -517,7 +517,7 @@ export const orderBy = (
     return array;
   }
 
-  console.log('reverse', reverse);
+  // string
   if (typeof reverse === 'string') {
     reverse = reverse === 'descending' ? -1 : 1;
   } else {
