@@ -28,7 +28,7 @@ class TableLayout<T> {
     // 表格 scrollY
     this.scrollY = ref(false);
 
-    // 内容宽度
+    // 表格宽度
     this.bodyWidth = ref(null);
 
     // 表格高度
@@ -62,15 +62,7 @@ class TableLayout<T> {
     const columns = this.table.store.states.columns.value;
 
     columns.forEach((column) => {
-      // 是列组合头部
-      if (column.isColumnGroup) {
-        // eslint-disable-next-line prefer-spread
-        flattenColumns.push.apply(flattenColumns, column.columns);
-      }
-      // 不是是列组合头部
-      else {
-        flattenColumns.push(column);
-      }
+      flattenColumns.push(column);
     });
 
     return flattenColumns;
@@ -145,14 +137,17 @@ class TableLayout<T> {
         // 可以自动撑开的宽度
         const totalFlexWidth = bodyWidth - bodyMinWidth;
 
+
         // 只有一个自动撑开的列沾满屏幕剩余宽度
         if (flexColumns.length === 1) {
           flexColumns[0].columnWidth = Number(flexColumns[0].minWidth || 80) + totalFlexWidth;
         }
         // 多个自动撑开列
         else {
-          // 获取自动撑开列的最小宽度
+          // 获取自动撑开列的最小宽度 数量 * 80
           const allColumnWidth = flexColumns.reduce((prev, item) => prev + Number(item.minWidth || 80), 0);
+
+          // 可以自动撑开的宽度 / 所有列加起来的宽度 = 弹性像素
           const flexWidthPerPixel = totalFlexWidth / allColumnWidth;
 
           // 不是第一个的宽度
@@ -165,19 +160,23 @@ class TableLayout<T> {
               return;
             }
 
-            // 自动撑开的宽度
+            // 列的宽度 * 弹性像素
             const flexWidth = Math.floor(Number(item.minWidth || 80) * flexWidthPerPixel);
+
+            // 剩余可撑开宽度
             noneFirstWidth += flexWidth;
 
+            // 列的宽度 + 弹性宽度 (最小80 + 弹性宽度)
             item.columnWidth = Number(item.minWidth || 80) + flexWidth;
           });
 
-          // 自动睁开的第一个宽度等于剩余的宽度
+          // 自动撑开的第一个宽度等于剩余的宽度
           flexColumns[0].columnWidth = Number(flexColumns[0].minWidth || 80) + totalFlexWidth - noneFirstWidth;
         }
       }
       // 是滚动表格
       else {
+        // x轴滚动
         this.scrollX.value = true;
 
         // 设置列宽度为最小宽度
@@ -205,11 +204,14 @@ class TableLayout<T> {
           item.columnWidth = Number(item.width || item.minWidth);
         }
 
+        // 表格宽度
         bodyMinWidth += item.columnWidth;
       });
 
+      // x轴是否可以滚动 内容的最小宽度 > 表格的宽度
       this.scrollX.value = bodyMinWidth > bodyWidth;
 
+      // 表格宽度
       this.bodyWidth.value = bodyMinWidth;
     }
 
@@ -221,6 +223,7 @@ class TableLayout<T> {
   setHeight(value: string | number, prop = 'height') {
     const el = this.table.vnode.el;
 
+    // 高度转换类型
     value = this.parseHeight(value);
 
     this.height.value = Number(value);
@@ -263,7 +266,6 @@ class TableLayout<T> {
 
     // string
     if (typeof height === 'string') {
-
       // 是否有px
       if (/^\d+(?:px)?$/.test(height)) {
         return Number.parseInt(height, 10);
@@ -297,6 +299,7 @@ class TableLayout<T> {
       return false;
     }
 
+    // 滚动条dom
     const scrollbar = this.table.refs.scrollbar;
 
     // 是否渲染完成

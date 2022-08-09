@@ -14,8 +14,9 @@ import type { TableHeader } from './table-header';
 import type TableLayout from './table-layout';
 
 function useLayoutObserver<T>(root: Table<T>) {
-  const vm = getCurrentInstance() as TableHeader;
 
+  // vm
+  const vm = getCurrentInstance() as TableHeader;
 
   // computed
 

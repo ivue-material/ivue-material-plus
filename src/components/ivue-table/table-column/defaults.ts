@@ -37,7 +37,6 @@ interface TableColumnCtx<T> {
   filterMethod: FilterMethods<T>
   filterValue: string[]
   filterPlacement: string
-  isColumnGroup: boolean
   filterOpened?: boolean
   index: number | ((index: number) => number)
   rawColumnKey: string

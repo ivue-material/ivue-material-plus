@@ -141,8 +141,6 @@ export default defineComponent({
         filterPlacement: '',
         // 过滤开启
         filterOpened: false,
-        // 是否是多头列表
-        isColumnGroup: false,
         // 是否是嵌套的子列
         isSubColumn: false,
         // 对应列是否可以排序

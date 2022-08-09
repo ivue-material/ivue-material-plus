@@ -1,11 +1,11 @@
 <template>
     <div>
-        <!-- <h1>基础表格</h1>
+        <h1>基础表格</h1>
         <ivue-table :data="tableData" style="width: 100%">
-            <ivue-table-column prop="date" label="Date" width="180" align="center"></ivue-table-column>
-            <ivue-table-column prop="name" label="Name" width="180" align="right"  headerAlign="center"></ivue-table-column>
-            <ivue-table-column prop="address" label="Address"></ivue-table-column>
-        </ivue-table>-->
+            <ivue-table-column prop="date" label="Date"  align="center"></ivue-table-column>
+            <ivue-table-column prop="name" label="Name" align="right"  headerAlign="center"></ivue-table-column>
+            <ivue-table-column prop="address" label="Address" ></ivue-table-column>
+        </ivue-table>
         <!-- <h1>带斑马纹表格</h1>
         <ivue-table :data="tableData" stripe style="width: 100%">
             <ivue-table-column prop="date" label="Date" width="180"></ivue-table-column>
@@ -48,7 +48,7 @@
                  12121
                 </template>
             </ivue-table-column>
-        </ivue-table>-->
+        </ivue-table> -->
         <!-- <h1>流体高度</h1>
         <ivue-table maxHeight="250" :data="tableData3" style="width: 100%">
             <ivue-table-column fixed prop="date" label="Date" width="150"></ivue-table-column>
@@ -76,7 +76,7 @@
                     <ivue-table-column prop="zip" label="Zip" width="120" />
                 </ivue-table-column>
             </ivue-table-column>
-        </ivue-table>-->
+        </ivue-table> -->
         <!-- <h1>单选</h1>
         <ivue-table
             ref="singleTableRef"
