@@ -62,8 +62,10 @@ function useWatcher<T>(
               value = parseMinWidth(newVal);
             }
 
-            // 更新行的porps
+            // 修改 width ｜ minWidth 时触发
             vm.columnConfig.value[columnKey as any] = value;
+
+            // 更新其他props值
             vm.columnConfig.value[key] = value;
 
             // 如果是固定列 更新 DOM
@@ -117,8 +119,6 @@ function useWatcher<T>(
       }
     });
   };
-
-
 
   return {
     registerNormalWatchers,

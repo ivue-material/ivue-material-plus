@@ -58,6 +58,7 @@ function useStyle<T>(props: TableHeaderProps<T>) {
         row as unknown as TableColumnCtx<T>[]
       );
 
+    // class
     const classes = [
       column.id,
       column.order,
@@ -66,7 +67,6 @@ function useStyle<T>(props: TableHeaderProps<T>) {
       column.labelClassName,
       ...fixedClasses,
     ];
-
 
     // 没有子项
     if (!column.children) {

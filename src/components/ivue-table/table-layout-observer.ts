@@ -33,7 +33,7 @@ function useLayoutObserver<T>(root: Table<T>) {
 
   // methods
 
-  // 列改变
+  // 列宽度改变
   const handleColumnsChange = (layout: TableLayout<T>) => {
     // 获取col
     const cols = root.vnode.el?.querySelectorAll('colgroup > col') || [];
@@ -64,13 +64,11 @@ function useLayoutObserver<T>(root: Table<T>) {
   };
 
   // 设置滚动宽度
-  const handleScrollableWidthChange = () => {
+  const handleScrollableWidthChange = (layout: TableLayout<T>) => {
     const cols =
       root.vnode.el?.querySelectorAll('colgroup > col[name=gutter]') || [];
 
-    console.log('root', cols);
     const ths = root.vnode.el?.querySelectorAll('th.gutter') || [];
-    console.log('ths', ths);
 
   };
 
@@ -88,13 +86,21 @@ function useLayoutObserver<T>(root: Table<T>) {
 
   // onMounted
   onMounted(() => {
+    // 列改变
     handleColumnsChange(tableLayout.value);
+
+    // 设置滚动宽度
+    handleScrollableWidthChange(tableLayout.value);
   });
 
   // onUpdated
   // 在数据更改导致的虚拟 DOM 重新渲染和更新完毕之后被调用
   onUpdated(() => {
+    // 列宽度改变
     handleColumnsChange(tableLayout.value);
+
+    // 设置滚动宽度
+    handleScrollableWidthChange(tableLayout.value);
   });
 
   return {

@@ -64,6 +64,9 @@ interface TableColumnCtx<T> {
   reserveSelection: boolean
   sortOrders: ('ascending' | 'descending' | null)[]
   sortBy: string | ((row: T, index: number) => string) | string[]
+  sortMethod: (a: T, b: T) => number
+  columnKey: string,
+  filterable: boolean | FilterMethods<T> | Filters
 }
 
 // 列节点内容
@@ -304,5 +307,23 @@ export default {
    */
   sortBy: {
     type: [String, Function, Array] as PropType<TableColumnCtx<DefaultRow>['sortBy']>,
+  },
+  /**
+   * 自定义排序方法
+   *
+   * @type {Function}
+   */
+  sortMethod: {
+    type: Function as PropType<TableColumnCtx<DefaultRow>['sortMethod']>,
+  },
+  /**
+   * column 的 key， column 的 key
+   * 如果需要使用 filter-change 事件
+   * 则需要此属性标识是哪个 column 的筛选条件
+   *
+   * @type {String}
+   */
+  columnKey: {
+    type: String,
   }
 };

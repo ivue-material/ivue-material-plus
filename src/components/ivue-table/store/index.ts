@@ -83,6 +83,16 @@ function useStore<T>() {
         // 更新多选框key
         vm.store.updateSelectionByRowKey();
       }
+      else {
+        // 数据变化，更新部分数据。
+        if (dataInstanceChanged) {
+          vm.store.clearSelection();
+        }
+        // 删除多余的数据(选择后当前表格中不存在的数据)
+        else {
+          vm.store.cleanRedundantSelection();
+        }
+      }
 
       // 更新是否选择全部行
       vm.store.updateAllSelected();
@@ -92,7 +102,6 @@ function useStore<T>() {
         // 更新布局
         vm.store.scheduleLayout();
       }
-
     },
 
     // 用于多选表格，切换全选和全不选

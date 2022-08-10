@@ -1,4 +1,5 @@
 import { ref, getCurrentInstance, unref } from 'vue';
+import { hasOwn } from '@vue/shared';
 
 // 展开行
 import useExpand from './expand';
@@ -420,6 +421,52 @@ function useWatcher<T>() {
     }
   };
 
+  // 清洁选择
+  const cleanRedundantSelection = () => {
+
+    // 需要删除的数据
+    let deleted;
+
+    // 有rowKey
+    if (rowKey.value) {
+      deleted = [];
+
+      // 行数据的Key
+      const selectedMap = getKeysMap(selection.value, rowKey.value);
+
+      // 获取列数据 {index, row}
+      const dataMap = getKeysMap(data.value, rowKey.value);
+
+      for (const key in selectedMap) {
+        // 是否存在数据
+        if (hasOwn(selectedMap, key) && !dataMap[key]) {
+
+          // 获取需要删除的数据(当前数据列表中不存在的数据)
+          deleted.push(selectedMap[key].row);
+        }
+      }
+    }
+    // 没有设置rowKey
+    else {
+      // 获取需要删除的数据(当前数据列表中不存在的数据)
+      deleted = selection.value.filter((item) => !data.value.includes(item));
+    }
+
+    // 有需要删除的数组
+    if (deleted.length) {
+
+      // 过滤数据获取最新的选择数据
+      const newSelection = selection.value.filter(
+        (item) => !deleted.includes(item)
+      );
+
+      selection.value = newSelection;
+
+      // 选择的数据
+      vm.emit('on-selection-change', newSelection);
+    }
+  };
+
   // 根据 filters 与 sort 去过滤 data
   const handleExecQueryData = (filter = true) => {
     filteredData.value = unref(_data);
@@ -510,6 +557,7 @@ function useWatcher<T>() {
     toggleRowSelection,
     updateAllSelected,
     clearSelection,
+    cleanRedundantSelection,
     handleExecQueryData,
     updateSort,
     assertRowKey,

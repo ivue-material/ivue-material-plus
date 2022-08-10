@@ -105,14 +105,13 @@ class TableLayout<T> {
     const fit = this.fit;
     // 获取表宽度
     const bodyWidth = this.table.vnode.el.clientWidth;
-    // 最小宽度
-    let bodyMinWidth = 0;
-
     // 扁平化列
     const flattenColumns = this.getFlattenColumns();
-
     // 需要自动撑开的列
     const flexColumns = flattenColumns.filter((item) => typeof item.width !== 'number');
+
+    // 最小宽度
+    let bodyMinWidth = 0;
 
     // 重置列的宽度
     flattenColumns.forEach((item) => {
@@ -318,7 +317,6 @@ class TableLayout<T> {
       // 是否相等 是否有滚动过
       return prevScrollY !== scrollY;
     }
-
 
     return false;
   }

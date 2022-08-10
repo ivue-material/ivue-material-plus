@@ -29,7 +29,6 @@ function useStyles<T>(props: Partial<TableBodyProps<T>>) {
     return rowStyle || null;
   };
 
-
   // 行样式
   const getRowClass = (row: T, rowIndex: number) => {
     const classes = [
@@ -86,11 +85,13 @@ function useStyles<T>(props: Partial<TableBodyProps<T>>) {
     row: T,
     column: TableColumnCtx<T>
   ) => {
+    // 是否是嵌套的子列
     const fixedClasses = column.isSubColumn
       ? []
       : getFixedColumnsClass(prefixCls, columnIndex, props?.fixed, props.store);
 
 
+    // classes
     const classes = [column.id, column.align, column.className, 'ivue-table-cell', ...fixedClasses];
 
     return classes.filter((className) => Boolean(className)).join(' ');
@@ -103,8 +104,7 @@ function useStyles<T>(props: Partial<TableBodyProps<T>>) {
     row: T,
     column: TableColumnCtx<T>
   ) => {
-
-    // fixedStyle
+    // 是否是嵌套的子列
     const fixedStyle = column.isSubColumn
       ? null
       : getFixedColumnOffset(columnIndex, props?.fixed, props.store);

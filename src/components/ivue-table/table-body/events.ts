@@ -1,6 +1,8 @@
 import {
   inject,
 } from 'vue';
+import { debounce } from 'lodash-unified';
+
 import { getCell, getColumnByCell, createTablePopper } from '../utils';
 import { hasClass, getStyle } from '../../../utils/assist';
 
@@ -102,13 +104,24 @@ function useEvents<T>(props: Partial<TableBodyProps<T>>) {
         },
       );
     }
-
   };
+
+  // 行鼠标进入
+  const handleMouseEnter = debounce((index: number) => {
+    props.store.commit('setHoverRow', index);
+  }, 30);
+
+  // 行鼠标离开
+  const handleMouseLeave = debounce(() => {
+    props.store.commit('setHoverRow', null);
+  }, 30);
 
 
   return {
     handleClickTr,
-    handleCellMouseEnter
+    handleCellMouseEnter,
+    handleMouseEnter,
+    handleMouseLeave
   };
 }
 

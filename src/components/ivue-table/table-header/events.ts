@@ -119,14 +119,25 @@ function useEvent<T>(props: TableHeaderProps<T>, emit) {
     if (!column.filters && column.sortable) {
       handleSortClick(event, column, false);
     }
+    // 有过滤属性 没有排序
+    else if (column.filterable && !column.sortable) {
+      handleFilterClick(event);
+    }
 
     IvueTable?.emit('on-header-click', column, event);
   };
 
+  // 开启过滤后点击
+  const handleFilterClick = (event: Event) => {
+    event.stopPropagation();
+
+    return;
+  };
 
   return {
     handleSortClick,
-    handleHeaderClick
+    handleHeaderClick,
+    handleFilterClick
   };
 }
 

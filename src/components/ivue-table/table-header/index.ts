@@ -9,9 +9,11 @@ import {
 import IvueIcon from '../../ivue-icon/index.vue';
 
 import useUtils from './utils';
-import useStyle from './style';
+import useStyle from './styles';
 import useEvent from './events';
 import useTableLayoutObserver from '../table-layout-observer';
+
+import FilterPanel from '../table/filter-panel.vue';
 
 // ts
 import type { PropType, ComponentInternalInstance, Ref } from 'vue';
@@ -101,7 +103,8 @@ export default defineComponent({
     // 事件
     const {
       handleSortClick,
-      handleHeaderClick
+      handleHeaderClick,
+      handleFilterClick
     } = useEvent(props as TableHeaderProps<unknown>, emit);
 
     // 布局改变监听
@@ -114,6 +117,73 @@ export default defineComponent({
 
     // methods
 
+    // 渲染排序
+    const renderSortable = (column) => {
+
+      // 是否有排序
+      if (!column.sortable) {
+        return null;
+      }
+
+      return h(
+        'span',
+        {
+          class: `${prefixCls}-header--sortable`
+        },
+        [
+          // 上按钮
+          h(IvueIcon, {
+            class: `${prefixCls}-header--ascending`,
+            onClick: ($event) => {
+              handleSortClick($event, column, 'ascending');
+            }
+          },
+            {
+              default: () => 'arrow_drop_up'
+            }
+          ),
+          // 下按钮
+          h(IvueIcon, {
+            class: `${prefixCls}-header--descending`,
+            onClick: ($event) => {
+              handleSortClick($event, column, 'descending');
+            }
+          },
+            {
+              default: () => 'arrow_drop_down'
+            }
+          ),
+        ]
+      );
+    };
+
+    // 渲染头部
+    const renderHeader = (column, cellIndex) => {
+
+      // 是否有头部
+      if (!column.renderHeader) {
+        return column.label;
+      }
+
+      return h('span', {}, [
+        column.renderHeader({
+          column,
+          $index: cellIndex,
+          store: props.store,
+          _self: vm.$parent,
+        })
+      ]);
+    };
+
+    // 渲染过滤
+    const renderFilter = (column) => {
+      if (!column.filterable) {
+        return null;
+      }
+
+      return h(FilterPanel);
+    };
+
     // 渲染 th
     const renderTh = (list, rowSpan, rowIndex) => {
       return list.map((column, cellIndex) => {
@@ -124,13 +194,14 @@ export default defineComponent({
         }
 
         return h('th', {
-          // 合并样式s
+          // class
           class: getHeaderCellClass(
             rowIndex,
             cellIndex,
             list,
             column
           ),
+          // style
           style: getHeaderCellStyle(
             rowIndex,
             cellIndex,
@@ -141,8 +212,10 @@ export default defineComponent({
           colspan: column.colSpan,
           // 规定单元格可横跨的行数
           rowspan: column.rowSpan,
+          // key
           key: `${column.id}-thead`,
           onClick: ($event) => {
+            // 头部点击
             handleHeaderClick($event, column);
           }
         }, [
@@ -153,46 +226,11 @@ export default defineComponent({
             },
             [
               // 渲染头部
-              column.renderHeader
-                ? h('span', {}, [
-                  column.renderHeader({
-                    column,
-                    $index: cellIndex,
-                    store: props.store,
-                    _self: vm.$parent,
-                  })
-                ])
-                : column.label,
+              renderHeader(column, cellIndex),
               // 排序
-              column.sortable &&
-              h(
-                'span',
-                {
-                  class: `${prefixCls}-header--sortable`
-                },
-                [
-                  h(IvueIcon, {
-                    class: `${prefixCls}-header--ascending`,
-                    onClick: ($event) => {
-                      handleSortClick($event, column, 'ascending');
-                    }
-                  },
-                    {
-                      default: () => 'arrow_drop_up'
-                    }
-                  ),
-                  h(IvueIcon, {
-                    class: `${prefixCls}-header--descending`,
-                    onClick: ($event) => {
-                      handleSortClick($event, column, 'descending');
-                    }
-                  },
-                    {
-                      default: () => 'arrow_drop_down'
-                    }
-                  ),
-                ]
-              )
+              renderSortable(column),
+              // 渲染过滤
+              renderFilter(column)
             ]
           )
         ]);
@@ -210,10 +248,14 @@ export default defineComponent({
     });
 
     return {
-      columnRows,
+      // computed
       isGroup,
+      columnRows,
+
+      // methods
+      renderTh,
       handleColumnsChange,
-      renderTh
+      handleFilterClick
     };
 
   },

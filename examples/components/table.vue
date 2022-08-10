@@ -1,11 +1,11 @@
 <template>
     <div>
-        <h1>基础表格</h1>
-        <ivue-table :data="tableData" style="width: 100%">
+        <!-- <h1>基础表格</h1> -->
+        <!-- <ivue-table :data="tableData" style="width: 100%">
             <ivue-table-column prop="date" label="Date"  align="center"></ivue-table-column>
             <ivue-table-column prop="name" label="Name" align="right"  headerAlign="center"></ivue-table-column>
             <ivue-table-column prop="address" label="Address" ></ivue-table-column>
-        </ivue-table>
+        </ivue-table>-->
         <!-- <h1>带斑马纹表格</h1>
         <ivue-table :data="tableData" stripe style="width: 100%">
             <ivue-table-column prop="date" label="Date" width="180"></ivue-table-column>
@@ -36,7 +36,7 @@
             <ivue-table-column prop="address" label="Address"></ivue-table-column>
         </ivue-table>-->
         <!-- <h1>固定列</h1>
-        <ivue-table border  height="250" :data="tableData2" style="width: 100%">
+        <ivue-table border  height="250" :data="tableData3" style="width: 100%">
             <ivue-table-column fixed prop="date" label="Date" width="150"></ivue-table-column>
             <ivue-table-column prop="name" label="Name" width="120"></ivue-table-column>
             <ivue-table-column prop="state" label="State" width="120"></ivue-table-column>
@@ -48,7 +48,7 @@
                  12121
                 </template>
             </ivue-table-column>
-        </ivue-table> -->
+        </ivue-table>-->
         <!-- <h1>流体高度</h1>
         <ivue-table maxHeight="250" :data="tableData3" style="width: 100%">
             <ivue-table-column fixed prop="date" label="Date" width="150"></ivue-table-column>
@@ -76,7 +76,7 @@
                     <ivue-table-column prop="zip" label="Zip" width="120" />
                 </ivue-table-column>
             </ivue-table-column>
-        </ivue-table> -->
+        </ivue-table>-->
         <!-- <h1>单选</h1>
         <ivue-table
             ref="singleTableRef"
@@ -92,7 +92,7 @@
         </ivue-table>
         <ivue-button @click="setCurrent(tableData[1])">Select second row</ivue-button>
         <ivue-button @click="setCurrent()">Clear selection</ivue-button>-->
-        <h1>多选</h1>
+        <!-- <h1>多选</h1>
         <ivue-table
             ref="table"
             :data="tableData"
@@ -109,20 +109,48 @@
         <ivue-button @click="toggleSelection()">Clear selection</ivue-button>
         <ivue-button @click="updata()">Updata</ivue-button>
         <ivue-button @click="updata1()">Updata1</ivue-button>
-        <ivue-button @click="updata2()">Updata2</ivue-button>
+        <ivue-button @click="updata2()">Updata2</ivue-button>-->
 
         <!-- <h1>排序</h1>
         <ivue-table
             ref="table"
-            :data="tableData5"
+            :data="tableData4"
             style="width: 100%"
-            :defaultSort="{ prop: 'date', order: 'descending' }"
             @on-header-click="onHeaderClick"
         >
-            <ivue-table-column prop="date" label="Date" sortable width="180" align="center" headerAlign="center"></ivue-table-column>
+            <ivue-table-column
+                prop="date"
+                label="Date"
+                sortable
+                :sortOrders="['ascending', 'descending']"
+                :sortMethod="sortMethod"
+                :sortBy="['name']"
+                width="180"
+                align="center"
+                headerAlign="center"
+            ></ivue-table-column>
             <ivue-table-column prop="name" label="Name" width="180" headerAlign="center"></ivue-table-column>
             <ivue-table-column prop="address" label="Address" :formatter="formatter"></ivue-table-column>
         </ivue-table>-->
+
+        <h1>筛选</h1>
+        <ivue-table ref="table" :data="tableData4" style="width: 100%">
+            <ivue-table-column
+                prop="date"
+                label="Date"
+                width="180"
+                :filters="[
+                    { text: '2016-05-01', value: '2016-05-01' },
+                    { text: '2016-05-02', value: '2016-05-02' },
+                    { text: '2016-05-03', value: '2016-05-03' },
+                    { text: '2016-05-04', value: '2016-05-04' },
+                ]"
+                :filter-method="filterHandler"
+                filter-placement="bottom-end"
+            ></ivue-table-column>
+            <ivue-table-column prop="name" label="Name" width="180"></ivue-table-column>
+            <ivue-table-column prop="address" label="Address"></ivue-table-column>
+        </ivue-table>
     </div>
 </template>
 
@@ -173,7 +201,7 @@ export default {
             tableData4: [
                 {
                     date: '2016-05-03',
-                    name: 'Tom',
+                    name: '1',
                     state: 'California',
                     city: 'Los Angeles',
                     address: 'No. 189, Grove St, Los Angeles',
@@ -181,7 +209,7 @@ export default {
                 },
                 {
                     date: '2016-05-02',
-                    name: 'Tom',
+                    name: '3',
                     state: 'California',
                     city: 'Los Angeles',
                     address: 'No. 189, Grove St, Los Angeles',
@@ -189,7 +217,7 @@ export default {
                 },
                 {
                     date: '2016-05-04',
-                    name: 'Tom',
+                    name: '0',
                     state: 'California',
                     city: 'Los Angeles',
                     address: 'No. 189, Grove St, Los Angeles',
@@ -301,7 +329,7 @@ export default {
             return false;
         },
         formatter(row) {
-            return `22${row.address}`;
+            return `测试${row.address}`;
         },
         onHeaderClick(column, event) {
             console.log('e', column.order);
@@ -340,6 +368,13 @@ export default {
         },
         getRowKey(row) {
             return row.name;
+        },
+        sortMethod(a, b) {
+            return a.date - b.date;
+        },
+        filterHandler(value, row, column) {
+            const property = column['property'];
+            return row[property] === value;
         },
     },
 };

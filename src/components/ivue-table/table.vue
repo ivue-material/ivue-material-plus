@@ -25,7 +25,7 @@
                     <!-- colgroup -->
                     <ivue-colgroup
                         :columns="store.states.columns.value"
-                        :table-layout="tableLayout"
+                        :tableLayout="tableLayout"
                     ></ivue-colgroup>
                     <!-- header -->
                     <table-header
@@ -105,7 +105,7 @@ import { Mousewheel } from '../../utils/directives';
 import { createStore } from './store/helper';
 
 // 表格style
-import useStyle from './table/style';
+import useStyle from './table/styles';
 import useUtils from './table/utils';
 
 // components
@@ -230,7 +230,7 @@ export default defineComponent({
                     [`${prefixCls}-scroll-x`]: layout.scrollX.value,
                     // 滚动y
                     [`${prefixCls}-scroll-y`]: layout.scrollY.value,
-                    // 没有 固定列的时使用
+                    // 没有固定列的时使用
                     [`${prefixCls}-nofixed-row-hover`]:
                         !store.states.isFixedColumns.value,
                     // 是否有表格数据

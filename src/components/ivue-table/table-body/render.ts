@@ -1,10 +1,11 @@
 
 import { h, inject } from 'vue';
-import useStyles from './style';
+import useStyles from './styles';
 import useEvents from './events';
+import { getRowIdentity } from '../utils';
 
 // ts
-import type { TableProps, TreeNode, RenderRowData } from '../table/defaults';
+import type { TableProps, RenderRowData } from '../table/defaults';
 import type { TableBodyProps } from './defaults';
 
 function useRender<T>(props: Partial<TableBodyProps<T>>) {
@@ -24,7 +25,9 @@ function useRender<T>(props: Partial<TableBodyProps<T>>) {
   // 事件
   const {
     handleClickTr,
-    handleCellMouseEnter
+    handleCellMouseEnter,
+    handleMouseEnter,
+    handleMouseLeave
   } = useEvents(props);
 
   // methods
@@ -33,9 +36,11 @@ function useRender<T>(props: Partial<TableBodyProps<T>>) {
   const getRowKey = (row: T, index: number) => {
     const rowKey = (IvueTable.props as Partial<TableProps<T>>).rowKey;
 
-
-    // if (rowKey) {
-    // }
+    // 有自定义 rowKey
+    if (rowKey) {
+      // 获取自定义的行标志
+      return getRowIdentity(row, rowKey);
+    }
 
     return index;
   };
@@ -59,7 +64,15 @@ function useRender<T>(props: Partial<TableBodyProps<T>>) {
       key: getRowKey(row, $index),
       onClick: ($event) => {
         handleClickTr($event, row);
-      }
+      },
+      // 鼠标进入
+      onMouseenter: () => {
+        handleMouseEnter($index);
+      },
+      // 鼠标离开
+      onMouseleave: () => {
+        handleMouseLeave();
+      },
     },
       columns.value.map((column, cellIndex) => {
 
@@ -71,11 +84,16 @@ function useRender<T>(props: Partial<TableBodyProps<T>>) {
           return null;
         }
 
+        // key
         const baseKey = `${$index},${cellIndex}`;
+
+        // 当前列的数据
         const columnData = { ...column };
 
-        const patchKey = columnData.rawColumnKey || '';
+        // column 的 key |  列 vode key
+        const patchKey = columnData.columnKey || columnData.rawColumnKey || '';
 
+        // data
         const data: RenderRowData<T> = {
           store: props.store,
           _self: props.context || IvueTable,
@@ -89,16 +107,21 @@ function useRender<T>(props: Partial<TableBodyProps<T>>) {
         return h(
           'td',
           {
-            style: getCellStyle($index, cellIndex, row, column),
+            // class
             class: getCellClass($index, cellIndex, row, column),
+            // style
+            style: getCellStyle($index, cellIndex, row, column),
             rowspan,
             colspan,
+            // key
             key: `${patchKey}${baseKey}`,
+            // 鼠标进入
             onMouseenter: ($event) => {
               handleCellMouseEnter($event, row);
             }
           },
           [
+            // 渲染单元格
             column.renderCell(data)
           ]
         );
@@ -108,8 +131,6 @@ function useRender<T>(props: Partial<TableBodyProps<T>>) {
 
   // 渲染行
   const wrappedRowRender = (row: T, $index: number) => {
-
-
     return rowRender(row, $index);
   };
 

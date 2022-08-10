@@ -39,7 +39,6 @@ export const getRowIdentity = <T>(
 
   // 字符串
   if (typeof rowKey === 'string') {
-
     // 分割字符串成数组
     if (!rowKey.includes('.')) {
       return `${row[rowKey]}`;

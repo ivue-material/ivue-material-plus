@@ -109,8 +109,8 @@ $name:'ivue-table';
     }
   }
 
-   // 行左对齐
-   &-cell.is-left {
+  // 行左对齐
+  &-cell.is-left {
     .cell {
       justify-content: left;
     }
@@ -257,7 +257,6 @@ $name:'ivue-table';
 
     .highlight-current-row>.ivue-table-cell {
       background-color: rgba(91, 142, 255, .3);
-      ;
     }
   }
 
@@ -282,6 +281,14 @@ $name:'ivue-table';
 
   // 行
   &-row {}
+
+
+  // 行hover 有固定列的时候触发
+  &-row.hover-row {
+    .#{$name}-cell {
+      background-color: #eee;
+    }
+  }
 
   // 斑马纹
   &-stripe {

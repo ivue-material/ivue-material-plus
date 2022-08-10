@@ -37,7 +37,6 @@ const convertToRows = <T>(
 
   // 遍历
   const traverse = (column: TableColumnCtx<T>, parent: TableColumnCtx<T>) => {
-
     // 父
     if (parent) {
       column.level = parent.level + 1;
