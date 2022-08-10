@@ -138,6 +138,15 @@ export default defineComponent({
         beforeShowPopper: {
             type: Function,
         },
+        /**
+         * 是否手动控制 Tooltip
+         *
+         * @type {Boolean}
+         */
+        manual: {
+            type: Boolean,
+            default: false,
+        },
     },
     setup(props) {
         // dom

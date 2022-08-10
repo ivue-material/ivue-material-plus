@@ -85,7 +85,7 @@
             <ivue-button>Long Content</ivue-button>
         </ivue-tooltip>
         <h1>是否将弹层放置于 body 内</h1>
-        <ivue-tooltip placement="bottom" transfer transferClassName="123" content="Can disable text prompts" >
+        <ivue-tooltip  manual placement="bottom" transfer transferClassName="123" content="Can disable text prompts" >
             <ivue-button>Long Content</ivue-button>
         </ivue-tooltip>
     </div>
