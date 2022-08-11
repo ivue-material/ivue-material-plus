@@ -129,9 +129,9 @@ function useEvent<T>(props: TableHeaderProps<T>, emit) {
 
   // 开启过滤后点击
   const handleFilterClick = (event: Event) => {
-    event.stopPropagation();
+    // event.stopPropagation();
 
-    return;
+    // return;
   };
 
   return {

@@ -27,6 +27,11 @@ $name:'ivue-table';
     word-break: break-all;
     line-height: 23px;
     padding: 0 12px;
+    transition: all 0.2s ease-in-out;
+  }
+
+  .highlight {
+    color: $primary-color;
   }
 
   // 没有border
@@ -348,6 +353,87 @@ $name:'ivue-table';
 
   .ivue-tooltip {
     display: flex;
+  }
+
+  // 过滤弹窗
+  &-filter-panel {
+    cursor: pointer;
+    padding: 0 !important;
+
+    &-icon {
+      display: flex;
+      overflow: hidden;
+      width: auto;
+      min-width: auto;
+      height: auto;
+      font-weight: initial;
+      transition: all 0.2s ease-in-out;
+      transform-origin: center center;
+      color: $arrow-color;
+    }
+
+    &-visible {
+      transform: rotate(180deg);
+    }
+
+    &-content {
+      min-width: 100px;
+    }
+
+    &-checkbox-group {
+      padding: 10px;
+
+      .ivue-checkbox-group--item {
+        display: flex;
+        align-items: center;
+        margin-right: 5px;
+        margin-bottom: 12px;
+        margin-left: 5px;
+        height: unset;
+
+        &:last-child {
+          margin-bottom: 0;
+        }
+      }
+
+      .ivue-checkbox-label-text {
+        padding-left: 6px;
+      }
+    }
+
+    // 底部
+    &-bottom {
+      border-top: 1px solid $border-color;
+      padding: 8px;
+
+      button {
+        background: 0 0;
+        border: none;
+        color: $text-color;
+        cursor: pointer;
+        font-size: 13px;
+        padding: 0 3px;
+        transition: all 0.2s ease-in-out;
+
+        &:hover {
+          color: $primary-color;
+        }
+      }
+
+      .is-disabled {
+        color: $disabled-color !important;
+        cursor: not-allowed;
+      }
+    }
+
+    .ivue-scrollbar-wrapper {
+      max-height: 280px;
+    }
+
+    .ivue-tooltip-inner {
+      padding: 0;
+      border: 1px solid $border-color;
+    }
   }
 }
 

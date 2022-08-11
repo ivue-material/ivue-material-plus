@@ -1,4 +1,3 @@
-import { nextTick } from 'vue';
 import { createPopper } from '@popperjs/core';
 import { get } from 'lodash-unified';
 

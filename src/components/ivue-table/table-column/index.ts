@@ -149,6 +149,8 @@ export default defineComponent({
         // <column key="xxx" />
         // 列 vode key
         rawColumnKey: vm.vnode.key,
+        // 选中的数据过滤项
+        filteredValue: [],
       };
 
       // 基础 props

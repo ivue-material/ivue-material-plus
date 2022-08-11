@@ -23,10 +23,7 @@
                     ref="tableHeader"
                 >
                     <!-- colgroup -->
-                    <ivue-colgroup
-                        :columns="store.states.columns.value"
-                        :tableLayout="tableLayout"
-                    ></ivue-colgroup>
+                    <ivue-colgroup :columns="store.states.columns.value" :tableLayout="tableLayout"></ivue-colgroup>
                     <!-- header -->
                     <table-header
                         :border="border"
@@ -117,6 +114,7 @@ import IvueScrollbar from '../ivue-scrollbar/index.vue';
 // ts
 import type { Table } from './table/defaults';
 import defaultProps from './table/defaults';
+import type { TableColumnCtx } from './table-column/defaults';
 
 const prefixCls = 'ivue-table';
 let tableIdSeed = 1;
@@ -270,6 +268,17 @@ export default defineComponent({
                 headerHeight:
                     props.showHeader && header ? header.offsetHeight : null,
             };
+
+            // 初始化过滤的数据
+            store.states.columns.value.forEach((column: TableColumnCtx<T>) => {
+                if (column.filteredValue && column.filteredValue.length) {
+                    table.store.commit('filterChange', {
+                        column,
+                        values: column.filteredValue,
+                        silent: true,
+                    });
+                }
+            });
 
             // 初始化完成
             table.$ready = true;

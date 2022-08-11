@@ -82,6 +82,14 @@ interface TableState {
   debouncedUpdateLayout: () => void
 }
 
+// 过滤
+interface Filter<T> {
+  column: TableColumnCtx<T>
+  values: string[]
+  silent: any
+}
+
+
 interface Sort {
   prop: string
   order: 'ascending' | 'descending'
@@ -373,5 +381,6 @@ export type {
   Sort,
   rowClass,
   rowStyle,
-  ColumnCls
+  ColumnCls,
+  Filter
 };

@@ -5,8 +5,6 @@ import {
   watch,
   unref,
   watchEffect,
-  onMounted,
-  nextTick
 } from 'vue';
 import { useResizeObserver, useEventListener } from '@vueuse/core';
 

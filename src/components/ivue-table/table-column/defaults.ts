@@ -67,6 +67,8 @@ interface TableColumnCtx<T> {
   sortMethod: (a: T, b: T) => number
   columnKey: string,
   filterable: boolean | FilterMethods<T> | Filters
+  filterMultiple: boolean
+  filteredValue: string[]
 }
 
 // 列节点内容
@@ -325,5 +327,22 @@ export default {
    */
   columnKey: {
     type: String,
+  },
+  /**
+   * 数据过滤的选项是否多选
+   *
+   * @type {Boolean}
+   */
+  filterMultiple: {
+    type: Boolean,
+    default: true,
+  },
+  /**
+   * 选中的数据过滤项
+   *
+   * @type {Array}
+   */
+  filteredValue: {
+    type: Array as PropType<TableColumnCtx<DefaultRow>['filteredValue']>,
   }
 };

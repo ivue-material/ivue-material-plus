@@ -1,5 +1,11 @@
 <template>
-    <div :class="prefixCls" @mouseenter="handleShowPopper" @mouseleave="handleClosePopper">
+    <div
+        :class="prefixCls"
+        v-click-outside[capture]="handleClickOutside"
+        @click="handleClickShowPopper"
+        @mouseenter="handleMouseenter"
+        @mouseleave="handleMouseleave"
+    >
         <!-- 描述 -->
         <div :class="`${prefixCls}-rel`" ref="reference">
             <slot></slot>
@@ -11,13 +17,14 @@
                     ref="popper"
                     :class="popperClass"
                     :style="popperStyle"
-                    @mouseenter="handleShowPopper"
-                    @mouseleave="handleClosePopper"
+                    @click.stop
+                    @mouseenter="handleMouseenter"
+                    @mouseleave="handleMouseleave"
                     v-show="!disabled && (visible || always)"
                 >
                     <div :class="[`${prefixCls}-content`]">
                         <!-- arrow -->
-                        <div :class="[`${prefixCls}-arrow`]" ref="arrow"></div>
+                        <div :class="[`${prefixCls}-arrow`]" ref="arrow" v-show="!noArrow"></div>
                         <!-- 内容 -->
                         <div :class="innerClass" :style="innerStyles">
                             <slot name="content">{{ content }}</slot>
@@ -147,6 +154,33 @@ export default defineComponent({
             type: Boolean,
             default: false,
         },
+        /**
+         * 是否开启外部点击的 capture 模式，可通过全局配置
+         *
+         * @type {Boolean}
+         */
+        capture: {
+            type: Boolean,
+            default: true,
+        },
+        /**
+         * 主题，可选值为 dark 或 light
+         *
+         * @type {String}
+         */
+        theme: {
+            type: String,
+            default: 'dark',
+        },
+        /**
+         * 不显示三角形
+         *
+         * @type {Boolean}
+         */
+        noArrow: {
+            type: Boolean,
+            default: false,
+        },
     },
     setup(props) {
         // dom
@@ -196,6 +230,7 @@ export default defineComponent({
             return [
                 `${prefixCls}-popper`,
                 {
+                    [`${prefixCls}-${props.theme}`]: true,
                     [`${prefixCls}-transfer`]: props.transfer,
                     // 开启 transfer 时，给浮层添加额外的 class 名称
                     [props.transferClassName]: props.transferClassName,
@@ -284,6 +319,56 @@ export default defineComponent({
             return transferIndex;
         };
 
+        // 鼠标进入
+        const handleMouseenter = (event) => {
+            // 是否手动控制
+            if (props.manual) {
+                return;
+            }
+
+            // 是否显示
+            if (visible.value) {
+                return;
+            }
+
+            handleShowPopper(event);
+        };
+
+        // 鼠标离开
+        const handleMouseleave = () => {
+            // 是否手动控制
+            if (props.manual) {
+                return;
+            }
+
+            handleClosePopper();
+        };
+
+        // 点击显示
+        const handleClickShowPopper = (event) => {
+            // 是否手动控制
+            if (!props.manual) {
+                return;
+            }
+
+            handleShowPopper(event);
+        };
+
+        // 点击外部
+        const handleClickOutside = () => {
+            // 是否手动控制
+            if (!props.manual) {
+                return;
+            }
+
+            // 是否显示
+            if (!visible.value) {
+                return;
+            }
+
+            handleClosePopper();
+        };
+
         // watch
 
         watch(
@@ -312,6 +397,10 @@ export default defineComponent({
             // methods
             handleShowPopper,
             handleClosePopper,
+            handleClickShowPopper,
+            handleClickOutside,
+            handleMouseenter,
+            handleMouseleave,
         };
     },
 });

@@ -165,14 +165,17 @@ export default defineComponent({
         return column.label;
       }
 
-      return h('span', {}, [
-        column.renderHeader({
-          column,
-          $index: cellIndex,
-          store: props.store,
-          _self: vm.$parent,
-        })
-      ]);
+      return h(
+        'span',
+        {},
+        [
+          column.renderHeader({
+            column,
+            $index: cellIndex,
+            store: props.store,
+            _self: vm.$parent,
+          })
+        ]);
     };
 
     // 渲染过滤
@@ -181,7 +184,18 @@ export default defineComponent({
         return null;
       }
 
-      return h(FilterPanel);
+      return h(
+        FilterPanel,
+        {
+          // 当前列
+          column,
+          // store
+          store: props.store,
+          // 更新列数据
+          upDataColumn: (key: string, value: boolean) => {
+            column[key] = value;
+          },
+        });
     };
 
     // 渲染 th
@@ -222,7 +236,13 @@ export default defineComponent({
           // cell
           h('div',
             {
-              class: 'cell'
+              class: [
+                'cell',
+                // 是否有选择过滤
+                column.filteredValue && column.filteredValue.length > 0
+                  ? 'highlight'
+                  : '',
+              ]
             },
             [
               // 渲染头部

@@ -3,8 +3,8 @@ import useWatcher from './watcher';
 
 // ts
 import type { Ref } from 'vue';
-import type { Table, Sort } from '../table/defaults';
-import type { TableColumnCtx, } from '../table-column/defaults';
+import type { Table, Sort, Filter } from '../table/defaults';
+import type { TableColumnCtx } from '../table-column/defaults';
 
 // 监听props的数据
 interface WatcherPropsData<T> {
@@ -266,6 +266,19 @@ function useStore<T>() {
         }
       }
     },
+    // 过滤改变
+    filterChange(states: states, options: Filter<T>) {
+      const { column, values, silent } = options;
+
+      console.log('过滤改变', values);
+      const newFilters = vm.store.updateFilters(column, values);
+      // instance.store.execQuery()
+
+      // if (!silent) {
+      //   instance.emit('filter-change', newFilters)
+      // }
+      // instance.store.updateTableScrollY()
+    }
   };
 
   // 调用数据

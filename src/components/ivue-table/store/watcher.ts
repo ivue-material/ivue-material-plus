@@ -542,6 +542,29 @@ function useWatcher<T>() {
     }
   };
 
+  // 更新过滤的数据
+  const updateFilters = (columns, values) => {
+    if (!Array.isArray(columns)) {
+      columns = [columns];
+    }
+
+
+    const obj: any = {
+      value: {}
+    };
+
+    // 获取列表数据
+    columns.forEach((item) => {
+      obj.value[`${item.id}`] = values;
+
+
+      obj[item.columnKey || item.id] = values;
+    });
+
+
+    return obj;
+  };
+
 
   return {
     _toggleAllSelection,
@@ -561,6 +584,7 @@ function useWatcher<T>() {
     handleExecQueryData,
     updateSort,
     assertRowKey,
+    updateFilters,
     // 状态
     states: {
       data,
