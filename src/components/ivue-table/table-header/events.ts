@@ -5,7 +5,7 @@ import {
 } from 'vue';
 
 import { hasClass, removeClass, addClass } from '../../../utils/assist';
-import { on } from '../../../utils/dom';
+import { on, off } from '../../../utils/dom';
 
 // ts
 import type { TableHeaderProps } from './index';
@@ -181,7 +181,7 @@ function useEvent<T>(props: TableHeaderProps<T>, emit) {
       const cellDom = currentColumnDom.querySelector('.cell-content');
 
       // 最小左边距离
-      const minLeft = columnRect.left - tableLeft + (cellDom.offsetWidth || 30);
+      const minLeft = columnRect.left - tableLeft + (cellDom.offsetWidth + 30);
 
       // 添加class noclick 防止开启排序时点击
       addClass(currentColumnDom, 'noclick');
@@ -199,10 +199,10 @@ function useEvent<T>(props: TableHeaderProps<T>, emit) {
       };
 
       // 拖拽时的虚线
-      const resizeProxy = IvueTable?.refs.resizeProxy as HTMLElement;
+      const draggingDottedDom = IvueTable?.refs.draggingDotted as HTMLElement;
 
       // 设置拖拽时的虚线距离
-      resizeProxy.style.left = `${(dragState.value as any).startLeft}px`;
+      draggingDottedDom.style.left = `${(dragState.value as any).startLeft}px`;
 
       // 禁止document选择事件
       document.onselectstart = () => {
@@ -221,15 +221,76 @@ function useEvent<T>(props: TableHeaderProps<T>, emit) {
         const deltaLeft = event.clientX - (dragState.value as any).startMouseLeft;
 
         // 可拖动最大值
-        const maxLeft = (dragState.value as any).startLeft + deltaLeft;
+        let maxLeft = (dragState.value as any).startLeft + deltaLeft;
+
+        if(maxLeft >= tableDom.offsetWidth - 30) {
+          maxLeft = tableDom.offsetWidth - 30;
+        }
 
         // minLeft ｜ maxLeft
-        resizeProxy.style.left = `${Math.max(minLeft, maxLeft)}px`;
+        draggingDottedDom.style.left = `${Math.max(minLeft, maxLeft)}px`;
       };
 
       // 鼠标放开
       const handleDocumentMouseUp = () => {
+        // 拖动中
+        if (dragging.value) {
+          const { startColumnLeft, startLeft } = dragState.value as any;
 
+          // 拖拽时的虚线位置
+          const draggingDottedDomLeft = Number.parseInt(draggingDottedDom.style.left, 10);
+
+          // 列的宽度 = 拖拽虚线后的位置 - 开始列左边到窗口的距离
+          const columnWidth = draggingDottedDomLeft - startColumnLeft;
+
+          // 设置列的宽度
+          column.width = columnWidth;
+          column.columnWidth = columnWidth;
+
+          IvueTable?.emit(
+            'on-header-dragend',
+            // 设置列的宽度
+            column.width,
+            // 拖拽后的位置
+            startLeft - startColumnLeft,
+            column,
+            event
+          );
+
+          // 更新dom重新执行布局
+          requestAnimationFrame(() => {
+            props.store.scheduleLayout(false, true);
+          });
+
+          // 初始化样式
+          document.body.style.cursor = '';
+
+          // 拖动中
+          dragging.value = false;
+
+          // 当前鼠标移动到的拖动列
+          draggingColumn.value = null;
+
+          // 拖动开始
+          dragState.value = {};
+
+          // 隐藏拖动虚线
+          emit('on-drag-visible', false);
+        }
+
+        // 移除鼠标移动
+        off(document, 'mousemove', handleDocumentMouseMove);
+        // 移除鼠标放开
+        off(document, 'mouseup', handleDocumentMouseUp);
+
+        // 开启document选择事件
+        document.onselectstart = null;
+        // 开启document拖拽事件
+        document.ondragstart = null;
+
+        setTimeout(() => {
+          removeClass(currentColumnDom, 'noclick');
+        }, 0);
       };
 
       // 鼠标移动

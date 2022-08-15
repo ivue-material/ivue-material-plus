@@ -89,7 +89,7 @@
             </div>
         </div>
         <!-- 拖拽时的虚线 -->
-        <div :class="`${prefixCls}-column-resize-proxy`" ref="resizeProxy" v-show="dragging"></div>
+        <div :class="`${prefixCls}-column-resize-proxy`" ref="draggingDotted" v-show="dragging"></div>
     </div>
 </template>
 
@@ -145,6 +145,7 @@ export default defineComponent({
         'on-header-click',
         'on-sort-change',
         'on-filter-change',
+        'on-header-dragend'
     ],
     setup(props) {
         type Row = typeof props.data[number];
