@@ -186,7 +186,7 @@ function useEvent<T>(props: TableHeaderProps<T>, emit) {
       // 添加class noclick 防止开启排序时点击
       addClass(currentColumnDom, 'noclick');
 
-      //
+      // 开始拖动
       dragState.value = {
         // 触发点相对浏览器可视区域左距离
         startMouseLeft: event.clientX,
@@ -217,6 +217,14 @@ function useEvent<T>(props: TableHeaderProps<T>, emit) {
 
       // 鼠标移动
       const handleDocumentMouseMove = (event: MouseEvent) => {
+        // 当前触发点相对浏览器可视区域左距离 - 开始拖动时 触发点相对浏览器可视区域左距离
+        const deltaLeft = event.clientX - (dragState.value as any).startMouseLeft;
+
+        // 可拖动最大值
+        const maxLeft = (dragState.value as any).startLeft + deltaLeft;
+
+        // minLeft ｜ maxLeft
+        resizeProxy.style.left = `${Math.max(minLeft, maxLeft)}px`;
       };
 
       // 鼠标放开
