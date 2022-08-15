@@ -14,7 +14,7 @@
         </ivue-table>-->
         <!-- <h1>带边框表格</h1>
         <ivue-table :data="tableData" border style="width: 100%">
-            <ivue-table-column prop="date" label="Date" width="180"></ivue-table-column>
+            <ivue-table-column prop="date" label="Dat   e" width="180"></ivue-table-column>
             <ivue-table-column prop="name" label="Name" width="180"></ivue-table-column>
             <ivue-table-column prop="address" label="Address"></ivue-table-column>
         </ivue-table>-->
@@ -108,7 +108,7 @@
         <ivue-button @click="toggleSelection()">Clear selection</ivue-button>
         <ivue-button @click="updata()">Updata</ivue-button>
         <ivue-button @click="updata1()">Updata1</ivue-button>
-        <ivue-button @click="updata2()">Updata2</ivue-button> -->
+        <ivue-button @click="updata2()">Updata2</ivue-button>-->
 
         <!-- <h1>排序</h1>
         <ivue-table
@@ -132,31 +132,101 @@
             <ivue-table-column prop="address" label="Address" :formatter="formatter"></ivue-table-column>
         </ivue-table>-->
 
-        <h1>筛选</h1>
+        <!-- <h1>筛选</h1> -->
         <!-- filterPlacement="right" -->
-        <ivue-table ref="table" :data="tableData4" style="width: 100%">
+        <!-- :filtered-value="['2016-05-01']" -->
+        <!-- <ivue-table ref="table" :data="tableData6" style="width: 100%">
             <ivue-table-column
                 prop="date"
                 label="Date"
                 width="180"
                 sortable
-                column-key="date"
+                columnKey="date"
                 :filters="[
                     { text: '2016-05-01', value: '2016-05-01' },
                     { text: '2016-05-02', value: '2016-05-02' },
                     { text: '2016-05-03', value: '2016-05-03' },
                     { text: '2016-05-04', value: '2016-05-04' },
                 ]"
-                :filter-method="filterHandler"
+                :filterMethod="filterHandler"
                 :filterMultiple="false"
-
             ></ivue-table-column>
             <ivue-table-column prop="name" label="Name" width="180"></ivue-table-column>
-            <ivue-table-column prop="address" label="Address"></ivue-table-column>
+            <ivue-table-column
+                prop="tag"
+                label="tag"
+                columnKey="date"
+                :filters="[
+                  { text: 'Home', value: 'Home' },
+                 { text: 'Office', value: 'Office' },
+                ]"
+                :filterMethod="filterTag"
+                 :filter-method="filterTag"
+            ></ivue-table-column>
         </ivue-table>
 
         <button @click="resetDateFilter">reset date filter</button>
-        <button @click="clearFilter">reset all filters</button>
+        <button @click="clearFilter">reset all filters</button>-->
+        <!-- <h1>自定义列模板</h1>
+        <ivue-table :data="tableData" style="width: 100%">
+            <ivue-table-column prop="date" label="Date">
+                <template #default="scope">插槽{{ scope.row }}{{ scope.$index }}</template>
+            </ivue-table-column>
+            <ivue-table-column prop="name" label="Name" align="right" headerAlign="center"></ivue-table-column>
+            <ivue-table-column prop="address" label="Address"></ivue-table-column>
+        </ivue-table>-->
+
+        <!-- <h1>自定义表头</h1>
+        <ivue-table :data="tableData" style="width: 100%">
+            <ivue-table-column prop="date" label="Date">
+                <template #header>自定义表头</template>
+                <template #default="scope">插槽{{ scope.row }}</template>
+            </ivue-table-column>
+            <ivue-table-column prop="name" label="Name" align="right" headerAlign="center"></ivue-table-column>
+            <ivue-table-column prop="address" label="Address"></ivue-table-column>
+        </ivue-table>-->
+
+        <h1>表格布局</h1>
+        <ivue-table :data="tableData3" tableLayout="auto">
+            <ivue-table-column
+                prop="date"
+                label="Date"
+                sortable
+                columnKey="date"
+                :filters="[
+                    { text: '2016-05-01', value: '2016-05-01' },
+                    { text: '2016-05-02', value: '2016-05-02' },
+                    { text: '2016-05-03', value: '2016-05-03' },
+                    { text: '2016-05-04', value: '2016-05-04' },
+                ]"
+                :filterMethod="filterHandler"
+            ></ivue-table-column>
+            <ivue-table-column prop="name" label="Name">
+                 <template #header>自定义表头</template>
+                  <template #default="scope">插槽{{ scope.row }}</template>
+            </ivue-table-column>
+            <ivue-table-column prop="address" label="Address"></ivue-table-column>
+        </ivue-table>
+        <ivue-table :data="tableData3" tableLayout="fixed">
+            <ivue-table-column
+                prop="date"
+                label="Date"
+                sortable
+                columnKey="date"
+                :filters="[
+                    { text: '2016-05-01', value: '2016-05-01' },
+                    { text: '2016-05-02', value: '2016-05-02' },
+                    { text: '2016-05-03', value: '2016-05-03' },
+                    { text: '2016-05-04', value: '2016-05-04' },
+                ]"
+                :filterMethod="filterHandler"
+            ></ivue-table-column>
+            <ivue-table-column prop="name" label="Name">
+                    <template #header>自定义表头</template>
+                  <template #default="scope">插槽{{ scope.row }}</template>
+            </ivue-table-column>
+            <ivue-table-column prop="address" label="Address"></ivue-table-column>
+        </ivue-table>
     </div>
 </template>
 
@@ -272,6 +342,32 @@ export default {
                     date: '2016-05-02',
                     name: '4',
                     address: 'No. 189, Grove St, Los Angeles',
+                },
+            ],
+            tableData6: [
+                {
+                    date: '2016-05-03',
+                    name: 'Tom',
+                    address: 'No. 189, Grove St, Los Angeles',
+                    tag: 'Home',
+                },
+                {
+                    date: '2016-05-02',
+                    name: 'Tom',
+                    address: 'No. 189, Grove St, Los Angeles',
+                    tag: 'Office',
+                },
+                {
+                    date: '2016-05-04',
+                    name: 'Tom',
+                    address: 'No. 189, Grove St, Los Angeles',
+                    tag: 'Home',
+                },
+                {
+                    date: '2016-05-01',
+                    name: 'Tom',
+                    address: 'No. 189, Grove St, Los Angeles',
+                    tag: 'Office',
                 },
             ],
         };
@@ -394,6 +490,9 @@ export default {
         },
         clearFilter() {
             this.$refs.table.clearFilter();
+        },
+        filterTag(value, row) {
+            return row.tag === value;
         },
     },
 };

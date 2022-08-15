@@ -280,8 +280,9 @@ function useStyle<T>(
     }
 
     // 监听表格头部是否显示
-    const tableHeader: HTMLElement = table.refs.header;
-    if (props.showHeader && tableHeader.offsetHeight !== oldHeaderHeight) {
+    const tableHeader: HTMLElement = table.refs.header || {};
+
+    if (tableHeader && (props.showHeader && tableHeader.offsetHeight !== oldHeaderHeight)) {
       shouldUpdateLayout = true;
     }
 

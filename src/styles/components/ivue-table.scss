@@ -20,6 +20,7 @@ $name:'ivue-table';
   // 行
   .cell {
     display: flex;
+    flex-wrap: wrap;
     box-sizing: border-box;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -143,6 +144,25 @@ $name:'ivue-table';
     border-bottom: 1px solid $border-color;
   }
 
+  // 排序
+  .is-sortable {
+    cursor: pointer;
+  }
+
+  // 升序
+  .ascending {
+    .#{$name}-header--ascending {
+      color: $primary-color;
+    }
+  }
+
+  // 降序
+  .descending {
+    .#{$name}-header--descending {
+      color: $primary-color;
+    }
+  }
+
   // 头部
   &-header {
     table-layout: fixed;
@@ -177,23 +197,6 @@ $name:'ivue-table';
       }
     }
 
-    .is-sortable {
-      cursor: pointer;
-    }
-
-    // 升序
-    .ascending {
-      .#{$name}-header--ascending {
-        color: $primary-color;
-      }
-    }
-
-    // 降序
-    .descending {
-      .#{$name}-header--descending {
-        color: $primary-color;
-      }
-    }
   }
 
   // 边框

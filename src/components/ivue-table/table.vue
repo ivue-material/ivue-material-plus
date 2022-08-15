@@ -56,6 +56,16 @@
                             :columns="store.states.columns.value"
                             :table-layout="tableLayout"
                         ></ivue-colgroup>
+                        <!-- auto 头部 -->
+
+                        <table-header
+                            :border="border"
+                            :defaultSort="defaultSort"
+                            :store="store"
+                            @on-drag-visible="handleDragVisible"
+                            v-if="showHeader && tableLayout === 'auto'"
+                        ></table-header>
+
                         <!-- 内容 -->
                         <table-body
                             :store="store"
