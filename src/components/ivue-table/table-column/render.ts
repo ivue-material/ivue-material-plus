@@ -109,8 +109,10 @@ function useRender<T>(
 
   // 列渲染
   const columnRender = (column: TableColumnCtx<T>) => {
+    // renderHeader 属性不推荐使用。
+
     // 不是多选框
-    if ((column.type !== 'selection') && (column.type !== 'index')) {
+    if (!props.renderHeader && (column.type !== 'selection') && (column.type !== 'index')) {
       column.renderHeader = (scope) => {
         vm.columnConfig.value['label'];
 

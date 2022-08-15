@@ -1,11 +1,11 @@
 <template>
     <div>
-        <!-- <h1>基础表格</h1> -->
-        <!-- <ivue-table :data="tableData" style="width: 100%">
-            <ivue-table-column prop="date" label="Date"  align="center"></ivue-table-column>
-            <ivue-table-column prop="name" label="Name" align="right"  headerAlign="center"></ivue-table-column>
-            <ivue-table-column prop="address" label="Address" ></ivue-table-column>
-        </ivue-table>-->
+        <h1>基础表格</h1>
+        <ivue-table :data="tableData" style="width: 100%" resizable border>
+            <ivue-table-column prop="date" label="Date" width="180" sortable></ivue-table-column>
+            <ivue-table-column prop="name" label="Name" width="180"></ivue-table-column>
+            <ivue-table-column prop="address" label="Address"></ivue-table-column>
+        </ivue-table>
         <!-- <h1>带斑马纹表格</h1>
         <ivue-table :data="tableData" stripe style="width: 100%">
             <ivue-table-column prop="date" label="Date" width="180"></ivue-table-column>
@@ -186,7 +186,7 @@
             <ivue-table-column prop="address" label="Address"></ivue-table-column>
         </ivue-table>-->
 
-        <h1>表格布局</h1>
+        <!-- <h1>表格布局</h1>
         <ivue-table :data="tableData3" tableLayout="auto">
             <ivue-table-column
                 prop="date"
@@ -226,11 +226,21 @@
                   <template #default="scope">插槽{{ scope.row }}</template>
             </ivue-table-column>
             <ivue-table-column prop="address" label="Address"></ivue-table-column>
-        </ivue-table>
+        </ivue-table> -->
+
+        <!-- <h1>自定义索引</h1>
+        <ivue-table :data="tableData3" style="width: 100%">
+            <ivue-table-column type="index" :index="indexMethod"></ivue-table-column>
+            <ivue-table-column prop="date" label="Date" width="180" :renderHeader="renderHeader"></ivue-table-column>
+            <ivue-table-column prop="name" label="Name" width="180"></ivue-table-column>
+            <ivue-table-column prop="address" label="Address"></ivue-table-column>
+        </ivue-table>-->
     </div>
 </template>
 
 <script>
+import { h } from 'vue';
+
 export default {
     data() {
         return {
@@ -493,6 +503,13 @@ export default {
         },
         filterTag(value, row) {
             return row.tag === value;
+        },
+        indexMethod(index) {
+            return index * 2;
+        },
+        renderHeader() {
+            console.log('renderHeader');
+            return h('div', {}, 'renderHeader');
         },
     },
 };

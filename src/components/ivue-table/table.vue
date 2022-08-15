@@ -56,8 +56,8 @@
                             :columns="store.states.columns.value"
                             :table-layout="tableLayout"
                         ></ivue-colgroup>
-                        <!-- auto 头部 -->
 
+                        <!-- auto 头部 -->
                         <table-header
                             :border="border"
                             :defaultSort="defaultSort"

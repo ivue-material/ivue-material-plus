@@ -110,7 +110,10 @@ export default defineComponent({
     const {
       handleSortClick,
       handleHeaderClick,
-      handleFilterClick
+      handleFilterClick,
+      handleMouseDown,
+      handleMouseMove,
+      handleMouseOut
     } = useEvent(props as TableHeaderProps<unknown>, emit);
 
     // 布局改变监听
@@ -241,7 +244,19 @@ export default defineComponent({
           onClick: ($event) => {
             // 头部点击
             handleHeaderClick($event, column);
-          }
+          },
+          // 鼠标按下
+          onMousedown: ($event) => {
+            handleMouseDown($event, column);
+          },
+          // 鼠标移动
+          onMousemove: ($event) => {
+            handleMouseMove($event, column);
+          },
+          // 鼠标退出
+          onMouseout: () => {
+            handleMouseOut();
+          },
         }, [
           // cell
           h('div',
@@ -254,14 +269,19 @@ export default defineComponent({
                   : '',
               ]
             },
-            [
-              // 渲染头部
-              renderHeader(column, cellIndex),
-              // 排序
-              renderSortable(column),
-              // 渲染过滤
-              renderFilter(column)
-            ]
+            h('div',
+              {
+                class: 'cell-content'
+              },
+              [
+                // 渲染头部
+                renderHeader(column, cellIndex),
+                // 排序
+                renderSortable(column),
+                // 渲染过滤
+                renderFilter(column)
+              ]
+            )
           )
         ]);
       });

@@ -29,6 +29,12 @@ $name:'ivue-table';
     line-height: 23px;
     padding: 0 12px;
     transition: all 0.2s ease-in-out;
+
+    &-content {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+    }
   }
 
   .highlight {

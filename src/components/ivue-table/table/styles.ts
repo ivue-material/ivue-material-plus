@@ -228,7 +228,7 @@ function useStyle<T>(
 
   // 拖拽显示
   const handleDragVisible = (visible: boolean) => {
-    // dragging.value = visible;
+    dragging.value = visible;
   };
 
   // 更新布局
