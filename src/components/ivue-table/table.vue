@@ -30,7 +30,7 @@
                         :defaultSort="defaultSort"
                         :store="store"
                         @on-drag-visible="handleDragVisible"
-                        ref="tableHeaderRef"
+                        ref="tableHeaderContent"
                     ></table-header>
                 </table>
             </div>
@@ -111,9 +111,10 @@ import TableHeader from './table-header';
 import TableBody from './table-body';
 import IvueScrollbar from '../ivue-scrollbar/index.vue';
 
+import defaultProps from './table/defaults';
+
 // ts
 import type { Table } from './table/defaults';
-import defaultProps from './table/defaults';
 import type { TableColumnCtx } from './table-column/defaults';
 
 const prefixCls = 'ivue-table';
@@ -133,6 +134,7 @@ export default defineComponent({
         'on-current-change',
         'on-header-click',
         'on-sort-change',
+        'on-filter-change',
     ],
     setup(props) {
         type Row = typeof props.data[number];
@@ -202,10 +204,18 @@ export default defineComponent({
         const {
             // 单选选择当前行
             setCurrentRow,
+            // 返回当前选中的行
+            getSelectionRows,
             // 多选选择的行
             toggleRowSelection,
             // 清除多选选择行
             clearSelection,
+            // 用于清空排序条件，数据会恢复成未排序的状态
+            clearSort,
+            // 手动排序表格,参数 prop 属性指定排序列 order 指定排序顺序
+            sort,
+            // 传入由columnKey 组成的数组以清除指定列的过滤条件
+            clearFilter,
         } = useUtils<Row>(store);
 
         // computed
@@ -270,15 +280,17 @@ export default defineComponent({
             };
 
             // 初始化过滤的数据
-            store.states.columns.value.forEach((column: TableColumnCtx<T>) => {
-                if (column.filteredValue && column.filteredValue.length) {
-                    table.store.commit('filterChange', {
-                        column,
-                        values: column.filteredValue,
-                        silent: true,
-                    });
+            store.states.columns.value.forEach(
+                (column: TableColumnCtx<any>) => {
+                    if (column.filteredValue && column.filteredValue.length) {
+                        table.store.commit('filterChange', {
+                            column,
+                            values: column.filteredValue,
+                            silent: true,
+                        });
+                    }
                 }
-            });
+            );
 
             // 初始化完成
             table.$ready = true;
@@ -324,7 +336,11 @@ export default defineComponent({
             handleDragVisible,
             setCurrentRow,
             toggleRowSelection,
+            getSelectionRows,
             clearSelection,
+            clearSort,
+            sort,
+            clearFilter,
         };
     },
     components: {

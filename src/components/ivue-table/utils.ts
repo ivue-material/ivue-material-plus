@@ -360,7 +360,7 @@ export const getColumnByCell = <T>(
   return null;
 };
 
-// 寻找当前单元格
+// 通过id寻找对应的列数据
 export const getColumnById = <T>(
   // 列数组
   table: {
@@ -378,6 +378,34 @@ export const getColumnById = <T>(
       column = item;
     }
   });
+
+  return column;
+};
+
+// 通过key寻找对应的列数据
+export const getColumnByKey = function <T>(
+  table: {
+    columns: TableColumnCtx<T>[]
+  },
+  columnKey: string
+): TableColumnCtx<T> {
+  let column = null;
+
+  for (let i = 0; i < table.columns.length; i++) {
+    const item = table.columns[i];
+
+    // 没有设置columnKey
+    if(!item.columnKey) {
+      throw('column does not have columnKey set');
+    }
+
+    // 是否有相同的key->对应的列
+    if (item.columnKey === columnKey) {
+      column = item;
+
+      break;
+    }
+  }
 
   return column;
 };
@@ -592,18 +620,18 @@ export const orderBy = <T>(
       key: getKey ? getKey(value, index) : null,
     };
   })
-  // 排序
-  .sort((a, b) => {
-    let order = sort(a, b);
+    // 排序
+    .sort((a, b) => {
+      let order = sort(a, b);
 
-    // 是否需要排序
-    if (!order) {
-      // make stable https://en.wikipedia.org/wiki/Sorting_algorithm#Stability
-      order = a.index - b.index;
-    }
+      // 是否需要排序
+      if (!order) {
+        // make stable https://en.wikipedia.org/wiki/Sorting_algorithm#Stability
+        order = a.index - b.index;
+      }
 
-    return order * +reverse;
-  })
-  // 返回当前行值
-  .map((item) => item.value);
+      return order * +reverse;
+    })
+    // 返回当前行值
+    .map((item) => item.value);
 };

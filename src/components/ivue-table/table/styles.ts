@@ -233,6 +233,11 @@ function useStyle<T>(
 
   // 更新布局
   const updateLayout = () => {
+    // 高度是否有变化更新高度
+    if (shouldUpdateHeight.value) {
+      layout.updateTableContentHeight();
+    }
+
     // 更新列的宽度
     layout.updateColumnsWidth();
 

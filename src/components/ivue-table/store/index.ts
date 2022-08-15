@@ -70,6 +70,8 @@ function useStore<T>() {
       states.data.value = data;
       states._data.value = data;
 
+      // 根据 filters 与 sort 去过滤 data
+      vm.store.handleExecQueryData();
 
       // 数据变化，更新部分数据。
       // 没有使用 computed，而是手动更新部分数据 https://github.com/vuejs/vue/issues/6660#issuecomment-331417140
@@ -103,7 +105,6 @@ function useStore<T>() {
         vm.store.scheduleLayout();
       }
     },
-
     // 用于多选表格，切换全选和全不选
     toggleAllSelection() {
       vm.store.toggleAllSelection();
@@ -152,6 +153,7 @@ function useStore<T>() {
         // 仅对 type=selection 的列有效，类型为 Function，
         // Function 的返回值用来决定这一行的 CheckBox 是否可以勾选
         states.selectable.value = column.selectable;
+
         // 保存数据更新前选中的值
         states.reserveSelection.value = column.reserveSelection;
       }
@@ -228,7 +230,7 @@ function useStore<T>() {
         states.sortProp.value = null;
       }
 
-      //  根据 filters 与 sort 去过滤 data
+      // 根据 filters 与 sort 去过滤 data
       vm.store.handleExecQueryData(false);
 
       // 没有选项不是初始化
@@ -270,14 +272,18 @@ function useStore<T>() {
     filterChange(states: states, options: Filter<T>) {
       const { column, values, silent } = options;
 
-      console.log('过滤改变', values);
       const newFilters = vm.store.updateFilters(column, values);
-      // instance.store.execQuery()
 
-      // if (!silent) {
-      //   instance.emit('filter-change', newFilters)
-      // }
-      // instance.store.updateTableScrollY()
+      //  根据 filters 与 sort 去过滤 data
+      vm.store.handleExecQueryData();
+
+      // 是否不执行发送事件
+      if (!silent) {
+        vm.emit('on-filter-change', newFilters);
+      }
+
+      // 更新y轴滚动高度
+      vm.store.updateTableScrollY();
     }
   };
 
@@ -293,7 +299,6 @@ function useStore<T>() {
     else {
       throw new Error(`Action not found: ${String(name)}`);
     }
-
   };
 
   // 更新y轴滚动高度
@@ -318,5 +323,6 @@ class HelperStore<T> {
 }
 
 type Store<T> = HelperStore<T>['Return']
+type StoreFilter = Record<string, string[]>
 
-export type { Store, WatcherPropsData };
+export type { Store, WatcherPropsData, StoreFilter };

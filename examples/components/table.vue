@@ -95,8 +95,7 @@
         <!-- <h1>多选</h1>
         <ivue-table
             ref="table"
-            :data="tableData"
-            :rowKey="getRowKey"
+            :data="tableData3"
             style="width: 100%"
             @on-selection-change="handleonSelectionChange"
         >
@@ -109,7 +108,7 @@
         <ivue-button @click="toggleSelection()">Clear selection</ivue-button>
         <ivue-button @click="updata()">Updata</ivue-button>
         <ivue-button @click="updata1()">Updata1</ivue-button>
-        <ivue-button @click="updata2()">Updata2</ivue-button>-->
+        <ivue-button @click="updata2()">Updata2</ivue-button> -->
 
         <!-- <h1>排序</h1>
         <ivue-table
@@ -134,11 +133,14 @@
         </ivue-table>-->
 
         <h1>筛选</h1>
+        <!-- filterPlacement="right" -->
         <ivue-table ref="table" :data="tableData4" style="width: 100%">
             <ivue-table-column
                 prop="date"
                 label="Date"
                 width="180"
+                sortable
+                column-key="date"
                 :filters="[
                     { text: '2016-05-01', value: '2016-05-01' },
                     { text: '2016-05-02', value: '2016-05-02' },
@@ -146,11 +148,15 @@
                     { text: '2016-05-04', value: '2016-05-04' },
                 ]"
                 :filter-method="filterHandler"
-                filter-placement="bottom-end"
+                :filterMultiple="false"
+
             ></ivue-table-column>
             <ivue-table-column prop="name" label="Name" width="180"></ivue-table-column>
             <ivue-table-column prop="address" label="Address"></ivue-table-column>
         </ivue-table>
+
+        <button @click="resetDateFilter">reset date filter</button>
+        <button @click="clearFilter">reset all filters</button>
     </div>
 </template>
 
@@ -309,13 +315,20 @@ export default {
             console.log('handleonSelectionChange', value);
         },
         toggleSelection(rows) {
-            if (rows) {
-                rows.forEach((row) => {
-                    this.$refs.table.toggleRowSelection(row, undefined);
-                });
-            } else {
-                this.$refs.table.clearSelection();
-            }
+            setTimeout(() => {
+                console.log(
+                    'getSelectionRows',
+                    this.$refs.table.getSelectionRows()
+                );
+            });
+
+            // if (rows) {
+            //     rows.forEach((row) => {
+            //         this.$refs.table.toggleRowSelection(row, undefined);
+            //     });
+            // } else {
+            //     this.$refs.table.clearSelection();
+            // }
         },
         selectable(row, index) {
             if (index === 2) {
@@ -375,6 +388,12 @@ export default {
         filterHandler(value, row, column) {
             const property = column['property'];
             return row[property] === value;
+        },
+        resetDateFilter() {
+            this.$refs.table.clearFilter(['date']);
+        },
+        clearFilter() {
+            this.$refs.table.clearFilter();
         },
     },
 };

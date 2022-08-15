@@ -426,6 +426,34 @@ $name:'ivue-table';
       }
     }
 
+    // 筛选单选列表
+    &-list {
+      padding: 5px 0;
+      margin: 0;
+      list-style: none;
+      min-width: 100px;
+
+      &--item {
+        line-height: 36px;
+        padding: 0 10px;
+        cursor: pointer;
+        font-size: 14px;
+        transition: all $ivue-transition-default;
+
+        &:hover {
+          color: $primary-color;
+          background: rgba(91, 142, 255, .1);
+        }
+      }
+
+      // 激活
+      &--active {
+        color: $white-color !important;
+        background: $primary-color !important;
+        ;
+      }
+    }
+
     .ivue-scrollbar-wrapper {
       max-height: 280px;
     }

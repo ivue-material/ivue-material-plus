@@ -29,7 +29,7 @@ if (window.__VUE_DEVTOOLS_GLOBAL_HOOK__) {
 
 app.use(router)
 app.use(IVue, {
-  capture: false,
+  // capture: false,
 })
 
 

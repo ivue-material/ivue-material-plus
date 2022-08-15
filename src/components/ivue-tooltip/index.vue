@@ -1,7 +1,7 @@
 <template>
     <div
         :class="prefixCls"
-        v-click-outside[capture]="handleClickOutside"
+        v-click-outside[data.capture]="handleClickOutside"
         @click="handleClickShowPopper"
         @mouseenter="handleMouseenter"
         @mouseleave="handleMouseleave"
@@ -198,6 +198,7 @@ export default defineComponent({
         const data = reactive<{
             timeout: any;
             zIndex: number;
+            capture: boolean;
         }>({
             /**
              * 延迟
@@ -211,6 +212,12 @@ export default defineComponent({
              * @type {Number}
              */
             zIndex: 0,
+              /**
+             * 是否开启 capture 模式，也可通过全局配置
+             *
+             * @type {Boolean}
+             */
+            capture: !proxy.$IVUE ? props.capture : proxy.$IVUE.capture,
         });
 
         // onMounted

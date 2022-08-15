@@ -213,7 +213,7 @@ export default {
   */
   filterPlacement: {
     type: String,
-    default: ''
+    default: 'bottom-start'
   },
   /**
    * 如果设置了 type=index，可以通过传递 index 属性来自定义索引

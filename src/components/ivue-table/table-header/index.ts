@@ -4,7 +4,8 @@ import {
   inject,
   getCurrentInstance,
   onMounted,
-  nextTick
+  nextTick,
+  ref
 } from 'vue';
 import IvueIcon from '../../ivue-icon/index.vue';
 
@@ -88,6 +89,11 @@ export default defineComponent({
     // inject
     const IvueTable: any = inject(prefixCls);
 
+    // data
+
+    // 过滤的列节点
+    const filterPanels = ref({});
+
     const {
       // 获取当前列的行数
       columnRows,
@@ -114,6 +120,8 @@ export default defineComponent({
       handleColumnsChange,
       handleScrollableWidthChange
     };
+
+    vm.filterPanels = filterPanels;
 
     // methods
 
@@ -191,6 +199,8 @@ export default defineComponent({
           column,
           // store
           store: props.store,
+          // 过滤弹出框的定位
+          placement: column.filterPlacement,
           // 更新列数据
           upDataColumn: (key: string, value: boolean) => {
             column[key] = value;
@@ -268,6 +278,9 @@ export default defineComponent({
     });
 
     return {
+      // data
+      filterPanels,
+
       // computed
       isGroup,
       columnRows,

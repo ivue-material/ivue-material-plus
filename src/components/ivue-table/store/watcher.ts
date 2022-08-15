@@ -12,13 +12,16 @@ import {
   getKeysMap,
   getRowIdentity,
   toggleRowStatus,
-  orderBy
+  orderBy,
+  getColumnById,
+  getColumnByKey
 } from '../utils';
 
 // ts
 import type { Ref } from 'vue';
 import type { TableColumnCtx } from '../table-column/defaults';
-import type { Table, } from '../table/defaults';
+import type { Table } from '../table/defaults';
+import type { StoreFilter } from './index';
 
 
 // 扁平化数组
@@ -121,6 +124,13 @@ function useWatcher<T>() {
 
   // 过滤的数据
   const filteredData = ref(null);
+
+  // 选择过滤的列
+  // 例子
+  // 列id: [
+  //   选择过滤的数据
+  // ]
+  const filters: Ref<StoreFilter> = ref({});
 
   // methods
 
@@ -288,6 +298,11 @@ function useWatcher<T>() {
   // 选择多选
   const isSelected = (row) => {
     return selection.value.includes(row);
+  };
+
+  // 多选返回当前选中的行
+  const getSelectionRows = () => {
+    return selection.value || [];
   };
 
   // 多选选择的行
@@ -469,19 +484,17 @@ function useWatcher<T>() {
 
   // 根据 filters 与 sort 去过滤 data
   const handleExecQueryData = (filter = true) => {
-    filteredData.value = unref(_data);
-
     // 过滤数据
     if (filter) {
-      handleFilter();
+      initFilterData();
     }
 
     // 排序数据
-    handleSortData();
+    initSortData();
   };
 
   // 排序数据
-  const handleSortData = () => {
+  const initSortData = () => {
     data.value = sortData(filteredData.value, {
       // 需要排序的列
       sortingColumn: sortingColumn.value,
@@ -493,26 +506,36 @@ function useWatcher<T>() {
   };
 
   // 过滤数据
-  const handleFilter = () => {
-    const sourceData = unref(_data);
+  const initFilterData = () => {
+    let sourceData = unref(_data);
 
-    // Object.keys(filters.value).forEach((columnId) => {
-    //   const values = filters.value[columnId];
-    //   if (!values || values.length === 0) return;
-    //   const column = getColumnById(
-    //     {
-    //       columns: columns.value,
-    //     },
-    //     columnId
-    //   );
-    //   if (column && column.filterMethod) {
-    //     sourceData = sourceData.filter((row) => {
-    //       return values.some((value) =>
-    //         column.filterMethod.call(null, value, row, column)
-    //       );
-    //     });
-    //   }
-    // });
+    // 循环列
+    Object.keys(filters.value).forEach((columnId) => {
+      // 列的值->选择过滤的数据
+      const values = filters.value[columnId];
+
+      // 没有选择数据
+      if (!values || values.length === 0) {
+        return;
+      }
+
+      // 根据当前选择需要筛选的列id -> 获取表格中的当前选择列数据
+      const column = getColumnById(
+        {
+          columns: columns.value,
+        },
+        columnId
+      );
+
+      // 是否有自定义过滤方法
+      if (column && column.filterMethod) {
+        sourceData = sourceData.filter((row) => {
+          return values.some((value) =>
+            column.filterMethod.call(null, value, row, column)
+          );
+        });
+      }
+    });
 
     filteredData.value = sourceData;
   };
@@ -548,22 +571,111 @@ function useWatcher<T>() {
       columns = [columns];
     }
 
-
-    const obj: any = {
-      value: {}
-    };
+    const obj: any = {};
 
     // 获取列表数据
     columns.forEach((item) => {
-      obj.value[`${item.id}`] = values;
-
+      filters.value[`${item.id}`] = values;
 
       obj[item.columnKey || item.id] = values;
     });
 
-
     return obj;
   };
+
+  // 用于清空排序条件，数据会恢复成未排序的状态
+  const clearSort = () => {
+    // 没有排序
+    if (!sortingColumn.value) {
+      return;
+    }
+
+    // 更新排序属性
+    updateSort(null, null, null);
+
+    vm.store.commit('changeSortCondition', {
+      silent: true,
+    });
+
+  };
+
+  // 传入由columnKey 组成的数组以清除指定列的过滤条件
+  //  如果没有参数，清除所有过滤器
+  const clearFilter = (columnKeys) => {
+    const { tableHeaderContent } = vm.refs;
+
+    // 没有头部
+    if (!tableHeaderContent) {
+      return;
+    }
+
+    // 当前有哪些过滤列表
+    const panels = Object.assign({}, tableHeaderContent.filterPanels);
+
+    const keys = Object.keys(panels);
+
+    // 没有过滤列表
+    if (!keys.length) {
+      return;
+    }
+
+    // 清除指定列的过滤条件
+    if (typeof columnKeys === 'string') {
+      columnKeys = [columnKeys];
+    }
+
+    // 有过滤条件
+    if (Array.isArray(columnKeys)) {
+      const _columns = columnKeys.map((key) =>
+        getColumnByKey(
+          {
+            columns: columns.value,
+          },
+          key
+        )
+      );
+
+      // 清空过滤的值
+      keys.forEach((key) => {
+
+        const column = _columns.find((col) => col.id === key);
+
+        // 清空过滤的值
+        if (column) {
+          column.filteredValue = [];
+        }
+      });
+
+      // 发送事件 过滤改变
+      vm.store.commit('filterChange', {
+        column: _columns,
+        values: [],
+        silent: true,
+        multi: true,
+      });
+
+    }
+    // 没有过滤条件清空全部过滤列表
+    else {
+      // 清空全部过滤列表
+      keys.forEach((key) => {
+        const column = columns.value.find((col) => col.id === key);
+        if (column) {
+          column.filteredValue = [];
+        }
+      });
+
+      filters.value = {};
+
+      // 发送事件 过滤改变
+      vm.store.commit('filterChange', {
+        column: {},
+        values: [],
+        silent: true,
+      });
+    }
+  };
+
 
 
   return {
@@ -585,6 +697,9 @@ function useWatcher<T>() {
     updateSort,
     assertRowKey,
     updateFilters,
+    clearSort,
+    clearFilter,
+    getSelectionRows,
     // 状态
     states: {
       data,
