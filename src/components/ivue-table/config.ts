@@ -177,6 +177,16 @@ export function treeCellPrefix<T>(
 
   // 展开行
   if (typeof treeNode.expanded === 'boolean' && !treeNode.noLazyChildren) {
+    const expandClasses = [];
+
+    ele.push(
+      h(
+        'div',
+        {
+          class: expandClasses
+        }
+      )
+    );
   }
   // 其他
   else {
