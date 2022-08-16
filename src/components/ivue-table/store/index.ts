@@ -77,6 +77,13 @@ function useStore<T>() {
       // 没有使用 computed，而是手动更新部分数据 https://github.com/vuejs/vue/issues/6660#issuecomment-331417140
       vm.store.updateCurrentRowData();
 
+      // 更新展开行
+      vm.store.updateExpandRows();
+
+      // 更新树数据
+      vm.store.updateTreeData(
+        vm.store.states.defaultExpandAll.value
+      );
 
       // 保存数据更新前选中的值
       if (unref(states.reserveSelection)) {

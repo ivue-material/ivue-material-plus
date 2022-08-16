@@ -1,7 +1,7 @@
 import {
   inject,
   ref,
-  getCurrentInstance
+  getCurrentInstance,
 } from 'vue';
 
 import { hasClass, removeClass, addClass } from '../../../utils/assist';
@@ -129,25 +129,16 @@ function useEvent<T>(props: TableHeaderProps<T>, emit) {
 
   // 头部点击
   const handleHeaderClick = (event: Event, column: TableColumnCtx<T>) => {
+    event.preventDefault();
 
     // 没有过滤筛选数据，只有排序
     if (!column.filters && column.sortable) {
       handleSortClick(event, column, false);
     }
-    // 有过滤属性 没有排序
-    else if (column.filterable && !column.sortable) {
-      handleFilterClick(event);
-    }
 
     IvueTable?.emit('on-header-click', column, event);
   };
 
-  // 开启过滤后点击
-  const handleFilterClick = (event: Event) => {
-    // event.stopPropagation();
-
-    // return;
-  };
 
   // 鼠标按下
   const handleMouseDown = (event: MouseEvent, column: TableColumnCtx<T>) => {
@@ -214,7 +205,6 @@ function useEvent<T>(props: TableHeaderProps<T>, emit) {
         return false;
       };
 
-
       // 鼠标移动
       const handleDocumentMouseMove = (event: MouseEvent) => {
         // 当前触发点相对浏览器可视区域左距离 - 开始拖动时 触发点相对浏览器可视区域左距离
@@ -223,8 +213,9 @@ function useEvent<T>(props: TableHeaderProps<T>, emit) {
         // 可拖动最大值
         let maxLeft = (dragState.value as any).startLeft + deltaLeft;
 
-        if(maxLeft >= tableDom.offsetWidth - 30) {
-          maxLeft = tableDom.offsetWidth - 30;
+        // 最大表格宽度
+        if (maxLeft >= tableDom.offsetWidth) {
+          maxLeft = tableDom.offsetWidth;
         }
 
         // minLeft ｜ maxLeft
@@ -288,6 +279,7 @@ function useEvent<T>(props: TableHeaderProps<T>, emit) {
         // 开启document拖拽事件
         document.ondragstart = null;
 
+        // 删除样式
         setTimeout(() => {
           removeClass(currentColumnDom, 'noclick');
         }, 0);
@@ -326,6 +318,7 @@ function useEvent<T>(props: TableHeaderProps<T>, emit) {
       // 当前头部的大小
       const rect = target.getBoundingClientRect();
 
+      // body样式
       const bodyStyle = document.body.style;
 
       // dom宽度 > 12px  && dom右边距离body的距离 - 当前手势距离窗口的距离 < 8px
@@ -345,7 +338,11 @@ function useEvent<T>(props: TableHeaderProps<T>, emit) {
         bodyStyle.cursor = '';
 
         // 是否有排序
-        if (hasClass(target, 'is-sortable')) {
+        if (hasClass(target, 'is-sortable') && column.filterable) {
+          target.style.cursor = 'inherit';
+        }
+        // 是否有排序
+        else if (hasClass(target, 'is-sortable')) {
           target.style.cursor = 'pointer';
         }
 
@@ -363,7 +360,6 @@ function useEvent<T>(props: TableHeaderProps<T>, emit) {
   return {
     handleSortClick,
     handleHeaderClick,
-    handleFilterClick,
     handleMouseDown,
     handleMouseMove,
     handleMouseOut

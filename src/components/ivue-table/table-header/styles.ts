@@ -78,6 +78,11 @@ function useStyle<T>(props: TableHeaderProps<T>) {
       classes.push('is-sortable');
     }
 
+    // 过滤
+    if (column.filterable) {
+      classes.push('is-filterable');
+    }
+
     // cell
     classes.push(`${prefixCls}-cell`);
 

@@ -51,9 +51,12 @@ interface TableRefs {
 
 // 树节点
 interface TreeNode {
-  indent?: number
   expanded?: boolean
+  loading?: boolean
   noLazyChildren?: boolean
+  indent?: number
+  level?: number
+  display?: boolean
 }
 
 // 设置表格单元、行和列的布局方式
@@ -161,7 +164,9 @@ interface TableProps<T> {
   // 行的 style 的回调方法，也可以使用一个固定的 Object 为所有行设置一样的 Style
   rowStyle?: ColumnStyle<T>
   // 是否要高亮当前行
-  highlightCurrentRow?: boolean
+  highlightCurrentRow?: boolean,
+  // 以通过该属性设置 Table 目前的展开行
+  expandRowKeys?: any[]
 }
 
 // 行样式
@@ -370,6 +375,14 @@ export default {
   highlightCurrentRow: {
     type: Boolean,
     default: false,
+  },
+  /**
+   * 可以通过该属性设置 Table 目前的展开行
+   *
+   * @type {Array}
+   */
+  expandRowKeys: {
+    type: Array as PropType<TableProps<DefaultRow>['expandRowKeys']>,
   }
 };
 

@@ -28,6 +28,8 @@ function useCurrent<T>(watcherData: WatcherPropsData<T>) {
     if (!data.includes(oldCurrentRow) && oldCurrentRow) {
       // 行数据的key
       if (rowKey) {
+
+        // 获取rowKey对应的数据
         const currentRowKey = getRowIdentity(oldCurrentRow, rowKey);
 
         // 设置当前行数据的key
@@ -61,6 +63,7 @@ function useCurrent<T>(watcherData: WatcherPropsData<T>) {
 
     // 行数据的key
     if (rowKey.value) {
+      // 获取rowKey对应的数据
       _currentRow = (unref(data) || []).find(
         (item) => getRowIdentity(item, rowKey.value) === key
       );
@@ -104,6 +107,7 @@ function useCurrent<T>(watcherData: WatcherPropsData<T>) {
   return {
     updateCurrentRowData,
     updateCurrentRow,
+    setCurrentRowKey,
     states: {
       _currentRowKey,
       currentRow,

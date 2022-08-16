@@ -401,7 +401,8 @@ function useStyle<T>(
         return;
       }
 
-      // store.setCurrentRowKey(`${currentRowKey}`);
+      // 设置当前行的key
+      store.setCurrentRowKey(`${currentRowKey}`);
     },
     {
       immediate: true,
@@ -418,6 +419,12 @@ function useStyle<T>(
   // 监听高度变化设置表格最大高度
   watchEffect(() => {
     layout.setMaxHeight(props.maxHeight);
+  });
+
+  watchEffect(() => {
+    if (props.expandRowKeys) {
+      store.setExpandRowKeysAdapter(props.expandRowKeys);
+    }
   });
 
   return {

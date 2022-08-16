@@ -20,6 +20,7 @@ export const getKeysMap = function <T>(
 
   // arrayMap
   (array || []).forEach((row, index) => {
+    // 获取rowKey对应的数据
     arrayMap[getRowIdentity(row, rowKey)] = { row, index };
   });
 
@@ -27,7 +28,7 @@ export const getKeysMap = function <T>(
 };
 
 
-// 获取行标志
+// 获取rowKey对应的数据
 export const getRowIdentity = <T>(
   row: T,
   rowKey: string | ((row: T) => any)
@@ -395,8 +396,8 @@ export const getColumnByKey = function <T>(
     const item = table.columns[i];
 
     // 没有设置columnKey
-    if(!item.columnKey) {
-      throw('column does not have columnKey set');
+    if (!item.columnKey) {
+      throw ('column does not have columnKey set');
     }
 
     // 是否有相同的key->对应的列
@@ -635,3 +636,56 @@ export const orderBy = <T>(
     // 返回当前行值
     .map((item) => item.value);
 };
+
+// 行树节点
+export function walkTreeNode(
+  root,
+  cb,
+  childrenKey = 'children',
+  lazyKey = 'hasChildren'
+) {
+
+  // 是否有值
+  const isNull = (array) => !(Array.isArray(array) && array.length);
+
+  // 递归方法检查是否还有嵌套的数据
+  function walker(parent, children, level) {
+    cb(parent, children, level);
+
+    children.forEach((item) => {
+      // 懒加载子节点数据
+      if (item[lazyKey]) {
+        cb(item, null, level + 1);
+
+        return;
+      }
+
+      // 子节点数据
+      const children = item[childrenKey];
+
+      // 是否有值
+      if (!isNull(children)) {
+        walker(item, children, level + 1);
+      }
+    });
+  }
+
+  // 原始数据
+  root.forEach((item) => {
+    // 懒加载子节点数据
+    if (item[lazyKey]) {
+      cb(item, null, 0);
+
+      return;
+    }
+
+    // 子节点数据
+    const children = item[childrenKey];
+
+    // 是否有值
+    if (!isNull(children)) {
+      // 递归执行
+      walker(item, children, 0);
+    }
+  });
+}

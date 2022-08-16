@@ -40,6 +40,11 @@ function useUtils<T>(store: Store<T>) {
     store.clearFilter(columnKeys);
   };
 
+  // 切换行展开
+  const toggleRowExpansion = (row: T, expanded: boolean) => {
+    store.toggleRowExpansionAdapter(row, expanded);
+  };
+
   return {
     // 设置当前选择的行
     setCurrentRow,
@@ -54,7 +59,9 @@ function useUtils<T>(store: Store<T>) {
     // 手动排序表格,参数 prop 属性指定排序列 order 指定排序顺序
     sort,
     // 传入由columnKey 组成的数组以清除指定列的过滤条件
-    clearFilter
+    clearFilter,
+    // 切换行展开
+    toggleRowExpansion
   };
 }
 

@@ -1,11 +1,17 @@
 <template>
     <div>
-        <h1>基础表格</h1>
+        <!-- <h1>基础表格</h1>
         <ivue-table :data="tableData" style="width: 100%" resizable border>
-            <ivue-table-column prop="date" label="Date" width="180" sortable></ivue-table-column>
+            <ivue-table-column
+                prop="date"
+                label="Date"
+                width="180"
+                labelClassName="red"
+                class="red"
+            ></ivue-table-column>
             <ivue-table-column prop="name" label="Name" width="180"></ivue-table-column>
             <ivue-table-column prop="address" label="Address"></ivue-table-column>
-        </ivue-table>
+        </ivue-table>-->
         <!-- <h1>带斑马纹表格</h1>
         <ivue-table :data="tableData" stripe style="width: 100%">
             <ivue-table-column prop="date" label="Date" width="180"></ivue-table-column>
@@ -226,7 +232,7 @@
                   <template #default="scope">插槽{{ scope.row }}</template>
             </ivue-table-column>
             <ivue-table-column prop="address" label="Address"></ivue-table-column>
-        </ivue-table> -->
+        </ivue-table>-->
 
         <!-- <h1>自定义索引</h1>
         <ivue-table :data="tableData3" style="width: 100%">
@@ -235,6 +241,49 @@
             <ivue-table-column prop="name" label="Name" width="180"></ivue-table-column>
             <ivue-table-column prop="address" label="Address"></ivue-table-column>
         </ivue-table>-->
+        <!-- <h1>展开行</h1>
+        <ivue-table
+            :data="tableData8"
+            border
+            style="width: 100%"
+            rowKey="date"
+            :expand-row-keys="['31']"
+            row-key="id"
+        >
+            <ivue-table-column type="expand">
+                <template #default="props">
+                    <div>
+                        <p>State: {{ props.row.state }}</p>
+                        <p>City: {{ props.row.city }}</p>
+                        <p>Address: {{ props.row.address }}</p>
+                        <p>Zip: {{ props.row.zip }}</p>
+                        <h3>Family</h3>
+                        <ivue-table :data="props.row.family" border>
+                            <ivue-table-column label="Name" prop="name"></ivue-table-column>
+                            <ivue-table-column label="State" prop="state"></ivue-table-column>
+                            <ivue-table-column label="City" prop="city"></ivue-table-column>
+                            <ivue-table-column label="Address" prop="address"></ivue-table-column>
+                            <ivue-table-column label="Zip" prop="zip"></ivue-table-column>
+                        </ivue-table>
+                    </div>
+                </template>
+            </ivue-table-column>
+            <ivue-table-column label="Date" prop="date"></ivue-table-column>
+            <ivue-table-column label="Name" prop="name"></ivue-table-column>
+        </ivue-table>-->
+
+        <!-- <ivue-table :data="tableData8" style="width: 100%" rowKey="date">
+            <ivue-table-column type="expand" >
+                <template #default>122121122121</template>
+            </ivue-table-column>
+            <ivue-table-column label="Date" prop="date"></ivue-table-column>
+            <ivue-table-column label="Name" prop="name"></ivue-table-column>
+        </ivue-table>-->
+
+        <h1>树形数据与懒加载</h1>
+        <ivue-table :data="tableData9" style="width: 100%" default-expand-all border  rowKey="id">
+            <ivue-table-column prop="date" label="date" sortable width="180"></ivue-table-column>
+        </ivue-table>
     </div>
 </template>
 
@@ -380,6 +429,271 @@ export default {
                     tag: 'Office',
                 },
             ],
+            tableData7: [
+                {
+                    date: '2016-05-03',
+                    name: 'Tom',
+                    state: 'California',
+                    city: 'San Francisco',
+                    address: '3650 21st St, San Francisco',
+                    zip: 'CA 94114',
+                    family: [
+                        {
+                            name: 'Jerry',
+                            state: 'California',
+                            city: 'San Francisco',
+                            address: '3650 21st St, San Francisco',
+                            zip: 'CA 94114',
+                        },
+                        {
+                            name: 'Spike',
+                            state: 'California',
+                            city: 'San Francisco',
+                            address: '3650 21st St, San Francisco',
+                            zip: 'CA 94114',
+                        },
+                        {
+                            name: 'Tyke',
+                            state: 'California',
+                            city: 'San Francisco',
+                            address: '3650 21st St, San Francisco',
+                            zip: 'CA 94114',
+                        },
+                    ],
+                },
+                {
+                    date: '2016-05-02',
+                    name: 'Tom',
+                    state: 'California',
+                    city: 'San Francisco',
+                    address: '3650 21st St, San Francisco',
+                    zip: 'CA 94114',
+                    family: [
+                        {
+                            name: 'Jerry',
+                            state: 'California',
+                            city: 'San Francisco',
+                            address: '3650 21st St, San Francisco',
+                            zip: 'CA 94114',
+                        },
+                        {
+                            name: 'Spike',
+                            state: 'California',
+                            city: 'San Francisco',
+                            address: '3650 21st St, San Francisco',
+                            zip: 'CA 94114',
+                        },
+                        {
+                            name: 'Tyke',
+                            state: 'California',
+                            city: 'San Francisco',
+                            address: '3650 21st St, San Francisco',
+                            zip: 'CA 94114',
+                        },
+                    ],
+                },
+                {
+                    date: '2016-05-04',
+                    name: 'Tom',
+                    state: 'California',
+                    city: 'San Francisco',
+                    address: '3650 21st St, San Francisco',
+                    zip: 'CA 94114',
+                    family: [
+                        {
+                            name: 'Jerry',
+                            state: 'California',
+                            city: 'San Francisco',
+                            address: '3650 21st St, San Francisco',
+                            zip: 'CA 94114',
+                        },
+                        {
+                            name: 'Spike',
+                            state: 'California',
+                            city: 'San Francisco',
+                            address: '3650 21st St, San Francisco',
+                            zip: 'CA 94114',
+                        },
+                        {
+                            name: 'Tyke',
+                            state: 'California',
+                            city: 'San Francisco',
+                            address: '3650 21st St, San Francisco',
+                            zip: 'CA 94114',
+                        },
+                    ],
+                },
+                {
+                    date: '2016-05-01',
+                    name: 'Tom',
+                    state: 'California',
+                    city: 'San Francisco',
+                    address: '3650 21st St, San Francisco',
+                    zip: 'CA 94114',
+                    family: [
+                        {
+                            name: 'Jerry',
+                            state: 'California',
+                            city: 'San Francisco',
+                            address: '3650 21st St, San Francisco',
+                            zip: 'CA 94114',
+                        },
+                        {
+                            name: 'Spike',
+                            state: 'California',
+                            city: 'San Francisco',
+                            address: '3650 21st St, San Francisco',
+                            zip: 'CA 94114',
+                        },
+                        {
+                            name: 'Tyke',
+                            state: 'California',
+                            city: 'San Francisco',
+                            address: '3650 21st St, San Francisco',
+                            zip: 'CA 94114',
+                        },
+                    ],
+                },
+                {
+                    date: '2016-05-08',
+                    name: 'Tom',
+                    state: 'California',
+                    city: 'San Francisco',
+                    address: '3650 21st St, San Francisco',
+                    zip: 'CA 94114',
+                    family: [
+                        {
+                            name: 'Jerry',
+                            state: 'California',
+                            city: 'San Francisco',
+                            address: '3650 21st St, San Francisco',
+                            zip: 'CA 94114',
+                        },
+                        {
+                            name: 'Spike',
+                            state: 'California',
+                            city: 'San Francisco',
+                            address: '3650 21st St, San Francisco',
+                            zip: 'CA 94114',
+                        },
+                        {
+                            name: 'Tyke',
+                            state: 'California',
+                            city: 'San Francisco',
+                            address: '3650 21st St, San Francisco',
+                            zip: 'CA 94114',
+                        },
+                    ],
+                },
+                {
+                    date: '2016-05-06',
+                    name: 'Tom',
+                    state: 'California',
+                    city: 'San Francisco',
+                    address: '3650 21st St, San Francisco',
+                    zip: 'CA 94114',
+                    family: [
+                        {
+                            name: 'Jerry',
+                            state: 'California',
+                            city: 'San Francisco',
+                            address: '3650 21st St, San Francisco',
+                            zip: 'CA 94114',
+                        },
+                        {
+                            name: 'Spike',
+                            state: 'California',
+                            city: 'San Francisco',
+                            address: '3650 21st St, San Francisco',
+                            zip: 'CA 94114',
+                        },
+                        {
+                            name: 'Tyke',
+                            state: 'California',
+                            city: 'San Francisco',
+                            address: '3650 21st St, San Francisco',
+                            zip: 'CA 94114',
+                        },
+                    ],
+                },
+                {
+                    date: '2016-05-07',
+                    name: 'Tom',
+                    state: 'California',
+                    city: 'San Francisco',
+                    address: '3650 21st St, San Francisco',
+                    zip: 'CA 94114',
+                    family: [
+                        {
+                            name: 'Jerry',
+                            state: 'California',
+                            city: 'San Francisco',
+                            address: '3650 21st St, San Francisco',
+                            zip: 'CA 94114',
+                        },
+                        {
+                            name: 'Spike',
+                            state: 'California',
+                            city: 'San Francisco',
+                            address: '3650 21st St, San Francisco',
+                            zip: 'CA 94114',
+                        },
+                        {
+                            name: 'Tyke',
+                            state: 'California',
+                            city: 'San Francisco',
+                            address: '3650 21st St, San Francisco',
+                            zip: 'CA 94114',
+                        },
+                    ],
+                },
+            ],
+            tableData8: [
+                {
+                    id: 31,
+                    date: '2016-05-01',
+                    name: 'wangxiaohu',
+                },
+                {
+                    id: 32,
+                    date: '2016-05-02',
+                    name: 'wangxiaohu',
+                },
+            ],
+            tableData9: [
+                // {
+                //     id: 1,
+                //     date: '2016-05-02',
+                //     name: 'wangxiaohu',
+                // },
+                // {
+                //     id: 2,
+                //     date: '2016-05-04',
+                //     name: 'wangxiaohu',
+                // },
+                {
+                    id: 3,
+                    date: '2016-05-01',
+                    name: 'wangxiaohu',
+                    children: [
+                        {
+                            id: 31,
+                            date: '2016-05-02',
+                            name: 'wangxiaohu',
+                        },
+                        {
+                            id: 32,
+                            date: '2016-05-03',
+                            name: 'wangxiaohu',
+                        },
+                    ],
+                },
+                // {
+                //     id: 4,
+                //     date: '2016-05-03',
+                //     name: 'wangxiaohu',
+                // },
+            ],
         };
     },
     methods: {
@@ -521,5 +835,9 @@ export default {
 }
 .success-row {
     background-color: #f0f9eb;
+}
+
+.red {
+    background: red;
 }
 </style>

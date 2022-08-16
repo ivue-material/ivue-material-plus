@@ -155,6 +155,12 @@ $name:'ivue-table';
     cursor: pointer;
   }
 
+  // 过滤
+  .is-sortable {
+    cursor: inherit;
+  }
+
+
   // 升序
   .ascending {
     .#{$name}-header--ascending {
@@ -470,6 +476,50 @@ $name:'ivue-table';
     .ivue-tooltip-inner {
       padding: 0;
       border: 1px solid $border-color;
+    }
+  }
+
+  // 展开
+  &--expand {
+
+    // icon
+    &-icon {
+      position: relative;
+      cursor: pointer;
+      color: $arrow-color;
+      font-size: 12px;
+      transition: all $ivue-transition-default;
+      height: 20px;
+      display: flex;
+
+      .ivue-icon {
+        width: auto;
+        height: auto;
+        min-width: auto;
+        font-size: 20px;
+      }
+
+      // 展开完成
+      &__expandend {
+        transform: rotate(90deg);
+      }
+    }
+
+    // 单元格
+    &-cell {
+      transition: all $ivue-transition-default;
+
+      &:hover {
+        background-color: transparent !important;
+      }
+    }
+  }
+
+  // 树节点缩进
+  &-indent {
+    &--placeholder {
+      display: inline-block;
+      width: 20px;
     }
   }
 }

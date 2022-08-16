@@ -145,7 +145,8 @@ export default defineComponent({
         'on-header-click',
         'on-sort-change',
         'on-filter-change',
-        'on-header-dragend'
+        'on-header-dragend',
+        'on-expand-change'
     ],
     setup(props) {
         type Row = typeof props.data[number];
@@ -227,6 +228,8 @@ export default defineComponent({
             sort,
             // 传入由columnKey 组成的数组以清除指定列的过滤条件
             clearFilter,
+            // 切换行展开
+            toggleRowExpansion,
         } = useUtils<Row>(store);
 
         // computed
@@ -352,6 +355,7 @@ export default defineComponent({
             clearSort,
             sort,
             clearFilter,
+            toggleRowExpansion,
         };
     },
     components: {

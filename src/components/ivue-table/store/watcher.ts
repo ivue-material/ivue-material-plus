@@ -191,13 +191,23 @@ function useWatcher<T>() {
   };
 
   // 展开行数据
-  const { states: expandStates } = useExpand({
+  const {
+    toggleRowExpansion,
+    updateExpandRows,
+    setExpandRowKeys,
+    isRowExpanded,
+    states: expandStates
+  } = useExpand({
     data,
     rowKey,
   });
 
   // 嵌套数据
-  const { loadOrToggle, states: treeStates, } = useTree({
+  const {
+    loadOrToggle,
+    updateTreeData,
+    states: treeStates,
+  }:any = useTree({
     data,
     rowKey,
   });
@@ -214,6 +224,7 @@ function useWatcher<T>() {
     const selectedMap = getKeysMap(selection.value, rowKey.value);
 
     data.value.forEach((row) => {
+      // 获取rowKey对应的数据
       const rowId = getRowIdentity(row, rowKey.value);
 
       const rowInfo = selectedMap[rowId];
@@ -272,6 +283,7 @@ function useWatcher<T>() {
   const {
     updateCurrentRowData,
     updateCurrentRow,
+    setCurrentRowKey,
     states: currentData,
   } = useCurrent({
     data,
@@ -677,12 +689,32 @@ function useWatcher<T>() {
   };
 
 
+  // 展开行与 TreeTable 都要使用
+  const toggleRowExpansionAdapter = (row: T, expanded: boolean) => {
+
+    // 是否是展开列
+    const hasExpandColumn = columns.value.some(({ type }) => type === 'expand');
+
+    if (hasExpandColumn) {
+      toggleRowExpansion(row, expanded);
+    }
+    else {
+      // toggleTreeExpansion(row, expanded)
+    }
+  };
+
+  // 适配层，expand-row-keys 在 Expand 与 TreeTable 中都有使用
+  const setExpandRowKeysAdapter = (val: string[]) => {
+    // 这里会触发额外的计算，但为了兼容性，暂时这么做
+    setExpandRowKeys(val);
+    // updateTreeExpandKeys(val)
+  };
+
 
   return {
     _toggleAllSelection,
     toggleAllSelection: null,
     isRowKey,
-    loadOrToggle,
     updateSelectionByRowKey,
     updateColumns,
     scheduleLayout,
@@ -700,6 +732,14 @@ function useWatcher<T>() {
     clearSort,
     clearFilter,
     getSelectionRows,
+    toggleRowExpansion,
+    toggleRowExpansionAdapter,
+    updateExpandRows,
+    setExpandRowKeysAdapter,
+    setCurrentRowKey,
+    isRowExpanded,
+    updateTreeData,
+    loadOrToggle,
     // 状态
     states: {
       data,

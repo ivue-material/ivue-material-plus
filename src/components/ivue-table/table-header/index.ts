@@ -110,7 +110,6 @@ export default defineComponent({
     const {
       handleSortClick,
       handleHeaderClick,
-      handleFilterClick,
       handleMouseDown,
       handleMouseMove,
       handleMouseOut
@@ -308,7 +307,6 @@ export default defineComponent({
       // methods
       renderTh,
       handleColumnsChange,
-      handleFilterClick
     };
 
   },

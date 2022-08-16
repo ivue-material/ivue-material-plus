@@ -2,6 +2,7 @@ import { h } from 'vue';
 import { hasOwn } from '@vue/shared';
 import { get, set } from 'lodash-unified';
 import IvueCheckbox from '../ivue-checkbox/index.vue';
+import IvueIcon from '../ivue-icon/index.vue';
 
 // ts
 import type { VNode } from 'vue';
@@ -136,6 +137,7 @@ export function treeCellPrefix<T>(
   },
   createPlacehoder = false
 ) {
+  console.log('treeNode', treeNode);
 
   // 不是树节点
   if (!treeNode) {
@@ -156,22 +158,33 @@ export function treeCellPrefix<T>(
 
   const callback = (e) => {
     e.stopPropagation();
+
+    // 树形数据与懒加载
     store.loadOrToggle(row);
   };
 
-
+  // 展示树形数据时，树节点的缩进
   if (treeNode.indent) {
+    ele.push(
+      h('span', {
+        class: 'ivue-table-indent',
+        style: {
+          'padding-left': `${treeNode.indent}px`
+        },
+      })
+    );
   }
 
+  // 展开行
   if (typeof treeNode.expanded === 'boolean' && !treeNode.noLazyChildren) {
   }
   // 其他
   else {
-    // ele.push(
-    //   h('span', {
-    //     class: ns.e('placeholder'),
-    //   })
-    // );
+    ele.push(
+      h('span', {
+        class: 'ivue-table-indent--placeholder'
+      })
+    );
   }
 
   return ele;
@@ -252,7 +265,53 @@ export const cellForced = {
       return h('div', {}, [i]);
     },
   },
-  expand: {}
+  expand: {
+    // 渲染头部
+    renderHeader<T>({ column }: { column: TableColumnCtx<T> }) {
+      return column.label || '';
+    },
+    renderCell<T>({
+      row,
+      store,
+      expanded,
+    }: {
+      row: T
+      store: Store<T>
+      expanded: boolean
+    }) {
+      // 切换展开
+      const handleToggleRowExpansion = (event: Event) => {
+        event.stopPropagation();
+
+        // 切换行展开
+        store.toggleRowExpansion(row);
+      };
+
+      return h(
+        'div',
+        {
+          class: [
+            'ivue-table--expand-icon',
+            {
+              ['ivue-table--expand-icon__expandend']: expanded
+            }
+          ],
+          onClick: handleToggleRowExpansion,
+        },
+        {
+          default: () => {
+            return [
+              h(IvueIcon, null, {
+                default: () => 'chevron_right'
+              }),
+            ];
+          },
+        }
+      );
+    },
+    sortable: false,
+    resizable: false,
+  }
 };
 
 // 获取默认的class
