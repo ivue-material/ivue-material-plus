@@ -80,6 +80,7 @@ function useStore<T>() {
       // 更新展开行
       vm.store.updateExpandRows();
 
+      console.log('更新树数据');
       // 更新树数据
       vm.store.updateTreeData(
         vm.store.states.defaultExpandAll.value

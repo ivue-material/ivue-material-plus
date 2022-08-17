@@ -31,7 +31,6 @@ function useExpand<T>(watcherData: WatcherPropsData<T>) {
     }
     // 行key
     else if (rowKey) {
-      console.log('行key------');
       const expandRowsMap = getKeysMap(expandRows.value, rowKey);
 
       expandRows.value = data.reduce((prev: T[], row: T) => {
@@ -65,8 +64,6 @@ function useExpand<T>(watcherData: WatcherPropsData<T>) {
 
   // 设置展开行的key
   const setExpandRowKeys = (rowKeys: string[]) => {
-
-    console.log('设置展开行的key');
     // 检查 rowKey 是否存在
     vm.store.assertRowKey();
 

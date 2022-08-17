@@ -1,6 +1,6 @@
 
 
-import { ref, getCurrentInstance, computed, unref } from 'vue';
+import { ref, getCurrentInstance, computed, unref, watch } from 'vue';
 import { getRowIdentity, walkTreeNode } from '../utils';
 
 // ts
@@ -124,11 +124,39 @@ function useTree<T>(watcherData: WatcherPropsData<T>) {
 
   // 树形数据与懒加载
   const loadOrToggle = (row) => {
-
     // 检查 rowKey 是否存在
-    // vm.store.isRowKey();
-    // vm.store.updateSelectionByRowKey();
+    vm.store.assertRowKey();
 
+    // 获取当前行key
+    const rowKey = watcherData.rowKey.value;
+
+    // 获取rowKey对应的数据
+    const id = getRowIdentity(row, rowKey);
+
+    const data = treeData.value[id];
+
+    // 懒加载
+    if (lazy.value && data && 'loaded' in data && !data.loaded) {
+      loadData(row, id, data);
+    }
+    // 子节点
+    else {
+      toggleTreeExpansion(row, undefined);
+    }
+
+  };
+
+  // 懒加载数据
+  const loadData = (row: T, key: string, treeNode) => {
+    const { load } = vm.props as unknown as TableProps<T>;
+    console.log('load', load);
+
+    // 加载子节点数据的函数 && 没加载完成
+    if (load && !treeData.value[key].loaded) {
+      // 加载中
+      treeData.value[key].loading = true;
+
+    }
   };
 
   // 更新树数据
@@ -138,6 +166,7 @@ function useTree<T>(watcherData: WatcherPropsData<T>) {
   ) => {
     // 格式化后的数据
     const nested = normalizedData.value;
+
     // 懒加载节点
     const normalizedLazyNode_ = normalizedLazyNode.value;
 
@@ -166,6 +195,13 @@ function useTree<T>(watcherData: WatcherPropsData<T>) {
           else {
             return !!(ifExpandAll || oldValue?.expanded);
           }
+        }
+        // 没有改变展开
+        else {
+          // 展开全部 || 可以通过该属性设置 Table 目前的展开行
+          const included = ifExpandAll || (expandRowKeys.value && expandRowKeys.value.includes(key));
+
+          return !!(oldValue?.expanded || included);
         }
       };
 
@@ -219,9 +255,79 @@ function useTree<T>(watcherData: WatcherPropsData<T>) {
     vm.store?.updateTableScrollY();
   };
 
+  // 切换树节点展开
+  const toggleTreeExpansion = (row: T, expanded?: boolean) => {
+    // 检查 rowKey 是否存在
+    vm.store.assertRowKey();
+
+    // 获取当前行key
+    const rowKey = watcherData.rowKey.value;
+
+    // 获取rowKey对应的数据
+    const id = getRowIdentity(row, rowKey);
+
+    // 子节点的数据
+    const data = id && treeData.value[id];
+
+    // 有展开
+    if (id && data && 'expanded' in data) {
+
+      const oldExpanded = data.expanded;
+
+      // 重新赋值
+      expanded = typeof expanded === 'undefined' ? !data.expanded : expanded;
+
+      // 切换展开
+      treeData.value[id].expanded = expanded;
+
+      // 展开有改变
+      if (oldExpanded !== expanded) {
+        vm.emit('on-expand-change', row, expanded);
+      }
+
+      // 更新y轴滚动高度
+      vm.store.updateTableScrollY();
+    }
+  };
+
+  // 更新树节点展开
+  const updateTreeExpandKeys = (value: string[]) => {
+    expandRowKeys.value = value;
+
+    updateTreeData();
+  };
+
+  // watch
+
+  // 监听格式化后的数据
+  watch(
+    () => normalizedData.value,
+    () => {
+      updateTreeData();
+    }
+  );
+
+  // 以通过该属性设置 Table 目前的展开行
+  watch(
+    () => expandRowKeys.value,
+    () => {
+      updateTreeData(true);
+    }
+  );
+
+  // 格式化懒加载节点
+  watch(
+    () => normalizedLazyNode.value,
+    () => {
+      updateTreeData();
+    }
+  );
+
   return {
     loadOrToggle,
     updateTreeData,
+    updateTreeExpandKeys,
+    toggleTreeExpansion,
     states: {
       indent,
       lazy,

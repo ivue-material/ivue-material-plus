@@ -421,6 +421,7 @@ function useStyle<T>(
     layout.setMaxHeight(props.maxHeight);
   });
 
+  // 以通过该属性设置 Table 目前的展开行
   watchEffect(() => {
     if (props.expandRowKeys) {
       store.setExpandRowKeysAdapter(props.expandRowKeys);

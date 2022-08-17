@@ -166,7 +166,9 @@ interface TableProps<T> {
   // 是否要高亮当前行
   highlightCurrentRow?: boolean,
   // 以通过该属性设置 Table 目前的展开行
-  expandRowKeys?: any[]
+  expandRowKeys?: any[],
+  // 加载子节点数据的函数
+  load?: (row: T, treeNode: TreeNode, resolve: (data: T[]) => void) => void
 }
 
 // 行样式
@@ -383,6 +385,14 @@ export default {
    */
   expandRowKeys: {
     type: Array as PropType<TableProps<DefaultRow>['expandRowKeys']>,
+  },
+  /**
+   * 加载子节点数据的函数
+   *
+   * @type {Function}
+   */
+  load: {
+    type: Function as PropType<TableProps<DefaultRow>['load']>
   }
 };
 

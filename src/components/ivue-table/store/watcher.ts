@@ -206,8 +206,10 @@ function useWatcher<T>() {
   const {
     loadOrToggle,
     updateTreeData,
+    updateTreeExpandKeys,
+    toggleTreeExpansion,
     states: treeStates,
-  }:any = useTree({
+  }: any = useTree({
     data,
     rowKey,
   });
@@ -314,7 +316,7 @@ function useWatcher<T>() {
 
   // 多选返回当前选中的行
   const getSelectionRows = () => {
-    return selection.value || [];
+    return (selection.value || []).slice();
   };
 
   // 多选选择的行
@@ -326,12 +328,14 @@ function useWatcher<T>() {
     const changed = toggleRowStatus(selection.value, row, selected);
 
     if (changed) {
+      const newSelection = (selection.value || []).slice();
+
       // 通过api调用时触发
       if (emitChange) {
-        vm.emit('on-select', selection.value || [], row);
+        vm.emit('on-select', newSelection, row);
       }
 
-      vm.emit('on-selection-change', selection.value || []);
+      vm.emit('on-selection-change', newSelection);
     }
   };
 
@@ -695,11 +699,13 @@ function useWatcher<T>() {
     // 是否是展开列
     const hasExpandColumn = columns.value.some(({ type }) => type === 'expand');
 
+    // 展开列
     if (hasExpandColumn) {
       toggleRowExpansion(row, expanded);
     }
+    // 切换树节点展开
     else {
-      // toggleTreeExpansion(row, expanded)
+      toggleTreeExpansion(row, expanded);
     }
   };
 
@@ -707,7 +713,8 @@ function useWatcher<T>() {
   const setExpandRowKeysAdapter = (val: string[]) => {
     // 这里会触发额外的计算，但为了兼容性，暂时这么做
     setExpandRowKeys(val);
-    // updateTreeExpandKeys(val)
+    // 更新树节点展开
+    updateTreeExpandKeys(val);
   };
 
 

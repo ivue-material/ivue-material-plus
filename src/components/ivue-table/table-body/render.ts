@@ -70,9 +70,25 @@ function useRender<T>(props: Partial<TableBodyProps<T>>) {
     // 行样式
     const rowClasses = getRowClass(row, $index);
 
+    let display = true;
+
+    // 是否是子节点数据
+    if (treeRowData) {
+      rowClasses.push(`ivue-table-level-${treeRowData.level}`);
+
+      display = treeRowData.display;
+    }
+
+    // tr 隐藏显示用于树形节点
+    const displayStyle = display
+      ? null
+      : {
+        display: 'none',
+      };
+
     return h('tr', {
       class: rowClasses,
-      style: [getRowStyle(row, $index)],
+      style: [displayStyle, getRowStyle(row, $index)],
       key: getRowKey(row, $index),
       onClick: ($event) => {
         handleClickTr($event, row);

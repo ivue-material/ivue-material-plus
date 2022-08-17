@@ -30,7 +30,7 @@
                     <!-- 描述的信息 -->
                     <div
                         :class="`${prefixCls}-mask__message`"
-                        v-if="file.message "
+                        v-if="file.message"
                     >{{ file.message }}</div>
                 </div>
                 <!-- 删除按钮 -->

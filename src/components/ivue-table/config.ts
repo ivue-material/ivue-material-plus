@@ -1,8 +1,9 @@
-import { h } from 'vue';
+import { h, resolveDirective } from 'vue';
 import { hasOwn } from '@vue/shared';
 import { get, set } from 'lodash-unified';
 import IvueCheckbox from '../ivue-checkbox/index.vue';
 import IvueIcon from '../ivue-icon/index.vue';
+import Loading from './loading';
 
 // ts
 import type { VNode } from 'vue';
@@ -137,7 +138,6 @@ export function treeCellPrefix<T>(
   },
   createPlacehoder = false
 ) {
-  console.log('treeNode', treeNode);
 
   // 不是树节点
   if (!treeNode) {
@@ -145,7 +145,7 @@ export function treeCellPrefix<T>(
     if (createPlacehoder) {
       return [
         h('span', {
-          class: 'ivue-table-placeholder'
+          class: 'ivue-table-indent--placeholder'
         }),
       ];
     }
@@ -177,13 +177,39 @@ export function treeCellPrefix<T>(
 
   // 展开行
   if (typeof treeNode.expanded === 'boolean' && !treeNode.noLazyChildren) {
-    const expandClasses = [];
+    const expandClasses = [
+      'ivue-table--expand-icon',
+      {
+        ['ivue-table--expand-icon__expandend']: treeNode.expanded
+      }
+    ];
+
+    let icon = 'chevron_right';
+
+    // 加载中
+    if (treeNode.loading) {
+      icon = '';
+    }
+
+    // 解析指令
 
     ele.push(
       h(
         'div',
         {
-          class: expandClasses
+          class: expandClasses,
+          onClick: callback,
+        },
+        {
+          default: () => {
+            return [
+              icon ?
+                h(IvueIcon, null, {
+                  default: () => icon
+                }) :
+                h(Loading)
+            ];
+          },
         }
       )
     );

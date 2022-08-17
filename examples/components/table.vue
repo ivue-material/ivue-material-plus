@@ -281,8 +281,21 @@
         </ivue-table>-->
 
         <h1>树形数据与懒加载</h1>
-        <ivue-table :data="tableData9" style="width: 100%" default-expand-all border  rowKey="id">
+        <!-- <ivue-table :data="tableData9" style="width: 100%" border rowKey="id">
             <ivue-table-column prop="date" label="date" sortable width="180"></ivue-table-column>
+            <ivue-table-column prop="name" label="Name" sortable width="180"></ivue-table-column>
+        </ivue-table> -->
+        <ivue-table
+            :data="tableData10"
+            style="width: 100%"
+            border
+            rowKey="id"
+            lazy
+            :load="load"
+            :treeProps="{ children: 'children', hasChildren: 'hasChildren' }"
+        >
+            <ivue-table-column prop="date" label="date" sortable width="180"></ivue-table-column>
+            <ivue-table-column prop="name" label="Name" sortable width="180"></ivue-table-column>
         </ivue-table>
     </div>
 </template>
@@ -661,16 +674,16 @@ export default {
                 },
             ],
             tableData9: [
-                // {
-                //     id: 1,
-                //     date: '2016-05-02',
-                //     name: 'wangxiaohu',
-                // },
-                // {
-                //     id: 2,
-                //     date: '2016-05-04',
-                //     name: 'wangxiaohu',
-                // },
+                {
+                    id: 1,
+                    date: '2016-05-02',
+                    name: 'wangxiaohu',
+                },
+                {
+                    id: 2,
+                    date: '2016-05-04',
+                    name: 'wangxiaohu',
+                },
                 {
                     id: 3,
                     date: '2016-05-01',
@@ -678,21 +691,44 @@ export default {
                     children: [
                         {
                             id: 31,
-                            date: '2016-05-02',
+                            date: '2016-05-01',
                             name: 'wangxiaohu',
                         },
                         {
                             id: 32,
-                            date: '2016-05-03',
+                            date: '2016-05-01',
                             name: 'wangxiaohu',
                         },
                     ],
                 },
-                // {
-                //     id: 4,
-                //     date: '2016-05-03',
-                //     name: 'wangxiaohu',
-                // },
+                {
+                    id: 4,
+                    date: '2016-05-03',
+                    name: 'wangxiaohu',
+                },
+            ],
+            tableData10: [
+                {
+                    id: 1,
+                    date: '2016-05-02',
+                    name: 'wangxiaohu',
+                },
+                {
+                    id: 2,
+                    date: '2016-05-04',
+                    name: 'wangxiaohu',
+                },
+                {
+                    id: 3,
+                    date: '2016-05-01',
+                    name: 'wangxiaohu',
+                    hasChildren: true,
+                },
+                {
+                    id: 4,
+                    date: '2016-05-03',
+                    name: 'wangxiaohu',
+                },
             ],
         };
     },
@@ -824,6 +860,22 @@ export default {
         renderHeader() {
             console.log('renderHeader');
             return h('div', {}, 'renderHeader');
+        },
+        load(row, treeNode, resolve) {
+            setTimeout(() => {
+                resolve([
+                    {
+                        id: 31,
+                        date: '2016-05-01',
+                        name: 'wangxiaohu',
+                    },
+                    {
+                        id: 32,
+                        date: '2016-05-01',
+                        name: 'wangxiaohu',
+                    },
+                ]);
+            }, 1000);
         },
     },
 };

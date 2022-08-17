@@ -20,7 +20,6 @@ $name:'ivue-table';
   // 行
   .cell {
     display: flex;
-    flex-wrap: wrap;
     box-sizing: border-box;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -105,6 +104,16 @@ $name:'ivue-table';
     position: relative;
     text-align: left;
     z-index: 1;
+
+    .ivue-table--expand-icon {
+      width: 20px;
+      height: 23px;
+      align-items: center;
+
+      .ivue-icon {
+        line-height: 23px;
+      }
+    }
   }
 
   // 行居中
@@ -522,7 +531,48 @@ $name:'ivue-table';
       width: 20px;
     }
   }
+
+  &-circular {
+    width: 15px;
+    height: 15px;
+    animation: loading-rotate 2s linear infinite;
+
+    .path {
+      animation: loading-dash 1.5s ease-in-out infinite;
+      stroke-dasharray: 90, 150;
+      stroke-dashoffset: 0;
+      stroke-width: 3;
+      stroke: $arrow-color;
+      stroke-linecap: round;
+    }
+  }
 }
+
+// 滚动
+@keyframes loading-rotate {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+// 圆形滚动样式
+@keyframes loading-dash {
+  0% {
+    stroke-dasharray: 1, 200;
+    stroke-dashoffset: 0;
+  }
+
+  50% {
+    stroke-dasharray: 90, 150;
+    stroke-dashoffset: -40px;
+  }
+
+  100% {
+    stroke-dasharray: 90, 150;
+    stroke-dashoffset: -120px;
+  }
+}
+
 
 // 固定列右边
 .#{$name}.is-scrolling-left,
