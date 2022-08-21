@@ -62,19 +62,30 @@ function useTree<T>(watcherData: WatcherPropsData<T>) {
       return res;
     }
 
-    // keys.forEach((key) => {
-    //   if (lazyTreeNodeMap.value[key].length) {
-    //     const item = { children: [] }
-    //     lazyTreeNodeMap.value[key].forEach((row) => {
-    //       const currentRowKey = getRowIdentity(row, rowKey)
-    //       item.children.push(currentRowKey)
-    //       if (row[lazyColumnIdentifier.value] && !res[currentRowKey]) {
-    //         res[currentRowKey] = { children: [] }
-    //       }
-    //     })
-    //     res[key] = item
-    //   }
-    // })
+    keys.forEach((key) => {
+      // 有懒加载节点
+      if (lazyTreeNodeMap.value[key].length) {
+        const item = {
+          children: []
+        };
+
+        lazyTreeNodeMap.value[key].forEach((row) => {
+          // 获取rowKey对应的数据
+          const currentRowKey = getRowIdentity(row, rowKey);
+
+          item.children.push(currentRowKey);
+
+          // 是否嵌套的懒加载节点
+          if (row[lazyColumnIdentifier.value] && !res[currentRowKey]) {
+            res[currentRowKey] = {
+              children: []
+            };
+          }
+        });
+
+        res[key] = item;
+      }
+    });
 
     return res;
   });
@@ -135,7 +146,7 @@ function useTree<T>(watcherData: WatcherPropsData<T>) {
 
     const data = treeData.value[id];
 
-    // 懒加载
+    // 懒加载 | 没有加载完成
     if (lazy.value && data && 'loaded' in data && !data.loaded) {
       loadData(row, id, data);
     }
@@ -149,13 +160,34 @@ function useTree<T>(watcherData: WatcherPropsData<T>) {
   // 懒加载数据
   const loadData = (row: T, key: string, treeNode) => {
     const { load } = vm.props as unknown as TableProps<T>;
-    console.log('load', load);
 
     // 加载子节点数据的函数 && 没加载完成
     if (load && !treeData.value[key].loaded) {
       // 加载中
       treeData.value[key].loading = true;
 
+      // 当前行数据 ｜ 节点数据
+      load(row, treeNode, (data) => {
+
+        // 不是数组
+        if (!Array.isArray(data)) {
+          throw new TypeError('[Table] data must be an array');
+        }
+
+        // 取消loading
+        treeData.value[key].loading = false;
+        // 加载完成
+        treeData.value[key].loaded = true;
+        // 展开数据
+        treeData.value[key].expanded = true;
+
+        // 有数据
+        if (data.length) {
+          lazyTreeNodeMap.value[key] = data;
+        }
+
+        vm.emit('on-expand-change', row, true);
+      });
     }
   };
 
@@ -243,9 +275,42 @@ function useTree<T>(watcherData: WatcherPropsData<T>) {
 
       // 根据懒加载数据更新 treeData
       const lazyKeys = Object.keys(normalizedLazyNode_);
-      // if (lazy.value && lazyKeys.length && rootLazyRowKeys.length) {
 
-      // }
+      // 是否有懒加载后的数据
+      if (lazy.value && lazyKeys.length && rootLazyRowKeys.length) {
+        lazyKeys.forEach((key) => {
+          // 上一个子节点的值
+          const oldValue = oldTreeData[key];
+
+          // 懒加载后的数据
+          const lazyNodeChildren = normalizedLazyNode_[key].children;
+
+          // 是否是当前节点
+          if (rootLazyRowKeys.includes(key)) {
+            // 懒加载的 root 节点，更新一下原有的数据，原来的 children 一定是空数组
+            if (newTreeData[key].children.length !== 0) {
+              throw new Error('[Table]children must be an empty array.');
+            }
+
+            // 更新当前懒加载节点数据
+            newTreeData[key].children = lazyNodeChildren;
+          }
+          // 其他节点数据
+          else {
+            const { loaded = false, loading = false } = oldValue || {};
+
+            // 修改节点状态
+            newTreeData[key] = {
+              lazy: true,
+              loaded: !!loaded,
+              loading: !!loading,
+              expanded: getExpanded(oldValue, key),
+              children: lazyNodeChildren,
+              level: '',
+            };
+          }
+        });
+      }
     }
 
     // 树数据
@@ -307,7 +372,7 @@ function useTree<T>(watcherData: WatcherPropsData<T>) {
     }
   );
 
-  // 以通过该属性设置 Table 目前的展开行
+  // 监听以通过该属性设置 Table 目前的展开行
   watch(
     () => expandRowKeys.value,
     () => {
@@ -315,7 +380,7 @@ function useTree<T>(watcherData: WatcherPropsData<T>) {
     }
   );
 
-  // 格式化懒加载节点
+  // 监听格式化懒加载节点
   watch(
     () => normalizedLazyNode.value,
     () => {

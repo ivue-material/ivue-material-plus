@@ -156,8 +156,13 @@ export function treeCellPrefix<T>(
   // ele
   const ele: VNode[] = [];
 
-  const callback = (e) => {
-    e.stopPropagation();
+  const callback = (event) => {
+    event.stopPropagation();
+
+    // 加载中
+    if (treeNode.loading) {
+      return;
+    }
 
     // 树形数据与懒加载
     store.loadOrToggle(row);
