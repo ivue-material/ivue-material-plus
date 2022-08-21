@@ -30,8 +30,14 @@ function useStyle<T>(
   // 表格可滚动高度
   const tableScrollHeight = ref(0);
 
+  // 中间内容的高度
+  const bodyScrollHeight = ref(0);
+
   // 表格头部滚动高度
   const headerScrollHeight = ref(0);
+
+  // 表格底部滚动高度
+  const footerScrollHeight = ref(0);
 
   // 表格缩放
   const resizeState = ref<{
@@ -113,7 +119,12 @@ function useStyle<T>(
       return null;
     }
 
-    const height = '100%';
+    let height = '100%';
+
+    // 中间内容的高度
+    if (props.height && bodyScrollHeight.value) {
+      height = `${bodyScrollHeight.value}px`;
+    }
 
     const width = tableWidth.value;
 
@@ -292,6 +303,12 @@ function useStyle<T>(
     // 表格头部滚动高度
     headerScrollHeight.value = table.refs.header?.scrollHeight || 0;
 
+    // 表格底部滚动高度
+    footerScrollHeight.value = table.refs.footer?.scrollHeight || 0;
+
+    // 中间内容的高度 = 表格可滚动高度 - 表格头部滚动高度 - 表格底部滚动高度
+    bodyScrollHeight.value = tableScrollHeight.value - headerScrollHeight.value - footerScrollHeight.value;
+
     if (shouldUpdateLayout) {
       resizeState.value = {
         width,
@@ -331,12 +348,18 @@ function useStyle<T>(
     }
 
     const { scrollLeft, offsetWidth, scrollWidth } = scrollContainer;
-    const { header } = table.refs;
+    const { header, footer } = table.refs;
 
     // 设置头部滚动位置
     if (header) {
       header.scrollLeft = scrollLeft;
     }
+
+    // 设置底部滚动位置
+    if (footer) {
+      footer.scrollLeft = scrollLeft;
+    }
+
 
     // 最大滚动位置
     const maxScrollLeftPosition = scrollWidth - offsetWidth - 1;

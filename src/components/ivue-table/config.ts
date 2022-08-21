@@ -3,7 +3,7 @@ import { hasOwn } from '@vue/shared';
 import { get, set } from 'lodash-unified';
 import IvueCheckbox from '../ivue-checkbox/index.vue';
 import IvueIcon from '../ivue-icon/index.vue';
-import Loading from './loading';
+import Loading from './loading.vue';
 
 // ts
 import type { VNode } from 'vue';

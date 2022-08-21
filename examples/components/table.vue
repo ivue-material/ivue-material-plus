@@ -280,12 +280,12 @@
             <ivue-table-column label="Name" prop="name"></ivue-table-column>
         </ivue-table>-->
 
-        <h1>树形数据与懒加载</h1>
+        <!-- <h1>树形数据与懒加载</h1> -->
         <!-- <ivue-table :data="tableData9" style="width: 100%" border rowKey="id">
             <ivue-table-column prop="date" label="date" sortable width="180"></ivue-table-column>
             <ivue-table-column prop="name" label="Name" sortable width="180"></ivue-table-column>
-        </ivue-table> -->
-        <ivue-table
+        </ivue-table>-->
+        <!-- <ivue-table
             :data="tableData10"
             style="width: 100%"
             border
@@ -296,6 +296,14 @@
         >
             <ivue-table-column prop="date" label="date" sortable width="180"></ivue-table-column>
             <ivue-table-column prop="name" label="Name" sortable width="180"></ivue-table-column>
+        </ivue-table>-->
+        <h1>表尾合计行</h1>
+        <ivue-table :data="tableData11" showSummary >
+            <ivue-table-column prop="id" label="ID" width="180"  fixed="left"></ivue-table-column>
+            <ivue-table-column prop="name" label="Name"></ivue-table-column>
+            <ivue-table-column prop="amount1" sortable label="Amount 1"></ivue-table-column>
+            <ivue-table-column prop="amount2" sortable label="Amount 2"></ivue-table-column>
+            <ivue-table-column prop="amount3" sortable label="Amount 3" fixed="right"></ivue-table-column>
         </ivue-table>
     </div>
 </template>
@@ -717,6 +725,7 @@ export default {
                     id: 2,
                     date: '2016-05-04',
                     name: 'wangxiaohu',
+                    hasChildren: true,
                 },
                 {
                     id: 3,
@@ -728,6 +737,56 @@ export default {
                     id: 4,
                     date: '2016-05-03',
                     name: 'wangxiaohu',
+                    children: [
+                        {
+                            id: 6,
+                            date: '2016-05-01',
+                            name: 'wangxiaohu',
+                            hasChildren: true,
+                        },
+                        {
+                            id: 7,
+                            date: '2016-05-01',
+                            name: 'wangxiaohu',
+                        },
+                    ],
+                },
+            ],
+            tableData11: [
+                {
+                    id: '12987122',
+                    name: 'Tom',
+                    amount1: '234',
+                    amount2: '3.2',
+                    amount3: 10,
+                },
+                {
+                    id: '12987123',
+                    name: 'Tom',
+                    amount1: '165',
+                    amount2: '4.43',
+                    amount3: 12,
+                },
+                {
+                    id: '12987124',
+                    name: 'Tom',
+                    amount1: '324',
+                    amount2: '1.9',
+                    amount3: 9,
+                },
+                {
+                    id: '12987125',
+                    name: 'Tom',
+                    amount1: '621',
+                    amount2: '2.2',
+                    amount3: 17,
+                },
+                {
+                    id: '12987126',
+                    name: 'Tom',
+                    amount1: '539',
+                    amount2: '4.1',
+                    amount3: 15,
                 },
             ],
         };
@@ -862,16 +921,18 @@ export default {
             return h('div', {}, 'renderHeader');
         },
         load(row, treeNode, resolve) {
+            console.log('row', row);
             setTimeout(() => {
-                console.log('?load??')
+                console.log('?load??');
                 resolve([
                     {
-                        id: 31,
+                        id: Math.random(),
                         date: '2016-05-01',
                         name: 'wangxiaohu',
+                        hasChildren: true,
                     },
                     {
-                        id: 32,
+                        id: Math.random(),
                         date: '2016-05-01',
                         name: 'wangxiaohu',
                     },

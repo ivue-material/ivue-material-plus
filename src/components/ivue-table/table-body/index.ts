@@ -30,7 +30,7 @@ export default defineComponent({
     // inject
     const IvueTable: any = inject('ivue-table');
 
-    const { wrappedRowRender } = useRender(props);
+    const { wrappedRowRender }: any = useRender(props);
 
     const { handleColumnsChange, handleScrollableWidthChange } = useTableLayoutObserver(IvueTable!);
 

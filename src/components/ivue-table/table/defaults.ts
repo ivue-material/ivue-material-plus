@@ -38,6 +38,16 @@ type ColumnStyle<T> =
   | CSSProperties
   | ((data: { row: T; rowIndex: number }) => CSSProperties)
 
+
+// 自定义的合计计算方法
+type SummaryMethod<T> = (data: {
+  columns: TableColumnCtx<T>[]
+  data: T[]
+}) => string[]
+
+// 设置表格单元、行和列的布局方式
+type Layout = 'fixed' | 'auto'
+
 // refs
 interface TableRefs {
   tableWrapper: HTMLElement
@@ -59,8 +69,6 @@ interface TreeNode {
   display?: boolean
 }
 
-// 设置表格单元、行和列的布局方式
-type Layout = 'fixed' | 'auto'
 
 // 渲染行数据
 interface RenderRowData<T> {
@@ -169,6 +177,10 @@ interface TableProps<T> {
   expandRowKeys?: any[],
   // 加载子节点数据的函数
   load?: (row: T, treeNode: TreeNode, resolve: (data: T[]) => void) => void
+  // 合计行第一列的文本
+  sumText?: string
+  // 自定义的合计计算方法
+  summaryMethod?: SummaryMethod<T>
 }
 
 // 行样式
@@ -393,6 +405,23 @@ export default {
    */
   load: {
     type: Function as PropType<TableProps<DefaultRow>['load']>
+  },
+  /**
+   * 合计行第一列的文本
+   *
+   * @type {String}
+   */
+  sumText: {
+    type: String,
+    default: '合计'
+  },
+  /**
+   * 自定义的合计计算方法
+   *
+   * @type {Function}
+   */
+  summaryMethod: {
+    type: Function as PropType<TableProps<DefaultRow>['summaryMethod']>,
   }
 };
 
@@ -405,5 +434,6 @@ export type {
   rowClass,
   rowStyle,
   ColumnCls,
-  Filter
+  Filter,
+  SummaryMethod
 };

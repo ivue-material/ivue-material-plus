@@ -87,6 +87,23 @@
                     </div>
                 </ivue-scrollbar>
             </div>
+            <!-- 合计 -->
+            <div
+                v-if="showSummary"
+                v-show="!isData"
+                v-mousewheel="handleMousewheel"
+                :class="`${prefixCls}-footer--wrapper`"
+                ref="footer"
+            >
+                <table-footer
+                    :border="border"
+                    :defaultSort="defaultSort"
+                    :store="store"
+                    :style="tableStyles"
+                    :sum-text="sumText"
+                    :summary-method="summaryMethod"
+                ></table-footer>
+            </div>
         </div>
         <!-- 拖拽时的虚线 -->
         <div :class="`${prefixCls}-column-resize-proxy`" ref="draggingDotted" v-show="dragging"></div>
@@ -120,6 +137,7 @@ import IvueColgroup from './colgroup';
 import TableHeader from './table-header';
 import TableBody from './table-body';
 import IvueScrollbar from '../ivue-scrollbar/index.vue';
+import TableFooter from './table-footer';
 
 import defaultProps from './table/defaults';
 
@@ -146,7 +164,7 @@ export default defineComponent({
         'on-sort-change',
         'on-filter-change',
         'on-header-dragend',
-        'on-expand-change'
+        'on-expand-change',
     ],
     setup(props) {
         type Row = typeof props.data[number];
@@ -363,6 +381,7 @@ export default defineComponent({
         TableBody,
         IvueScrollbar,
         TableHeader,
+        TableFooter,
     },
 });
 </script>

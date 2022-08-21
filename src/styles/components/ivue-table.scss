@@ -165,7 +165,7 @@ $name:'ivue-table';
   }
 
   // 过滤
-  .is-sortable {
+  .is-filterable {
     cursor: inherit;
   }
 
@@ -233,6 +233,12 @@ $name:'ivue-table';
     .#{$name}-cell {
       border-right: 1px solid $border-color;
       border-bottom: 1px solid $border-color;
+    }
+
+    .#{$name}-footer--wrapper {
+      position: relative;
+      flex-shrink: 0;
+      margin-top: -2px;
     }
 
     &::before {
@@ -546,6 +552,25 @@ $name:'ivue-table';
       stroke-linecap: round;
     }
   }
+
+
+  // 底部
+  &-footer {
+    table-layout: fixed;
+    border-collapse: separate;
+
+    &--wrapper {
+      overflow: hidden;
+      width: 100%;
+
+      tbody td.#{$name}-cell{
+        background-color: #eee;
+        color: $text-color;
+      }
+    }
+
+  }
+
 }
 
 // 滚动

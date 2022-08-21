@@ -216,6 +216,7 @@ function useRender<T>(props: Partial<TableBodyProps<T>>) {
       if (expanded) {
         // 没有展开内容
         if (!renderExpanded) {
+          // eslint-disable-next-line no-console
           console.error('[Error]renderExpanded is required.');
 
           return tr;

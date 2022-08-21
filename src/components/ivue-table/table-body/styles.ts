@@ -74,6 +74,23 @@ function useStyles<T>(props: Partial<TableBodyProps<T>>) {
     // 单元格可横跨的列数
     const colspan = 1;
 
+    // const fn = parent?.props.spanMethod
+    // if (typeof fn === 'function') {
+    //   const result = fn({
+    //     row,
+    //     column,
+    //     rowIndex,
+    //     columnIndex,
+    //   })
+    //   if (Array.isArray(result)) {
+    //     rowspan = result[0]
+    //     colspan = result[1]
+    //   } else if (typeof result === 'object') {
+    //     rowspan = result.rowspan
+    //     colspan = result.colspan
+    //   }
+    // }
+
     return { rowspan, colspan };
   };
 
