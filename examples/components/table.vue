@@ -10,19 +10,19 @@
             <ivue-table-column prop="name" label="Name" width="180"></ivue-table-column>
             <ivue-table-column prop="address" label="Address"></ivue-table-column>
         </ivue-table>
-        <!-- <h1>带斑马纹表格</h1>
+        <h1>带斑马纹表格</h1>
         <ivue-table :data="tableData" stripe style="width: 100%">
             <ivue-table-column prop="date" label="Date" width="180"></ivue-table-column>
             <ivue-table-column prop="name" label="Name" width="180"></ivue-table-column>
             <ivue-table-column prop="address" label="Address"></ivue-table-column>
-        </ivue-table>-->
-        <!-- <h1>带边框表格</h1>
+        </ivue-table>
+        <h1>带边框表格</h1>
         <ivue-table :data="tableData" border style="width: 100%">
             <ivue-table-column prop="date" label="Dat   e" width="180"></ivue-table-column>
             <ivue-table-column prop="name" label="Name" width="180"></ivue-table-column>
             <ivue-table-column prop="address" label="Address"></ivue-table-column>
-        </ivue-table>-->
-        <!-- <h1>带状态表格</h1>
+        </ivue-table>
+        <h1>带状态表格</h1>
         <ivue-table
             :data="tableData"
             :rowClassName="tableRowClassName"
@@ -32,14 +32,14 @@
             <ivue-table-column prop="date" label="Date" width="180"></ivue-table-column>
             <ivue-table-column prop="name" label="Name" width="180"></ivue-table-column>
             <ivue-table-column prop="address" label="Address"></ivue-table-column>
-        </ivue-table>-->
-        <!-- <h1>固定表头</h1>
+        </ivue-table>
+        <h1>固定表头</h1>
         <ivue-table :data="tableData" height="250" style="width: 100%">
             <ivue-table-column prop="date" label="Date" width="180"></ivue-table-column>
             <ivue-table-column prop="name" label="Name" width="180"></ivue-table-column>
             <ivue-table-column prop="address" label="Address"></ivue-table-column>
-        </ivue-table>-->
-        <!-- <h1>固定列</h1>
+        </ivue-table>
+        <h1>固定列</h1>
         <ivue-table border  height="250" :data="tableData3" style="width: 100%">
             <ivue-table-column fixed prop="date" label="Date" width="150"></ivue-table-column>
             <ivue-table-column prop="name" label="Name" width="120"></ivue-table-column>
@@ -52,8 +52,8 @@
                  12121
                 </template>
             </ivue-table-column>
-        </ivue-table>-->
-        <!-- <h1>流体高度</h1>
+        </ivue-table>
+        <h1>流体高度</h1>
         <ivue-table maxHeight="250" :data="tableData3" style="width: 100%">
             <ivue-table-column fixed prop="date" label="Date" width="150"></ivue-table-column>
             <ivue-table-column prop="name" label="Name" width="120"></ivue-table-column>
@@ -67,8 +67,8 @@
                 </template>
             </ivue-table-column>
         </ivue-table>
-        <ivue-button @click="onAddItem">Add</ivue-button>-->
-        <!-- <h1>多级表头</h1>
+        <ivue-button @click="onAddItem">Add</ivue-button>
+        <h1>多级表头</h1>
         <ivue-table :data="tableData4" style="width: 100%">
             <ivue-table-column prop="date" label="Date" width="150"></ivue-table-column>
             <ivue-table-column label="Delivery Info">
@@ -80,8 +80,8 @@
                     <ivue-table-column prop="zip" label="Zip" width="120" />
                 </ivue-table-column>
             </ivue-table-column>
-        </ivue-table>-->
-        <!-- <h1>单选</h1>
+        </ivue-table>
+        <h1>单选</h1>
         <ivue-table
             ref="singleTableRef"
             highlight-current-row
@@ -95,8 +95,8 @@
             <ivue-table-column prop="address" label="Address"></ivue-table-column>
         </ivue-table>
         <ivue-button @click="setCurrent(tableData[1])">Select second row</ivue-button>
-        <ivue-button @click="setCurrent()">Clear selection</ivue-button>-->
-        <!-- <h1>多选</h1>
+        <ivue-button @click="setCurrent()">Clear selection</ivue-button>
+        <h1>多选</h1>
         <ivue-table
             ref="table"
             :data="tableData3"
@@ -124,9 +124,9 @@
         <ivue-button @click="toggleSelection()">Clear selection</ivue-button>
         <ivue-button @click="updata()">Updata</ivue-button>
         <ivue-button @click="updata1()">Updata1</ivue-button>
-        <ivue-button @click="updata2()">Updata2</ivue-button> -->
+        <ivue-button @click="updata2()">Updata2</ivue-button>
 
-        <!-- <h1>排序</h1>
+        <h1>排序</h1>
         <ivue-table
             ref="table"
             :data="tableData4"
@@ -146,12 +146,12 @@
             ></ivue-table-column>
             <ivue-table-column prop="name" label="Name" width="180" headerAlign="center"></ivue-table-column>
             <ivue-table-column prop="address" label="Address" :formatter="formatter"></ivue-table-column>
-        </ivue-table>-->
+        </ivue-table>
 
-        <!-- <h1>筛选</h1> -->
+        <h1>筛选</h1>
         <!-- filterPlacement="right" -->
         <!-- :filtered-value="['2016-05-01']" -->
-        <!-- <ivue-table ref="table" :data="tableData6" style="width: 100%">
+        <ivue-table ref="table" :data="tableData6" style="width: 100%">
             <ivue-table-column
                 prop="date"
                 label="Date"
@@ -183,16 +183,16 @@
 
         <button @click="resetDateFilter">reset date filter</button>
         <button @click="clearFilter">reset all filters</button>-->
-        <!-- <h1>自定义列模板</h1>
+       <h1>自定义列模板</h1>
         <ivue-table :data="tableData" style="width: 100%">
             <ivue-table-column prop="date" label="Date">
                 <template #default="scope">插槽{{ scope.row }}{{ scope.$index }}</template>
             </ivue-table-column>
             <ivue-table-column prop="name" label="Name" align="right" headerAlign="center"></ivue-table-column>
             <ivue-table-column prop="address" label="Address"></ivue-table-column>
-        </ivue-table>-->
+        </ivue-table>
 
-        <!-- <h1>自定义表头</h1>
+        <h1>自定义表头</h1>
         <ivue-table :data="tableData" style="width: 100%">
             <ivue-table-column prop="date" label="Date">
                 <template #header>自定义表头</template>
@@ -200,9 +200,9 @@
             </ivue-table-column>
             <ivue-table-column prop="name" label="Name" align="right" headerAlign="center"></ivue-table-column>
             <ivue-table-column prop="address" label="Address"></ivue-table-column>
-        </ivue-table>-->
+        </ivue-table>
 
-        <!-- <h1>表格布局</h1>
+        <h1>表格布局</h1>
         <ivue-table :data="tableData3" tableLayout="auto">
             <ivue-table-column
                 prop="date"
@@ -242,16 +242,16 @@
                   <template #default="scope">插槽{{ scope.row }}</template>
             </ivue-table-column>
             <ivue-table-column prop="address" label="Address"></ivue-table-column>
-        </ivue-table>-->
+        </ivue-table>
 
-        <!-- <h1>自定义索引</h1>
+        <h1>自定义索引</h1>
         <ivue-table :data="tableData3" style="width: 100%">
             <ivue-table-column type="index" :index="indexMethod"></ivue-table-column>
             <ivue-table-column prop="date" label="Date" width="180" :renderHeader="renderHeader"></ivue-table-column>
             <ivue-table-column prop="name" label="Name" width="180"></ivue-table-column>
             <ivue-table-column prop="address" label="Address"></ivue-table-column>
-        </ivue-table>-->
-        <!-- <h1>展开行</h1>
+        </ivue-table>
+        <h1>展开行</h1>
         <ivue-table
             :data="tableData8"
             border
@@ -280,22 +280,22 @@
             </ivue-table-column>
             <ivue-table-column label="Date" prop="date"></ivue-table-column>
             <ivue-table-column label="Name" prop="name"></ivue-table-column>
-        </ivue-table>-->
+        </ivue-table>
 
-        <!-- <ivue-table :data="tableData8" style="width: 100%" rowKey="date">
+        <ivue-table :data="tableData8" style="width: 100%" rowKey="date">
             <ivue-table-column type="expand" >
                 <template #default>122121122121</template>
             </ivue-table-column>
             <ivue-table-column label="Date" prop="date"></ivue-table-column>
             <ivue-table-column label="Name" prop="name"></ivue-table-column>
-        </ivue-table>-->
+        </ivue-table>
 
-        <!-- <h1>树形数据与懒加载</h1>
+        <h1>树形数据与懒加载</h1>
         <ivue-table :data="tableData9" style="width: 100%" border rowKey="id" :indent="100">
             <ivue-table-column prop="date" label="date" sortable width="180"></ivue-table-column>
             <ivue-table-column prop="name" label="Name" sortable width="180"></ivue-table-column>
-        </ivue-table> -->
-        <!-- <ivue-table
+        </ivue-table>
+        <ivue-table
             :data="tableData10"
             style="width: 100%"
             border
@@ -306,16 +306,16 @@
         >
             <ivue-table-column prop="date" label="date" sortable width="180"></ivue-table-column>
             <ivue-table-column prop="name" label="Name" sortable width="180"></ivue-table-column>
-        </ivue-table>-->
-        <!-- <h1>表尾合计行</h1> -->
-        <!-- <ivue-table :data="tableData11" showSummary>
+        </ivue-table>
+        <h1>表尾合计行</h1>
+        <ivue-table :data="tableData11" showSummary>
             <ivue-table-column prop="id" label="ID" width="180" fixed="left"></ivue-table-column>
             <ivue-table-column prop="name" label="Name"></ivue-table-column>
             <ivue-table-column prop="amount1" sortable label="Amount 1"></ivue-table-column>
             <ivue-table-column prop="amount2" sortable label="Amount 2"></ivue-table-column>
             <ivue-table-column prop="amount3" sortable label="Amount 3" fixed="right"></ivue-table-column>
-        </ivue-table>-->
-        <!-- <ivue-table
+        </ivue-table>
+        <ivue-table
             :data="tableData11"
             showSummary
             border
@@ -327,9 +327,9 @@
             <ivue-table-column prop="amount1" sortable label="Amount 1"></ivue-table-column>
             <ivue-table-column prop="amount2" sortable label="Amount 2"></ivue-table-column>
             <ivue-table-column prop="amount3" sortable label="Amount 3" fixed="right"></ivue-table-column>
-        </ivue-table>-->
+        </ivue-table>
 
-        <!-- <h1>合并行或列</h1>
+        <h1>合并行或列</h1>
         <ivue-table :data="tableData11" border>
             <ivue-table-column prop="id" label="ID" width="180" fixed="left"></ivue-table-column>
             <ivue-table-column prop="name" label="Name"></ivue-table-column>
@@ -352,7 +352,7 @@
             <ivue-table-column prop="amount1" sortable label="Amount 1"></ivue-table-column>
             <ivue-table-column prop="amount2" sortable label="Amount 2"></ivue-table-column>
             <ivue-table-column prop="amount3" sortable label="Amount 3" fixed="right"></ivue-table-column>
-        </ivue-table> -->
+        </ivue-table>
     </div>
 </template>
 

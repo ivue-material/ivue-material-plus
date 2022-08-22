@@ -156,6 +156,7 @@ export default defineComponent({
     },
     emits: [
         'on-cell-mouse-enter',
+        'on-cell-mouse-leave',
         'on-selection-change',
         'on-select-all',
         'on-select',
@@ -165,6 +166,8 @@ export default defineComponent({
         'on-filter-change',
         'on-header-dragend',
         'on-expand-change',
+        'on-cell-click',
+        'on-row-click'
     ],
     setup(props) {
         type Row = typeof props.data[number];

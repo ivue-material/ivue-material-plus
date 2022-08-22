@@ -8,6 +8,7 @@ import { hasClass, getStyle } from '../../../utils/assist';
 
 // ts
 import type { TableBodyProps } from './defaults';
+import type { TableColumnCtx } from '../table-column/defaults';
 
 const prefixCls = 'ivue-table';
 
@@ -15,10 +16,42 @@ function useEvents<T>(props: Partial<TableBodyProps<T>>) {
   // inject
   const IvueTable: any = inject(prefixCls);
 
+  // 触发事件
+  const handleEvent = (event: Event, row: T, name: string) => {
+
+    // 获取单元格
+    const cell = getCell(event);
+
+    let column: TableColumnCtx<T>;
+
+
+    if (cell) {
+      column = getColumnByCell(
+        {
+          // 列的vm对象
+          columns: props.store.states.columns.value,
+        },
+        // 单元格
+        cell,
+        prefixCls
+      );
+
+      if (column) {
+        IvueTable?.emit(`on-cell-${name}`, row, column, cell, event);
+      }
+    }
+
+    // 行点击
+    IvueTable?.emit(`on-row-${name}`, row, column, event);
+  };
+
   // 点击行
   const handleClickTr = (event: Event, row: T) => {
     // 当前选择的row
     props.store.commit('setCurrentRow', row);
+
+    // 点击
+    handleEvent(event, row, 'click');
   };
 
   // 鼠标进入
@@ -106,6 +139,26 @@ function useEvents<T>(props: Partial<TableBodyProps<T>>) {
     }
   };
 
+  // 鼠标离开
+  const handleCellMouseLeave = (event) => {
+    const cell = getCell(event);
+
+    // 是否有单元格
+    if (!cell) {
+      return;
+    }
+
+    const oldHoverState = IvueTable?.hoverState;
+
+    IvueTable?.emit(
+      'on-cell-mouse-leave',
+      oldHoverState?.row,
+      oldHoverState?.column,
+      oldHoverState?.cell,
+      event
+    );
+  };
+
   // 行鼠标进入
   const handleMouseEnter = debounce((index: number) => {
     props.store.commit('setHoverRow', index);
@@ -120,6 +173,7 @@ function useEvents<T>(props: Partial<TableBodyProps<T>>) {
   return {
     handleClickTr,
     handleCellMouseEnter,
+    handleCellMouseLeave,
     handleMouseEnter,
     handleMouseLeave
   };

@@ -26,6 +26,7 @@ function useRender<T>(props: Partial<TableBodyProps<T>>) {
   const {
     handleClickTr,
     handleCellMouseEnter,
+    handleCellMouseLeave,
     handleMouseEnter,
     handleMouseLeave
   } = useEvents(props);
@@ -169,9 +170,13 @@ function useRender<T>(props: Partial<TableBodyProps<T>>) {
             // key
             key: `${patchKey}${baseKey}`,
             // 鼠标进入
-            onMouseenter: ($event) => {
-              handleCellMouseEnter($event, row);
-            }
+            onMouseenter: (event) => {
+              handleCellMouseEnter(event, row);
+            },
+            // 鼠标离开
+            onMouseleave: (event) => {
+              handleCellMouseLeave(event);
+            },
           },
           [
             // 渲染单元格
