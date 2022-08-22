@@ -35,6 +35,7 @@ import Avatar from '../components/avatar';
 import Page from '../components/page';
 import Spin from '../components/spin';
 import Table from '../components/table';
+import AutoComplete from '../components/auto-complete.vue';
 
 const routes = [{
     path: '/Affix',
@@ -200,6 +201,11 @@ const routes = [{
     path: '/table',
     name: 'Table',
     component: Table
+  },
+  {
+    path: '/auto-complete',
+    name: 'AutoComplete',
+    component: AutoComplete
   }
 ];
 

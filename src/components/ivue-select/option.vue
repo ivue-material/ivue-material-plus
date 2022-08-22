@@ -189,7 +189,8 @@ export default defineComponent({
                 {
                     [`${prefixCls}-disabled`]: isDisabled.value,
                     [`${prefixCls}-focus`]: data.isFocused,
-                    [`${prefixCls}-selected`]: itemSelected.value,
+                    [`${prefixCls}-selected`]:
+                        itemSelected.value && !select.props.autoComplete,
                 },
             ];
         });
@@ -199,7 +200,10 @@ export default defineComponent({
             let obj = {};
 
             // 单选触发
-            if (itemSelected.value || data.isFocused) {
+            if (
+                (itemSelected.value && !select.props.autoComplete) ||
+                data.isFocused
+            ) {
                 // 单选
                 if (!select.props.multiple) {
                     obj = {
@@ -357,10 +361,12 @@ export default defineComponent({
             if (Array.isArray(color)) {
                 style = {
                     background: `linear-gradient(135deg,${color[0]} 0%, ${color[1]} 100%)`,
+                    color: '#fff',
                 };
             } else if (isCssColor(color)) {
                 style = {
                     'background-color': `${color}`,
+                    color: '#fff',
                 };
             }
 

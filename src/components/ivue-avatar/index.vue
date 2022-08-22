@@ -16,12 +16,6 @@
 </template>
 
 <script lang='ts'>
-import Colorable from '../../utils/mixins/colorable';
-import { oneOf } from '../../utils/assist';
-import IvueIcon from '../ivue-icon/index.vue';
-
-const prefixCls = 'ivue-avatar';
-
 import {
     defineComponent,
     computed,
@@ -30,8 +24,13 @@ import {
     reactive,
     ref,
     watch,
-    nextTick
+    nextTick,
 } from 'vue';
+import Colorable from '../../utils/mixins/colorable';
+import { oneOf } from '../../utils/assist';
+import IvueIcon from '../ivue-icon/index.vue';
+
+const prefixCls = 'ivue-avatar';
 
 export default defineComponent({
     name: prefixCls,
@@ -202,7 +201,7 @@ export default defineComponent({
             () => props.size,
             () => {
                 nextTick(() => {
-                  setTextScale();
+                    setTextScale();
                 });
             }
         );

@@ -125,6 +125,9 @@
                 <li>
                     <router-link to="/table">Table</router-link>
                 </li>
+                 <li>
+                    <router-link to="/auto-complete">AutoComplete</router-link>
+                </li>
             </ul>
         </nav>
 

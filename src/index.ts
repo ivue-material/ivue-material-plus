@@ -38,6 +38,7 @@ import IvueAvatar from './components/ivue-avatar';
 import IvuePage from './components/ivue-page';
 import IvueSpin from './components/ivue-spin';
 import IvueTable from './components/ivue-table';
+import IvueAutoComplete from './components/ivue-auto-complete';
 
 // 指令
 import Directives from './utils/directives/index';
@@ -80,7 +81,8 @@ export {
     IvueAvatar,
     IvuePage,
     IvueSpin,
-    IvueTable
+    IvueTable,
+    IvueAutoComplete
 };
 
 
@@ -123,6 +125,7 @@ const install = (app: App, opts: any = {}): void => {
     IvuePage(app);
     IvueSpin(app);
     IvueTable(app);
+    IvueAutoComplete(app);
 
     // 全局配置
     app.config.globalProperties.$IVUE = {

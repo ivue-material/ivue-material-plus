@@ -5,6 +5,7 @@
         v-click-outside[capture]="handleClickOutside"
         v-click-outside:[capture].mousedown="handleClickOutside"
     >
+        {{dropVisible}}
         <div
             ref="reference"
             :class="selectionClasses"
@@ -20,9 +21,9 @@
             @keydown.esc.stop.prevent="handldKeyDown"
             @keydown.tab="handldKeyDown"
         >
-            <input type="hidden" :name="name" :value="currentSelectValue" />
-
             <slot name="input">
+                <input type="hidden" :name="name" :value="currentSelectValue" />
+
                 <!-- 头部 -->
                 <select-head
                     :prefix="prefix"
@@ -139,6 +140,7 @@ export default defineComponent({
         'on-filter-query-change',
         'on-set-default-options',
         'on-create',
+        'on-select',
     ],
     props: {
         /**
@@ -435,8 +437,26 @@ export default defineComponent({
         transferClassName: {
             type: String,
         },
+        /**
+         * 自动完成
+         *
+         * @type {Boolean}
+         */
+        autoComplete: {
+            type: Boolean,
+            default: false,
+        },
+        /**
+         * 外部输入框输入数据
+         *
+         * @type {String}
+         */
+        filterQueryProp: {
+            type: String,
+            default: '',
+        },
     },
-    setup(props: any, { emit, slots }) {
+    setup(props: any, { emit }) {
         // 事件发射器/发布订阅
         const selectEmitter = mitt();
 
@@ -463,6 +483,7 @@ export default defineComponent({
             lastSearchQuery: string;
             selectEmitter: any;
             hasExpectedValue: boolean;
+            unchangedQuery: boolean;
         }>({
             /**
              * 是否显示菜单
@@ -542,6 +563,12 @@ export default defineComponent({
              * @type {Boolean}
              */
             hasExpectedValue: false,
+            /**
+             * 防止下拉框隐藏
+             *
+             * @type {Boolean}
+             */
+            unchangedQuery: true,
         });
 
         // computed
@@ -568,7 +595,7 @@ export default defineComponent({
             return [
                 `${prefixCls}-selection-default`,
                 {
-                    [`${prefixCls}-selection`]: true,
+                    [`${prefixCls}-selection`]: !props.autoComplete,
                     [`${prefixCls}-selection-focused`]: data.isFocused,
                 },
             ];
@@ -632,6 +659,21 @@ export default defineComponent({
                 .filter(Boolean)
                 .map(({ value }) => value);
 
+            // 判断是否有自动输入
+            if (props.autoComplete) {
+                for (let option of data.options) {
+                    selectOptions.push(
+                        handleOption(
+                            option,
+                            selectedValues,
+                            false
+                        )
+                    );
+                }
+
+                return selectOptions;
+            }
+
             // 选项的数据
             for (let option of data.options) {
                 // 选项计数器
@@ -689,6 +731,14 @@ export default defineComponent({
                 status = false;
             }
 
+            // 自动完成
+            // if ( ([...data.options].length === 0)) {
+            //     status = false;
+            // }
+            // else {
+            //     status = true;
+            // }
+
             return data.visibleMenu && status;
         });
 
@@ -742,6 +792,7 @@ export default defineComponent({
             return {
                 [`${prefixCls}-dropdown--transfer`]: props.transfer,
                 [`${prefixCls}-multiple`]: props.multiple && props.transfer,
+                ['ivue-auto-complete']: props.autoComplete,
                 [props.transferClassName]: props.transferClassName,
             };
         });
@@ -769,8 +820,10 @@ export default defineComponent({
                 // 取消焦点
                 data.isFocused = false;
 
-                // 用于 自动完成组件
-                event.stopPropagation();
+                // 不是自动完成组件
+                if (!props.autoComplete) {
+                    event.stopPropagation();
+                }
 
                 event.preventDefault();
 
@@ -833,6 +886,10 @@ export default defineComponent({
         // 隐藏菜单
         const hideMenu = () => {
             handleToggleMenu(null, false);
+
+            setTimeout(() => {
+                data.unchangedQuery = true;
+            }, 300);
         };
 
         // 选项菜单点击
@@ -886,11 +943,17 @@ export default defineComponent({
             if (props.filterable) {
                 const input = proxy.$el.querySelector('input[type="text"]');
 
-                // 输入框获取焦点
-                nextTick(() => {
-                    input.focus();
-                });
+                // 不是自动输入
+                if (!props.autoComplete) {
+                    // 输入框获取焦点
+                    nextTick(() => {
+                        input.focus();
+                    });
+                }
             }
+
+            // 选择项目时触发
+            emit('on-select', option);
 
             // 更新下拉框
             dropdown.value.update();
@@ -959,6 +1022,8 @@ export default defineComponent({
             data.filterQuery = '';
             // 是否开始输入框支持搜索
             data.filterQueryChange = false;
+
+            data.unchangedQuery = true;
         };
 
         // 初始化值
@@ -1016,11 +1081,24 @@ export default defineComponent({
         const handleFilterQueryChange = (filterQuery) => {
             // 是否显示下拉菜单
             if (filterQuery.length > 0 && filterQuery !== data.filterQuery) {
-                data.visibleMenu = true;
+                if (props.autoComplete) {
+                    // 输入框是否获取焦点
+                    let isInputFocused =
+                        document.hasFocus &&
+                        document.hasFocus() &&
+                        document.activeElement ===
+                            proxy.$el.querySelector('input');
+
+                    data.visibleMenu = isInputFocused;
+                } else {
+                    data.visibleMenu = true;
+                }
             }
 
             // 输入框需要过滤的数据
             data.filterQuery = filterQuery;
+
+            data.unchangedQuery = data.visibleMenu;
 
             // 输入框过滤输入开始
             data.filterQueryChange = true;
@@ -1057,33 +1135,35 @@ export default defineComponent({
 
         // 设置滚动条滚动
         const focusScroll = (index) => {
-            if (index < 0) {
+            if (index < 0 || props.autoComplete) {
                 return;
             }
 
-            // update scroll
-            const options = data.options[index];
+            if (data.options[index]) {
+                // update scroll
+                const options = data.options[index];
 
-            // dropdown
-            const _dropdown = dropdown.value.$el;
-            // 底部距离
-            let bottomOverflowDistance =
-                options.$el.getBoundingClientRect().bottom -
-                _dropdown.getBoundingClientRect().bottom;
+                // dropdown
+                const _dropdown = dropdown.value.$el;
+                // 底部距离
+                let bottomOverflowDistance =
+                    options.$el.getBoundingClientRect().bottom -
+                    _dropdown.getBoundingClientRect().bottom;
 
-            // 顶部距离
-            let topOverflowDistance =
-                options.$el.getBoundingClientRect().top -
-                _dropdown.getBoundingClientRect().top;
+                // 顶部距离
+                let topOverflowDistance =
+                    options.$el.getBoundingClientRect().top -
+                    _dropdown.getBoundingClientRect().top;
 
-            // 滚动到底部
-            if (bottomOverflowDistance > 0) {
-                _dropdown.scrollTop += bottomOverflowDistance;
-            }
+                // 滚动到底部
+                if (bottomOverflowDistance > 0) {
+                    _dropdown.scrollTop += bottomOverflowDistance;
+                }
 
-            // 滚动到顶部
-            if (topOverflowDistance < 0) {
-                _dropdown.scrollTop += topOverflowDistance;
+                // 滚动到顶部
+                if (topOverflowDistance < 0) {
+                    _dropdown.scrollTop += topOverflowDistance;
+                }
             }
         };
 
@@ -1267,6 +1347,28 @@ export default defineComponent({
                         handleOptionClick(option);
                     });
                 }
+            }
+        };
+
+        // 设置过滤输入框输入
+        const setQuery = (query) => {
+            if (query) {
+                // 过滤输入框输入
+                handleFilterQueryChange(query);
+
+                return;
+            }
+
+            // 没有输入值
+            if (query === null) {
+                // 过滤输入框输入
+                handleFilterQueryChange('');
+
+                // 最终渲染的数据
+                data.values = [];
+
+                // 清空搜索关键词后，重新搜索相同的关键词没有触发远程搜索
+                data.lastSearchQuery = '';
             }
         };
 
@@ -1608,6 +1710,7 @@ export default defineComponent({
             handldKeyDown,
             handleCreateItem,
             setFocusIndex,
+            setQuery,
         };
     },
     components: {
