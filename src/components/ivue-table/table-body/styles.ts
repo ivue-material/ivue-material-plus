@@ -119,7 +119,27 @@ function useStyles<T>(props: Partial<TableBodyProps<T>>) {
 
 
     // classes
-    const classes = [column.id, column.align, column.className, 'ivue-table-cell', ...fixedClasses];
+    const classes = [column.id, column.align, column.className, ...fixedClasses];
+
+    const cellClassName = IvueTable?.props.cellClassName;
+
+    // 字符串
+    if (typeof cellClassName === 'string') {
+      classes.push(cellClassName);
+    }
+    // 方法
+    else if (typeof cellClassName === 'function') {
+      classes.push(
+        cellClassName.call(null, {
+          rowIndex,
+          columnIndex,
+          row,
+          column,
+        })
+      );
+    }
+
+    classes.push('ivue-table-cell');
 
     return classes.filter((className) => Boolean(className)).join(' ');
   };
@@ -131,6 +151,22 @@ function useStyles<T>(props: Partial<TableBodyProps<T>>) {
     row: T,
     column: TableColumnCtx<T>
   ) => {
+
+    // 单元格的 style 的回调方法
+    const cellStyle = IvueTable?.props.cellStyle;
+
+    let cellStyles = cellStyle ?? {};
+
+    // 方法
+    if (typeof cellStyle === 'function') {
+      cellStyles = cellStyle.call(null, {
+        rowIndex,
+        columnIndex,
+        row,
+        column,
+      });
+    }
+
     // 是否是嵌套的子列
     const fixedStyle = column.isSubColumn
       ? null
@@ -141,7 +177,7 @@ function useStyles<T>(props: Partial<TableBodyProps<T>>) {
     // 右边
     ensurePosition(fixedStyle, 'right');
 
-    return Object.assign({}, fixedStyle);
+    return Object.assign({}, cellStyles, fixedStyle);
   };
 
 

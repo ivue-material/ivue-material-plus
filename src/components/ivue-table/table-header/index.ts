@@ -103,7 +103,9 @@ export default defineComponent({
     const {
       // 头部行样式
       getHeaderCellClass,
-      getHeaderCellStyle
+      getHeaderCellStyle,
+      getHeaderRowStyle,
+      getHeaderRowClass
     } = useStyle(props as TableHeaderProps<unknown>);
 
     // 事件
@@ -307,6 +309,8 @@ export default defineComponent({
       // methods
       renderTh,
       handleColumnsChange,
+      getHeaderRowStyle,
+      getHeaderRowClass
     };
 
   },
@@ -314,7 +318,9 @@ export default defineComponent({
     const {
       columnRows,
       renderTh,
-      isGroup
+      isGroup,
+      getHeaderRowStyle,
+      getHeaderRowClass
     } = this;
 
     const rowSpan = 1;
@@ -329,6 +335,8 @@ export default defineComponent({
       columnRows.map((item, rowIndex) => {
         return h('tr',
           {
+            class: getHeaderRowClass(rowIndex),
+            style: getHeaderRowStyle(rowIndex),
             key: rowIndex
           },
           renderTh(item, rowSpan, rowIndex)

@@ -216,6 +216,14 @@ interface TableProps<T> {
   headerCellStyle?: CellStyle<T>
   // 表头单元格的 className 的回调方法，也可以使用字符串为所有表头单元格设置一个固定的 className
   headerCellClassName?: CellCls<T>
+  // 表头行的 style 的回调方法，也可以使用一个固定的 Object 为所有表头行设置一样的 Style
+  headerRowStyle?: ColumnStyle<T>
+  // 表头行的 className 的回调方法
+  headerRowClassName?: ColumnCls<T>
+  // 单元格的 style 的回调方法
+  cellStyle?: CellStyle<T>
+  // 单元格的 className 的回调方法
+  cellClassName?: CellCls<T>
 }
 
 // 行样式
@@ -483,6 +491,39 @@ export default {
    */
   headerCellClassName: {
     type: [String, Function] as PropType<TableProps<DefaultRow>['headerCellClassName']>,
+  },
+  /**
+   * 表头行的 style 的回调方法，
+   * 也可以使用一个固定的 Object 为所有表头行设置一样的 Style
+   *
+   * @type {Object, Function}
+   */
+  headerRowStyle: {
+    type: [Object, Function] as PropType<TableProps<DefaultRow>['headerRowStyle']>
+  },
+  /**
+   * 表头行的 className 的回调方法
+   *
+   * @type {String, Function}
+   */
+  headerRowClassName: {
+    type: [String, Function] as PropType<TableProps<DefaultRow>['headerRowClassName']>,
+  },
+  /**
+   * 单元格的 style 的回调方法
+   *
+   * @type {Object, Function}
+   */
+  cellStyle: {
+    type: [Object, Function] as PropType<TableProps<DefaultRow>['cellStyle']>,
+  },
+  /**
+   * 单元格的 className 的回调方法
+   *
+   * @type {String, Function}
+   */
+  cellClassName: {
+    type: [String, Function] as PropType<TableProps<DefaultRow>['cellClassName']>,
   }
 };
 

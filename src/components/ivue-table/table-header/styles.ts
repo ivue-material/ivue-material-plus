@@ -12,7 +12,6 @@ function useStyle<T>(props: TableHeaderProps<T>) {
   // inject
   const IvueTable: any = inject(prefixCls);
 
-
   // 头部行样式
   const getHeaderCellStyle = (
     rowIndex: number,
@@ -121,10 +120,41 @@ function useStyle<T>(props: TableHeaderProps<T>) {
     return classes.filter((className) => Boolean(className)).join(' ');
   };
 
+  // 表头行的 style 的回调方法
+  const getHeaderRowStyle = (rowIndex: number) => {
+    const headerRowStyle = IvueTable?.props.headerRowStyle;
+
+    // 方法
+    if (typeof headerRowStyle === 'function') {
+      return headerRowStyle.call(null, { rowIndex });
+    }
+
+    return headerRowStyle;
+  };
+
+  // 表头行的 className 的回调方法
+  const getHeaderRowClass = (rowIndex: number): string => {
+    const classes: string[] = [];
+
+    const headerRowClassName = IvueTable?.props.headerRowClassName;
+
+    // 字符串
+    if (typeof headerRowClassName === 'string') {
+      classes.push(headerRowClassName);
+    }
+    // 方法
+    else if (typeof headerRowClassName === 'function') {
+      classes.push(headerRowClassName.call(null, { rowIndex }));
+    }
+
+    return classes.join(' ');
+  };
 
   return {
     getHeaderCellClass,
     getHeaderCellStyle,
+    getHeaderRowStyle,
+    getHeaderRowClass
   };
 }
 

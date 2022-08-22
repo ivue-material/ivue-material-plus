@@ -1,7 +1,7 @@
 <template>
     <div>
         <h1>基础表格</h1>
-        <ivue-table :data="tableData" style="width: 100%" resizable border :headerCellStyle="headerCellStyle" headerCellClassName="red">
+        <ivue-table :data="tableData" style="width: 100%" resizable border :rowStyle="headerCellStyle" rowClassName="red">
             <ivue-table-column
                 prop="date"
                 label="Date"
