@@ -1,17 +1,15 @@
 <template>
     <div>
-        <!-- <h1>基础表格</h1>
-        <ivue-table :data="tableData" style="width: 100%" resizable border>
+        <h1>基础表格</h1>
+        <ivue-table :data="tableData" style="width: 100%" resizable border :headerCellStyle="headerCellStyle" headerCellClassName="red">
             <ivue-table-column
                 prop="date"
                 label="Date"
                 width="180"
-                labelClassName="red"
-                class="red"
             ></ivue-table-column>
             <ivue-table-column prop="name" label="Name" width="180"></ivue-table-column>
             <ivue-table-column prop="address" label="Address"></ivue-table-column>
-        </ivue-table>-->
+        </ivue-table>
         <!-- <h1>带斑马纹表格</h1>
         <ivue-table :data="tableData" stripe style="width: 100%">
             <ivue-table-column prop="date" label="Date" width="180"></ivue-table-column>
@@ -110,11 +108,23 @@
             <ivue-table-column prop="name" label="name" showOverflowTooltip></ivue-table-column>
         </ivue-table>
 
+        <ivue-table
+            ref="table"
+            :data="tableData3"
+            style="width: 100%"
+            :selectOnIndeterminate="false"
+            @on-selection-change="handleonSelectionChange"
+        >
+            <ivue-table-column type="selection" width="55"></ivue-table-column>
+            <ivue-table-column prop="date" label="date" width="120"></ivue-table-column>
+            <ivue-table-column prop="name" label="name" showOverflowTooltip></ivue-table-column>
+        </ivue-table>
+
         <ivue-button @click="toggleSelection([tableData[1], tableData[2]])">Select second row</ivue-button>
         <ivue-button @click="toggleSelection()">Clear selection</ivue-button>
         <ivue-button @click="updata()">Updata</ivue-button>
         <ivue-button @click="updata1()">Updata1</ivue-button>
-        <ivue-button @click="updata2()">Updata2</ivue-button>-->
+        <ivue-button @click="updata2()">Updata2</ivue-button> -->
 
         <!-- <h1>排序</h1>
         <ivue-table
@@ -280,11 +290,11 @@
             <ivue-table-column label="Name" prop="name"></ivue-table-column>
         </ivue-table>-->
 
-        <!-- <h1>树形数据与懒加载</h1> -->
-        <!-- <ivue-table :data="tableData9" style="width: 100%" border rowKey="id">
+        <!-- <h1>树形数据与懒加载</h1>
+        <ivue-table :data="tableData9" style="width: 100%" border rowKey="id" :indent="100">
             <ivue-table-column prop="date" label="date" sortable width="180"></ivue-table-column>
             <ivue-table-column prop="name" label="Name" sortable width="180"></ivue-table-column>
-        </ivue-table>-->
+        </ivue-table> -->
         <!-- <ivue-table
             :data="tableData10"
             style="width: 100%"
@@ -297,14 +307,52 @@
             <ivue-table-column prop="date" label="date" sortable width="180"></ivue-table-column>
             <ivue-table-column prop="name" label="Name" sortable width="180"></ivue-table-column>
         </ivue-table>-->
-        <h1>表尾合计行</h1>
-        <ivue-table :data="tableData11" showSummary >
-            <ivue-table-column prop="id" label="ID" width="180"  fixed="left"></ivue-table-column>
+        <!-- <h1>表尾合计行</h1> -->
+        <!-- <ivue-table :data="tableData11" showSummary>
+            <ivue-table-column prop="id" label="ID" width="180" fixed="left"></ivue-table-column>
+            <ivue-table-column prop="name" label="Name"></ivue-table-column>
+            <ivue-table-column prop="amount1" sortable label="Amount 1"></ivue-table-column>
+            <ivue-table-column prop="amount2" sortable label="Amount 2"></ivue-table-column>
+            <ivue-table-column prop="amount3" sortable label="Amount 3" fixed="right"></ivue-table-column>
+        </ivue-table>-->
+        <!-- <ivue-table
+            :data="tableData11"
+            showSummary
+            border
+            height="200"
+            :summaryMethod="getSummaries"
+        >
+            <ivue-table-column prop="id" label="ID" width="180" fixed="left"></ivue-table-column>
+            <ivue-table-column prop="name" label="Name"></ivue-table-column>
+            <ivue-table-column prop="amount1" sortable label="Amount 1"></ivue-table-column>
+            <ivue-table-column prop="amount2" sortable label="Amount 2"></ivue-table-column>
+            <ivue-table-column prop="amount3" sortable label="Amount 3" fixed="right"></ivue-table-column>
+        </ivue-table>-->
+
+        <!-- <h1>合并行或列</h1>
+        <ivue-table :data="tableData11" border>
+            <ivue-table-column prop="id" label="ID" width="180" fixed="left"></ivue-table-column>
             <ivue-table-column prop="name" label="Name"></ivue-table-column>
             <ivue-table-column prop="amount1" sortable label="Amount 1"></ivue-table-column>
             <ivue-table-column prop="amount2" sortable label="Amount 2"></ivue-table-column>
             <ivue-table-column prop="amount3" sortable label="Amount 3" fixed="right"></ivue-table-column>
         </ivue-table>
+
+        <ivue-table :data="tableData11" border :spanMethod="arraySpanMethod">
+            <ivue-table-column prop="id" label="ID" width="180" fixed="left"></ivue-table-column>
+            <ivue-table-column prop="name" label="Name"></ivue-table-column>
+            <ivue-table-column prop="amount1" sortable label="Amount 1"></ivue-table-column>
+            <ivue-table-column prop="amount2" sortable label="Amount 2"></ivue-table-column>
+            <ivue-table-column prop="amount3" sortable label="Amount 3" fixed="right"></ivue-table-column>
+        </ivue-table>
+
+        <ivue-table :data="tableData11" border :spanMethod="objectSpanMethod">
+            <ivue-table-column prop="id" label="ID" width="180" fixed="left"></ivue-table-column>
+            <ivue-table-column prop="name" label="Name"></ivue-table-column>
+            <ivue-table-column prop="amount1" sortable label="Amount 1"></ivue-table-column>
+            <ivue-table-column prop="amount2" sortable label="Amount 2"></ivue-table-column>
+            <ivue-table-column prop="amount3" sortable label="Amount 3" fixed="right"></ivue-table-column>
+        </ivue-table> -->
     </div>
 </template>
 
@@ -939,6 +987,63 @@ export default {
                 ]);
             }, 1000);
         },
+        getSummaries(param) {
+            const { columns, data } = param;
+            const sums = [];
+
+            columns.forEach((column, index) => {
+                if (index === 0) {
+                    sums[index] = 'Total Cost';
+                    return;
+                }
+                const values = data.map((item) =>
+                    Number(item[column.property])
+                );
+                if (!values.every((value) => Number.isNaN(value))) {
+                    sums[index] = `$ ${values.reduce((prev, curr) => {
+                        const value = Number(curr);
+                        if (!Number.isNaN(value)) {
+                            return prev + curr;
+                        } else {
+                            return prev;
+                        }
+                    }, 0)}`;
+                } else {
+                    sums[index] = 'N/A';
+                }
+            });
+
+            return sums;
+        },
+        arraySpanMethod({ row, column, rowIndex, columnIndex }) {
+            if (rowIndex % 2 === 0) {
+                if (columnIndex === 0) {
+                    return [1, 2];
+                } else if (columnIndex === 1) {
+                    return [0, 0];
+                }
+            }
+        },
+        objectSpanMethod({ row, column, rowIndex, columnIndex }) {
+            if (columnIndex === 0) {
+                if (rowIndex % 2 === 0) {
+                    return {
+                        rowspan: 2,
+                        colspan: 1,
+                    };
+                } else {
+                    return {
+                        rowspan: 0,
+                        colspan: 0,
+                    };
+                }
+            }
+        },
+        headerCellStyle() {
+            return {
+                color: 'red',
+            }
+        }
     },
 };
 </script>
@@ -954,4 +1059,5 @@ export default {
 .red {
     background: red;
 }
+
 </style>

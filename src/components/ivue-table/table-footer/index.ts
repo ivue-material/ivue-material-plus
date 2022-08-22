@@ -93,7 +93,7 @@ export default defineComponent({
       // 自定义的合计计算方法
       if (props.summaryMethod) {
         sums = props.summaryMethod({
-          columns,
+          columns: columns.value,
           data,
         });
       }

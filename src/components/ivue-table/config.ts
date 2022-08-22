@@ -248,6 +248,10 @@ export const cellForced = {
         'onUpdate:modelValue': store.toggleAllSelection,
         // 中间状态
         indeterminate: store.states.selection.value.length > 0 && !store.states.isAllSelected.value,
+        // onClick
+        onClick: (event: Event) => {
+          event.stopPropagation();
+        }
       });
     },
     // 渲染单元格

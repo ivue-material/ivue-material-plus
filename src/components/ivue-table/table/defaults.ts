@@ -48,6 +48,24 @@ type SummaryMethod<T> = (data: {
 // 设置表格单元、行和列的布局方式
 type Layout = 'fixed' | 'auto'
 
+type CellStyle<T> =
+  | CSSProperties
+  | ((data: {
+    row: T
+    rowIndex: number
+    column: TableColumnCtx<T>
+    columnIndex: number
+  }) => CSSProperties)
+
+type CellCls<T> =
+  | string
+  | ((data: {
+    row: T
+    rowIndex: number
+    column: TableColumnCtx<T>
+    columnIndex: number
+  }) => string)
+
 // refs
 interface TableRefs {
   tableWrapper: HTMLElement
@@ -181,6 +199,23 @@ interface TableProps<T> {
   sumText?: string
   // 自定义的合计计算方法
   summaryMethod?: SummaryMethod<T>
+  // 合并行或列的计算方法
+  spanMethod?: (data: {
+    row: T
+    rowIndex: number
+    column: TableColumnCtx<T>
+    columnIndex: number
+  }) =>
+    | number[]
+    | {
+      rowspan: number
+      colspan: number
+    }
+    | undefined
+  // 表头单元格的 style 的回调方法，也可以使用一个固定的 Object 为所有表头单元格设置一样的 Style
+  headerCellStyle?: CellStyle<T>
+  // 表头单元格的 className 的回调方法，也可以使用字符串为所有表头单元格设置一个固定的 className
+  headerCellClassName?: CellCls<T>
 }
 
 // 行样式
@@ -422,6 +457,32 @@ export default {
    */
   summaryMethod: {
     type: Function as PropType<TableProps<DefaultRow>['summaryMethod']>,
+  },
+  /**
+   * 合并行或列的计算方法
+   *
+   * @type {Function}
+   */
+  spanMethod: {
+    type: Function as PropType<TableProps<DefaultRow>['spanMethod']>
+  },
+  /**
+   * 表头单元格的 style 的回调方法，
+   * 也可以使用一个固定的 Object 为所有表头单元格设置一样的 Style
+   *
+   * @type {Object, Function}
+   */
+  headerCellStyle: {
+    type: [Object, Function] as PropType<TableProps<DefaultRow>['headerCellStyle']>,
+  },
+  /**
+   * 表头单元格的 className 的回调方法，
+   * 也可以使用字符串为所有表头单元格设置一个固定的 className
+   *
+   * @type {String, Function}
+   */
+  headerCellClassName: {
+    type: [String, Function] as PropType<TableProps<DefaultRow>['headerCellClassName']>,
   }
 };
 

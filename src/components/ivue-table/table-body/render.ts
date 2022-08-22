@@ -155,7 +155,6 @@ function useRender<T>(props: Partial<TableBodyProps<T>>) {
               data.treeNode.noLazyChildren = treeRowData.noLazyChildren;
             }
           }
-
         }
 
         return h(

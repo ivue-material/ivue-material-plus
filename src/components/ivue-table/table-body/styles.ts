@@ -70,26 +70,36 @@ function useStyles<T>(props: Partial<TableBodyProps<T>>) {
     columnIndex: number
   ) => {
     // 单元格可横跨的列数
-    const rowspan = 1;
+    let rowspan = 1;
     // 单元格可横跨的列数
-    const colspan = 1;
+    let colspan = 1;
 
-    // const fn = parent?.props.spanMethod
-    // if (typeof fn === 'function') {
-    //   const result = fn({
-    //     row,
-    //     column,
-    //     rowIndex,
-    //     columnIndex,
-    //   })
-    //   if (Array.isArray(result)) {
-    //     rowspan = result[0]
-    //     colspan = result[1]
-    //   } else if (typeof result === 'object') {
-    //     rowspan = result.rowspan
-    //     colspan = result.colspan
-    //   }
-    // }
+    const spanMethod = IvueTable?.props.spanMethod;
+
+    // 合并行或列的计算方法
+    if (typeof spanMethod === 'function') {
+      const result = spanMethod({
+        // 当前行
+        row,
+        // 当前列
+        column,
+        // 当前行号
+        rowIndex,
+        // 当前列号
+        columnIndex,
+      });
+
+      // 数组
+      if (Array.isArray(result)) {
+        rowspan = result[0];
+        colspan = result[1];
+      }
+      // 对象
+      else if (typeof result === 'object') {
+        rowspan = result.rowspan;
+        colspan = result.colspan;
+      }
+    }
 
     return { rowspan, colspan };
   };

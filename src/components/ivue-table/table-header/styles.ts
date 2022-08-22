@@ -10,7 +10,7 @@ const prefixCls = 'ivue-table';
 
 function useStyle<T>(props: TableHeaderProps<T>) {
   // inject
-  const parent: any = inject('ivue-table');
+  const IvueTable: any = inject(prefixCls);
 
 
   // 头部行样式
@@ -20,6 +20,17 @@ function useStyle<T>(props: TableHeaderProps<T>) {
     row: T,
     column: TableColumnCtx<T>
   ) => {
+
+    let headerCellStyles = IvueTable?.props.headerCellStyle ?? {};
+
+    if (typeof headerCellStyles === 'function') {
+      headerCellStyles = headerCellStyles.call(null, {
+        rowIndex,
+        columnIndex,
+        row,
+        column,
+      });
+    }
 
     // fixedStyle
     const fixedStyle = column.isSubColumn
@@ -36,7 +47,7 @@ function useStyle<T>(props: TableHeaderProps<T>) {
     // 右边
     ensurePosition(fixedStyle, 'right');
 
-    return Object.assign({}, fixedStyle);
+    return Object.assign({}, headerCellStyles, fixedStyle);
   };
 
   // 头部行样式
@@ -81,6 +92,26 @@ function useStyle<T>(props: TableHeaderProps<T>) {
     // 过滤
     if (column.filterable) {
       classes.push('is-filterable');
+    }
+
+    // 表头单元格的 className 的回调方法，
+    // 也可以使用字符串为所有表头单元格设置一个固定的 className
+    const headerCellClassName = IvueTable?.props.headerCellClassName;
+
+    // 字符串
+    if (typeof headerCellClassName === 'string') {
+      classes.push(headerCellClassName);
+    }
+    // 方法
+    else if (typeof headerCellClassName === 'function') {
+      classes.push(
+        headerCellClassName.call(null, {
+          rowIndex,
+          columnIndex,
+          row,
+          column,
+        })
+      );
     }
 
     // cell
