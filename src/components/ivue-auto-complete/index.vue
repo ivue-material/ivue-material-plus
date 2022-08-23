@@ -59,7 +59,7 @@ const prefixCls = 'ivue-auto-complete';
 
 export default defineComponent({
     name: prefixCls,
-    emits: ['on-search', 'on-change', 'update:modelValue'],
+    emits: ['on-search', 'on-change', 'update:modelValue', 'on-select'],
     props: {
         /**
          * 设置选择的值
@@ -193,6 +193,8 @@ export default defineComponent({
 
         // select
         const select = ref(null);
+        // input
+        const input = ref(null);
 
         // data
         const data: any = reactive<{
@@ -236,6 +238,17 @@ export default defineComponent({
 
         // 被选中时调用，参数为选中项的 value 值
         const handleSelect = (option) => {
+            const value = option.value;
+            if (value === undefined || value === null) {
+                return;
+            }
+
+            data.currentValue = value;
+
+            // blur
+            input.value.blur();
+
+            emit('on-select', value);
         };
 
         // 点击外部
@@ -278,6 +291,7 @@ export default defineComponent({
         return {
             // dom
             select,
+            input,
 
             // data
             data,

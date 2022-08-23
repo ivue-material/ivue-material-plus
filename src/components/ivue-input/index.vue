@@ -632,6 +632,15 @@ export default defineComponent({
             }
         };
 
+        // 失去焦点
+        const blur = () => {
+            if (props.type === 'textarea') {
+                textarea.value.blur();
+            } else {
+                input.value.focus();
+            }
+        };
+
         // 是否显示密码
         const handleShowPassword = () => {
             // 是否禁用
@@ -720,6 +729,7 @@ export default defineComponent({
             handleSuffix,
             handleSearch,
             focus,
+            blur,
             // data
             showPassword,
             currentValue,

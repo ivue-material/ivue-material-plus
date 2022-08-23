@@ -5,7 +5,6 @@
         v-click-outside[capture]="handleClickOutside"
         v-click-outside:[capture].mousedown="handleClickOutside"
     >
-        {{dropVisible}}
         <div
             ref="reference"
             :class="selectionClasses"
@@ -663,11 +662,7 @@ export default defineComponent({
             if (props.autoComplete) {
                 for (let option of data.options) {
                     selectOptions.push(
-                        handleOption(
-                            option,
-                            selectedValues,
-                            false
-                        )
+                        handleOption(option, selectedValues, false)
                     );
                 }
 
@@ -732,12 +727,11 @@ export default defineComponent({
             }
 
             // 自动完成
-            // if ( ([...data.options].length === 0)) {
-            //     status = false;
-            // }
-            // else {
-            //     status = true;
-            // }
+            nextTick(() => {
+                if (props.autoComplete && noSelectOptions) {
+                    status = false;
+                }
+            });
 
             return data.visibleMenu && status;
         });
@@ -1425,6 +1419,7 @@ export default defineComponent({
                 props,
                 selectWrapper,
                 reference,
+                dropVisible,
                 options: data.options,
                 values: data.values,
                 handleOptionClick,

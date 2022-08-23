@@ -8,8 +8,8 @@
         v-ripple="!disabledRipple"
         @click.stop="handleOptionClick"
         @mousedown.prevent
-        @mouseenter="data.hasMouseHover = true"
-        @mouseleave="data.hasMouseHover = false"
+        @mouseenter="handleMouseenter"
+        @mouseleave="handleMouseleave"
     >
         <slot>{{ showLabel }}</slot>
     </li>
@@ -329,9 +329,6 @@ export default defineComponent({
         const isEqual = (a: unknown, b: unknown) => {
             if (!isObject.value) {
                 return a === b;
-            } else {
-                // const { valueKey } = select.props;
-                // return getValueByPath(a, valueKey) === getValueByPath(b, valueKey);
             }
         };
 
@@ -339,17 +336,6 @@ export default defineComponent({
         const contains = (arr = [], target) => {
             if (!isObject.value) {
                 return arr && arr.indexOf(target) > -1;
-            } else {
-                // const valueKey = select.props.valueKey;
-                // return (
-                //     arr &&
-                //     arr.some((item) => {
-                //         return (
-                //             getValueByPath(item, valueKey) ===
-                //             getValueByPath(target, valueKey)
-                //         );
-                //     })
-                // );
             }
         };
 
@@ -391,6 +377,20 @@ export default defineComponent({
             return style;
         };
 
+        // 鼠标进入
+        const handleMouseenter = () => {
+            if (!select.dropVisible) {
+                return;
+            }
+
+            data.hasMouseHover = true;
+        };
+
+        // 鼠标离开
+        const handleMouseleave = () => {
+            data.hasMouseHover = false;
+        };
+
         // onMounted
         onMounted(() => {
             if (!props.allowCreate) {
@@ -420,6 +420,8 @@ export default defineComponent({
 
             // methods
             handleOptionClick,
+            handleMouseenter,
+            handleMouseleave,
             setBackgroundColor,
         };
     },
