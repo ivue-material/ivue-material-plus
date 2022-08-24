@@ -24,6 +24,7 @@ import {
     reactive,
     onBeforeUnmount,
     onMounted,
+    nextTick,
 } from 'vue';
 
 import ripple from '../../utils/directives/ripple';
@@ -401,9 +402,13 @@ export default defineComponent({
 
         // onBeforeUnmount
         onBeforeUnmount(() => {
-            select.onOptionDestroy(
-                select.options.map((item) => item.value).indexOf(props.value)
-            );
+            nextTick(() => {
+                select.onOptionDestroy(
+                    select.options
+                        .map((item) => item.value)
+                        .indexOf(props.value)
+                );
+            });
         });
 
         return {

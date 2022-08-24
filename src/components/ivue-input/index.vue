@@ -637,7 +637,7 @@ export default defineComponent({
             if (props.type === 'textarea') {
                 textarea.value.blur();
             } else {
-                input.value.focus();
+                input.value.blur();
             }
         };
 

@@ -1,4 +1,9 @@
 $name: 'ivue-auto-complete';
 
 .#{$name} {
+
+  &--notdata{
+    padding: 0;
+    margin: 0;
+  }
 }

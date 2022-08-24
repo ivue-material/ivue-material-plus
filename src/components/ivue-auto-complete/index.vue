@@ -11,6 +11,7 @@
             :transfer="transfer"
             :capture="capture"
             :eventsEnabled="eventsEnabled"
+            :notFindText="''"
             filterable
             auto-complete
             ref="select"
@@ -26,6 +27,8 @@
                         :id="id"
                         :placeholder="placeholder"
                         :disabled="disabled"
+                        @on-focus="handleFocus"
+                        @on-blur="handleBlur"
                         ref="input"
                     ></ivue-input>
                 </slot>
@@ -39,16 +42,7 @@
 </template>
 
 <script lang='ts'>
-import {
-    defineComponent,
-    computed,
-    getCurrentInstance,
-    onMounted,
-    reactive,
-    ref,
-    watch,
-    nextTick,
-} from 'vue';
+import { defineComponent, computed, reactive, ref, watch, nextTick } from 'vue';
 import IvueSelect from '../ivue-select/index.vue';
 import IvueInput from '../ivue-input/index.vue';
 import IvueOption from '../ivue-select/option.vue';
@@ -59,7 +53,14 @@ const prefixCls = 'ivue-auto-complete';
 
 export default defineComponent({
     name: prefixCls,
-    emits: ['on-search', 'on-change', 'update:modelValue', 'on-select'],
+    emits: [
+        'update:modelValue',
+        'on-search',
+        'on-change',
+        'on-select',
+        'on-focus',
+        'on-blur',
+    ],
     props: {
         /**
          * 设置选择的值
@@ -239,6 +240,7 @@ export default defineComponent({
         // 被选中时调用，参数为选中项的 value 值
         const handleSelect = (option) => {
             const value = option.value;
+
             if (value === undefined || value === null) {
                 return;
             }
@@ -252,7 +254,22 @@ export default defineComponent({
         };
 
         // 点击外部
-        const handleClickOutside = () => {};
+        const handleClickOutside = () => {
+            nextTick(() => {
+                // blur
+                input.value.blur();
+            });
+        };
+
+        // 获取焦点
+        const handleFocus = (event) => {
+            emit('on-focus', event);
+        };
+
+        // 失去焦点
+        const handleBlur = (event) => {
+            emit('on-blur', event);
+        };
 
         // watch
 
@@ -302,6 +319,8 @@ export default defineComponent({
             searchMethod,
             handleSelect,
             handleClickOutside,
+            handleFocus,
+            handleBlur,
         };
     },
     components: {

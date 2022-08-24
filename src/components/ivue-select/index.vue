@@ -67,7 +67,10 @@
                 v-show="dropVisible"
             >
                 <!-- 没有找到数据时的提示 -->
-                <ul :class="`${prefixCls}-not-find`" v-show="showNotFindText && !allowCreate">
+                <ul
+                    :class="`${prefixCls}-not-find`"
+                    v-show="showNotFindText && !allowCreate && notFindText"
+                >
                     <li>{{ notFindText }}</li>
                 </ul>
                 <!-- 列表 -->
@@ -482,7 +485,7 @@ export default defineComponent({
             lastSearchQuery: string;
             selectEmitter: any;
             hasExpectedValue: boolean;
-            unchangedQuery: boolean;
+            _filterQuery: string;
         }>({
             /**
              * 是否显示菜单
@@ -563,11 +566,11 @@ export default defineComponent({
              */
             hasExpectedValue: false,
             /**
-             * 防止下拉框隐藏
+             * 过滤输入内容
              *
-             * @type {Boolean}
+             * @type {String}
              */
-            unchangedQuery: true,
+            _filterQuery: '',
         });
 
         // computed
@@ -661,8 +664,34 @@ export default defineComponent({
             // 判断是否有自动输入
             if (props.autoComplete) {
                 for (let option of data.options) {
+                    // 选项计数器
+                    optionCounter = optionCounter + 1;
+
+                    option.data.visible = true;
+
+                    //如果没有 filterQueryChange ，则忽略选项
+                    const optionFilter = props.filterable
+                        ? validateOption(option)
+                        : option;
+
+                    // 不符合条件的选项
+                    if (!optionFilter) {
+                        option.data.visible = false;
+                    } else {
+                        option.data.visible = true;
+                    }
+
+                    // autoComplete 过滤输入的内容
+                    if (data._filterQuery === '') {
+                        option.data.visible = true;
+                    }
+
                     selectOptions.push(
-                        handleOption(option, selectedValues, false)
+                        handleOption(
+                            option,
+                            selectedValues,
+                            optionCounter === currentIndex
+                        )
                     );
                 }
 
@@ -726,12 +755,10 @@ export default defineComponent({
                 status = false;
             }
 
-            // 自动完成
-            nextTick(() => {
-                if (props.autoComplete && noSelectOptions) {
-                    status = false;
-                }
-            });
+            // autoComplete
+            if (props.autoComplete && noSelectOptions) {
+                status = false;
+            }
 
             return data.visibleMenu && status;
         });
@@ -787,6 +814,8 @@ export default defineComponent({
                 [`${prefixCls}-dropdown--transfer`]: props.transfer,
                 [`${prefixCls}-multiple`]: props.multiple && props.transfer,
                 ['ivue-auto-complete']: props.autoComplete,
+                ['ivue-auto-complete--notdata']:
+                    selectOptions.value.length === 0,
                 [props.transferClassName]: props.transferClassName,
             };
         });
@@ -880,10 +909,6 @@ export default defineComponent({
         // 隐藏菜单
         const hideMenu = () => {
             handleToggleMenu(null, false);
-
-            setTimeout(() => {
-                data.unchangedQuery = true;
-            }, 300);
         };
 
         // 选项菜单点击
@@ -920,14 +945,14 @@ export default defineComponent({
             }
             // 单选
             else {
+                // 点击后隐藏菜单
+                hideMenu();
+
                 // 过滤输入框数据
                 data.filterQuery = String(option.label).trim();
 
                 // 最终渲染的数据
                 data.values = [option];
-
-                // 点击后隐藏菜单
-                hideMenu();
 
                 // 搜索请求
                 data.lastSearchQuery = '';
@@ -952,8 +977,10 @@ export default defineComponent({
             // 更新下拉框
             dropdown.value.update();
 
-            // 获取焦点项
-            data.focusIndex = setFocusIndex(option);
+            nextTick(() => {
+                // 获取焦点项
+                data.focusIndex = setFocusIndex(option);
+            });
 
             // 判断是否进行了过滤输入
             if (data.filterQueryChange) {
@@ -1016,8 +1043,6 @@ export default defineComponent({
             data.filterQuery = '';
             // 是否开始输入框支持搜索
             data.filterQueryChange = false;
-
-            data.unchangedQuery = true;
         };
 
         // 初始化值
@@ -1061,8 +1086,11 @@ export default defineComponent({
                 return null;
             }
 
-            // 获取焦点项
-            data.focusIndex = setFocusIndex(option);
+            //  不是自动完成
+            if (!props.autoComplete) {
+                // 获取焦点项
+                data.focusIndex = setFocusIndex(option);
+            }
 
             return {
                 value: option.value,
@@ -1092,8 +1120,6 @@ export default defineComponent({
             // 输入框需要过滤的数据
             data.filterQuery = filterQuery;
 
-            data.unchangedQuery = data.visibleMenu;
-
             // 输入框过滤输入开始
             data.filterQueryChange = true;
         };
@@ -1116,7 +1142,7 @@ export default defineComponent({
                 : [value, label, textContent].toString();
 
             // 把输入框数据转换成小写去除前后空格
-            const filterQuery = data.filterQuery.toLowerCase().trim();
+            let filterQuery = data.filterQuery.toLowerCase().trim();
 
             // 是否开启搜索，没有多选，没有输入
             if (props.filterable && !props.multiple && filterQuery === '') {
@@ -1346,6 +1372,12 @@ export default defineComponent({
 
         // 设置过滤输入框输入
         const setQuery = (query) => {
+            // 过滤输入框输入
+            data._filterQuery = query;
+
+            // 重置焦点项
+            data.focusIndex = -1;
+
             if (query) {
                 // 过滤输入框输入
                 handleFilterQueryChange(query);
@@ -1405,6 +1437,7 @@ export default defineComponent({
                     });
 
                     emit('on-set-default-options', values);
+
                     nextTick(() => {
                         data.values = values;
                     });
@@ -1422,6 +1455,7 @@ export default defineComponent({
                 dropVisible,
                 options: data.options,
                 values: data.values,
+                focusIndex: data.focusIndex,
                 handleOptionClick,
                 selectEmitter: data.selectEmitter,
                 onOptionDestroy: handleOptionDestroy,
@@ -1560,6 +1594,7 @@ export default defineComponent({
                 // 是否有搜索方法
                 if (shouldCallRemoteMethod) {
                     data.focusIndex = -1;
+
                     props.searchMethod(filterQuery);
                 }
 
