@@ -50,7 +50,7 @@
 
 <script lang='ts'>
 import { defineComponent, PropType } from 'vue';
-import ivueloading from '../ivue-loading/directive';
+import Ivueloading from '../ivue-loading/directive';
 import IvueIcon from '../ivue-icon/index.vue';
 import { callInterceptor, Interceptor } from '../../utils/interceptor';
 import { isImageFile, getSizeStyle } from '../../utils/helpers';
@@ -60,7 +60,7 @@ const prefixCls = 'ivue-upload-list';
 export default defineComponent({
     name: prefixCls,
     directives: {
-        ivueloading,
+        Ivueloading,
     },
     props: {
         /**

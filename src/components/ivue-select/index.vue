@@ -68,7 +68,7 @@
             >
                 <!-- 没有找到数据时的提示 -->
                 <ul
-                    :class="`${prefixCls}-not-find`"
+                    :class="[`${prefixCls}-not-find`]"
                     v-show="showNotFindText && !allowCreate && notFindText"
                 >
                     <li>{{ notFindText }}</li>
@@ -96,20 +96,28 @@
                     <slot></slot>
                 </ul>
                 <!-- 加载中 -->
-                <ul v-show="loading" :class="`${prefixCls}-loading`">{{ loadingText }}</ul>
+                <ul v-show="loading" :class="`${prefixCls}-loading`">
+                    <div :class="`${prefixCls}-loading--load`">
+                        <div class="load" v-ivueloading="true"></div>
+                        <!-- loadingText -->
+                        <span>{{ loadingText }}</span>
+                    </div>
+                </ul>
             </drop-down>
         </transition>
     </div>
 </template>
 
 <script lang='ts'>
+import mitt from 'mitt';
+
 // 输入框
 import SelectHead from './select-head.vue';
 // 下拉框
 import DropDown from './drop-down.vue';
 import IvueOption from './option.vue';
 import IvueIcon from '../ivue-icon/index.vue';
-import mitt from 'mitt';
+import Ivueloading from '../ivue-loading/directive';
 
 import {
     defineComponent,
@@ -133,7 +141,7 @@ const prefixCls = 'ivue-select';
 export default defineComponent({
     name: prefixCls,
     // 注册局部指令
-    directives: { ClickOutside, TransferDom },
+    directives: { ClickOutside, TransferDom, Ivueloading },
     emits: [
         'update:modelValue',
         'on-change',
@@ -756,7 +764,7 @@ export default defineComponent({
             }
 
             // autoComplete
-            if (props.autoComplete && noSelectOptions) {
+            if (props.autoComplete && noSelectOptions && !props.loading) {
                 status = false;
             }
 
@@ -815,7 +823,7 @@ export default defineComponent({
                 [`${prefixCls}-multiple`]: props.multiple && props.transfer,
                 ['ivue-auto-complete']: props.autoComplete,
                 ['ivue-auto-complete--notdata']:
-                    selectOptions.value.length === 0,
+                    selectOptions.value.length === 0 && props.autoComplete && !props.loading,
                 [props.transferClassName]: props.transferClassName,
             };
         });
@@ -1385,6 +1393,11 @@ export default defineComponent({
                 return;
             }
 
+            // 输入框未空
+            if (query === '') {
+                props.searchMethod(query);
+            }
+
             // 没有输入值
             if (query === null) {
                 // 过滤输入框输入
@@ -1688,7 +1701,7 @@ export default defineComponent({
                 }
 
                 // 更新下拉框
-                dropdown.value.update();
+                dropdown.value && dropdown.value.update();
             }
         );
 

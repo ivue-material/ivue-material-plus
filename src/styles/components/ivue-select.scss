@@ -12,8 +12,25 @@ $name: 'ivue-select';
 
   // 加载中
   &-loading {
+    padding: 7px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     text-align: center;
     color: #9AB0C6;
+    height: 100px;
+
+    &--load {
+      display: flex;
+      align-items: center;
+
+      .load {
+        margin-right: 10px;
+        position: relative;
+        width: 17px;
+        height: 17px;
+      }
+    }
   }
 
   // 禁用样式
@@ -353,6 +370,7 @@ $name: 'ivue-select';
     box-shadow: 0 1px 6px rgba(0, 0, 0, .2);
     z-index: 999;
     transform-origin: center top 0px;
+    opacity: 1;
 
     &--transfer {
       z-index: 1060;
@@ -371,8 +389,13 @@ $name: 'ivue-select';
 
   /*没有数据时的提示*/
   &-not-find {
+    padding: 7px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     text-align: center;
     color: #9AB0C6;
+    height: 100px;
 
     li {
       margin-bottom: 0;
@@ -469,21 +492,49 @@ $name: 'ivue-select';
 
 /*下拉菜单动画*/
 
+.transition-drop-appear,
 .transition-drop-enter-active {
-  transition: opacity .3s ease-in-out, transform .3s ease-in-out;
+  animation-duration: .3s;
+  animation-fill-mode: both;
+  animation-name: transitionDropIn;
+  animation-play-state: running;
+  opacity: 0;
+  animation-timing-function: ease-in-out;
 }
 
 .transition-drop-leave-active {
-  transition: opacity .3s ease-in-out, transform .3s ease-in-out;
+  animation-duration: .3s;
+  animation-fill-mode: both;
+  animation-timing-function: ease-in-out;
+  animation-name: transitionDropOut;
+  animation-play-state: running
 }
 
-.transition-drop-enter-from,
-.transition-drop-leave-to {
-  opacity: 0;
-  transform-origin: 0% 0%;
-  transform: scaleY(0.8);
-  will-change: opacity, transform;
+
+@keyframes transitionDropIn {
+  0% {
+    opacity: 0;
+    transform: scaleY(0.8);
+  }
+
+  100% {
+    opacity: 1;
+    transform: scaleY(1);
+  }
 }
+
+@keyframes transitionDropOut {
+  0% {
+    opacity: 1;
+    transform: scaleY(1);
+  }
+
+  100% {
+    opacity: 0;
+    transform: scaleY(0.8);
+  }
+}
+
 
 /*多选选项动画*/
 

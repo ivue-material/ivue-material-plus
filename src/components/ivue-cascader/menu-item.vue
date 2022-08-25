@@ -10,7 +10,7 @@
 <script lang='ts'>
 import { defineComponent, computed } from 'vue';
 import IvueIcon from '../ivue-icon/index.vue';
-import ivueloading from '../ivue-loading/directive';
+import Ivueloading from '../ivue-loading/directive';
 
 const prefixCls = 'ivue-cascader-menu--item';
 
@@ -18,7 +18,7 @@ export default defineComponent({
     name: prefixCls,
     emits: ['click', 'mouseenter'],
     directives: {
-        ivueloading,
+        Ivueloading,
     },
     props: {
         /**

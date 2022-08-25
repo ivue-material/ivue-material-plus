@@ -4,7 +4,6 @@
             :modelValue="data.currentValue"
             :placeholder="placeholder"
             :disabled="disabled"
-            :clearable="clearable"
             :placement="placement"
             :transferClassName="transferClassName"
             :searchMethod="searchMethod"
@@ -12,6 +11,8 @@
             :capture="capture"
             :eventsEnabled="eventsEnabled"
             :notFindText="''"
+            :loading="loading"
+            :loadingText="loadingText"
             filterable
             auto-complete
             ref="select"
@@ -27,10 +28,18 @@
                         :id="id"
                         :placeholder="placeholder"
                         :disabled="disabled"
+                        :clearable="clearable"
                         @on-focus="handleFocus"
                         @on-blur="handleBlur"
                         ref="input"
-                    ></ivue-input>
+                    >
+                        <template #prefix v-if="$slots.prefix">
+                            <slot name="prefix"></slot>
+                        </template>
+                        <template #suffix v-if="$slots.suffix">
+                            <slot name="suffix"></slot>
+                        </template>
+                    </ivue-input>
                 </slot>
             </template>
             <!-- option -->
@@ -188,6 +197,32 @@ export default defineComponent({
             type: [Function, Boolean],
             default: false,
         },
+        /**
+         * 远程搜索方法
+         *
+         * @type {Function}
+         */
+        remoteMethod: {
+            type: Function,
+        },
+        /**
+         * 加载中
+         *
+         * @type {Boolean}
+         */
+        loading: {
+            type: Boolean,
+            default: false,
+        },
+        /**
+         * 加载中的文字提示
+         *
+         * @type {String}
+         */
+        loadingText: {
+            type: String,
+            default: '加载中',
+        },
     },
     setup(props: any, { emit }) {
         // dom
@@ -235,6 +270,10 @@ export default defineComponent({
         // 搜索方法
         const searchMethod = (query) => {
             emit('on-search', query);
+
+            if (props.remoteMethod) {
+                props.remoteMethod(query);
+            }
         };
 
         // 被选中时调用，参数为选中项的 value 值

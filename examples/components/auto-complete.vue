@@ -5,13 +5,24 @@
             v-model="value"
             :list="data"
             @on-search="handleSearch"
+            clearable
+            transferClassName="red"
             placeholder="请输入"
-        ></ivue-auto-complete>
+        >
+            <template #prefix>
+                <ivue-icon>cruelty_free</ivue-icon>
+            </template>
+            <template #suffix>
+                <ivue-icon>cruelty_free</ivue-icon>
+            </template>
+        </ivue-auto-complete>
         <h1>自定义选项</h1>
         <ivue-auto-complete
             v-model="value1"
             :list="data1"
             @on-search="handleSearch1"
+            clearable
+            transfer
             placeholder="请输入"
         ></ivue-auto-complete>
         {{data1}}
@@ -44,10 +55,35 @@
                 class="demo-auto-complete-more"
             >查看所有结果</a>
         </ivue-auto-complete>
+        <h1>远程搜索</h1>
+        <ivue-auto-complete
+            v-model="value5"
+            filterable
+            :remoteMethod="remoteMethod1"
+            :loading="loading1"
+            placeholder="请输入"
+            @on-select="handleSelect"
+        >
+            <ivue-option
+                v-for="item in data5"
+                :value="item.value"
+                :key="item.value"
+            >{{ item.value }}</ivue-option>
+        </ivue-auto-complete>
+        {{value5}}
     </div>
 </template>
 
 <script>
+const loadAll = [
+    { value: 'vue', link: 'https://github.com/vuejs/vue' },
+    { value: 'element', link: 'https://github.com/ElemeFE/element' },
+    { value: 'cooking', link: 'https://github.com/ElemeFE/cooking' },
+    { value: 'mint-ui', link: 'https://github.com/ElemeFE/mint-ui' },
+    { value: 'vuex', link: 'https://github.com/vuejs/vuex' },
+    { value: 'vue-router', link: 'https://github.com/vuejs/vue-router' },
+    { value: 'babel', link: 'https://github.com/babel/babel' },
+];
 export default {
     data() {
         return {
@@ -95,6 +131,10 @@ export default {
                     ],
                 },
             ],
+            value5: '',
+            data5: loadAll,
+            loading1: false,
+            select: ''
         };
     },
     methods: {
@@ -119,6 +159,31 @@ export default {
         filterMethod(value, option) {
             return option.toUpperCase().indexOf(value.toUpperCase()) !== -1;
         },
+        remoteMethod1(queryString) {
+            if(this.select === queryString) {
+                return
+            }
+
+            const results = queryString
+                ? loadAll.filter((item) => {
+                      return (
+                          item.value
+                              .toLowerCase()
+                              .indexOf(queryString.toLowerCase()) === 0
+                      );
+                  })
+                : loadAll;
+
+            this.loading1 = true;
+
+            setTimeout(() => {
+                this.loading1 = false;
+                this.data5 = results;
+            }, 3000);
+        },
+        handleSelect(value) {
+            this.select = value
+        }
     },
 };
 </script>
@@ -149,5 +214,9 @@ export default {
     padding: 4px;
     text-align: center;
     font-size: 12px;
+}
+
+.red {
+    background: red;
 }
 </style>
