@@ -37,6 +37,8 @@ import Spin from '../components/spin';
 import Table from '../components/table';
 import AutoComplete from '../components/auto-complete';
 import Animation from '../components/animation';
+import CountDown from '../components/count-down';
+import CountUp from '../components/count-up';
 
 const routes = [{
     path: '/Affix',
@@ -209,8 +211,17 @@ const routes = [{
     component: AutoComplete
   }, {
     path: '/animation',
-    name: 'animation',
+    name: 'Animation',
     component: Animation
+  },
+  {
+    path: '/count-down',
+    name: 'CountDown',
+    component: CountDown
+  }, {
+    path: '/count-up',
+    name: 'CountUp',
+    component: CountUp
   }
 ];
 

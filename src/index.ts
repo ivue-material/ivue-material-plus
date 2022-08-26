@@ -39,6 +39,8 @@ import IvuePage from './components/ivue-page';
 import IvueSpin from './components/ivue-spin';
 import IvueTable from './components/ivue-table';
 import IvueAutoComplete from './components/ivue-auto-complete';
+import IvueCountDown from './components/ivue-count-down';
+import IvueCountUp from './components/ivue-count-up';
 
 // 指令
 import Directives from './utils/directives/index';
@@ -82,7 +84,9 @@ export {
     IvuePage,
     IvueSpin,
     IvueTable,
-    IvueAutoComplete
+    IvueAutoComplete,
+    IvueCountDown,
+    IvueCountUp
 };
 
 
@@ -126,6 +130,8 @@ const install = (app: App, opts: any = {}): void => {
     IvueSpin(app);
     IvueTable(app);
     IvueAutoComplete(app);
+    IvueCountDown(app);
+    IvueCountUp(app);
 
     // 全局配置
     app.config.globalProperties.$IVUE = {

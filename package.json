@@ -36,7 +36,8 @@
     "normalize-wheel-es": "^1.2.0",
     "popper.js": "^1.16.1",
     "raf": "^3.4.1",
-    "tslib": "^2.3.1"
+    "tslib": "^2.3.1",
+    "countup.js": "^2.3.2"
   },
   "peerDependencies": {
     "vue": ">=3.0.0"

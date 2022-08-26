@@ -90,7 +90,6 @@ import IvueCheckbox from '../../ivue-checkbox/index.vue';
 // ts
 import type { TableColumnCtx } from '../table-column/defaults';
 import type { Store } from '../store';
-import { values } from 'lodash';
 
 const prefixCls = 'ivue-table-filter-panel';
 

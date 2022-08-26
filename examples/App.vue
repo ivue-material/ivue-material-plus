@@ -128,8 +128,14 @@
                 <li>
                     <router-link to="/auto-complete">AutoComplete</router-link>
                 </li>
-                  <li>
+                <li>
                     <router-link to="/animation">Animation</router-link>
+                </li>
+                <li>
+                    <router-link to="/count-down">CountDown</router-link>
+                </li>
+                 <li>
+                    <router-link to="/count-up">CountUp</router-link>
                 </li>
             </ul>
         </nav>

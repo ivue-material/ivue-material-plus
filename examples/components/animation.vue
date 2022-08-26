@@ -66,6 +66,10 @@
                 <div v-show="anim11" class="transition-box">向右折叠</div>
             </transition>
         </div>
+         <div  class="card">
+           循环
+            <ivue-icon class="ivue-animation-loop" >menu</ivue-icon>
+        </div>
     </div>
 </template>
 
