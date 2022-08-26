@@ -1,9 +1,14 @@
 <template>
     <div>
         <h1>倒计时</h1>
-        <!-- <ivue-count-down :target="targetTime1"></ivue-count-down> -->
+        <ivue-count-down :target="targetTime1">
+
+            <template v-slot="slotProps">
+                倒计时:{{slotProps.countDown}}
+            </template>
+        </ivue-count-down>
         <h1>倒计时 on-end</h1>
-        <!-- <ivue-count-down :target="targetTime2" @on-end="handleEnd"></ivue-count-down> -->
+        <ivue-count-down :target="targetTime2" @on-end="handleEnd"></ivue-count-down>
         <h1>倒计时数字</h1>
         <ivue-count-down :target="10000" type="number" @on-end="handleEnd"></ivue-count-down>
     </div>

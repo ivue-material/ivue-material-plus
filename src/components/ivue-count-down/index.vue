@@ -1,5 +1,7 @@
 <template>
-    <span>{{ countDownData }}</span>
+    <span>
+        <slot :countDown="countDownData">{{ countDownData }}</slot>
+    </span>
 </template>
 
 <script lang='ts'>
