@@ -14,7 +14,7 @@ import type TableLayout from '../table-layout';
 export type DefaultRow = any
 
 // 列表行hover状态
-type HoverState<T> = Nullable<{
+type HoverState<T> = NonNullable<{
   cell: HTMLElement
   column: TableColumnCtx<T>
   row: T

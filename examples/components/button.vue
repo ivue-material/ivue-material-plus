@@ -89,10 +89,7 @@ export default {
 };
 </script>
 
-<style lang="scss">
-body {
-    background: #eee;
-}
+<style lang="scss" >
 
 .ivue-button {
 }

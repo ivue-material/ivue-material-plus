@@ -125,8 +125,11 @@
                 <li>
                     <router-link to="/table">Table</router-link>
                 </li>
-                 <li>
+                <li>
                     <router-link to="/auto-complete">AutoComplete</router-link>
+                </li>
+                  <li>
+                    <router-link to="/animation">Animation</router-link>
                 </li>
             </ul>
         </nav>
@@ -135,7 +138,6 @@
     </div>
 </template>
 <script>
-
 module.exports = {
     data() {
         return {};

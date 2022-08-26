@@ -24,18 +24,19 @@ import Message from '../components/message';
 import LoadingBar from '../components/loading-bar';
 import Tabs from '../components/tabs';
 import Badge from '../components/badge';
-import DatePicker from '../components/date-picker.vue';
-import Collapse from '../components/collapse.vue';
-import Cascader from '../components/cascader.vue';
-import Tooltip from '../components/tooltip.vue';
-import Chip from '../components/chip.vue';
-import Radio from '../components/radio.vue';
+import DatePicker from '../components/date-picker';
+import Collapse from '../components/collapse';
+import Cascader from '../components/cascader';
+import Tooltip from '../components/tooltip';
+import Chip from '../components/chip';
+import Radio from '../components/radio';
 import Checkbox from '../components/checkbox';
 import Avatar from '../components/avatar';
 import Page from '../components/page';
 import Spin from '../components/spin';
 import Table from '../components/table';
-import AutoComplete from '../components/auto-complete.vue';
+import AutoComplete from '../components/auto-complete';
+import Animation from '../components/animation';
 
 const routes = [{
     path: '/Affix',
@@ -206,6 +207,10 @@ const routes = [{
     path: '/auto-complete',
     name: 'AutoComplete',
     component: AutoComplete
+  }, {
+    path: '/animation',
+    name: 'animation',
+    component: Animation
   }
 ];
 
