@@ -88,7 +88,7 @@ export default defineComponent({
             type: Function,
         },
     },
-    setup(props) {
+    setup(props: any) {
         // dom
         const wrapper = ref(null);
 
@@ -137,7 +137,7 @@ export default defineComponent({
         // 更新结束值并设置动画
         const update = (value) => {
             if (countUp.value && countUp.value.update) {
-              // 判断是否有暂停
+                // 判断是否有暂停
                 if (countUp.value.paused) {
                     countUp.value.paused = false;
                 }
@@ -151,7 +151,6 @@ export default defineComponent({
         const pauseResume = () => {
             if (countUp.value && countUp.value.pauseResume) {
                 countUp.value.pauseResume();
-
             }
         };
 

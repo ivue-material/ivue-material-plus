@@ -4,14 +4,6 @@ import { transferIndex, transferIncrease } from '../../utils/transfer-queue';
 import Message from './index.vue';
 
 
-type MessageVM = VNode
-
-type MessageQueueItem = {
-    vm: MessageVM
-}
-
-type MessageQueue = Array<MessageQueueItem>
-
 type MessageType = 'success' | 'warning' | 'info' | 'error' | ''
 
 type options = {
@@ -27,7 +19,7 @@ type options = {
 
 
 // 实例列表
-const instances = [];
+const instances: any = [];
 
 let name = 1;
 let offset;
@@ -48,7 +40,7 @@ const message = (type, options: options) => {
     let verticalOffset = offset || options.offset || 20;
 
     // 遍历实例累加位移位置
-    instances.forEach(({ vm }) => {
+    instances.forEach(({ vm }: any) => {
         verticalOffset += (vm.el.offsetHeight || 0) + 16;
     });
 
@@ -86,14 +78,14 @@ const message = (type, options: options) => {
     };
 
     // 实例对象
-    const vm: VNode = createVNode(
+    const vm: any = createVNode(
         Message,
         options,
         isVNode(options.content) ?
             { default: () => message } :
             null);
 
-    const container = document.createElement('div');
+    const container = document.createElement('div') as HTMLElement;
 
     // 清除通知元素防止内存泄漏
     vm.props.onDestroy = () => {
@@ -107,7 +99,8 @@ const message = (type, options: options) => {
 
     // 当 close 函数被调用时，实例将删除此项。 所以我们不需要担心。
     instances.push({ vm });
-    document.body.appendChild(container.firstElementChild);
+
+    document.body.appendChild(container.firstElementChild as HTMLElement);
 };
 
 
@@ -168,7 +161,7 @@ const closeAll = (): void => {
             (vm.component.proxy.data as ComponentPublicInstance<{ visible: boolean; }>).visible = false;
         });
     }
-}
+};
 
 export default {
     info(options: options) {
@@ -194,7 +187,7 @@ export default {
         }
 
         // 延迟时间
-        if (options.duration > 0) {
+        if (options.duration && (options.duration > 0)) {
             defaultDuration = options.duration;
         }
     },

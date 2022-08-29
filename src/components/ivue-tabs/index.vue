@@ -44,9 +44,9 @@
         <div
             class="ivue-tabs-items"
             v-touch="{
-                    left: e => handleSwipeItem('next'),
-                    right: e => handleSwipeItem('prev'),
-                }"
+                left: e => handleSwipeItem('next'),
+                right: e => handleSwipeItem('prev'),
+            }"
         >
             <slot name="content"></slot>
         </div>
@@ -193,13 +193,13 @@ export default defineComponent({
         // dom
 
         // tabs-container
-        const container = ref(null);
+        const container = ref<any>(null);
 
         // tabs-wrapper
-        const wrapper = ref(null);
+        const wrapper = ref<any>(null);
 
         // tabs-bar
-        const bar = ref(null);
+        const bar = ref<any>(null);
 
         // data
         const data: any = reactive<{
@@ -327,7 +327,7 @@ export default defineComponent({
 
         // 获取导航宽度
         const setWidths = () => {
-            const _bar = bar.value ? bar.value.clientWidth : 0;
+            const _bar = bar.value ? bar.value?.clientWidth : 0;
             const _container = container.value
                 ? container.value.clientWidth
                 : 0;
@@ -551,16 +551,6 @@ export default defineComponent({
 
         // watch
 
-        // watch(
-        //     () => data.tabs,
-        //     () => {
-        //         onResize();
-        //     },
-        //     {
-        //         deep: true,
-        //     }
-        // );
-
         // 同步监听 tab导航数组
         watchEffect(() => {
             if (data.tabs) {
@@ -594,6 +584,7 @@ export default defineComponent({
             handleScrollTo,
             unregister,
             handleSwipeItem,
+            tabNavClick,
         };
     },
     components: {

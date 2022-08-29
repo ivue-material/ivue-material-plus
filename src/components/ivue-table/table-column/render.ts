@@ -76,7 +76,7 @@ function useRender<T>(
   // 获取props值
   const getPropsData = (...propsKey: unknown[]) => {
 
-    return propsKey.reduce((prev, cur) => {
+    return propsKey.reduce((prev: any, cur) => {
       // 数组
       if (Array.isArray(cur)) {
         cur.forEach((key) => {
@@ -150,7 +150,7 @@ function useRender<T>(
 
       // 渲染行
       column.renderCell = (data) => {
-        let children = null;
+        let children: any = null;
 
         // 有默认插槽
         if (slots.default) {
@@ -260,7 +260,7 @@ function useRender<T>(
 
   // 同步监听 对齐方向
   watchEffect(() => {
-    align.value = props.align ? `is-${props.align}` : null;
+    align.value = props.align ? `is-${props.align}` : '';
 
     return align.value;
   });

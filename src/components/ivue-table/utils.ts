@@ -58,6 +58,8 @@ export const getRowIdentity = <T>(
   else if (typeof rowKey === 'function') {
     return rowKey.call(null, row);
   }
+
+  return '';
 };
 
 // 宽度判断
@@ -322,21 +324,8 @@ export function toggleRowStatus<T>(
 }
 
 // 获取当前单元格元素
-export const getCell = (event: Event): HTMLElement => {
-  let cell = event.target as HTMLElement;
-
-  while (cell && cell.tagName.toUpperCase() !== 'HTML') {
-
-    // td
-    if (cell.tagName.toUpperCase() === 'TD') {
-      return cell;
-    }
-
-    // 返回父节点
-    cell = cell.parentNode as HTMLElement;
-  }
-
-  return null;
+export const getCell = (event: Event) => {
+  return (event.target as HTMLElement)?.closest('td');
 };
 
 // 单元格
@@ -370,7 +359,7 @@ export const getColumnById = <T>(
   // 列id
   columnId: string
 ): null | TableColumnCtx<T> => {
-  let column = null;
+  let column: any = null;
 
   // 根据id获取当前列
   table.columns.forEach((item) => {
@@ -390,15 +379,10 @@ export const getColumnByKey = function <T>(
   },
   columnKey: string
 ): TableColumnCtx<T> {
-  let column = null;
+  let column: any = null;
 
   for (let i = 0; i < table.columns.length; i++) {
     const item = table.columns[i];
-
-    // 没有设置columnKey
-    if (!item.columnKey) {
-      throw ('column does not have columnKey set');
-    }
 
     // 是否有相同的key->对应的列
     if (item.columnKey === columnKey) {
@@ -406,6 +390,11 @@ export const getColumnByKey = function <T>(
 
       break;
     }
+  }
+
+  // 没有设置columnKey
+  if (!column) {
+    throw ('column does not have columnKey set');
   }
 
   return column;
@@ -472,7 +461,7 @@ export const createTablePopper = (
   // 渲染内容
   const content = renderContent();
 
-  let popperInstance = null;
+  let popperInstance: any = null;
 
   popperInstance = createPopper(trigger, content, {
     strategy: 'absolute',
@@ -552,7 +541,7 @@ export const orderBy = <T>(
   }
 
   // 获取key
-  let getKey = null;
+  let getKey: any = null;
 
   // 没有自定义排序方法
   if (!sortMethod) {

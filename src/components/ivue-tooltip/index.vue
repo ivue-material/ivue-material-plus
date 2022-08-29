@@ -182,7 +182,7 @@ export default defineComponent({
             default: false,
         },
     },
-    setup(props) {
+    setup(props: any) {
         // dom
         const popper = ref(null);
         const reference = ref(null);
@@ -212,7 +212,7 @@ export default defineComponent({
              * @type {Number}
              */
             zIndex: 0,
-              /**
+            /**
              * 是否开启 capture 模式，也可通过全局配置
              *
              * @type {Boolean}

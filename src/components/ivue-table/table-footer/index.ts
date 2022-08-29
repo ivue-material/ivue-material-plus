@@ -85,7 +85,7 @@ export default defineComponent({
 
     // 渲染td
     const renderTd = () => {
-      let sums = [];
+      let sums: any = [];
 
       // 没行的数据
       const data = props.store.states.data.value;
@@ -110,7 +110,7 @@ export default defineComponent({
 
           const values = data.map((item) => Number(item[column.property]));
 
-          const precisions = [];
+          const precisions: Array<number> = [];
           let notNumber = true;
 
           values.forEach((value) => {

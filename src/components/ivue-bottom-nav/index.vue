@@ -267,10 +267,10 @@ export default defineComponent({
                     ...this.classes,
                 },
                 style: {
-                    height: `${parseInt(this.computedHeight)}px`,
+                    height: `${this.computedHeight}px`,
                 },
             }),
-            this.$slots.default()
+            this.$slots && this.$slots?.default?.()
         );
     },
 });

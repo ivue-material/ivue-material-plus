@@ -63,7 +63,7 @@ export default defineComponent({
             default: 1,
         },
     },
-    setup(props) {
+    setup(props: any) {
         // data
         const data: any = reactive<{
             moveX: number;

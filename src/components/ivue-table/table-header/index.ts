@@ -82,7 +82,7 @@ export default defineComponent({
       },
     },
   },
-  setup(props, { emit }) {
+  setup(props: any, { emit }) {
     // vm
     const vm: any = getCurrentInstance() as TableHeader;
 

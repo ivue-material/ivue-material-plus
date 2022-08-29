@@ -19,7 +19,7 @@ function useTree<T>(watcherData: WatcherPropsData<T>) {
   const lazy = ref(false);
 
   // 树数据
-  const treeData = ref<unknown>({});
+  const treeData = ref({});
 
   // 懒加载子节点数据
   const lazyColumnIdentifier = ref('hasChildren');
@@ -66,12 +66,12 @@ function useTree<T>(watcherData: WatcherPropsData<T>) {
       // 有懒加载节点
       if (lazyTreeNodeMap.value[key].length) {
         const item = {
-          children: []
+          children: [] as string[]
         };
 
         lazyTreeNodeMap.value[key].forEach((row) => {
           // 获取rowKey对应的数据
-          const currentRowKey = getRowIdentity(row, rowKey);
+          const currentRowKey: string = getRowIdentity(row, rowKey);
 
           item.children.push(currentRowKey);
 
@@ -212,7 +212,7 @@ function useTree<T>(watcherData: WatcherPropsData<T>) {
     if (keys.length) {
       const oldTreeData = unref(treeData);
 
-      const rootLazyRowKeys = [];
+      const rootLazyRowKeys: string[] = [];
 
       // 是否展开行
       const getExpanded = (oldValue, key) => {
@@ -243,7 +243,7 @@ function useTree<T>(watcherData: WatcherPropsData<T>) {
       //   level: 0
       // }
       // 父节点值 [3]
-      keys.forEach((key) => {
+      keys.forEach((key: string) => {
         // 上一个子节点的值
         const oldValue = oldTreeData[key];
         // 最新子节点的值

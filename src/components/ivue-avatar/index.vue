@@ -79,8 +79,8 @@ export default defineComponent({
         const { proxy }: any = getCurrentInstance();
 
         // dom
-        const text = ref(null);
-        const wrapper = ref(null);
+        const text = ref<HTMLElement | null>(null);
+        const wrapper = ref<HTMLElement | any>(null);
 
         // data
         const data: any = reactive<{

@@ -6,13 +6,14 @@ module.exports = {
   'extends': [
     'plugin:vue/vue3-essential',
     'eslint:recommended',
-    '@vue/typescript/recommended',
-    "plugin:vue/base"
+    "plugin:vue/base",
+    '@vue/typescript/recommended'
   ],
   "parserOptions": {
-    "ecmaFeatures": {
-      "experimentalObjectRestSpread": true
-    },
+    // parser: 'babel-eslint',
+    // "ecmaFeatures": {
+    //   "experimentalObjectRestSpread": true
+    // },
     "ecmaVersion": 6,
     "sourceType": "module"
   },
@@ -32,6 +33,8 @@ module.exports = {
     "@typescript-eslint/no-empty-function": 'off',
     '@typescript-eslint/explicit-module-boundary-types': 'off',
     '@typescript-eslint/no-explicit-any': 'off',
-    '@typescript-eslint/ban-ts-comment': ['off', { 'ts-ignore': false }],
+    '@typescript-eslint/ban-ts-comment': ['off', {
+      'ts-ignore': false
+    }],
   }
 }

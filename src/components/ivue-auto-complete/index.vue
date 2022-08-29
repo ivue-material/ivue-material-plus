@@ -228,9 +228,9 @@ export default defineComponent({
         // dom
 
         // select
-        const select = ref(null);
+        const select = ref<HTMLElement | any>(null);
         // input
-        const input = ref(null);
+        const input = ref<HTMLElement | any>(null);
 
         // data
         const data: any = reactive<{

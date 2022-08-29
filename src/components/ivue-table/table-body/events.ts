@@ -20,16 +20,16 @@ function useEvents<T>(props: Partial<TableBodyProps<T>>) {
   const handleEvent = (event: Event, row: T, name: string) => {
 
     // 获取单元格
-    const cell = getCell(event);
+    const cell: HTMLElement = getCell(event);
 
-    let column: TableColumnCtx<T>;
+    let column: TableColumnCtx<T> | any;
 
 
     if (cell) {
       column = getColumnByCell(
         {
           // 列的vm对象
-          columns: props.store.states.columns.value,
+          columns: props.store?.states.columns.value,
         },
         // 单元格
         cell,
@@ -48,7 +48,7 @@ function useEvents<T>(props: Partial<TableBodyProps<T>>) {
   // 点击行
   const handleClickTr = (event: Event, row: T) => {
     // 当前选择的row
-    props.store.commit('setCurrentRow', row);
+    props.store?.commit('setCurrentRow', row);
 
     // 点击
     handleEvent(event, row, 'click');
@@ -67,7 +67,7 @@ function useEvents<T>(props: Partial<TableBodyProps<T>>) {
       const column = getColumnByCell(
         {
           // 列的vm对象
-          columns: props.store.states.columns.value,
+          columns: props.store?.states.columns.value,
         },
         // 单元格
         cell,
@@ -130,7 +130,7 @@ function useEvents<T>(props: Partial<TableBodyProps<T>>) {
       createTablePopper(
         IvueTable?.refs.tableWrapper,
         cell,
-        cell.innerText || cell.textContent,
+        cell?.innerText || cell?.textContent,
         {
           placement: 'top',
           strategy: 'fixed',
@@ -161,12 +161,12 @@ function useEvents<T>(props: Partial<TableBodyProps<T>>) {
 
   // 行鼠标进入
   const handleMouseEnter = debounce((index: number) => {
-    props.store.commit('setHoverRow', index);
+    props.store?.commit('setHoverRow', index);
   }, 30);
 
   // 行鼠标离开
   const handleMouseLeave = debounce(() => {
-    props.store.commit('setHoverRow', null);
+    props.store?.commit('setHoverRow', null);
   }, 30);
 
 

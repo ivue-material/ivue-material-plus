@@ -3,7 +3,7 @@
     // 启用装饰器
     "experimentalDecorators": true,
     // 允许编译javascript文件
-    "allowJs": true,
+    "allowJs": false,
     // 指定生成哪个模块系统代码
     "module": "esnext",
     // 为项目内的每个TypeScript或JavaScript文件生成.d.ts文件。
@@ -14,7 +14,7 @@
     // TypeScript在无法推断类型时会回退到该变量的任何类型
     "noImplicitAny": false,
     // 转换为JavaScript时，从TypeScript文件中剥离所有注释。 默认为false
-    "removeComments": true,
+    "removeComments": false,
     // 决定如何处理模块, 默认"Classic", "Node"对于Node.js/io.js
     "moduleResolution": "node",
     // 设置默认模块导出
@@ -24,14 +24,18 @@
     // 禁用自动包含任何库文件
     "noLib": false,
     // 指定ECMAScript目标版本, 默认"ES3", 最新"esnext"
-    "target": "es5",
+    "target": "es2018",
     // 生成相应的 .map文件
     "sourceMap": true,
     "importHelpers": true,
     // 编译过程中需要引入的库文件的列表
     "lib": ["esnext", "dom", "dom.iterable", "scripthost"],
     // 允许从没有设置默认导出的模块中默认导入
-    "allowSyntheticDefaultImports": true
+    "allowSyntheticDefaultImports": true,
+    // "strict": true,
+    "types": [
+      "webpack-env"
+    ],
   },
   // 排除文件
   "exclude": ["node_modules"],
@@ -41,7 +45,7 @@
     "src/**/*.ts",
     "src/**/*.tsx",
     "src/**/*.vue",
-    // 让 ts 识别 .vue 文件
+    // // 让 ts 识别 .vue 文件
     "./src/typings/vue-shim.d.ts",
     "src/index.ts",
     "src/utils/render.ts"

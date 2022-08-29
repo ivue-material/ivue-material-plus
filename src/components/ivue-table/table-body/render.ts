@@ -8,7 +8,7 @@ import { getRowIdentity } from '../utils';
 import type { TableProps, RenderRowData, TreeNode } from '../table/defaults';
 import type { TableBodyProps } from './defaults';
 
-function useRender<T>(props: Partial<TableBodyProps<T>>) {
+function useRender<T>(props: Partial<TableBodyProps<T>> | any) {
 
   // inject
   const IvueTable: any = inject('ivue-table');
@@ -35,7 +35,7 @@ function useRender<T>(props: Partial<TableBodyProps<T>>) {
 
   // 是否是默认索引
   const firstDefaultColumnIndex = computed(() => {
-    return props.store.states.columns.value.findIndex(
+    return props.store?.states.columns.value.findIndex(
       ({ type }) => type === 'default'
     );
   });
@@ -60,18 +60,18 @@ function useRender<T>(props: Partial<TableBodyProps<T>>) {
   const rowRender = (
     row: T,
     $index: number,
-    treeRowData?: TreeNode,
+    treeRowData?: TreeNode | any,
     // 展开状态
     expanded = false
   ) => {
     const { store } = props;
 
-    const { columns, indent } = store.states;
+    const { columns, indent } = store?.states;
 
     // 行样式
     const rowClasses = getRowClass(row, $index);
 
-    let display = true;
+    let display: any = true;
 
     // 是否是子节点数据
     if (treeRowData) {
@@ -124,7 +124,7 @@ function useRender<T>(props: Partial<TableBodyProps<T>>) {
 
         // data
         const data: RenderRowData<T> = {
-          store: props.store,
+          store: props?.store,
           _self: props.context || IvueTable,
           column: columnData,
           row,
@@ -191,12 +191,12 @@ function useRender<T>(props: Partial<TableBodyProps<T>>) {
   const wrappedRowRender = (row: T, $index: number) => {
     const store = props.store;
 
-    const { isRowExpanded, assertRowKey } = store;
+    const { isRowExpanded, assertRowKey }: any = store;
 
     const { treeData, lazyTreeNodeMap, childrenColumnName, rowKey } =
-      store.states;
+      store?.states;
 
-    const columns = store.states.columns.value;
+    const columns = store?.states.columns.value;
 
     // 是否是展开行
     const hasExpandColumn = columns.some(({ type }) => type === 'expand');
@@ -279,7 +279,7 @@ function useRender<T>(props: Partial<TableBodyProps<T>>) {
       let childrenData = treeData.value[rowKeyData];
 
       // 每一行的节点数据
-      let treeRowData = null;
+      let treeRowData: any = null;
 
       // 子节点数据
       if (childrenData) {

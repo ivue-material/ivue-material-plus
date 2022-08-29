@@ -30,7 +30,7 @@ let columnIdSeed = 1;
 export default defineComponent({
   name: prefixCls,
   props: defaultProps,
-  setup(props, { slots }) {
+  setup(props: any, { slots }) {
     const vm = getCurrentInstance() as TableColumn<DefaultRow>;
 
     // data
@@ -181,7 +181,7 @@ export default defineComponent({
       ];
 
       // 获取props值
-      let column = getPropsData(basicProps, sortProps, selectProps, filterProps);
+      let column: any = getPropsData(basicProps, sortProps, selectProps, filterProps);
 
       // 合并props值
       column = mergeOptions(defaults, column);
@@ -242,13 +242,13 @@ export default defineComponent({
   },
   render() {
     try {
-      const slotsList = this.$slots.default?.({
+      const slotsList: any = this.$slots.default?.({
         row: {},
         column: {},
         $index: -1,
       });
 
-      const slot = [];
+      const slot: any[] = [];
 
       // 有插槽
       if (Array.isArray(slotsList)) {

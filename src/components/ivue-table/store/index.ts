@@ -296,7 +296,7 @@ function useStore<T>() {
 
   // 调用数据
   const commit = (name: keyof typeof mutations, ...args) => {
-    const mutations: any = vm.store.mutations;
+    const mutations = vm.store.mutations;
 
     // 判断 mutations 是否存在当前方法
     if (mutations[name]) {

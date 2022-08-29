@@ -88,7 +88,7 @@ export default defineComponent({
             default: false,
         },
     },
-    setup(props) {
+    setup(props: any) {
         // IvueScrollbar
         const IvueScrollbar: any = inject(prefixCls);
 

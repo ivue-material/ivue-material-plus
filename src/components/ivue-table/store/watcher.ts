@@ -26,7 +26,7 @@ import type { StoreFilter } from './index';
 
 // 扁平化数组
 const flattenColumns = (columns) => {
-  const result = [];
+  const result: any[] = [];
 
   columns.forEach((column) => {
     // 有子项
@@ -77,13 +77,13 @@ function useWatcher<T>() {
   const data: Ref<T[]> = ref([]);
   const _data: Ref<T[]> = ref([]);
   // 行数据的 Key
-  const rowKey: Ref<string> = ref(null);
+  const rowKey: Ref<string | any> = ref(null);
   // 选择或取消选择所有行的值
   const selectOnIndeterminate = ref(false);
   // 选择全部
   const isAllSelected = ref(false);
   // 选择列表
-  const selection = ref([]);
+  const selection: any = ref([]);
   // 是否有固定列
   const isFixedColumns = ref(false);
   // hover行
@@ -245,7 +245,7 @@ function useWatcher<T>() {
     // 固定列
     fixedColumns.value = _columns.value.filter(
       (column) => column.fixed === true || column.fixed === 'left'
-    );
+    ) || [];
 
     // 右边固定列
     rightFixedColumns.value = _columns.value.filter(
@@ -322,7 +322,7 @@ function useWatcher<T>() {
   // 多选选择的行
   const toggleRowSelection = (
     row: T,
-    selected = undefined,
+    selected: any = undefined,
     emitChange = true
   ) => {
     const changed = toggleRowStatus(selection.value, row, selected);

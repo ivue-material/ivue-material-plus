@@ -1,5 +1,5 @@
 export default {
-    beforeMount (el, binding, vnode) {
+    beforeMount (el, binding) {
         function documentHandler (e) {
             if (el.contains(e.target)) {
                 return false;
@@ -11,7 +11,7 @@ export default {
         el.__vueClickOutside__ = documentHandler;
         document.addEventListener('click', documentHandler);
     },
-    unmounted (el, binding) {
+    unmounted (el) {
         document.removeEventListener('click', el.__vueClickOutside__);
         delete el.__vueClickOutside__;
     }

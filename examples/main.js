@@ -5,13 +5,19 @@ import App from './App'
 import router from './router'
 
 
-import IVue from '../src/index'
+// import IVue from '../src/index.ts'
 // import IVue from '../dist/ivue';
 
-import "../src/styles/index.scss";
-import "../src/styles/theme/index.scss";
-import "../src/components/ivue-elevation/index";
-import "../src/components/ivue-layout/index";
+// import "../src/styles/index.scss";
+// import "../src/styles/theme/index.scss";
+// import "../src/components/ivue-elevation/index";
+// import "../src/components/ivue-layout/index";
+
+import "../dist/styles/ivue.css";
+import "../dist/styles/color.css";
+import "../dist/styles/elevation.css";
+import "../dist/styles/layout.css";
+
 
 const app = createApp(App)
 
@@ -28,9 +34,9 @@ if (window.__VUE_DEVTOOLS_GLOBAL_HOOK__) {
 // Vue.config.devtools = process.env.NODE_ENV === 'development'
 
 app.use(router)
-app.use(IVue, {
-  // capture: false,
-})
+// app.use(IVue, {
+//   // capture: false,
+// })
 
 
 app.mount('#app')

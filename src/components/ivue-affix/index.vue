@@ -54,7 +54,7 @@ export default defineComponent({
         },
     },
     // 组合式 API
-    setup(props, { emit }) {
+    setup(props:any, { emit }) {
         // data
         const data = reactive<{
             affix: boolean;
@@ -73,9 +73,9 @@ export default defineComponent({
         });
 
         // ref = wrapper
-        const wrapper = ref(null);
+        const wrapper = ref<HTMLElement | any>(null);
         // ref = content
-        const content = ref(null);
+        const content = ref<HTMLElement | any>(null);
 
         // computed
 
@@ -146,7 +146,7 @@ export default defineComponent({
         // 监听滚动
         const handleScroll = () => {
             // 获取垂直滚动高度
-            const scrollTop = getScroll(window, true);
+            const scrollTop: any = getScroll(window, true);
 
             // 获取元素坐标
             const elOffset = getOffset(wrapper.value);
@@ -192,7 +192,7 @@ export default defineComponent({
                 data.slot = false;
                 data.slotStyle = {};
                 data.affix = false;
-                data.styles = null;
+                data.styles = {};
 
                 // 在固定状态发生改变时触发
                 emit('on-change', false);
@@ -221,7 +221,7 @@ export default defineComponent({
                 data.affix
             ) {
                 data.affix = false;
-                data.styles = null;
+                data.styles = {};
 
                 // 在固定状态发生改变时触发
                 emit('on-change', false);

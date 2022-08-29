@@ -15,16 +15,16 @@
 <script>
 export default {
     methods: {
-        handleChang () {
-            console.log('>>>>>>')
-        }
-    }
-}
+        handleChang() {
+            console.log('>>>>>>');
+        },
+    },
+};
 </script>
 
 <style lang="scss" scope>
 .affix {
-    margin-top:100px;
+    margin-top: 100px;
     width: 100px;
     height: 3000px;
     background: red;

@@ -50,7 +50,7 @@
                 <!-- 全部 -->
                 <li
                     :class="[`${prefixCls}-list--item`, (filterValue === undefined || filterValue === null) && `${prefixCls}-list--active`]"
-                     @click="handleSelect(null)"
+                    @click="handleSelect(null)"
                 >全部</li>
                 <!-- 其他 -->
                 <li
@@ -125,7 +125,7 @@ export default defineComponent({
             type: Object as PropType<Store<unknown>>,
         },
     },
-    setup(props) {
+    setup(props: any) {
         // vm
         const vm = getCurrentInstance();
 

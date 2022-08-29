@@ -1,8 +1,6 @@
 // Thanks to: https://github.com/airyland/vux/blob/v2/src/directives/transfer-dom/index.js
 // Thanks to: https://github.com/calebroseland/vue-dom-portal
-import {
-    nextTick
-} from 'vue';
+
 /**
  * Get target DOM Node
  * @param {(Node|string|Boolean)} [node=document.body] DOM Node, CSS selector, or Boolean
@@ -10,10 +8,10 @@ import {
  */
 function getTarget(node) {
     if (node === void 0) {
-        node = document.body
+        node = document.body;
     }
-    if (node === true) { return document.body }
-    return node instanceof window.Node ? node : document.querySelector(node)
+    if (node === true) { return document.body; }
+    return node instanceof window.Node ? node : document.querySelector(node);
 }
 
 // 指令定义
@@ -40,7 +38,7 @@ function beforeMount(el: any, { value }) {
         // 移动到新的地方
         getTarget(value).appendChild(el);
 
-        hasMovedOut = true
+        hasMovedOut = true;
     }
 
     if (!el.__transferDomData) {
@@ -49,7 +47,7 @@ function beforeMount(el: any, { value }) {
             home: home,
             target: getTarget(value),
             hasMovedOut: hasMovedOut
-        }
+        };
     }
 }
 
@@ -70,7 +68,7 @@ function updated(el: Record<string, any>, { value }) {
 
     // 没有创建节点初始化创建
     if (!ref$1) {
-        beforeMount(el, { value })
+        beforeMount(el, { value });
         return;
     }
 
@@ -116,10 +114,10 @@ function unmounted(el) {
 
     // 移除节点
     if (el.__transferDomData.hasMovedOut === true) {
-        el.__transferDomData.parentNode && el.__transferDomData.parentNode.appendChild(el)
+        el.__transferDomData.parentNode && el.__transferDomData.parentNode.appendChild(el);
     }
 
-    el.__transferDomData = null
+    el.__transferDomData = null;
 }
 
 

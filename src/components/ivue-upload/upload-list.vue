@@ -114,7 +114,7 @@ export default defineComponent({
          */
         previewSize: [Number, String],
     },
-    setup(props, { emit }) {
+    setup(props: any, { emit }) {
         // methods
 
         // 有删除
@@ -200,7 +200,7 @@ export default defineComponent({
             isImageFile,
             isDeletable,
             imgStyle,
-            getSizeStyle
+            getSizeStyle,
         };
     },
     components: {

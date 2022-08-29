@@ -1,4 +1,4 @@
-import { computed } from 'vue'
+import { computed } from 'vue';
 import { isNumeric } from '../../utils/validate';
 
 export default (props, data) => {
@@ -10,12 +10,12 @@ export default (props, data) => {
 
       // 导航样式
       const containerStyles = computed(() => {
-            const height = props.height
+            const height = props.height;
 
             return {
                   height: isNumeric(height) ? `${parseInt(height, 10)}${props.unit}` : height,
                   transform: `translate3d(-${data.scrollOffset}${props.unit}, 0,0)`,
-            }
+            };
       });
 
       // 激活的Index
@@ -44,5 +44,5 @@ export default (props, data) => {
             activeTab,
             activeIndex,
             containerStyles,
-      }
-}
+      };
+};

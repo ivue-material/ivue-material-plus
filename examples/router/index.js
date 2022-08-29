@@ -15,7 +15,7 @@ import BottomNav from '../components/bottom-nav';
 import Breadcrumb from '../components/breadcrumb';
 import Select from '../components/select';
 import Steps from '../components/steps';
-import UpLoad from '../components/upload';
+import UpLoad from '../components/upLoad.vue';
 import Progress from '../components/progress';
 import Circle from '../components/circle';
 import Loading from '../components/loading';

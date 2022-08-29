@@ -15,7 +15,7 @@ interface TableBodyProps<T> {
   context: Table<T>
   rowClassName: ColumnCls<T>
   rowStyle: rowStyle<T>
-  fixed: string
+  fixed: string | any
   highlight: boolean
   tooltipEffect: string
 }

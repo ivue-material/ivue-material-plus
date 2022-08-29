@@ -1,17 +1,20 @@
+import { getCurrentInstance } from 'vue';
 
 export default (data: any, container: any, wrapper: any, activeIndex) => {
+      const { proxy }: any = getCurrentInstance();
+
       // 手势开始
       const onTouchStart = (e) => {
             data.startX = data.scrollOffset + e.touchstartX;
 
             container.value.style.transition = 'none';
             container.value.style.willChange = 'transform';
-      }
+      };
 
       // 手势移动
       const onTouchMove = (e: any) => {
             data.scrollOffset = data.startX - e.touchmoveX;
-      }
+      };
 
       // 手势结束
       const onTouchEnd = () => {
@@ -26,7 +29,7 @@ export default (data: any, container: any, wrapper: any, activeIndex) => {
             else if (data.scrollOffset >= maxScrollOffset) {
                   data.scrollOffset = maxScrollOffset;
             }
-      }
+      };
 
       // 偏移位置
       const newOffset = (direction: string) => {
@@ -41,9 +44,30 @@ export default (data: any, container: any, wrapper: any, activeIndex) => {
       };
 
       // 内容滑动切换.
-      const handleSwipeItem = () => {
+      const handleSwipeItem = (direction) => {
+            // 左
+            if (direction === 'next') {
+                  const index = activeIndex.value + 1;
 
-      }
+                  const tab = data.tabs[index];
+
+                  if (tab) {
+                        proxy.tabNavClick(tab);
+                  }
+            }
+
+            // 右
+            if (direction === 'prev') {
+                  const index = activeIndex.value - 1;
+
+                  const tab = data.tabs[index];
+
+                  if (tab) {
+                        proxy.tabNavClick(tab);
+                  }
+            }
+
+      };
 
       return {
             onTouchStart,
@@ -51,5 +75,5 @@ export default (data: any, container: any, wrapper: any, activeIndex) => {
             onTouchEnd,
             newOffset,
             handleSwipeItem
-      }
-}
+      };
+};

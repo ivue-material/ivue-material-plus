@@ -167,9 +167,9 @@ export default defineComponent({
         'on-header-dragend',
         'on-expand-change',
         'on-cell-click',
-        'on-row-click'
+        'on-row-click',
     ],
-    setup(props) {
+    setup(props: any) {
         type Row = typeof props.data[number];
 
         // vm
