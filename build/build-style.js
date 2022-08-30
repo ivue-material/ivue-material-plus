@@ -17,7 +17,7 @@ gulp.task('index', function () {
       })
     )
     .pipe(cleanCSS())
-    .pipe(rename('ivue.css'))
+    .pipe(rename('index.css'))
     .pipe(gulp.dest('../dist/styles'));
 });
 
