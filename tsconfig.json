@@ -36,6 +36,8 @@
     "types": [
       "webpack-env"
     ],
+    // 中存在的resolveJsonModule选项
+    "resolveJsonModule": true
   },
   // 排除文件
   "exclude": ["node_modules"],

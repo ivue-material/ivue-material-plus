@@ -9,7 +9,7 @@
 </head>
 <body>
 <div id="app">
-    <IvueButton @click="show">Click me!</IvueButton>
+    <ivue-button @click="show">Click me!</ivue-button>
 </div>
 <script>
     const app = Vue.createApp({
@@ -24,7 +24,8 @@
             }
         }
     });
-    app.use(IvueMaterialPlus);
+
+    app.use(IvueMaterialPlus.default);
     app.mount("#app");
   </script>
 </body>

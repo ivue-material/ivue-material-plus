@@ -2,7 +2,6 @@ import { App } from 'vue';
 
 import IvueSpin from './spin';
 
-
 let spinInstance;
 
 // 获取组件实例

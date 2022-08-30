@@ -1,8 +1,8 @@
 import { App } from 'vue';
-import Notice from './notice';
+import IvueNotice from './notice';
 
 export default (app: App): void => {
-    app.config.globalProperties.$notice = Notice;
+    app.config.globalProperties.$notice = IvueNotice;
 };
 
-export { Notice };
+export { IvueNotice };

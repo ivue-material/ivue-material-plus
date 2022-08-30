@@ -1,8 +1,8 @@
 import { App } from 'vue';
-import LoadingBar from './loading-bar';
+import IvueLoadingBar from './loading-bar';
 
 export default (app: App): void => {
-    app.config.globalProperties.$LoadingBar = LoadingBar;
+    app.config.globalProperties.$LoadingBar = IvueLoadingBar;
 };
 
-export { LoadingBar };
+export { IvueLoadingBar };

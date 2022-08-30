@@ -9,4 +9,4 @@ export default (app: App): void => {
 
 };
 
-export { IvueSteps,IvueStep  };
+export { IvueSteps, IvueStep };

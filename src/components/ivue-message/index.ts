@@ -1,8 +1,8 @@
 import { App } from 'vue';
-import Message from './message';
+import IvueMessage from './message';
 
 export default (app: App): void => {
-    app.config.globalProperties.$message = Message;
+    app.config.globalProperties.$message = IvueMessage;
 };
 
-export { Message };
+export { IvueMessage };
