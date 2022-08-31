@@ -51,5 +51,5 @@
     "./src/typings/vue-shim.d.ts",
     "src/index.ts",
     "src/utils/render.ts"
-  ]
+, "rollup/src/tasks/modules.js", "rollup/src/tasks/index.js", "rollup/src/utils/process.js"  ]
 }

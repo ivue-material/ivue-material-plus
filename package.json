@@ -9,7 +9,7 @@
   ],
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "npm run build:prod && npm run unbuild && npm run build:style",
+    "build": "npm run build:prod && npm run build:style",
     "build:style": "gulp --gulpfile build/build-style.js",
     "build:prod": "vite build",
     "unbuild": "unbuild"
