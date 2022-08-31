@@ -40,19 +40,29 @@ function getCompDir(compName: string): string {
   return compPath;
 }
 
+const resolveComponent = (name: string) => {
+  if (!name.match(/^Ivue[A-Z]/)) {
+    return;
+  }
+
+};
+
 export function IvueMaterialPlusResolver(): ComponentResolver {
   return {
     type: 'component',
-    resolve: (name: string) => {
-      if (name.match(/^I[A-Z]/)) {
-        const compName = name.slice(1);
+    // resolve: (name: string) => {
+    //   if (name.match(/^I[A-Z]/)) {
+    //     const compName = name.slice(1);
 
-        return {
-          from: `ivue-material-plus/src/components/${getCompDir(compName)}`,
-          // 需要自动引入的插件或者css
-          sideEffects: getSideEffects(),
-        };
-      }
+    //     return {
+    //       from: `ivue-material-plus/src/components/${getCompDir(compName)}`,
+    //       // 需要自动引入的插件或者css
+    //       sideEffects: getSideEffects(),
+    //     };
+    //   }
+    // },
+    resolve: (name: string) => {
+      return resolveComponent(name);
     },
   };
 }
