@@ -1,8 +1,7 @@
-import { App } from 'vue';
-import IvueBreadcrumbs from './index.vue';
+import { withInstall } from '../../utils/install';
+import Breadcrumbs from './index.vue';
 
-export default (app: App): void => {
-    app.component(IvueBreadcrumbs.name, IvueBreadcrumbs);
-};
+export const IvueBreadcrumbs = withInstall(Breadcrumbs);
+export default IvueBreadcrumbs;
 
-export { IvueBreadcrumbs };
+export * from './index.vue';

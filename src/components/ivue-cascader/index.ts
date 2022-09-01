@@ -1,8 +1,7 @@
-import { App } from 'vue';
-import IvueCascader from './index.vue';
+import { withInstall } from '../../utils/install';
+import Cascader from './index.vue';
 
-export default (app: App): void => {
-  app.component(IvueCascader.name, IvueCascader);
-};
+export const IvueCascader = withInstall(Cascader);
+export default IvueCascader;
 
-export { IvueCascader };
+export * from './index.vue';

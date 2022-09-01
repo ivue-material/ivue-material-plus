@@ -1,8 +1,8 @@
-import { App } from 'vue';
-import IvueUpload from './index.vue';
+import { withInstall } from '../../utils/install';
 
-export default (app: App): void => {
-    app.component(IvueUpload.name, IvueUpload);
-};
+import Upload from './index.vue';
 
-export { IvueUpload };
+export const IvueUpload = withInstall(Upload);
+export default IvueUpload;
+
+export * from './index.vue';

@@ -1,9 +1,7 @@
+import { withInstall } from '../../utils/install';
+import Circular from './circular.vue';
 
-import { App } from 'vue';
-import IvueCircular from './circular.vue';
+export const IvueCircular = withInstall(Circular);
+export default IvueCircular;
 
-export default (app: App): void => {
-    app.component(IvueCircular.name, IvueCircular);
-};
-
-export { IvueCircular };
+export * from './circular.vue';

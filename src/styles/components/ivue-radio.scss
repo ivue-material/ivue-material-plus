@@ -1,3 +1,6 @@
+@import "../custom.scss";
+@import "../animation/variables";
+
 $name: 'ivue-radio';
 $transition-time: .2s;
 $ease-in-out: ease-in-out;
@@ -228,6 +231,7 @@ $ease-in-out: ease-in-out;
 
     // small
     &--small {
+
       // 外层
       .#{$name}-wrapper {
         height: 24px;

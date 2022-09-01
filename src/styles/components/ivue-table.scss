@@ -1,4 +1,4 @@
-@import "ivue-tooltip";
+@import "../custom.scss";
 
 $name:'ivue-table';
 
@@ -12,6 +12,8 @@ $name:'ivue-table';
   background-color: $white-color;
   font-size: 14px;
   color: $text-color;
+
+  @import "ivue-tooltip";
 
   thead {
     font-weight: 500;
@@ -563,7 +565,7 @@ $name:'ivue-table';
       overflow: hidden;
       width: 100%;
 
-      tbody td.#{$name}-cell{
+      tbody td.#{$name}-cell {
         background-color: #eee;
         color: $text-color;
       }

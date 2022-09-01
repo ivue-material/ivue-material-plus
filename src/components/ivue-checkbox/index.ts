@@ -1,8 +1,7 @@
-import { App } from 'vue';
-import IvueCheckbox from './index.vue';
+import { withInstall } from '../../utils/install';
+import Checkbox from './index.vue';
 
-export default (app: App): void => {
-    app.component(IvueCheckbox.name, IvueCheckbox);
-};
+export const IvueCheckbox = withInstall(Checkbox);
+export default IvueCheckbox;
 
-export { IvueCheckbox };
+export * from './index.vue';

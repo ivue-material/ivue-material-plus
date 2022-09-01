@@ -1,3 +1,7 @@
+@import "../custom.scss";
+@import "../animation/variables";
+@import "../mixins.scss";
+
 $name: 'ivue-select';
 
 .#{$name} {
@@ -9,6 +13,8 @@ $name: 'ivue-select';
   color: $text-color;
   font-size: 12px;
   line-height: normal;
+
+  @import "./ivue-icon.scss";
 
   // 加载中
   &-loading {
@@ -284,6 +290,7 @@ $name: 'ivue-select';
     .#{$name}-item {
       &-selected:after {
         @include ivue-icon;
+
         content: "done";
         position: absolute;
         top: 0;

@@ -1,10 +1,13 @@
-import { App } from 'vue';
-import IvueCollapse from './collapse.vue';
-import IvueCollapsePanel from './panel.vue';
+import { withInstall, withNoopInstall } from '../../utils/install';
+import Collapse from './collapse.vue';
+import CollapsePanel from './panel.vue';
 
-export default (app: App): void => {
-  app.component(IvueCollapse.name, IvueCollapse);
-  app.component(IvueCollapsePanel.name, IvueCollapsePanel);
-};
+export const IvueCollapse = withInstall(Collapse, {
+  CollapsePanel,
+});
+export default IvueCollapse;
 
-export { IvueCollapse, IvueCollapsePanel };
+export const IvueCollapsePanel = withNoopInstall(CollapsePanel);
+
+export * from './collapse.vue';
+export * from './panel.vue';

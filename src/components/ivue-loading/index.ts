@@ -1,11 +1,16 @@
 import { App } from 'vue';
-import IvueLoading from './loading';
+import Loading from './loading';
 import directive from './directive';
 
-export default (app: App): void => {
-    app.directive('loading', directive);
-
-    app.config.globalProperties.$loading = IvueLoading;
+export const IvueLoading = {
+    install(app: App): any {
+        app.directive('loading', directive);
+        app.config.globalProperties.$loading = Loading;
+    },
+    directive: directive,
+    service: Loading,
 };
 
-export { IvueLoading };
+export default IvueLoading;
+
+export { directive, directive as IvueLoadingDirective, Loading as IvueLoadingService };

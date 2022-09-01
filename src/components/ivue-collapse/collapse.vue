@@ -81,7 +81,7 @@ export default defineComponent({
         };
 
         // 子项点击切换
-        const toggle = (obj: { name: String; isActive: Boolean }) => {
+        const toggle = (obj: { name: string; isActive: boolean }) => {
             const name = obj.name.toString();
 
             let newActiveKey = [];
@@ -132,7 +132,7 @@ export default defineComponent({
 
         // data
         const data: any = reactive<{
-            currentValue: Array<any> | String;
+            currentValue: Array<any> | string;
             childrenList: Record<string, any>;
         }>({
             /**

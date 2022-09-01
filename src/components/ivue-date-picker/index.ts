@@ -1,8 +1,7 @@
-import { App } from 'vue';
-import IvueDatePicker from './index.vue';
+import { withInstall } from '../../utils/install';
+import DatePicker from './index.vue';
 
-export default (app: App): void => {
-    app.component(IvueDatePicker.name, IvueDatePicker);
-};
+export const IvueDatePicker = withInstall(DatePicker);
+export default IvueDatePicker;
 
-export { IvueDatePicker };
+export * from './index.vue';

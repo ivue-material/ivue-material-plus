@@ -1,8 +1,7 @@
-import { App } from 'vue';
-import IvueListItem from './index.vue';
+import { withInstall } from '../../utils/install';
+import ListItem from './index.vue';
 
-export default (app: App): void => {
-    app.component(IvueListItem.name, IvueListItem);
-};
+export const IvueListItem = withInstall(ListItem);
+export default IvueListItem;
 
-export { IvueListItem };
+export * from './index.vue';

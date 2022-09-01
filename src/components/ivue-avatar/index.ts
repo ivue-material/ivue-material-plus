@@ -1,8 +1,7 @@
-import { App } from 'vue';
-import IvueAvatar from './index.vue';
+import { withInstall } from '../../utils/install';
+import Avatar from './index.vue';
 
-export default (app: App): void => {
-    app.component(IvueAvatar.name, IvueAvatar);
-};
+export const IvueAvatar = withInstall(Avatar);
+export default IvueAvatar;
 
-export { IvueAvatar };
+export * from './index.vue';

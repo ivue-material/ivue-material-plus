@@ -1,8 +1,7 @@
-import { App } from 'vue';
-import IvueInput from './index.vue';
+import { withInstall } from '../../utils/install';
+import Input from './index.vue';
 
-export default (app: App): void => {
-    app.component(IvueInput.name, IvueInput);
-};
+export const IvueInput = withInstall(Input);
+export default IvueInput;
 
-export { IvueInput };
+export * from './index.vue';

@@ -1,8 +1,7 @@
-import { App } from 'vue';
-import IvueSvgLoader from './index.vue';
+import { withInstall } from '../../utils/install';
+import SvgLoader from './index.vue';
 
-export default (app: App): void => {
-    app.component(IvueSvgLoader.name, IvueSvgLoader);
-};
+export const IvueSvgLoader = withInstall(SvgLoader);
+export default IvueSvgLoader;
 
-export { IvueSvgLoader };
+export * from './index.vue';

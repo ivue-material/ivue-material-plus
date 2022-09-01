@@ -1,9 +1,7 @@
+import { withInstall } from '../../utils/install';
+import Progress from './index.vue';
 
-import { App } from 'vue';
-import IvueProgress from './index.vue';
+export const IvueProgress = withInstall(Progress);
+export default IvueProgress;
 
-export default (app: App): void => {
-    app.component(IvueProgress.name, IvueProgress);
-};
-
-export { IvueProgress };
+export * from './index.vue';

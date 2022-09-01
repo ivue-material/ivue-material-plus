@@ -1,8 +1,7 @@
-import { App } from 'vue';
-import IvueRadioGroup from './index.vue';
+import { withInstall } from '../../utils/install';
+import RadioGroup from './index.vue';
 
-export default (app: App): void => {
-    app.component(IvueRadioGroup.name, IvueRadioGroup);
-};
+export const IvueRadioGroup = withInstall(RadioGroup);
+export default IvueRadioGroup;
 
-export { IvueRadioGroup };
+export * from './index.vue';

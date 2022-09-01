@@ -1,8 +1,7 @@
-import { App } from 'vue';
-import IvueSwitch from './index.vue';
+import { withInstall } from '../../utils/install';
+import Switch from './index.vue';
 
-export default (app: App): void => {
-    app.component(IvueSwitch.name, IvueSwitch);
-};
+export const IvueSwitch = withInstall(Switch);
+export default IvueSwitch;
 
-export { IvueSwitch };
+export * from './index.vue';

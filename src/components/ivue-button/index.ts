@@ -1,8 +1,7 @@
-import { App } from 'vue';
-import IvueButton from './index.vue';
+import { withInstall } from '../../utils/install';
+import Button from './index.vue';
 
-export default (app: App): void => {
-    app.component(IvueButton.name, IvueButton);
-};
+export const IvueButton = withInstall(Button);
+export default IvueButton;
 
-export { IvueButton };
+export * from './index.vue';

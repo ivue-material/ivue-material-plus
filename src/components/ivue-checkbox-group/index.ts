@@ -1,8 +1,7 @@
-import { App } from 'vue';
-import IvueCheckboxGroup from './index.vue';
+import { withInstall } from '../../utils/install';
+import CheckboxGroup from './index.vue';
 
-export default (app: App): void => {
-    app.component(IvueCheckboxGroup.name, IvueCheckboxGroup);
-};
+export const IvueCheckboxGroup = withInstall(CheckboxGroup);
+export default IvueCheckboxGroup;
 
-export { IvueCheckboxGroup };
+export * from './index.vue';

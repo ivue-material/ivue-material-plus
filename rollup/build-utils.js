@@ -8,16 +8,19 @@ export const projRoot = resolve('../')
 export const buildOutput = resolve(projRoot, 'dist')
 
 // 打包后输出的路径
-export const epOutput = resolve(buildOutput, 'ivue-material-plus')
+export const outputPath = resolve(buildOutput, 'unplugin-vue-components')
 
 // 打包根目录
 export const buildRoot = resolve(projRoot, 'rollup')
 
-// 打包名称
-export const PKG_NAME = 'ivue-material-plus'
-
 // 打包根目录
 export const pkgRoot = resolve(projRoot, 'src')
+
+// 输入模块的目录路径
+export const epRoot = resolve(pkgRoot, 'components')
+
+// 打包名称
+export const PKG_NAME = 'unplugin-vue-components'
 
 // 忽略文件目录
 export const excludeFiles = (files) => {
@@ -27,6 +30,3 @@ export const excludeFiles = (files) => {
     (path) => !excludes.some((exclude) => path.includes(exclude))
   )
 }
-
-// 输入模块的目录路径
-export const epRoot = resolve(pkgRoot, 'components')

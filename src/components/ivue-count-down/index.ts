@@ -1,8 +1,7 @@
-import { App } from 'vue';
-import IvueCountDown from './index.vue';
+import { withInstall } from '../../utils/install';
+import CountDown from './index.vue';
 
-export default (app: App): void => {
-  app.component(IvueCountDown.name, IvueCountDown);
-};
+export const IvueCountDown = withInstall(CountDown);
+export default IvueCountDown;
 
-export { IvueCountDown };
+export * from './index.vue';

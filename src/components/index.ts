@@ -12,8 +12,6 @@ import IvueBottomNav from './ivue-bottom-nav';
 import IvueBottomNavItem from './ivue-bottom-nav-item';
 import IvueBreadcrumbs from './ivue-breadcrumbs';
 import IvueBreadcrumbsItem from './ivue-breadcrumbs-item';
-import IvueSelect from './ivue-select';
-import IvueSteps from './ivue-steps';
 import IvueUpload from './ivue-upload';
 import IvueProgress from './ivue-progress';
 import IvueCircular from './ivue-circular';
@@ -21,10 +19,8 @@ import IvueLoading from './ivue-loading';
 import IvueNotice from './ivue-notice';
 import IvueMessage from './ivue-message';
 import IvueLoadingBar from './ivue-loading-bar';
-import IvueTabs from './ivue-tabs';
 import IvueBadge from './ivue-badge';
 import IvueDatePicker from './ivue-date-picker';
-import IvueCollapse from './ivue-collapse';
 import IvueCascader from './ivue-cascader';
 import IvueTooltip from './ivue-tooltip';
 import IvueChip from './ivue-chip';
@@ -35,10 +31,15 @@ import IvueCheckboxGroup from './ivue-checkbox-group';
 import IvueAvatar from './ivue-avatar';
 import IvuePage from './ivue-page';
 import IvueSpin from './ivue-spin';
-import IvueTable from './ivue-table';
 import IvueAutoComplete from './ivue-auto-complete';
 import IvueCountDown from './ivue-count-down';
 import IvueCountUp from './ivue-count-up';
+
+import { IvueCollapse, IvueCollapsePanel } from './ivue-collapse';
+import { IvueSelect, IvueOption, IvueOptionGroup } from './ivue-select';
+import { IvueSteps, IvueStep } from './ivue-steps';
+import { IvueTabs, IvueTab, IvueTabItem } from './ivue-tabs';
+import { IvueTable, IvueTableColumn } from './ivue-table';
 
 export {
   IvueAffix,
@@ -56,7 +57,10 @@ export {
   IvueBreadcrumbs,
   IvueBreadcrumbsItem,
   IvueSelect,
+  IvueOption,
+  IvueOptionGroup,
   IvueSteps,
+  IvueStep,
   IvueUpload,
   IvueProgress,
   IvueCircular,
@@ -65,9 +69,12 @@ export {
   IvueMessage,
   IvueLoadingBar,
   IvueTabs,
+  IvueTab,
+  IvueTabItem,
   IvueBadge,
   IvueDatePicker,
   IvueCollapse,
+  IvueCollapsePanel,
   IvueCascader,
   IvueTooltip,
   IvueChip,
@@ -79,6 +86,7 @@ export {
   IvuePage,
   IvueSpin,
   IvueTable,
+  IvueTableColumn,
   IvueAutoComplete,
   IvueCountDown,
   IvueCountUp

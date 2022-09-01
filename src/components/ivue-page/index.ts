@@ -1,8 +1,7 @@
-import { App } from 'vue';
-import IvuePage from './index.vue';
+import { withInstall } from '../../utils/install';
+import Page from './index.vue';
 
-export default (app: App): void => {
-    app.component(IvuePage.name, IvuePage);
-};
+export const IvuePage = withInstall(Page);
+export default IvuePage;
 
-export { IvuePage };
+export * from './index.vue';

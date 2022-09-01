@@ -1,8 +1,7 @@
-import { App } from 'vue';
-import IvueBadge from './index.vue';
+import { withInstall } from '../../utils/install';
+import Badge from './index.vue';
 
-export default (app: App): void => {
-    app.component(IvueBadge.name, IvueBadge);
-};
+export const IvueBadge = withInstall(Badge);
+export default IvueBadge;
 
-export { IvueBadge };
+export * from './index.vue';

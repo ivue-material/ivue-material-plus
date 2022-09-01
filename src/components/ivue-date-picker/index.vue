@@ -3,10 +3,6 @@ import {
     defineComponent,
     reactive,
     computed,
-    nextTick,
-    onMounted,
-    onBeforeUnmount,
-    provide,
     watch,
     h,
     getCurrentInstance,
@@ -463,6 +459,7 @@ export default defineComponent({
             const expected = props.multiple ? 'Array' : 'String';
 
             if (valueType !== expected) {
+                // eslint-disable-next-line no-console
                 console.warn(
                     `Value must be ${
                         props.multiple ? 'an' : 'a'
@@ -700,7 +697,7 @@ export default defineComponent({
         // 监听 tableDate
         watch(
             () => data.tableDate,
-            (val, prev) => {
+            (val) => {
                 // 发送月份或年份改变事件
                 emit('update:pickerDate', val);
             }

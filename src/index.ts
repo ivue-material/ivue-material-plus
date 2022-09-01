@@ -66,7 +66,16 @@ const install = (app: App, opts: any = {}): void => {
 
     // 注册组件
     Object.keys(components).forEach(key => {
-        app.component(key, components[key](app));
+
+        if (components[key].render) {
+            app.component(key, components[key]);
+            app.component(key, components[key].install(app));
+        }
+        // 注册指令
+        else if (components[key].install) {
+            app.component(key, components[key].install(app));
+
+        }
     });
 };
 
@@ -93,7 +102,6 @@ export {
     IvueUpload,
     IvueProgress,
     IvueCircular,
-    IvueLoading,
     IvueNotice,
     IvueMessage,
     IvueLoadingBar,
@@ -105,6 +113,7 @@ export {
     IvueCollapse,
     IvueCollapsePanel,
     IvueCascader,
+    IvueLoading,
     IvueTooltip,
     IvueChip,
     IvueRadio,

@@ -1,8 +1,7 @@
-import { App } from 'vue';
-import IvueLoadingBar from './loading-bar';
+import { withInstallFunction } from '../../utils/install';
+import LoadingBar from './loading-bar';
 
-export default (app: App): void => {
-    app.config.globalProperties.$LoadingBar = IvueLoadingBar;
-};
+export const IvueLoadingBar = withInstallFunction(LoadingBar, '$LoadingBar');
+export default IvueLoadingBar;
 
-export { IvueLoadingBar };
+export * from './index.vue';

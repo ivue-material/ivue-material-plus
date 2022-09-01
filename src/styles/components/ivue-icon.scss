@@ -1,3 +1,10 @@
+@import "../custom.scss";
+@import "../animation/variables";
+
+// 图标
+$material-icons-font-path: '~material-icons/iconfont/';
+@import 'material-icons/iconfont/material-icons.scss';
+
 @mixin ivue-icon-size($size: $icon-size) {
       width: $size;
       min-width: $size;
@@ -30,7 +37,7 @@
 .ivue-icon {
       @include ivue-icon-size($icon-size);
       @include ivue-icon;
-     
+
       &.ivue-size-2x {
             @include ivue-icon-size($icon-size * 2);
       }

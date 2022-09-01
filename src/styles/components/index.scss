@@ -1,8 +1,9 @@
+@import "ivue-icon";
 @import "ivue-affix";
 @import "ivue-input";
-@import "ivue-icon";
 @import "ivue-button";
 @import "ivue-ripple";
+@import "ivue-tabs";
 @import "ivue-list";
 @import "ivue-list-item";
 @import "ivue-carousel";
@@ -18,14 +19,8 @@
 @import "ivue-notice";
 @import "ivue-message";
 @import "ivue-loading-bar";
-@import "ivue-tabs";
 @import "ivue-badge";
-@import "ivue-picker";
-@import "ivue-date-picker-title";
-@import "ivue-date-picker-header";
-@import "ivue-date-picker-date";
-@import "ivue-date-picker-month";
-@import "ivue-date-picker-years";
+@import "ivue-date-picker";
 @import "ivue-collapse";
 @import "ivue-cascader";
 @import "ivue-tooltip";
@@ -38,3 +33,5 @@
 @import "ivue-table";
 @import "ivue-scrollbar";
 @import "ivue-auto-complete";
+@import "ivue-count-up";
+@import "ivue-count-down";

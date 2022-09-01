@@ -1,8 +1,7 @@
-import { App } from 'vue';
-import IvueCarouselItem from './index.vue';
+import { withInstall } from '../../utils/install';
+import CarouselItem from './index.vue';
 
-export default (app: App): void => {
-    app.component(IvueCarouselItem.name, IvueCarouselItem);
-};
+export const IvueCarouselItem = withInstall(CarouselItem);
+export default IvueCarouselItem;
 
-export { IvueCarouselItem };
+export * from './index.vue';

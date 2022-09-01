@@ -1,10 +1,14 @@
-import { App } from 'vue';
-import IvueTable from './table.vue';
-import IvueTableColumn from './table-column/index';
+import { withInstall, withNoopInstall } from '../../utils/install';
 
-export default (app: App): void => {
-    app.component(IvueTable.name, IvueTable);
-    app.component(IvueTableColumn.name, IvueTableColumn);
-};
+import Table from './table.vue';
+import TableColumn from './table-column/index';
 
-export { IvueTable, IvueTableColumn };
+export const IvueTable = withInstall(Table, {
+    TableColumn,
+});
+export default IvueTable;
+
+export const IvueTableColumn = withNoopInstall(TableColumn);
+
+export * from './table.vue';
+export * from './table-column/index';

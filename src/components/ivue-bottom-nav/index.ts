@@ -1,8 +1,7 @@
-import { App } from 'vue';
-import IvueBottomNav from './index.vue';
+import { withInstall } from '../../utils/install';
+import BottomNav from './index.vue';
 
-export default (app: App): void => {
-    app.component(IvueBottomNav.name, IvueBottomNav);
-};
+export const IvueBottomNav = withInstall(BottomNav);
+export default IvueBottomNav;
 
-export { IvueBottomNav };
+export * from './index.vue';

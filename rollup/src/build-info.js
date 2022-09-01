@@ -1,9 +1,8 @@
 import path from 'path'
 
-export const PKG_NAME = 'ivue-material-plus'
-
 import {
-  epOutput
+  outputPath,
+  PKG_NAME
 } from '../build-utils'
 
 // 模块列表
@@ -17,7 +16,7 @@ export const buildConfig = {
     ext: 'mjs',
     output: {
       name: 'es',
-      path: path.resolve(epOutput, 'es'),
+      path: path.resolve(outputPath, 'es'),
     },
     bundle: {
       path: `${PKG_NAME}/es`,
@@ -29,7 +28,7 @@ export const buildConfig = {
     ext: 'js',
     output: {
       name: 'lib',
-      path: path.resolve(epOutput, 'lib'),
+      path: path.resolve(outputPath, 'lib'),
     },
     bundle: {
       path: `${PKG_NAME}/lib`,

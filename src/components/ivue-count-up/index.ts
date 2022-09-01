@@ -1,8 +1,7 @@
-import { App } from 'vue';
-import IvueCountUp from './index.vue';
+import { withInstall } from '../../utils/install';
+import CountUp from './index.vue';
 
-export default (app: App): void => {
-  app.component(IvueCountUp.name, IvueCountUp);
-};
+export const IvueCountUp = withInstall(CountUp);
+export default IvueCountUp;
 
-export { IvueCountUp };
+export * from './index.vue';

@@ -1,5 +1,8 @@
-$name: 'ivue-input';
+@import "../custom.scss";
+@import "../animation/variables";
+@import "../mixins.scss";
 
+$name: 'ivue-input';
 
 .#{$name}-wrapper {
   display: inline-block;

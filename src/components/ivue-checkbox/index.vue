@@ -257,7 +257,6 @@ export default defineComponent({
 
         // 改变
         const handleChange = (event) => {
-            console.log('改变');
             // 禁用
             if (props.disabled) {
                 return false;

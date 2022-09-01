@@ -1,8 +1,7 @@
-import { App } from 'vue';
-import IvueMessage from './message';
+import { withInstallFunction } from '../../utils/install';
+import Message from './message';
 
-export default (app: App): void => {
-    app.config.globalProperties.$message = IvueMessage;
-};
+export const IvueMessage = withInstallFunction(Message, '$message');
+export default IvueMessage;
 
-export { IvueMessage };
+export * from './index.vue';

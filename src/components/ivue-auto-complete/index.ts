@@ -1,8 +1,8 @@
-import { App } from 'vue';
-import IvueAutoComplete from './index.vue';
+import { withInstall } from '../../utils/install';
 
-export default (app: App): void => {
-    app.component(IvueAutoComplete.name, IvueAutoComplete);
-};
+import AutoComplete from './index.vue';
 
-export { IvueAutoComplete };
+export const IvueAutoComplete = withInstall(AutoComplete);
+export default IvueAutoComplete;
+
+export * from './index.vue';

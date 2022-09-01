@@ -146,6 +146,7 @@ import {
 
 import { calcTextareaHeight } from '../../utils/calc-textarea-height';
 import { oneOf } from '../../utils/assist';
+import IvueIcon from '../ivue-icon/index.vue';
 
 function isCssColor(color) {
     return !!color && !!color.match(/^(#|(rgb|hsl)a?\()/);
@@ -881,6 +882,9 @@ export default defineComponent({
 
             return _color;
         },
+    },
+    components: {
+        IvueIcon,
     },
 });
 </script>

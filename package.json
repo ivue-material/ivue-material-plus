@@ -9,10 +9,10 @@
   ],
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "npm run build:prod && npm run build:style",
+    "build": "npm run build:prod && npm run build:style && npm run build:rollup",
     "build:style": "gulp --gulpfile build/build-style.js",
     "build:prod": "vite build",
-    "unbuild": "unbuild"
+    "build:rollup": "gulp --require @esbuild-kit/cjs-loader -f ./rollup/gulpfile.js"
   },
   "repository": {
     "type": "git",

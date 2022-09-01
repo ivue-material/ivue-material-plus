@@ -1,10 +1,7 @@
-import { App } from 'vue';
+import { withInstall } from '../../utils/install';
+import Scrollbar from './index.vue';
 
-import IvueScrollbar from './index.vue';
+export const IvueScrollbar = withInstall(Scrollbar);
+export default IvueScrollbar;
 
-export default (app: App): void => {
-  app.component(IvueScrollbar.name, IvueScrollbar);
-
-};
-
-export { IvueScrollbar };
+export * from './index.vue';

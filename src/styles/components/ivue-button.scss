@@ -1,5 +1,6 @@
 @import "../animation/variables.scss";
 @import "../../components/ivue-elevation/mixins";
+@import "../custom.scss";
 
 $name: 'ivue-button';
 
@@ -38,6 +39,8 @@ $name: 'ivue-button';
   font-size: $ivue-button-font-size;
   font-weight: 500;
   color: currentColor;
+
+  @import "./ivue-ripple.scss";
 
   &-content {
     position: relative;

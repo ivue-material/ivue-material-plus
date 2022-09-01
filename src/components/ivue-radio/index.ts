@@ -1,8 +1,7 @@
-import { App } from 'vue';
-import IvueRadio from './index.vue';
+import { withInstall } from '../../utils/install';
+import Radio from './index.vue';
 
-export default (app: App): void => {
-    app.component(IvueRadio.name, IvueRadio);
-};
+export const IvueRadio = withInstall(Radio);
+export default IvueRadio;
 
-export { IvueRadio };
+export * from './index.vue';

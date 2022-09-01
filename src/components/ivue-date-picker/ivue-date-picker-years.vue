@@ -1,5 +1,3 @@
-
-
 <script lang='ts'>
 import {
     defineComponent,
@@ -110,8 +108,8 @@ export default defineComponent({
         // 动画
         const computedTransition = computed(() => {
             return data.isReversing
-                ? `tab-reverse-transition`
-                : `tab-transition`;
+                ? 'tab-reverse-transition'
+                : 'tab-transition';
         });
 
         // 显示的年份
@@ -287,7 +285,7 @@ export default defineComponent({
                 'button',
                 setColor(color, {
                     class: {
-                        [`ivue-button`]: true,
+                        ['ivue-button']: true,
                         ...genButtonClasses(isSelected, isCurrent),
                     },
                     disabled: !isAllowed,

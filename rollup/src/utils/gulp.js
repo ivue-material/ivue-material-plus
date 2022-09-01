@@ -6,13 +6,16 @@ import {
 } from './process'
 
 // 运行任务名称
-export const withTaskName = (name, fn) =>
-  Object.assign(fn, {
+export const withTaskName = (name, fn) => {
+  return Object.assign(fn, {
     displayName: name
   })
+}
+
 
 // 运行任务
-export const runTask = (name) =>
-  withTaskName(`shellTask:${name}`, () =>
-    run(`pnpm run start ${name}`, buildRoot)
-  )
+export const runTask = (name) => {
+  return withTaskName(`shellTask:${name}`, () => {
+    return run(`pnpm run start ${name}`, buildRoot)
+  })
+}

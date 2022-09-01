@@ -1,13 +1,19 @@
-import { App } from 'vue';
-import IvueSelect from './index.vue';
-import IvueOption from './option.vue';
-import IvueOptionGroup from './option-group.vue';
+import { withInstall, withNoopInstall } from '../../utils/install';
 
-export default (app: App): void => {
-    app.component(IvueSelect.name, IvueSelect);
-    app.component(IvueOption.name, IvueOption);
-    app.component(IvueOptionGroup.name, IvueOptionGroup);
+import Select from './index.vue';
+import Option from './option.vue';
+import OptionGroup from './option-group.vue';
 
-};
+export const IvueSelect = withInstall(Select, {
+    Option,
+    OptionGroup,
+});
 
-export { IvueSelect, IvueOption, IvueOptionGroup };
+export default IvueSelect;
+
+export const IvueOption = withNoopInstall(Option);
+export const IvueOptionGroup = withNoopInstall(OptionGroup);
+
+export * from './index.vue';
+export * from './option.vue';
+export * from './option-group.vue';

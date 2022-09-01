@@ -64,5 +64,19 @@ gulp.task('color', function () {
     .pipe(gulp.dest('../dist/styles'));
 });
 
+// animation
+gulp.task('animation', function () {
+  return gulp.src('../src/styles/animation/index.scss')
+    .pipe(sass())
+    .pipe(
+      autoprefixer({
+        overrideBrowserslist: ['last 2 versions', 'ie > 8']
+      })
+    )
+    .pipe(cleanCSS())
+    .pipe(rename('animation.css'))
+    .pipe(gulp.dest('../dist/styles'));
+});
 
-gulp.task('default', gulp.parallel('index', 'layout', 'elevation', 'color'));
+
+gulp.task('default', gulp.parallel('index', 'layout', 'elevation', 'color', 'animation'));

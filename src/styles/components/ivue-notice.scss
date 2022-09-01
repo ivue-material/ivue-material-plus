@@ -1,3 +1,5 @@
+@import "../custom.scss";
+
 $name: 'ivue-notice';
 $notice-width: 335px;
 $notice-padding: 16px;
@@ -8,7 +10,6 @@ $have-icon: 51px;
   position: fixed;
   width: $notice-width;
   z-index: 1000;
-
 
   &-notice {
     padding: $notice-padding;

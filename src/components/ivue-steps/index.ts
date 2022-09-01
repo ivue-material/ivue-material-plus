@@ -1,12 +1,14 @@
-import { App } from 'vue';
+import { withInstall, withNoopInstall } from '../../utils/install';
 
-import IvueSteps from './steps.vue';
-import IvueStep from './step.vue';
+import Steps from './steps.vue';
+import Step from './step.vue';
 
-export default (app: App): void => {
-    app.component(IvueSteps.name, IvueSteps);
-    app.component(IvueStep.name, IvueStep);
+export const IvueSteps = withInstall(Steps, {
+    Step,
+});
+export default IvueSteps;
 
-};
+export const IvueStep = withNoopInstall(Step);
 
-export { IvueSteps, IvueStep };
+export * from './steps.vue';
+export * from './step.vue';

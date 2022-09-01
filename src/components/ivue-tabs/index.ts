@@ -1,12 +1,18 @@
-import { App } from 'vue';
-import IvueTabs from './index.vue';
-import IvueTab from './tab.vue';
-import IvueTabItem from './item.vue';
+import { withInstall, withNoopInstall } from '../../utils/install';
 
-export default (app: App): void => {
-    app.component(IvueTabs.name, IvueTabs);
-    app.component(IvueTab.name, IvueTab);
-    app.component(IvueTabItem.name, IvueTabItem);
-};
+import Tabs from './index.vue';
+import Tab from './tab.vue';
+import TabItem from './item.vue';
 
-export { IvueTabs, IvueTab, IvueTabItem };
+export const IvueTabs = withInstall(Tabs, {
+    Tab,
+    TabItem,
+});
+export default IvueTabs;
+
+export const IvueTab = withNoopInstall(Tab);
+export const IvueTabItem = withNoopInstall(TabItem);
+
+export * from './index.vue';
+export * from './tab.vue';
+export * from './item.vue';

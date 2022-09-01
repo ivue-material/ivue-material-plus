@@ -8,13 +8,12 @@ const app = createApp(App)
 
 import IVue from '../src/index.ts'
 
-console.log('IVue', IVue)
 // import {IvueButton} from '../dist/ivue-material-plus.min.esm'
-// import IVue from '../dist/ivue';
+// import IVue from '../dist/ivue-material-plus.min.esm';
 import "../src/styles/index.scss";
-import "../src/styles/theme/index.scss";
-import "../src/components/ivue-elevation/index";
-import "../src/components/ivue-layout/index";
+// import "../src/styles/theme/index.scss";
+// import "../src/components/ivue-elevation/index";
+// import "../src/components/ivue-layout/index";
 
 // import "../dist/styles/ivue.css";
 // import "../dist/styles/color.css";

@@ -7,20 +7,26 @@ import {
   series
 } from 'gulp'
 import {
-  epOutput,
+  outputPath,
 } from './build-utils'
 import {
   runTask,
   withTaskName
 } from './src'
 
+import {
+  buildStyles
+} from './src/tasks/build-styles'
+
 export default series(
-  withTaskName('createOutput', () => mkdir(epOutput, {
+  withTaskName('createOutput', () => mkdir(outputPath, {
     recursive: true
   })),
 
+
   parallel(
     runTask('buildComponents'),
+    series(buildStyles)
   ),
 )
 

@@ -1,8 +1,7 @@
-import { App } from 'vue';
-import IvueTooltip from './index.vue';
+import { withInstall } from '../../utils/install';
+import Tooltip from './index.vue';
 
-export default (app: App): void => {
-    app.component(IvueTooltip.name, IvueTooltip);
-};
+export const IvueTooltip = withInstall(Tooltip);
+export default IvueTooltip;
 
-export { IvueTooltip };
+export * from './index.vue';

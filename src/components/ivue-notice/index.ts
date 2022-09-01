@@ -1,8 +1,7 @@
-import { App } from 'vue';
-import IvueNotice from './notice';
+import { withInstallFunction } from '../../utils/install';
+import Notice from './notice';
 
-export default (app: App): void => {
-    app.config.globalProperties.$notice = IvueNotice;
-};
+export const IvueNotice = withInstallFunction(Notice, '$notice');
+export default IvueNotice;
 
-export { IvueNotice };
+export * from './index.vue';

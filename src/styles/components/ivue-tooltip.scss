@@ -1,3 +1,6 @@
+@import "../custom.scss";
+@import "../animation/variables";
+
 $name: 'ivue-tooltip';
 
 $bg: rgba(56, 61, 71, 0.9);
@@ -21,19 +24,6 @@ $bg: rgba(56, 61, 71, 0.9);
     line-height: 1.5;
     z-index: 1060;
 
-
-    // top
-    // &[x-placement=top] {
-    //   padding: 5px 0 8px;
-
-    //   .#{$name}-arrow {
-    //     left: 50%;
-    //     margin-left: -5px;
-    //     bottom: 3px;
-    //     border-width: 5px 5px 0;
-    //     border-top-color: $bg;
-    //   }
-    // }
 
     // top
     &[data-popper-placement=top] {

@@ -1,3 +1,5 @@
+@import "../custom.scss";
+
 $name: 'ivue-loading';
 
 .#{$name} {
@@ -25,7 +27,6 @@ $name: 'ivue-loading';
       overflow: hidden !important;
     }
   }
-
 
   // 滚动
   &-spinner {

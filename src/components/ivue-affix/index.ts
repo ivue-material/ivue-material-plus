@@ -1,8 +1,8 @@
-import { App } from 'vue';
-import IvueAffix from './index.vue';
+import { withInstall } from '../../utils/install';
 
-export default (app: App): void => {
-    app.component(IvueAffix.name, IvueAffix);
-};
+import Affix from './index.vue';
 
-export { IvueAffix };
+export const IvueAffix = withInstall(Affix);
+export default IvueAffix;
+
+export * from './index.vue';

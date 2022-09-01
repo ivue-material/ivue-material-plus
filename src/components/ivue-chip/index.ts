@@ -1,9 +1,8 @@
+import { withInstall } from '../../utils/install';
+import Chip from './index.vue';
 
-import { App } from 'vue';
-import IvueChip from './index.vue';
+export const IvueChip = withInstall(Chip);
+export default IvueChip;
 
-export default (app: App): void => {
-  app.component(IvueChip.name, IvueChip);
-};
 
-export { IvueChip };
+export * from './index.vue';

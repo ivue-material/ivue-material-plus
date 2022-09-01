@@ -1,5 +1,8 @@
 @use "sass:math";
 
+@import "../custom.scss";
+@import "../animation/variables";
+
 $name: 'ivue-switch';
 $defailt-width: 52px;
 $defailt-after-width: 24px;
