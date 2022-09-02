@@ -7,7 +7,9 @@ import dartSass from 'sass'
 import cleanCSS from 'gulp-clean-css'
 import autoprefixer from 'gulp-autoprefixer'
 import chalk from 'chalk'
-import {PKG_NAME} from '../../build-utils'
+import {
+  PKG_NAME
+} from '../../build-utils'
 
 import {
   resolve
@@ -42,4 +44,10 @@ export const buildStyles = () => {
     )
     // 打包输出路径
     .pipe(dest(`../dist/${PKG_NAME}/styles`));
+}
+
+// 打包字体
+export const buildFonts = () => {
+  return src('../src/styles/material-icons/fonts/*.*')
+    .pipe(dest(`../dist/${PKG_NAME}/styles/fonts`));
 }

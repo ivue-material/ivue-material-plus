@@ -75,9 +75,9 @@
                 <span style="float:right;color:#ccc">Australian</span>
             </ivue-option>
         </ivue-select>
-        {{model9}}
+        {{multiple}}
         <p>多选</p>
-        <ivue-select v-model="model10" multiple style="width:200px">
+        <ivue-select v-model="multiple" multiple style="width:200px">
             <ivue-option
                 v-for="item in cityList"
                 :value="item.value"
@@ -337,6 +337,7 @@ export default {
             model14: [],
             loading2: false,
             options2: [],
+            multiple: [],
             list: [
                 'Alabama',
                 'Alaska',

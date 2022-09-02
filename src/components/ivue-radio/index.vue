@@ -28,7 +28,7 @@ import {
     inject,
     onMounted,
 } from 'vue';
-import { isCssColor , setTextColor} from '../../utils/helpers';
+import { isCssColor, setTextColor } from '../../utils/helpers';
 
 const prefixCls = 'ivue-radio';
 
@@ -107,7 +107,6 @@ export default defineComponent({
         },
     },
     setup(props: any, { emit }) {
-
         // 组合
         const IvueRadioGroup: any = inject('IvueRadioGroup', {
             default: null,
@@ -234,6 +233,10 @@ export default defineComponent({
 
             // 设置 v-model
             const value = checked ? props.trueValue : props.falseValue;
+
+            console.log('/??', value);
+            console.log('/??', value);
+
             emit('update:modelValue', value);
 
             // 组合

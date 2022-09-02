@@ -8,8 +8,7 @@
     >
         <!-- 左按钮 -->
         <ivue-button
-            :class="arrowClasses"
-            class="left ivue-icon-button"
+            :class="['left ivue-icon-button', arrowClasses]"
             @click="arrowEvent(-1)"
             flat
             icon
@@ -43,8 +42,7 @@
         </div>
         <!-- 右按钮 -->
         <ivue-button
-            :class="arrowClasses"
-            class="right ivue-icon-button"
+            :class="['right ivue-icon-button', arrowClasses]"
             @click="arrowEvent(1)"
             flat
             icon
@@ -64,10 +62,7 @@
                 @click="dotsEvent('click', index - 1)"
                 @mouseover="dotsEvent('hover', index - 1)"
             >
-                <button
-                    type="button"
-                    :class="[radiusDot ? 'radius' : '']"
-                ></button>
+                <button type="button" :class="[radiusDot ? 'radius' : '']"></button>
             </li>
         </ul>
     </div>

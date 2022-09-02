@@ -2,8 +2,7 @@
 @import "../animation/variables";
 
 // 图标
-$material-icons-font-path: '~material-icons/iconfont/';
-@import 'material-icons/iconfont/material-icons.scss';
+@import '../material-icons/material-icons.scss';
 
 @mixin ivue-icon-size($size: $icon-size) {
       width: $size;

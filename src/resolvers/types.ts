@@ -1,6 +1,5 @@
 import type { Awaitable } from '@antfu/utils';
 
-
 export interface ImportInfo {
   as?: string
   name?: string

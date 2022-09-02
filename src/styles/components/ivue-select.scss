@@ -1,6 +1,7 @@
 @import "../custom.scss";
 @import "../animation/variables";
 @import "../mixins.scss";
+@import "ivue-icon.scss";
 
 $name: 'ivue-select';
 
@@ -13,8 +14,6 @@ $name: 'ivue-select';
   color: $text-color;
   font-size: 12px;
   line-height: normal;
-
-  @import "./ivue-icon.scss";
 
   // 加载中
   &-loading {
@@ -294,8 +293,9 @@ $name: 'ivue-select';
         content: "done";
         position: absolute;
         top: 0;
+        bottom: 0;
         right: 8px;
-        padding: 7px 0;
+        padding: 0 !important;
         font-size: 17px;
         color: currentColor;
         transition: all .1s $ivue-transition-default-timing
@@ -319,11 +319,11 @@ $name: 'ivue-select';
     line-height: $input-height-base - 12px;
   }
 
-
   // 输入框箭头方向
-  &-arrow {
+  .#{$name}-arrow {
     position: absolute;
     top: 0;
+    bottom: 0;
     right: 0;
     line-height: 1;
     font-size: $font-default-size;
@@ -451,18 +451,6 @@ $name: 'ivue-select';
         transition: all .1s $ivue-transition-default-timing;
       }
     }
-
-
-    // &-selected:after {
-    //   @include ivue-icon;
-    //   content: "done";
-    //   position: absolute;
-    //   top: 0;
-    //   right: 8px;
-    //   padding: 7px 0;
-    //   font-size: 17px;
-    //   color: transparentize($primary-color, 0.1);
-    // }
 
     /*选项菜单禁用样式*/
     &-disabled {

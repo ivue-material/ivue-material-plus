@@ -1,9 +1,5 @@
 <template>
     <div>
-        <link
-            href="https://fonts.googleapis.com/icon?family=Material+Icons"
-            rel="stylesheet"
-        />
         开启loop
         <!-- <ivue-switch @on-change="handleChange">
             <span slot="open">开</span>
@@ -21,7 +17,7 @@
                 <div class="demo-carousel">3</div>
             </ivue-carousel-item>
         </ivue-carousel>
-<!--
+
         <p>自动切换</p>
         <ivue-carousel v-model="value1" loop autoplay>
             <ivue-carousel-item>
@@ -53,7 +49,7 @@
             <ivue-carousel-item>
                 <div class="demo-carousel">3</div>
             </ivue-carousel-item>
-        </ivue-carousel> -->
+        </ivue-carousel>
     </div>
 </template>
 

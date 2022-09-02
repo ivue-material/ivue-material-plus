@@ -1,6 +1,8 @@
 @import "../custom.scss";
 
-.ivue-carousel {
+$name: 'ivue-carousel';
+
+.#{$name} {
   position: relative;
   display: block;
   box-sizing: border-box;
@@ -9,12 +11,12 @@
   -webkit-tap-highlight-color: transparent;
 
   /*箭头*/
-  &-arrow {
+  .#{$name}-arrow {
     position: absolute;
     top: 50%;
     display: none;
     text-align: center;
-    font-size: 1em;
+    font-size: 12px;
     font-family: inherit;
     line-height: inherit;
     border: none;

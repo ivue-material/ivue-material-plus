@@ -19,7 +19,7 @@
         </h1>
         <h1>回调</h1>
         <h1>
-            <ivue-count-up :endValue="end" :duration="6" :callback="handleUpdate"></ivue-count-up>
+            <ivue-count-up :endValue="end" :duration="6" :callback="handleUpdateEnd"></ivue-count-up>
         </h1>
         <h1>自定义设置项</h1>
         <h1>
@@ -53,7 +53,7 @@ export default {
         handleUpdate() {
             this.$refs.count.update(this.update);
         },
-        handleUpdate() {
+        handleUpdateEnd() {
             setTimeout(() => {
                 this.end = 100;
             }, 1000);

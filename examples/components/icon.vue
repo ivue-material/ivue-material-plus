@@ -1,10 +1,5 @@
 <template>
     <div>
-        <link
-            href="https://fonts.googleapis.com/icon?family=Material+Icons"
-            rel="stylesheet"
-        />
-
         <p>
             图标可以使用图标字体或外部SVG。此外，可以接受一些大小尺寸，如 2x,
             3x, 4x and 5x。默认情况下，IvueIcon 将假定你使用的是

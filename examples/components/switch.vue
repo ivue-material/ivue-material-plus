@@ -1,9 +1,5 @@
 <template>
     <div>
-        <link
-            href="https://fonts.googleapis.com/icon?family=Material+Icons"
-            rel="stylesheet"
-        />
         <p>基础</p>
 
         <ivue-switch

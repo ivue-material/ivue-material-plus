@@ -238,7 +238,7 @@ export default defineComponent({
         // beforeUnmount
         onBeforeUnmount(() => {
             off(window, 'resize', handleScroll, props.useCapture);
-            off(window, 'resize', handleScroll, props.useCapture);
+            off(window, 'scroll', handleScroll, props.useCapture);
         });
 
         return {

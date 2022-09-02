@@ -12,8 +12,7 @@ import {
 
 import { oneOf } from '../../utils/assist';
 import Colorable from '../../utils/mixins/colorable';
-// import ripple from '../../utils/directives/ripple';
-// import touch from '../../utils/directives/touch';
+import ripple from '../../utils/directives/ripple';
 
 type Size = 'large' | 'small' | 'default';
 
@@ -22,6 +21,9 @@ const prefixCls = 'ivue-switch';
 export default defineComponent({
     name: prefixCls,
     mixins: [Colorable],
+    directives: {
+        ripple,
+    },
     emits: ['on-change', 'update:modelValue'],
     props: {
         /**
@@ -128,7 +130,7 @@ export default defineComponent({
     setup(props: any, { emit }) {
         // data
         const data = reactive<{
-            currentValue: string | boolean | number
+            currentValue: string | boolean | number;
         }>({
             /**
              * 当前选择状态
@@ -189,7 +191,6 @@ export default defineComponent({
                     [`${prefixCls}-emboss--thumb__checked`]:
                         data.currentValue === props.trueValue,
                     [`${prefixCls}-emboss--thumb__gradient`]: props.gradient,
-
                 },
             ];
         });
@@ -252,7 +253,6 @@ export default defineComponent({
                 event.preventDefault();
             }
 
-
             if (props.disabled || props.loading) {
                 return false;
             }
@@ -269,7 +269,6 @@ export default defineComponent({
                     handleToggle();
                 });
             } else {
-
                 handleToggle();
             }
         };
@@ -282,7 +281,6 @@ export default defineComponent({
 
             // 修改 v-modul
             data.currentValue = checked;
-
 
             emit('update:modelValue', checked);
 
@@ -326,7 +324,6 @@ export default defineComponent({
 
         // 渲染浮雕
         const genEmboss = () => {
-
             return h(
                 'div',
                 this.setTextColor(this.setColor, {
@@ -366,13 +363,13 @@ export default defineComponent({
                     name
                         ? this.$slots.open && this.$slots.open()
                         : close
-                            ? this.$slots.close && this.$slots.close()
-                            : '',
+                        ? this.$slots.close && this.$slots.close()
+                        : '',
                 ]
             );
         };
 
-        return  h(
+        return h(
             'div',
             this.setTextColor(!this.emboss && this.setColor, {
                 class: this.wrapClasses,

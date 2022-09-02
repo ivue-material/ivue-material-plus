@@ -8,8 +8,12 @@ module.exports = {
       chunks: ['chunk-vendors', 'chunk-common', 'index']
     }
   },
-  configureWebpack: {
-    resolve: {
+  css: {
+    loaderOptions: {
+      // 给 sass-loader 传递选项
+      sass: {
+
+      },
     }
   }
 };

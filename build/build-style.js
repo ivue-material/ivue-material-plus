@@ -78,5 +78,10 @@ gulp.task('animation', function () {
     .pipe(gulp.dest('../dist/styles'));
 });
 
+// 拷贝字体文件
+gulp.task('fonts', function () {
+  return gulp.src('../src/styles/material-icons/fonts/*.*')
+    .pipe(gulp.dest('../dist/styles/fonts'));
+});
 
-gulp.task('default', gulp.parallel('index', 'layout', 'elevation', 'color', 'animation'));
+gulp.task('default', gulp.parallel('index', 'layout', 'elevation', 'color', 'animation', 'fonts'));

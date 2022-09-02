@@ -35,7 +35,8 @@ import IvueAutoComplete from './ivue-auto-complete';
 import IvueCountDown from './ivue-count-down';
 import IvueCountUp from './ivue-count-up';
 
-import { IvueCollapse, IvueCollapsePanel } from './ivue-collapse';
+import { IvueCollapse } from './ivue-collapse';
+import { IvueCollapsePanel } from './ivue-collapse-panel';
 import { IvueSelect, IvueOption, IvueOptionGroup } from './ivue-select';
 import { IvueSteps, IvueStep } from './ivue-steps';
 import { IvueTabs, IvueTab, IvueTabItem } from './ivue-tabs';

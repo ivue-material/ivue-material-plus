@@ -8,21 +8,30 @@ const app = createApp(App)
 
 import IVue from '../src/index.ts'
 
-// import {IvueButton} from '../dist/ivue-material-plus.min.esm'
-// import IVue from '../dist/ivue-material-plus.min.esm';
-import "../src/styles/index.scss";
-// import "../src/styles/theme/index.scss";
+// import IVue from '../dist/ivue-material-plus.min.esm'
+
+// import "./test.scss";
+
+// import "../src/styles/index.scss";
+
 // import "../src/components/ivue-elevation/index";
 // import "../src/components/ivue-layout/index";
 
-// import "../dist/styles/ivue.css";
+// import "../dist/unplugin-vue-components/styles/index.css";
+// import "../dist/unplugin-vue-components/styles/reset.css";
+import "../dist/unplugin-vue-components/styles/ivue-switch.css";
+// import "../dist/unplugin-vue-components/styles/ivue-carousel.css";
+// import "../src/styles/components/ivue-cascader.scss";
+
+import "../dist/styles/index.css";
+// import "../dist/unplugin-vue-components/styles/ivue-page.css";
+
 // import "../dist/styles/color.css";
 // import "../dist/styles/elevation.css";
 // import "../dist/styles/layout.css";
 
 
 // app.component('IvueButton', IvueButton);
-// app.component('IvueIcon', IvueIcon);
 
 app.config.devtools = false
 

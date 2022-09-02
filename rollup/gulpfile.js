@@ -15,8 +15,10 @@ import {
 } from './src'
 
 import {
-  buildStyles
+  buildStyles,
+  buildFonts
 } from './src/tasks/build-styles'
+
 
 export default series(
   withTaskName('createOutput', () => mkdir(outputPath, {
@@ -26,7 +28,10 @@ export default series(
 
   parallel(
     runTask('buildComponents'),
-    series(buildStyles)
+    series(
+      buildStyles,
+      buildFonts
+    )
   ),
 )
 

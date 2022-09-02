@@ -1,9 +1,5 @@
 <template>
     <div>
-        <link
-            href="https://fonts.googleapis.com/icon?family=Material+Icons"
-            rel="stylesheet"
-        />
         <div>
             <p>方按钮</p>
             <ivue-button :color="['#5AB2FF', '#5B8EFF']">Button</ivue-button>

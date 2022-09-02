@@ -75,23 +75,23 @@
                         <i class="ivue-icon">{{ suffix }}</i>
                     </slot>
                 </span>
-                <!-- 搜索型输入框 -->
-                <template v-if="search && enterButton === false">
-                    <i :class="[`${prefixCls}-icon`, 'ivue-icon']" @click="handleSearch">search</i>
-                </template>
-                <template v-else-if="search && enterButton">
-                    <div
-                        :class="[
+            </div>
+            <!-- 搜索型输入框 -->
+            <template v-if="search && enterButton === false">
+                <i :class="[`${prefixCls}-icon`, 'ivue-icon']" @click="handleSearch">search</i>
+            </template>
+            <template v-else-if="search && enterButton">
+                <div
+                    :class="[
                             `${prefixCls}-group-append`,
                             `${prefixCls}-search`,
                         ]"
-                        @click="handleSearch"
-                    >
-                        <i :class="['ivue-icon']" v-if="enterButton === true">search</i>
-                        <template v-else>{{ enterButton }}</template>
-                    </div>
-                </template>
-            </div>
+                    @click="handleSearch"
+                >
+                    <i :class="['ivue-icon']" v-if="enterButton === true">search</i>
+                    <template v-else>{{ enterButton }}</template>
+                </div>
+            </template>
             <!-- 后置内容，仅在 text 类型下有效 -->
             <div
                 :class="[`${prefixCls}-group-append`, ...appendColor]"

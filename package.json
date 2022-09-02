@@ -37,7 +37,7 @@
     "hex-to-rgba": "^2.0.1",
     "lodash-es": "^4.17.21",
     "lodash-unified": "^1.0.2",
-    "material-icons": "^1.11.2",
+    "material-icons": "^1.11.11",
     "mitt": "^3.0.0",
     "normalize-wheel-es": "^1.2.0",
     "path": "^0.12.7",
@@ -150,7 +150,7 @@
     "Android >= 6"
   ],
   "workspaces": [
-    "src/components/*"
+    "src/*"
   ],
   "eslintConfig": {
     "parser": "babel-eslint"

@@ -152,7 +152,9 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
+$material-icons-font-path: '~@/styles/material-icons/fonts/material-icons' !default;
+
 nav {
     margin-bottom: 40px;
 

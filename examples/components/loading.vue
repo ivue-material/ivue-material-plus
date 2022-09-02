@@ -2,7 +2,7 @@
     <div>
         <h1>区域加载</h1>
         <div class="conetn1" v-loading="true"></div>
-        <!-- <h1>自定义</h1>
+        <h1>自定义</h1>
         <div
             class="conetn1"
             v-loading="{
@@ -26,7 +26,7 @@
                 :color="['#5AB2FF', '#5B8EFF']"
                 @click="openFullScreen2"
             >服务方式</ivue-button>
-        </div> -->
+        </div>
     </div>
 </template>
 

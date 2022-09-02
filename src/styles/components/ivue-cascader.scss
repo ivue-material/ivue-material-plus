@@ -1,3 +1,6 @@
+@import "ivue-input";
+@import "ivue-select";
+@import "ivue-loading";
 
 $name: 'ivue-cascader';
 $input: 'ivue-input';
@@ -5,8 +8,6 @@ $input: 'ivue-input';
 .#{$name} {
   line-height: normal;
   position: relative;
-
-  @import "ivue-select";
 
   // 输入框外层
   &-input {
@@ -231,6 +232,11 @@ $input: 'ivue-input';
 
         .ivue-loading-mask {
           background: none;
+        }
+
+        .circular{
+          width: 100%;
+          height: 100%;
         }
       }
 

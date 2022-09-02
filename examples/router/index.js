@@ -1,5 +1,5 @@
 import {
-  createWebHashHistory,
+  createWebHistory,
   createRouter
 } from 'vue-router';
 import Affix from '../components/affix';
@@ -226,7 +226,7 @@ const routes = [{
 ];
 
 const router = createRouter({
-  history: createWebHashHistory(),
+  history: createWebHistory(),
   routes
 });
 

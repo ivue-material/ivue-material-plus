@@ -6,4 +6,6 @@
   flex-flow: column nowrap;
   list-style: none;
   -webkit-tap-highlight-color: transparent;
+
+  @import 'ivue-ripple.scss';
 }

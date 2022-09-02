@@ -181,13 +181,13 @@ $name: 'ivue-input';
     }
 
     &--prepend {
-      border-bottom-right-radius: 0 !important;
-      border-top-right-radius: 0 !important;
+      border-bottom-left-radius: 0 !important;
+      border-top-left-radius: 0 !important;
     }
 
     &--append {
-      border-bottom-left-radius: 0 !important;
-      border-top-left-radius: 0 !important;
+      border-bottom-right-radius: 0 !important;
+      border-top-right-radius: 0 !important;
     }
 
     &-disabled {
@@ -310,16 +310,16 @@ $name: 'ivue-input';
 
 }
 
-// 前置内容
-.#{$name}-group-with-append .#{$name} {
-  border-top-left-radius: 0;
-  border-bottom-left-radius: 0;
-}
-
 // 后置内容
 .#{$name}-group-with-append .#{$name} {
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
+}
+
+// 前置内容
+.#{$name}-group-with-prepend .#{$name} {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
 }
 
 
