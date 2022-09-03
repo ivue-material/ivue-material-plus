@@ -141,7 +141,7 @@ $name: 'ivue-tabs';
     position: relative;
   }
 
-  &-icon {
+  .#{$name}-icon {
     position: absolute;
     top: 0;
     display: inline-flex;
