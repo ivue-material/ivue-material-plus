@@ -42,6 +42,7 @@ import { IvueTable, IvueTableColumn } from './components/ivue-table';
 import { IvueAutoComplete } from './components/ivue-auto-complete';
 import { IvueCountDown } from './components/ivue-count-down';
 import { IvueCountUp } from './components/ivue-count-up';
+import { Ripple } from './components/ivue-ripple';
 
 // 指令
 import Directives from './utils/directives/index';
@@ -129,6 +130,7 @@ export {
     IvueAutoComplete,
     IvueCountDown,
     IvueCountUp,
+    Ripple,
     install
 };
 

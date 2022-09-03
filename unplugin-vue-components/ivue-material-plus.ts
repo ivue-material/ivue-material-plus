@@ -100,22 +100,26 @@ const resolveDirective = (name: string) => {
     Loading: {
       name: 'IvueLoadingDirective',
       importName: 'ivue-loading',
-      styleName: 'ivue-loading'
+      styleName: 'ivue-loading',
+      importStyle: true
     },
     Ripple: {
       name: 'Ripple',
       importName: 'ivue-ripple',
-      styleName: 'ivue-ripple'
+      styleName: 'ivue-ripple',
+      importStyle: true
     },
     ClickOutside: {
       name: 'ClickOutside',
       importName: 'ivue-click-outside',
-      styleName: 'ivue-click-outside'
+      styleName: 'ivue-click-outside',
+      importStyle: false
     },
     Touch: {
       name: 'Touch',
       importName: 'ivue-touch',
-      styleName: 'ivue-touch'
+      styleName: 'ivue-touch',
+      importStyle: false
     },
   };
 
@@ -129,7 +133,7 @@ const resolveDirective = (name: string) => {
     name: directive.name,
     from: `${pakPath}/es/${directive.importName}`,
     sideEffects: getSideEffects(directive.styleName, {
-      importStyle: true
+      importStyle: directive.importStyle
     })
   };
 };
