@@ -112,6 +112,11 @@ const resolveDirective = (name: string) => {
       importName: 'ivue-click-outside',
       styleName: 'ivue-click-outside'
     },
+    Touch: {
+      name: 'Touch',
+      importName: 'ivue-touch',
+      styleName: 'ivue-touch'
+    },
   };
 
   const directive = directives[name];

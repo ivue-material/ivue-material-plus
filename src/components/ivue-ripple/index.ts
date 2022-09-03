@@ -1,3 +1,3 @@
-import directive from '../../utils/directives/click-outside';
+import directive from '../../utils/directives/ripple';
 
-export { directive, directive as ClickOutside };
+export { directive, directive as Ripple };
