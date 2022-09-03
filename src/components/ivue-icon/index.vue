@@ -1,10 +1,10 @@
 <template>
-    <IvueSvgLoader
+    <ivue-svg-loader
         class="ivue-icon ivue-icon-image"
         :svgSrc="svgSrc"
         v-if="svgSrc"
         @svg-loaded="$emit('svg-loaded')"
-    ></IvueSvgLoader>
+    ></ivue-svg-loader>
     <i class="ivue-icon ivue-icon-font" v-else>
         <slot />
     </i>

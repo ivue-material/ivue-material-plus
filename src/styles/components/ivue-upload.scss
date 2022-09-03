@@ -37,7 +37,7 @@ $name: 'ivue-upload';
     }
 
     // 图标
-    &__icon {
+    .#{$name}-content__icon {
       margin: 0;
       color: currentColor;
       transition: all $ivue-transition-default;
@@ -120,7 +120,7 @@ $name: 'ivue-upload';
     }
 
     // 删除
-    &-remove {
+    .#{$name}-list-remove {
       position: absolute;
       top: 0;
       right: 0;

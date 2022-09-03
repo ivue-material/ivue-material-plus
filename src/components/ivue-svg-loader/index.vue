@@ -3,8 +3,9 @@
 </template>
 
 <script lang='ts'>
-let ivueSVGStore = {};
 import { defineComponent } from 'vue';
+
+let ivueSVGStore = {};
 
 export default defineComponent({
     name: 'ivue-svg-loader',

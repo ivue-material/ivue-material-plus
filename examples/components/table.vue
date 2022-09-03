@@ -1,12 +1,15 @@
 <template>
     <div>
         <h1>基础表格</h1>
-        <ivue-table :data="tableData" style="width: 100%" resizable border :rowStyle="headerCellStyle" rowClassName="red">
-            <ivue-table-column
-                prop="date"
-                label="Date"
-                width="180"
-            ></ivue-table-column>
+        <ivue-table
+            :data="tableData"
+            style="width: 100%"
+            resizable
+            border
+            :rowStyle="headerCellStyle"
+            rowClassName="red"
+        >
+            <ivue-table-column prop="date" label="Date" width="180"></ivue-table-column>
             <ivue-table-column prop="name" label="Name" width="180"></ivue-table-column>
             <ivue-table-column prop="address" label="Address"></ivue-table-column>
         </ivue-table>
@@ -40,7 +43,7 @@
             <ivue-table-column prop="address" label="Address"></ivue-table-column>
         </ivue-table>
         <h1>固定列</h1>
-        <ivue-table border  height="250" :data="tableData3" style="width: 100%">
+        <ivue-table border height="250" :data="tableData3" style="width: 100%">
             <ivue-table-column fixed prop="date" label="Date" width="150"></ivue-table-column>
             <ivue-table-column prop="name" label="Name" width="120"></ivue-table-column>
             <ivue-table-column prop="state" label="State" width="120"></ivue-table-column>
@@ -48,13 +51,11 @@
             <ivue-table-column prop="address" label="Address" width="600"></ivue-table-column>
             <ivue-table-column fixed="right" prop="zip" label="Zip" width="120"></ivue-table-column>
             <ivue-table-column fixed="right" label="Operations" width="120">
-                <template #default>
-                 12121
-                </template>
+                <template #default>12121</template>
             </ivue-table-column>
         </ivue-table>
         <h1>流体高度</h1>
-        <ivue-table maxHeight="250" :data="tableData3" style="width: 100%">
+        <ivue-table maxHeight="250" :data="tableData13" style="width: 100%">
             <ivue-table-column fixed prop="date" label="Date" width="150"></ivue-table-column>
             <ivue-table-column prop="name" label="Name" width="120"></ivue-table-column>
             <ivue-table-column prop="state" label="State" width="120"></ivue-table-column>
@@ -81,6 +82,7 @@
                 </ivue-table-column>
             </ivue-table-column>
         </ivue-table>
+
         <h1>单选</h1>
         <ivue-table
             ref="singleTableRef"
@@ -92,7 +94,7 @@
             <ivue-table-column type="index" width="50"></ivue-table-column>
             <ivue-table-column prop="date" label="Date" minWidth="180"></ivue-table-column>
             <ivue-table-column prop="name" label="Name" width="180"></ivue-table-column>
-            <ivue-table-column prop="address" label="Address"></ivue-table-column>
+            <ivue-table-column prop="address" label="Address" showOverflowTooltip></ivue-table-column>
         </ivue-table>
         <ivue-button @click="setCurrent(tableData[1])">Select second row</ivue-button>
         <ivue-button @click="setCurrent()">Clear selection</ivue-button>
@@ -107,9 +109,9 @@
             <ivue-table-column prop="date" label="date" width="120"></ivue-table-column>
             <ivue-table-column prop="name" label="name" showOverflowTooltip></ivue-table-column>
         </ivue-table>
-
+        <p>间隔</p>
         <ivue-table
-            ref="table"
+            ref="table123"
             :data="tableData3"
             style="width: 100%"
             :selectOnIndeterminate="false"
@@ -177,13 +179,13 @@
                  { text: 'Office', value: 'Office' },
                 ]"
                 :filterMethod="filterTag"
-                 :filter-method="filterTag"
+                :filter-method="filterTag"
             ></ivue-table-column>
         </ivue-table>
 
         <button @click="resetDateFilter">reset date filter</button>
         <button @click="clearFilter">reset all filters</button>-->
-       <h1>自定义列模板</h1>
+        <h1>自定义列模板</h1>
         <ivue-table :data="tableData" style="width: 100%">
             <ivue-table-column prop="date" label="Date">
                 <template #default="scope">插槽{{ scope.row }}{{ scope.$index }}</template>
@@ -218,8 +220,8 @@
                 :filterMethod="filterHandler"
             ></ivue-table-column>
             <ivue-table-column prop="name" label="Name">
-                 <template #header>自定义表头</template>
-                  <template #default="scope">插槽{{ scope.row }}</template>
+                <template #header>自定义表头</template>
+                <template #default="scope">插槽{{ scope.row }}</template>
             </ivue-table-column>
             <ivue-table-column prop="address" label="Address"></ivue-table-column>
         </ivue-table>
@@ -238,8 +240,8 @@
                 :filterMethod="filterHandler"
             ></ivue-table-column>
             <ivue-table-column prop="name" label="Name">
-                    <template #header>自定义表头</template>
-                  <template #default="scope">插槽{{ scope.row }}</template>
+                <template #header>自定义表头</template>
+                <template #default="scope">插槽{{ scope.row }}</template>
             </ivue-table-column>
             <ivue-table-column prop="address" label="Address"></ivue-table-column>
         </ivue-table>
@@ -283,7 +285,7 @@
         </ivue-table>
 
         <ivue-table :data="tableData8" style="width: 100%" rowKey="date">
-            <ivue-table-column type="expand" >
+            <ivue-table-column type="expand">
                 <template #default>122121122121</template>
             </ivue-table-column>
             <ivue-table-column label="Date" prop="date"></ivue-table-column>
@@ -377,6 +379,32 @@ export default {
                 },
             ],
             tableData3: [
+                {
+                    date: '2016-05-01',
+                    name: 'Tom',
+                    state: 'California',
+                    city: 'Los Angeles',
+                    address: 'No. 189, Grove St, Los Angeles',
+                    zip: 'CA 90036',
+                },
+                {
+                    date: '2016-05-02',
+                    name: 'Tom',
+                    state: 'California',
+                    city: 'Los Angeles',
+                    address: 'No. 189, Grove St, Los Angeles',
+                    zip: 'CA 90036',
+                },
+                {
+                    date: '2016-05-03',
+                    name: 'Tom',
+                    state: 'California',
+                    city: 'Los Angeles',
+                    address: 'No. 189, Grove St, Los Angeles',
+                    zip: 'CA 90036',
+                },
+            ],
+             tableData13: [
                 {
                     date: '2016-05-01',
                     name: 'Tom',
@@ -856,7 +884,7 @@ export default {
             }
         },
         onAddItem() {
-            this.tableData3.push({
+            this.tableData13.push({
                 date: 1,
                 name: 'Tom',
                 state: 'California',
@@ -866,7 +894,7 @@ export default {
             });
         },
         deleteRow(index) {
-            this.tableData3.splice(index, 1);
+            this.tableData13.splice(index, 1);
         },
         handleCurrentChange(currentRow, oldCurrentRow) {
             console.log('val', currentRow, oldCurrentRow);
@@ -878,20 +906,20 @@ export default {
             console.log('handleonSelectionChange', value);
         },
         toggleSelection(rows) {
-            setTimeout(() => {
-                console.log(
-                    'getSelectionRows',
-                    this.$refs.table.getSelectionRows()
-                );
-            });
+            // setTimeout(() => {
+            //     console.log(
+            //         'getSelectionRows',
+            //         this.$refs.table123.getSelectionRows()
+            //     );
+            // });
 
-            // if (rows) {
-            //     rows.forEach((row) => {
-            //         this.$refs.table.toggleRowSelection(row, undefined);
-            //     });
-            // } else {
-            //     this.$refs.table.clearSelection();
-            // }
+            if (rows) {
+                rows.forEach((row) => {
+                    this.$refs.table123.toggleRowSelection(row, undefined);
+                });
+            } else {
+                this.$refs.table123.clearSelection();
+            }
         },
         selectable(row, index) {
             if (index === 2) {
@@ -1042,8 +1070,8 @@ export default {
         headerCellStyle() {
             return {
                 color: 'red',
-            }
-        }
+            };
+        },
     },
 };
 </script>
@@ -1059,5 +1087,4 @@ export default {
 .red {
     background: red;
 }
-
 </style>

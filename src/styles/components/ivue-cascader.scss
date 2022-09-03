@@ -110,7 +110,7 @@ $input: 'ivue-input';
   }
 
   // 下拉图标
-  &-arrow {
+  .#{$name}-arrow {
     position: absolute;
     top: 0;
     bottom: 0;
@@ -121,7 +121,8 @@ $input: 'ivue-input';
     transition: all .2s ease-in-out;
   }
 
-  &-clearable {
+  // 清除按钮
+  .#{$name}-clearable {
     position: absolute;
     top: 0;
     bottom: 0;

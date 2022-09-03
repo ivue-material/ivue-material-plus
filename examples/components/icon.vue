@@ -11,6 +11,7 @@
         </p>
 
         <div>
+            <ivue-icon svgSrc="https://file.iviewui.com/view-design-dist/img/icon-social-zhihu.1dc5a4ff.svg"></ivue-icon>
             <ivue-icon>menu</ivue-icon>
             <ivue-icon>add</ivue-icon>
             <ivue-icon>thumb_up</ivue-icon>

@@ -1,7 +1,7 @@
 <template>
     <div :class="classes" v-outside="handleClickOutside">
         <!-- 输入框 -->
-        <div :class="`${prefixCls}-input`" ref="reference" @click.capture="handleToggleOpen">
+        <div :class="`${prefixCls}-input`" ref="reference" @click="handleToggleOpen">
             <input type="hidden" :name="name" :value="data.currentValue" />
 
             <slot>
@@ -22,11 +22,12 @@
                             <ivue-icon
                                 :class="`${prefixCls}-clearable ${clearableIconClass}`"
                                 v-show="showCloseIcon"
-                                @click="handleClearSelect"
+                                @click.stop="handleClearSelect"
                             >{{ clearableIcon }}</ivue-icon>
                             <!-- 下拉按钮 -->
                             <ivue-icon
                                 :class="`${prefixCls}-arrow ${arrowDownIconClass}`"
+                                @click.stop="handleToggleOpen"
                             >{{ arrowDownIcon }}</ivue-icon>
                         </slot>
                     </template>
@@ -650,6 +651,11 @@ export default defineComponent({
                 // 清除菜单选择数据
                 menu.value.handleClear();
             }, 300);
+
+            setTimeout(() => {
+                // 取消transition动画
+                data.transitionCss = true;
+            }, 1000);
         };
 
         // 获取焦点

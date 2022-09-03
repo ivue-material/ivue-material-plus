@@ -48,12 +48,16 @@ import {
 } from 'vue';
 import { transferIndex, transferIncrease } from '../../utils/transfer-queue';
 import Popper from '../../utils/mixins/popper';
+// 注册外部点击事件插件
+import { ClickOutside } from '../../utils/directives';
 
 const prefixCls = 'ivue-tooltip';
 
 export default defineComponent({
     name: prefixCls,
     mixins: [Popper],
+    // 注册局部指令
+    directives: { ClickOutside },
     props: {
         /**
          * 是否将弹层放置于 body 内，在 Tabs、

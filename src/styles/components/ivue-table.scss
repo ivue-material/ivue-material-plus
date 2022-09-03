@@ -1,5 +1,6 @@
 @import "../custom.scss";
 @import "ivue-tooltip";
+@import "ivue-checkbox";
 @import "ivue-scrollbar";
 
 $name:'ivue-table';
@@ -21,9 +22,7 @@ $name:'ivue-table';
 
   // 行
   .cell {
-    display: flex;
     box-sizing: border-box;
-    overflow: hidden;
     text-overflow: ellipsis;
     white-space: normal;
     word-break: break-all;
@@ -381,6 +380,7 @@ $name:'ivue-table';
   .cell.#{$name}-tooltip {
     white-space: nowrap;
     min-width: 50px;
+    overflow: hidden;
   }
 
   .ivue-tooltip {

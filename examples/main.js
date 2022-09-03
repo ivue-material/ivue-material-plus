@@ -14,12 +14,15 @@ import IVue from '../src/index.ts'
 
 // import "../src/styles/index.scss";
 
-// import "../src/components/ivue-elevation/index";
+// import {
+//   IvueTable,
+//   IvueTableColumn
+// } from "../dist/unplugin-vue-components/es/ivue-table";
 // import "../src/components/ivue-layout/index";
 
 // import "../dist/unplugin-vue-components/styles/index.css";
 // import "../dist/unplugin-vue-components/styles/reset.css";
-import "../dist/unplugin-vue-components/styles/ivue-switch.css";
+// import "../dist/unplugin-vue-components/styles/ivue-switch.css";
 // import "../dist/unplugin-vue-components/styles/ivue-carousel.css";
 // import "../src/styles/components/ivue-cascader.scss";
 
@@ -31,7 +34,8 @@ import "../dist/styles/index.css";
 // import "../dist/styles/layout.css";
 
 
-// app.component('IvueButton', IvueButton);
+// app.component('IvueTable', IvueTable);
+// app.component('IvueTableColumn', IvueTableColumn);
 
 app.config.devtools = false
 

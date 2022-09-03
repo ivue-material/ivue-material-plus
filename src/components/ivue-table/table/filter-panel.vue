@@ -86,6 +86,8 @@ import IvueIcon from '../../ivue-icon/index.vue';
 import IvueScrollbar from '../../ivue-scrollbar/index.vue';
 import IvueCheckboxGroup from '../../ivue-checkbox-group/index.vue';
 import IvueCheckbox from '../../ivue-checkbox/index.vue';
+// 注册外部点击事件插件
+import ClickOutside from '../../../utils/directives/click-outside';
 
 // ts
 import type { TableColumnCtx } from '../table-column/defaults';
@@ -95,6 +97,8 @@ const prefixCls = 'ivue-table-filter-panel';
 
 export default defineComponent({
     name: prefixCls,
+    // 注册局部指令
+    directives: { ClickOutside },
     props: {
         /**
          * 弹窗的展开方向
