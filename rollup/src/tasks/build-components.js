@@ -35,7 +35,6 @@ import pkg from '../../../package.json';
 const dependencies = Object.keys(pkg.dependencies);
 
 export const buildComponents = async () => {
-
   // 获取组件路径
   const input = excludeFiles(
     await glob('**/*.{js,ts,vue}', {

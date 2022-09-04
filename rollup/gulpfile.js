@@ -28,6 +28,9 @@ export default series(
 
   parallel(
     runTask('buildComponents'),
+    runTask('buildResolvers'),
+
+    // 打包样式
     series(
       buildStyles,
       buildFonts

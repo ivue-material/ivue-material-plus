@@ -10,11 +10,17 @@ export const buildOutput = resolve(projRoot, 'dist')
 // 打包后输出的路径
 export const outputPath = resolve(buildOutput, 'unplugin-vue-components')
 
+// 打包后输出解析器路径
+export const outputResolversPath = resolve(buildOutput, 'unplugin-vue-components/resolvers')
+
 // 打包根目录
 export const buildRoot = resolve(projRoot, 'rollup')
 
 // 打包根目录
 export const pkgRoot = resolve(projRoot, 'src')
+
+// 打包插件
+export const resolversPath = resolve(projRoot, 'src/resolvers/ivue-material-plus.ts')
 
 // 输入模块的目录路径
 export const epRoot = resolve(pkgRoot, 'components')

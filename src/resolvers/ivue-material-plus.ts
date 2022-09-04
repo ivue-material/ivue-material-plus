@@ -1,7 +1,7 @@
 import type { ComponentResolver, ComponentInfo } from './types';
 
 // 转换为驼峰
-export function kebabCase(key) {
+function kebabCase(key) {
   const result = key.replace(/([A-Z])/g, ' $1').trim();
   return result.split(' ').join('-').toLowerCase();
 }
