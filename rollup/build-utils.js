@@ -11,7 +11,7 @@ export const buildOutput = resolve(projRoot, 'dist')
 export const outputPath = resolve(buildOutput, 'unplugin-vue-components')
 
 // 打包后输出解析器路径
-export const outputResolversPath = resolve(buildOutput, 'unplugin-vue-components/resolvers')
+export const outputResolversPath = resolve(projRoot, 'resolvers')
 
 // 打包根目录
 export const buildRoot = resolve(projRoot, 'rollup')
