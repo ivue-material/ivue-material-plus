@@ -51,7 +51,15 @@
 </template>
 
 <script lang='ts'>
-import { defineComponent, computed, reactive, ref, watch, nextTick } from 'vue';
+import {
+    defineComponent,
+    computed,
+    reactive,
+    ref,
+    watch,
+    nextTick,
+    getCurrentInstance,
+} from 'vue';
 import IvueSelect from '../ivue-select/index.vue';
 import IvueInput from '../ivue-input/index.vue';
 import IvueOption from '../ivue-select/option.vue';
@@ -160,7 +168,11 @@ export default defineComponent({
          */
         capture: {
             type: Boolean,
-            default: true,
+            default() {
+                const global =
+                    getCurrentInstance().appContext.config.globalProperties;
+                return !global.$IVUE ? true : global.$IVUE.capture;
+            },
         },
         /**
          * 是否开启 Popper 的 eventsEnabled 属性，开启可能会牺牲一定的性能

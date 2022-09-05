@@ -98,8 +98,12 @@ function useStyle<T>(
 
   // 表格内容宽度
   const tableStyles = computed(() => {
+    const { scrollY, gutterWidth } = layout;
+
     return {
-      width: layout.bodyWidth.value ? `${layout.bodyWidth.value}px` : '',
+      width: layout.bodyWidth.value ?
+        `${(layout.bodyWidth.value as number) - (scrollY.value ? gutterWidth : 0)}px`
+        : '',
     };
   });
 

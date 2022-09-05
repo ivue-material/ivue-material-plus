@@ -1,6 +1,8 @@
+import { isClient } from '../helpers';
+
 export default {
-    beforeMount (el, binding) {
-        function documentHandler (e) {
+    beforeMount(el, binding) {
+        function documentHandler(e) {
             if (el.contains(e.target)) {
                 return false;
             }
@@ -9,10 +11,10 @@ export default {
         }
 
         el.__vueClickOutside__ = documentHandler;
-        document.addEventListener('click', documentHandler);
+        isClient && document.addEventListener('click', documentHandler);
     },
-    unmounted (el) {
-        document.removeEventListener('click', el.__vueClickOutside__);
+    unmounted(el) {
+        isClient && document.removeEventListener('click', el.__vueClickOutside__);
         delete el.__vueClickOutside__;
     }
 };

@@ -155,6 +155,7 @@ const close = (
 // 关闭所有
 const closeAll = (): void => {
     // 遍历所有方向，立即关闭它们。
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     for (const key in instances) {
         instances.forEach(({ vm }) => {
             // same as the previous close method, we'd like to make sure lifecycle gets handle properly.

@@ -1,4 +1,4 @@
-import { CSSProperties, computed, ref, getCurrentInstance } from 'vue';
+import { CSSProperties, computed, ref } from 'vue';
 import { isDef, isNumeric } from './validate';
 
 // 文件上传类型
@@ -287,3 +287,6 @@ export const useZIndex = () => {
         nextZIndex,
     };
 };
+
+// 是否是客户端
+export const isClient = typeof window !== 'undefined';

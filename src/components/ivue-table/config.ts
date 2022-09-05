@@ -1,4 +1,4 @@
-import { h, resolveDirective } from 'vue';
+import { h } from 'vue';
 import { hasOwn } from '@vue/shared';
 import { get, set } from 'lodash-unified';
 import IvueCheckbox from '../ivue-checkbox/index.vue';

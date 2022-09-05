@@ -72,15 +72,30 @@ function inserted(el: Element, binding: Record<string, any>): void {
         throw new TypeError('Binding value must be a function');
     }
 
-    // 传给指令的参数，可选。例如 v-my-directive:foo 中，参数为 "foo"。
+    // 事件名称
+    let eventType;
+    const modifiers = binding.modifiers;
 
-    const arg = binding.arg || CLICK;
+    if (modifiers.click) {
+        eventType = 'click';
+    }
+    else if (modifiers.mousedown) {
+        eventType = 'mousedown';
+    }
+    else if (modifiers.touchstart) {
+        eventType = 'touchstart';
+    }
+    else {
+        eventType = CLICK;
+    }
+
+    // 是否开启外部点击的 capture 模式，可通过全局配置
+    const useCapture = binding.arg;
 
     // 归并事件绑定
     const normalisedBinding = {
         ...binding,
         ...{
-            arg,
             // 一个包含修饰符的对象。例如：v-my-directive.foo.bar 中，修饰符对象为 { foo: true, bar: true }
             modifiers: {
                 ...{
@@ -96,21 +111,20 @@ function inserted(el: Element, binding: Record<string, any>): void {
         }
     };
 
-    const useCapture = normalisedBinding.modifiers.capture;
     // 实例化事件
     const instances = useCapture ? captureInstances : nonCaptureInstances;
 
     // 判断事件中是否有对应的指令参数 初始化指令
-    if (!Array.isArray(instances[arg])) {
-        instances[arg] = [];
+    if (!Array.isArray(instances[eventType])) {
+        instances[eventType] = [];
     }
 
-    if (instances[arg].push({
+    if (instances[eventType].push({
         el,
         binding: normalisedBinding
     }) === 1) {
         if (typeof document === 'object' && document) {
-            document.addEventListener(arg, getEventHandler(useCapture), useCapture);
+            document.addEventListener(eventType, getEventHandler(useCapture), useCapture);
         }
     }
 }
@@ -130,7 +144,6 @@ function unbind(el: Element): void {
         if (instancesKeys.length) {
             // 判断是否使用事件捕获
             const useCapture = instances === captureInstances;
-
 
             const keys = function _keys(eventName) {
                 // 查找元素实例

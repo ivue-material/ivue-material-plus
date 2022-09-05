@@ -19,6 +19,7 @@ class TableLayout<T> {
   bodyWidth: Ref<null | number>
   observers: TableHeader[]
   height: Ref<null | number>
+  gutterWidth: number
 
   constructor(options: Record<string, any>) {
 
@@ -36,6 +37,9 @@ class TableLayout<T> {
 
     // 观察者列表
     this.observers = [];
+
+    // 排水沟宽度
+    this.gutterWidth = 0;
 
     // 设置内部函数
     for (const name in options) {

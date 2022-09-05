@@ -30,7 +30,6 @@
     }
   },
   "plugins": [
-    "@babel/plugin-transform-modules-umd",
     [
       "import",
       {

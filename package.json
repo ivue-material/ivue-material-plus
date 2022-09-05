@@ -1,6 +1,6 @@
 {
   "name": "ivue-material-plus",
-  "version": "0.0.9",
+  "version": "0.1.0",
   "description": "A high quality UI components Library with Vue.js",
   "main": "dist/ivue-material-plus.min.js",
   "files": [
@@ -36,6 +36,7 @@
     "g": "^2.0.1",
     "gulp-sass-import": "^1.0.0",
     "hex-to-rgba": "^2.0.1",
+    "ivue-material-plus": "^0.0.9",
     "lodash-es": "^4.17.21",
     "lodash-unified": "^1.0.2",
     "material-icons": "^1.11.11",
@@ -50,7 +51,8 @@
     "rollup-plugin-typescript2": "^0.33.0",
     "rollup-plugin-vue": "^6.0.0",
     "tslib": "^2.3.1",
-    "unbuild": "^0.8.9"
+    "unbuild": "^0.8.9",
+    "vite-plugin-dts": "^1.4.1"
   },
   "peerDependencies": {
     "vue": ">=3.0.0"

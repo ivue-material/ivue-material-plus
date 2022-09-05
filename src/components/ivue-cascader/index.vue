@@ -101,7 +101,6 @@ import {
     reactive,
     computed,
     ref,
-    getCurrentInstance,
     provide,
     watch,
     nextTick,
@@ -150,15 +149,6 @@ export default defineComponent({
          */
         name: {
             type: String,
-        },
-        /**
-         * 是否开启外部点击的 capture 模式，可通过全局配置
-         *
-         * @type {Boolean}
-         */
-        capture: {
-            type: Boolean,
-            default: true,
         },
         /**
          * id
@@ -325,14 +315,10 @@ export default defineComponent({
         const dropdown = ref<HTMLElement | any>(null);
         const menu = ref<HTMLElement | any>(null);
 
-        // vm
-        const { proxy }: any = getCurrentInstance();
-
         // data
         const data: any = reactive<{
             visibleMenu: boolean;
             currentValue: Array<any>;
-            capture: boolean;
             selected: Array<any>;
             queryData: string;
             validDataStr: string;
@@ -354,12 +340,6 @@ export default defineComponent({
              * @type {Array}
              */
             currentValue: props.modelValue || [],
-            /**
-             * 是否开启 capture 模式，也可通过全局配置
-             *
-             * @type {Boolean}
-             */
-            capture: !proxy.$IVUE ? props.capture : proxy.$IVUE.capture,
             /**
              * 选择的数据
              *

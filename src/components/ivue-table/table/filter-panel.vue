@@ -185,7 +185,7 @@ export default defineComponent({
 
         // tooltip 状态 capture
         const capture = computed(() => {
-            return tooltip.value?.data?.capture;
+            return tooltip.value?.capture;
         });
 
         // 第一个选择过滤的值

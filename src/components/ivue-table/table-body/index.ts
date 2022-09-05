@@ -32,7 +32,7 @@ export default defineComponent({
 
     const { wrappedRowRender }: any = useRender(props);
 
-    const { handleColumnsChange, handleScrollableWidthChange } = useTableLayoutObserver(IvueTable!);
+    const { handleColumnsChange, handleScrollableWidthChange } = useTableLayoutObserver(IvueTable);
 
     // methods
 

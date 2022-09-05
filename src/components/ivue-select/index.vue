@@ -2,7 +2,7 @@
     <div
         ref="selectWrapper"
         :class="classes"
-        v-click-outside[capture]="handleClickOutside"
+        v-click-outside:[capture]="handleClickOutside"
         v-click-outside:[capture].mousedown="handleClickOutside"
     >
         <div
@@ -232,7 +232,11 @@ export default defineComponent({
          */
         capture: {
             type: Boolean,
-            default: true,
+            default() {
+                const global =
+                    getCurrentInstance().appContext.config.globalProperties;
+                return !global.$IVUE ? true : global.$IVUE.capture;
+            },
         },
         /**
          * 是否支持搜索
@@ -481,7 +485,6 @@ export default defineComponent({
         // data
         const data: any = reactive<{
             visibleMenu: boolean;
-            capture: boolean;
             isFocused: boolean;
             values: Array<any>;
             options: Array<any>;
@@ -501,12 +504,6 @@ export default defineComponent({
              * @type {Boolean}
              */
             visibleMenu: false,
-            /**
-             * 是否开启 capture 模式，也可通过全局配置
-             *
-             * @type {Boolean}
-             */
-            capture: !proxy.$IVUE ? props.capture : proxy.$IVUE.capture,
             /**
              * 判断是否有焦点
              *
@@ -823,7 +820,9 @@ export default defineComponent({
                 [`${prefixCls}-multiple`]: props.multiple && props.transfer,
                 ['ivue-auto-complete']: props.autoComplete,
                 ['ivue-auto-complete--notdata']:
-                    selectOptions.value.length === 0 && props.autoComplete && !props.loading,
+                    selectOptions.value.length === 0 &&
+                    props.autoComplete &&
+                    !props.loading,
                 [props.transferClassName]: props.transferClassName,
             };
         });
