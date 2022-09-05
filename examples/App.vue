@@ -3,9 +3,6 @@
     <div class="container">
         <nav>
             <ul>
-                <!-- <li>
-                    <router-link to="/"> Home </router-link>
-                </li>-->
                 <li>
                     <router-link to="/affix">Affix</router-link>
                 </li>
@@ -134,8 +131,11 @@
                 <li>
                     <router-link to="/count-down">CountDown</router-link>
                 </li>
-                 <li>
+                <li>
                     <router-link to="/count-up">CountUp</router-link>
+                </li>
+                <li>
+                    <router-link to="/card">Card</router-link>
                 </li>
             </ul>
         </nav>

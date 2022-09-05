@@ -10,7 +10,7 @@ export default defineComponent({
          *
          * @type {String}
          */
-        ivueTag: {
+        tag: {
             type: String,
             default: 'div'
         }

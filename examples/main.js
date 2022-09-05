@@ -12,7 +12,7 @@ import IVue from '../src/index.ts'
 
 // import "./test.scss";
 
-// import "../src/styles/index.scss";
+import "../src/styles/index.scss";
 
 // import {
 //   IvueTable,
@@ -26,7 +26,7 @@ import IVue from '../src/index.ts'
 // import "../dist/unplugin-vue-components/styles/ivue-carousel.css";
 // import "../src/styles/components/ivue-cascader.scss";
 
-import "../dist/styles/index.css";
+// import "../dist/styles/index.css";
 // import "../dist/unplugin-vue-components/styles/ivue-page.css";
 
 // import "../dist/styles/color.css";

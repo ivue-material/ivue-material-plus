@@ -42,6 +42,7 @@ import { IvueTable, IvueTableColumn } from './components/ivue-table';
 import { IvueAutoComplete } from './components/ivue-auto-complete';
 import { IvueCountDown } from './components/ivue-count-down';
 import { IvueCountUp } from './components/ivue-count-up';
+import { IvueCard } from './components/ivue-card';
 import { Ripple } from './components/ivue-ripple';
 
 // 指令
@@ -55,9 +56,7 @@ const install = (app: App, opts: any = {}): void => {
     // 全局配置
     app.config.globalProperties.$IVUE = {
         // 是否开启 capture 模式
-        capture: 'capture' in opts ? opts.capture : true,
-        // 是否固定 需要父级有relative或absolute
-        fix: 'fix' in opts ? opts.fix : false,
+        capture: 'capture' in opts ? opts.capture : true
     };
 
     // 注册全局指令
@@ -76,7 +75,6 @@ const install = (app: App, opts: any = {}): void => {
         // 注册指令
         else if (components[key].install) {
             app.component(key, components[key].install(app));
-
         }
     });
 };
@@ -130,6 +128,8 @@ export {
     IvueAutoComplete,
     IvueCountDown,
     IvueCountUp,
+    IvueCard,
+
     Ripple,
     install
 };

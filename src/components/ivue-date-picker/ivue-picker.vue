@@ -1,14 +1,7 @@
 <script lang='ts'>
 import {
     defineComponent,
-    reactive,
-    computed,
-    nextTick,
-    onMounted,
-    onBeforeUnmount,
-    provide,
     Transition,
-    TransitionGroup,
     h,
     getCurrentInstance,
 } from 'vue';
@@ -101,7 +94,7 @@ export default defineComponent({
                 'div',
                 {
                     class: {
-                        [`${prefixCls} ivue-card`]: true,
+                        [`${prefixCls} ivue-picker-card`]: true,
                         [`${prefixCls}--landscape`]: props.landscape,
                     },
                     style: props.fullWidth

@@ -9,6 +9,14 @@ $name:'ivue-picker';
   flex-direction: column;
   vertical-align: top;
 
+  &-card {
+    position: relative;
+    border-radius: 2px;
+    min-width: 0;
+    transition: $ivue-transition-default;
+    box-shadow: 0 2px 1px -1px rgba(0, 0, 0, .2), 0 1px 1px 0 rgba(0, 0, 0, .14), 0 1px 3px 0 rgba(0, 0, 0, .12);
+  }
+
   &-title {
     border-top-left-radius: 2px;
     border-top-right-radius: 2px;
@@ -52,14 +60,6 @@ $name:'ivue-picker';
       margin-left: 170px;
     }
   }
-}
-
-.ivue-card {
-  position: relative;
-  border-radius: 2px;
-  min-width: 0;
-  transition: $ivue-transition-default;
-  box-shadow: 0 2px 1px -1px rgba(0, 0, 0, .2), 0 1px 1px 0 rgba(0, 0, 0, .14), 0 1px 3px 0 rgba(0, 0, 0, .12);
 }
 
 .primary {

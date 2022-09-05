@@ -52,15 +52,7 @@ export default defineComponent({
          */
         fix: {
             type: Boolean,
-            default() {
-                // 获取全局配置
-                const global =
-                    getCurrentInstance().appContext.config.globalProperties;
-
-                return !global.$IVUE || global.$IVUE.fix === false
-                    ? false
-                    : global.$IVUE.fix;
-            },
+            default: false,
         },
         /**
          * 全屏显示

@@ -1,0 +1,29 @@
+@import "../custom.scss";
+
+$name: 'ivue-card';
+
+.#{$name} {
+  display: block;
+  background: $white-color;
+  border-radius: 4px;
+  font-size: 14px;
+  position: relative;
+  transition: all .2s ease-in-out;
+
+  &:hover {
+    box-shadow: 0 1px 6px rgba(0, 0, 0, 0.2);
+    border-color: #eee;
+  }
+
+
+  &-bordered {
+    border: 1px solid $border-multiple-color;
+  }
+
+  // 标题
+  &-title {
+    border-bottom: 1px solid $border-multiple-color;
+    padding: 14px 16px;
+    line-height: 1;
+  }
+}

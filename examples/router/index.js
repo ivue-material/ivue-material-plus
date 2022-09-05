@@ -39,6 +39,7 @@ import AutoComplete from '../components/auto-complete';
 import Animation from '../components/animation';
 import CountDown from '../components/count-down';
 import CountUp from '../components/count-up';
+import Card from '../components/card';
 
 const routes = [{
     path: '/Affix',
@@ -222,6 +223,11 @@ const routes = [{
     path: '/count-up',
     name: 'CountUp',
     component: CountUp
+  },
+  {
+    path: '/card',
+    name: 'Card',
+    component: Card
   }
 ];
 
