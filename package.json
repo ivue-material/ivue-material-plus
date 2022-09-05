@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "description": "A high quality UI components Library with Vue.js",
   "main": "dist/ivue-material-plus.min.js",
+  "types": "dist/src/index.d.ts",
   "files": [
     "dist",
     "src",

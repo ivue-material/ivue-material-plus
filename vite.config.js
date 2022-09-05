@@ -7,7 +7,10 @@ import dts from 'vite-plugin-dts';
 import path from 'path';
 
 const config = defineConfig({
-  plugins: [vue(),dts()],
+  plugins: [
+    vue(),
+    dts()
+  ],
   target: 'es2015',
   build: {
     outDir: path.resolve(__dirname, './dist'),
