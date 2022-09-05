@@ -6,13 +6,8 @@
             可以通过设置属性 title 和 icon 快速设置标题栏。
         </p>
         <ivue-card style="width:100%">
-            <template #title>
-              title
-            </template>
-            <template #extra>
-              extra
-            </template>
-
+            <template #title>title</template>
+            <template #extra>extra</template>
             212112
             <!-- <p class="rate-demo" v-for="item in randomMovieList">
                 <a :href="item.url" target="_blank">{{ item.name }}</a>
@@ -20,7 +15,18 @@
                     <Rate disabled v-model="item.rate" />
                     {{ item.rate }}
                 </span>
-            </p> -->
+            </p>-->
+        </ivue-card>
+        <p>标题</p>
+        <ivue-card style="width:100%" title="标题">
+            212112
+            <!-- <p class="rate-demo" v-for="item in randomMovieList">
+                <a :href="item.url" target="_blank">{{ item.name }}</a>
+                <span>
+                    <Rate disabled v-model="item.rate" />
+                    {{ item.rate }}
+                </span>
+            </p>-->
         </ivue-card>
     </div>
 </template>

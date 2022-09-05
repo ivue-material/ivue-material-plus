@@ -1,7 +1,16 @@
 <template>
     <component :class="classes" :is="tagName">
+        <!-- 标题 -->
         <div :class="`${prefixCls}-title`" v-if="showTitle">
-            <slot name="title"></slot>
+            <slot name="title">{{ title }}</slot>
+        </div>
+        <!-- 额外显示的内容，默认位置在右上角 -->
+        <div :class="`${prefixCls}-extra`" v-if="showExtra">
+            <slot name="extra"></slot>
+        </div>
+        <!-- 内容 -->
+        <div :class="`${prefixCls}-body`" :style="bodyStyles">
+            <slot></slot>
         </div>
     </component>
 </template>
@@ -36,7 +45,7 @@ export default defineComponent({
          *
          * @type {Boolean}
          */
-        bordered: {
+        border: {
             type: Boolean,
             default: true,
         },
@@ -54,6 +63,9 @@ export default defineComponent({
         // 是否显示标题
         const showTitle = ref(false);
 
+        // 额外显示的内容，默认位置在右上角
+        const showExtra = ref(false);
+
         // computed
 
         // 样式
@@ -61,7 +73,7 @@ export default defineComponent({
             return [
                 prefixCls,
                 {
-                    [`${prefixCls}-bordered`]: props.bordered && !props.shadow,
+                    [`${prefixCls}-border`]: props.border && !props.shadow,
                 },
             ];
         });
@@ -77,10 +89,20 @@ export default defineComponent({
             return isHrefPattern.value ? 'a' : 'div';
         });
 
+        // 内容样式
+        const bodyStyles = computed(() => {
+          return {
+
+          };
+        });
+
         // onMounted
         onMounted(() => {
             // 是否显示头部
             showTitle.value = props.title || slots.title !== undefined;
+
+            // 额外显示的内容，默认位置在右上角
+            showExtra.value = slots.extra !== undefined;
         });
 
         return {
@@ -88,10 +110,12 @@ export default defineComponent({
 
             // data
             showTitle,
+            showExtra,
 
             // computed
             tagName,
             classes,
+            bodyStyles
         };
     },
 });

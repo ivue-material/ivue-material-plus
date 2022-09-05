@@ -16,7 +16,8 @@ $name: 'ivue-card';
   }
 
 
-  &-bordered {
+  // 是否显示边框，建议在灰色背景下使用
+  &-border {
     border: 1px solid $border-multiple-color;
   }
 
@@ -24,6 +25,14 @@ $name: 'ivue-card';
   &-title {
     border-bottom: 1px solid $border-multiple-color;
     padding: 14px 16px;
+    line-height: 1;
+  }
+
+  // 额外显示的内容，默认位置在右上角
+  &-extra {
+    position: absolute;
+    right: 16px;
+    top: 14px;
     line-height: 1;
   }
 }
