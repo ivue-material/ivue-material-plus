@@ -35,4 +35,17 @@ $name: 'ivue-card';
     top: 14px;
     line-height: 1;
   }
+
+  // 内容
+  &-body {
+    padding: 16px;
+  }
+
+  // 禁用鼠标悬停显示阴影
+  &-dis-hover {
+    &:hover {
+      box-shadow: none;
+      border-color: $border-multiple-color;
+    }
+  }
 }
