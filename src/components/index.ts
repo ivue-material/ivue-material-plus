@@ -35,6 +35,7 @@ import IvueAutoComplete from './ivue-auto-complete';
 import IvueCountDown from './ivue-count-down';
 import IvueCountUp from './ivue-count-up';
 import IvueCard from './ivue-card';
+import IvueScrollbar from './ivue-scrollbar';
 
 import { IvueCollapse } from './ivue-collapse';
 import { IvueCollapsePanel } from './ivue-collapse-panel';
@@ -94,5 +95,7 @@ export {
   IvueCountDown,
   IvueCountUp,
   IvueCard,
+  IvueScrollbar,
+
   Ripple
 };

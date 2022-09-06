@@ -40,6 +40,7 @@ import Animation from '../components/animation';
 import CountDown from '../components/count-down';
 import CountUp from '../components/count-up';
 import Card from '../components/card';
+import Scrollbar from '../components/scrollbar';
 
 const routes = [{
     path: '/Affix',
@@ -228,6 +229,11 @@ const routes = [{
     path: '/card',
     name: 'Card',
     component: Card
+  },
+  {
+    path: '/scrollbar',
+    name: 'Scrollbar',
+    component: Scrollbar
   }
 ];
 

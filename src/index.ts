@@ -43,6 +43,8 @@ import { IvueAutoComplete } from './components/ivue-auto-complete';
 import { IvueCountDown } from './components/ivue-count-down';
 import { IvueCountUp } from './components/ivue-count-up';
 import { IvueCard } from './components/ivue-card';
+import { IvueScrollbar } from './components/ivue-scrollbar';
+
 import { Ripple } from './components/ivue-ripple';
 
 // 指令
@@ -129,6 +131,7 @@ export {
     IvueCountDown,
     IvueCountUp,
     IvueCard,
+    IvueScrollbar,
 
     Ripple,
     install
