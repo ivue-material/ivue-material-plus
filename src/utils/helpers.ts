@@ -224,7 +224,7 @@ export function setTextColor(color: Record<string, any>) {
 
 // 是否是纯数字
 export function isValueNumber(value) {
-    return (/^[1-9][0-9]*$/).test(value + '');
+    return (/^[0-9][0-9]*$/).test(value + '');
 }
 
 // 滚动隐藏
@@ -290,3 +290,8 @@ export const useZIndex = () => {
 
 // 是否是客户端
 export const isClient = typeof window !== 'undefined';
+
+// 是否是对象
+export const isObject = (obj: unknown): boolean => {
+    return obj !== null && typeof obj === 'object';
+};

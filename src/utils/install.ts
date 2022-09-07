@@ -9,7 +9,6 @@ export type SFCInstallWithContext<T> = SFCWithInstall<T> & {
   _context: AppContext | null
 }
 
-
 // 安装组件
 export const withInstall = <T, E extends Record<string, any>>(
   // 当前组件

@@ -36,9 +36,9 @@ import {
     provide,
     watch,
 } from 'vue';
-import { useEventListener, useResizeObserver } from '@vueuse/core';
+import { useEventListener, useResizeObserver, isNumber } from '@vueuse/core';
 
-import { addUnit, isValueNumber } from '../../utils/helpers';
+import { addUnit, isValueNumber, isObject } from '../../utils/helpers';
 import Bar from './bar.vue';
 
 // ts
@@ -141,6 +141,15 @@ export default defineComponent({
             type: Boolean,
             default: false,
         },
+        /**
+         * 自定义滚动条最小尺寸(开启 native 该属性不生效)
+         *
+         * @type {Number}
+         */
+        minBarSize: {
+            type: Number,
+            default: 20,
+        },
     },
     setup(props: any, { emit }) {
         // dom
@@ -224,7 +233,7 @@ export default defineComponent({
             if (scrollbarWrapper.value) {
                 bar.value?.handleScroll(scrollbarWrapper.value);
 
-                emit('scroll', {
+                emit('on-scroll', {
                     scrollTop: scrollbarWrapper.value.scrollTop,
                     scrollLeft: scrollbarWrapper.value.scrollLeft,
                 });
@@ -243,7 +252,7 @@ export default defineComponent({
             const originalHeight =
                 offsetHeight ** 2 / scrollbarWrapper.value.scrollHeight;
             // 滚动条高度
-            const height = Math.max(originalHeight, 20);
+            const height = Math.max(originalHeight, props.minBarSize);
             // 滚动条高度
             data.barHeight = height + GAP < offsetHeight ? `${height}px` : '';
 
@@ -254,7 +263,7 @@ export default defineComponent({
                 offsetWidth ** 2 / scrollbarWrapper.value.scrollWidth;
 
             // 表格宽度
-            const width = Math.max(originalWidth, 20);
+            const width = Math.max(originalWidth, props.minBarSize);
             // 滚动条宽度
             data.barWidth = width + GAP < offsetWidth ? `${width}px` : '';
 
@@ -287,6 +296,18 @@ export default defineComponent({
             }
 
             scrollbarWrapper.value.scrollLeft = value;
+        };
+
+        // 滚动到一组特定坐标
+        const scrollTo = (arg1: unknown, arg2?: number): void => {
+            // 对象
+            if (isObject(arg1)) {
+                scrollbarWrapper.value.scrollTo(arg1);
+            }
+            // 数字
+            else if (isNumber(arg1) && isNumber(arg2)) {
+                scrollbarWrapper.value.scrollTo(arg1, arg2);
+            }
         };
 
         // watch
@@ -367,6 +388,8 @@ export default defineComponent({
             handleScroll,
             setScrollTop,
             setScrollLeft,
+            update,
+            scrollTo,
         };
     },
     components: {

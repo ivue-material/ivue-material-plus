@@ -41,6 +41,7 @@ import CountDown from '../components/count-down';
 import CountUp from '../components/count-up';
 import Card from '../components/card';
 import Scrollbar from '../components/scrollbar';
+import Image from '../components/image';
 
 const routes = [{
     path: '/Affix',
@@ -234,6 +235,11 @@ const routes = [{
     path: '/scrollbar',
     name: 'Scrollbar',
     component: Scrollbar
+  },
+  {
+    path: '/image',
+    name: 'Image',
+    component: Image
   }
 ];
 

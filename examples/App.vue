@@ -140,6 +140,9 @@
                 <li>
                     <router-link to="/scrollbar">Scrollbar</router-link>
                 </li>
+                <li>
+                    <router-link to="/image">Image</router-link>
+                </li>
             </ul>
         </nav>
 
