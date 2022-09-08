@@ -59,7 +59,9 @@ const install = (app: App, opts: any = {}): void => {
     // 全局配置
     app.config.globalProperties.$IVUE = {
         // 是否开启 capture 模式
-        capture: 'capture' in opts ? opts.capture : true
+        capture: 'capture' in opts ? opts.capture : true,
+        // 是否将弹层放置于 body 内
+        transfer: 'transfer' in opts ? opts.transfer : '',
     };
 
     // 注册全局指令

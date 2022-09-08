@@ -295,3 +295,8 @@ export const isClient = typeof window !== 'undefined';
 export const isObject = (obj: unknown): boolean => {
     return obj !== null && typeof obj === 'object';
 };
+
+// 是否是Element
+export const isElement = (el: HTMLElement) => {
+    return typeof HTMLElement === 'object' && el instanceof HTMLElement;
+};

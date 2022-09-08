@@ -1,3 +1,6 @@
+@import "../custom.scss";
+@import "../animation/index.scss";
+
 $name: 'ivue-image';
 
 .#{$name} {
@@ -9,6 +12,12 @@ $name: 'ivue-image';
     position: relative;
     width: 100%;
     height: 100%;
+
+    &:hover {
+      .#{$name}-mark {
+        opacity: 1;
+      }
+    }
   }
 
   &-img {
@@ -17,7 +26,58 @@ $name: 'ivue-image';
     height: 100%;
   }
 
-  &-loading {
+  &-loading,
+  &-error {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    z-index: 1;
+    color: $primary-color;
+  }
+
+  &-error {
+    color: $error-color;
+  }
+
+  // 悬浮层
+  &-mark {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, .3);
+    z-index: 1;
+    color: $white-color;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    transition: opacity .3s;
     opacity: 0;
   }
+
+
+  // 图片预览
+  &-preview {
+
+    // 蒙版
+    &-mask {
+      position: fixed;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background-color: rgba(55, 55, 55, .6);
+      height: 100%;
+    }
+  }
+
 }
