@@ -41,24 +41,25 @@ export default defineComponent({
             type: Number,
             default: 0,
         },
-        /**
-         * 样式单位
-         *
-         * @type {String}
-         */
-        unit: {
-            type: String,
-            default: 'px',
-        },
     },
     setup(props: any) {
         // computed
 
         const sliderWrapperStyles = computed(() => {
+            const regexp = new RegExp(/[a-zA-Z]/g);
+
+            // 是否有单位
+            const isUnitSliderLeft = regexp.test(props.sliderLeft);
+            const isUnitSliderWidth = regexp.test(props.sliderWidth);
+
             return {
-                left: `${props.sliderLeft}${props.unit}`,
+                left: !isUnitSliderLeft
+                    ? `${props.sliderLeft}px`
+                    : props.sliderLeft,
+                width: !isUnitSliderWidth
+                    ? `${props.sliderWidth}px`
+                    : props.sliderWidth,
                 transition: props.sliderLeft !== 0 ? null : 'none',
-                width: `${props.sliderWidth}${props.unit}`,
             };
         });
 

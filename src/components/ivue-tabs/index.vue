@@ -26,7 +26,6 @@
                         :sliderLeft="data.sliderLeft"
                         :sliderWidth="data.sliderWidth"
                         :color="sliderColor"
-                        :unit="unit"
                     ></slider>
                     <slot name="header"></slot>
                 </div>
@@ -173,20 +172,11 @@ export default defineComponent({
         /**
          * 调整显示箭头时设置的前后滚动的间距
          *
-         * @type {Number}
+         * @type {Number | String}
          */
         arrowsMargin: {
-            type: Number,
+            type: [Number, String],
             default: 40,
-        },
-        /**
-         * 样式单位
-         *
-         * @type {String}
-         */
-        unit: {
-            type: String,
-            default: 'px',
         },
     },
     setup(props: any, { emit }) {
@@ -265,12 +255,21 @@ export default defineComponent({
 
         // tab外层样式
         const tabWrapperStyle = computed(() => {
+            const regexp = new RegExp(/[a-zA-Z]/g);
+
+            // 是否有单位
+            const isUnit = regexp.test(props.arrowsMargin);
+
             return {
                 'margin-left': hasArrows
-                    ? `${props.arrowsMargin}${props.unit}`
+                    ? !isUnit
+                        ? `${props.arrowsMargin}px`
+                        : props.arrowsMargin
                     : '',
                 'margin-right': hasArrows
-                    ? `${props.arrowsMargin}${props.unit}`
+                    ? !isUnit
+                        ? `${props.arrowsMargin}px`
+                        : props.arrowsMargin
                     : '',
             };
         });

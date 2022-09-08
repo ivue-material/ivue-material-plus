@@ -1,5 +1,4 @@
 import { computed } from 'vue';
-import { isNumeric } from '../../utils/validate';
 
 export default (props, data) => {
       // 是否有箭头
@@ -12,15 +11,20 @@ export default (props, data) => {
       const containerStyles = computed(() => {
             const height = props.height;
 
+            const regexp = new RegExp(/[a-zA-Z]/g);
+
+            // 是否有单位
+            const isUnit = regexp.test(height);
+
             return {
-                  height: isNumeric(height) ? `${parseInt(height, 10)}${props.unit}` : height,
+                  height: !isUnit ? `${height}px` : height,
                   transform: `translate3d(-${data.scrollOffset}${props.unit}, 0,0)`,
             };
       });
 
       // 激活的Index
       const activeIndex = computed(() => {
-            return data.tabs.findIndex((tab, index) => {
+            return data.tabs.findIndex((tab, index: number) => {
                   if (!props.modelValue) {
                         return index === 0;
                   }

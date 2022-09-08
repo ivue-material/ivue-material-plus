@@ -62,11 +62,17 @@ $name: 'ivue-image';
     font-size: 14px;
     transition: opacity .3s;
     opacity: 0;
+    user-select: none;
   }
 
 
   // 图片预览
   &-preview {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
 
     // 蒙版
     &-mask {
@@ -78,6 +84,159 @@ $name: 'ivue-image';
       background-color: rgba(55, 55, 55, .6);
       height: 100%;
     }
-  }
 
+    &-wrapper {
+      position: fixed;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      z-index: 1000;
+      user-select: none;
+      overflow: hidden;
+    }
+
+    // 加载中
+    &-loading,
+    &-error {
+      position: absolute;
+      z-index: 1;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%)
+    }
+
+    // 加载错误
+    &-error {
+      color: $error-color;
+      font-size: 16px;
+    }
+
+    // 图片
+    &-image {
+      cursor: grab;
+    }
+
+    // transition
+    &-transition {
+      transition: transform .3s ease;
+    }
+
+    // 限制图片大小
+    &-limit {
+      max-width: 100%;
+      max-height: 100%;
+    }
+
+    // 隐藏图片
+    &-hidden {
+      display: none;
+    }
+
+    // 抓取
+    &-grabbing {
+      cursor: grabbing
+    }
+
+    // 关闭
+    .#{$name}-preview-close,
+    // 左按钮
+    .#{$name}-preview-left,
+    // 右按钮
+    .#{$name}-preview-right {
+      width: 40px;
+      height: 40px;
+      line-height: 40px;
+      border-radius: 50%;
+      color: $white-color;
+      z-index: 1;
+      font-size: 26px;
+      cursor: pointer;
+      background: rgba(55, 55, 55, 0.4);
+    }
+
+    .#{$name}-preview-close {
+      position: absolute;
+      right: 16px;
+      top: 16px;
+    }
+
+    // 左按钮
+    .#{$name}-preview-left {
+      position: absolute;
+      top: 50%;
+      left: 16px;
+      transform: translateY(-50%);
+      font-size: 35px;
+    }
+
+    // 右按钮
+    .#{$name}-preview-right {
+      position: absolute;
+      top: 50%;
+      right: 16px;
+      transform: translateY(-50%);
+      font-size: 35px;
+    }
+
+    // 菜单
+    &-toolbar {
+      position: absolute;
+      left: 50%;
+      bottom: 30px;
+      height: 40px;
+      z-index: 1;
+      border-radius: 4px;
+      overflow: hidden;
+      background: rgba(55, 55, 55, 0.4);
+      transform: translate(-50%);
+      display: flex;
+      flex-flow: row wrap;
+      flex-wrap: nowrap;
+      align-items: center;
+
+      .#{$name}-preview-toolbar--item {
+        flex: 1 1 0%;
+        position: relative;
+        max-width: 100%;
+        min-height: 1px;
+        margin: 0 6px;
+        padding: 4px 8px;
+        width: 36px;
+        height: 40px;
+        color: $white-color;
+        cursor: pointer;
+        transition: opacity 0.1s ease-in-out;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        &:hover {
+          opacity: 0.75;
+        }
+      }
+
+      .#{$name}-preview-toolbar--wait {
+        cursor: wait;
+      }
+
+      .ivue-load-loop {
+        animation: ivue-load-loop 1s linear infinite;
+      }
+
+      @keyframes ivue-load-loop {
+        from {
+          transform: rotate(0deg);
+        }
+
+        50% {
+          transform: rotate(180deg);
+        }
+
+        to {
+          transform: rotate(360deg);
+        }
+      }
+    }
+  }
 }

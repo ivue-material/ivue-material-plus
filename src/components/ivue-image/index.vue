@@ -31,12 +31,24 @@
         </div>
 
         <!-- 图片预览 -->
-        <image-preview :initialIndex="initialIndex"></image-preview>
+        <image-preview
+            v-model="data.imagePreviewModal"
+            :previewList="previewList"
+            :initialIndex="initialIndex"
+            @on-close="handleImagePreviewClose"
+        ></image-preview>
     </div>
 </template>
 
 <script lang='ts'>
-import { defineComponent, ref, computed, reactive, onMounted } from 'vue';
+import {
+    defineComponent,
+    ref,
+    computed,
+    reactive,
+    onMounted,
+    onBeforeUnmount,
+} from 'vue';
 import { isClient, isElement } from '../../utils/helpers';
 import { oneOf } from '../../utils/assist';
 import ImagePreview from './image-preview.vue';
@@ -45,24 +57,16 @@ const prefixCls = 'ivue-image';
 
 export default defineComponent({
     name: prefixCls,
+    emits: ['on-click', 'on-load', 'on-error', 'on-close'],
     props: {
         /**
          * 圆角
          *
-         * @type {Number}
+         * @type {Number | String}
          */
         radius: {
-            type: Number,
+            type: [Number, String],
             default: 0,
-        },
-        /**
-         * 像素单位
-         *
-         * @type {String}
-         */
-        unit: {
-            type: String,
-            default: 'px',
         },
         /**
          * 图片源地址
@@ -175,6 +179,14 @@ export default defineComponent({
             type: Number,
             default: 0,
         },
+        /**
+         * 图片预览列表
+         *
+         * @type {Array}
+         */
+        previewList: {
+            type: Array,
+        },
     },
     setup(props: any, { emit }) {
         // dom
@@ -187,6 +199,7 @@ export default defineComponent({
             imageError: boolean;
             scrollElement: any;
             observer: IntersectionObserver;
+            imagePreviewModal: boolean;
         }>({
             /**
              * 加载中
@@ -218,6 +231,12 @@ export default defineComponent({
              * @type {Function}
              */
             observer: null,
+            /**
+             * 图片预览弹窗
+             *
+             * @type {Boolean}
+             */
+            imagePreviewModal: false,
         });
 
         // computed
@@ -228,8 +247,13 @@ export default defineComponent({
 
             // 圆角
             if (props.radius) {
+                const regexp = new RegExp(/[a-zA-Z]/g);
+
+                // 是否有单位
+                const isUnit = regexp.test(props.radius);
+
                 obj = {
-                    borderRadius: `${props.radius}${props.unit}`,
+                    borderRadius: !isUnit ? `${props.radius}px` : props.radius,
                 };
             }
 
@@ -359,10 +383,17 @@ export default defineComponent({
         const handlePreview = () => {
             // const { preview, initialIndex } = this;
             // if (preview) {
-            //     this.imagePreviewModal = true;
-            //     // reslove click image get the currentIndex to do other thing
-            //     this.$emit('on-click', { initialIndex });
+            data.imagePreviewModal = true;
+
+            emit('on-click', {
+                initialIndex: props.initialIndex,
+            });
             // }
+        };
+
+        // 图片预览关闭
+        const handleImagePreviewClose = () => {
+            emit('on-close');
         };
 
         // onMounted
@@ -370,6 +401,11 @@ export default defineComponent({
             if (isClient) {
                 props.lazy ? lazyImage() : initLoadImage();
             }
+        });
+
+        // onBeforeUnmount
+        onBeforeUnmount(() => {
+            observerDisconnect();
         });
 
         return {
@@ -391,6 +427,7 @@ export default defineComponent({
             handleImageLoad,
             handleImageError,
             handlePreview,
+            handleImagePreviewClose,
         };
     },
     components: {

@@ -40,6 +40,7 @@
     "ivue-material-plus": "^0.0.9",
     "lodash-es": "^4.17.21",
     "lodash-unified": "^1.0.2",
+    "lodash.throttle": "^4.1.1",
     "material-icons": "^1.11.11",
     "mitt": "^3.0.0",
     "normalize-wheel-es": "^1.2.0",

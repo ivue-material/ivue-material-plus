@@ -43,7 +43,7 @@
             <p>Content of no border type. Content of no border type. Content of no border type. Content of no border type.</p>
         </ivue-card>
         <h1>简洁卡片</h1>
-        <ivue-card :padding="1" unit="rem" to="/count-down">
+        <ivue-card padding="1rem" to="/count-down">
             <div style="text-align:center">
                 <h3>A high quality UI Toolkit based on Vue.js</h3>
             </div>

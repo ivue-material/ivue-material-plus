@@ -84,27 +84,18 @@ export default defineComponent({
         /**
          * 卡片内部间距
          *
-         * @type {Number}
+         * @type {Number | String}
          */
         padding: {
-            type: Number,
+            type: [Number, String],
         },
         /**
          * 标题内部间距(paddingStylesLinkage开启该属性将不生效)
          *
-         * @type {Number}
+         * @type {Number | String}
          */
         titlePadding: {
-            type: Number,
-        },
-        /**
-         * 像素单位
-         *
-         * @type {String}
-         */
-        unit: {
-            type: String,
-            default: 'px',
+            type: [Number, String],
         },
         /**
          * 相当于 a 链接的 target 属性
@@ -171,8 +162,13 @@ export default defineComponent({
         const wrapperStyles = computed(() => {
             // 圆角
             if (props.radius) {
+                const regexp = new RegExp(/[a-zA-Z]/g);
+
+                // 是否有单位
+                const isUnit = regexp.test(props.radius);
+
                 return {
-                    borderRadius: `${props.radius}${props.unit}`,
+                    borderRadius: !isUnit ? `${props.radius}px` : props.radius,
                 };
             }
 
@@ -187,8 +183,13 @@ export default defineComponent({
 
             // padding
             if (padding) {
+                const regexp = new RegExp(/[a-zA-Z]/g);
+
+                // 是否有单位
+                const isUnit = regexp.test(padding);
+
                 return {
-                    padding: `${padding}${props.unit}`,
+                    padding: !isUnit ? `${padding}px` : padding,
                 };
             }
 
@@ -199,8 +200,13 @@ export default defineComponent({
         const bodyStyles = computed(() => {
             // 卡片内部间距
             if (props.padding) {
+                const regexp = new RegExp(/[a-zA-Z]/g);
+
+                // 是否有单位
+                const isUnit = regexp.test(props.padding);
+
                 return {
-                    padding: `${props.padding}${props.unit}`,
+                    padding: !isUnit ? `${props.padding}px` : props.padding,
                 };
             }
 

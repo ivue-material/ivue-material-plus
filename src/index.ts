@@ -62,6 +62,10 @@ const install = (app: App, opts: any = {}): void => {
         capture: 'capture' in opts ? opts.capture : true,
         // 是否将弹层放置于 body 内
         transfer: 'transfer' in opts ? opts.transfer : '',
+        // 图片预览操作栏选项，按数组顺序排序
+        image: {
+            toolbar: opts.image ? opts.image.toolbar ? opts.image.toolbar : '' : ''
+        }
     };
 
     // 注册全局指令
