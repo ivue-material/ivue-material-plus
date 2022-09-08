@@ -44,7 +44,7 @@ import { IvueCountDown } from './components/ivue-count-down';
 import { IvueCountUp } from './components/ivue-count-up';
 import { IvueCard } from './components/ivue-card';
 import { IvueScrollbar } from './components/ivue-scrollbar';
-import { IvueImage } from './components/ivue-image';
+import { IvueImage, IvueImagePreview } from './components/ivue-image';
 
 import { Ripple } from './components/ivue-ripple';
 
@@ -140,6 +140,7 @@ export {
     IvueCard,
     IvueScrollbar,
     IvueImage,
+    IvueImagePreview,
 
     Ripple,
     install

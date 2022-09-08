@@ -36,8 +36,8 @@ import IvueCountDown from './ivue-count-down';
 import IvueCountUp from './ivue-count-up';
 import IvueCard from './ivue-card';
 import IvueScrollbar from './ivue-scrollbar';
-import IvueImage from './ivue-image';
 
+import { IvueImage, IvueImagePreview } from './ivue-image';
 import { IvueCollapse } from './ivue-collapse';
 import { IvueCollapsePanel } from './ivue-collapse-panel';
 import { IvueSelect, IvueOption, IvueOptionGroup } from './ivue-select';
@@ -98,6 +98,7 @@ export {
   IvueCard,
   IvueScrollbar,
   IvueImage,
+  IvueImagePreview,
 
   Ripple
 };

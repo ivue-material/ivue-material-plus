@@ -67,7 +67,7 @@
                             :order="toolbar.indexOf('original') + 1"
                             @click.stop="handleOperation('original')"
                             v-if="toolbar.indexOf('original') > -1"
-                        >{{  !data.original ? 'crop_free' : 'zoom_out_map' }}</ivue-icon>
+                        >{{ !data.original ? 'crop_free' : 'zoom_out_map' }}</ivue-icon>
                         <!-- 左旋转 -->
                         <ivue-icon
                             :class="`${prefixCls}-toolbar--item`"
@@ -125,7 +125,7 @@ const prefixCls = 'ivue-image-preview';
 
 export default defineComponent({
     name: prefixCls,
-    emits: ['update:modelValue', 'on-close'],
+    emits: ['update:modelValue', 'on-close', 'on-switch'],
     props: {
         /**
          * 是否显示，可使用 v-model 双向绑定
@@ -540,6 +540,10 @@ export default defineComponent({
                     data.currentIndex -= 1;
                 }
             }
+
+            emit('on-switch', {
+                currentIndex: data.currentIndex,
+            });
         };
 
         // data
