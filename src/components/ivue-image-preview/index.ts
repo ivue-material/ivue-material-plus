@@ -1,4 +1,4 @@
-import ImagePreview from '../ivue-image/image-preview.vue';
+import ImagePreview from '../ivue-image/image-preview-global';
 
 let imagePreviewInstance;
 
@@ -9,10 +9,11 @@ function getImagePreviewInstance() {
   return imagePreviewInstance;
 }
 
+// 显示
 ImagePreview.show = (props: any = {}) => {
   const instance = getImagePreviewInstance();
 
-  props.onRemove = function () {
+  props.removeInstance = function () {
     imagePreviewInstance = null;
   };
 

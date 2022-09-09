@@ -28,19 +28,20 @@
                         @load="handleImageLoad"
                         @error="handleImageError"
                         @mousedown.stop.prevent="handleMousedown"
+                        @touchstart.stop.prevent="handleTouchStart"
                     />
                     <!-- 左按钮 -->
                     <ivue-icon
                         :class="`${prefixCls}-left`"
-                        @click.stop="handleSwitch(false)"
+                        @click.stop="handleImageSwitch(false)"
                     >chevron_left</ivue-icon>
                     <!-- 右按钮 -->
                     <ivue-icon
                         :class="`${prefixCls}-right`"
-                        @click.stop="handleSwitch(true)"
+                        @click.stop="handleImageSwitch(true)"
                     >chevron_right</ivue-icon>
                     <!-- 关闭按钮 -->
-                    <ivue-icon :class="`${prefixCls}-close`">close</ivue-icon>
+                    <ivue-icon :class="`${prefixCls}-close`" @click.stop="handleClose">close</ivue-icon>
                     <!-- toolbar -->
                     <div
                         :class="`${prefixCls}-toolbar`"
@@ -359,6 +360,42 @@ export default defineComponent({
             off(document, 'mouseup', handleMouseup);
         };
 
+        // 手指按下
+        const handleTouchStart = (event) => {
+            const { pageX, pageY } = event.touches[0];
+
+            // 触发事件的位置
+            data.startX = pageX;
+            data.startY = pageY;
+
+            data.transition = false;
+
+            on(document, 'touchmove', handleTouchmove);
+            on(document, 'touchend', handleTouchend);
+        };
+
+        // 手指移动
+        const handleTouchmove = throttle((event) => {
+            event.stopPropagation();
+
+            const { pageX, pageY } = event.touches[0];
+
+            data.imageTranslate.x += pageX - data.startX;
+            data.imageTranslate.y += pageY - data.startY;
+
+            // 触发事件的位置
+            data.startX = pageX;
+            data.startY = pageY;
+        });
+
+        // 手指离开
+        const handleTouchend = () => {
+            data.transition = true;
+
+            off(document, 'touchmove', handleTouchmove);
+            off(document, 'touchend', handleTouchend);
+        };
+
         // 重制样式
         const resetStyle = () => {
             data.imageScale = 1;
@@ -458,12 +495,12 @@ export default defineComponent({
 
             // 左边键盘
             if (keyCode === 37) {
-                handleSwitch(false);
+                handleImageSwitch(false);
             }
 
             // 右边键盘
             if (keyCode === 39) {
-                handleSwitch(true);
+                handleImageSwitch(true);
             }
 
             // 上按钮
@@ -500,9 +537,10 @@ export default defineComponent({
         };
 
         // 切换
-        const handleSwitch = (next) => {
+        const handleImageSwitch = (next) => {
             // 下一个
             if (next) {
+                // 是否是最后一个图片
                 if (data.currentIndex + 1 === props.previewList.length) {
                     // 是否循环切换
                     if (props.infinite) {
@@ -720,8 +758,10 @@ export default defineComponent({
             handleImageLoad,
             handleImageError,
             handleMousedown,
-            handleSwitch,
+            handleImageSwitch,
             handleOperation,
+            handleClose,
+            handleTouchStart,
             resetStyle,
         };
     },

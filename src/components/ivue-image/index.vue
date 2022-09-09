@@ -36,6 +36,7 @@
             :previewList="previewList"
             :initialIndex="initialIndex"
             @on-close="handleImagePreviewClose"
+            @on-switch="handleImageSwitch"
         ></image-preview>
     </div>
 </template>
@@ -57,7 +58,7 @@ const prefixCls = 'ivue-image';
 
 export default defineComponent({
     name: prefixCls,
-    emits: ['on-click', 'on-load', 'on-error', 'on-close'],
+    emits: ['on-click', 'on-load', 'on-error', 'on-close', 'on-switch'],
     props: {
         /**
          * 圆角
@@ -381,14 +382,18 @@ export default defineComponent({
 
         // 预览图片
         const handlePreview = () => {
-            // const { preview, initialIndex } = this;
-            // if (preview) {
-            data.imagePreviewModal = true;
+            if (props.preview) {
+                data.imagePreviewModal = true;
 
-            emit('on-click', {
-                initialIndex: props.initialIndex,
-            });
-            // }
+                emit('on-click', {
+                    initialIndex: props.initialIndex,
+                });
+            }
+        };
+
+        // 切换
+        const handleImageSwitch = (params) => {
+            emit('on-switch', params);
         };
 
         // 图片预览关闭
@@ -428,6 +433,7 @@ export default defineComponent({
             handleImageError,
             handlePreview,
             handleImagePreviewClose,
+            handleImageSwitch,
         };
     },
     components: {

@@ -35,8 +35,15 @@
                 preview
                 :preview-list="urlList"
                 :initial-index="index"
+                @on-switch="handleSwitch"
+                @on-click="handleSwitch"
             ></ivue-image>
         </template>
+        <h1>单独使用预览</h1>
+        <ivue-button @click="handleShowPreview">打开图片预览</ivue-button>
+        <ivue-image-preview v-model="preview" :preview-list="urlList"></ivue-image-preview>
+        <h1>实例化调用</h1>
+        <ivue-button @click="handleShowPreview1">打开图片预览</ivue-button>
     </div>
 </template>
 
@@ -46,6 +53,7 @@ export default {
         return {
             fits: ['fill', 'contain', 'cover', 'none', 'scale-down'],
             url: 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg',
+            preview: false,
             urlList: [
                 'https://file.iviewui.com/images/image-demo-1.jpg',
                 'https://file.iviewui.com/images/image-demo-2.jpg',
@@ -55,6 +63,21 @@ export default {
                 'https://file.iviewui.com/images/image-demo-6.jpg',
             ],
         };
+    },
+    mounted() {},
+    methods: {
+        handleSwitch(value) {
+            console.log('handleSwitch', value);
+        },
+        handleShowPreview() {
+            this.preview = true;
+        },
+        handleShowPreview1() {
+            this.$IvueImagePreview.show({
+                previewList: this.urlList,
+                maskClosable: false
+            });
+        },
     },
 };
 </script>
