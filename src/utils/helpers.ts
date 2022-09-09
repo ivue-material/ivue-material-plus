@@ -333,3 +333,20 @@ export async function downloadFile(url, name = '') {
         return Promise.reject(e);
     }
 }
+
+// requestAnimationFrame
+export function raf(fn: FrameRequestCallback): number {
+    return isClient ? requestAnimationFrame(fn) : -1;
+}
+
+// cancelAnimationFrame
+export function cancelRaf(id: number) {
+    if (isClient) {
+        cancelAnimationFrame(id);
+    }
+}
+
+// double raf for animation
+export function doubleRaf(fn: FrameRequestCallback): void {
+    raf(() => raf(fn));
+}

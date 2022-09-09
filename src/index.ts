@@ -44,8 +44,10 @@ import { IvueCountDown } from './components/ivue-count-down';
 import { IvueCountUp } from './components/ivue-count-up';
 import { IvueCard } from './components/ivue-card';
 import { IvueScrollbar } from './components/ivue-scrollbar';
-import { IvueImage, IvueImagePreview } from './components/ivue-image';
-import { default as IvueImagePreviewGlobal } from './components/ivue-image-preview';
+import { IvueImage } from './components/ivue-image';
+import { IvueNoticeBar } from './components/ivue-notice-bar';
+
+import { IvueImagePreview } from './components/ivue-image-preview';
 
 import { Ripple } from './components/ivue-ripple';
 
@@ -68,9 +70,6 @@ const install = (app: App, opts: any = {}): void => {
             toolbar: opts.image ? opts.image.toolbar ? opts.image.toolbar : '' : ''
         }
     };
-
-    // 注册全局事件
-    app.config.globalProperties.$IvueImagePreview = IvueImagePreviewGlobal;
 
     // 注册全局指令
     // ripple resize touch click-outside
@@ -145,6 +144,7 @@ export {
     IvueScrollbar,
     IvueImage,
     IvueImagePreview,
+    IvueNoticeBar,
 
     Ripple,
     install

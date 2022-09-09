@@ -6,7 +6,7 @@
         </transition>
         <!-- 内容 -->
         <transition name="fade">
-            <div :class="`${prefixCls}-wrapper`" :style="maskStyle" v-if="modelValue">
+            <div :class="`${prefixCls}-wrapper`" :style="maskStyle" v-if="modelValue" ref="wrapper">
                 <div :class="prefixCls" @click.stop="handleClickMask">
                     <!-- 加载中 -->
                     <ivue-spin
@@ -109,9 +109,9 @@ import {
     computed,
     defineComponent,
     getCurrentInstance,
-    onBeforeUnmount,
-    onMounted,
+    nextTick,
     reactive,
+    ref,
     watch,
 } from 'vue';
 import throttle from 'lodash.throttle';
@@ -216,6 +216,9 @@ export default defineComponent({
         },
     },
     setup(props: any, { emit }) {
+        // dom
+        const wrapper = ref(null);
+
         // computed
 
         // 蒙版样式
@@ -704,11 +707,27 @@ export default defineComponent({
 
                     // 蒙层zIndex
                     data.maskIndex = getMaskIndex();
+
+                    nextTick(() => {
+                        // 鼠标滚动
+                        on(wrapper.value, 'wheel', handleWheel);
+                        // 键盘按下
+                        on(document, 'keydown', handleKeydown);
+                        // 键盘松开
+                        on(document, 'keyup', handleKeyup);
+                    });
                 }
                 // 隐藏
                 else {
                     // 重新设置body样式
                     setBodyOverflow(data.prevOverflow);
+
+                    // 鼠标滚动
+                    off(wrapper.value, 'wheel', handleWheel);
+                    // 键盘按下
+                    off(document, 'keydown', handleKeydown);
+                    // 键盘松开
+                    off(document, 'keyup', handleKeyup);
                 }
             }
         );
@@ -721,28 +740,10 @@ export default defineComponent({
             }
         );
 
-        // onMounted
-        onMounted(() => {
-            // 键盘按下
-            on(document, 'keydown', handleKeydown);
-            // 键盘松开
-            on(document, 'keyup', handleKeyup);
-            // 鼠标滚动
-            on(document, 'wheel', handleWheel);
-        });
-
-        // onBeforeUnmount
-        onBeforeUnmount(() => {
-            // 键盘按下
-            off(document, 'keydown', handleKeydown);
-            // 键盘松开
-            off(document, 'keyup', handleKeyup);
-            // 鼠标滚动
-            off(document, 'wheel', handleWheel);
-        });
-
         return {
             prefixCls,
+            // dom
+            wrapper,
 
             // data
             data,

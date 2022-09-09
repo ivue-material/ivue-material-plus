@@ -143,6 +143,9 @@
                 <li>
                     <router-link to="/image">Image</router-link>
                 </li>
+                <li>
+                    <router-link to="/notice-bar">NoticeBar</router-link>
+                </li>
             </ul>
         </nav>
 

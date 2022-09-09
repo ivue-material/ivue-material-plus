@@ -1,3 +1,4 @@
+import { withInstallFunction } from '../../utils/install';
 import ImagePreview from '../ivue-image/image-preview-global';
 
 let imagePreviewInstance;
@@ -21,4 +22,8 @@ ImagePreview.show = (props: any = {}) => {
   instance.show(props);
 };
 
-export default ImagePreview;
+
+export const IvueImagePreview = withInstallFunction(ImagePreview, '$IvueImagePreview');
+export default IvueImagePreview;
+
+export * from '../ivue-image/image-preview-global';

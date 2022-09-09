@@ -1,0 +1,73 @@
+@import "../custom.scss";
+@import "ivue-icon.scss";
+
+$name: 'ivue-notice-bar';
+
+.#{$name} {
+  position: relative;
+  display: flex;
+  align-items: center;
+  height: 40px;
+  font-size: 14px;
+  line-height: 24px;
+  background: $primary-color;
+  color: $white-color;
+
+  &-left,
+  &-right {
+    height: 100%;
+    display: flex;
+    align-items: center;
+  }
+
+  &-right {
+    .#{$name}-icon {
+      cursor: pointer;
+    }
+  }
+
+  // icon
+  .#{$name}-icon {
+    color: currentColor;
+    margin: 0 5px;
+  }
+
+  // text
+  &-text {
+    position: absolute;
+    white-space: nowrap;
+    transition-timing-function: linear;
+
+    &--wrapper {
+      position: relative;
+      display: flex;
+      flex: 1;
+      align-items: center;
+      height: 100%;
+      overflow: hidden;
+    }
+
+    &--ellipsis {
+      max-width: 100%;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+  }
+
+  // 换行
+  &-wrapable {
+    height: auto;
+    padding: 8px 16px;
+
+    .#{$name}-text {
+      position: relative;
+      white-space: normal;
+      word-wrap: break-word;
+    }
+
+    .#{$name}-text--wrapper {
+      height: auto;
+    }
+  }
+}

@@ -83,34 +83,12 @@ export default defineComponent({
             return style;
         });
 
-        // methods
-
-        // 设置背景颜色
-        const setBackgroundColor = (color: string | any[]) => {
-            let style = {};
-
-            if (isCssColor(color)) {
-                style = {
-                    'background-color': `${color}`,
-                    'border-color': `${color}`,
-                };
-            } else if (color) {
-                return {
-                    class: color,
-                };
-            }
-
-            return style;
-        };
 
         return {
             // computed
             sliderWrapperStyles,
             sliderClass,
             sliderStyles,
-
-            // methods
-            setBackgroundColor,
         };
     },
 });
