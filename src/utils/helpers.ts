@@ -350,3 +350,6 @@ export function cancelRaf(id: number) {
 export function doubleRaf(fn: FrameRequestCallback): void {
     raf(() => raf(fn));
 }
+
+// 是否是undefined
+export const isUndefined = (val: any): val is undefined => val === undefined;

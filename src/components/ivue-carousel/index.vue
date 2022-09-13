@@ -1,66 +1,52 @@
 <template>
     <div
-        :class="classes"
-        v-touch="{
-            left: (e) => e.offsetX < -15 && arrowEvent(1),
-            right: (e) => e.offsetX > 15 && arrowEvent(-1),
-        }"
+        :class="wrapperClasses"
+        ref="wrapper"
+        @mouseenter.stop="handleMouseEnter"
+        @mouseleave.stop="handleMouseLeave"
     >
-        <!-- 左按钮 -->
-        <ivue-button
-            :class="['left ivue-icon-button', arrowClasses]"
-            @click="arrowEvent(-1)"
-            flat
-            icon
-        >
-            <ivue-icon>{{ leftArrow }}</ivue-icon>
-        </ivue-button>
-        <!-- 内容 -->
-        <div :class="[`${prefixCls}-list`]">
-            <div
-                :class="[
-                    `${prefixCls}-track`,
-                    data.showCopyTrack ? '' : 'higher',
-                ]"
-                :style="trackStyles"
-                ref="originTrack"
-                @click="handleClick('currentIndex')"
-            >
-                <slot></slot>
-            </div>
-            <!-- loop开启时使用 -->
-            <div
-                :class="[
-                    `${prefixCls}-track`,
-                    data.showCopyTrack ? 'higher' : '',
-                ]"
-                :style="copyTrackStyles"
-                ref="copyTrack"
-                v-if="loop"
-                @click="handleClick('currentIndex')"
-            ></div>
+        <div :class="`${prefixCls}-content`" :style="{ height: height }">
+            <!-- 左按钮 -->
+            <transition v-if="arrowDisplay" name="fade">
+                <ivue-button
+                    :class="[`${prefixCls}-arrow left`]"
+                    flat
+                    icon
+                    @click="handleArrowClick(data.activeIndex - 1)"
+                    v-show="(arrow === 'always' || data.hover) && (loop || data.activeIndex > 0)"
+                >
+                    <slot name="leftArrow">
+                        <ivue-icon>{{ leftArrow }}</ivue-icon>
+                    </slot>
+                </ivue-button>
+            </transition>
+
+            <!-- slot -->
+            <slot></slot>
+
+            <!-- 右按钮 -->
+            <transition v-if="arrowDisplay" name="fade">
+                <ivue-button
+                    :class="[`${prefixCls}-arrow right`]"
+                    flat
+                    icon
+                    @click="handleArrowClick(data.activeIndex + 1)"
+                    v-show="(arrow === 'always' || data.hover) && (loop || data.activeIndex < data.items.length - 1)"
+                >
+                    <slot name="rightArrow">
+                        <ivue-icon>{{ rightArrow }}</ivue-icon>
+                    </slot>
+                </ivue-button>
+            </transition>
         </div>
-        <!-- 右按钮 -->
-        <ivue-button
-            :class="['right ivue-icon-button', arrowClasses]"
-            @click="arrowEvent(1)"
-            flat
-            icon
-        >
-            <ivue-icon>{{ rightArrow }}</ivue-icon>
-        </ivue-button>
         <!-- 导航器 -->
         <ul :class="dotsClasses">
             <li
-                v-for="index in data.slides.length"
-                :key="index"
+                v-for="(item, index) in data.items"
                 :class="[
-                    index - 1 === data.currentIndex
-                        ? `${prefixCls}-active`
-                        : '',
+                    index === data.activeIndex ? `${prefixCls}-dots--active` : '',
                 ]"
-                @click="dotsEvent('click', index - 1)"
-                @mouseover="dotsEvent('hover', index - 1)"
+                :key="index"
             >
                 <button type="button" :class="[radiusDot ? 'radius' : '']"></button>
             </li>
@@ -70,46 +56,82 @@
 
 <script lang='ts'>
 import {
-    defineComponent,
-    reactive,
     computed,
-    nextTick,
-    onMounted,
+    defineComponent,
     onBeforeUnmount,
+    onMounted,
     provide,
-    watch,
+    reactive,
     ref,
-    getCurrentInstance,
+    shallowRef,
+    watch,
 } from 'vue';
+import { useResizeObserver } from '@vueuse/core';
+import { isString } from '@vue/shared';
 
-import Touch from '../../utils/directives/touch';
-import { getStyle, oneOf } from '../../utils/assist';
-import { on, off } from '../../utils/dom';
+import { throttle } from 'lodash-unified';
 
-import { IvueButton } from '../ivue-button';
-import { IvueIcon } from '../ivue-icon';
+import { oneOf } from '../../utils/assist';
+
+// ts
+import { CarouselItemContext } from './carousel';
+import { CarouselContextKey } from '../ivue-carousel-item/carousel-item';
 
 const prefixCls = 'ivue-carousel';
 
+/* eslint-disable */
 export default defineComponent({
     name: prefixCls,
-    directives: { Touch },
-    // 声明事件
-    emits: ['on-change', 'on-click', 'current-index'],
+    emits: ['on-change'],
     props: {
         /**
-         * 切换箭头显示时机
+         * carousel 的类型
          *
          * @type {String}
-         *
-         * hover（悬停），always（一直显示），never（不显示）
          */
-        arrow: {
+        type: {
             type: String,
-            default: 'hover',
             validator(value: string) {
-                return oneOf(value, ['hover', 'always', 'never']);
+                return oneOf(value, ['card']);
             },
+        },
+        /**
+         * 展示的方向
+         *
+         * @type {String}
+         */
+        direction: {
+            type: String,
+            validator(value: string) {
+                return oneOf(value, ['vertical', 'horizontal']);
+            },
+            default: 'horizontal',
+        },
+        /**
+         * carousel 的高度
+         *
+         * @type {String}
+         */
+        height: {
+            type: String,
+        },
+        /**
+         * 是否循环显示
+         *
+         * @type {Boolean}
+         */
+        loop: {
+            type: Boolean,
+            default: true,
+        },
+        /**
+         * 初始状态激活的幻灯片的索引，从 0 开始
+         *
+         * @type {Number}
+         */
+        initialIndex: {
+            type: Number,
+            default: 0,
         },
         /**
          * 左箭头图标
@@ -130,66 +152,18 @@ export default defineComponent({
             default: 'keyboard_arrow_right',
         },
         /**
-         * 动画效果
+         * 切换箭头显示时机
          *
          * @type {String}
+         *
+         * hover（悬停），always（一直显示），never（不显示）
          */
-        easing: {
+        arrow: {
             type: String,
-            default: 'ease',
-        },
-        /**
-         * 是否开启循环
-         *
-         * @type {Boolean}
-         */
-        loop: {
-            type: Boolean,
-            default: false,
-        },
-        /**
-         * 轮播图高度
-         *
-         * @type {String | Number}
-         *
-         * 可填 auto 或具体高度数值，单位 px
-         */
-        height: {
-            type: [String, Number],
-            default: 'auto',
-            validator(value) {
-                return (
-                    value === 'auto' ||
-                    Object.prototype.toString.call(value) === '[object Number]'
-                );
+            default: 'always',
+            validator(value: string) {
+                return oneOf(value, ['hover', 'always', 'never']);
             },
-        },
-        /**
-         * 幻灯片的索引
-         *
-         * @type {Number}
-         */
-        modelValue: {
-            type: Number,
-            default: 0,
-        },
-        /**
-         * 是否自动切换
-         *
-         * @type {Boolean}
-         */
-        autoplay: {
-            type: Boolean,
-            default: false,
-        },
-        /**
-         * 自动切换的时间间隔，单位为毫秒
-         *
-         * @type {Number}
-         */
-        autoplaySpeed: {
-            type: Number,
-            default: 2000,
         },
         /**
          * 指示器的位置，可选值为 inside （内部），outside（外部），none（不显示）
@@ -212,134 +186,64 @@ export default defineComponent({
             type: Boolean,
             default: false,
         },
-        /**
-         * 指示器的触发方式，可选值为 click（点击），hover（悬停）
-         *
-         * @type {String}
-         */
-        trigger: {
-            type: String,
-            default: 'click',
-            validator(value: string) {
-                return oneOf(value, ['click', 'hover']);
-            },
-        },
     },
     setup(props: any, { emit }) {
-        // ref
-        const copyTrack = ref(null);
-        const originTrack = ref(null);
+        // dom
 
-        // 支持访问内部组件实例
-        const vm = getCurrentInstance();
+        // wrapper
+        const wrapper = ref<HTMLDivElement>();
 
         // data
         const data: any = reactive<{
-            listWidth: number;
-            trackWidth: number;
-            trackOffset: number;
-            trackIndex: number;
-            trackCopyOffset: number;
-            trackCopyIndex: number;
-            showCopyTrack: boolean;
-            slides: Array<any>;
-            slideInstances: Array<any>;
-            currentIndex: number;
-            hideTrackPos: number;
-            childData: Record<string, any>;
+            items: Array<CarouselItemContext>;
+            activeIndex: number;
+            hover: boolean;
         }>({
             /**
-             * 列表内容宽度
+             * 选项数量
+             *
+             * @type {Array}
+             */
+            items: [],
+            /**
+             * 激活的选项
+             *
              * @type {Number}
              */
-            listWidth: 0,
+            activeIndex: -1,
             /**
-             * 跟踪宽度
-             * @type {Number}
-             */
-            trackWidth: 0,
-            /**
-             * 跟踪偏移位置
-             * @type {Number}
-             */
-            trackOffset: 0,
-            /**
-             * 跟踪索引位置
-             * @type {Number}
-             */
-            trackIndex: props.modelValue,
-            /**
-             * 跟踪内容偏移位置
-             * @type {Number}
-             */
-            trackCopyOffset: 0,
-            /**
-             * 跟踪复制索引位置
-             * @type {Number}
-             */
-            trackCopyIndex: props.modelValue,
-            /**
-             * 显示复制的内容
+             * 鼠标进入
+             *
              * @type {Boolean}
              */
-            showCopyTrack: false,
-            /**
-             * 滑动列表
-             * @type {Array}
-             */
-            slides: [],
-            /**
-             * 滑动列表实例
-             * @type {Array}
-             */
-            slideInstances: [],
-            /**
-             * 当前内容索引位置
-             * @type {Number}
-             */
-            currentIndex: props.modelValue,
-            /**
-             * 跟踪滑动位置
-             * @type {Number}
-             */
-            hideTrackPos: -1,
-            /**
-             * 子组件数据
-             *
-             * @type {Object}
-             */
-            childData: {},
+            hover: false,
         });
 
         // computed
-        // 外城样式
-        const classes = computed(() => {
-            return [`${prefixCls}`];
+
+        // 外层样式
+        const wrapperClasses = computed(() => {
+            return [
+                prefixCls,
+                {
+                    [`${prefixCls}-${props.direction}`]: true,
+                },
+            ];
         });
 
-        // 箭头样式
-        const arrowClasses = computed(() => {
-            return [`${prefixCls}-arrow`, `${prefixCls}-arrow-${props.arrow}`];
+        // 是否是垂直
+        const isVertical = computed(() => {
+            return props.direction === 'vertical';
         });
 
-        // 内容样式
-        const trackStyles = computed(() => {
-            return {
-                width: `${data.trackWidth}px`,
-                transform: `translate3d(${-data.trackOffset}px, 0px, 0px)`,
-                transition: `transform 500ms ${props.easing}`,
-            };
+        // 是否是卡片类型
+        const isCardType = computed(() => {
+            return props.type === 'card';
         });
 
-        // 复制的内容的样式
-        const copyTrackStyles = computed(() => {
-            return {
-                width: `${data.trackWidth}px`,
-                transform: `translate3d(${-data.trackCopyOffset}px, 0px, 0px)`,
-                transition: `transform 500ms ${props.easing}`,
-                position: 'absolute',
-                top: 0,
-            };
+        // 按钮禁用
+        const arrowDisplay = computed(() => {
+            return props.arrow !== 'never' && !isVertical.value;
         });
 
         // dots 样式
@@ -347,374 +251,194 @@ export default defineComponent({
             return [`${prefixCls}-dots`, `${prefixCls}-dots-${props.dots}`];
         });
 
-        // mounted
-        // 当slot改变时使用
-        const slotChange = () => {
-            nextTick(() => {
-                data.slides = [];
-                data.slideInstances = [];
+        // methods
 
-                // 更新滑动列表
-                updateSlides(true);
-                // 更新内容宽度高度
-                updatePos();
-                // 更新偏移位置
-                updateOffset();
-            });
-        };
+        // 激活选项
+        const setActiveItem = (index: number | string) => {
+            // index 是 字符串
+            if (isString(index)) {
+                // 通过幻灯片的名字查找下标
+                const filteredItems = data.items.filter(
+                    (item) => item.props.name === index
+                );
 
-        // 更新滑动列表
-        const updateSlides = (init) => {
-            let slides = [];
-            let index = 1;
-
-            findChild((child) => {
-                slides.push({
-                    $el: child.children.default()[0].el,
-                });
-
-                child.index = index++;
-
-                if (init) {
-                    data.slideInstances.push(child);
+                // 过滤选项获取对应的index
+                if (filteredItems.length > 0) {
+                    index = data.items.indexOf(filteredItems[0]);
                 }
-            });
-
-            // 获取滑动列表数量
-            data.slides = slides;
-
-            // 更新内容宽度高度
-            updatePos();
-        };
-
-        // 找到子节点
-        const findChild = (cb) => {
-            const find = (child) => {
-                const name = child.type.componentName;
-
-                if (name && child.children.default) {
-                    cb(child);
-                }
-            };
-
-            const children = vm.slots.default();
-
-            if (data.slideInstances.length || !children) {
-                data.slideInstances.forEach((child) => {
-                    find(child);
-                });
-            } else {
-                children.forEach((child) => {
-                    find(child);
-                });
             }
-        };
 
-        // 更新内容宽度高度
-        const updatePos = () => {
-            findChild(() => {
-                // 设置子节点宽度和高度
-                data.childData.width = data.listWidth;
-                data.childData.height =
-                    typeof props.height === 'number'
-                        ? `${props.height}px`
-                        : props.height;
-            });
+            // index
+            index = Number(index);
 
-            // 跟踪宽度
-            data.trackWidth = (data.slides.length || 0) * data.listWidth;
-        };
+            // 是否是整数
+            if (Number.isNaN(index) || index !== Math.floor(index)) {
+                console.warn('index must be integer');
 
-        // 更新偏移位置
-        const updateOffset = () => {
-            nextTick(() => {
-                let offset = data.trackCopyIndex > 0 ? -1 : 1;
-                // 跟踪偏移位置
-                data.trackOffset = data.trackIndex * data.listWidth;
-                // 跟踪复制内容的偏移位置
-                data.trackCopyOffset =
-                    data.trackCopyIndex * data.listWidth + offset;
-            });
-        };
-
-        // 监听调整大小
-        const handleResize = () => {
-            // 当前列表宽度
-            data.listWidth = parseInt(getStyle(vm.vnode.el, 'width'));
-
-            // 更新内容宽度高度
-            updatePos();
-            // 更新偏移位置
-            updateOffset();
-        };
-
-        // 设置自动播放
-        const setAutoplay = () => {
-            window.clearInterval(data.timer);
-
-            if (props.autoplay) {
-                data.timer = window.setInterval(() => {
-                    add(1);
-                }, props.autoplaySpeed);
-            }
-        };
-
-        // 切换
-        const add = (offset) => {
-            // 获取内容数量
-            let slidesLen = data.slides.length;
-
-            if (slidesLen === 1) {
                 return;
             }
-            // 如果是无缝滚动，需要初始化双内容位置
-            if (props.loop) {
-                if (offset > 0) {
-                    // 跟踪滑动位置
-                    data.hideTrackPos = -1;
-                } else {
-                    // 跟踪滑动位置
-                    data.hideTrackPos = slidesLen;
+
+            // 选项长度
+            const itemsLength = data.items.length;
+
+            // 之前激活的下标
+            const oldIndex = data.activeIndex;
+
+            // 指向最后一个下标
+            if (index < 0) {
+                data.activeIndex = props.loop ? itemsLength - 1 : 0;
+            }
+            // 指向最后一个
+            else if (index >= itemsLength) {
+                data.activeIndex = props.loop ? 0 : itemsLength - 1;
+            }
+            // 其他
+            else {
+                data.activeIndex = index;
+            }
+
+            // 上一个下标 === 当前激活的下标
+            if (oldIndex === data.activeIndex) {
+                // 重置选项位置
+                resetItemPosition(oldIndex);
+            }
+        };
+
+        // 添加选项
+        const addItem = (item: CarouselItemContext) => {
+            data.items.push(item);
+        };
+
+        // 删除选项
+        const removeItem = (uid?: number) => {
+            const index = data.items.findIndex((item) => item.uid === uid);
+
+            // 删除
+            if (index !== -1) {
+                data.items.splice(index, 1);
+
+                // 设置下一个激活选项
+                if (data.activeIndex === index) {
+                    next();
                 }
-
-                // 更新跟踪位置
-                updateTrackPos(data.hideTrackPos);
-            }
-
-            // 获取当前显示图片的索引 如果显示复制的内容 跟踪复制索引位置 否则 跟踪索引位置
-            const oldIndex = data.showCopyTrack
-                ? data.trackCopyIndex
-                : data.trackIndex;
-
-            let index = oldIndex + offset;
-
-            while (index < 0) {
-                index += slidesLen;
-            }
-
-            // 判断到达边界点
-            if (
-                ((offset > 0 && index === slidesLen) ||
-                    (offset < 0 && index === slidesLen - 1)) &&
-                props.loop
-            ) {
-                // 极限值（左滑：当前索引为总图片张数， 右滑：当前索引为总图片张数 - 1）切换内容
-
-                // 显示复制的内容
-                data.showCopyTrack = !data.showCopyTrack;
-                // 跟踪索引位置
-                data.trackIndex += offset;
-
-                //  跟踪复制索引位置
-                data.trackCopyIndex += offset;
-            } else {
-                if (!props.loop) {
-                    index = index % data.slides.length;
-                }
-
-                // 更新跟踪索引
-                updateTrackIndex(index);
-            }
-
-            // 当前内容索引
-            data.currentIndex = index === data.slides.length ? 0 : index;
-
-            // 发送点击事件
-            emit('on-change', oldIndex, data.currentIndex);
-            emit('current-index', data.currentIndex);
-        };
-
-        // 切换内容事件
-        const arrowEvent = (offset) => {
-            setAutoplay();
-            add(offset);
-        };
-
-        // 更新跟踪位置
-        const updateTrackPos = (index) => {
-            // 显示复制的内容
-            if (data.showCopyTrack) {
-                // 跟踪索引位置
-                data.trackIndex = index;
-            } else {
-                // 跟踪复制索引位置
-                data.trackCopyIndex = index;
             }
         };
 
-        // 更新跟踪索引
-        const updateTrackIndex = (index) => {
-            // 显示复制的内容
-            if (data.showCopyTrack) {
-                // 跟踪复制索引位置
-                data.trackCopyIndex = index;
-            } else {
-                // 跟踪索引位置
-                data.trackIndex = index;
-            }
-
-            // 当前索引
-            data.currentIndex = index;
+        // 激活下一个选项
+        const next = () => {
+            setActiveItem(data.activeIndex + 1);
         };
 
-        // dots 点击
-        const dotsEvent = (event, index) => {
-            // 获取当前显示图片的索引 如果显示复制的内容 跟踪复制索引位置 否则 跟踪索引位置
-            let currentIndex = data.showCopyTrack
-                ? data.trackCopyIndex
-                : data.trackIndex;
-
-            if (event === props.trigger && currentIndex !== index) {
-                // 更新跟踪索引
-                updateTrackIndex(index);
-
-                // 发送点击事件
-                emit('current-index', index);
-
-                // 激活时重置自动播放计时器
-                setAutoplay();
-            }
-        };
-
-        // 初始化数据
-        const _initData = () => {
-            data.currentIndex = props.modelValue;
-            data.trackIndex = props.modelValue;
-        };
-
-        // 初始化复制内容节点 用于 loop 效果
-        const initCopyTrackDom = () => {
-            nextTick(() => {
-                copyTrack.value.innerHTML = originTrack.value.innerHTML;
+        // 重置选项位置
+        const resetItemPosition = (oldIndex?: number) => {
+            data.items.forEach((item, index) => {
+                // 移动选项
+                item.translateItem(index, data.activeIndex, oldIndex);
             });
         };
 
-        // 点击幻灯片时触发，返回索引值
-        const handleClick = (type) => {
-            emit('on-click', data[type]);
-        };
+        // 按钮点击
+        const handleArrowClick = throttle(
+            (index: number) => {
+                setActiveItem(index);
+            },
+            300,
+            { trailing: true }
+        );
 
         // provide
-        provide('childData', data.childData);
+        provide(CarouselContextKey, {
+            // dom
+            wrapper,
+
+            // data
+            items: ref(data.items),
+            loop: props.loop,
+
+            // computed
+            // 是否是垂直
+            isVertical,
+            // 是否是卡片类型
+            isCardType,
+
+            // methods
+            // 添加选项
+            addItem,
+            // 删除选项
+            removeItem,
+        });
+
+        // 监听缩放->浅拷贝 useResizeObserver
+        const resizeObserver =
+            shallowRef<ReturnType<typeof useResizeObserver>>();
+
+        // 鼠标进入
+        const handleMouseEnter = () => {
+            data.hover = true;
+        };
+
+        // 鼠标离开
+        const handleMouseLeave = () => {
+            data.hover = false;
+        };
 
         // watch
-        // 是否自动切换
         watch(
-            () => props.autoplay,
-            () => {
-                setAutoplay();
-            }
-        );
+            () => data.activeIndex,
+            (current, prev) => {
+                // 重置选项位置
+                resetItemPosition(prev);
 
-        // 是否自动切换速度
-        watch(
-            () => props.autoplaySpeed,
-            () => {
-                setAutoplay();
-            }
-        );
-
-        // 跟踪索引位置
-        watch(
-            () => data.trackIndex,
-            () => {
-                updateOffset();
-            }
-        );
-
-        // 跟踪复制索引位=置
-        watch(
-            () => data.trackCopyIndex,
-            () => {
-                updateOffset();
-            }
-        );
-
-        // 轮播图高度
-        watch(
-            () => props.height,
-            () => {
-                updatePos();
-            }
-        );
-
-        // 幻灯片的索引
-        watch(
-            () => props.modelValue,
-            (value) => {
-                updateTrackIndex(value);
-                setAutoplay();
-            }
-        );
-
-        // 是否开启循环
-        watch(
-            () => props.loop,
-            (value) => {
-                // 监听调整大小
-                handleResize();
-                // 设置自动播放
-                setAutoplay();
-                // 初始化数据
-                _initData();
-                // 更新偏移位置
-                updateOffset();
-
-                if (value) {
-                    initCopyTrackDom();
-                } else {
-                    data.showCopyTrack = false;
+                // 改变了
+                if (prev > -1) {
+                    emit('on-change', current, prev);
                 }
             }
         );
 
+        // onMounted
         onMounted(() => {
-            // 监听调整大小
-            handleResize();
-
-            // 设置自动播放
-            setAutoplay();
-
-            nextTick(() => {
-                add(1);
-                add(-1);
+            resizeObserver.value = useResizeObserver(wrapper.value, () => {
+                // 重置选项位置
+                resetItemPosition();
             });
 
-            // 监听缩放事件
-            on(window, 'resize', handleResize);
+            // 设置激活的选项
+            if (
+                props.initialIndex < data.items.length &&
+                props.initialIndex >= 0
+            ) {
+                data.activeIndex = props.initialIndex;
+            }
         });
 
+        // onBeforeUnmount
         onBeforeUnmount(() => {
-            // 销毁监听缩放事件
-            off(window, 'resize', handleResize);
+            // 停止监听缩放
+            if (wrapper.value && resizeObserver.value) {
+                resizeObserver.value.stop();
+            }
         });
 
         return {
             prefixCls,
-            // ref
-            copyTrack,
-            originTrack,
+
+            // dom
+            wrapper,
+
             // data
             data,
+
             // computed
-            classes,
-            arrowClasses,
-            copyTrackStyles,
-            trackStyles,
+            wrapperClasses,
+            arrowDisplay,
             dotsClasses,
+
             // methods
-            slotChange,
-            updateSlides,
-            handleResize,
-            handleClick,
-            arrowEvent,
-            dotsEvent,
-            initCopyTrackDom,
+            handleMouseEnter,
+            handleMouseLeave,
+            handleArrowClick,
         };
-    },
-    components: {
-        IvueButton,
-        IvueIcon,
     },
 });
 </script>

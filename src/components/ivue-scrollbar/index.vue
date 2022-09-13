@@ -43,6 +43,7 @@ import Bar from './bar.vue';
 
 // ts
 import type { CSSProperties } from 'vue';
+import { BarInstance } from './scrollbar';
 
 // top 2 + bottom 2
 const GAP = 4;
@@ -153,11 +154,11 @@ export default defineComponent({
     },
     setup(props: any, { emit }) {
         // dom
-        const scrollbarWrapper = ref<HTMLDivElement>(null);
-        const scrollbar = ref<HTMLDivElement>(null);
-        const resize = ref<HTMLDivElement>(null);
+        const scrollbarWrapper = ref<HTMLDivElement>();
+        const scrollbar = ref<HTMLDivElement>();
+        const resize = ref<HTMLDivElement>();
 
-        const bar = ref(null);
+        const bar = ref<BarInstance>();
 
         const data: any = reactive<{
             barHeight: string;

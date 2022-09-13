@@ -1,20 +1,48 @@
 @import "../custom.scss";
 
+@import "../animation/index.scss";
+
 $name: 'ivue-carousel';
 
 .#{$name} {
   position: relative;
-  display: block;
-  box-sizing: border-box;
-  user-select: none;
-  touch-action: pan-y;
-  -webkit-tap-highlight-color: transparent;
 
-  /*箭头*/
+  // 横向
+  &-horizontal {
+    overflow: hidden;
+  }
+
+  // 内容
+  &-content {
+    position: relative;
+    height: 200px;
+  }
+
+  // item
+  &-item {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    display: inline-block;
+    overflow: hidden;
+    z-index: 0;
+
+    // 激活
+    &--active {
+      z-index: 0;
+    }
+
+    // 动画
+    &--animating {
+      transition: transform .4s ease-in-out;
+    }
+  }
+
+  // 箭头
   .#{$name}-arrow {
     position: absolute;
     top: 50%;
-    display: none;
     text-align: center;
     font-size: 12px;
     font-family: inherit;
@@ -34,70 +62,19 @@ $name: 'ivue-carousel';
     background-color: rgba(31, 45, 61, .11);
     z-index: 10;
 
+    i {
+      font-size: 24px;
+    }
+
     &.left {
       left: 16px;
     }
+
 
     &.right {
       right: 16px;
     }
 
-    // 一直存在
-    &-always {
-      display: inherit;
-    }
-
-    // hover 效果
-    &-hover {
-      display: inline;
-      opacity: 0;
-    }
-
-    &:hover {
-      background-color: rgba(31, 45, 61, .5);
-    }
-
-    .ivue-icon {
-      font-size: 24px;
-    }
-  }
-
-  &:hover &-arrow-hover {
-    opacity: 1;
-  }
-
-  &-track,
-  &-list {
-    transform: translate3d(0, 0, 0);
-  }
-
-  &-list {
-    position: relative;
-    display: block;
-    overflow: hidden;
-    margin: 0;
-    padding: 0;
-  }
-
-  // 前一个内容
-  &-track {
-    position: relative;
-    top: 0;
-    left: 0;
-    display: block;
-    overflow: hidden;
-    z-index: 1;
-
-    &.higher {
-      z-index: 2;
-    }
-  }
-
-  &-item {
-    float: left;
-    display: block;
-    height: 100%;
-    min-height: 1px;
   }
 
   // 指示器
@@ -140,14 +117,14 @@ $name: 'ivue-carousel';
         opacity: .3;
         width: 16px;
         height: 3px;
-        border-radius: 1px;
+        border-radius: 3px;
         outline: none;
         font-size: 0;
         display: block;
         cursor: pointer;
         color: transparent;
         background: #8391a5;
-        transition: all ease-in-out .5s;
+        transition: all .4s ease-in-out;
 
         &.radius {
           padding: 0;
@@ -161,7 +138,7 @@ $name: 'ivue-carousel';
         opacity: 0.7;
       }
 
-      &.ivue-carousel-active>button {
+      &.#{$name}-dots--active>button {
         opacity: 1;
         width: 24px;
 
