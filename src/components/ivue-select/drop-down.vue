@@ -50,6 +50,14 @@ export default defineComponent({
          */
         transfer: {
             type: Boolean,
+            default() {
+                const global =
+                    getCurrentInstance().appContext.config.globalProperties;
+
+                return !global.$IVUE || global.$IVUE.transfer === ''
+                    ? false
+                    : global.$IVUE.transfer;
+            },
         },
         /**
          * 是否开启 Popper 的 eventsEnabled 属性，开启可能会牺牲一定的性能
@@ -129,9 +137,7 @@ export default defineComponent({
         });
 
         const minWidth = computed(
-            () =>
-                select &&
-                `${getStyle(select.selectWrapper, 'width')}`
+            () => select && `${getStyle(select.selectWrapper, 'width')}`
         );
 
         // methdos

@@ -123,7 +123,13 @@
 </template>
 
 <script lang='ts'>
-import { defineComponent, computed, reactive, watch } from 'vue';
+import {
+    defineComponent,
+    computed,
+    reactive,
+    watch,
+    getCurrentInstance,
+} from 'vue';
 import { oneOf } from '../../utils/assist';
 
 import IvueIcon from '../ivue-icon/index.vue';
@@ -252,7 +258,14 @@ export default defineComponent({
          */
         transfer: {
             type: Boolean,
-            default: false,
+            default() {
+                const global =
+                    getCurrentInstance().appContext.config.globalProperties;
+
+                return !global.$IVUE || global.$IVUE.transfer === ''
+                    ? false
+                    : global.$IVUE.transfer;
+            },
         },
         /**
          * 页数选择选项

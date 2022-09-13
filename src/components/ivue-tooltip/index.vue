@@ -69,7 +69,14 @@ export default defineComponent({
          */
         transfer: {
             type: Boolean,
-            default: false,
+            default() {
+                const global =
+                    getCurrentInstance().appContext.config.globalProperties;
+
+                return !global.$IVUE || global.$IVUE.transfer === ''
+                    ? false
+                    : global.$IVUE.transfer;
+            },
         },
         /**
          * 是否显示

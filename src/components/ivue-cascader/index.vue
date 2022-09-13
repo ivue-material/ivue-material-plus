@@ -105,6 +105,7 @@ import {
     watch,
     nextTick,
     onMounted,
+    getCurrentInstance,
 } from 'vue';
 
 import { oneOf } from '../../utils/assist';
@@ -259,7 +260,14 @@ export default defineComponent({
          */
         transfer: {
             type: Boolean,
-            default: false,
+            default() {
+                const global =
+                    getCurrentInstance().appContext.config.globalProperties;
+
+                return !global.$IVUE || global.$IVUE.transfer === ''
+                    ? false
+                    : global.$IVUE.transfer;
+            },
         },
         /**
          * 当此项为 true 时，点选每级菜单选项值都会发生变化

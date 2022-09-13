@@ -36,7 +36,7 @@
 </template>
 
 <script lang='ts'>
-import { defineComponent, reactive, watch } from 'vue';
+import { defineComponent, reactive, watch, getCurrentInstance } from 'vue';
 import { IvueSelect, IvueOption } from '../ivue-select/index';
 import { isValueNumber } from '../../utils/helpers';
 
@@ -80,6 +80,14 @@ export default defineComponent({
          */
         transfer: {
             type: Boolean,
+            default() {
+                const global =
+                    getCurrentInstance().appContext.config.globalProperties;
+
+                return !global.$IVUE || global.$IVUE.transfer === ''
+                    ? false
+                    : global.$IVUE.transfer;
+            },
         },
         /**
          * 是否禁用
