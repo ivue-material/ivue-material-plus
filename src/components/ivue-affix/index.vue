@@ -73,9 +73,9 @@ export default defineComponent({
         });
 
         // ref = wrapper
-        const wrapper = ref<HTMLElement | any>(null);
+        const wrapper = ref<HTMLElement>();
         // ref = content
-        const content = ref<HTMLElement | any>(null);
+        const content = ref<HTMLElement>();
 
         // computed
 

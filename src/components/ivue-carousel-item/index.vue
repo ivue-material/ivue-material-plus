@@ -1,5 +1,15 @@
 <template>
-    <div :class="wrapperClasses" :style="wrapperStyles" ref="item" v-show="data.ready">
+    <div
+        :class="wrapperClasses"
+        :style="wrapperStyles"
+        ref="carouselItem"
+        @click="handleItemClick"
+        v-show="data.ready"
+    >
+        <!-- mask -->
+        <template v-if="isCardType">
+            <div v-show="!data.active" :class="`${prefixCls}--mask`"></div>
+        </template>
         <slot></slot>
     </div>
 </template>
@@ -13,6 +23,7 @@ import {
     onMounted,
     getCurrentInstance,
     onUnmounted,
+    ref,
 } from 'vue';
 
 import { CarouselContextKey } from './carousel-item';
@@ -39,18 +50,32 @@ export default defineComponent({
          */
         label: {
             type: String,
+            default: '',
         },
     },
     setup(props: any) {
+        // dom
+        const carouselItem = ref<HTMLElement>();
+
         // inject
         const {
-            isVertical,
-            isCardType,
-            addItem,
-            removeItem,
+            // dom
+            wrapper,
+
+            // data
             items,
             loop,
-            wrapper,
+            cardScale,
+
+            // computed
+            isVertical,
+            isCardType,
+
+            // methods
+            addItem,
+            removeItem,
+            setContentHeight,
+            setActiveItem,
         } = inject(CarouselContextKey);
 
         // instance
@@ -64,6 +89,7 @@ export default defineComponent({
             scale: number;
             ready: boolean;
             inStage: boolean;
+            hover: boolean;
         }>({
             /**
              * 是否激活
@@ -96,11 +122,17 @@ export default defineComponent({
              */
             ready: false,
             /**
-             * inStage
+             * 是否可以点击下一个
              *
              * @type {Boolean}
              */
             inStage: false,
+            /**
+             * hover
+             *
+             * @type {Boolean}
+             */
+            hover: false,
         });
 
         // computed
@@ -114,6 +146,13 @@ export default defineComponent({
                     [`${prefixCls}--active`]: data.active,
                     // 切换动画
                     [`${prefixCls}--animating`]: data.animating,
+                    // 卡片类型
+                    [`${prefixCls}--card`]: isCardType.value,
+                    [`${prefixCls}--card__vertical`]: isVertical.value,
+                    // 是否可以点击下一个
+                    [`${prefixCls}--in-stage`]: data.inStage,
+                    // hover
+                    [`${prefixCls}--hover`]: data.hover,
                 },
             ];
         });
@@ -165,14 +204,29 @@ export default defineComponent({
                 //
                 if (_isVertical) {
                 }
+
+                // 是否可以点击下一个
+                data.inStage = Math.round(Math.abs(index - activeIndex)) <= 1;
+
+                // 偏移位置
+                data.translate = calcCardTranslate(index, activeIndex);
+
+                // 缩放大小
+                data.scale = isActive ? 1 : cardScale;
             }
             // 不是卡片
             else {
+                // 偏移位置
                 data.translate = calcTranslate(index, activeIndex, _isVertical);
             }
 
             // 是否可以渲染
             data.ready = true;
+
+            // 获取元素的高度
+            if (isActive) {
+                setContentHeight(carouselItem.value.scrollHeight);
+            }
         };
 
         // 选项进度索引
@@ -245,6 +299,53 @@ export default defineComponent({
             return distance * (index - activeIndex);
         };
 
+        // 计算 卡片类型 translate 位置
+        const calcCardTranslate = (index: number, activeIndex: number) => {
+            // 父级宽度
+            let parentNumber = 0;
+
+            // 垂直
+            if (isVertical) {
+                parentNumber = wrapper.value?.offsetHeight || 0;
+            }
+            // 横向
+            else {
+                parentNumber = wrapper.value?.offsetWidth || 0;
+            }
+
+            // 可以点击下一个
+            if (data.inStage) {
+                return (
+                    (parentNumber *
+                        ((2 - cardScale) * (index - activeIndex) + 1)) /
+                    4
+                );
+            }
+            // 当前选项下标 < 激活的索引 向右前进
+            else if (index < activeIndex) {
+                return (-(1 + cardScale) * parentNumber) / 4;
+            }
+            // 当前选项下标 > 激活的索引 向左前进
+            else {
+                return ((3 + cardScale) * parentNumber) / 4;
+            }
+        };
+
+        // methods
+
+        // 点击选项
+        const handleItemClick = () => {
+            if (wrapper.value && isCardType.value) {
+                // 当前点击的index
+                const index = items.value.findIndex(({ uid }) => {
+                    return uid === vm.uid;
+                });
+
+                // 激活选项
+                setActiveItem(index);
+            }
+        };
+
         // onMounted
         onMounted(() => {
             addItem({
@@ -263,12 +364,19 @@ export default defineComponent({
         return {
             prefixCls,
 
+            // dom
+            carouselItem,
+
             // data
             data,
 
             // computed
             wrapperClasses,
             wrapperStyles,
+            isCardType,
+
+            // methods
+            handleItemClick,
         };
     },
 });

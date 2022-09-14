@@ -6,16 +6,19 @@ $name: 'ivue-carousel';
 
 .#{$name} {
   position: relative;
+  overflow: hidden;
 
   // 横向
-  &-horizontal {
-    overflow: hidden;
-  }
+  &-horizontal {}
+
+  // 竖向
+  &-vertical {}
 
   // 内容
   &-content {
     position: relative;
     height: 200px;
+    overflow: hidden;
   }
 
   // item
@@ -28,16 +31,59 @@ $name: 'ivue-carousel';
     overflow: hidden;
     z-index: 0;
 
-    // 激活
-    &--active {
-      z-index: 0;
-    }
 
     // 动画
     &--animating {
       transition: transform .4s ease-in-out;
     }
+
+    // 是否可以点击下一个
+    &--in-stage {
+      z-index: 1;
+      cursor: pointer;
+    }
+
+    // 卡片类型
+    &--card {
+      width: 50%;
+      transition: transform .4s ease-in-out;
+
+      &__vertical{
+        width: 100%;
+        height: 50%;
+      }
+    }
+
+    // 激活
+    &--active {
+      z-index: 2;
+    }
+
+    // mask
+    &--mask {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      background: $white-color;
+      transition: .2s;
+      opacity: .24;
+
+      &:hover {
+        opacity: .12;
+      }
+    }
+
+    // hover
+    &--hover &--mask {
+      opacity: .12;
+    }
+
   }
+
+  // 卡片样式
+  &-card {}
 
   // 箭头
   .#{$name}-arrow {
@@ -70,7 +116,6 @@ $name: 'ivue-carousel';
       left: 16px;
     }
 
-
     &.right {
       right: 16px;
     }
@@ -89,63 +134,129 @@ $name: 'ivue-carousel';
     width: 100%;
     height: 3px + $padding * 2;
     z-index: 10;
+    pointer-events: none;
 
     // 内部
-    &-inside {
+    &--inside {
       display: block;
       position: absolute;
       bottom: 10px - $padding;
     }
 
     // 外部
-    &-outside {
+    &--outside {
+      position: static;
       display: block;
       margin-top: 10px - $padding;
+
+      .#{$name}-dots--button {
+        background: #8391a5;
+      }
     }
 
-    li {
+    // 指示器符号
+    &--dot {
       position: relative;
       display: inline-block;
       vertical-align: top;
       text-align: center;
-      margin: 0 2px;
+      margin: 0 4px;
       padding: $padding 0;
       cursor: pointer;
+      pointer-events: auto;
 
-      button {
-        border: 0;
-        opacity: .3;
-        width: 16px;
-        height: 3px;
-        border-radius: 3px;
-        outline: none;
-        font-size: 0;
-        display: block;
-        cursor: pointer;
-        color: transparent;
-        background: #8391a5;
-        transition: all .4s ease-in-out;
-
-        &.radius {
-          padding: 0;
-          width: 6px;
-          height: 6px;
-          border-radius: 50%;
-        }
-      }
-
-      &:hover>button {
+      &:hover>.#{$name}-dots--button {
         opacity: 0.7;
       }
+    }
 
-      &.#{$name}-dots--active>button {
+    // 激活
+    &--active {
+      .#{$name}-dots--button {
         opacity: 1;
-        width: 24px;
-
-        &.radius {
-          width: 6px;
-        }
       }
+    }
+
+    // 竖向
+    &--vertical {
+      width: auto;
+      height: auto;
+      top: 0;
+      bottom: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+
+      .#{$name}-dots--dot {
+        display: list-item;
+        padding: 4px 12px;
+        margin: 0;
+      }
+
+      .#{$name}-dots--button {
+        width: 2px;
+        height: 15px;
+      }
+    }
+
+    // 左边
+    &--left {
+      left: 0;
+    }
+
+    // 右边
+    &--right {
+      right: 0;
+    }
+
+    // 按钮
+    &--button {
+      border: 0;
+      width: 24px;
+      height: 3px;
+      opacity: .5;
+      border-radius: 3px;
+      outline: none;
+      font-size: 0;
+      display: block;
+      cursor: pointer;
+      color: transparent;
+      background: $white-color;
+      transition: all .4s ease-in-out;
+    }
+
+    // 圆形
+    &--radius {
+      padding: 0;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+    }
+
+    // 有指示器的文本
+    &--labels {
+      bottom: 0;
+      left: 0;
+      right: 0;
+      margin-bottom: 6px;
+      transform: none;
+      text-align: center;
+
+      .#{$name}-dots--dot {
+        padding: 0;
+      }
+
+      .#{$name}-dots--button {
+        height: auto;
+        width: auto;
+        padding: 2px 18px;
+        font-size: 12px;
+      }
+    }
+
+    // 指示器的文本样式
+    &--label {
+      color: $text-color;
     }
   }
 }

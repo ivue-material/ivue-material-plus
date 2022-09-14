@@ -21,9 +21,11 @@ export type CarouselContext = {
   isCardType: Ref<any>
   isVertical: Ref<any>
   loop: boolean
+  cardScale: number
   addItem: (item: CarouselItemContext) => void
   removeItem: (uid: number | undefined) => void
-  // setActiveItem: (index: number) => void
+  setContentHeight: (height: number) => void
+  setActiveItem: (index: number) => void
 }
 
 export const CarouselContextKey: InjectionKey<CarouselContext> =

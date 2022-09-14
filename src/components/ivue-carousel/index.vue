@@ -5,13 +5,15 @@
         @mouseenter.stop="handleMouseEnter"
         @mouseleave.stop="handleMouseLeave"
     >
-        <div :class="`${prefixCls}-content`" :style="{ height: height }">
+        <div :class="`${prefixCls}-content`" :style="contentStyles">
             <!-- 左按钮 -->
             <transition v-if="arrowDisplay" name="fade">
                 <ivue-button
                     :class="[`${prefixCls}-arrow left`]"
                     flat
                     icon
+                    @mouseenter="handleArrowEnter('left')"
+                    @mouseleave="handleArrowLeave"
                     @click="handleArrowClick(data.activeIndex - 1)"
                     v-show="(arrow === 'always' || data.hover) && (loop || data.activeIndex > 0)"
                 >
@@ -30,6 +32,8 @@
                     :class="[`${prefixCls}-arrow right`]"
                     flat
                     icon
+                    @mouseenter="handleArrowEnter('right')"
+                    @mouseleave="handleArrowLeave"
                     @click="handleArrowClick(data.activeIndex + 1)"
                     v-show="(arrow === 'always' || data.hover) && (loop || data.activeIndex < data.items.length - 1)"
                 >
@@ -44,11 +48,26 @@
             <li
                 v-for="(item, index) in data.items"
                 :class="[
-                    index === data.activeIndex ? `${prefixCls}-dots--active` : '',
+                    `${prefixCls}-dots--dot`,
+                    {
+                        [`${prefixCls}-dots--active`]: index === data.activeIndex,
+                    }
                 ]"
+                @mouseenter="handleThrottleDotHover(index)"
+                @click.stop="handleDotClick(index)"
                 :key="index"
             >
-                <button type="button" :class="[radiusDot ? 'radius' : '']"></button>
+                <button
+                    type="button"
+                    :class="[
+                        `${prefixCls}-dots--button`,
+                        {
+                            [`${prefixCls}-dots--radius`]: radiusDot
+                        },
+                    ]"
+                >
+                    <span :class="`${prefixCls}-dots--label`">{{ item.props.label }}</span>
+                </button>
             </li>
         </ul>
     </div>
@@ -106,6 +125,18 @@ export default defineComponent({
                 return oneOf(value, ['vertical', 'horizontal']);
             },
             default: 'horizontal',
+        },
+        /**
+         * 导航器竖向方向
+         *
+         * @type {String}
+         */
+        verticalDotsDirection: {
+            type: String,
+            validator(value: string) {
+                return oneOf(value, ['left', 'right']);
+            },
+            default: 'left',
         },
         /**
          * carousel 的高度
@@ -172,10 +203,10 @@ export default defineComponent({
          */
         dots: {
             type: String,
-            default: 'inside',
             validator(value: string) {
                 return oneOf(value, ['inside', 'outside', 'none']);
             },
+            default: 'inside',
         },
         /**
          * 是否显示圆形指示器
@@ -185,6 +216,63 @@ export default defineComponent({
         radiusDot: {
             type: Boolean,
             default: false,
+        },
+        /**
+         * 节流时间
+         *
+         * @type {Number}
+         */
+        throttleTime: {
+            type: Number,
+            default: 300,
+        },
+        /**
+         * 指示器的触发方式
+         *
+         * @type {String}
+         */
+        trigger: {
+            type: String,
+            validator(value: string) {
+                return oneOf(value, ['hover', 'click']);
+            },
+            default: 'click',
+        },
+        /**
+         * 是否自动切换
+         *
+         * @type {Boolean}
+         */
+        autoplay: {
+            type: Boolean,
+            default: false,
+        },
+        /**
+         * 自动切换的时间间隔，单位为毫秒
+         *
+         * @type {Number}
+         */
+        interval: {
+            type: Number,
+            default: 3000,
+        },
+        /**
+         * 鼠标悬浮时暂停自动切换
+         *
+         * @type {Boolean}
+         */
+        pauseOnHover: {
+            type: Boolean,
+            default: false,
+        },
+        /**
+         * 卡片缩放大小
+         *
+         * @type {Number}
+         */
+        cardScale: {
+            type: Number,
+            default: 0.83,
         },
     },
     setup(props: any, { emit }) {
@@ -198,6 +286,8 @@ export default defineComponent({
             items: Array<CarouselItemContext>;
             activeIndex: number;
             hover: boolean;
+            timer: ReturnType<typeof setInterval> | null;
+            contentHeight: number;
         }>({
             /**
              * 选项数量
@@ -217,6 +307,18 @@ export default defineComponent({
              * @type {Boolean}
              */
             hover: false,
+            /**
+             * setInterval
+             *
+             * @type  {Function}
+             */
+            timer: null,
+            /**
+             * 内容高度
+             *
+             * @type {Number}
+             */
+            contentHeight: 0,
         });
 
         // computed
@@ -226,9 +328,26 @@ export default defineComponent({
             return [
                 prefixCls,
                 {
+                    // 展示的方向
                     [`${prefixCls}-${props.direction}`]: true,
+                    // 卡片类型
+                    [`${prefixCls}-card`]: isCardType.value,
                 },
             ];
+        });
+
+        // 内容样式
+        const contentStyles = computed(() => {
+            // 高度auto
+            if (props.height === 'auto') {
+                return {
+                    height: `${data.contentHeight}px`,
+                };
+            }
+
+            return {
+                height: props.height,
+            };
         });
 
         // 是否是垂直
@@ -248,7 +367,30 @@ export default defineComponent({
 
         // dots 样式
         const dotsClasses = computed(() => {
-            return [`${prefixCls}-dots`, `${prefixCls}-dots-${props.dots}`];
+            return [
+                `${prefixCls}-dots`,
+                // 指示器的位置
+                `${prefixCls}-dots--${props.dots}`,
+                {
+                    // 指示器文字
+                    [`${prefixCls}-dots--labels`]: hasLabel.value,
+                    // 指示器竖向
+                    [`${prefixCls}-dots--vertical`]: isVertical.value,
+                    // 指示器竖向时方向位置
+                    [`${prefixCls}-dots--${props.verticalDotsDirection}`]:
+                        isVertical.value,
+                    // 卡片类型指示器使用 outside
+                    [`${prefixCls}-dots--outside`]:
+                        isCardType.value && !isVertical.value,
+                },
+            ];
+        });
+
+        // 该幻灯片所对应指示器的文本
+        const hasLabel = computed(() => {
+            return data.items.some(
+                (item) => item.props.label.toString().length > 0
+            );
         });
 
         // methods
@@ -342,9 +484,148 @@ export default defineComponent({
             (index: number) => {
                 setActiveItem(index);
             },
-            300,
+            props.throttleTime,
             { trailing: true }
         );
+
+        // 开始自动切换
+        const startTimer = () => {
+            if (props.interval <= 0 || !props.autoplay || data.timer) {
+                return;
+            }
+
+            data.timer = setInterval(() => {
+                // 激活的选项 < 选项数量
+                if (data.activeIndex < data.items.length - 1) {
+                    data.activeIndex += 1;
+                }
+                // 开启循环
+                else if (props.loop) {
+                    data.activeIndex = 0;
+                }
+            }, props.interval);
+        };
+
+        // 停止自动切换
+        const pauseTimer = () => {
+            if (data.timer) {
+                clearInterval(data.timer);
+
+                data.timer = null;
+            }
+        };
+
+        // 监听缩放->浅拷贝 useResizeObserver
+        const resizeObserver =
+            shallowRef<ReturnType<typeof useResizeObserver>>();
+
+        // 鼠标进入
+        const handleMouseEnter = () => {
+            data.hover = true;
+
+            // 鼠标悬浮时暂停自动切换
+            if (props.pauseOnHover) {
+                pauseTimer();
+            }
+        };
+
+        // 鼠标离开
+        const handleMouseLeave = () => {
+            data.hover = false;
+
+            startTimer();
+        };
+
+        // 点击导航器
+        const handleDotClick = (index) => {
+            data.activeIndex = index;
+        };
+
+        // 导航器hover
+        const handleDotHover = (index) => {
+            if (props.trigger === 'hover' && index !== data.activeIndex) {
+                data.activeIndex = index;
+            }
+        };
+
+        // 导航器hover
+        const handleThrottleDotHover = throttle((index: number) => {
+            handleDotHover(index);
+        }, props.throttleTime);
+
+        // 设置内容高度
+        const setContentHeight = (height: number) => {
+            data.contentHeight = height;
+        };
+
+        // 按钮鼠标进入
+        const handleArrowEnter = (arrow: 'left' | 'right') => {
+            // 是否是垂直
+            if (isVertical.value) {
+                return;
+            }
+
+            data.items.forEach((item, index) => {
+                // 设置卡片hover
+                if (arrow === itemInStage(item, index)) {
+                    item.states.hover = true;
+                }
+            });
+        };
+
+        // 按钮鼠标离开
+        const handleArrowLeave = () => {
+            // 是否是垂直
+            if (isVertical.value) {
+                return;
+            }
+
+            // 取消选项的hover
+            data.items.forEach((item) => {
+                item.states.hover = false;
+            });
+        };
+
+        // 选项是否可以点击下一个
+        const itemInStage = (item: CarouselItemContext, index: number) => {
+            const items = [...data.items];
+            const itemLength = items.length;
+
+            // 没有选项 || 没有下一个
+            if (itemLength === 0 || !item.states.inStage) {
+                return false;
+            }
+
+            // 上一个选项的index
+            const prevItemIndex = index - 1;
+            // 下一个选项的index
+            const nextItemIndex = index + 1;
+            // 最后一个选项的index
+            const lastItemIndex = itemLength - 1;
+
+            // 最后一个选项激活
+            const isLastItemActive = items[lastItemIndex].states.active;
+            // 第一个选项激活
+            const isFirstItemActive = items[0].states.active;
+            // 上一个选项激活
+            const isPrevItemActive = items[prevItemIndex]?.states?.active;
+            // 下一个选项激活
+            const isNextItemActive = items[nextItemIndex]?.states?.active;
+
+            // 当前选项 === 最后一个选项 && 第一个选项激活 || 下一个选项激活 -> 选择的是左边
+            if (
+                (index === lastItemIndex && isFirstItemActive) ||
+                isNextItemActive
+            ) {
+                return 'left';
+            }
+            // index === 0 && 最后一个选项激活 || 上一个选项激活 -> 选择的是右边
+            else if ((index === 0 && isLastItemActive) || isPrevItemActive) {
+                return 'right';
+            }
+
+            return false;
+        };
 
         // provide
         provide(CarouselContextKey, {
@@ -354,6 +635,7 @@ export default defineComponent({
             // data
             items: ref(data.items),
             loop: props.loop,
+            cardScale: props.cardScale,
 
             // computed
             // 是否是垂直
@@ -366,21 +648,11 @@ export default defineComponent({
             addItem,
             // 删除选项
             removeItem,
+            // 设置内容高度
+            setContentHeight,
+            // 激活选项
+            setActiveItem,
         });
-
-        // 监听缩放->浅拷贝 useResizeObserver
-        const resizeObserver =
-            shallowRef<ReturnType<typeof useResizeObserver>>();
-
-        // 鼠标进入
-        const handleMouseEnter = () => {
-            data.hover = true;
-        };
-
-        // 鼠标离开
-        const handleMouseLeave = () => {
-            data.hover = false;
-        };
 
         // watch
         watch(
@@ -410,6 +682,9 @@ export default defineComponent({
             ) {
                 data.activeIndex = props.initialIndex;
             }
+
+            // 开始自动切换
+            startTimer();
         });
 
         // onBeforeUnmount
@@ -433,11 +708,16 @@ export default defineComponent({
             wrapperClasses,
             arrowDisplay,
             dotsClasses,
+            contentStyles,
 
             // methods
             handleMouseEnter,
             handleMouseLeave,
             handleArrowClick,
+            handleDotClick,
+            handleThrottleDotHover,
+            handleArrowEnter,
+            handleArrowLeave,
         };
     },
 });
