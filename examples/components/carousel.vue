@@ -1,17 +1,20 @@
 <template>
     <div>
         <p>基础用法</p>
-        <ivue-carousel height="auto" :initialIndex="1">
-            <ivue-carousel-item>
+        <ivue-carousel height="auto" :initialIndex="1" ref="carousel">
+            <ivue-carousel-item name="1">
                 <div class="demo-carousel">1</div>
             </ivue-carousel-item>
-            <ivue-carousel-item>
+            <ivue-carousel-item name="2">
                 <div class="demo-carousel">2</div>
             </ivue-carousel-item>
-            <ivue-carousel-item>
+            <ivue-carousel-item name="3">
                 <div class="demo-carousel">3</div>
             </ivue-carousel-item>
         </ivue-carousel>
+        <ivue-button @click="handlePrev">上一个</ivue-button>
+        <ivue-button @click="handleNext">下一个</ivue-button>
+
         <h1>指示器的触发方式</h1>
         <p>hover</p>
         <ivue-carousel trigger="hover" height="300px">
@@ -166,7 +169,21 @@
             </ivue-carousel-item>
         </ivue-carousel>
         <h1>卡片化</h1>
-        <ivue-carousel type="card" direction="vertical">
+        <div class="card">
+            <ivue-carousel type="card" direction="vertical" height="auto">
+                <ivue-carousel-item>
+                    <div class="demo-carousel">1</div>
+                </ivue-carousel-item>
+                <ivue-carousel-item>
+                    <div class="demo-carousel">2</div>
+                </ivue-carousel-item>
+                <ivue-carousel-item>
+                    <div class="demo-carousel">3</div>
+                </ivue-carousel-item>
+            </ivue-carousel>
+        </div>
+        <h1>卡片化</h1>
+        <ivue-carousel type="card" height="auto">
             <ivue-carousel-item>
                 <div class="demo-carousel">1</div>
             </ivue-carousel-item>
@@ -174,11 +191,12 @@
                 <div class="demo-carousel">2</div>
             </ivue-carousel-item>
             <ivue-carousel-item>
-                <div class="demo-carousel">3</div>
+                <div class="demo-carousel three">3</div>
+            </ivue-carousel-item>
+            <ivue-carousel-item>
+                <div class="demo-carousel">4</div>
             </ivue-carousel-item>
         </ivue-carousel>
-        <h1>卡片化</h1>
-
     </div>
 </template>
 
@@ -187,9 +205,20 @@ export default {
     data() {
         return {};
     },
+    mounted() {
+        setTimeout(() => {
+            this.$refs.carousel.setActiveItem(2);
+        }, 2000);
+    },
     methods: {
         handleClick() {
             console.log(12);
+        },
+        handlePrev() {
+            this.$refs.carousel.prev();
+        },
+        handleNext() {
+            this.$refs.carousel.next();
         },
     },
 };
@@ -197,11 +226,18 @@ export default {
 
 <style lang="scss">
 .demo-carousel {
-    height: 200px;
-    line-height: 200px;
+    height: 100%;
+    line-height: 100px;
     text-align: center;
     color: #fff;
     font-size: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.three {
+    background: red;
 }
 
 .ivue-carousel-item:nth-child(2n) {
@@ -210,5 +246,9 @@ export default {
 
 .ivue-carousel-item:nth-child(2n + 1) {
     background-color: #d3dce6;
+}
+
+.card {
+    width: 300px;
 }
 </style>

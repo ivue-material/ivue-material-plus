@@ -90,6 +90,7 @@ export default defineComponent({
             ready: boolean;
             inStage: boolean;
             hover: boolean;
+            zIndex: number;
         }>({
             /**
              * 是否激活
@@ -133,6 +134,12 @@ export default defineComponent({
              * @type {Boolean}
              */
             hover: false,
+            /**
+             * 选项位置
+             *
+             * @type {Number}
+             */
+            zIndex: 0,
         });
 
         // computed
@@ -148,7 +155,9 @@ export default defineComponent({
                     [`${prefixCls}--animating`]: data.animating,
                     // 卡片类型
                     [`${prefixCls}--card`]: isCardType.value,
-                    [`${prefixCls}--card__vertical`]: isVertical.value,
+                    // 卡片竖向
+                    [`${prefixCls}--card__vertical`]:
+                        isCardType.value && isVertical.value,
                     // 是否可以点击下一个
                     [`${prefixCls}--in-stage`]: data.inStage,
                     // hover
@@ -165,9 +174,19 @@ export default defineComponent({
 
             const transform = [_translate, _scale].join(' ');
 
-            return {
+            let style: {
+                transform: string;
+                zIndex?: number;
+            } = {
                 transform,
             };
+
+            // 是卡片 有zIndex
+            if (isCardType.value && data.zIndex) {
+                style.zIndex = data.zIndex;
+            }
+
+            return style;
         });
 
         // methods
@@ -201,15 +220,39 @@ export default defineComponent({
 
             // 是卡片
             if (_isCardType) {
-                //
-                if (_isVertical) {
-                }
 
                 // 是否可以点击下一个
                 data.inStage = Math.round(Math.abs(index - activeIndex)) <= 1;
 
                 // 偏移位置
                 data.translate = calcCardTranslate(index, activeIndex);
+
+                // 不是当前激活的选项
+                if (index !== activeIndex) {
+                    // 当前是否有 zIndex
+                    if (data.zIndex) {
+                        data.zIndex -= 1;
+                    }
+
+                    // 右选项
+                    if (data.translate > 0) {
+                        data.zIndex = data.zIndex || 2;
+                    }
+
+                    // 左选项
+                    if (data.translate < 0) {
+                        data.zIndex = data.zIndex || 3;
+                    }
+                }
+                // 当前激活的选项清除 zIndex
+                else {
+                    data.zIndex = 0;
+                }
+
+                // 是否可以点击下一个 清除zIndex
+                if (!data.inStage) {
+                    data.zIndex = 0;
+                }
 
                 // 缩放大小
                 data.scale = isActive ? 1 : cardScale;
@@ -225,7 +268,14 @@ export default defineComponent({
 
             // 获取元素的高度
             if (isActive) {
-                setContentHeight(carouselItem.value.scrollHeight);
+                // 竖向
+                if (isVertical.value) {
+                    setContentHeight(carouselItem.value.offsetWidth);
+                }
+                // 横向
+                else {
+                    setContentHeight(carouselItem.value.offsetHeight);
+                }
             }
         };
 
@@ -283,51 +333,51 @@ export default defineComponent({
                 return 0;
             }
 
-            // 方向
-            let distance = 0;
+            // 父级宽度
+            let parentOffset = 0;
 
             // 垂直
             if (isVertical) {
-                distance = wrapperEl.offsetHeight;
+                parentOffset = wrapperEl.offsetHeight;
             }
             // 横向
             else {
-                distance = wrapperEl.offsetWidth;
+                parentOffset = wrapperEl.offsetWidth;
             }
 
             // 位置 * (当前索引 - 激活的索引)
-            return distance * (index - activeIndex);
+            return parentOffset * (index - activeIndex);
         };
 
         // 计算 卡片类型 translate 位置
         const calcCardTranslate = (index: number, activeIndex: number) => {
             // 父级宽度
-            let parentNumber = 0;
+            let parentOffset = 0;
 
             // 垂直
-            if (isVertical) {
-                parentNumber = wrapper.value?.offsetHeight || 0;
+            if (isVertical.value) {
+                parentOffset = wrapper.value?.offsetHeight || 0;
             }
             // 横向
             else {
-                parentNumber = wrapper.value?.offsetWidth || 0;
+                parentOffset = wrapper.value?.offsetWidth || 0;
             }
 
             // 可以点击下一个
             if (data.inStage) {
                 return (
-                    (parentNumber *
+                    (parentOffset *
                         ((2 - cardScale) * (index - activeIndex) + 1)) /
                     4
                 );
             }
             // 当前选项下标 < 激活的索引 向右前进
             else if (index < activeIndex) {
-                return (-(1 + cardScale) * parentNumber) / 4;
+                return (-(1 + cardScale) * parentOffset) / 4;
             }
             // 当前选项下标 > 激活的索引 向左前进
             else {
-                return ((3 + cardScale) * parentNumber) / 4;
+                return ((3 + cardScale) * parentOffset) / 4;
             }
         };
 

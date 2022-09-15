@@ -218,7 +218,7 @@ export default defineComponent({
             default: false,
         },
         /**
-         * 节流时间
+         * 节流时间 (作用于 prev,next,handleArrowClick 方法 )
          *
          * @type {Number}
          */
@@ -288,6 +288,7 @@ export default defineComponent({
             hover: boolean;
             timer: ReturnType<typeof setInterval> | null;
             contentHeight: number;
+            init: boolean;
         }>({
             /**
              * 选项数量
@@ -319,6 +320,12 @@ export default defineComponent({
              * @type {Number}
              */
             contentHeight: 0,
+            /**
+             * 是否初始化完毕
+             *
+             * @type {Boolean}
+             */
+            init: false,
         });
 
         // computed
@@ -332,6 +339,7 @@ export default defineComponent({
                     [`${prefixCls}-${props.direction}`]: true,
                     // 卡片类型
                     [`${prefixCls}-card`]: isCardType.value,
+                    [`${prefixCls}-no-init`]: !data.init,
                 },
             ];
         });
@@ -345,6 +353,7 @@ export default defineComponent({
                 };
             }
 
+            // 自定义高度
             return {
                 height: props.height,
             };
@@ -466,10 +475,23 @@ export default defineComponent({
             }
         };
 
+        // 激活上一个选项
+        const prev = throttle(
+            () => {
+                setActiveItem(data.activeIndex - 1);
+            },
+            props.throttleTime,
+            { trailing: true }
+        );
+
         // 激活下一个选项
-        const next = () => {
-            setActiveItem(data.activeIndex + 1);
-        };
+        const next = throttle(
+            () => {
+                setActiveItem(data.activeIndex + 1);
+            },
+            props.throttleTime,
+            { trailing: true }
+        );
 
         // 重置选项位置
         const resetItemPosition = (oldIndex?: number) => {
@@ -685,6 +707,11 @@ export default defineComponent({
 
             // 开始自动切换
             startTimer();
+
+            // 已经完成初始化
+            setTimeout(() => {
+                data.init = true;
+            });
         });
 
         // onBeforeUnmount
@@ -718,6 +745,9 @@ export default defineComponent({
             handleThrottleDotHover,
             handleArrowEnter,
             handleArrowLeave,
+            setActiveItem,
+            prev,
+            next,
         };
     },
 });

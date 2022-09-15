@@ -14,6 +14,13 @@ $name: 'ivue-carousel';
   // 竖向
   &-vertical {}
 
+  // 没有初始化
+  &-no-init {
+    .#{$name}-item--card {
+      transition: none;
+    }
+  }
+
   // 内容
   &-content {
     position: relative;
@@ -31,7 +38,6 @@ $name: 'ivue-carousel';
     overflow: hidden;
     z-index: 0;
 
-
     // 动画
     &--animating {
       transition: transform .4s ease-in-out;
@@ -48,7 +54,7 @@ $name: 'ivue-carousel';
       width: 50%;
       transition: transform .4s ease-in-out;
 
-      &__vertical{
+      &__vertical {
         width: 100%;
         height: 50%;
       }
@@ -56,7 +62,7 @@ $name: 'ivue-carousel';
 
     // 激活
     &--active {
-      z-index: 2;
+      z-index: 10;
     }
 
     // mask
@@ -79,7 +85,6 @@ $name: 'ivue-carousel';
     &--hover &--mask {
       opacity: .12;
     }
-
   }
 
   // 卡片样式
@@ -106,7 +111,7 @@ $name: 'ivue-carousel';
     transition: all .2s;
     color: $white-color;
     background-color: rgba(31, 45, 61, .11);
-    z-index: 10;
+    z-index: 15;
 
     i {
       font-size: 24px;
@@ -133,7 +138,7 @@ $name: 'ivue-carousel';
     margin: 0;
     width: 100%;
     height: 3px + $padding * 2;
-    z-index: 10;
+    z-index: 15;
     pointer-events: none;
 
     // 内部
