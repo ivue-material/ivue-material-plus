@@ -204,10 +204,12 @@ export default defineComponent({
 
         // 方框 style
         const innerStyles = computed(() => {
-            let obj: any = {};
+            let obj: {
+                color?: string;
+            } = {};
 
             // 文字样式
-            const isTextColor: any = setTextColor(props.color);
+            const isTextColor = setTextColor(props.color);
             if (isTextColor.color && isCssColor(isTextColor.color)) {
                 obj.color = isTextColor.color;
             }

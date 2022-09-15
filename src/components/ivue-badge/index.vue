@@ -32,15 +32,11 @@
 import hexToRgba from 'hex-to-rgba';
 import { oneOf } from '../../utils/assist';
 
-import {
-    defineComponent,
-    computed,
-    getCurrentInstance,
-} from 'vue';
+import { defineComponent, computed, getCurrentInstance } from 'vue';
 
 const prefixCls = 'ivue-badge';
 
-function isCssColor(color) {
+function isCssColor(color: string) {
     return !!color && !!color.match(/^(#|(rgb|hsl)a?\()/);
 }
 
@@ -148,7 +144,7 @@ export default defineComponent({
          * @type {String}
          */
         status: {
-            type: String
+            type: String,
         },
     },
     setup(props: any) {

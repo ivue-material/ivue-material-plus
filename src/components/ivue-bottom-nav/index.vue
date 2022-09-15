@@ -5,13 +5,16 @@ import {
     reactive,
     computed,
     onMounted,
-    nextTick,
-    getCurrentInstance,
     watch,
     provide,
 } from 'vue';
 
 import Colorable from '../../utils/mixins/colorable';
+import { oneOf } from '../../utils/assist';
+
+// ts
+import { BottomNavContextKey } from '../ivue-bottom-nav-item/bottom-nav-item';
+import { BottomNavItemContext } from './bottom-nav';
 
 const prefixCls = 'ivue-bottom-nav';
 
@@ -52,13 +55,15 @@ export default defineComponent({
             default: true,
         },
         /**
-         * 导航栏 position
+         * 导航栏固定位置
          *
          * @type {String}
          */
         position: {
             type: String,
-            default: null,
+            validator(value: string) {
+                return oneOf(value, ['fixed', 'absolute']);
+            },
         },
         /**
          * 不是激活状态时隐藏按钮上的文字
@@ -71,26 +76,12 @@ export default defineComponent({
         },
     },
     setup(props: any, { emit }) {
-        // 支持访问内部组件实例
-        const { proxy }: any = getCurrentInstance();
-
         // data
         const data: any = reactive<{
-            buttons: Array<any>;
-            listeners: Array<any>;
-            ivueSyncRoute: boolean;
-            isDestroying: boolean;
+            items: Array<BottomNavItemContext>;
         }>({
-            // 按钮导航数组
-            buttons: [],
-            // 监听事件列表
-            listeners: [],
-            // 判断是否是路由按钮
-            // isRouteButton: [],
-            // 是否开启监听导航路由
-            ivueSyncRoute: false,
-            // 是否正在销毁
-            isDestroying: false,
+            // 导航数组
+            items: [],
         });
 
         // computed
@@ -98,12 +89,14 @@ export default defineComponent({
         // class
         const classes = computed(() => {
             return {
+                // 导航栏固定位置 position
                 [`${prefixCls}--absolute`]: props.position === 'absolute',
+                // 导航栏固定位置 fixed
+                [`${prefixCls}--fixed`]: props.position === 'fixed',
                 // 控制可见性
                 [`${prefixCls}--active`]: props.visible,
-                [`${prefixCls}--fixed`]: props.position === 'fixed',
+                // 不是激活状态时隐藏按钮上的文字
                 [`${prefixCls}--shift`]: props.shift,
-                // [`${prefixCls}--is-color`]: props.color !== '',
             };
         });
 
@@ -116,87 +109,57 @@ export default defineComponent({
 
         // 更新数据
         const update = () => {
-            for (let i = 0; i < data.buttons.length; i++) {
-                const button = data.buttons[i];
+            for (let i = 0; i < data.items.length; i++) {
+                const button = data.items[i];
 
                 // 记录选择项
+
+                // 激活
                 if (isSelected(i)) {
                     button.data.isActive = true;
-                } else {
-                    button.data.isActive = false;
                 }
-
-                // 判断 to 开始监听路由
-                if (button.to) {
-                    data.ivueSyncRoute = true;
+                // 没有激活
+                else {
+                    button.data.isActive = false;
                 }
             }
         };
 
         // 更新当前激活的导航
-        const updateValue = (value) => {
+        const updateValue = (value: number | string) => {
             // updated v-model
             emit('update:modelValue', value);
         };
 
         // 获取button index
-        const getValue = (i) => {
-            if (data.buttons[i].name != null) {
-                return data.buttons[i].name;
+        const getValue = (i: number) => {
+            if (data.items[i].name != null) {
+                return data.items[i].name;
             }
 
             return i;
         };
 
         // 判断是否选中
-        const isSelected = (i) => {
+        const isSelected = (i: number) => {
             const index = getValue(i);
 
             return props.modelValue === index;
         };
 
-        // 判断路由激活导航
-        const setActiveItemByRoute = () => {
-            if (proxy.$router) {
-                for (let i = 0; i < data.buttons.length; i++) {
-                    const button = data.buttons[i];
-
-                    if (
-                        button.to ===
-                        (proxy.$router.path ||
-                            proxy.$router.currentRoute.value.fullPath)
-                    ) {
-                        button.$data.isActive = true;
-                    } else {
-                        button.$data.isActive = false;
-                    }
-                }
-            }
+        // 添加选项
+        const addItem = (item: BottomNavItemContext) => {
+            data.items.push(item);
         };
 
-        // 设置watch深度监听router
-        const setupWatchers = () => {
-            // 监听路由变化
-            if (data.ivueSyncRoute) {
-                watch(
-                    () => proxy.$route,
-                    () => {
-                        if (data.ivueSyncRoute) {
-                            // 判断路由激活导航
-                            setActiveItemByRoute();
-                        }
-                    },
-                    {
-                        deep: true,
-                    }
-                );
-            }
-        };
+        // 删除选项
+        const removeItem = (uid?: number) => {
+            const index = data.items.findIndex((item) => item.uid === uid);
 
-        // 提供参数给注入 buttonGroup 的子组件
-        const register = (index) => {
-            // 更新当前激活的导航
-            updateValue(index);
+            // 删除
+            if (index !== -1) {
+                data.items.splice(index, 1);
+            }
         };
 
         // watch
@@ -213,7 +176,7 @@ export default defineComponent({
 
         // 监听按钮导航数组
         watch(
-            () => data.buttons,
+            () => data.items,
             () => {
                 // 初始化
                 update();
@@ -221,29 +184,16 @@ export default defineComponent({
         );
 
         // provide
-        provide('buttonGroup', {
-            register,
-            buttons: data.buttons,
-            modelValue: props.modelValue,
+        provide(BottomNavContextKey, {
+            addItem,
+            removeItem,
+            updateValue,
         });
 
         // onMounted
         onMounted(() => {
             // 初始化
             update();
-
-            nextTick(() => {
-                // 是否开启监听导航路由
-                if (data.ivueSyncRoute) {
-                    // 判断路由激活导航
-                    setActiveItemByRoute();
-                }
-
-                // 设置watch深度监听router
-                window.setTimeout(() => {
-                    setupWatchers();
-                }, 100);
-            });
         });
 
         return {
@@ -270,6 +220,7 @@ export default defineComponent({
                     height: `${this.computedHeight}px`,
                 },
             }),
+            // 插槽
             this.$slots && this.$slots?.default?.()
         );
     },

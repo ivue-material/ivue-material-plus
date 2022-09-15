@@ -9,7 +9,6 @@ import { getStyle, addClass, removeClass } from '../../utils/assist';
 
 import isServer from '../../utils/isServer';
 
-
 // 默认选项
 const defaults: LoadingOptions = {
     parent: null,

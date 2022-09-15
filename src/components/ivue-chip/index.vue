@@ -16,12 +16,9 @@
 <script lang='ts'>
 import { computed, defineComponent } from 'vue';
 import IvueIcon from '../ivue-icon/index.vue';
+import { isCssColor } from '../../utils/helpers';
 
 const prefixCls = 'ivue-chip';
-
-function isCssColor(color) {
-    return !!color && !!color.match(/^(#|(rgb|hsl)a?\()/);
-}
 
 export default defineComponent({
     name: prefixCls,

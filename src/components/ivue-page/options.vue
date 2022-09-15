@@ -165,9 +165,9 @@ export default defineComponent({
         };
 
         // 页数改变
-        const handleChangePage = (event) => {
+        const handleChangePage = ({ target }) => {
             // 去除前后空格
-            let value = event.target.value.trim();
+            let value = target.value.trim();
             let page = 0;
 
             // 是否是纯数字
@@ -198,7 +198,7 @@ export default defineComponent({
                 emit('on-page', page);
 
                 // 重新赋值
-                event.target.value = page;
+                target.value = page;
             }
         };
 

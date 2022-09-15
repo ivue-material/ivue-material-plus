@@ -35,6 +35,9 @@ import {
 
 import MenuItem from './menu-item.vue';
 
+// ts
+import { tmpItem, result, options, MenuItemInstance } from './cascader';
+
 const prefixCls = 'ivue-cascader-menu';
 
 let key = 1;
@@ -91,10 +94,10 @@ export default defineComponent({
         const cascader: any = inject('ivue-cascader');
 
         // data
-        const data: any = reactive<{
-            tmpItem: any;
-            sublist: Array<any>;
-            result: Array<any>;
+        const data = reactive<{
+            tmpItem: tmpItem;
+            sublist: MenuItemInstance[];
+            result: result[];
         }>({
             // 临时item
             tmpItem: {},
@@ -151,7 +154,7 @@ export default defineComponent({
 
         // 当前点击的选项
         const handleTriggerItem = (
-            item: any,
+            item: options,
             fromInit = false,
             fromUser = false
         ) => {

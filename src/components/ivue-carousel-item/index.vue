@@ -10,6 +10,7 @@
         <template v-if="isCardType">
             <div v-show="!data.active" :class="`${prefixCls}--mask`"></div>
         </template>
+        <!-- slot -->
         <slot></slot>
     </div>
 </template>
@@ -31,7 +32,6 @@ import { isUndefined } from '../../utils/helpers';
 
 const prefixCls = 'ivue-carousel-item';
 
-/* eslint-disable */
 export default defineComponent({
     name: prefixCls,
     props: {
@@ -54,6 +54,9 @@ export default defineComponent({
         },
     },
     setup(props: any) {
+        // instance
+        const vm = getCurrentInstance();
+
         // dom
         const carouselItem = ref<HTMLElement>();
 
@@ -77,9 +80,6 @@ export default defineComponent({
             setContentHeight,
             setActiveItem,
         } = inject(CarouselContextKey);
-
-        // instance
-        const vm = getCurrentInstance();
 
         // data
         const data = reactive<{
@@ -220,7 +220,6 @@ export default defineComponent({
 
             // 是卡片
             if (_isCardType) {
-
                 // 是否可以点击下一个
                 data.inStage = Math.round(Math.abs(index - activeIndex)) <= 1;
 

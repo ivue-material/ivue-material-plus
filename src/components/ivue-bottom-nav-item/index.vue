@@ -1,5 +1,5 @@
 <template>
-    <div :class="classes">
+    <div :class="prefixCls">
         <ivue-button
             flat
             :color="color"
@@ -15,13 +15,16 @@
 <script lang="ts">
 import IvueButton from '../../components/ivue-button/index.vue';
 import Colorable from '../../utils/mixins/colorable';
+import { BottomNavContextKey } from './bottom-nav-item';
 
 import {
     defineComponent,
     inject,
     getCurrentInstance,
     reactive,
-    computed
+    ComponentInternalInstance,
+    onMounted,
+    onUnmounted,
 } from 'vue';
 
 const prefixCls = 'ivue-bottom-nav-item';
@@ -42,18 +45,17 @@ export default defineComponent({
     },
     setup(props: any) {
         // 支持访问内部组件实例
-        const { proxy }: any = getCurrentInstance();
+        const { proxy, uid } =
+            getCurrentInstance() as ComponentInternalInstance;
 
         // inject
-        const buttonGroup: any = inject('buttonGroup');
-
-        if (buttonGroup) {
-            buttonGroup.buttons.push(proxy);
-        }
+        const { addItem, removeItem, updateValue } =
+            inject(BottomNavContextKey);
 
         // data
         const data = reactive<{
             isActive: boolean;
+            uid: number;
         }>({
             /**
              * 按钮是否激活状态
@@ -61,37 +63,36 @@ export default defineComponent({
              * @type {Boolean}
              */
             isActive: false,
-        });
-
-        // computed
-
-        // class
-        const classes = computed(() => {
-            return {
-                [`${prefixCls}`]: true,
-            };
+            /**
+             * uid
+             *
+             * @type {Number}
+             */
+            uid: uid,
         });
 
         // methods
 
+        // 点击选项
         const handleClick = () => {
-            // 激活数据
-            if (buttonGroup) {
-                buttonGroup.register(props.name);
-            }
+            updateValue(props.name);
         };
+
+        // onMounted
+        onMounted(() => {
+            addItem(proxy);
+        });
+
+        // onUnmounted
+        onUnmounted(() => {
+            removeItem(uid);
+        });
 
         return {
             prefixCls,
 
             // data
             data,
-
-            // computed
-            classes,
-
-            // inject
-            buttonGroup,
 
             // methods
             handleClick,

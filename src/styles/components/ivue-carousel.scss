@@ -8,12 +8,6 @@ $name: 'ivue-carousel';
   position: relative;
   overflow: hidden;
 
-  // 横向
-  &-horizontal {}
-
-  // 竖向
-  &-vertical {}
-
   // 没有初始化
   &-no-init {
     .#{$name}-item--card {
@@ -86,9 +80,6 @@ $name: 'ivue-carousel';
       opacity: .12;
     }
   }
-
-  // 卡片样式
-  &-card {}
 
   // 箭头
   .#{$name}-arrow {

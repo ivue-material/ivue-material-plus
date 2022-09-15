@@ -1268,7 +1268,7 @@ export default defineComponent({
         };
 
         // 下一个选项
-        const navigateOptions = (direction) => {
+        const navigateOptions = (direction: number) => {
             const optionLength = selectOptions.value.length - 1;
 
             let index = data.focusIndex + direction;

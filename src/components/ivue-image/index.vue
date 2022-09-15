@@ -191,7 +191,7 @@ export default defineComponent({
     },
     setup(props: any, { emit }) {
         // dom
-        const wrapper = ref<HTMLElement>();
+        const wrapper = ref<HTMLDivElement>();
 
         // data
         const data: any = reactive<{

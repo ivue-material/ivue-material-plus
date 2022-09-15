@@ -54,7 +54,7 @@ export default defineComponent({
         },
     },
     // 组合式 API
-    setup(props:any, { emit }) {
+    setup(props: any, { emit }) {
         // data
         const data = reactive<{
             affix: boolean;
@@ -73,9 +73,9 @@ export default defineComponent({
         });
 
         // ref = wrapper
-        const wrapper = ref<HTMLElement>();
+        const wrapper = ref<HTMLDivElement>();
         // ref = content
-        const content = ref<HTMLElement>();
+        const content = ref<HTMLDivElement>();
 
         // computed
 
@@ -103,7 +103,7 @@ export default defineComponent({
         // method
 
         // 获取滚动数值
-        const getScroll = (target, top) => {
+        const getScroll = (target: Window, top: boolean) => {
             const prop = top ? 'pageYOffset' : 'pageXOffset';
             const method = top ? 'scrollTop' : 'scrollLeft';
 
@@ -120,7 +120,7 @@ export default defineComponent({
         };
 
         // 获取元素坐标
-        const getOffset = (element) => {
+        const getOffset = (element: HTMLDivElement) => {
             // 方法返回元素的大小及其相对于视口的位置
             const rect = element.getBoundingClientRect();
 
@@ -146,7 +146,7 @@ export default defineComponent({
         // 监听滚动
         const handleScroll = () => {
             // 获取垂直滚动高度
-            const scrollTop: any = getScroll(window, true);
+            const scrollTop = getScroll(window, true);
 
             // 获取元素坐标
             const elOffset = getOffset(wrapper.value);
@@ -158,10 +158,12 @@ export default defineComponent({
             const elHeight = content.value.offsetHeight;
 
             // 固定在头部 Top
-            // 元素的顶部 减去 需要到达指定位置的数值   < windo 的滚动高度 向上滚动 没有开启固定状态
             if (
+                // 元素的顶部 减去 需要到达指定位置的数值 < window 的滚动高度 向上滚动
                 elOffset.top - props.offsetTop < scrollTop &&
+                // 固定头部
                 offsetType.value === 'top' &&
+                // 没有开启固定状态
                 !data.affix
             ) {
                 // 开启固定状态
@@ -184,9 +186,14 @@ export default defineComponent({
 
                 // 在固定状态发生改变时触发
                 emit('on-change', true);
-            } else if (
+            }
+            // 头部取消固定顶部
+            else if (
+                // 没有达到指定位置的数值
                 elOffset.top - props.offsetTop > scrollTop &&
+                // 固定头部
                 offsetType.value == 'top' &&
+                // 开启固定状态
                 data.affix
             ) {
                 data.slot = false;
@@ -200,9 +207,12 @@ export default defineComponent({
 
             // 固定在底部 Bottom
             if (
+                // 元素的顶部 + 距离窗口底部达到指定偏移量后触发 + 元素高度 > 获取垂直滚动高度 + window高度
                 elOffset.top + props.offsetBottom + elHeight >
                     scrollTop + windowHeight &&
+                // 固定底部
                 offsetType.value == 'bottom' &&
+                // 没有开启固定状态
                 !data.affix
             ) {
                 data.affix = true;
@@ -214,10 +224,15 @@ export default defineComponent({
 
                 // 在固定状态发生改变时触发
                 emit('on-change', true);
-            } else if (
+            }
+            // 头部取消固定底部
+            else if (
+                // 元素的顶部 + 距离窗口底部达到指定偏移量后触发 + 元素高度 < 获取垂直滚动高度 + window高度
                 elOffset.top + props.offsetBottom + elHeight <
                     scrollTop + windowHeight &&
+                // 固定底部
                 offsetType.value == 'bottom' &&
+                // 开启固定状态
                 data.affix
             ) {
                 data.affix = false;

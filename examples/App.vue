@@ -146,6 +146,9 @@
                 <li>
                     <router-link to="/notice-bar">NoticeBar</router-link>
                 </li>
+                <li>
+                    <router-link to="/carousel-loop">CarouselLoop</router-link>
+                </li>
             </ul>
         </nav>
 

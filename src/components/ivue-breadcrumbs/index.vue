@@ -4,7 +4,7 @@
     </div>
 </template>
 
-<script  lang='ts'>
+<script lang='ts'>
 import { defineComponent, computed, provide } from 'vue';
 
 interface BreadcrumbProps {
@@ -54,8 +54,8 @@ export default defineComponent({
             const justify = props.justifyCenter
                 ? 'center'
                 : props.justifyEnd
-                    ? 'flex-end'
-                    : 'flex-start';
+                ? 'flex-end'
+                : 'flex-start';
 
             return {
                 'justify-content': justify,

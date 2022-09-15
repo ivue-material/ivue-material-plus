@@ -576,7 +576,7 @@ export default defineComponent({
         };
 
         // 改变页数
-        const handleCangePage = (page) => {
+        const handleCangePage = (page: number) => {
             // 禁用
             if (props.disabled) {
                 return;
@@ -678,9 +678,9 @@ export default defineComponent({
         };
 
         // 键盘弹起
-        const handleKeyUp = (event) => {
-            const key = event.keyCode;
-            const value = parseInt(event.target.value);
+        const handleKeyUp = ({ keyCode, target }) => {
+            const key = keyCode;
+            const value = parseInt(target.value);
 
             // 上一页
             if (key === 38) {
@@ -707,7 +707,7 @@ export default defineComponent({
                     page = value;
                 }
 
-                event.target.value = page;
+                target.value = page;
 
                 // 改变页数
                 handleCangePage(page);

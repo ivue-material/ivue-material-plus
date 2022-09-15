@@ -127,7 +127,7 @@ export default defineComponent({
         // methods
 
         // 改变值
-        const handleChange = (value) => {
+        const handleChange = (value: string | number) => {
             data.currentValue = value;
 
             emit('update:modelValue', value);

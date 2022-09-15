@@ -79,8 +79,8 @@ export default defineComponent({
         const { proxy }: any = getCurrentInstance();
 
         // dom
-        const text = ref<HTMLElement | null>(null);
-        const wrapper = ref<HTMLElement | any>(null);
+        const text = ref<HTMLDivElement>();
+        const wrapper = ref<HTMLDivElement>();
 
         // data
         const data: any = reactive<{
@@ -169,7 +169,7 @@ export default defineComponent({
         // methods
 
         // 图片加载错误
-        const handleImageError = (event) => {
+        const handleImageError = (event: Event) => {
             emit('on-error', event);
         };
 

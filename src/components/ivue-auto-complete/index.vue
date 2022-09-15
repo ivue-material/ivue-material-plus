@@ -66,6 +66,8 @@ import IvueOption from '../ivue-select/option.vue';
 
 import { oneOf } from '../../utils/assist';
 
+import { Select, Input } from './auto-complete';
+
 const prefixCls = 'ivue-auto-complete';
 
 export default defineComponent({
@@ -247,9 +249,9 @@ export default defineComponent({
         // dom
 
         // select
-        const select = ref<HTMLElement | any>(null);
+        const select = ref<Select>();
         // input
-        const input = ref<HTMLElement | any>(null);
+        const input = ref<Input>(null);
 
         // data
         const data: any = reactive<{
@@ -320,12 +322,12 @@ export default defineComponent({
         };
 
         // 获取焦点
-        const handleFocus = (event) => {
+        const handleFocus = (event: Event) => {
             emit('on-focus', event);
         };
 
         // 失去焦点
-        const handleBlur = (event) => {
+        const handleBlur = (event: Event) => {
             emit('on-blur', event);
         };
 

@@ -172,7 +172,7 @@ export default defineComponent({
         /**
          * 当前index
          *
-         * @type {Numebr}
+         * @type {Number}
          */
         zIndex: {
             type: Number,
@@ -280,8 +280,8 @@ export default defineComponent({
             return props.render && !props.title
                 ? ''
                 : props.desc || props.render
-                    ? `${prefixCls}-have-desc`
-                    : '';
+                ? `${prefixCls}-have-desc`
+                : '';
         });
 
         // 内容样式

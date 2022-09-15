@@ -200,7 +200,9 @@ export function isCssColor(color) {
 
 // 设置文字颜色
 export function setTextColor(color: Record<string, any>) {
-    let style = {};
+    let style: {
+        color?: string
+    } = {};
 
     // 是否是数组
     if (Array.isArray(color)) {

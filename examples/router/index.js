@@ -43,6 +43,7 @@ import Card from '../components/card';
 import Scrollbar from '../components/scrollbar';
 import Image from '../components/image';
 import NoticeBar from '../components/notice-bar';
+import CarouselLoop from '../components/carousel-loop.vue';
 
 const routes = [{
     path: '/Affix',
@@ -246,6 +247,11 @@ const routes = [{
     path: '/notice-bar',
     name: 'NoticeBar',
     component: NoticeBar
+  },
+  {
+    path: '/carousel-loop',
+    name: 'CarouselLoop',
+    component: CarouselLoop
   }
 ];
 

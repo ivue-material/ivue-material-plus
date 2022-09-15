@@ -28,6 +28,7 @@ import {
     getCurrentInstance,
     onMounted,
     onBeforeUnmount,
+    ComponentInternalInstance,
 } from 'vue';
 import IvueIcon from '../ivue-icon/index.vue';
 import CollapseTransition from '../../utils/collapse-transition';
@@ -72,7 +73,7 @@ export default defineComponent({
         } = inject('IvueCollapse');
 
         // 支持访问内部组件实例
-        const vm: any = getCurrentInstance();
+        const vm = getCurrentInstance() as ComponentInternalInstance;
 
         // data
         const data: any = reactive<{

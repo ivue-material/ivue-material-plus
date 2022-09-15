@@ -416,7 +416,7 @@ export default defineComponent({
         };
 
         // 设置body样式
-        const setBodyOverflow = (value) => {
+        const setBodyOverflow = (value: string) => {
             if (!isClient) {
                 return;
             }
@@ -438,7 +438,15 @@ export default defineComponent({
         };
 
         // 处理事件
-        const handleOperation = (value) => {
+        const handleOperation = (
+            value:
+                | 'zoomIn'
+                | 'zoomOut'
+                | 'original'
+                | 'rotateLeft'
+                | 'rotateRight'
+                | 'download'
+        ) => {
             // 放大
             if (value === 'zoomIn' && data.imageScale < 6) {
                 data.imageScale += 0.25;
@@ -540,7 +548,7 @@ export default defineComponent({
         };
 
         // 切换
-        const handleImageSwitch = (next) => {
+        const handleImageSwitch = (next: boolean) => {
             // 下一个
             if (next) {
                 // 是否是最后一个图片

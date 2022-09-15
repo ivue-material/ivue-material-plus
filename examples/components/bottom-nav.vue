@@ -7,11 +7,13 @@
                 <span>Recents</span>
                 <ivue-icon>history</ivue-icon>
             </ivue-bottom-nav-item>
-            <ivue-bottom-nav-item color="primary" name="2">
+            <ivue-bottom-nav-item color="primary" name="2" v-if="show">
                 <span>Favorites</span>
                 <ivue-icon>favorite</ivue-icon>
             </ivue-bottom-nav-item>
         </ivue-bottom-nav>
+
+        <button @click="show = !show">show</button>
 
         <ivue-bottom-nav v-model="bottomNav">
             <ivue-bottom-nav-item color="red-accent-4" name="1">
@@ -72,6 +74,7 @@ export default {
         return {
             bottomNav: '1',
             showNav: true,
+            show: true
         };
     },
     computed: {

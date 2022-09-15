@@ -116,6 +116,9 @@ import IvueIcon from '../ivue-icon/index.vue';
 import DropDown from '../ivue-select/drop-down.vue';
 import IvueCascaderMenu from './menu.vue';
 
+// ts
+import { IvueInputInstance } from './cascader';
+
 const prefixCls = 'ivue-cascader';
 
 export default defineComponent({
@@ -318,8 +321,8 @@ export default defineComponent({
     },
     setup(props: any, { emit }) {
         // dom
-        const input = ref<HTMLElement | any>(null);
-        const reference = ref<HTMLElement | null>(null);
+        const input = ref<IvueInputInstance>();
+        const reference = ref<HTMLDivElement>();
         const dropdown = ref<HTMLElement | any>(null);
         const menu = ref<HTMLElement | any>(null);
 
@@ -558,7 +561,7 @@ export default defineComponent({
 
         // 失去焦点
         const handleInputFocus = () => {
-            input.value.focus();
+            input.value.focus(null);
         };
 
         // 关闭下拉框
@@ -758,9 +761,7 @@ export default defineComponent({
                     }
 
                     // 是否将弹层放置于 body 内，在 Tabs
-                    if (props.transfer) {
-                        dropdown.value.update();
-                    }
+                    dropdown.value.update();
                 } else {
                     // 是否支持搜索
                     if (props.filterable) {

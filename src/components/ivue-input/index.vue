@@ -459,9 +459,9 @@ export default defineComponent({
         const showPassword = ref(false);
 
         // ref = textarea
-        const textarea = ref<HTMLElement | any>(null);
+        const textarea = ref<HTMLTextAreaElement>();
         // ref = input
-        const input = ref<HTMLElement | any>(null);
+        const input = ref<HTMLInputElement>();
 
         // computed
 
@@ -497,27 +497,27 @@ export default defineComponent({
 
         // methods
         // 按下回车键时触发
-        const handleEnter = (event) => {
+        const handleEnter = (event: Event) => {
             emit('on-enter', event);
         };
 
         // 原生的 keyup 事件
-        const handleKeyup = (event) => {
+        const handleKeyup = (event: Event) => {
             emit('on-keyup', event);
         };
 
         // 原生的 keypress 事件
-        const handleKeypress = (event) => {
+        const handleKeypress = (event: Event) => {
             emit('on-keypress', event);
         };
 
         // 原生的 keydown 事件
-        const handleKeydown = (event) => {
+        const handleKeydown = (event: Event) => {
             emit('on-keydown', event);
         };
 
         // 尾部图标点击事件
-        const handleSuffix = (event) => {
+        const handleSuffix = (event: Event) => {
             emit('on-suffix', event);
         };
 
@@ -571,8 +571,8 @@ export default defineComponent({
         };
 
         // 输入事件
-        const handleInput = (event) => {
-            let value = event.target.value;
+        const handleInput = ({ target }) => {
+            let value = target.value;
 
             // 是否开启了 Number 类型
             if (props.number && value !== '') {
@@ -584,16 +584,16 @@ export default defineComponent({
 
             setCurrentValue(value);
 
-            emit('on-change', event.target.value);
+            emit('on-change', target.value);
         };
 
         // 输入框聚焦时触发
-        const handleFocus = (event) => {
+        const handleFocus = (event: Event) => {
             emit('on-focus', event);
         };
 
         // 输入框失去焦点时触发
-        const handleBlur = (event) => {
+        const handleBlur = (event: Event) => {
             emit('on-blur', event);
         };
 

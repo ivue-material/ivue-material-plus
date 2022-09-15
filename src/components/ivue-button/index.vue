@@ -181,6 +181,7 @@ export default defineComponent({
         });
 
         // computed
+
         // 是否显示涟漪效果
         const rippleWorks = computed(() => {
             return !props.disabled;
@@ -239,7 +240,7 @@ export default defineComponent({
         const buttonContent = h(IvueButtonContent, {}, this.$slots.default);
 
         // 按钮属性
-        let buttonAttrs: any = {
+        let buttonAttrs = {
             class: {
                 [`${prefixCls}`]: true,
                 isMobile: this.data.mobile,
@@ -248,6 +249,7 @@ export default defineComponent({
             },
             href: this.href,
             type: !this.href && (this.type || 'button'),
+            disabled: false,
             onTouchstart: (event) => {
                 // 是否显示涟漪效果
                 if (this.rippleWorks) {
@@ -277,6 +279,7 @@ export default defineComponent({
             },
         };
 
+        // 是否禁用
         if (this.disabled) {
             buttonAttrs.disabled = this.disabled;
         }

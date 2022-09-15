@@ -28,6 +28,7 @@ import {
     getCurrentInstance,
     onMounted,
     ref,
+    ComponentInternalInstance,
 } from 'vue';
 import { oneOf } from '../../utils/assist';
 import { isClient } from '../../utils/helpers';
@@ -137,7 +138,7 @@ export default defineComponent({
         },
     },
     setup(props: any, { slots }) {
-        const { proxy }: any = getCurrentInstance();
+        const { proxy } = getCurrentInstance() as ComponentInternalInstance;
 
         // 是否显示标题
         const showTitle = ref(false);

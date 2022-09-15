@@ -2,13 +2,13 @@
     <div>
         <p>基础用法</p>
         <ivue-carousel height="auto" :initialIndex="1" ref="carousel">
-            <ivue-carousel-item name="1">
+            <ivue-carousel-item name="1" label="1">
                 <div class="demo-carousel">1</div>
             </ivue-carousel-item>
-            <ivue-carousel-item name="2">
+            <ivue-carousel-item name="2" label="2">
                 <div class="demo-carousel">2</div>
             </ivue-carousel-item>
-            <ivue-carousel-item name="3">
+            <ivue-carousel-item name="3" label="3">
                 <div class="demo-carousel">3</div>
             </ivue-carousel-item>
         </ivue-carousel>
@@ -226,7 +226,7 @@ export default {
 
 <style lang="scss">
 .demo-carousel {
-    height: 100%;
+    height: 200px;
     line-height: 100px;
     text-align: center;
     color: #fff;

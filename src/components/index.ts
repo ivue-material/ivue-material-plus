@@ -37,6 +37,7 @@ import IvueCountUp from './ivue-count-up';
 import IvueCard from './ivue-card';
 import IvueScrollbar from './ivue-scrollbar';
 import IvueNoticeBar from './ivue-notice-bar';
+import IvueCarouselLoop from './ivue-carousel-loop';
 
 import { IvueImage, IvueImagePreview } from './ivue-image';
 import { IvueCollapse } from './ivue-collapse';
@@ -101,6 +102,7 @@ export {
   IvueImage,
   IvueImagePreview,
   IvueNoticeBar,
+  IvueCarouselLoop,
 
   Ripple
 };

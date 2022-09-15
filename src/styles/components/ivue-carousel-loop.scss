@@ -1,0 +1,63 @@
+$name: 'ivue-carousel-loop';
+
+.#{$name} {
+  position: relative;
+  width: 100%;
+  height: 100px;
+
+
+  &-scroll {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+  }
+
+  // 内容
+  &-content {
+    position: relative;
+    z-index: 1;
+    display: flex;
+  }
+
+  &-list {
+    display: flex;
+  }
+
+
+  // 箭头
+  .#{$name}-arrow {
+    position: absolute;
+    top: 50%;
+    text-align: center;
+    font-size: 12px;
+    font-family: inherit;
+    line-height: inherit;
+    border: none;
+    outline: none;
+    padding: 0;
+    margin: 0;
+    width: 36px;
+    min-width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    cursor: pointer;
+    transform: translateY(-50%);
+    transition: all .2s;
+    color: $white-color;
+    background-color: rgba(31, 45, 61, .11);
+    z-index: 15;
+
+    i {
+      font-size: 24px;
+    }
+
+    &.left {
+      left: 16px;
+    }
+
+    &.right {
+      right: 16px;
+    }
+
+  }
+}

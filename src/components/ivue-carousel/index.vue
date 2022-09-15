@@ -87,10 +87,12 @@ import {
 } from 'vue';
 import { useResizeObserver } from '@vueuse/core';
 import { isString } from '@vue/shared';
-
 import { throttle } from 'lodash-unified';
 
 import { oneOf } from '../../utils/assist';
+
+import IvueButton from '../ivue-button';
+import IvueIcon from '../ivue-icon';
 
 // ts
 import { CarouselItemContext } from './carousel';
@@ -98,7 +100,6 @@ import { CarouselContextKey } from '../ivue-carousel-item/carousel-item';
 
 const prefixCls = 'ivue-carousel';
 
-/* eslint-disable */
 export default defineComponent({
     name: prefixCls,
     emits: ['on-change'],
@@ -339,6 +340,7 @@ export default defineComponent({
                     [`${prefixCls}-${props.direction}`]: true,
                     // 卡片类型
                     [`${prefixCls}-card`]: isCardType.value,
+                    // 没有初始化完成
                     [`${prefixCls}-no-init`]: !data.init,
                 },
             ];
@@ -424,6 +426,7 @@ export default defineComponent({
 
             // 是否是整数
             if (Number.isNaN(index) || index !== Math.floor(index)) {
+                // eslint-disable-next-line no-console
                 console.warn('index must be integer');
 
                 return;
@@ -453,6 +456,9 @@ export default defineComponent({
                 // 重置选项位置
                 resetItemPosition(oldIndex);
             }
+
+            // 重置倒计时
+            resetTimer();
         };
 
         // 添加选项
@@ -512,6 +518,7 @@ export default defineComponent({
 
         // 开始自动切换
         const startTimer = () => {
+            // 自动切换的时间间隔，单位为毫秒 < 0 ｜ 没有开启自动切换 | 已经存在倒计时
             if (props.interval <= 0 || !props.autoplay || data.timer) {
                 return;
             }
@@ -649,6 +656,12 @@ export default defineComponent({
             return false;
         };
 
+        // 重置倒计时
+        const resetTimer = () => {
+            pauseTimer();
+            startTimer();
+        };
+
         // provide
         provide(CarouselContextKey, {
             // dom
@@ -677,6 +690,8 @@ export default defineComponent({
         });
 
         // watch
+
+        // 监听激活的选项
         watch(
             () => data.activeIndex,
             (current, prev) => {
@@ -687,6 +702,30 @@ export default defineComponent({
                 if (prev > -1) {
                     emit('on-change', current, prev);
                 }
+            }
+        );
+
+        // 监听是否自动切换
+        watch(
+            () => props.autoplay,
+            (value) => {
+                value ? startTimer() : pauseTimer();
+            }
+        );
+
+        // 监听是否循环显示
+        watch(
+            () => props.loop,
+            () => {
+                setActiveItem(data.activeIndex);
+            }
+        );
+
+        // 监听自动切换的时间间隔，单位为毫秒
+        watch(
+            () => props.interval,
+            () => {
+                resetTimer();
             }
         );
 
@@ -749,6 +788,10 @@ export default defineComponent({
             prev,
             next,
         };
+    },
+    components: {
+        IvueButton,
+        IvueIcon
     },
 });
 </script>
