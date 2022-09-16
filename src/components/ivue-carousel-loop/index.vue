@@ -1,5 +1,5 @@
 <template>
-    <div :class="prefixCls">
+    <div :class="prefixCls" @mouseenter="handleMouseenter" @mouseleave="handleMouseleave">
         <!-- 按钮 -->
         <ivue-button
             :class="[`${prefixCls}-arrow left`]"
@@ -11,16 +11,15 @@
                 <ivue-icon>{{ leftArrow }}</ivue-icon>
             </slot>
         </ivue-button>
-
         <!-- scroll -->
         <div :class="`${prefixCls}-scroll`" ref="scroll">
             <!-- 内容 -->
-            <div :class="`${prefixCls}-content`">
-                <div :class="`${prefixCls}-list`" :style="trackStyle" ref="content">
+            <div :class="`${prefixCls}-content`" ref="content">
+                <div :class="`${prefixCls}-list`" :style="listStyle" ref="list">
                     <slot></slot>
                 </div>
                 <!-- 复制的内容 -->
-                <div :class="`${prefixCls}-list`" :style="copyTrackStyle" v-if="data.showCopyTrack">
+                <div :class="`${prefixCls}-list copy-track`" :style="listCopyStyle">
                     <slot></slot>
                 </div>
             </div>
@@ -31,7 +30,7 @@
             :class="[`${prefixCls}-arrow right`]"
             flat
             icon
-            @click="handleArrowClick('left')"
+            @click="handleArrowClick('right')"
         >
             <slot name="rightArrow">
                 <ivue-icon>{{ rightArrow }}</ivue-icon>
@@ -46,13 +45,12 @@ import {
     reactive,
     computed,
     ref,
-    provide,
-    watch,
     nextTick,
     onMounted,
-    getCurrentInstance,
     onUnmounted,
 } from 'vue';
+
+import { oneOf } from '../../utils/assist';
 
 import IvueButton from '../ivue-button';
 import IvueIcon from '../ivue-icon';
@@ -97,24 +95,53 @@ export default defineComponent({
          */
         interval: {
             type: Number,
-            default: 0,
+            // default: 16.7,
+            default: 1,
+        },
+        /**
+         * 滚动方向
+         *
+         * @type {String}
+         */
+        direction: {
+            type: String,
+            validator(value: string) {
+                return oneOf(value, ['left', 'right']);
+            },
+            default: 'left',
+        },
+        /**
+         * 鼠标悬浮时暂停自动切换
+         *
+         * @type {Boolean}
+         */
+        pauseOnHover: {
+            type: Boolean,
+            default: false,
         },
     },
     setup(props: any) {
         // dom
         const scroll = ref<HTMLDivElement>();
-
         const content = ref<HTMLDivElement>();
+        const list = ref<HTMLDivElement>();
 
         // data
         const data: any = reactive<{
             timer: ReturnType<typeof setInterval> | null;
             loop: boolean;
-            canScrollWidth: number;
             showCopyTrack: boolean;
-            translate: number;
-            copyTranslate: number;
-            currentTrack: boolean;
+            listWidth: number;
+            contentWidth: number;
+            listTranslate: number;
+            listTranslateStart: boolean;
+            listCopyTranslate: number;
+            listCopyTranslateStart: boolean;
+            overflowWidth: number;
+            scrollDoneQuantity: number;
+            direction: string;
+            arrowInterval: any;
+            span: number;
         }>({
             /**
              * setInterval
@@ -129,129 +156,310 @@ export default defineComponent({
              */
             loop: true,
             /**
-             * 可滚动宽度
-             *
-             * @type {Number}
-             */
-            canScrollWidth: 0,
-            /**
              * 显示复制的内容
              *
              * @type {Boolean}
              */
             showCopyTrack: false,
             /**
-             * 内容偏移的位置
+             * 列表宽度
              *
              * @type {Number}
              */
-            translate: 0,
+            listWidth: 0,
             /**
-             * 内容偏移的位置
+             * 内容宽度
              *
              * @type {Number}
              */
-            copyTranslate: 0,
+            contentWidth: 0,
             /**
-             * 当前跟踪是那个内容
+             * 列表动画
+             *
+             * @type {Number}
+             */
+            listTranslate: 0,
+            /**
+             * 列表动画开始
              *
              * @type {Boolean}
              */
-            currentTrack: false,
+            listTranslateStart: true,
+            /**
+             * 复制列表动画
+             *
+             * @type {Number}
+             */
+            listCopyTranslate: 0,
+            /**
+             * 复制列表动画开始
+             *
+             * @type {Boolean}
+             */
+            listCopyTranslateStart: false,
+            /**
+             * 溢出宽度
+             *
+             * @type {Number}
+             */
+            overflowWidth: 0,
+            /**
+             * 列表滚动完成数量
+             *
+             * @type {Number}
+             */
+            scrollDoneQuantity: 0,
+            /**
+             * 方向
+             *
+             * @type {String}
+             */
+            direction: props.direction,
+            arrowInterval: null,
+            /**
+             * 跨度
+             *
+             * @type {Number}
+             */
+            span: -1,
         });
 
         // computed
 
-        const trackStyle = computed(() => {
+        // 列表样式
+        const listStyle = computed(() => {
+            let left = 0;
+
+            // 向左
+            if (data.span < 0) {
+                left = data.scrollDoneQuantity > 0 ? data.contentWidth : 0;
+            }
+
+            // 向右
+            if (data.span > 0) {
+                left = data.scrollDoneQuantity > 0 ? -data.listWidth : 0;
+            }
+
             return {
-                transform: `translateX(-${data.translate}px)`,
+                // left: `${left}px`,
+                transform: `translateX(${data.listTranslate}px)`,
             };
         });
 
-        // 复制内容的样式
-        const copyTrackStyle = computed(() => {
+        // 复制列表样式
+        const listCopyStyle = computed(() => {
+            let left = 0;
+
+            // 向左
+            if (data.span < 0) {
+                left = data.contentWidth;
+            }
+
+            // 向右
+            if (data.span > 0) {
+                left = -data.listWidth;
+            }
+
             return {
-                transform: `translateX(-${data.copyTranslate}px)`,
+                // left: `${left}px`,
+                transform: `translateX(${data.listCopyTranslate}px)`,
             };
+        });
+
+        // 达到尾部的距离
+        const tailDistance = computed(() => {
+            return data.scrollDoneQuantity > 0
+                ? data.overflowWidth + data.contentWidth
+                : data.overflowWidth;
+        });
+
+        // 总宽度
+        const overallWidth = computed(() => {
+            // 总宽度 = 已经滚动成功次数 > 0 ? 列表宽度 + 父级宽度 : 列表宽度
+            let overallWidth = 0;
+
+            // 向左
+            if (data.span < 0) {
+                overallWidth = data.listWidth;
+            }
+
+            // 向右
+            if (data.span > 0) {
+                overallWidth = data.contentWidth;
+            }
+
+            // 滚动次数超过一次
+            if (data.scrollDoneQuantity > 0) {
+                overallWidth = data.listWidth + data.contentWidth;
+            }
+
+            return overallWidth;
         });
 
         // methods
 
-        // 箭头点击
-        const handleArrowClick = (arrow: 'left' | 'right') => {
-            // 左按钮
-            if (arrow === 'left') {
-            }
-
-            // 右按钮
-            if (arrow === 'right') {
-            }
-        };
-
-        // 重置
-        const reset = () => {
+        // 初始化数据
+        const initData = () => {
             // 可滚动滚动的宽度
             const scrollWidth = scroll.value.scrollWidth;
             // 滚动层宽度
             const offsetWidth = scroll.value.offsetWidth;
 
-            // 可滚动宽度
-            let canScrollWidth = scrollWidth - offsetWidth;
+            // 内容宽度
+            data.contentWidth = content.value.offsetWidth;
 
-            setCanScrollWidth();
+            // 列表宽度
+            data.listWidth = list.value.offsetWidth;
+
+            // 溢出宽度
+            data.overflowWidth = data.listWidth - data.contentWidth;
 
             // 超过长度显示复制的内容
-            if (canScrollWidth > 0) {
+            if (scrollWidth - offsetWidth > 0) {
                 data.showCopyTrack = true;
+            }
+
+            // 向左
+            if (props.direction === 'left') {
+                data.span = -1;
+
+                data.listCopyTranslate = data.contentWidth;
+            }
+
+            // 向右
+            if (props.direction === 'right') {
+                data.span = 1;
+
+                data.listCopyTranslate = -data.listWidth;
             }
         };
 
-        // 设置可滚动宽度
-        const setCanScrollWidth = () => {
-            // 可滚动滚动的宽度
-            const scrollWidth = scroll.value.scrollWidth;
-            // 滚动层宽度
-            const offsetWidth = scroll.value.offsetWidth;
+        // 设置列表动画
+        const setListTranslate = () => {
+            // 列表动画开始
+            if (data.listTranslateStart) {
+                // 列表动画 < 总宽度
+                data.listTranslate += data.span;
 
-            data.canScrollWidth = scrollWidth - offsetWidth;
+                console.log('data/listTranslate', overallWidth.value);
 
-            console.log(data.canScrollWidth);
+                // listTranslate === 溢出宽度
+                if (data.listTranslate === -tailDistance.value) {
+                    // 复制列表动画开始
+                    data.listCopyTranslateStart = true;
+                }
+
+                // 向左
+                if (data.span < 0) {
+                    // listTranslate === 溢出宽度
+                    if (data.listTranslate === -overallWidth.value) {
+                        // 重制列表动画位置
+                        data.listTranslate = data.contentWidth;
+
+                        // 列表动画结束
+                        data.listTranslateStart = false;
+                    }
+                }
+                // if (Math.abs(data.listTranslate) < overallWidth.value) {
+                //     data.listTranslate += data.span;
+                // }
+
+                // // 没有列表滚动完成
+                // if (Math.abs(data.listTranslate) >= overallWidth.value) {
+                //     // 记录滚动次数
+                //     data.scrollDoneQuantity += 1;
+
+                //     console.log('没有列表滚动完成');
+
+                //     // 重制列表动画位置
+                //     data.listTranslate = data.contentWidth;
+
+                //     // 列表动画结束
+                //     data.listTranslateStart = false;
+                // }
+
+                // // 向右
+                // if (data.span > 0) {
+                //     // 当前列表第一个已经显示
+                //     if (
+                //         data.scrollDoneQuantity === 0 ||
+                //         Math.abs(data.listTranslate) === data.listWidth
+                //     ) {
+                //         data.listCopyTranslateStart = true;
+                //     }
+                // }
+                // // 向左
+                // // 当前列表最后一个已经显示
+                // else if (Math.abs(data.listTranslate) >= tailDistance.value) {
+                //     data.listCopyTranslateStart = true;
+                // }
+            }
+
+            // 复制列表动画开始
+            if (data.listCopyTranslateStart) {
+                // 总宽度
+                // let listCopyOverallWidth = 0;
+
+                // 向右
+                // if (data.span > 0) {
+                //     // 列表宽度 + 内容宽度
+                //     listCopyOverallWidth = data.listWidth + data.contentWidth;
+                // }
+
+                // // 向左
+                // if (data.span < 0) {
+                //     // 总宽度
+                //     listCopyOverallWidth = overallWidth.value;
+                // }
+
+                // 复制列表动画 < 总宽度
+                data.listCopyTranslate += data.span;
+
+                // if (Math.abs(data.listCopyTranslate) < listCopyOverallWidth) {
+                // }
+
+                // 没有列表滚动完成
+                // if (Math.abs(data.listCopyTranslate) >= listCopyOverallWidth) {
+                //     // 记录滚动次数
+                //     data.scrollDoneQuantity += 1;
+
+                //     // 重制复制列表动画位置
+                //     data.listCopyTranslate = 0;
+
+                //     // 复制列表动画结束
+                //     data.listCopyTranslateStart = false;
+                // }
+
+                // 向左
+                if (data.span < 0) {
+                    // listCopyTranslate > 0
+                    // listCopyTranslate === 溢出的宽度
+                    if (
+                        data.listCopyTranslate < 0 &&
+                        data.listCopyTranslate === -data.overflowWidth
+                    ) {
+                        // 列表动画开始
+                        // data.listTranslateStart = false;
+
+                        data.listCopyTranslateStart = false;
+                    }
+                }
+            }
         };
 
         // 自动滚动
-        const autoScroll = () => {
-            // 滚动层宽度
-            const offsetWidth = scroll.value.offsetWidth;
+        const startTime = () => {
+            // 自动切换的时间间隔，单位为毫秒 < 0 ｜ 没有开启自动切换 | 已经存在倒计时
+            if (props.interval <= 0 || !props.autoplay || data.timer) {
+                return;
+            }
 
             // 可以滚动
-            // if (data.canScrollWidth > 0) {
-            data.timer = setInterval(() => {
-                if (data.canScrollWidth + offsetWidth > data.translate) {
-                    data.translate += 1;
-                }
-
-                // 复制的内容
-                if (data.translate > data.canScrollWidth) {
-                    data.copyTranslate = data.translate;
-                    data.copyTranslate = data.translate + 1;
-                }
-
-                if (data.copyTranslate > offsetWidth) {
-                    data.copyTranslate = data.translate;
-                    data.copyTranslate += 1;
-                }
-
-                // scroll.value.scrollLeft += 1;
-                // // 当前可滚动宽度 等于 外层滚动scrollLeft
-                // if (data.canScrollWidth === scroll.value.scrollLeft) {
-                //     console.log(
-                //         'scroll.value.scrollLeft',
-                //         content.value.scrollWidth
-                //     );
-                //     data.translate = content.value.scrollWidth;
-                // }
-            }, props.interval);
-            // }
+            nextTick(() => {
+                data.timer = setInterval(() => {
+                    setListTranslate();
+                }, props.interval);
+            });
         };
 
         // 清除定时器
@@ -263,25 +471,78 @@ export default defineComponent({
             }
         };
 
-        watch(
-            () => data.canScrollWidth,
-            (value) => {
-                // 可滚动滚动的宽度
-                // const scrollWidth = scroll.value.scrollWidth;
-                // console.log('scrollWidth', scrollWidth);
-                // console.log('value', value);
+        // 重置计时
+        const resetTimer = () => {
+            clearTimer();
+            startTime();
+        };
+
+        // 箭头点击
+        const handleArrowClick = (arrow: 'left' | 'right') => {
+            // 设置方向
+
+            // 向左
+            if (arrow === 'left') {
+                data.span = -1;
             }
-        );
+
+            // 向右
+            if (arrow === 'right') {
+                data.span = 1;
+
+                if (data.listTranslate === 0) {
+                    data.listCopyTranslate = -data.listWidth;
+                }
+            }
+
+            // 重置计时
+            // resetTimer();
+
+            // 初始化动画
+            // initTranslate();
+            clearInterval(data.arrowInterval);
+
+            data.arrowInterval = setInterval(() => {
+                setListTranslate();
+            }, props.interval);
+
+            // setTimeout(() => {
+            //     clearInterval(data.arrowInterval);
+            // }, 1000);
+
+            // clearTimer();
+        };
+
+        // 鼠标进入
+        const handleMouseenter = () => {
+            // 鼠标悬浮时暂停自动切换
+            if (props.pauseOnHover) {
+                clearTimer();
+            }
+        };
+
+        // 鼠标移开
+        const handleMouseleave = () => {
+            // startTime();
+        };
 
         // onMounted
         onMounted(() => {
-            reset();
-            // 自动滚动
-            autoScroll();
+            // 初始化数据
+            initData();
+
+            // 是否自动切换
+            if (props.autoplay) {
+                // 自动滚动
+                startTime();
+            }
         });
 
         // onUnmounted
-        onUnmounted(() => {});
+        onUnmounted(() => {
+            // 清除定时器
+            clearTimer();
+        });
 
         return {
             prefixCls,
@@ -289,16 +550,20 @@ export default defineComponent({
             // dom
             scroll,
             content,
+            list,
 
             // data
             data,
 
             // computed
-            trackStyle,
-            copyTrackStyle,
+            listStyle,
+            listCopyStyle,
 
             // methods
+            clearTimer,
             handleArrowClick,
+            handleMouseenter,
+            handleMouseleave,
         };
     },
     components: {

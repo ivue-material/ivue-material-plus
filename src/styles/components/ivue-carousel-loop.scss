@@ -17,10 +17,16 @@ $name: 'ivue-carousel-loop';
     position: relative;
     z-index: 1;
     display: flex;
+
+    .copy-track {
+      position: absolute;
+    }
   }
 
   &-list {
+    position: relative;
     display: flex;
+    will-change: transform
   }
 
 
