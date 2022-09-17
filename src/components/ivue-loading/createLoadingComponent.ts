@@ -3,6 +3,7 @@ import { removeClass } from '../../utils/assist';
 
 import type { LoadingCreateComponentParams, LoadingInstance } from './loading-ts';
 
+type Nullable<T> = T | null;
 
 export function createLoadingComponent({ options, globalLoadingOption }: LoadingCreateComponentParams): LoadingInstance {
     // 实例
@@ -129,15 +130,15 @@ export function createLoadingComponent({ options, globalLoadingOption }: Loading
                             this.fullscreen ? 'is-fullscreen' : '',
                         ],
                     },
-                    [
-                        h('div', {
-                            class: 'ivue-loading-spinner',
-                        }, [
-                            this.iconRender ? this.iconRender() : !this.iconClass ? spinner : noSpinner,
-                            this.text ? spinnerText : null,
+                        [
+                            h('div', {
+                                class: 'ivue-loading-spinner',
+                            }, [
+                                this.iconRender ? this.iconRender() : !this.iconClass ? spinner : noSpinner,
+                                this.text ? spinnerText : null,
+                            ]),
                         ]),
-                    ]),
-                    [[vShow, this.visible]])
+                        [[vShow, this.visible]])
                 ])
             });
         }

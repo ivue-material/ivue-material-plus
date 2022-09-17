@@ -25,7 +25,7 @@
     "-": "0.0.1",
     "@antfu/utils": "^0.5.2",
     "@esbuild-kit/cjs-loader": "^2.3.3",
-    "@popperjs/core": "^2.11.5",
+    "@popperjs/core": "^2.11.6",
     "@rollup/plugin-json": "^4.1.0",
     "@types/lodash-es": "^4.17.6",
     "@vue/shared": "^3.2.37",

@@ -25,7 +25,7 @@ type RenderExpanded<T> = ({
   row,
   $index,
   store,
-  expanded: boolean,
+  expanded,
 }: Column<T>) => VNode
 
 // 列表行

@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="content">
         <h1>基础用法</h1>
         <ivue-carousel-loop>
             <div class="image" v-for="(i, index) in urlList" :key="i">
@@ -112,5 +112,9 @@ export default {
 
 .card {
     margin: 0 100px;
+}
+
+.content {
+    width: 500px;
 }
 </style>

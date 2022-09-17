@@ -29,7 +29,12 @@
     "sourceMap": true,
     "importHelpers": true,
     // 编译过程中需要引入的库文件的列表
-    "lib": ["esnext", "dom", "dom.iterable", "scripthost"],
+    "lib": [
+      "esnext",
+      "dom",
+      "dom.iterable",
+      "scripthost"
+    ],
     // 允许从没有设置默认导出的模块中默认导入
     "allowSyntheticDefaultImports": true,
     // "strict": true,
@@ -40,16 +45,18 @@
     "resolveJsonModule": true
   },
   // 排除文件
-  "exclude": ["node_modules"],
+  "exclude": [
+    "node_modules"
+  ],
   "include": [
     "./**/*.ts",
     "src/**/*.vue",
     "src/**/*.ts",
     "src/**/*.tsx",
     "src/**/*.vue",
-    // // 让 ts 识别 .vue 文件
-    "./src/typings/vue-shim.d.ts",
+    // 让 ts 识别 .vue 文件
+    "./typings/vue-shim.d.ts",
     "src/index.ts",
-    "src/utils/render.ts"
-, "rollup/src/tasks/modules.js", "rollup/src/tasks/index.js", "rollup/src/utils/process.js"  ]
+    "src/utils/render.ts",
+  ]
 }

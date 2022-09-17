@@ -20,7 +20,6 @@ import {
     computed,
     reactive,
     watch,
-    getCurrentInstance,
 } from 'vue';
 
 const prefixCls = 'ivue-spin';
