@@ -192,10 +192,10 @@ export default defineComponent({
          */
         arrow: {
             type: String,
-            default: 'always',
             validator(value: string) {
                 return oneOf(value, ['hover', 'always', 'never']);
             },
+            default: 'always',
         },
         /**
          * 指示器的位置，可选值为 inside （内部），outside（外部），none（不显示）

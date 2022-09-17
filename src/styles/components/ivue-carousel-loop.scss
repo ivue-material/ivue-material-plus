@@ -5,6 +5,10 @@ $name: 'ivue-carousel-loop';
   width: 100%;
   height: 100px;
 
+  &:hover .#{$name}-arrow--hover {
+    opacity: 1;
+  }
+
 
   &-scroll {
     width: 100%;
@@ -65,5 +69,25 @@ $name: 'ivue-carousel-loop';
       right: 16px;
     }
 
+    // 悬停
+    &--hover {
+      opacity: 0;
+    }
+
+    // 不显示
+    &--never {
+      display: none;
+    }
+
+    // 外部
+    &--outside {
+      &.left {
+        left: -52px;
+      }
+
+      &.right {
+        right: -52px;
+      }
+    }
   }
 }
