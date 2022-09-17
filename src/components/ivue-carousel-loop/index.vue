@@ -70,7 +70,6 @@ import IvueIcon from '../ivue-icon';
 
 const prefixCls = 'ivue-carousel-loop';
 
-/* eslint-disable */
 export default defineComponent({
     name: prefixCls,
     emits: ['on-scroll-end'],
@@ -442,18 +441,6 @@ export default defineComponent({
 
                 // 向左
                 if (data.span < 0) {
-                    // 最后一个已隐藏 -> 重制复制列表动画位置
-                    if (data.listCopyTranslate === -overallWidth.value) {
-                        // 列表动画结束
-                        data.listCopyTranslateStart = false;
-
-                        // 重制复制列表动画位置
-                        data.listCopyTranslate = data.contentWidth;
-
-                        // 记录滚动次数
-                        data.scrollDoneQuantity += 1;
-                    }
-
                     // 列表最后一个已展示 -> 重制列表动画位置
                     if (
                         data.listCopyTranslate < 0 &&
@@ -464,6 +451,18 @@ export default defineComponent({
 
                         // 重制列表动画位置
                         data.listTranslate = data.contentWidth;
+                    }
+
+                    // 最后一个已隐藏 -> 重制复制列表动画位置
+                    if (data.listCopyTranslate === -overallWidth.value) {
+                        // 列表动画结束
+                        data.listCopyTranslateStart = false;
+
+                        // 重制复制列表动画位置
+                        data.listCopyTranslate = data.contentWidth;
+
+                        // 记录滚动次数
+                        data.scrollDoneQuantity += 1;
                     }
                 }
 

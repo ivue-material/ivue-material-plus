@@ -28,6 +28,7 @@ import {
 } from 'vue';
 
 import { CarouselContextKey } from './carousel-item';
+
 import { isUndefined } from '../../utils/helpers';
 
 const prefixCls = 'ivue-carousel-item';
