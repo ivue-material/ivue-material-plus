@@ -188,7 +188,7 @@ export default defineComponent({
         const list = ref<HTMLDivElement>();
 
         // data
-        const data: any = reactive<{
+        const data = reactive<{
             timer: ReturnType<typeof setInterval> | null;
             loop: boolean;
             showCopyTrack: boolean;

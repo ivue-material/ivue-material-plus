@@ -15,7 +15,7 @@ import BottomNav from '../components/bottom-nav';
 import Breadcrumb from '../components/breadcrumb';
 import Select from '../components/select';
 import Steps from '../components/steps';
-import UpLoad from '../components/upLoad.vue';
+import UpLoad from '../components/upLoad';
 import Progress from '../components/progress';
 import Circle from '../components/circle';
 import Loading from '../components/loading';
@@ -43,7 +43,8 @@ import Card from '../components/card';
 import Scrollbar from '../components/scrollbar';
 import Image from '../components/image';
 import NoticeBar from '../components/notice-bar';
-import CarouselLoop from '../components/carousel-loop.vue';
+import CarouselLoop from '../components/carousel-loop';
+import Ellipsis from '../components/ellipsis';
 
 const routes = [{
     path: '/Affix',
@@ -252,6 +253,11 @@ const routes = [{
     path: '/carousel-loop',
     name: 'CarouselLoop',
     component: CarouselLoop
+  },
+  {
+    path: '/ellipsis',
+    name: 'Ellipsis',
+    component: Ellipsis
   }
 ];
 

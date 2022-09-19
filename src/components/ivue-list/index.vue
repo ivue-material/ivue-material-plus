@@ -5,11 +5,7 @@
 </template>
 
 <script lang='ts'>
-import {
-    defineComponent,
-    reactive,
-    provide
-} from 'vue';
+import { defineComponent, reactive, provide } from 'vue';
 
 export default defineComponent({
     name: 'ivue-list',
@@ -21,18 +17,20 @@ export default defineComponent({
          */
         ivueExpandSingle: {
             type: Boolean,
-            default: false
-        }
+            default: false,
+        },
     },
     // 组合式 API
     setup(props) {
-
         // methods
         // 扩展 tab
         const expandATab = (expandedListItem) => {
             if (props.ivueExpandSingle && expandedListItem) {
                 // 其他可扩展列表项
-                const otherExpandableListItem: any = data.ivueList.expandable.filter((target) => target.uid !== expandedListItem.uid);
+                const otherExpandableListItem: any =
+                    data.ivueList.expandable.filter(
+                        (target) => target.uid !== expandedListItem.uid
+                    );
 
                 otherExpandableListItem.forEach((expandableListItem) => {
                     expandableListItem.close();
@@ -50,7 +48,9 @@ export default defineComponent({
             });
 
             if (!findItem) {
-                data.ivueList.expandable = expandableListItems.concat([expandableListItem]);
+                data.ivueList.expandable = expandableListItems.concat([
+                    expandableListItem,
+                ]);
             }
         };
 
@@ -64,14 +64,15 @@ export default defineComponent({
             });
 
             if (findItem) {
-                data.ivueList.expandable = expandableListItems.filter((target) => target.uid !== expandableListItem.uid);
-
+                data.ivueList.expandable = expandableListItems.filter(
+                    (target) => target.uid !== expandableListItem.uid
+                );
             }
         };
 
         // data
-        const data: any = reactive<{
-            ivueList: Record<string, any>
+        const data = reactive<{
+            ivueList: Record<string, any>;
         }>({
             ivueList: {
                 /**
@@ -91,8 +92,8 @@ export default defineComponent({
                 /**
                  * 删除扩展
                  */
-                removeExpandable: removeExpandable
-            }
+                removeExpandable: removeExpandable,
+            },
         });
 
         // provide
@@ -104,7 +105,7 @@ export default defineComponent({
             // methods
             expandATab,
             pushExpandable,
-            removeExpandable
+            removeExpandable,
         };
     },
 });

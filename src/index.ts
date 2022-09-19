@@ -46,6 +46,7 @@ import { IvueCard } from './components/ivue-card';
 import { IvueScrollbar } from './components/ivue-scrollbar';
 import { IvueNoticeBar } from './components/ivue-notice-bar';
 import { IvueCarouselLoop } from './components/ivue-carousel-loop';
+import { IvueEllipsis } from './components/ivue-ellipsis';
 
 import { IvueImage } from './components/ivue-image';
 import { IvueImagePreview } from './components/ivue-image-preview';
@@ -147,6 +148,7 @@ export {
     IvueImagePreview,
     IvueNoticeBar,
     IvueCarouselLoop,
+    IvueEllipsis,
 
     Ripple,
     install

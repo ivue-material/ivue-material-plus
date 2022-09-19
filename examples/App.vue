@@ -149,6 +149,9 @@
                 <li>
                     <router-link to="/carousel-loop">CarouselLoop</router-link>
                 </li>
+                <li>
+                    <router-link to="/ellipsis">Ellipsis</router-link>
+                </li>
             </ul>
         </nav>
 
