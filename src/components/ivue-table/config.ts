@@ -1,3 +1,4 @@
+
 import { h } from 'vue';
 import { hasOwn } from '@vue/shared';
 import { get, set } from 'lodash-unified';
@@ -17,7 +18,7 @@ const defaultClassNames = {
 };
 
 
-export type Arrayable<T> = T | T[]
+export type ArrayTable<T> = T | T[]
 
 // 行样式
 export const cellStyles = {
@@ -91,7 +92,7 @@ export function defaultRenderCell<T>({
   column,
   $index,
 }: {
-  row: T
+  row: Record<string, any>
   column: TableColumnCtx<T>
   $index: number
 }) {
@@ -111,7 +112,7 @@ export function defaultRenderCell<T>({
 // 获取props
 export const getProp = <T = any>(
   obj: Record<string, any>,
-  path: Arrayable<string>,
+  path: ArrayTable<string>,
   defaultValue?: any
 ): { value: T } => {
   return {
@@ -136,13 +137,13 @@ export function treeCellPrefix<T>(
     treeNode: TreeNode
     store: Store<T>
   },
-  createPlacehoder = false
+  createPlaceholder = false
 ) {
 
   // 不是树节点
   if (!treeNode) {
     // 创建占位符
-    if (createPlacehoder) {
+    if (createPlaceholder) {
       return [
         h('span', {
           class: 'ivue-table-indent--placeholder'

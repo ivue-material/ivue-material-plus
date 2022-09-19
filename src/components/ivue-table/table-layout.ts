@@ -10,10 +10,10 @@ import type { TableColumnCtx } from './table-column/defaults';
 import type { TableHeader } from './table-header';
 
 class TableLayout<T> {
-  store: Store<T>
-  table: Table<T>
-  fit: boolean
-  showHeader: boolean
+  store!: Store<T>
+  table!: Table<T>
+  fit: boolean | undefined
+  showHeader: boolean | undefined
   scrollX: Ref<boolean>
   scrollY: Ref<boolean>
   bodyWidth: Ref<null | number>
@@ -60,7 +60,7 @@ class TableLayout<T> {
 
   // 扁平化列
   getFlattenColumns(): TableColumnCtx<T>[] {
-    const flattenColumns = [];
+    const flattenColumns: any = [];
 
     // 列
     const columns = this.table.store.states.columns.value;
@@ -108,7 +108,7 @@ class TableLayout<T> {
     // 列的宽度是否自撑开
     const fit = this.fit;
     // 获取表宽度
-    const bodyWidth = this.table.vnode.el.clientWidth;
+    const bodyWidth = this.table.vnode.el?.clientWidth;
     // 扁平化列
     const flattenColumns = this.getFlattenColumns();
     // 需要自动撑开的列
@@ -121,7 +121,7 @@ class TableLayout<T> {
     flattenColumns.forEach((item) => {
       // 初始化列宽度
       if (typeof item.width === 'number' && item.columnWidth)
-        item.columnWidth = null;
+        item.columnWidth = 0;
     });
 
 
@@ -224,7 +224,7 @@ class TableLayout<T> {
 
   // 设置高度
   setHeight(value: string | number, prop = 'height') {
-    const el = this.table.vnode.el;
+    const el = this.table.vnode.el!;
 
     // 高度转换类型
     value = this.parseHeight(value);
@@ -261,7 +261,6 @@ class TableLayout<T> {
 
   // 设置高度
   parseHeight(height: number | string) {
-
     // number
     if (typeof height === 'number') {
       return height;
@@ -279,7 +278,7 @@ class TableLayout<T> {
       }
     }
 
-    return null;
+    return 0;
   }
 
   // 更新表格高度

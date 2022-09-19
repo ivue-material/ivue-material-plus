@@ -37,7 +37,6 @@
     ],
     // 允许从没有设置默认导出的模块中默认导入
     "allowSyntheticDefaultImports": true,
-    // "strict": true,
     "types": [
       "webpack-env"
     ],
@@ -54,9 +53,8 @@
     "src/**/*.ts",
     "src/**/*.tsx",
     "src/**/*.vue",
-    // 让 ts 识别 .vue 文件
-    "./typings/vue-shim.d.ts",
     "src/index.ts",
     "src/utils/render.ts",
+    "typings/*.ts",
   ]
 }

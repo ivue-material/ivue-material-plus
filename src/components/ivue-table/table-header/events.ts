@@ -24,7 +24,7 @@ function useEvent<T>(props: TableHeaderProps<T>, emit) {
   // data
 
   // 当前鼠标移动到的拖动列
-  const draggingColumn = ref(null);
+  const draggingColumn: any = ref(null);
 
   // 拖动中
   const dragging = ref(false);
@@ -163,7 +163,7 @@ function useEvent<T>(props: TableHeaderProps<T>, emit) {
       const tableLeft = tableDom.getBoundingClientRect().left;
 
       // 当前拖动的列
-      const currentColumnDom = vm.vnode.el.querySelector(`th.${column.id}`);
+      const currentColumnDom = vm!.vnode.el!.querySelector(`th.${column.id}`);
 
       // 当前列距离窗口的距离
       const columnRect = currentColumnDom.getBoundingClientRect();
@@ -206,7 +206,7 @@ function useEvent<T>(props: TableHeaderProps<T>, emit) {
       };
 
       // 鼠标移动
-      const handleDocumentMouseMove = (event: MouseEvent) => {
+      const handleDocumentMouseMove = (event) => {
         // 当前触发点相对浏览器可视区域左距离 - 开始拖动时 触发点相对浏览器可视区域左距离
         const deltaLeft = event.clientX - (dragState.value as any).startMouseLeft;
 

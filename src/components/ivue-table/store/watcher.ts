@@ -108,7 +108,7 @@ function useWatcher<T>() {
 
   // 仅对 type=selection 的列有效，
   // 类型为 Function，Function 的返回值用来决定这一行的 CheckBox 是否可以勾选
-  const selectable: Ref<(row: T, index: number) => boolean> = ref(null);
+  const selectable: Ref<(row: T, index: number) => boolean> | any = ref(null);
 
   // 保存数据更新前选中的值
   const reserveSelection = ref(false);
@@ -117,13 +117,13 @@ function useWatcher<T>() {
   const sortProp = ref(null);
 
   // 需要排序的列
-  const sortingColumn = ref(null);
+  const sortingColumn: any = ref(null);
 
   // 排序
   const sortOrder = ref(null);
 
   // 过滤的数据
-  const filteredData = ref(null);
+  const filteredData: Ref<T[]> = ref([]);
 
   // 选择过滤的列
   // 例子
@@ -253,8 +253,9 @@ function useWatcher<T>() {
     );
 
     // 未扁平化列数据
-    originColumns.value = []
-      .concat(fixedColumns.value)
+    originColumns.value = [];
+    originColumns.value = originColumns.value
+      .concat(fixedColumns.value, notFixedColumns)
       .concat(notFixedColumns)
       .concat(rightFixedColumns.value);
 
@@ -262,7 +263,7 @@ function useWatcher<T>() {
     // 扁平化不是固定列
     const leafColumns = flattenColumns(notFixedColumns);
     // 扁平化固定列
-    const fixedLeafColumns = flattenColumns(fixedColumns.value);
+    const fixedLeafColumns: any[] = flattenColumns(fixedColumns.value);
     // 扁平化右边固定列
     const rightFixedLeafColumns = flattenColumns(rightFixedColumns.value);
 
@@ -271,7 +272,8 @@ function useWatcher<T>() {
     rightFixedLeafColumnsLength.value = rightFixedLeafColumns.length;
 
     // 扁平化后的列数据
-    columns.value = []
+    columns.value = [];
+    columns.value = columns.value
       .concat(fixedLeafColumns)
       .concat(leafColumns)
       .concat(rightFixedLeafColumns);
@@ -720,7 +722,7 @@ function useWatcher<T>() {
 
   return {
     _toggleAllSelection,
-    toggleAllSelection: null,
+    toggleAllSelection: () => { },
     isRowKey,
     updateSelectionByRowKey,
     updateColumns,

@@ -1,7 +1,9 @@
 import {
   createApp,
   h,
-  getCurrentInstance
+  getCurrentInstance,
+  VNode,
+  ComponentInternalInstance,
 } from 'vue';
 import Spin from './index.vue';
 import {
@@ -20,7 +22,7 @@ let tIndex = handleGetIndex();
 
 // 新实例
 Spin.newInstance = (props = {}) => {
-  let _instance = null;
+  let _instance: ComponentInternalInstance | any = null;
 
   const Instance = createApp({
     // data
@@ -29,11 +31,11 @@ Spin.newInstance = (props = {}) => {
     },
     // created
     created() {
-      _instance = getCurrentInstance();
+      _instance = getCurrentInstance() as ComponentInternalInstance;
     },
     // render
     render() {
-      let vnode = null;
+      let vnode: VNode | null = null;
 
       // 有渲染函数
       if (this.render) {

@@ -36,7 +36,7 @@ const convertToRows = <T>(
   let maxLevel = 1;
 
   // 遍历
-  const traverse = (column: TableColumnCtx<T>, parent: TableColumnCtx<T>) => {
+  const traverse = (column: TableColumnCtx<T>, parent: TableColumnCtx<T> | undefined) => {
     // 父
     if (parent) {
       column.level = parent.level + 1;
@@ -75,7 +75,7 @@ const convertToRows = <T>(
   });
 
   // 行数据
-  const rows = [];
+  const rows: any[] = [];
 
   for (let i = 0; i < maxLevel; i++) {
     rows.push([]);

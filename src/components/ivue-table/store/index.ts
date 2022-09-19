@@ -128,7 +128,7 @@ function useStore<T>() {
     ) {
       const array = unref(states._columns);
 
-      let newColumns = [];
+      let newColumns: TableColumnCtx<T>[] = [];
 
       // 不是组合头部
       if (!parent) {
@@ -143,7 +143,7 @@ function useStore<T>() {
         }
 
         // 设置子列
-        parent.children.push(column);
+        parent.children && parent.children.push(column);
 
         // 设置为新的列
         newColumns = replaceColumn(array, parent);
@@ -182,7 +182,7 @@ function useStore<T>() {
       const array = unref(states._columns) || [];
 
       // 有父节点
-      if (parent) {
+      if (parent && parent.children) {
         const findIndex = parent.children.findIndex((item) => item.id === column.id);
 
         // 移除当前行
@@ -296,7 +296,7 @@ function useStore<T>() {
 
   // 调用数据
   const commit = (name: keyof typeof mutations, ...args) => {
-    const mutations = vm.store.mutations;
+    const mutations: any = vm.store.mutations;
 
     // 判断 mutations 是否存在当前方法
     if (mutations[name]) {

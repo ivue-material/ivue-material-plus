@@ -14,7 +14,8 @@ const noStylesComponents = [
   "ivue-count-up",
   "ivue-radio-group",
   "ivue-option",
-  "ivue-option-group"
+  "ivue-option-group",
+  "ivue-image-preview"
 ];
 const useDependentComponents = [
   {

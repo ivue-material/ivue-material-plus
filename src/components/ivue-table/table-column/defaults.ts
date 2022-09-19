@@ -25,7 +25,7 @@ interface TableColumnCtx<T> {
   label: string
   width: string | number
   minWidth: string | number
-  children: TableColumnCtx<T>[]
+  children?: TableColumnCtx<T>[]
   isSubColumn: boolean,
   type: string
   sortable: boolean | string
@@ -43,7 +43,7 @@ interface TableColumnCtx<T> {
   renderHeader: (data: SlotsContent<T>) => VNode
   renderCell: (data: any) => void
   formatter: (
-    row: T,
+    row: Record<string, any>,
     column: TableColumnCtx<T>,
     cellValue,
     index: number
@@ -56,11 +56,11 @@ interface TableColumnCtx<T> {
   level: number
   rowSpan: number
   colSpan: number
-  order: string
+  order: string | null
   labelClassName: string
   columns: TableColumnCtx<T>[]
   resizable: boolean
-  selectable: (row: T, index: number) => boolean
+  selectable: (row: T, index: number | string) => boolean
   reserveSelection: boolean
   sortOrders: ('ascending' | 'descending' | null)[]
   sortBy: string | ((row: T, index: number) => string) | string[]

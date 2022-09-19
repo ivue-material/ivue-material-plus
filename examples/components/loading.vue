@@ -1,21 +1,17 @@
 <template>
-    <div>
+    <div class="card">
         <h1>区域加载</h1>
-        <div class="conetn1" v-loading="true"></div>
+        <div class="conetn1" v-loading="show"></div>
         <h1>自定义</h1>
         <div
             class="conetn1"
-            v-loading="{
-                iconRender: renderIcon,
-                visible: true
-            }"
+            v-loading="show"
             ivue-loading-text="拼命加载中"
-            ivue-loading-iconClass="ivue-icon"
-            ivue-loading-iconText="nightlight_round"
-            ivue-loading-background="rgba(0, 0, 0, 1)"
+            ivue-loading-icon-class="ivue-icon red"
+            ivue-loading-icon-text="nightlight_round"
         ></div>
+        <button @click="show = !show">show</button>
         <h1>整页加载</h1>
-
         <div>
             <ivue-button
                 :color="['#5AB2FF', '#5B8EFF']"
@@ -54,36 +50,23 @@ export default {
                 text: 'Loading',
                 spinner: 'el-icon-loading',
                 background: 'rgba(0, 0, 0, 0.7)',
+                loadingSpinner: this.renderIcon
             });
             setTimeout(() => {
                 loading.close();
             }, 2000);
         },
         renderIcon() {
-            return h(
-                'svg',
-                {
-                    class: 'circular1',
-                    viewBox: '25 25 50 50',
-                },
-                [
-                    h('circle', {
-                        class: 'path1',
-                        cx: '50',
-                        cy: '50',
-                        r: '20',
-                        fill: 'none',
-                        strokeWidth: '10',
-                        strokeMiterlimit: '10',
-                    }),
-                ]
-            );
+            return h('ivue-icon', {}, ['menu']);
         },
     },
 };
 </script>
 
 <style lang="scss">
+.card{
+    height: 10000px;
+}
 .conetn1 {
     height: 100px;
     width: 100px;

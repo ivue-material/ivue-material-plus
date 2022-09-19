@@ -10,9 +10,9 @@ function useCurrent<T>(watcherData: WatcherPropsData<T>) {
   const vm = getCurrentInstance() as Table<T>;
 
   // 当前行数据
-  const currentRow: Ref<T> = ref(null);
+  const currentRow: Ref<T> | any = ref(null);
   // 当前行key
-  const _currentRowKey = ref<string>(null);
+  const _currentRowKey = ref<string | null>(null);
 
   // 更新当前行数据
   const updateCurrentRowData = () => {
@@ -59,7 +59,8 @@ function useCurrent<T>(watcherData: WatcherPropsData<T>) {
   const setCurrentRowKey = (key: string) => {
     const { data, rowKey } = watcherData;
 
-    let _currentRow = null;
+    // 当前行数据
+    let _currentRow: Ref<T> | any = null;
 
     // 行数据的key
     if (rowKey.value) {
@@ -69,7 +70,7 @@ function useCurrent<T>(watcherData: WatcherPropsData<T>) {
       );
     }
 
-    // 当前行数据的key
+    // 获取rowKey对应的数据
     currentRow.value = _currentRow;
 
     vm.emit('on-current-change', currentRow.value, null);

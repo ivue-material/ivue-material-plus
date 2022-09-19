@@ -131,7 +131,7 @@ interface Table<T> extends ComponentInternalInstance {
   // onMounted 是否渲染完成
   $ready: boolean
   // 列表行hover状态
-  hoverState?: HoverState<T>
+  hoverState?: HoverState<T> | null
   // 渲染可展开的按钮的内容
   renderExpanded: RenderExpanded<T>
   // store

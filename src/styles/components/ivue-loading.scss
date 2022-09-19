@@ -55,6 +55,13 @@ $name: 'ivue-loading';
       stroke: currentColor;
       stroke-linecap: round;
     }
+
+    i {
+      width: auto;
+      min-width: auto;
+      height: auto;
+      margin: 0;
+    }
   }
 
   // 文字

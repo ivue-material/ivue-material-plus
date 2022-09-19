@@ -69,7 +69,7 @@ const install = (app: App, opts: any = {}): void => {
         // 图片预览操作栏选项，按数组顺序排序
         image: {
             toolbar: opts.image ? opts.image.toolbar ? opts.image.toolbar : '' : ''
-        }
+        },
     };
 
     // 注册全局指令

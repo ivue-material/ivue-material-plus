@@ -271,7 +271,7 @@ function useStyle<T>(
     let shouldUpdateLayout = false;
 
     // 当前el
-    const el = table.vnode.el;
+    const el = table.vnode.el!;
 
     // 当前改变的值
     const {
@@ -440,12 +440,12 @@ function useStyle<T>(
 
   // 监听高度变化设置表格高度
   watchEffect(() => {
-    layout.setHeight(props.height);
+    props.height && layout.setHeight(props.height);
   });
 
   // 监听高度变化设置表格最大高度
   watchEffect(() => {
-    layout.setMaxHeight(props.maxHeight);
+    props.maxHeight && layout.setMaxHeight(props.maxHeight);
   });
 
   // 以通过该属性设置 Table 目前的展开行
