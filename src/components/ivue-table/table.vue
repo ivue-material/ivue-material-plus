@@ -139,6 +139,7 @@ import TableBody from './table-body';
 import IvueScrollbar from '../ivue-scrollbar/index.vue';
 import TableFooter from './table-footer';
 
+// props
 import defaultProps from './table/defaults';
 
 // ts

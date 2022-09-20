@@ -46,8 +46,12 @@ import {
     watch,
     ref,
 } from 'vue';
+
+// utils
 import { transferIndex, transferIncrease } from '../../utils/transfer-queue';
+import { oneOf } from '../../utils/assist';
 import Popper from '../../utils/mixins/popper';
+
 // 注册外部点击事件插件
 import { ClickOutside } from '../../utils/directives';
 
@@ -196,6 +200,30 @@ export default defineComponent({
             type: Boolean,
             default: false,
         },
+        /**
+         * 弹窗的展开方向
+         *
+         * @type {String}
+         */
+        placement: {
+            validator(value: string) {
+                return oneOf(value, [
+                    'top',
+                    'top-start',
+                    'top-end',
+                    'bottom',
+                    'bottom-start',
+                    'bottom-end',
+                    'left',
+                    'left-start',
+                    'left-end',
+                    'right',
+                    'right-start',
+                    'right-end',
+                ]);
+            },
+            default: 'bottom',
+        },
     },
     setup(props: any) {
         // dom
@@ -343,6 +371,12 @@ export default defineComponent({
 
             // 是否显示
             if (visible.value) {
+
+                // 清除定时器
+                if (data.timeout) {
+                    clearTimeout(data.timeout);
+                }
+
                 return;
             }
 

@@ -1,7 +1,11 @@
 $name: 'ivue-ellipsis';
 
 .#{$name} {
-  &-more {
-    display: inline-block;
+  font-size: 14px;
+
+  &-more {}
+
+  &-hidden {
+    visibility: hidden;
   }
 }
