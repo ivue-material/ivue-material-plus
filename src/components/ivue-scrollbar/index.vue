@@ -160,7 +160,8 @@ export default defineComponent({
 
         const bar = ref<BarInstance>();
 
-        const data: any = reactive<{
+        // data
+        const data = reactive<{
             barHeight: string;
             barWidth: string;
             ratioX: number;

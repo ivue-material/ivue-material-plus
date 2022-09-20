@@ -39,6 +39,7 @@ import IvueScrollbar from './ivue-scrollbar';
 import IvueNoticeBar from './ivue-notice-bar';
 import IvueCarouselLoop from './ivue-carousel-loop';
 import IvueEllipsis from './ivue-ellipsis';
+import IvueRelativeTime from './ivue-relative-time';
 
 import { IvueImage, IvueImagePreview } from './ivue-image';
 import { IvueCollapse } from './ivue-collapse';
@@ -105,6 +106,7 @@ export {
   IvueNoticeBar,
   IvueCarouselLoop,
   IvueEllipsis,
+  IvueRelativeTime,
 
   Ripple
 };

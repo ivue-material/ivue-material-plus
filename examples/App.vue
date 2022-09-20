@@ -152,6 +152,9 @@
                 <li>
                     <router-link to="/ellipsis">Ellipsis</router-link>
                 </li>
+                <li>
+                    <router-link to="/relative-time">RelativeTime</router-link>
+                </li>
             </ul>
         </nav>
 

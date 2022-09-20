@@ -45,6 +45,7 @@ import Image from '../components/image';
 import NoticeBar from '../components/notice-bar';
 import CarouselLoop from '../components/carousel-loop';
 import Ellipsis from '../components/ellipsis';
+import RelativeTime from '../components/relative-time.vue';
 
 const routes = [{
     path: '/Affix',
@@ -258,6 +259,11 @@ const routes = [{
     path: '/ellipsis',
     name: 'Ellipsis',
     component: Ellipsis
+  },
+  {
+    path: '/relative-time',
+    name: 'RelativeTime',
+    component: RelativeTime
   }
 ];
 
