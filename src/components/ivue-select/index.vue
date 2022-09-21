@@ -60,7 +60,7 @@
                 :data-transfer="transfer"
                 :placement="placement"
                 :eventsEnabled="eventsEnabled"
-                :class="dropdownClass"
+                :class="dropdownClasses"
                 v-transfer-dom
                 key="IvueSelectDropdown"
                 ref="dropdown"
@@ -80,7 +80,7 @@
                 >
                     <!-- 创建选项 -->
                     <ivue-option
-                        :class="createItemClass"
+                        :class="createItemClasses"
                         :allowCreate="allowCreate"
                         :showCreateItem="showCreateItem"
                         :filterQuery="data.filterQuery"
@@ -616,7 +616,7 @@ export default defineComponent({
         });
 
         // 创建列表选项样式
-        const createItemClass = computed(() => {
+        const createItemClasses = computed(() => {
             return [`${prefixCls}-item`, `${prefixCls}-item--create`];
         });
 
@@ -821,7 +821,7 @@ export default defineComponent({
         });
 
         // 下拉框样式
-        const dropdownClass = computed(() => {
+        const dropdownClasses = computed(() => {
             return {
                 [`${prefixCls}-dropdown--transfer`]: props.transfer,
                 [`${prefixCls}-multiple`]: props.multiple && props.transfer,
@@ -1739,7 +1739,7 @@ export default defineComponent({
             // computed
             classes,
             selectionClasses,
-            createItemClass,
+            createItemClasses,
             selectTabindex,
             currentSelectValue,
             isSearchMethod,
@@ -1747,7 +1747,7 @@ export default defineComponent({
             dropVisible,
             canClearable,
             showCreateItem,
-            dropdownClass,
+            dropdownClasses,
 
             // methods
             handleClickOutside,

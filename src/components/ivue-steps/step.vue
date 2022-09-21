@@ -1,5 +1,5 @@
 <template>
-    <div :class="wrapClasses" :style="wrapStyle">
+    <div :class="wrapClasses" :style="wrapStyles">
         <!-- 下划线 -->
         <div
             :class="[`${prefixCls}-divider`]"
@@ -202,7 +202,7 @@ export default defineComponent({
         });
 
         // 外层样式
-        const wrapStyle = computed(() => {
+        const wrapStyles = computed(() => {
             const space = steps.props.space;
 
             const style: Record<string, unknown> = {
@@ -250,7 +250,7 @@ export default defineComponent({
 
             // computed
             wrapClasses,
-            wrapStyle,
+            wrapStyles,
         };
     },
     components: {

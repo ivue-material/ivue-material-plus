@@ -4,7 +4,7 @@
 
         <!-- 输入框 -->
         <div
-            :class="inputWrapClass"
+            :class="inputWrapClasses"
             @click="handleClickInput"
             @drop.prevent="handleDrop"
             @dragover.prevent="handleDragOver"
@@ -20,7 +20,7 @@
                 @change="handleChange"
             />
             <slot>
-                <div :class="inputContentClass" :style="getSizeStyle(previewSize)">
+                <div :class="inputContentClasses" :style="getSizeStyle(previewSize)">
                     <!-- 图标 -->
                     <ivue-icon :class="`${prefixCls}-content__icon`">cloud_upload</ivue-icon>
                     <p :class="`${prefixCls}-content__text`">点击上传</p>
@@ -286,7 +286,7 @@ export default defineComponent({
 
         // computed
 
-        const inputWrapClass = computed(() => {
+        const inputWrapClasses = computed(() => {
             return [
                 {
                     [`${prefixCls}-select`]: props.type === 'select',
@@ -294,7 +294,7 @@ export default defineComponent({
             ];
         });
 
-        const inputContentClass = computed(() => {
+        const inputContentClasses = computed(() => {
             return [
                 {
                     [`${prefixCls}-content`]: true,
@@ -578,8 +578,8 @@ export default defineComponent({
             input,
 
             // computed
-            inputWrapClass,
-            inputContentClass,
+            inputWrapClasses,
+            inputContentClasses,
 
             // methods
             handleClickInput,

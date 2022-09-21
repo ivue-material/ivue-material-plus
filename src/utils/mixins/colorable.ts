@@ -1,6 +1,4 @@
-function isCssColor(color) {
-    return !!color && !!color.match(/^(#|(rgb|hsl)a?\()/);
-}
+import { isCssColor } from '../../utils/helpers';
 
 export default {
     name: 'colorable',

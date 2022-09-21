@@ -12,8 +12,8 @@
             </transition>
             <!-- 内容 -->
             <div
-                :class="tabWrapperClass"
-                :style="tabWrapperStyle"
+                :class="tabWrapperClasses"
+                :style="tabWrapperStyles"
                 v-touch="{
                     start: e => overflowCheck(e, onTouchStart),
                     move: e => overflowCheck(e, onTouchMove),
@@ -21,7 +21,7 @@
                 }"
                 ref="wrapper"
             >
-                <div :class="tabContainerClass" :style="containerStyles" ref="container">
+                <div :class="tabContainerClasses" :style="containerStyles" ref="container">
                     <slider
                         :sliderLeft="data.sliderLeft"
                         :sliderWidth="data.sliderWidth"
@@ -64,6 +64,8 @@ import {
     onMounted,
     watchEffect,
 } from 'vue';
+
+  /* eslint-disable */
 
 import tabsComputed from './tabs-computed';
 import tabsTouch from './tabs-touch';
@@ -246,7 +248,7 @@ export default defineComponent({
             tabsComputed(props, data);
 
         // tab外层样式
-        const tabWrapperClass = computed(() => {
+        const tabWrapperClasses = computed(() => {
             return {
                 'ivue-tabs-wrapper': true,
                 'ivue-tabs-wrapper--show-arrow': hasArrows.value,
@@ -254,7 +256,7 @@ export default defineComponent({
         });
 
         // tab外层样式
-        const tabWrapperStyle = computed(() => {
+        const tabWrapperStyles = computed(() => {
             const regexp = new RegExp(/[a-zA-Z]/g);
 
             // 是否有单位
@@ -275,7 +277,7 @@ export default defineComponent({
         });
 
         // tab样式
-        const tabContainerClass = computed(() => {
+        const tabContainerClasses = computed(() => {
             return {
                 'ivue-tabs-container': true,
                 'ivue-tabs-container--centered': props.centered,
@@ -502,6 +504,7 @@ export default defineComponent({
         watch(
             () => data.scrollOffset,
             () => {
+                console.log('/');
                 // 是否开启按钮
                 if (hasArrows.value) {
                     data.nextIconVisible = checkNextIcon();
@@ -569,11 +572,11 @@ export default defineComponent({
             data,
 
             // computed
-            tabWrapperClass,
+            tabWrapperClasses,
             hasArrows,
-            tabContainerClass,
+            tabContainerClasses,
             containerStyles,
-            tabWrapperStyle,
+            tabWrapperStyles,
 
             // methods
             overflowCheck,

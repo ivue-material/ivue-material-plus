@@ -10,7 +10,7 @@ const HIDDEN_TEXTAREA_STYLE = `
   right:0 !important
 `;
 
-const SIZING_STYLE: any = [
+const SIZING_STYLE = [
     'letter-spacing',
     'line-height',
     'padding-top',
@@ -31,6 +31,7 @@ const SIZING_STYLE: any = [
 const computedStyleCache: Record<string, any> = {};
 let hiddenTextarea;
 
+// 获取节点样式
 function calculateNodeStyling(node: any, useCache = false) {
     const nodeRef = (
         node.getAttribute('id') ||
@@ -77,11 +78,13 @@ function calculateNodeStyling(node: any, useCache = false) {
     return nodeInfo;
 }
 
-export const calcTextareaHeight = (uiTextNode: Record<string, any>, minRows = null, maxRows = null, useCache = false): any => {
+// 计算Textarea高度
+export const calcTextareaHeight = (uiTextNode: Record<string, any>, minRows = null, maxRows = null, useCache = false) => {
     if (!hiddenTextarea) {
         hiddenTextarea = document.createElement('textarea');
         document.body.appendChild(hiddenTextarea);
     }
+
     // Fix wrap="off" issue
     // https://github.com/ant-design/ant-design/issues/6577
     if (uiTextNode.getAttribute('wrap')) {
@@ -108,18 +111,21 @@ export const calcTextareaHeight = (uiTextNode: Record<string, any>, minRows = nu
     let height = hiddenTextarea.scrollHeight;
     let overflowY;
 
+    // border-box: add border, since height = content + padding + border
     if (boxSizing === 'border-box') {
-        // border-box: add border, since height = content + padding + border
         height = height + borderSize;
-    } else if (boxSizing === 'content-box') {
-        // remove padding, since height = content
+    }
+    // remove padding, since height = content
+    else if (boxSizing === 'content-box') {
         height = height - paddingSize;
     }
 
     if (minRows !== null || maxRows !== null) {
         // measure height of a textarea with a single row
         hiddenTextarea.value = ' ';
+
         const singleRowHeight = hiddenTextarea.scrollHeight - paddingSize;
+
         if (minRows !== null) {
             minHeight = singleRowHeight * minRows;
             if (boxSizing === 'border-box') {
@@ -127,15 +133,19 @@ export const calcTextareaHeight = (uiTextNode: Record<string, any>, minRows = nu
             }
             height = Math.max(minHeight, height);
         }
+
         if (maxRows !== null) {
             maxHeight = singleRowHeight * maxRows;
+
             if (boxSizing === 'border-box') {
                 maxHeight = maxHeight + paddingSize + borderSize;
             }
+
             overflowY = height > maxHeight ? '' : 'hidden';
             height = Math.min(maxHeight, height);
         }
     }
+
     // Remove scroll bar flash when autosize without maxRows
     if (!maxRows) {
         overflowY = 'hidden';

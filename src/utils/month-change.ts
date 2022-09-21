@@ -4,8 +4,8 @@ import Pad from './pad';
  * @param {String} value YYYY-MM format
  * @param {Number} sign -1 or +1
  */
-export default (value, sign) => {
-      const [year, month] = String(value).split('-').map(v => 1 * v);
+export default (value: string, sign: number) => {
+      const [year, month] = String(value).split('-').map((v: any) => 1 * v);
 
       // 月尾
       if (month + sign === 0) {

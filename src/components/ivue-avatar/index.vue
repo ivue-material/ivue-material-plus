@@ -1,5 +1,5 @@
 <template>
-    <span :class="wrapperClass" :style="wrapperStyle" ref="wrapper">
+    <span :class="wrapperClasses" :style="wrapperStyles" ref="wrapper">
         <!-- 图片 -->
         <slot name="img">
             <img :class="`${prefixCls}-img`" v-if="src" :src="src" @error="handleImageError" />
@@ -9,7 +9,7 @@
             <ivue-icon v-if="icon">{{ icon }}</ivue-icon>
         </slot>
         <!-- text -->
-        <span :class="`${prefixCls}-text`" :style="slotStyle" ref="text" v-if="$slots.default">
+        <span :class="`${prefixCls}-text`" :style="slotStyles" ref="text" v-if="$slots.default">
             <slot></slot>
         </span>
     </span>
@@ -111,7 +111,7 @@ export default defineComponent({
         // computed
 
         // 外层样式
-        const wrapperClass = computed(() => {
+        const wrapperClasses = computed(() => {
             const _class = proxy.setBackgroundColor(props.color).class;
 
             return [
@@ -124,7 +124,7 @@ export default defineComponent({
         });
 
         // 外层样式
-        const wrapperStyle = computed(() => {
+        const wrapperStyles = computed(() => {
             const _style = proxy.setBackgroundColor(props.color).style;
 
             // 大小
@@ -151,7 +151,7 @@ export default defineComponent({
         });
 
         // slot样式
-        const slotStyle = computed(() => {
+        const slotStyles = computed(() => {
             let style = {};
 
             if (data.isSlotShow) {
@@ -220,9 +220,9 @@ export default defineComponent({
             // data
             data,
             // computed
-            wrapperClass,
-            wrapperStyle,
-            slotStyle,
+            wrapperClasses,
+            wrapperStyles,
+            slotStyles,
 
             // methods
             handleImageError,

@@ -1,5 +1,5 @@
 <template>
-    <div :class="wrapperClasses" :style="wrapperStyle" v-show="data.show">
+    <div :class="wrapperClasses" :style="wrapperStyles" v-show="data.show">
         <!-- icon -->
         <div :class="`${prefixCls}-left`">
             <slot name="prevIcon">
@@ -10,7 +10,7 @@
         <div :class="`${prefixCls}-text--wrapper`" ref="contentWrapper">
             <div
                 :class="textClasses"
-                :style="textStyle"
+                :style="textStyles"
                 :onTransitionend="handleTransitionEnd"
                 ref="content"
             >
@@ -212,7 +212,7 @@ export default defineComponent({
             ];
         });
 
-        const wrapperStyle = computed(() => {
+        const wrapperStyles = computed(() => {
             return {
                 ...setBackgroundColor(props.background),
                 ...setTextColor(props.textColor),
@@ -256,7 +256,7 @@ export default defineComponent({
         };
 
         // 文字样式
-        const textStyle = computed(() => {
+        const textStyles = computed(() => {
             return {
                 transform: data.offset ? `translateX(${data.offset}px)` : '',
                 transitionDuration: `${data.duration}s`,
@@ -406,10 +406,10 @@ export default defineComponent({
             data,
 
             // computed
-            textStyle,
+            textStyles,
             textClasses,
             wrapperClasses,
-            wrapperStyle,
+            wrapperStyles,
 
             // methods
             reset,

@@ -2,7 +2,7 @@
     <!-- 简洁版 -->
     <ul :class="simpleWrapperClasses" v-if="simple">
         <!-- 上一页按钮 -->
-        <li :class="prevClass" @click="handlePrev">
+        <li :class="prevClasses" @click="handlePrev">
             <slot name="prev">
                 <ivue-icon>{{ prevIcon }}</ivue-icon>
             </slot>
@@ -29,31 +29,31 @@
         </div>
 
         <!-- 下一页按钮 -->
-        <li :class="nextClass" @click="handleNext">
+        <li :class="nextClasses" @click="handleNext">
             <slot name="next">
                 <ivue-icon>{{ nextIcon }}</ivue-icon>
             </slot>
         </li>
     </ul>
     <!-- 正常版 -->
-    <ul :class="wrapperClass" v-else>
+    <ul :class="wrapperClasses" v-else>
         <!-- 数据总条数 -->
         <span :class="`${prefixCls}-total`" v-if="showTotal">
             <slot name="total">{{ `共 ${total} 条` }}</slot>
         </span>
         <!-- 上一页按钮 -->
-        <li :class="prevClass" @click="handlePrev">
+        <li :class="prevClasses" @click="handlePrev">
             <slot name="prev">
                 <ivue-icon>{{ prevIcon }}</ivue-icon>
             </slot>
         </li>
         <!-- 第一页 -->
-        <li :class="firstClass" @click="handleCangePage(1)">
+        <li :class="firstClasses" @click="handleCangePage(1)">
             <span :class="itemTextClass">1</span>
         </li>
 
         <!-- 上一页更多 -->
-        <li :class="abbreviationClass" v-show="data.showPrevMore" @click="handleFastPrev">
+        <li :class="abbreviationClasses" v-show="data.showPrevMore" @click="handleFastPrev">
             <slot name="prevArrow">
                 <!-- 箭头 -->
                 <span class="arrow">
@@ -68,7 +68,7 @@
         <!-- 选项 -->
         <li
             :class="{
-                ...itemClass,
+                ...itemClasses,
                 [`${prefixCls}-item--active`]: item === data.currentPage
             }"
             v-for="(item, index) in pagerList"
@@ -79,7 +79,7 @@
         </li>
 
         <!-- 下一页更多 -->
-        <li :class="abbreviationClass" v-show="data.showNextMore" @click="handleFastNext">
+        <li :class="abbreviationClasses" v-show="data.showNextMore" @click="handleFastNext">
             <slot name="nextArrow">
                 <!-- 箭头 -->
                 <span class="arrow">
@@ -92,12 +92,12 @@
         </li>
 
         <!-- 最后一页 -->
-        <li :class="lastClass" @click="handleCangePage(allPages)">
+        <li :class="lastClasses" @click="handleCangePage(allPages)">
             <span :class="itemTextClass">{{ allPages }}</span>
         </li>
 
         <!-- 下一页按钮 -->
-        <li :class="nextClass" @click="handleNext">
+        <li :class="nextClasses" @click="handleNext">
             <slot name="next">
                 <ivue-icon>{{ nextIcon }}</ivue-icon>
             </slot>
@@ -341,7 +341,7 @@ export default defineComponent({
         });
 
         // 外层样式
-        const wrapperClass = computed(() => {
+        const wrapperClasses = computed(() => {
             return [
                 prefixCls,
                 {
@@ -352,12 +352,12 @@ export default defineComponent({
         });
 
         // 上一页样式
-        const prevClass = computed(() => {
+        const prevClasses = computed(() => {
             return [
                 `${prefixCls}-prev`,
                 {
                     // 选项样式
-                    ...itemClass.value,
+                    ...itemClasses.value,
                     [`${prefixCls}-slot`]: slots.prev,
                     [`${prefixCls}-disabled`]:
                         data.currentPage === 1 || props.disabled,
@@ -366,12 +366,12 @@ export default defineComponent({
         });
 
         // 下一页样式
-        const nextClass = computed(() => {
+        const nextClasses = computed(() => {
             return [
                 `${prefixCls}-next`,
                 {
                     // 选项样式
-                    ...itemClass.value,
+                    ...itemClasses.value,
                     [`${prefixCls}-slot`]: slots.next,
                     [`${prefixCls}-disabled`]:
                         data.currentPage === allPages.value || props.disabled,
@@ -380,7 +380,7 @@ export default defineComponent({
         });
 
         // 选项样式
-        const itemClass = computed(() => {
+        const itemClasses = computed(() => {
             return {
                 [`${prefixCls}-item`]: true,
             };
@@ -394,20 +394,20 @@ export default defineComponent({
         });
 
         // 第一页按钮
-        const firstClass = computed(() => {
+        const firstClasses = computed(() => {
             return {
                 // 选项样式
-                ...itemClass.value,
+                ...itemClasses.value,
                 // 激活
                 [`${prefixCls}-item--active`]: data.currentPage === 1,
             };
         });
 
         // 最后一页按钮
-        const lastClass = computed(() => {
+        const lastClasses = computed(() => {
             return {
                 // 选项样式
-                ...itemClass.value,
+                ...itemClasses.value,
                 // 激活
                 [`${prefixCls}-item--active`]:
                     data.currentPage === allPages.value,
@@ -415,9 +415,9 @@ export default defineComponent({
         });
 
         // 缩略号样式
-        const abbreviationClass = computed(() => {
+        const abbreviationClasses = computed(() => {
             return {
-                ...itemClass.value,
+                ...itemClasses.value,
                 [`${prefixCls}-abbreviation`]: true,
             };
         });
@@ -752,15 +752,15 @@ export default defineComponent({
             data,
 
             // computed
-            wrapperClass,
-            prevClass,
-            nextClass,
-            itemClass,
+            wrapperClasses,
+            prevClasses,
+            nextClasses,
+            itemClasses,
             itemTextClass,
-            firstClass,
+            firstClasses,
             allPages,
-            lastClass,
-            abbreviationClass,
+            lastClasses,
+            abbreviationClasses,
             pagerList,
             simpleWrapperClasses,
             simplePageClasses,

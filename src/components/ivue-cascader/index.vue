@@ -46,8 +46,8 @@
                 :transfer="transfer"
                 :data-transfer="transfer"
                 :eventsEnabled="eventsEnabled"
-                :class="dropdownClass"
-                :style="dropdownStyle"
+                :class="dropdownClasses"
+                :style="dropdownStyles"
                 v-transfer-dom
                 ref="dropdown"
                 v-show="data.visibleMenu"
@@ -451,7 +451,7 @@ export default defineComponent({
         });
 
         // 下拉框样式
-        const dropdownClass = computed(() => {
+        const dropdownClasses = computed(() => {
             return {
                 [`${prefixCls}-dropdown-not-found`]:
                     props.filterable &&
@@ -463,7 +463,7 @@ export default defineComponent({
         });
 
         // 下拉框样式
-        const dropdownStyle = computed(() => {
+        const dropdownStyles = computed(() => {
             return {
                 display: data.filterableSelect ? 'inline-block' : 'none',
             };
@@ -888,8 +888,8 @@ export default defineComponent({
             displayRender,
             displayInputRender,
             inputPlaceholder,
-            dropdownClass,
-            dropdownStyle,
+            dropdownClasses,
+            dropdownStyles,
             showCloseIcon,
             querySelections,
 

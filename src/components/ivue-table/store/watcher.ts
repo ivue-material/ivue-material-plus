@@ -255,7 +255,7 @@ function useWatcher<T>() {
     // 未扁平化列数据
     originColumns.value = [];
     originColumns.value = originColumns.value
-      .concat(fixedColumns.value, notFixedColumns)
+      .concat(fixedColumns.value)
       .concat(notFixedColumns)
       .concat(rightFixedColumns.value);
 

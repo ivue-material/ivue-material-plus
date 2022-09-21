@@ -1,6 +1,6 @@
 <template>
     <div class="ivue-tabs-slider-wrapper" :style="sliderWrapperStyles">
-        <div :class="sliderClass" :style="sliderStyles"></div>
+        <div :class="sliderClasses" :style="sliderStyles"></div>
     </div>
 </template>
 
@@ -63,7 +63,7 @@ export default defineComponent({
             };
         });
 
-        const sliderClass = computed(() => {
+        const sliderClasses = computed(() => {
             return {
                 'ivue-tabs-slider': true,
                 [props.color]: !isCssColor(props.color),
@@ -87,7 +87,7 @@ export default defineComponent({
         return {
             // computed
             sliderWrapperStyles,
-            sliderClass,
+            sliderClasses,
             sliderStyles,
         };
     },

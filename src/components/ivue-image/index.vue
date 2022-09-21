@@ -17,7 +17,7 @@
             <img
                 :src="src"
                 :class="imageClasses"
-                :style="imageStyle"
+                :style="imageStyles"
                 :referrerPolicy="referrerPolicy"
                 :loading="loadingType"
                 @load="handleImageLoad"
@@ -267,7 +267,7 @@ export default defineComponent({
         });
 
         // 图片样式
-        const imageStyle = computed(() => {
+        const imageStyles = computed(() => {
             const { fit } = props;
 
             let obj = {};
@@ -425,7 +425,7 @@ export default defineComponent({
             // computed
             wrapperStyles,
             imageClasses,
-            imageStyle,
+            imageStyles,
             loadingType,
 
             // methods

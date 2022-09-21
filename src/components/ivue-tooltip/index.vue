@@ -15,8 +15,8 @@
             <transition name="fade-tooltip">
                 <div
                     ref="popper"
-                    :class="popperClass"
-                    :style="popperStyle"
+                    :class="popperClasses"
+                    :style="popperStyles"
                     @click.stop
                     @mouseenter="handleMouseenter"
                     @mouseleave="handleMouseleave"
@@ -26,7 +26,7 @@
                         <!-- arrow -->
                         <div :class="[`${prefixCls}-arrow`]" ref="arrow" v-show="!noArrow"></div>
                         <!-- 内容 -->
-                        <div :class="innerClass" :style="innerStyles">
+                        <div :class="innerClasses" :style="innerStyles">
                             <slot name="content">{{ content }}</slot>
                         </div>
                     </div>
@@ -269,7 +269,7 @@ export default defineComponent({
         // computed
 
         // 悬浮框样式
-        const popperClass = computed(() => {
+        const popperClasses = computed(() => {
             return [
                 `${prefixCls}-popper`,
                 {
@@ -282,7 +282,7 @@ export default defineComponent({
         });
 
         // 悬浮框样式
-        const popperStyle = computed(() => {
+        const popperStyles = computed(() => {
             let styles = {};
 
             // 是否将弹层放置于 body 内
@@ -294,7 +294,7 @@ export default defineComponent({
         });
 
         // 内容
-        const innerClass = computed(() => {
+        const innerClasses = computed(() => {
             return [
                 `${prefixCls}-inner`,
                 {
@@ -438,9 +438,9 @@ export default defineComponent({
             visible,
 
             // computed
-            popperClass,
-            popperStyle,
-            innerClass,
+            popperClasses,
+            popperStyles,
+            innerClasses,
             innerStyles,
 
             // methods

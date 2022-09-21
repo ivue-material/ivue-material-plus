@@ -9,7 +9,7 @@ export type SFCInstallWithContext<T> = SFCWithInstall<T> & {
   _context: AppContext | null
 }
 
-// 安装组件
+// 安装组件 Record -> 构造一个对象类型 其属性键为Keys，其属性值为Type
 export const withInstall = <T, E extends Record<string, any>>(
   // 当前组件
   main: T,

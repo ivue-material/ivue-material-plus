@@ -2,11 +2,11 @@
     <teleport to="body" :disabled="!transfer">
         <!-- 蒙层 -->
         <transition name="fade">
-            <div :class="`${prefixCls}-mask`" :style="maskStyle" v-if="modelValue"></div>
+            <div :class="`${prefixCls}-mask`" :style="maskStyles" v-if="modelValue"></div>
         </transition>
         <!-- 内容 -->
         <transition name="fade">
-            <div :class="`${prefixCls}-wrapper`" :style="maskStyle" v-if="modelValue" ref="wrapper">
+            <div :class="`${prefixCls}-wrapper`" :style="maskStyles" v-if="modelValue" ref="wrapper">
                 <div :class="prefixCls" @click.stop="handleClickMask">
                     <!-- 加载中 -->
                     <ivue-spin
@@ -20,7 +20,7 @@
                     </div>
                     <!-- 图片 -->
                     <img
-                        :style="imageStyle"
+                        :style="imageStyles"
                         :class="imageClasses"
                         :src="currentImage"
                         :key="`${data.currentIndex}`"
@@ -222,7 +222,7 @@ export default defineComponent({
         // computed
 
         // 蒙版样式
-        const maskStyle = computed(() => {
+        const maskStyles = computed(() => {
             return {
                 zIndex: data.maskIndex + 1000,
             };
@@ -251,7 +251,7 @@ export default defineComponent({
         });
 
         // 图片style
-        const imageStyle = computed(() => {
+        const imageStyles = computed(() => {
             let translateX = data.imageTranslate.x / data.imageScale;
             let translateY = data.imageTranslate.y / data.imageScale;
 
@@ -757,10 +757,10 @@ export default defineComponent({
             data,
 
             // computed
-            maskStyle,
+            maskStyles,
             currentImage,
             imageClasses,
-            imageStyle,
+            imageStyles,
 
             // methods
             handleClickMask,

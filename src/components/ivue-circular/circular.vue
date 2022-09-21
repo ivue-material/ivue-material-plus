@@ -16,7 +16,7 @@
                 :stroke-linecap="strokeLinecap"
                 :stroke="strokeValue"
                 :stroke-width="computedStrokeWidth"
-                :style="pathStyle"
+                :style="pathStyles"
             />
         </svg>
         <!-- 文字 -->
@@ -198,7 +198,7 @@ export default defineComponent({
         });
 
         // 路径样式
-        const pathStyle = computed(() => {
+        const pathStyles = computed(() => {
             let style = {};
 
             // 仪表盘
@@ -234,7 +234,7 @@ export default defineComponent({
             trailStyle,
             strokeValue,
             computedStrokeWidth,
-            pathStyle,
+            pathStyles,
         };
     },
 });

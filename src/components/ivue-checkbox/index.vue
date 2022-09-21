@@ -1,14 +1,14 @@
 <template>
-    <label :class="wrapperClass">
+    <label :class="wrapperClasses">
         <!-- 方框外层 -->
-        <span :class="contentClass">
+        <span :class="contentClasses">
             <!-- 方框 -->
-            <span :class="innerClass" :style="innerStyles"></span>
+            <span :class="innerClasses" :style="innerStyles"></span>
             <!-- input 有组合 -->
             <input
                 v-if="isGroup"
                 type="checkbox"
-                :class="inputClass"
+                :class="inputClasses"
                 :disabled="disabled"
                 :value="label"
                 v-model="data.groupModel"
@@ -21,7 +21,7 @@
             <input
                 v-else
                 type="checkbox"
-                :class="inputClass"
+                :class="inputClasses"
                 :disabled="disabled"
                 :name="name"
                 :checked="currentValue"
@@ -31,7 +31,7 @@
             />
         </span>
         <!-- 内容 -->
-        <span :class="textClass" v-show="label">
+        <span :class="textClasses" v-show="label">
             <slot>{{ label }}</slot>
         </span>
     </label>
@@ -162,7 +162,7 @@ export default defineComponent({
         // computed
 
         // 外层样式
-        const wrapperClass = computed(() => {
+        const wrapperClasses = computed(() => {
             return [
                 `${prefixCls}-wrapper`,
                 {
@@ -175,7 +175,7 @@ export default defineComponent({
         });
 
         // 内容外层
-        const contentClass = computed(() => {
+        const contentClasses = computed(() => {
             return [
                 `${prefixCls}`,
                 {
@@ -187,7 +187,7 @@ export default defineComponent({
         });
 
         // 方框 class
-        const innerClass = computed(() => {
+        const innerClasses = computed(() => {
             let obj = {
                 [`${prefixCls}-focus`]: data.focusInner,
             };
@@ -218,12 +218,12 @@ export default defineComponent({
         });
 
         // 输入框
-        const inputClass = computed(() => {
+        const inputClasses = computed(() => {
             return `${prefixCls}-input`;
         });
 
         // 文字 class
-        const textClass = computed(() => {
+        const textClasses = computed(() => {
             return [
                 `${prefixCls}-label-text`,
                 {
@@ -327,12 +327,12 @@ export default defineComponent({
             data,
 
             // computed
-            wrapperClass,
-            contentClass,
-            innerClass,
+            wrapperClasses,
+            contentClasses,
+            innerClasses,
             innerStyles,
-            inputClass,
-            textClass,
+            inputClasses,
+            textClasses,
             currentValue,
             isGroup,
 

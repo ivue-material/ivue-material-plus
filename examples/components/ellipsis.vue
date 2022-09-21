@@ -13,7 +13,13 @@
         <h1>按照行数省略</h1>
         <ivue-ellipsis :text="text" :lines="3" style="width:400px;margin: 0 auto;"></ivue-ellipsis>
         <h1>禁用</h1>
-        <ivue-ellipsis :text="text" :lines="3" disabled style="width:400px;margin: 0 auto;"></ivue-ellipsis>
+        <ivue-ellipsis
+            :text="text"
+            :lines="3"
+            disabled
+            style="width:400px;margin: 0 auto;"
+            v-line-clamp="1"
+        ></ivue-ellipsis>
         <h1>是否自动根据外层宽度动态改变</h1>
         <ivue-ellipsis :text="text" :height="30" autoResize></ivue-ellipsis>
     </div>

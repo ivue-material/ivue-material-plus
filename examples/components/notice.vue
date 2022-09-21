@@ -163,6 +163,7 @@ export default {
         error(nodesc) {
             this.$notice.error({
                 title: 'Notification title',
+                duration: 0,
                 desc: nodesc
                     ? ''
                     : 'Here is the notification description. Here is the notification description. ',

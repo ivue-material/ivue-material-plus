@@ -19,13 +19,13 @@
         <div :class="`${prefixCls}-scroll`" ref="scroll">
             <!-- 内容 -->
             <div :class="`${prefixCls}-content`" ref="content">
-                <div :class="`${prefixCls}-list`" :style="listStyle" ref="list">
+                <div :class="`${prefixCls}-list`" :style="listStyles" ref="list">
                     <slot></slot>
                 </div>
                 <!-- 复制的内容 -->
                 <div
                     :class="`${prefixCls}-list copy-track`"
-                    :style="listCopyStyle"
+                    :style="listCopyStyles"
                     v-if="data.showCopyTrack"
                 >
                     <slot></slot>
@@ -307,14 +307,14 @@ export default defineComponent({
         // computed
 
         // 列表样式
-        const listStyle = computed(() => {
+        const listStyles = computed(() => {
             return {
                 transform: `translateX(${data.listTranslate}px)`,
             };
         });
 
         // 复制列表样式
-        const listCopyStyle = computed(() => {
+        const listCopyStyles = computed(() => {
             return {
                 transform: `translateX(${data.listCopyTranslate}px)`,
             };
@@ -660,8 +660,8 @@ export default defineComponent({
             data,
 
             // computed
-            listStyle,
-            listCopyStyle,
+            listStyles,
+            listCopyStyles,
 
             // methods
             startTime,

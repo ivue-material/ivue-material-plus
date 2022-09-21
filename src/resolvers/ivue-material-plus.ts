@@ -9,6 +9,9 @@ function kebabCase(key) {
 // 安装包路径
 const pakPath = 'ivue-material-plus/dist/unplugin-vue-components';
 
+// 颜色路径
+const colorPath = 'ivue-material-plus/dist/styles/color.css';
+
 // 没有样式的组件
 const noStylesComponents = [
   'ivue-content',
@@ -56,9 +59,16 @@ function getSideEffects(componentsName: string, options) {
     return;
   }
 
+  // 单文件引入
+  if (options.singleFile) {
+    return [
+      `${pakPath}/styles/${componentsName}.css`
+    ];
+  }
+
   return [
     `${pakPath}/styles/reset.css`,
-    'ivue-material-plus/dist/styles/color.css',
+    `${colorPath}`,
     `${pakPath}/styles/ivue-icon.css`,
     `${pakPath}/styles/${componentsName}.css`
   ];
@@ -98,29 +108,42 @@ const resolveComponent = (componentsName: string, options): ComponentInfo | unde
 // 请求指令
 const resolveDirective = (name: string) => {
   const directives = {
+    // loading
     Loading: {
       name: 'IvueLoadingDirective',
       importName: 'ivue-loading',
       styleName: 'ivue-loading',
       importStyle: true
     },
+    // 水波纹
     Ripple: {
       name: 'Ripple',
       importName: 'ivue-ripple',
       styleName: 'ivue-ripple',
       importStyle: true
     },
+    // 点击外层触发
     ClickOutside: {
       name: 'ClickOutside',
       importName: 'ivue-click-outside',
       styleName: 'ivue-click-outside',
       importStyle: false
     },
+    // 手指事件
     Touch: {
       name: 'Touch',
       importName: 'ivue-touch',
       styleName: 'ivue-touch',
       importStyle: false
+    },
+    // 文本缩略
+    LineClamp: {
+      name: 'LineClamp',
+      importName: 'ivue-line-clamp',
+      styleName: 'ivue-line-clamp',
+      importStyle: true,
+      // 单文件引入
+      singleFile: true
     },
   };
 
@@ -134,7 +157,8 @@ const resolveDirective = (name: string) => {
     name: directive.name,
     from: `${pakPath}/es/${directive.importName}`,
     sideEffects: getSideEffects(directive.styleName, {
-      importStyle: directive.importStyle
+      importStyle: directive.importStyle,
+      singleFile: directive.singleFile
     })
   };
 };

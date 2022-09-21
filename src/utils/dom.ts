@@ -1,7 +1,3 @@
-// interface IE8HTMLInputElement extends HTMLInputElement {
-//     attachEvent(event: string, listener: EventListener): boolean;
-// }
-
 /* istanbul ignore next */
 export const on = (
     element: HTMLElement | Document | Window,

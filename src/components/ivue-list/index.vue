@@ -102,6 +102,7 @@ export default defineComponent({
         return {
             // data
             data,
+
             // methods
             expandATab,
             pushExpandable,

@@ -54,7 +54,7 @@
             :class="[`${prefixCls}-input-filter`,
                         {'ivue-select-input-filter-placeholder': showPlaceholder}
                     ]"
-            :style="inputStyle"
+            :style="inputStyles"
             :placeholder="showPlaceholder ? placeholder : ''"
             :disabled="disabled"
             spellcheck="false"
@@ -362,7 +362,7 @@ export default defineComponent({
         });
 
         // 输入框样式
-        const inputStyle = computed(() => {
+        const inputStyles = computed(() => {
             let style: any = {};
 
             if (props.multiple) {
@@ -527,7 +527,7 @@ export default defineComponent({
             defaultDisplayValue,
             resetSelect,
             showPlaceholder,
-            inputStyle,
+            inputStyles,
 
             // methods
             handleClear,

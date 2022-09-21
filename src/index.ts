@@ -48,6 +48,7 @@ import { IvueNoticeBar } from './components/ivue-notice-bar';
 import { IvueCarouselLoop } from './components/ivue-carousel-loop';
 import { IvueEllipsis } from './components/ivue-ellipsis';
 import { IvueRelativeTime } from './components/ivue-relative-time';
+import { IvueBackTop } from './components/ivue-back-top';
 
 import { IvueImage } from './components/ivue-image';
 import { IvueImagePreview } from './components/ivue-image-preview';
@@ -151,6 +152,7 @@ export {
     IvueCarouselLoop,
     IvueEllipsis,
     IvueRelativeTime,
+    IvueBackTop,
 
     Ripple,
     install

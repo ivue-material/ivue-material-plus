@@ -1,0 +1,14 @@
+$name: 'ivue-line-clamp';
+
+.#{$name} {
+  word-break: break-all;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+
+  &-nowrap {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}

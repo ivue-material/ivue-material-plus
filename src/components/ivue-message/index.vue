@@ -6,12 +6,12 @@
     >
         <div
             :class="classes"
-            :style="wrapperStyle"
+            :style="wrapperStyles"
             @mouseenter="handleMouseenter"
             @mouseleave="handleMouseleave"
             v-show="data.visible"
         >
-            <div :class="`${baseClass}-content`" ref="content">
+            <div :class="`${baseClasses}-content`" ref="content">
                 <template v-if="type === 'loading'">
                     <div class="ivue-progress-circular-indeterminate">
                         <i :class="`ivue-icon ${loadingIcon}`" v-if="loadingIcon"></i>
@@ -42,13 +42,13 @@
                         :class="`ivue-icon ${prefixCls}-icon ${prefixCls}-icon-${type}`"
                     >{{ data.iconTypes[type] }}</i>
                     <!-- 内容 -->
-                    <div :class="`${baseClass}-content-text`" v-html="content"></div>
+                    <div :class="`${baseClasses}-content-text`" v-html="content"></div>
                     <!-- render 渲染 -->
-                    <div :class="`${baseClass}-content-text`" v-if="renderFunc">
+                    <div :class="`${baseClasses}-content-text`" v-if="renderFunc">
                         <render-cell :render="renderFunc"></render-cell>
                     </div>
                     <!-- 关闭按钮 -->
-                    <div :class="`${baseClass}-close`" @click="handleClose" v-show="closable">
+                    <div :class="`${baseClasses}-close`" @click="handleClose" v-show="closable">
                         <i class="ivue-icon">close</i>
                     </div>
                 </template>
@@ -268,17 +268,17 @@ export default defineComponent({
         // computed
 
         // 原始class
-        const baseClass = computed(() => {
+        const baseClasses = computed(() => {
             return `${prefixCls}-notice`;
         });
 
         // 外层样式
         const classes = computed(() => {
-            const _baseClass = baseClass.value;
+            const _baseClass = baseClasses.value;
 
             return [
                 'ivue-message',
-                baseClass.value,
+                baseClasses.value,
                 {
                     [`${props.className}`]: !!props.className,
                     [`${_baseClass}-closable`]: props.closable,
@@ -291,7 +291,7 @@ export default defineComponent({
         });
 
         // 外层样式
-        const wrapperStyle = computed(() => {
+        const wrapperStyles = computed(() => {
             return {
                 top: `${props.offset}px`,
                 'z-index': props.zIndex,
@@ -309,7 +309,7 @@ export default defineComponent({
 
         // 内容样式
         const contentClasses = computed(() => {
-            const _baseClass = baseClass.value;
+            const _baseClass = baseClasses.value;
 
             return {
                 [`${_baseClass}-content`]: true,
@@ -384,11 +384,11 @@ export default defineComponent({
 
             // computed
             classes,
-            baseClass,
+            baseClasses,
             contentClasses,
             contentHaveIcon,
             renderFunc,
-            wrapperStyle,
+            wrapperStyles,
             haveDesc,
 
             // methods

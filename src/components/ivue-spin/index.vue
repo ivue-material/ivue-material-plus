@@ -4,7 +4,7 @@
             <!-- 内容 -->
             <div :class="`${prefixCls}-content`">
                 <!-- dot -->
-                <div :class="`${prefixCls}-dot`" :style="dotStyle" v-show="!$slots.default"></div>
+                <div :class="`${prefixCls}-dot`" :style="dotStyles" v-show="!$slots.default"></div>
                 <!-- 提示文字 -->
                 <div :class="`${prefixCls}-text`" v-show="$slots.default">
                     <slot></slot>
@@ -88,7 +88,7 @@ export default defineComponent({
         });
 
         // dot样式
-        const dotStyle = computed(() => {
+        const dotStyles = computed(() => {
             // 大小
             let sizeStyle = {};
 
@@ -139,11 +139,13 @@ export default defineComponent({
 
         return {
             prefixCls,
+
             // data
             data,
+
             // computed
             wrapperClass,
-            dotStyle,
+            dotStyles,
             fullscreenVisible,
         };
     },

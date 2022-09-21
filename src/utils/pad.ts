@@ -1,8 +1,9 @@
 // 拼接字符串
-const padStart = (string, targetLength, padString) => {
+const padStart = (string: string, targetLength: number, padString: string) => {
       targetLength = targetLength >> 0;
       string = String(string);
       padString = String(padString);
+
       if (string.length > targetLength) {
             return String(string);
       }

@@ -1,5 +1,5 @@
 <template>
-    <div :class="wrapClass" v-ripple="computedRipple" ref="tab" @click="handleChange">
+    <div :class="wrapClasses" v-ripple="computedRipple" ref="tab" @click="handleChange">
         <slot></slot>
     </div>
 </template>
@@ -78,7 +78,7 @@ export default defineComponent({
         });
 
         // computed
-        const wrapClass = computed(() => {
+        const wrapClasses = computed(() => {
             return [
                 {
                     [prefixCls]: true,
@@ -135,7 +135,7 @@ export default defineComponent({
             data,
 
             // computed
-            wrapClass,
+            wrapClasses,
             computedRipple,
             isActive,
 

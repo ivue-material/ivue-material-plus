@@ -1,12 +1,12 @@
 <template>
-    <label :class="wrapperClass">
+    <label :class="wrapperClasses">
         <!-- 圆点 -->
-        <span :class="contentClass">
-            <span :class="innerClass" :style="innerStyles"></span>
+        <span :class="contentClasses">
+            <span :class="innerClasses" :style="innerStyles"></span>
             <!-- 输入框 -->
             <input
                 type="radio"
-                :class="inputClass"
+                :class="inputClasses"
                 :name="data.groupName"
                 :disabled="disabled"
                 @change="handleChange"
@@ -149,7 +149,7 @@ export default defineComponent({
         // computed
 
         // 外层样式
-        const wrapperClass = computed(() => {
+        const wrapperClasses = computed(() => {
             return [
                 `${prefixCls}-wrapper`,
                 {
@@ -162,7 +162,7 @@ export default defineComponent({
         });
 
         // 内容外层
-        const contentClass = computed(() => {
+        const contentClasses = computed(() => {
             return [
                 `${prefixCls}`,
                 {
@@ -173,7 +173,7 @@ export default defineComponent({
         });
 
         // 圆点 class
-        const innerClass = computed(() => {
+        const innerClasses = computed(() => {
             let obj = {
                 [`${prefixCls}-focus`]: data.focusInner,
             };
@@ -203,7 +203,7 @@ export default defineComponent({
         });
 
         // 输入框
-        const inputClass = computed(() => {
+        const inputClasses = computed(() => {
             return `${prefixCls}-input`;
         });
 
@@ -286,11 +286,11 @@ export default defineComponent({
             data,
 
             // computed
-            wrapperClass,
-            contentClass,
-            innerClass,
+            wrapperClasses,
+            contentClasses,
+            innerClasses,
             innerStyles,
-            inputClass,
+            inputClasses,
             currentValue,
 
             // methods

@@ -5,12 +5,12 @@
             <!-- 内容样式 -->
             <div :class="innerClasser">
                 <!-- 背景 -->
-                <div :class="bgClasser" :style="bgStyle">
+                <div :class="bgClasser" :style="bgStyles">
                     <!-- 百分比是否置于进度条内 -->
                     <div :class="`${prefixCls}-inner-text`" v-if="textInside">{{ percent }}%</div>
                 </div>
                 <!-- 已完成的分段百分比 -->
-                <div :class="successBgClasses" :style="successBgStyle"></div>
+                <div :class="successBgClasses" :style="successBgStyles"></div>
             </div>
         </div>
         <!-- 状态图标 -->
@@ -213,7 +213,7 @@ export default defineComponent({
         });
 
         // 已完成的分段百分比 style
-        const successBgStyle = computed(() => {
+        const successBgStyles = computed(() => {
             let style = {};
 
             // 垂直方向
@@ -233,7 +233,7 @@ export default defineComponent({
         });
 
         //背景样式
-        const bgStyle = computed(() => {
+        const bgStyles = computed(() => {
             let style: any = {};
 
             // 垂直方向
@@ -355,13 +355,13 @@ export default defineComponent({
             outerClasser,
             innerClasser,
             bgClasser,
-            bgStyle,
+            bgStyles,
             textClasses,
             textInnerClasses,
             statusIcon,
             isStatus,
             successBgClasses,
-            successBgStyle,
+            successBgStyles,
 
             // methods
             handleStatus,

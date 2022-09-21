@@ -30,8 +30,8 @@ import "../src/styles/index.scss";
 // import "../dist/unplugin-vue-components/styles/ivue-page.css";
 
 // import "../dist/styles/color.css";
-// import "../dist/styles/elevation.css";
-// import "../dist/styles/layout.css";
+import "../dist/styles/elevation.css";
+import "../dist/styles/layout.css";
 
 
 // app.component('IvueTable', IvueTable);

@@ -1,12 +1,12 @@
 <template>
     <div class="elevation-demo">
-        <ivue-content
-            :class="`ivue-elevation-${index}`"
+        <div
+            :class="`ivue-content ivue-elevation-${index}`"
             v-for="(item, index) in length"
             :key="index"
         >
             {{ index }}
-        </ivue-content>
+        </div>
     </div>
 </template>
 

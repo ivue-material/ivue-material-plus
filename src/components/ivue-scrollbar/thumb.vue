@@ -2,14 +2,14 @@
     <transition :name="`${prefixCls}-fade`">
         <!-- v-show="always || visible" -->
         <div
-            :class="wrapperClass"
+            :class="wrapperClasses"
             @mousedown="handleThumbWrapperMousedown"
             ref="thumbWrapper"
             v-show="always || data.visible"
         >
             <div
                 :class="`${prefixCls}-thumb`"
-                :style="thumbStyle"
+                :style="thumbStyles"
                 @mousedown="handleThumbMousedown"
                 ref="thumb"
             ></div>
@@ -115,8 +115,8 @@ export default defineComponent({
             visible: false,
         });
 
-        // wrapperClass
-        const wrapperClass = computed(() => {
+        // wrapperClasses
+        const wrapperClasses = computed(() => {
             return [
                 `${prefixCls}-bar`,
                 props.vertical ? 'is-vertical' : 'is-horizontal',
@@ -124,7 +124,7 @@ export default defineComponent({
         });
 
         // 滑动块样式
-        const thumbStyle = computed(() => {
+        const thumbStyles = computed(() => {
             let obj = {};
 
             // 垂直
@@ -459,8 +459,8 @@ export default defineComponent({
             data,
 
             // computed
-            wrapperClass,
-            thumbStyle,
+            wrapperClasses,
+            thumbStyles,
 
             // methods
             handleThumbMousedown,

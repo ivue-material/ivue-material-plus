@@ -11,6 +11,32 @@ $have-icon: 51px;
   width: $notice-width;
   z-index: 1000;
 
+  .#{$name}-icon {
+    position: absolute;
+    font-size: 17px;
+    width: auto;
+    min-width: auto;
+    height: auto;
+    line-height: 19px;
+
+    &-success {
+      color: $success-color;
+      display: inline-block;
+    }
+
+    &-info {
+      color: $primary-color;
+    }
+
+    &-warning {
+      color: $warning-color;
+    }
+
+    &-error {
+      color: $error-color;
+    }
+  }
+
   &-notice {
     padding: $notice-padding;
     border-radius: 8px;
@@ -85,7 +111,7 @@ $have-icon: 51px;
     margin-left: $have-icon;
   }
 
-  &-have-desc &-icon {
+  &-have-desc .#{$name}-icon {
     top: -2px;
     font-size: 36px;
     line-height: 1;
@@ -95,7 +121,7 @@ $have-icon: 51px;
     margin-left: 26px;
   }
 
-  /*标题*/
+  // 标题
   &-title {
     padding-right: 10px;
     text-overflow: ellipsis;
@@ -106,7 +132,7 @@ $have-icon: 51px;
     overflow: hidden;
   }
 
-  /*描述*/
+  // 描述
   &-desc {
     font-size: $font-base-size;
     color: #515a6e;
@@ -117,32 +143,6 @@ $have-icon: 51px;
   &-have-desc &-title {
     font-weight: bold;
     margin-bottom: 8px;
-  }
-
-  &-icon {
-    position: absolute;
-    font-size: 17px;
-    width: auto;
-    min-width: auto;
-    height: auto;
-    line-height: 19px;
-
-    &-success {
-      color: $success-color;
-      display: inline-block;
-    }
-
-    &-info {
-      color: $primary-color;
-    }
-
-    &-warning {
-      color: $warning-color;
-    }
-
-    &-error {
-      color: $error-color;
-    }
   }
 }
 
