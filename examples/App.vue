@@ -158,6 +158,9 @@
                 <li>
                     <router-link to="/back-top">BackTop</router-link>
                 </li>
+                <li>
+                    <router-link to="/modal">Modal</router-link>
+                </li>
             </ul>
         </nav>
 

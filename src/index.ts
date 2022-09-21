@@ -49,6 +49,7 @@ import { IvueCarouselLoop } from './components/ivue-carousel-loop';
 import { IvueEllipsis } from './components/ivue-ellipsis';
 import { IvueRelativeTime } from './components/ivue-relative-time';
 import { IvueBackTop } from './components/ivue-back-top';
+import { IvueModal } from './components/ivue-modal';
 
 import { IvueImage } from './components/ivue-image';
 import { IvueImagePreview } from './components/ivue-image-preview';
@@ -73,6 +74,10 @@ const install = (app: App, opts: any = {}): void => {
         image: {
             toolbar: opts.image ? opts.image.toolbar ? opts.image.toolbar : '' : ''
         },
+        // 弹窗
+        modal: {
+            maskClosable: opts.modal ? 'maskClosable' in opts.modal ? opts.modal.maskClosable : '' : ''
+        }
     };
 
     // 注册全局指令
@@ -153,6 +158,7 @@ export {
     IvueEllipsis,
     IvueRelativeTime,
     IvueBackTop,
+    IvueModal,
 
     Ripple,
     install

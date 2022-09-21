@@ -11,12 +11,11 @@
 import {
     defineComponent,
     onMounted,
-    onBeforeUnmount,
     ref,
     computed,
     reactive,
 } from 'vue';
-import { on, off } from '../../utils/dom';
+import { useEventListener } from '@vueuse/core';
 
 const prefixCls = 'ivue-affix';
 
@@ -246,14 +245,8 @@ export default defineComponent({
         // mounted
         onMounted(() => {
             // 监听滚动和缩放事件
-            on(window, 'resize', handleScroll, props.useCapture);
-            on(window, 'scroll', handleScroll, props.useCapture);
-        });
-
-        // beforeUnmount
-        onBeforeUnmount(() => {
-            off(window, 'resize', handleScroll, props.useCapture);
-            off(window, 'scroll', handleScroll, props.useCapture);
+            useEventListener(window, 'resize', handleScroll, props.useCapture);
+            useEventListener(window, 'scroll', handleScroll, props.useCapture);
         });
 
         return {

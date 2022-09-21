@@ -231,7 +231,7 @@ export function isValueNumber(value) {
 
 // 滚动隐藏
 let cached;
-export function getScrollBarSize(fresh) {
+export function getScrollBarSize(fresh?) {
     // if (isServer) return 0;
     if (fresh || cached === undefined) {
         const inner = document.createElement('div');

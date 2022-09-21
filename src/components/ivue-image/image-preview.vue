@@ -6,7 +6,12 @@
         </transition>
         <!-- 内容 -->
         <transition name="fade">
-            <div :class="`${prefixCls}-wrapper`" :style="maskStyles" v-if="modelValue" ref="wrapper">
+            <div
+                :class="`${prefixCls}-wrapper`"
+                :style="maskStyles"
+                ref="wrapper"
+                v-if="modelValue"
+            >
                 <div :class="prefixCls" @click.stop="handleClickMask">
                     <!-- 加载中 -->
                     <ivue-spin
@@ -115,12 +120,15 @@ import {
     watch,
 } from 'vue';
 import throttle from 'lodash.throttle';
-import IvueSpin from '../ivue-spin';
-import IvueIcon from '../ivue-icon';
 
+// utils
 import { transferIndex, transferIncrease } from '../../utils/transfer-queue';
 import { on, off } from '../../utils/dom';
 import { isClient, downloadFile } from '../../utils/helpers';
+
+// components
+import IvueSpin from '../ivue-spin';
+import IvueIcon from '../ivue-icon';
 
 const prefixCls = 'ivue-image-preview';
 

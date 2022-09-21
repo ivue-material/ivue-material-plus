@@ -53,7 +53,7 @@ import {
     PropType,
 } from 'vue';
 import { EVENT_CODE } from '../../utils/helpers';
-import { on, off } from '../../utils/dom';
+import { useEventListener } from '@vueuse/core';
 
 type Position = 'top-right' | 'top-left' | 'bottom-right' | 'bottom-left';
 type Type = 'normal' | 'info' | 'warning' | 'success' | 'error';
@@ -362,11 +362,7 @@ export default defineComponent({
 
             data.visible = true;
 
-            on(document, 'keydown', onKeydown);
-        });
-
-        onBeforeUnmount(() => {
-            off(document, 'keydown', onKeydown);
+            useEventListener(document, 'keydown', onKeydown);
         });
 
         return {

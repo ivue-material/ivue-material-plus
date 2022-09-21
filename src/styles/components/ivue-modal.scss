@@ -1,0 +1,40 @@
+@import "../animation/index.scss";
+
+$name: 'ivue-modal';
+
+.#{$name} {
+
+  // 蒙版
+  &-mask {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: rgba(55, 55, 55, .6);
+    height: 100%;
+    z-index: 1000;
+  }
+
+  // 弹窗外层
+  &-wrapper {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 1000;
+    outline: 0;
+    overflow: auto;
+  }
+
+  // 隐藏
+  &-hidden {
+    display: none;
+  }
+
+  // 没有蒙版
+  &-no-mask {
+    pointer-events: none;
+  }
+}

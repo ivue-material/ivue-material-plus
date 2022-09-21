@@ -41,6 +41,7 @@ import IvueCarouselLoop from './ivue-carousel-loop';
 import IvueEllipsis from './ivue-ellipsis';
 import IvueRelativeTime from './ivue-relative-time';
 import IvueBackTop from './ivue-back-top';
+import IvueModal from './ivue-modal';
 
 import { IvueImage, IvueImagePreview } from './ivue-image';
 import { IvueCollapse } from './ivue-collapse';
@@ -109,6 +110,7 @@ export {
   IvueEllipsis,
   IvueRelativeTime,
   IvueBackTop,
+  IvueModal,
 
   Ripple
 };

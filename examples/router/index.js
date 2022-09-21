@@ -47,6 +47,7 @@ import CarouselLoop from '../components/carousel-loop';
 import Ellipsis from '../components/ellipsis';
 import RelativeTime from '../components/relative-time';
 import BackTop from '../components/back-top';
+import Modal from '../components/modal';
 
 const routes = [{
     path: '/Affix',
@@ -270,6 +271,11 @@ const routes = [{
     path: '/back-top',
     name: 'BackTop',
     component: BackTop
+  },
+  {
+    path: '/modal',
+    name: 'Modal',
+    component: Modal
   }
 ];
 
