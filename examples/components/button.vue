@@ -1,15 +1,17 @@
 <template>
     <div>
         <div>
+            <p>loading按钮</p>
+            <ivue-button :color="['#5AB2FF', '#5B8EFF']" loading>Button</ivue-button>
+        </div>
+        <div>
             <p>方按钮</p>
             <ivue-button :color="['#5AB2FF', '#5B8EFF']">Button</ivue-button>
         </div>
 
         <div>
             <p>圆角按钮</p>
-            <ivue-button radius :color="['#5AB2FF', '#5B8EFF']"
-                >Button</ivue-button
-            >
+            <ivue-button radius :color="['#5AB2FF', '#5B8EFF']">Button</ivue-button>
         </div>
 
         <div>
@@ -21,9 +23,7 @@
 
         <div>
             <p>线性按钮</p>
-            <ivue-button outline color="#5B8EFF" textColor="#4A505E"
-                >color</ivue-button
-            >
+            <ivue-button outline color="#5B8EFF" textColor="#4A505E">color</ivue-button>
             <ivue-button outline>Button</ivue-button>
         </div>
 
@@ -42,30 +42,24 @@
 
         <div>
             <p>凹陷的按钮依然保持其背景色，但没有框阴影 depressed</p>
-            <ivue-button depressed :color="['#5AB2FF', '#5B8EFF']"
-                >Button</ivue-button
-            >
+            <ivue-button depressed :color="['#5AB2FF', '#5B8EFF']">Button</ivue-button>
         </div>
 
         <div>
             <p>转换成链接按钮link</p>
             <ivue-button :href="pageUrl">默认效果</ivue-button>
-            <ivue-button :href="pageUrl" :color="['#5AB2FF', '#5B8EFF']"
-                >Link</ivue-button
-            >
+            <ivue-button :href="pageUrl" :color="['#5AB2FF', '#5B8EFF']">Link</ivue-button>
         </div>
 
         <div>
             <p>按钮状态</p>
-            <ivue-button status="primary">primary</ivue-button>
-            <ivue-button status="light-primary">Light Primary</ivue-button>
+            <ivue-button status="primary" >primary</ivue-button>
+            <ivue-button status="light-primary" loading>Light Primary</ivue-button>
             <ivue-button status="dark-primary">Dark Primary</ivue-button>
-            <ivue-button status="success">Success</ivue-button>
+            <ivue-button status="success" loading>Success</ivue-button>
             <ivue-button status="warning">Warning</ivue-button>
             <ivue-button status="error">Error</ivue-button>
-            <ivue-button  disabled>disabled</ivue-button>
-
-
+            <ivue-button disabled>disabled</ivue-button>
         </div>
     </div>
 </template>
@@ -86,7 +80,6 @@ export default {
 </script>
 
 <style lang="scss" >
-
 .ivue-button {
 }
 </style>

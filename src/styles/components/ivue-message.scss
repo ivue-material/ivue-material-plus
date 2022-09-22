@@ -23,13 +23,14 @@ $name: 'ivue-message';
     &-close {
       position: absolute;
       right: 4px;
-      top: 8px;
+      top: 0;
+      bottom: 0;
       color: #999;
+      display: flex;
+      align-items: center;
       cursor: pointer;
 
       i {
-        position: relative;
-        top: -1px;
         font-size: 16px;
         transition: color .2s ease;
         width: auto;
@@ -109,6 +110,7 @@ $name: 'ivue-message';
     border-radius: $border-radius-small;
 
     &-text {
+      margin-left: 5px;
       display: inline-block;
     }
   }

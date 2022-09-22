@@ -18,7 +18,7 @@ export default (props, data) => {
 
             return {
                   height: !isUnit ? `${height}px` : height,
-                  transform: `translate3d(-${data.scrollOffset}, 0,0)`,
+                  transform: `translate3d(-${data.scrollOffset}px, 0,0)`,
             };
       });
 

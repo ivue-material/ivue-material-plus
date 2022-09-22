@@ -10,7 +10,7 @@ function kebabCase(key) {
 const pakPath = 'ivue-material-plus/dist/unplugin-vue-components';
 
 // 颜色路径
-const colorPath = 'ivue-material-plus/dist/styles/color.css';
+const basePath = 'ivue-material-plus/dist/styles/base.css';
 
 // 没有样式的组件
 const noStylesComponents = [
@@ -68,8 +68,8 @@ function getSideEffects(componentsName: string, options) {
 
   return [
     `${pakPath}/styles/reset.css`,
-    `${colorPath}`,
     `${pakPath}/styles/ivue-icon.css`,
+    `${basePath}`,
     `${pakPath}/styles/${componentsName}.css`
   ];
 }

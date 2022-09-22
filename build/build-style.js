@@ -78,10 +78,32 @@ gulp.task('animation', function () {
     .pipe(gulp.dest('../dist/styles'));
 });
 
+// base
+gulp.task('base', function () {
+  return gulp.src('../src/styles/base.scss')
+    .pipe(sass())
+    .pipe(
+      autoprefixer({
+        overrideBrowserslist: ['last 2 versions', 'ie > 8']
+      })
+    )
+    .pipe(cleanCSS())
+    .pipe(rename('base.css'))
+    .pipe(gulp.dest('../dist/styles'));
+});
+
 // 拷贝字体文件
 gulp.task('fonts', function () {
   return gulp.src('../src/styles/material-icons/fonts/*.*')
     .pipe(gulp.dest('../dist/styles/fonts'));
 });
 
-gulp.task('default', gulp.parallel('index', 'layout', 'elevation', 'color', 'animation', 'fonts'));
+gulp.task('default', gulp.parallel(
+  'index',
+  'layout',
+  'elevation',
+  'color',
+  'animation',
+  'base',
+  'fonts'
+));

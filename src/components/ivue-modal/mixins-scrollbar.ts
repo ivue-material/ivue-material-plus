@@ -52,7 +52,8 @@ export default {
 
       // 有滚动条
       if (this.bodyIsOverflowing) {
-        // 获取滚动条大小
+
+        // 获取滚动条宽度
         this.scrollBarWidth = getScrollBarSize();
       }
 

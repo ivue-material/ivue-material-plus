@@ -158,6 +158,15 @@ export default defineComponent({
                 ]);
             },
         },
+        /**
+         * 显示loading
+         *
+         * @type {Boolean}
+         */
+        loading: {
+            type: Boolean,
+            default: false,
+        },
     },
     // 组合式 API
     setup(props: any) {
@@ -184,7 +193,7 @@ export default defineComponent({
 
         // 是否显示涟漪效果
         const rippleWorks = computed(() => {
-            return !props.disabled;
+            return !props.disabled && !props.loading;
         });
 
         // 判断按钮是否激活
@@ -212,11 +221,19 @@ export default defineComponent({
 
         // 涟漪效果
         const computedRipple = computed(() => {
+            // loading效果
+            if (props.loading) {
+                return false;
+            }
+
+            // 涟漪居中
             if (props.ripple && props.center) {
                 return {
                     center: true,
                 };
-            } else if (props.ripple && !props.disabled) {
+            }
+            // 是否开启涟漪
+            else if (props.ripple && !props.disabled) {
                 return props.ripple;
             }
 
@@ -237,19 +254,37 @@ export default defineComponent({
     render() {
         let _tag = 'button';
 
-        const buttonContent = h(IvueButtonContent, {}, this.$slots.default);
+        // 按钮内容
+        const buttonContent = h(
+            IvueButtonContent,
+            {
+                loading: this.loading,
+            },
+            this.$slots.default
+        );
 
         // 按钮属性
-        let buttonAttrs = {
+        let buttonAttrs: {
+            class?: Record<string, any>;
+            href?: string;
+            type?: string;
+            disabled?: boolean;
+            onTouchstart: (event) => void;
+            onTouchmove: (event) => void;
+            onClick: (event) => void;
+        } = {
             class: {
                 [`${prefixCls}`]: true,
+                // 移动端
                 isMobile: this.data.mobile,
+                // 按钮激活
                 'ivue-button--active': this.isActive,
+                // 蒙版
+                [`${prefixCls}--mask`]: this.loading,
                 ...this.btnClasses,
             },
             href: this.href,
             type: !this.href && (this.type || 'button'),
-            disabled: false,
             onTouchstart: (event) => {
                 // 是否显示涟漪效果
                 if (this.rippleWorks) {

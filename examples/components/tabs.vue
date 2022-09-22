@@ -12,7 +12,7 @@
             </template>
         </ivue-tabs>
         <p>固定选项卡</p>
-        <!-- <ivue-tabs fixedTabs v-model="tab">
+        <ivue-tabs fixedTabs v-model="tab">
             <template #header>
                 <ivue-tab v-for="n in 3" :key="`item${n}`" :name="`item${n}`">Item {{ n }}</ivue-tab>
             </template>
@@ -40,7 +40,7 @@
             <template #content>
                 <ivue-tab-item v-for="i in 30" :id="'tab-' + i" :key="i">{{ text }}{{i}}</ivue-tab-item>
             </template>
-        </ivue-tabs> -->
+        </ivue-tabs>
     </div>
 </template>
 

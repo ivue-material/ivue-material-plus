@@ -77,6 +77,10 @@ const install = (app: App, opts: any = {}): void => {
         // 弹窗
         modal: {
             maskClosable: opts.modal ? 'maskClosable' in opts.modal ? opts.modal.maskClosable : '' : ''
+        },
+        // 加载中
+        spin: {
+            fix: opts.spin ? 'fix' in opts.spin ? opts.spin.fix : false : false
         }
     };
 

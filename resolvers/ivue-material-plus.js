@@ -3,6 +3,7 @@ function kebabCase(key) {
   return result.split(" ").join("-").toLowerCase();
 }
 const pakPath = "ivue-material-plus/dist/unplugin-vue-components";
+const basePath = "ivue-material-plus/dist/styles/base.css";
 const noStylesComponents = [
   "ivue-content",
   "ivue-carousel-item",
@@ -39,10 +40,15 @@ function getSideEffects(componentsName, options) {
   if (!options.importStyle) {
     return;
   }
+  if (options.singleFile) {
+    return [
+      `${pakPath}/styles/${componentsName}.css`
+    ];
+  }
   return [
     `${pakPath}/styles/reset.css`,
-    "ivue-material-plus/dist/styles/color.css",
     `${pakPath}/styles/ivue-icon.css`,
+    `${basePath}`,
     `${pakPath}/styles/${componentsName}.css`
   ];
 }
@@ -92,6 +98,13 @@ const resolveDirective = (name) => {
       importName: "ivue-touch",
       styleName: "ivue-touch",
       importStyle: false
+    },
+    LineClamp: {
+      name: "LineClamp",
+      importName: "ivue-line-clamp",
+      styleName: "ivue-line-clamp",
+      importStyle: true,
+      singleFile: true
     }
   };
   const directive = directives[name];
@@ -102,7 +115,8 @@ const resolveDirective = (name) => {
     name: directive.name,
     from: `${pakPath}/es/${directive.importName}`,
     sideEffects: getSideEffects(directive.styleName, {
-      importStyle: directive.importStyle
+      importStyle: directive.importStyle,
+      singleFile: directive.singleFile
     })
   };
 };

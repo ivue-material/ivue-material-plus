@@ -1,8 +1,14 @@
-@import "../animation/index.scss";
+@import "ivue-button";
+@import "ivue-spin";
 
 $name: 'ivue-modal';
 
 .#{$name} {
+  position: relative;
+  top: 0;
+  width: auto;
+  margin: 0 auto;
+  outline: 0;
 
   // 蒙版
   &-mask {
@@ -28,6 +34,10 @@ $name: 'ivue-modal';
     overflow: auto;
   }
 
+  &-wrapper * {
+    box-sizing: border-box;
+  }
+
   // 隐藏
   &-hidden {
     display: none;
@@ -37,4 +47,90 @@ $name: 'ivue-modal';
   &-no-mask {
     pointer-events: none;
   }
+
+  // 内容
+  &-content {
+    position: relative;
+    background-color: $white-color;
+    border: 0;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+
+    &--no-mask {
+      pointer-events: auto
+    }
+  }
+
+  // 头部
+  &-header {
+    border-bottom: 1px solid $border-color;
+    padding: 14px 30px 14px 16px;
+    line-height: 1;
+
+    // 内容
+    &--content {
+      display: inline-block;
+      width: 100%;
+      font-size: 16px;
+      color: $title-color;
+      font-weight: bold;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+  }
+
+  // 内容
+  &-body {
+    padding: 16px;
+    font-size: 14px;
+  }
+
+  // 底部
+  &-footer {
+    border-top: 1px solid $border-color;
+    padding: 12px 18px;
+    text-align: right;
+
+    .#{$name}-footer--button {
+      margin-right: 12px;
+
+      &:last-child {
+        margin-left: 12px;
+        margin-right: 0;
+      }
+    }
+  }
+
+  // 关闭按钮
+  &-close {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    cursor: pointer;
+  }
+
+  // 加载中
+  .#{$name}-spin {
+    border-radius: 8px;
+  }
+}
+
+// media
+@media (max-width: 576px) {
+  .#{$name} {
+    width: auto !important;
+    margin: 10px;
+  }
+
+  // .ivu-modal-fullscreen {
+  //   width: 100% !important;
+  //   margin: 0
+  // }
+
+  // .vertical-center-modal .ivu-modal {
+  //   -webkit-box-flex: 1;
+  //   -ms-flex: 1;
+  //   flex: 1
+  // }
 }

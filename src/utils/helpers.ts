@@ -229,21 +229,27 @@ export function isValueNumber(value) {
     return (/^[0-9][0-9]*$/).test(value + '');
 }
 
-// 滚动隐藏
+// 已经获取滚动条宽度
 let cached;
+
+// 获取滚动条宽度
 export function getScrollBarSize(fresh?) {
-    // if (isServer) return 0;
+    if (!isClient) {
+        return 0;
+    }
+
     if (fresh || cached === undefined) {
         const inner = document.createElement('div');
         inner.style.width = '100%';
         inner.style.height = '200px';
 
         const outer = document.createElement('div');
-        const outerStyle: any = outer.style;
+
+        const outerStyle: CSSStyleDeclaration = outer.style;
 
         outerStyle.position = 'absolute';
-        outerStyle.top = 0;
-        outerStyle.left = 0;
+        outerStyle.top = '0px';
+        outerStyle.left = '0px';
         outerStyle.pointerEvents = 'none';
         outerStyle.visibility = 'hidden';
         outerStyle.width = '200px';

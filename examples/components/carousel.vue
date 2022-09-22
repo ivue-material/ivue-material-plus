@@ -169,7 +169,7 @@
             </ivue-carousel-item>
         </ivue-carousel>
         <h1>卡片化</h1>
-        <div class="card">
+        <div style="width:300px">
             <ivue-carousel type="card" direction="vertical" height="auto">
                 <ivue-carousel-item>
                     <div class="demo-carousel">1</div>
@@ -248,7 +248,5 @@ export default {
     background-color: #d3dce6;
 }
 
-.card {
-    width: 300px;
-}
+
 </style>

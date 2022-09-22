@@ -20,6 +20,7 @@ import {
     computed,
     reactive,
     watch,
+    getCurrentInstance,
 } from 'vue';
 
 const prefixCls = 'ivue-spin';
@@ -51,7 +52,14 @@ export default defineComponent({
          */
         fix: {
             type: Boolean,
-            default: false,
+            default() {
+                const global =
+                    getCurrentInstance().appContext.config.globalProperties;
+
+                return !global.$IVUE || !global.$IVUE.spin.fix
+                    ? false
+                    : global.$IVUE.spin.fix;
+            },
         },
         /**
          * 全屏显示

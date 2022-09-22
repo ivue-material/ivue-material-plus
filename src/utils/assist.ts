@@ -15,6 +15,25 @@ const trim = function (s: string) {
     return (s || '').replace(/^[\s\uFEFF]+|[\s\uFEFF]+$/g, '')
 }
 
+// 类型判断
+function typeOf(obj) {
+    const toString = Object.prototype.toString;
+
+    const map = {
+        '[object Boolean]': 'boolean',
+        '[object Number]': 'number',
+        '[object String]': 'string',
+        '[object Function]': 'function',
+        '[object Array]': 'array',
+        '[object Date]': 'date',
+        '[object RegExp]': 'regExp',
+        '[object Undefined]': 'undefined',
+        '[object Null]': 'null',
+        '[object Object]': 'object'
+    };
+    return map[toString.call(obj)];
+}
+
 // 判断参数是否是其中之一
 export const oneOf = (
     value: string,
@@ -188,4 +207,41 @@ export function scrollTop(el, from: number = 0, to: number, duration = 500, endC
 
     // 滚动
     scroll(from, to, step);
+}
+
+
+// 深拷贝
+export const deepCopy = (data) => {
+    const _typeOf = typeOf(data);
+
+    let object;
+
+    // 数组
+    if (_typeOf === 'array') {
+        object = []
+    }
+    // 对象
+    else if (_typeOf === 'object') {
+        object = {};
+    }
+    // 两个都不是返回原值
+    else {
+        return data;
+    }
+
+    // 数组
+    if (_typeOf === 'array') {
+        for (let i = 0; i < data.length; i++) {
+            object.push(deepCopy(data[i]))
+        }
+    }
+    // 对象
+    else if (_typeOf === 'object') {
+        for (let i in data) {
+            object[i] = deepCopy(data[i])
+        }
+    }
+
+
+    return object
 }

@@ -148,7 +148,7 @@ export function createLoadingComponent(options: LoadingOptionsResolved) {
                                     class: [
                                         'ivue-loading-mask',
                                         data.customClass,
-                                        data.fullscreen ? 'is-fullscreen' : '',
+                                        // data.fullscreen ? 'is-fullscreen' : '',
                                     ],
                                 }, [
                                 h('div', {

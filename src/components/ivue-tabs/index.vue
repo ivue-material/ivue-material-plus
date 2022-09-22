@@ -65,8 +65,6 @@ import {
     watchEffect,
 } from 'vue';
 
-  /* eslint-disable */
-
 import tabsComputed from './tabs-computed';
 import tabsTouch from './tabs-touch';
 import IvueIcon from '../ivue-icon/index.vue';
@@ -504,7 +502,6 @@ export default defineComponent({
         watch(
             () => data.scrollOffset,
             () => {
-                console.log('/');
                 // 是否开启按钮
                 if (hasArrows.value) {
                     data.nextIconVisible = checkNextIcon();

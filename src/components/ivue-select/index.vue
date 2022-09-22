@@ -98,7 +98,7 @@
                 <!-- 加载中 -->
                 <ul v-show="loading" :class="`${prefixCls}-loading`">
                     <div :class="`${prefixCls}-loading--load`">
-                        <div class="load" v-ivueloading="true"></div>
+                        <div class="load" v-ivue-loading="true"></div>
                         <!-- loadingText -->
                         <span>{{ loadingText }}</span>
                     </div>
@@ -117,7 +117,7 @@ import SelectHead from './select-head.vue';
 import DropDown from './drop-down.vue';
 import IvueOption from './option.vue';
 import IvueIcon from '../ivue-icon/index.vue';
-import Ivueloading from '../ivue-loading/directive';
+import IvueLoading from '../ivue-loading/directive';
 
 import {
     defineComponent,
@@ -141,7 +141,7 @@ const prefixCls = 'ivue-select';
 export default defineComponent({
     name: prefixCls,
     // 注册局部指令
-    directives: { ClickOutside, TransferDom, Ivueloading },
+    directives: { ClickOutside, TransferDom, IvueLoading },
     emits: [
         'update:modelValue',
         'on-change',

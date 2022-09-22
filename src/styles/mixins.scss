@@ -3,12 +3,13 @@
       @include size($size, $size);
 }
 
+// size
 @mixin size($width, $height) {
       width: $width;
       height: $height;
 }
 
-
+// placeholder
 @mixin placeholder($color: $input-placeholder-color) {
       /*Firefox*/
       &::-moz-placeholder {

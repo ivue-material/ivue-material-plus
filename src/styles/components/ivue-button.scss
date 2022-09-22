@@ -1,6 +1,7 @@
-@import "../animation/variables.scss";
+@import "../base.scss";
+@import "ivue-loading.scss";
+
 @import "../../components/ivue-elevation/mixins";
-@import "../custom.scss";
 
 $name: 'ivue-button';
 
@@ -9,7 +10,6 @@ $name: 'ivue-button';
   padding: 0;
   display: inline-block;
   position: relative;
-  overflow: hidden;
   outline: none;
   background: transparent;
   border: 0;
@@ -38,15 +38,20 @@ $name: 'ivue-button';
   font-size: $ivue-button-font-size;
   font-weight: 500;
   color: currentColor;
+  padding: 0 15px;
 
   @import "./ivue-ripple.scss";
 
+  // 内容
   &-content {
     position: relative;
     z-index: 2;
     color: currentColor;
+    display: flex;
+    align-items: center;
   }
 
+  // 涟漪
   &-ripple {
     display: flex;
     justify-content: center;
@@ -57,6 +62,26 @@ $name: 'ivue-button';
     z-index: 10;
     overflow: hidden;
     box-sizing: border-box;
+  }
+
+  // loading
+  &-loading {
+    position: relative;
+    width: 16px;
+    height: 16px;
+
+    &--wrapper {
+      position: relative;
+      margin-right: 5px;
+    }
+
+    .ivue-loading-mask {
+      background: none;
+    }
+
+    .ivue-loading-spinner {
+      color: $white-color
+    }
   }
 
   &:active {
@@ -123,7 +148,7 @@ $name: 'ivue-button';
 
     @include ivue-elevation(2);
 
-    &:active {
+    &:not(.#{$name}--mask):active {
       @include ivue-elevation(8);
     }
   }
@@ -174,15 +199,31 @@ $name: 'ivue-button';
     border-radius: 18px;
   }
 
+  // 蒙版
+  &--mask {
+    &::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      z-index: 30;
+      opacity: 1 !important;
+      pointer-events: none;
+      background: rgba(255, 255, 255, .5) !important;
+    }
+  }
+
   // primary
   &--primary {
-    background: linear-gradient(135deg, #5AB2FF 0%, #5B8EFF 100%);
+    background: #5B8EFF;
     color: $white-color;
 
     &.#{$name}--raised:not(.#{$name}--depressed):not(.#{$name}--flat):not([disabled]) {
       box-shadow: 0 10px 10px -5px rgba(78, 134, 255, .2);
 
-      &:active {
+      &:not(.#{$name}--mask):active {
         @include ivue-elevation(8,
           rgba(78, 134, 255, .2),
           rgba(78, 134, 255, .14), rgba(78, 134, 255, .12));
@@ -198,7 +239,7 @@ $name: 'ivue-button';
     &.#{$name}--raised:not(.#{$name}--depressed):not(.#{$name}--flat):not([disabled]) {
       box-shadow: 0 10px 10px -5px rgba(90, 178, 255, .2);
 
-      &:active {
+      &:not(.#{$name}--mask):active {
         @include ivue-elevation(8,
           rgba(90, 178, 255, .2),
           rgba(90, 178, 255, .14), rgba(90, 178, 255, .12));
@@ -212,7 +253,13 @@ $name: 'ivue-button';
     color: $white-color;
 
     &.#{$name}--raised:not(.#{$name}--depressed):not(.#{$name}--flat):not([disabled]) {
-      box-shadow: none;
+      box-shadow: 0 10px 10px -5px rgba(58, 159, 246, .2);
+
+      &:not(.#{$name}--mask):active {
+        @include ivue-elevation(8,
+          rgb(58, 159, 246, .2),
+          rgba(58, 159, 246, .14), rgba(58, 159, 246, .12));
+      }
     }
   }
 
@@ -225,7 +272,7 @@ $name: 'ivue-button';
     &.#{$name}--raised:not(.#{$name}--depressed):not(.#{$name}--flat):not([disabled]) {
       box-shadow: 0 10px 10px -5px rgba(35, 222, 174, .2);
 
-      &:active {
+      &:not(.#{$name}--mask):active {
         @include ivue-elevation(8,
           rgba(35, 222, 174, .2),
           rgba(35, 222, 174, .14), rgba(35, 222, 174, .12));
@@ -242,7 +289,7 @@ $name: 'ivue-button';
     &.#{$name}--raised:not(.#{$name}--depressed):not(.#{$name}--flat):not([disabled]) {
       box-shadow: 0 10px 10px -5px rgba(255, 182, 41, .2);
 
-      &:active {
+      &:not(.#{$name}--mask):active {
         @include ivue-elevation(8,
           rgba(255, 182, 41, .2),
           rgba(255, 182, 41, .14), rgba(255, 182, 41, .12));
@@ -259,7 +306,7 @@ $name: 'ivue-button';
     &.#{$name}--raised:not(.#{$name}--depressed):not(.#{$name}--flat):not([disabled]) {
       box-shadow: 0 10px 10px -5px rgba(255, 86, 118, .2);
 
-      &:active {
+      &:not(.#{$name}--mask):active {
         @include ivue-elevation(8,
           rgba(255, 86, 118, .2),
           rgba(255, 86, 118, .14), rgba(255, 86, 118, .12));
@@ -281,6 +328,7 @@ $name: 'ivue-button';
   height: $ivue-button-icon-size;
   margin: 0 6px;
   border-radius: 50%;
+  padding: 0;
 
   &::before {
     border-radius: 50%;
