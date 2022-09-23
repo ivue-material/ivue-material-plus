@@ -1,7 +1,7 @@
-import { withInstall } from '../../utils/install';
-import Modal from './index.vue';
+import { withInstall, withInstallFunction } from '../../utils/install';
+import Modal from './modal';
 
-export const IvueModal = withInstall(Modal);
-export default IvueModal;
+export const IvueModal =  withInstallFunction(Modal, '$IvueModal');
+export default Modal;
 
 export * from './index.vue';

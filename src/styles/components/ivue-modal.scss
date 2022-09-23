@@ -48,6 +48,13 @@ $name: 'ivue-modal';
     pointer-events: none;
   }
 
+  // 拖动蒙版
+  &-drag-mask {
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+  }
+
   // 内容
   &-content {
     position: relative;
@@ -58,6 +65,21 @@ $name: 'ivue-modal';
 
     &--no-mask {
       pointer-events: auto
+    }
+
+    // 拖动
+    &--drag {
+      position: absolute;
+    }
+
+    // 拖动中
+    &--dragging {
+      user-select: none;
+    }
+
+    // 头部
+    .#{$name}-header {
+      cursor: move;
     }
   }
 
@@ -114,6 +136,38 @@ $name: 'ivue-modal';
   .#{$name}-spin {
     border-radius: 8px;
   }
+
+  // 居中
+  &-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  // 全屏
+  &-fullscreen {
+    width: 100% !important;
+    top: 0;
+    bottom: 0;
+    position: absolute;
+
+    // 弹窗内容
+    .#{$name}-content {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 100%;
+      border-radius: 0;
+      display: flex;
+      flex-direction: column;
+    }
+
+    // 内容
+    .#{$name}-body {
+      flex: 1;
+      overflow: auto;
+    }
+  }
 }
 
 // media
@@ -121,16 +175,14 @@ $name: 'ivue-modal';
   .#{$name} {
     width: auto !important;
     margin: 10px;
+
+    &-fullscreen {
+      width: 100% !important;
+      margin: 0
+    }
+
+    &-drag-mask{
+      margin: 0;
+    }
   }
-
-  // .ivu-modal-fullscreen {
-  //   width: 100% !important;
-  //   margin: 0
-  // }
-
-  // .vertical-center-modal .ivu-modal {
-  //   -webkit-box-flex: 1;
-  //   -ms-flex: 1;
-  //   flex: 1
-  // }
 }

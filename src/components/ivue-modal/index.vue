@@ -21,7 +21,12 @@
                     @mousedown="handleMousedown"
                 >
                     <!-- 弹窗内容 -->
-                    <div :class="contentClasses">
+                    <div
+                        :class="contentClasses"
+                        :style="contentStyles"
+                        @click="handleClickModal"
+                        ref="contentRef"
+                    >
                         <!-- close -->
                         <div :class="`${prefixCls}-close`" @click="close" v-if="closable">
                             <slot name="close">
@@ -29,11 +34,7 @@
                             </slot>
                         </div>
                         <!-- 头部 -->
-                        <div
-                            :class="`${prefixCls}-header`"
-                            @mousedown="handleDraggableStart"
-                            v-if="showHead"
-                        >
+                        <div :class="`${prefixCls}-header`" ref="headerRef" v-if="showHead">
                             <slot name="header">
                                 <div :class="`${prefixCls}-header--content`">{{ title }}</div>
                             </slot>
@@ -43,7 +44,7 @@
                             <slot></slot>
                         </div>
                         <!-- 底部 -->
-                        <div :class="`${prefixCls}-footer`">
+                        <div :class="`${prefixCls}-footer`" v-if="!footerHide">
                             <slot name="footer">
                                 <!-- 关闭 -->
                                 <ivue-button
@@ -72,7 +73,6 @@
 </template>
 
 <script lang='ts'>
-/* eslint-disable */
 import {
     computed,
     defineComponent,
@@ -80,6 +80,7 @@ import {
     onBeforeUnmount,
     onMounted,
     reactive,
+    ref,
     watch,
 } from 'vue';
 import { useEventListener } from '@vueuse/core';
@@ -89,11 +90,11 @@ import ScrollbarMixins from './mixins-scrollbar';
 import {
     transferIndex as modalIndex,
     transferIncrease as modalIncrease,
-    lastVisibleIndex,
-    lastVisibleIncrease,
 } from '../../utils/transfer-queue';
+import { currentUid, setCurrentUid } from '../../utils/current-event';
 import { deepCopy } from '../../utils/assist';
 import { oneOf } from '../../utils/assist';
+import { useDraggable } from '../../hooks';
 
 import IvueIcon from '../ivue-icon';
 import IvueButton from '../ivue-button';
@@ -263,7 +264,7 @@ export default defineComponent({
         /**
          * 是否显示关闭按钮
          *
-         * @type Boolean
+         * @type {Boolean}
          */
         closable: {
             type: Boolean,
@@ -326,11 +327,77 @@ export default defineComponent({
             type: Boolean,
             default: false,
         },
+        /**
+         * 居中
+         *
+         * @type {String}
+         */
+        center: {
+            type: Boolean,
+            default: false,
+        },
+        /**
+         * 是否全屏显示
+         *
+         * @type {Boolean}
+         */
+        fullscreen: {
+            type: Boolean,
+            default: false,
+        },
+        /**
+         * 不显示底部
+         *
+         * @type {Boolean}
+         */
+        footerHide: {
+            type: Boolean,
+            default: false,
+        },
+        /**
+         * 是否可以拖拽移动
+         *
+         * @type {Boolean}
+         */
+        draggable: {
+            type: Boolean,
+            default: false,
+        },
+        /**
+         * 拖拽时，是否吸附屏幕边缘
+         *
+         * @type {Boolean}
+         */
+        sticky: {
+            type: Boolean,
+            default: false,
+        },
+        /**
+         * 拖拽时，自动吸附屏幕边缘的临界距离
+         *
+         * @type {Number}
+         */
+        stickyDistance: {
+            type: Number,
+            default: 10,
+        },
+        /**
+         * 渲染函数
+         *
+         * @type {Function}
+         */
+        render: {
+            type: Function,
+        },
     },
     setup(props: any, { emit, slots }) {
         // proxy
         const { proxy, uid } =
             getCurrentInstance() as _ComponentInternalInstance;
+
+        // dom
+        const headerRef = ref<HTMLElement | undefined>();
+        const contentRef = ref<HTMLElement>();
 
         // computed
 
@@ -346,6 +413,8 @@ export default defineComponent({
                     // 弹窗外层样式
                     [`${props.modalWrapperClasses}`]:
                         !!props.modalWrapperClasses,
+                    // 展示方向
+                    [`${prefixCls}-center`]: data.wrapperShow && props.center,
                 },
             ];
         });
@@ -359,7 +428,13 @@ export default defineComponent({
 
         // 弹窗样式
         const modalClasses = computed(() => {
-            return [prefixCls];
+            return [
+                prefixCls,
+                {
+                    [`${prefixCls}-fullscreen`]: props.fullscreen,
+                    [`${prefixCls}-drag-mask`]: data.dragData.x !== null,
+                },
+            ];
         });
 
         // 弹窗样式
@@ -371,7 +446,7 @@ export default defineComponent({
                 top?: number | string;
             } = {
                 width: width <= 100 ? `${width}%` : `${width}px`,
-                top: `${props.top}px`,
+                top: !props.fullscreen && !props.center && `${props.top}px`,
             };
 
             // 有向左拖动
@@ -392,14 +467,65 @@ export default defineComponent({
             return [
                 `${prefixCls}-content`,
                 {
+                    // 没有蒙版
                     [`${prefixCls}-content--no-mask`]: !showMask.value,
+                    // 内容拖动
+                    [`${prefixCls}-content--drag`]: draggable.value,
+                    // 拖动中
+                    [`${prefixCls}-content--dragging`]:
+                        props.draggable && data.dragData.dragging,
                 },
             ];
         });
 
+        // 弹窗内容样式
+        const contentStyles = computed(() => {
+            let style: {
+                left?: string;
+                top?: string;
+                width?: string;
+            } = {};
+
+            // 开启拖动没有开启全屏
+            if (props.draggable && !props.fullscreen) {
+                const width = parseInt(props.width);
+
+                // width
+                style = {
+                    width: width <= 100 ? `${width}%` : `${width}px`,
+                };
+
+                // 初始化自定义样式
+                const customTop =
+                    props.styles && props.styles.top
+                        ? parseFloat(props.styles.top)
+                        : 0;
+
+                // 初始化自定义样式
+                const customLeft =
+                    props.styles && props.styles.left
+                        ? parseFloat(props.styles.left)
+                        : 0;
+
+                // left
+                if (data.dragData.x !== null) {
+                    style.left = `${data.dragData.x - customLeft}px`;
+                }
+
+                // top
+                if (data.dragData.y !== null) {
+                    style.top = `${data.dragData.y - customTop}px`;
+                }
+
+                return style;
+            }
+
+            return style;
+        });
+
         // 是否显示蒙版
         const showMask = computed(() => {
-            return props.mask;
+            return !props.draggable && props.mask;
         });
 
         // 是否显示头部
@@ -411,6 +537,15 @@ export default defineComponent({
             }
 
             return showHead;
+        });
+
+        // 可以拖动
+        const draggable = computed(() => {
+            if (!props.draggable || props.fullscreen) {
+                return false;
+            }
+
+            return true;
         });
 
         // methods
@@ -498,9 +633,6 @@ export default defineComponent({
         const handleMousedown = () => {
             data.isMouseTriggerIn = true;
         };
-
-        // 拖动开始
-        const handleDraggableStart = () => {};
 
         // 关闭按钮
         const handleCancel = () => {
@@ -591,6 +723,23 @@ export default defineComponent({
             }
         };
 
+        // 点击弹窗
+        const handleClickModal = () => {
+            // 重新设置当前弹窗的 zIndex
+            if (props.draggable) {
+                // 重复点击
+                if (currentUid === uid) {
+                    return;
+                }
+
+                // 设置当前点击的uid
+                setCurrentUid(uid);
+
+                // 设置zIndex
+                data.modalIndex = handleGetModalIndex();
+            }
+        };
+
         // data
         const data = reactive<{
             visible: boolean;
@@ -602,7 +751,6 @@ export default defineComponent({
             dragData: Record<string, any>;
             spinLoading: boolean;
             buttonLoading: boolean;
-            lastVisibleIndex: number;
         }>({
             /**
              * 显示/隐藏
@@ -658,12 +806,6 @@ export default defineComponent({
              * @type {Boolean}
              */
             buttonLoading: false,
-            /**
-             * 上一次显示的zIndex
-             *
-             * @type {Number}
-             */
-            lastVisibleIndex: 0,
         });
 
         // watch
@@ -685,7 +827,6 @@ export default defineComponent({
                     // 增加 zIndex
                     if (data.lastVisible !== value) {
                         data.modalIndex = handleGetModalIndex();
-                        lastVisibleIncrease();
                     }
 
                     // 清除setTimeout
@@ -710,10 +851,7 @@ export default defineComponent({
                 // 之前是否已经显示过
                 data.lastVisible = value;
 
-                // 上一次显示的zIndex
-                data.lastVisibleIndex = lastVisibleIndex;
-
-                // 拖动的数据
+                // 拖动的数据用于重新设置初始化拖动位置
                 if (value && props.resetDragPosition) {
                     data.dragData = deepCopy(dragData);
                 }
@@ -731,6 +869,21 @@ export default defineComponent({
             }
         );
 
+        // 监听页面是否可以滚动
+        watch(
+            () => props.scrollable,
+            (value) => {
+                // 页面是否可以滚动
+                if (!value) {
+                    proxy.addScrollEffect();
+                }
+                // 删除滚动条修改
+                else {
+                    proxy.removeScrollEffect();
+                }
+            }
+        );
+
         // onMounted
         onMounted(() => {
             // 显示
@@ -744,6 +897,14 @@ export default defineComponent({
 
             // 键盘事件
             useEventListener(window, 'keydown', handleEscClose);
+
+            // 拖动
+            if (showHead.value) {
+                useDraggable(contentRef, headerRef, data.dragData, draggable, {
+                    sticky: props.sticky,
+                    stickyDistance: props.stickyDistance,
+                });
+            }
         });
 
         // onBeforeUnmount
@@ -758,6 +919,10 @@ export default defineComponent({
         return {
             prefixCls,
 
+            // dom
+            headerRef,
+            contentRef,
+
             // data
             data,
 
@@ -767,17 +932,20 @@ export default defineComponent({
             modalClasses,
             modalStyles,
             contentClasses,
+            contentStyles,
             showMask,
             showHead,
 
             // methods
             close,
+            setLoading,
             handleMask,
             handleWrapperClick,
             handleAfterLeave,
             handleMousedown,
             handleCancel,
             handleConfirm,
+            handleClickModal,
         };
     },
     components: {

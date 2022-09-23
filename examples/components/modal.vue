@@ -79,6 +79,55 @@
             <p>Content of dialog</p>
             <p>Content of dialog</p>
         </ivue-modal>
+        <h1>自定义位置</h1>
+
+        <ivue-button @click="modal9 = true">顶部距离</ivue-button>
+        <ivue-modal title="Title" v-model="modal9" :top="50">
+            <p>Content of dialog</p>
+            <p>Content of dialog</p>
+            <p>Content of dialog</p>
+        </ivue-modal>
+        <ivue-button @click="modal10 = true">自定义样式</ivue-button>
+        <ivue-modal
+            title="Title"
+            v-model="modal10"
+            :top="50"
+            modalWrapperClasses="vertical-center-modal"
+            :styles="{top: '200px'}"
+        >
+            <p>Content of dialog</p>
+            <p>Content of dialog</p>
+            <p>Content of dialog</p>
+        </ivue-modal>
+        <ivue-button @click="modal11 = true">位置</ivue-button>
+        <ivue-modal title="Title" v-model="modal11" :top="50" center>
+            <p>Content of dialog</p>
+            <p>Content of dialog</p>
+            <p>Content of dialog</p>
+        </ivue-modal>
+        <h1>全屏</h1>
+        <ivue-button @click="modal12 = true">全屏</ivue-button>
+        <ivue-modal v-model="modal12" fullscreen>
+            <p>Content of dialog</p>
+            <p>Content of dialog</p>
+            <p>Content of dialog</p>
+        </ivue-modal>
+        <h1>拖拽移动</h1>
+        <ivue-button @click="modal13 = true">拖拽移动1</ivue-button>
+        <ivue-modal v-model="modal13" draggable scrollable title="Modal 1" transfer>
+            <div>Modal 1</div>
+            <div>Can be dragged off the screen</div>
+        </ivue-modal>
+        <ivue-button @click="modal14 = true">拖拽移动2</ivue-button>
+        <ivue-modal v-model="modal14" draggable sticky scrollable title="Modal 2" transfer>
+            <div>Modal 2</div>
+            <div>Can be dragged off the screen</div>
+        </ivue-modal>
+        <h1>实例化使用方法</h1>
+        <ivue-button @click="instance('info')">Info</ivue-button>
+        <ivue-button @click="instance('success')">Success</ivue-button>
+        <ivue-button @click="instance('warning')">Warning</ivue-button>
+        <ivue-button @click="instance('error')">Error</ivue-button>
     </div>
 </template>
 
@@ -96,6 +145,12 @@ export default {
             modal6: false,
             modal7: false,
             modal8: false,
+            modal9: false,
+            modal10: false,
+            modal11: false,
+            modal12: false,
+            modal13: false,
+            modal14: false,
         };
     },
     methods: {
@@ -110,12 +165,42 @@ export default {
                 this.modal6 = false;
             }, 2000);
         },
+        instance(type) {
+            const title = 'Title';
+            const content = '<p>Content of dialog</p><p>Content of dialog</p>';
+            switch (type) {
+                case 'info':
+                    this.$IvueModal.info({
+                        title: title,
+                        content: content,
+                    });
+                    break;
+                case 'success':
+                    this.$IvueModal.success({
+                        title: title,
+                        content: content,
+                    });
+                    break;
+                case 'warning':
+                    this.$IvueModal.warning({
+                        title: title,
+                        content: content,
+                    });
+                    break;
+                case 'error':
+                    this.$IvueModal.error({
+                        title: title,
+                        content: content,
+                    });
+                    break;
+            }
+        },
     },
 };
 </script>
 
-<style lang="scss" scoped>
-.card {
-    // height: 1000px;
+<style lang="scss">
+.vertical-center-modal {
+    background: yellow;
 }
 </style>
