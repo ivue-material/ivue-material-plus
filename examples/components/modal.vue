@@ -1,6 +1,6 @@
 <template>
     <div>
-        <h1>基础用法</h1>
+        <!-- <h1>基础用法</h1>
         <ivue-button type="primary" @click="modal = true">Display dialog box</ivue-button>
         <ivue-modal
             v-model="modal"
@@ -122,7 +122,7 @@
         <ivue-modal v-model="modal14" draggable sticky scrollable title="Modal 2" transfer>
             <div>Modal 2</div>
             <div>Can be dragged off the screen</div>
-        </ivue-modal>
+        </ivue-modal> -->
         <h1>实例化使用方法</h1>
         <ivue-button @click="instance('info')">Info</ivue-button>
         <ivue-button @click="instance('success')">Success</ivue-button>

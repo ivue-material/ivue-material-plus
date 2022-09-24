@@ -168,6 +168,56 @@ $name: 'ivue-modal';
       overflow: auto;
     }
   }
+
+  // 实例渲染
+  &-instance {
+
+    // 头部
+    &--head {
+      padding: 0 12px 0 0;
+      display: flex;
+      align-items: center;
+
+      &__title {
+        margin-left: 12px;
+        font-size: 16px;
+        color: $title-color;
+        font-weight: bold;
+      }
+
+      &__icon {
+        width: auto;
+        margin: 0;
+        font-size: 28px;
+      }
+
+      &__success {
+        color: $success-color;
+        display: inline-block;
+      }
+
+      &__info {
+        color: $primary-color;
+      }
+
+      &__warning {
+        color: $warning-color;
+      }
+
+      &__error {
+        color: $error-color;
+      }
+    }
+
+    // body
+    &--body {
+      position: relative;
+      margin-top: 10px;
+      padding-left: 40px;
+      font-size: 14px;
+      color: $text-color;
+    }
+  }
 }
 
 // media
@@ -181,7 +231,7 @@ $name: 'ivue-modal';
       margin: 0
     }
 
-    &-drag-mask{
+    &-drag-mask {
       margin: 0;
     }
   }

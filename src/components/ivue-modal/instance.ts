@@ -10,9 +10,9 @@ import {
   isClient
 } from '../../utils/helpers';
 
-const prefixCls = 'ivu-modal-instance';
+import IvueIcon from '../ivue-icon'
 
-type iconType = 'success' | 'warning' | 'info' | 'error' | ''
+const prefixCls = 'ivue-modal-instance';
 
 Modal.newInstance = (properties) => {
   if (!isClient) {
@@ -56,7 +56,17 @@ Modal.newInstance = (properties) => {
          * @type {String}
          */
         content: '',
+        /**
+         * 图标类型
+         *
+         * @type {String}
+         */
         iconType: '',
+        /**
+         * 图标名称
+         *
+         * @type {String}
+         */
         iconName: '',
         /**
          * 确定按钮文字
@@ -100,7 +110,25 @@ Modal.newInstance = (properties) => {
          *
          * @type {Boolean}
          */
-        closing: false
+        closing: false,
+        /**
+         * 按钮loading
+         *
+         * @type {Boolean}
+         */
+        buttonLoading: false,
+        /**
+         * 使用spain
+         *
+         * @type {Boolean}
+         */
+        spinLoading: false,
+        /**
+         * loading类型
+         *
+         * @type {String}
+         */
+        loadingType: 'spin'
       });
     },
     created() {
@@ -125,6 +153,34 @@ Modal.newInstance = (properties) => {
         // 删除实例
         this.remove();
       },
+      // 设置loading
+      setLoading(value: string) {
+        // spin
+        if (this.loadingType === 'spin') {
+          this.spinLoading = value;
+        }
+
+        // button
+        if (this.loadingType === 'button') {
+          this.buttonLoading = value;
+        }
+      },
+      remove() {
+        this.closing = true;
+
+        setTimeout(() => {
+          this.closing = false;
+          this.destroy();
+        }, 300);
+      },
+      // 销毁实例
+      destroy() {
+        Instance.unmount();
+
+        document.body.removeChild(container);
+
+        this.onRemove();
+      },
       // 点击确认
       onConfirm() { },
       // 点击取消的回调
@@ -133,6 +189,50 @@ Modal.newInstance = (properties) => {
       onRemove() { }
     },
     render() {
+
+      // 渲染头部
+      let headRender;
+
+      // 标题
+      if (this.title) {
+        headRender = h('div', {
+          class: `${prefixCls}--head`
+        }, [
+          h(IvueIcon, {
+            class: [
+              `${prefixCls}--head__icon`,
+              `${prefixCls}--head__${this.iconType}`,
+            ]
+          }, {
+            default: () => this.iconName
+          }),
+          h('div', {
+            class: `${prefixCls}--head__title`,
+            innerHTML: this.title
+          })
+        ]);
+      }
+
+      // 渲染body
+      let bodyRender;
+
+      // 有渲染函数
+      if (this.render) {
+        // bodyRender = h('div', {
+        //   class: `${prefixCls}-body ${prefixCls}-body-render`
+        // }, [this.render(h)]);
+      }
+      // 普通渲染
+      else {
+        bodyRender = h('div', {
+          class: `${prefixCls}--body`
+        }, [
+          h('div', {
+            innerHTML: this.content
+          })
+        ]);
+      }
+
       return h(Modal, {
         ..._props,
         // 对话框宽度
@@ -141,8 +241,6 @@ Modal.newInstance = (properties) => {
         scrollable: this.scrollable,
         // 是否显示关闭按钮
         closable: this.closable,
-        // ref
-        ref: 'modal',
         // modelValue
         modelValue: this.visible,
         // 更新modelValue
@@ -150,13 +248,15 @@ Modal.newInstance = (properties) => {
           this.visible = status;
         },
         // 点击取消的回调
-        'onOn-cancel': this.handleCancel
+        'onOn-cancel': this.handleCancel,
+        // ref
+        ref: 'modal',
       },
         () => h('div', {
           class: prefixCls
         }, [
-          // head_render,
-          // body_render,
+          headRender,
+          bodyRender,
           // h('div', {
           //   class: `${prefixCls}-footer`
           // }, footerVNodes)
@@ -193,6 +293,11 @@ Modal.newInstance = (properties) => {
         case 'confirm':
           modal.$parent.iconName = 'Help';
           break;
+      }
+
+      // loading类型
+      if ('loadingType' in props) {
+        modal.$parent.loadingType = props.loadingType;
       }
 
       // 对话框宽度
@@ -249,17 +354,16 @@ Modal.newInstance = (properties) => {
       modal.$parent.onRemove = props.onRemove;
 
       // 显示
-      modal.visible = true;
+      modal.data.visible = true;
 
-      console.log( modal.$parent.$refs.modal)
+      console.log(modal)
     },
     remove() {
-      modal.visible = false;
-      modal.$parent.buttonLoading = false;
-      modal.$parent.remove();
+      modal.data.visible = false;
 
       // 取消loading
-      // this.$refs.modal.setLoading(false);
+      modal.$parent.setLoading()
+      modal.$parent.remove();
     },
     component: modal
   };

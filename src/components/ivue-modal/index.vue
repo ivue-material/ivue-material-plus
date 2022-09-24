@@ -194,7 +194,7 @@ export default defineComponent({
                 const global =
                     getCurrentInstance().appContext.config.globalProperties;
 
-                return !global.$IVUE || global.$IVUE.modal.maskClosable === ''
+                return !global.$IVUE || !global.$IVUE.modal.maskClosable
                     ? true
                     : global.$IVUE.modal.maskClosable;
             },
@@ -595,6 +595,7 @@ export default defineComponent({
             else {
                 handleClose();
             }
+
         };
 
         // 弹窗外层点击
