@@ -69,16 +69,19 @@ export default {
         success() {
             this.$message.success({
                 content: '这是一条带背景色的通知',
+                duration: 0,
             });
         },
         warning() {
             this.$message.warning({
                 content: '这是一条带背景色的通知',
+                duration: 0,
             });
         },
         error() {
             this.$message.error({
                 content: '这是一条带背景色的通知',
+                duration: 0,
             });
         },
         background(type) {

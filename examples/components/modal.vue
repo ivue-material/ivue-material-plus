@@ -1,6 +1,6 @@
 <template>
     <div>
-        <!-- <h1>基础用法</h1>
+        <h1>基础用法</h1>
         <ivue-button type="primary" @click="modal = true">Display dialog box</ivue-button>
         <ivue-modal
             v-model="modal"
@@ -122,12 +122,18 @@
         <ivue-modal v-model="modal14" draggable sticky scrollable title="Modal 2" transfer>
             <div>Modal 2</div>
             <div>Can be dragged off the screen</div>
-        </ivue-modal> -->
+        </ivue-modal>
         <h1>实例化使用方法</h1>
         <ivue-button @click="instance('info')">Info</ivue-button>
         <ivue-button @click="instance('success')">Success</ivue-button>
         <ivue-button @click="instance('warning')">Warning</ivue-button>
         <ivue-button @click="instance('error')">Error</ivue-button>
+        <h1>确认对话框</h1>
+        <ivue-button @click="confirm">Normal</ivue-button>
+        <ivue-button @click="custom">Custom button text</ivue-button>
+        <ivue-button @click="async">Asynchronous closing</ivue-button>
+        <h1>自定义内容</h1>
+        <ivue-button @click="handleRender">Custom content</ivue-button>
     </div>
 </template>
 
@@ -194,6 +200,57 @@ export default {
                     });
                     break;
             }
+        },
+        confirm() {
+            this.$IvueModal.confirm({
+                title: 'Title',
+                content: 'content',
+                width: 600,
+                closable: true,
+                lockScroll: false,
+                onConfirm: () => {
+                    this.$message.info('Clicked ok');
+                },
+                onCancel: () => {
+                    this.$message.info('Clicked cancel');
+                },
+            });
+        },
+        custom() {
+            this.$IvueModal.confirm({
+                title: 'Title',
+                content: '自定义',
+                confirmText: '确认',
+                cancelText: '取消',
+            });
+        },
+        async() {
+            this.$IvueModal.confirm({
+                title: 'Title',
+                content: '<p>The dialog box will be closed after 2 seconds</p>',
+                loading: true,
+                loadingType: 'button',
+                onConfirm: () => {
+                    setTimeout(() => {
+                        this.$IvueModal.remove();
+                        // this.$Message.info(
+                        //     'Asynchronously close the dialog box'
+                        // );
+                    }, 2000);
+                },
+            });
+        },
+        handleRender() {
+            this.$IvueModal.confirm({
+                render: (h) => {
+                    return h('Input', {
+                        placeholder: 'Please enter your name...',
+                        onInput: (event) => {
+                            this.value = event.target.value;
+                        },
+                    });
+                },
+            });
         },
     },
 };

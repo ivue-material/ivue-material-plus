@@ -1,4 +1,3 @@
-/* eslint-disable */
 import {
   createApp,
   h,
@@ -10,7 +9,9 @@ import {
   isClient
 } from '../../utils/helpers';
 
-import IvueIcon from '../ivue-icon'
+import IvueIcon from '../ivue-icon';
+import IvueButton from '../ivue-button';
+import IvueSpin from '../ivue-spin';
 
 const prefixCls = 'ivue-modal-instance';
 
@@ -73,13 +74,13 @@ Modal.newInstance = (properties) => {
          *
          * @type {String}
          */
-        confirmText: undefined,
+        confirmText: 'Confirm',
         /**
          * 关闭文案
          *
          * @type {String}
          */
-        cancelText: undefined,
+        cancelText: 'Cancel',
         /**
          * 显示取消按钮
          *
@@ -143,15 +144,37 @@ Modal.newInstance = (properties) => {
         }
 
         // 关闭弹窗
-        this.$refs.modal.visible = false;
+        this.$refs.modal.data.visible = false;
 
         // 取消loading
-        this.$refs.modal.setLoading(false);
+        this.setLoading(false);
 
         // 点击取消的回调
         this.onCancel();
         // 删除实例
         this.remove();
+      },
+      // 点击确认
+      handleConfirm() {
+        // 关闭有动画，期间使用此属性避免重复点击
+        if (this.closing) {
+          return;
+        }
+
+        // 确定按钮是否显示 loading 状态
+        if (this.loading) {
+          this.setLoading(true);
+        }
+        // 点击隐藏
+        else {
+          this.$refs.modal.data.visible = false;
+
+          // 销毁实例
+          this.remove();
+        }
+
+        // 点击确定的回调
+        this.onConfirm();
       },
       // 设置loading
       setLoading(value: string) {
@@ -165,6 +188,7 @@ Modal.newInstance = (properties) => {
           this.buttonLoading = value;
         }
       },
+      // 销毁实例
       remove() {
         this.closing = true;
 
@@ -177,7 +201,7 @@ Modal.newInstance = (properties) => {
       destroy() {
         Instance.unmount();
 
-        document.body.removeChild(container);
+        container && document.body.removeChild(container);
 
         this.onRemove();
       },
@@ -218,9 +242,11 @@ Modal.newInstance = (properties) => {
 
       // 有渲染函数
       if (this.render) {
-        // bodyRender = h('div', {
-        //   class: `${prefixCls}-body ${prefixCls}-body-render`
-        // }, [this.render(h)]);
+        bodyRender = h('div', {
+          class: `${prefixCls}--body`
+        }, [
+          this.render(h)
+        ]);
       }
       // 普通渲染
       else {
@@ -232,6 +258,30 @@ Modal.newInstance = (properties) => {
           })
         ]);
       }
+
+      // 渲染底部
+      const footerRender = [];
+
+      // 取消按钮
+      if (this.showCancel) {
+        footerRender.push(h(IvueButton, {
+          class: 'ivue-modal-footer--button',
+          outline: true,
+          color: '#dcdfe6',
+          onClick: this.handleCancel
+        }, () => this.cancelText));
+      }
+
+      // 确认按钮
+      footerRender.push(h(IvueButton, {
+        class: 'ivue-modal-footer--button',
+        status: 'primary',
+        depressed: true,
+        loading: this.buttonLoading,
+        onClick: this.handleConfirm
+      },
+        () => this.confirmText)
+      );
 
       return h(Modal, {
         ..._props,
@@ -257,9 +307,15 @@ Modal.newInstance = (properties) => {
         }, [
           headRender,
           bodyRender,
-          // h('div', {
-          //   class: `${prefixCls}-footer`
-          // }, footerVNodes)
+          h('div', {
+            class: `${prefixCls}--footer`
+          }, footerRender),
+          (this.loadingType === 'spin') &&
+          h(IvueSpin, {
+            class: 'ivue-modal-spin',
+            fix: true,
+            show: this.spinLoading
+          })
         ])
       );
     }
@@ -282,7 +338,7 @@ Modal.newInstance = (properties) => {
           modal.$parent.iconName = 'info';
           break;
         case 'success':
-          modal.$parent.iconName = 'success';
+          modal.$parent.iconName = 'check_circle';
           break;
         case 'warning':
           modal.$parent.iconName = 'warning';
@@ -291,7 +347,7 @@ Modal.newInstance = (properties) => {
           modal.$parent.iconName = 'error';
           break;
         case 'confirm':
-          modal.$parent.iconName = 'Help';
+          modal.$parent.iconName = 'help';
           break;
       }
 
@@ -355,14 +411,12 @@ Modal.newInstance = (properties) => {
 
       // 显示
       modal.data.visible = true;
-
-      console.log(modal)
     },
     remove() {
       modal.data.visible = false;
 
       // 取消loading
-      modal.$parent.setLoading()
+      modal.$parent.setLoading();
       modal.$parent.remove();
     },
     component: modal

@@ -99,7 +99,9 @@ export default {
         return;
       }
 
+      // 检查滚动条
       this.checkScrollBar();
+      // 设置滚动条
       this.setScrollBar();
 
       document.body.style.overflow = 'hidden';

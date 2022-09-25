@@ -3,7 +3,7 @@ import { transferIndex, transferIncrease } from '../../utils/transfer-queue';
 
 import Notice from './index.vue';
 
- type Type = 'normal' | 'info' | 'warning' | 'success' | 'error'
+type Type = 'normal' | 'info' | 'warning' | 'success' | 'error'
 
 type options = {
     title?: string,
