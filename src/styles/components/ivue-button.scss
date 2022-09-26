@@ -131,6 +131,7 @@ $name: 'ivue-button';
   }
 
   &:before {
+    content: " ";
     position: absolute;
     top: 0;
     right: 0;
@@ -138,9 +139,9 @@ $name: 'ivue-button';
     left: 0;
     z-index: 1;
     opacity: 0;
+    border-radius: inherit;
     transition: $ivue-transition-default;
     will-change: background-color, opacity;
-    content: " ";
   }
 
   &.#{$name}--raised:not(.#{$name}--depressed):not(.#{$name}--flat):not([disabled]) {

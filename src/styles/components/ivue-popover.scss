@@ -1,6 +1,6 @@
 @import "../base.scss";
 
-$name: 'ivue-tooltip';
+$name:'ivue-popover';
 
 $bg: rgba(56, 61, 71, 0.9);
 $light-border: rgba(56, 61, 71, 0.5);
@@ -11,7 +11,6 @@ $light-border: rgba(56, 61, 71, 0.5);
   // 描述
   &-rel {
     position: relative;
-    width: inherit;
     display: inline-block;
   }
 
@@ -20,8 +19,9 @@ $light-border: rgba(56, 61, 71, 0.5);
     display: block;
     visibility: visible;
     font-size: 14px;
-    line-height: 1.5;
+    line-height: initial;
     z-index: 1060;
+    min-width: 150px;
 
     // top
     &[data-popper-placement=top] {
@@ -122,7 +122,7 @@ $light-border: rgba(56, 61, 71, 0.5);
       }
     }
 
-    // right-end
+    // right
     &[data-popper-placement=right-end] {
       padding: 0 5px 0 8px;
 
@@ -186,7 +186,7 @@ $light-border: rgba(56, 61, 71, 0.5);
     background-color: $bg;
     border-radius: 4px;
     box-shadow: 0 1px 6px rgb(0 0 0 / 20%);
-    word-break: break-all;
+    white-space: nowrap;
     overflow: hidden;
   }
 
@@ -199,11 +199,85 @@ $light-border: rgba(56, 61, 71, 0.5);
     border-style: solid;
   }
 
+  // title
+  &-title {
+    position: relative;
+    font-weight: bold;
+    padding-bottom: 8px;
+    border-bottom: 1px solid $white-color
+  }
+
+  // 对话框
+  &-confirm &-inner {
+    white-space: normal;
+  }
+
+  &-confirm &-body {
+    display: flex;
+    align-items: flex-start;
+  }
+
+  // body
+  &-body {
+    margin-top: 8px;
+
+    &--content {
+      overflow: auto;
+    }
+
+    &--word-wrap {
+      white-space: pre-wrap;
+      text-align: justify;
+    }
+
+    &--message {
+      margin-left: 5px;
+    }
+
+    .#{$name}-body--icon {
+      font-size: 16px;
+      color: $warning-color;
+      width: auto;
+      height: auto;
+      min-width: auto;
+      margin: 0;
+    }
+  }
+
+  // 底部
+  &-footer {
+    text-align: right;
+    margin-top: 24px;
+  }
+
+  // 底部按钮
+  &-footer--button {
+    margin-right: 8px;
+    font-size: 14px;
+    height: 26px;
+    padding: 0 7px;
+    min-width: auto;
+    border-radius: 4px;
+
+    &:last-child {
+      margin-left: 8px;
+      margin-right: 0;
+    }
+  }
+
   // light
   &-light {
     .#{$name}-inner {
       background-color: $white-color;
+    }
+
+    .#{$name}-title {
       color: $title-color;
+      border-bottom-color: $border-color;
+    }
+
+    .#{$name}-body {
+      color: $text-color;
     }
 
     .#{$name}-arrow {
@@ -390,16 +464,5 @@ $light-border: rgba(56, 61, 71, 0.5);
         }
       }
     }
-
   }
-}
-
-.fade-tooltip-enter-active,
-.fade-tooltip-leave-active {
-  transition: opacity .3s cubic-bezier(.25, .8, .50, 1);
-}
-
-.fade-tooltip-enter-from,
-.fade-tooltip-leave-to {
-  opacity: 0;
 }

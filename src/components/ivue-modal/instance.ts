@@ -243,7 +243,7 @@ Modal.newInstance = (properties) => {
       // 有渲染函数
       if (this.render) {
         bodyRender = h('div', {
-          class: `${prefixCls}--body`
+          class: `${prefixCls}--body ${prefixCls}--body__render`
         }, [
           this.render(h)
         ]);

@@ -40,7 +40,14 @@
                             </slot>
                         </div>
                         <!-- 内容 -->
-                        <div :class="`${prefixCls}-body`">
+                        <!-- 使用v-if重新渲染body -->
+                        <div :class="`${prefixCls}-body`" v-if="resetBody">
+                            <template v-if="data.resetRenderBody">
+                                <slot></slot>
+                            </template>
+                        </div>
+                        <!-- 普通渲染 -->
+                        <div :class="`${prefixCls}-body`" v-else>
                             <slot></slot>
                         </div>
                         <!-- 底部 -->
@@ -389,6 +396,15 @@ export default defineComponent({
         render: {
             type: Function,
         },
+        /**
+         * v-if 重新渲染body内容
+         *
+         * @type {Boolean}
+         */
+        resetBody: {
+            type: Boolean,
+            default: false,
+        },
     },
     setup(props: any, { emit, slots }) {
         // proxy
@@ -595,7 +611,6 @@ export default defineComponent({
             else {
                 handleClose();
             }
-
         };
 
         // 弹窗外层点击
@@ -619,6 +634,9 @@ export default defineComponent({
         const handleAfterLeave = () => {
             // 隐藏外层显示
             data.wrapperShow = false;
+
+            // 隐藏重新渲染body
+            data.resetRenderBody = false;
 
             // 取消loading
             setLoading(false);
@@ -752,6 +770,7 @@ export default defineComponent({
             dragData: Record<string, any>;
             spinLoading: boolean;
             buttonLoading: boolean;
+            resetRenderBody: boolean;
         }>({
             /**
              * 显示/隐藏
@@ -807,6 +826,12 @@ export default defineComponent({
              * @type {Boolean}
              */
             buttonLoading: false,
+            /**
+             * 重新渲染body
+             *
+             * @type {Boolean}
+             */
+            resetRenderBody: false,
         });
 
         // watch
@@ -816,6 +841,11 @@ export default defineComponent({
             () => props.modelValue,
             (value) => {
                 data.visible = value;
+
+                // 显示重新渲染body
+                if (value) {
+                    data.resetRenderBody = value;
+                }
             }
         );
 

@@ -152,18 +152,26 @@ export default {
       }
     },
     // 显示隐藏
-    visible(val: boolean) {
-      if (val) {
+    visible(value: boolean) {
+      // 显示
+      if (value) {
+        // 增加zIndex
+        if (this.handleIndexIncrease) {
+          this.handleIndexIncrease();
+        }
 
         // 更新
         this.updatePopper();
 
         this.$emit('on-popper-show');
-      } else {
+      }
+      // 隐藏
+      else {
         this.$emit('on-popper-hide');
       }
 
-      this.$emit('update:modelValue', val);
+      // update
+      this.$emit('update:modelValue', value);
     }
   },
 };

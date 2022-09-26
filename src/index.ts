@@ -50,6 +50,7 @@ import { IvueEllipsis } from './components/ivue-ellipsis';
 import { IvueRelativeTime } from './components/ivue-relative-time';
 import { IvueBackTop } from './components/ivue-back-top';
 import { IvueModal } from './components/ivue-modal';
+import { IvuePopover } from './components/ivue-popover';
 
 import { IvueImage } from './components/ivue-image';
 import { IvueImagePreview } from './components/ivue-image-preview';
@@ -163,6 +164,7 @@ export {
     IvueRelativeTime,
     IvueBackTop,
     IvueModal,
+    IvuePopover,
 
     Ripple,
     install

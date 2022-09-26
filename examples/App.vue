@@ -161,6 +161,9 @@
                 <li>
                     <router-link to="/modal">Modal</router-link>
                 </li>
+                <li>
+                    <router-link to="/popover">Popover</router-link>
+                </li>
             </ul>
         </nav>
 

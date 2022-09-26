@@ -222,6 +222,11 @@ $name: 'ivue-modal';
       padding-left: 40px;
       font-size: 14px;
       color: $text-color;
+
+      &__render{
+        padding: 0;
+        margin: 0;
+      }
     }
 
     // 底部

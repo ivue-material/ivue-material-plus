@@ -52,6 +52,9 @@ import { transferIndex, transferIncrease } from '../../utils/transfer-queue';
 import { oneOf } from '../../utils/assist';
 import Popper from '../../utils/mixins/popper';
 
+// ts
+import { _ComponentInternalInstance } from './types';
+
 // 注册外部点击事件插件
 import { ClickOutside } from '../../utils/directives';
 
@@ -189,7 +192,10 @@ export default defineComponent({
          */
         theme: {
             type: String,
-            default: 'dark',
+            validator(value: string) {
+                return oneOf(value, ['dark', 'light']);
+            },
+            default: 'light',
         },
         /**
          * 不显示三角形
@@ -231,7 +237,7 @@ export default defineComponent({
         const reference = ref(null);
 
         // 支持访问内部组件实例
-        const { proxy }: any = getCurrentInstance();
+        const { proxy } = getCurrentInstance() as _ComponentInternalInstance;
 
         // data
 
@@ -256,16 +262,6 @@ export default defineComponent({
             zIndex: 0,
         });
 
-        // onMounted
-        onMounted(() => {
-            data.zIndex = handleGetIndex();
-
-            // 是否总是可见
-            if (props.always) {
-                proxy.updatePopper();
-            }
-        });
-
         // computed
 
         // 悬浮框样式
@@ -273,7 +269,9 @@ export default defineComponent({
             return [
                 `${prefixCls}-popper`,
                 {
+                    // 主题
                     [`${prefixCls}-${props.theme}`]: true,
+                    // 是否将弹层放置于 body 内
                     [`${prefixCls}-transfer`]: props.transfer,
                     // 开启 transfer 时，给浮层添加额外的 class 名称
                     [props.transferClassName]: props.transferClassName,
@@ -371,7 +369,6 @@ export default defineComponent({
 
             // 是否显示
             if (visible.value) {
-
                 // 清除定时器
                 if (data.timeout) {
                     clearTimeout(data.timeout);
@@ -426,6 +423,17 @@ export default defineComponent({
                 proxy.updatePopper();
             }
         );
+
+        // onMounted
+        onMounted(() => {
+            data.zIndex = handleGetIndex();
+
+            // 是否总是可见
+            if (props.always) {
+                proxy.updatePopper();
+            }
+        });
+
         return {
             prefixCls,
 

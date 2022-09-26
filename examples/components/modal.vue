@@ -1,15 +1,24 @@
 <template>
     <div>
         <h1>基础用法</h1>
-        <ivue-button type="primary" @click="modal = true">Display dialog box</ivue-button>
+        <h2>resetBody 重新渲染body v-if 重新渲染body内容</h2>
+        <ivue-button type="primary" @click="modal = true">重新渲染body</ivue-button>
         <ivue-modal
             v-model="modal"
             :beforeClose="beforeClose"
+            resetBody
             title="Common Modal dialog box title"
         >
-            <p>Content of dialog</p>
-            <p>Content of dialog</p>
-            <p>Content of dialog</p>
+            <TestModal></TestModal>
+        </ivue-modal>
+        <h2>不重新渲染body</h2>
+        <ivue-button type="primary" @click="modal15 = true">不重新渲染body</ivue-button>
+        <ivue-modal
+            v-model="modal15"
+            :beforeClose="beforeClose"
+            title="Common Modal dialog box title"
+        >
+            <TestModal></TestModal>
         </ivue-modal>
         <h1>自定义样式</h1>
         <h2>自定义头部底部</h2>
@@ -138,6 +147,8 @@
 </template>
 
 <script>
+import TestModal from './test-modal.vue';
+
 export default {
     data() {
         return {
@@ -157,6 +168,7 @@ export default {
             modal12: false,
             modal13: false,
             modal14: false,
+            modal15: false,
         };
     },
     methods: {
@@ -233,9 +245,6 @@ export default {
                 onConfirm: () => {
                     setTimeout(() => {
                         this.$IvueModal.remove();
-                        // this.$Message.info(
-                        //     'Asynchronously close the dialog box'
-                        // );
                     }, 2000);
                 },
             });
@@ -252,6 +261,9 @@ export default {
                 },
             });
         },
+    },
+    components: {
+        TestModal,
     },
 };
 </script>
