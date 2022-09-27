@@ -95,9 +95,6 @@ import { oneOf } from '../../utils/assist';
 import Popper from '../../utils/mixins/popper';
 import { transferIndex, transferIncrease } from '../../utils/transfer-queue';
 
-// ts
-import { _ComponentInternalInstance } from './types';
-
 // 注册外部点击事件插件
 import { ClickOutside } from '../../utils/directives';
 

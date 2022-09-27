@@ -49,6 +49,7 @@ import RelativeTime from '../components/relative-time';
 import BackTop from '../components/back-top';
 import Modal from '../components/modal';
 import Popover from '../components/popover';
+import InputNumber from '../components/input-number';
 
 const routes = [{
     path: '/Affix',
@@ -282,6 +283,11 @@ const routes = [{
     path: '/popover',
     name: 'Popover',
     component: Popover
+  },
+  {
+    path: '/input-number',
+    name: 'InputNumber',
+    component: InputNumber
   }
 ];
 

@@ -43,6 +43,7 @@ import IvueRelativeTime from './ivue-relative-time';
 import IvueBackTop from './ivue-back-top';
 import IvueModal from './ivue-modal';
 import IvuePopover from './ivue-popover';
+import IvueInputNumber from './ivue-input-number';
 
 import { IvueImage, IvueImagePreview } from './ivue-image';
 import { IvueCollapse } from './ivue-collapse';
@@ -113,6 +114,7 @@ export {
   IvueBackTop,
   IvueModal,
   IvuePopover,
+  IvueInputNumber,
 
   Ripple
 };

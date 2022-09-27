@@ -44,7 +44,7 @@ export default defineComponent({
     },
     setup(props: any) {
         // data
-        const data: any = reactive<{
+        const data = reactive<{
             percent: number;
             status: string;
             visible: boolean;

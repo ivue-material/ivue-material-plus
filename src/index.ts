@@ -51,6 +51,7 @@ import { IvueRelativeTime } from './components/ivue-relative-time';
 import { IvueBackTop } from './components/ivue-back-top';
 import { IvueModal } from './components/ivue-modal';
 import { IvuePopover } from './components/ivue-popover';
+import { IvueInputNumber } from './components/ivue-input-number';
 
 import { IvueImage } from './components/ivue-image';
 import { IvueImagePreview } from './components/ivue-image-preview';
@@ -165,6 +166,7 @@ export {
     IvueBackTop,
     IvueModal,
     IvuePopover,
+    IvueInputNumber,
 
     Ripple,
     install
