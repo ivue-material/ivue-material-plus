@@ -228,9 +228,9 @@ export default defineComponent({
         const strokeWidth = (2 / +size) * viewBoxSize * 2;
 
         // data
-        const data: any = reactive<{
+        const data = reactive<{
             haveDesc: boolean;
-            closeTimer: any;
+            closeTimer: ReturnType<typeof setTimeout> | null;
             visible: boolean;
             iconTypes: Record<string, string>;
         }>({

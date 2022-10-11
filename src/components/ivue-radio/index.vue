@@ -29,6 +29,7 @@ import {
     onMounted,
 } from 'vue';
 import { isCssColor, setTextColor } from '../../utils/helpers';
+import { RadioContextKey } from '../ivue-radio-group/radio-group';
 
 const prefixCls = 'ivue-radio';
 
@@ -108,7 +109,7 @@ export default defineComponent({
     },
     setup(props: any, { emit }) {
         // 组合
-        const IvueRadioGroup: any = inject('IvueRadioGroup', {
+        const IvueRadioGroup = inject(RadioContextKey, {
             default: null,
         });
 

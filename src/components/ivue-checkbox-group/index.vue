@@ -6,6 +6,7 @@
 
 <script lang='ts'>
 import { computed, defineComponent, reactive, provide } from 'vue';
+import { CheckboxContextKey } from './checkbox-group';
 
 const prefixCls = 'ivue-checkbox-group';
 
@@ -46,7 +47,7 @@ export default defineComponent({
         // methods
 
         // 改变值
-        const handleChange = (value: Array<any>) => {
+        const handleChange = (value: any[]) => {
             data.currentValue = value;
 
             emit('update:modelValue', value);
@@ -55,7 +56,7 @@ export default defineComponent({
 
         // provide
 
-        provide('IvueCheckboxGroup', {
+        provide(CheckboxContextKey, {
             name: prefixCls,
             props,
             handleChange,

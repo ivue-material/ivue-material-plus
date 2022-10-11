@@ -167,6 +167,9 @@
                 <li>
                     <router-link to="/input-number">InputNumber</router-link>
                 </li>
+                  <li>
+                    <router-link to="/menu">Menu</router-link>
+                </li>
             </ul>
         </nav>
 

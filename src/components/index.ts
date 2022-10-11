@@ -52,6 +52,7 @@ import { IvueSelect, IvueOption, IvueOptionGroup } from './ivue-select';
 import { IvueSteps, IvueStep } from './ivue-steps';
 import { IvueTabs, IvueTab, IvueTabItem } from './ivue-tabs';
 import { IvueTable, IvueTableColumn } from './ivue-table';
+import { IvueMenu, IvueMenuItem, IvueSubmenu } from './ivue-menu';
 import { Ripple } from './ivue-ripple';
 
 export {
@@ -115,6 +116,9 @@ export {
   IvueModal,
   IvuePopover,
   IvueInputNumber,
+  IvueMenu,
+  IvueMenuItem,
+  IvueSubmenu,
 
   Ripple
 };

@@ -14,6 +14,7 @@ import {
     PropType,
 } from 'vue';
 import { oneOf } from '../../utils/assist';
+import { RadioContextKey } from './radio-group';
 
 const prefixCls = 'ivue-radio-group';
 
@@ -149,7 +150,7 @@ export default defineComponent({
 
         // provide
 
-        provide('IvueRadioGroup', {
+        provide(RadioContextKey, {
             name: props.name,
             data,
             change: handleChange,

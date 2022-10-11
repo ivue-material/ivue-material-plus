@@ -36,7 +36,13 @@ import {
 import MenuItem from './menu-item.vue';
 
 // ts
-import { tmpItem, result, options, MenuItemInstance } from './cascader';
+import {
+    tmpItem,
+    result,
+    options,
+    MenuItemInstance,
+    CascaderContextKey,
+} from './cascader';
 
 const prefixCls = 'ivue-cascader-menu';
 
@@ -91,7 +97,7 @@ export default defineComponent({
         const { ctx }: any = getCurrentInstance();
 
         // inject
-        const cascader: any = inject('ivue-cascader');
+        const cascader = inject(CascaderContextKey);
 
         // data
         const data = reactive<{
@@ -155,8 +161,8 @@ export default defineComponent({
         // 当前点击的选项
         const handleTriggerItem = (
             item: options,
-            fromInit = false,
-            fromUser = false
+            fromInit = false as boolean,
+            fromUser = false as boolean
         ) => {
             // 禁用
             if (item.disabled) {

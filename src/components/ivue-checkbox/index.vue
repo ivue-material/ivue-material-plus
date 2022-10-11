@@ -40,6 +40,7 @@
 <script lang='ts'>
 import { computed, defineComponent, reactive, watch, inject } from 'vue';
 import { isCssColor, setTextColor } from '../../utils/helpers';
+import { CheckboxContextKey } from '../ivue-checkbox-group/checkbox-group';
 
 const prefixCls = 'ivue-checkbox';
 
@@ -129,7 +130,7 @@ export default defineComponent({
     },
     setup(props: any, { emit }) {
         // 组合
-        const IvueCheckboxGroup: any = inject('IvueCheckboxGroup', {
+        const IvueCheckboxGroup = inject(CheckboxContextKey, {
             default: null,
         });
 

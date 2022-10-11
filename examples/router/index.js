@@ -50,6 +50,7 @@ import BackTop from '../components/back-top';
 import Modal from '../components/modal';
 import Popover from '../components/popover';
 import InputNumber from '../components/input-number';
+import Menu from '../components/menu';
 
 const routes = [{
     path: '/Affix',
@@ -288,6 +289,11 @@ const routes = [{
     path: '/input-number',
     name: 'InputNumber',
     component: InputNumber
+  },
+  {
+    path: '/menu',
+    name: 'Menu',
+    component: Menu
   }
 ];
 

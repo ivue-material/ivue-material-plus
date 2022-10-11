@@ -117,7 +117,12 @@ import DropDown from '../ivue-select/drop-down.vue';
 import IvueCascaderMenu from './menu.vue';
 
 // ts
-import { IvueInputInstance } from './cascader';
+import {
+    IvueInputInstance,
+    CascaderContextKey,
+    DropDownInstance,
+    IvueCascaderMenuInstance,
+} from './cascader';
 
 const prefixCls = 'ivue-cascader';
 
@@ -323,18 +328,18 @@ export default defineComponent({
         // dom
         const input = ref<IvueInputInstance>();
         const reference = ref<HTMLDivElement>();
-        const dropdown = ref<HTMLElement | any>(null);
-        const menu = ref<HTMLElement | any>(null);
+        const dropdown = ref<DropDownInstance>(null);
+        const menu = ref<IvueCascaderMenuInstance>(null);
 
         // data
         const data: any = reactive<{
             visibleMenu: boolean;
-            currentValue: Array<any>;
-            selected: Array<any>;
+            currentValue: any[];
+            selected: any[];
             queryData: string;
             validDataStr: string;
             isLoadedChildren: boolean;
-            tmpSelected: Array<any>;
+            tmpSelected: any[];
             updatingValue: boolean;
             isValueNull: boolean;
             filterableSelect: boolean;
@@ -735,7 +740,7 @@ export default defineComponent({
         };
 
         // 更新结果
-        const updateResult = (result) => {
+        const updateResult = (result: any[]) => {
             data.tmpSelected = result;
         };
 
@@ -861,7 +866,7 @@ export default defineComponent({
 
         // provide
         provide(
-            'ivue-cascader',
+            CascaderContextKey,
             reactive({
                 props,
                 dropdown,
