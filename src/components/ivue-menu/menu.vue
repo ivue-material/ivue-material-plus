@@ -10,7 +10,7 @@ import { oneOf } from '../../utils/assist';
 import { findComponentsUpward } from '../../utils/helpers';
 
 // ts
-import { MenuContextKey, menuItemList } from './menu';
+import { MenuContextKey, MenuItemList, SubmenuList } from './menu';
 
 const prefixCls = 'ivue-menu';
 
@@ -85,8 +85,8 @@ export default {
         // data
         const data = reactive<{
             openedNames: any[];
-            menuItemList: menuItemList[];
-            submenuList: any[];
+            menuItemList: MenuItemList[];
+            submenuList: SubmenuList[];
             currentActiveName: string | number;
             ready: boolean;
         }>({
@@ -208,7 +208,7 @@ export default {
             if (props.accordion) {
                 // 关闭下拉菜单
                 submenuList.forEach((item) => {
-                    item.opened = false;
+                    item.data.opened = false;
                 });
             }
 
@@ -221,7 +221,7 @@ export default {
                     if (item.name === name) {
                         currentSubmenu = item;
 
-                        item.opened = false;
+                        item.data.opened = false;
                     }
                 });
 
@@ -230,14 +230,14 @@ export default {
                     currentSubmenu,
                     'ivue-menu-submenu'
                 ).forEach((item) => {
-                    item.opened = true;
+                    item.data.opened = true;
                 });
 
                 // 子菜单列表全部关闭
-                currentSubmenu.childSubmenuList
+                currentSubmenu.data.childSubmenuList
                     .map((item) => item.submenu)
                     .forEach((item) => {
-                        item.opened = false;
+                        item.data.opened = false;
                     });
             }
             // 没有当前菜单
@@ -251,7 +251,7 @@ export default {
                         if (item.name === name) {
                             currentSubmenu = item;
 
-                            item.opened = true;
+                            item.data.opened = true;
                         }
                     });
 
@@ -259,7 +259,7 @@ export default {
                         currentSubmenu,
                         'ivue-menu-submenu'
                     ).forEach((item) => {
-                        item.opened = true;
+                        item.data.opened = true;
                     });
                 } else {
                     // 打开子菜单
@@ -269,7 +269,7 @@ export default {
 
                     submenuList.forEach((item) => {
                         if (item.name === name) {
-                            item.opened = true;
+                            item.data.opened = true;
                         }
                     });
                 }
@@ -277,14 +277,21 @@ export default {
 
             // 获取当前打开的子菜单
             let openedNames = submenuList
-                .filter((item) => item.opened)
+                .filter((item) => item.data.opened)
                 .map((item) => item.name);
 
             // 展开的 Submenu 的 name 集合
             data.openedNames = [...openedNames];
 
-            console.log(submenuList);
+            // 当前展开的 Submenu 的 name 值数组
             emit('on-open-change', openedNames);
+        };
+
+        // 选择当前菜单
+        const handleMenuItemSelect = (name: string | number) => {
+            data.currentActiveName = name;
+
+            emit('on-select', name);
         };
 
         // provide
@@ -297,6 +304,7 @@ export default {
                 menuItemActive,
                 handleEmitSelectEvent,
                 updateOpenKeys,
+                handleMenuItemSelect,
             })
         );
 

@@ -368,12 +368,37 @@ export function findComponentsUpward(context, componentName) {
     const parent = context.$parent;
 
     if (parent) {
+        // 找到当前组件名称
         if (parent.$options.name === componentName) {
             parents.push(parent);
         }
 
+        // 拼接数组
         return parents.concat(findComponentsUpward(parent, componentName));
     } else {
         return [];
     }
+}
+
+// Find components upward
+export function findComponentUpward(context, componentName, componentNames?) {
+    // 当前组件名称
+    if (typeof componentName === 'string') {
+        componentNames = [componentName];
+    } else {
+        componentNames = componentName;
+    }
+
+    let parent = context.$parent;
+    let name = parent.$options.name;
+
+    while (parent && (!name || componentNames.indexOf(name) < 0)) {
+        parent = parent.$parent;
+
+        if (parent) {
+            name = parent.$options.name;
+        }
+    }
+
+    return parent;
 }

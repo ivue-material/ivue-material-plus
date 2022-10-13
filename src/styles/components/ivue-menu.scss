@@ -40,6 +40,29 @@ $name: 'ivue-menu';
       }
     }
 
+    .#{$name}-submenu {
+      .#{$name}-dropdown {
+        min-width: 100%;
+        width: auto;
+        max-height: none;
+      }
+
+      .#{$name}-item {
+        padding: 7px 16px 8px;
+        font-size: 14px !important;
+      }
+
+      &--title {
+        display: flex;
+        align-items: center;
+      }
+
+      // icon
+      &--icon {
+        transition: inherit;
+      }
+    }
+
     .#{$name}-item--active {
       color: $primary-color;
       border-bottom: 2px solid $primary-color;

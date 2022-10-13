@@ -18,11 +18,8 @@
 
 <script lang='ts'>
 import {
-    defineComponent,
     computed,
     reactive,
-    onMounted,
-    inject,
     nextTick,
     getCurrentInstance,
     onBeforeUnmount,

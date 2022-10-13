@@ -7,6 +7,9 @@
 
             <ivue-submenu name="3">
                 <template #title>统计分析</template>
+                <ivue-menu-item name="3-1">新增和启动</ivue-menu-item>
+                <ivue-menu-item name="3-2">活跃分析</ivue-menu-item>
+
                 <!-- <MenuGroup title="使用">
                     <MenuItem name="3-1">新增和启动</MenuItem>
                     <MenuItem name="3-2">活跃分析</MenuItem>
@@ -15,7 +18,7 @@
                 <MenuGroup title="留存">
                     <MenuItem name="3-4">用户留存</MenuItem>
                     <MenuItem name="3-5">流失用户</MenuItem>
-                </MenuGroup> -->
+                </MenuGroup>-->
             </ivue-submenu>
         </ivue-menu>
     </div>

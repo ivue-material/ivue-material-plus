@@ -7,6 +7,7 @@
             :style="titleStyle"
         >
             <slot name="title"></slot>
+            <ivue-icon :class="`${prefixCls}--icon`">expand_more</ivue-icon>
             <!-- <Icon
                 :type="arrowType"
                 :custom="customArrowType"
@@ -26,7 +27,7 @@
             v-if="Menu.mode === 'horizontal'"
         >
             <ul :class="`${prefixCls}-dropdown--list`">
-                <slot></slot>1221
+                <slot></slot>
             </ul>
         </drop-down>
     </li>
@@ -37,18 +38,23 @@ import {
     computed,
     getCurrentInstance,
     inject,
+    onBeforeUnmount,
+    onMounted,
     reactive,
     ref,
     watch,
+    ComponentInternalInstance,
+    provide,
 } from 'vue';
 import CollapseTransition from '../../utils/collapse-transition';
 import { getStyle } from '../../utils/assist';
+import { findComponentUpward } from '../../utils/helpers';
 
 // 下拉框
-import DropDown from './dropdown.vue';
+import DropDown from './drop-down.vue';
 // ts
-import { MenuContextKey } from './menu';
-import { DropDownRef } from './submenu';
+import { MenuContextKey, SubmenuProxy, SubmenuList } from './menu';
+import { SubmenuContextKey } from './submenu';
 
 const prefixCls = 'ivue-menu-submenu';
 
@@ -76,14 +82,19 @@ export default {
     },
     setup(props: any) {
         // vm
-        const { proxy } = getCurrentInstance();
+        const { proxy, uid } =
+            getCurrentInstance() as ComponentInternalInstance;
 
         // dom
-        const reference = ref<HTMLDivElement>(null);
-        const dropDown = ref<DropDownRef>(null);
+        const reference = ref<HTMLDivElement>();
+        const dropDown = ref();
 
         // inject
         const Menu = inject(MenuContextKey, {
+            default: null,
+        });
+
+        const Submenu = inject(SubmenuContextKey, {
             default: null,
         });
 
@@ -92,7 +103,8 @@ export default {
             opened: boolean;
             dropWidth: number;
             timeout: ReturnType<typeof setTimeout> | null;
-            childSubmenuList: any[];
+            childSubmenuList: SubmenuList[];
+            active: boolean | number | string;
         }>({
             /**
              * 展开
@@ -118,6 +130,12 @@ export default {
              * @type {Array}
              */
             childSubmenuList: [],
+            /**
+             * 是否激活
+             *
+             * @type {Boolean}
+             */
+            active: false,
         });
 
         // computed
@@ -210,6 +228,73 @@ export default {
             }, 150);
         };
 
+        // 添加子菜单
+        const addSubmenu = () => {
+            const { submenuList } = Menu.data;
+
+            // 插入当前子菜单
+            if (submenuList) {
+                submenuList.push({
+                    uid: uid,
+                    submenu: proxy as unknown as SubmenuProxy,
+                });
+            }
+
+            // 查找父子菜单
+            const parentSubmenu = findComponentUpward(proxy, prefixCls);
+
+            if (parentSubmenu) {
+                if (!parentSubmenu.data.childSubmenuList) {
+                    parentSubmenu.data.childSubmenuList = [];
+                }
+
+                parentSubmenu.data.childSubmenuList.push({
+                    uid: uid,
+                    submenu: proxy as unknown as SubmenuProxy,
+                });
+            }
+        };
+
+        // 删除子菜单
+        const removeSubmenu = () => {
+            const { submenuList } = Menu.data;
+
+            if (submenuList && submenuList.length) {
+                const index = submenuList.findIndex((item) => item.uid === uid);
+
+                submenuList.splice(index, 1);
+            }
+        };
+
+        // 更新激活的名称
+        const handleUpdateActiveName = (status: boolean | string | number) => {
+            if (findComponentUpward(this, 'ivue-menu-submenu')) {
+                Submenu.handleUpdateActiveName(status);
+            }
+
+            // 子菜单列表
+            if (data.childSubmenuList && data.childSubmenuList.length) {
+                data.childSubmenuList
+                    .map((item) => item.submenu)
+                    .forEach((item) => {
+                        item.data.active = false;
+                    });
+            }
+
+            // 激活
+            data.active = status;
+        };
+
+        // 菜单选择
+        const handleMenuItemSelect = (name) => {
+            // 水平
+            if (Menu.mode === 'horizontal') {
+                data.opened = false;
+            }
+
+            Menu.handleMenuItemSelect(name);
+        };
+
         // watch
 
         // 监听模式变化
@@ -246,6 +331,25 @@ export default {
             }
         );
 
+        // provide
+
+        provide(
+            SubmenuContextKey,
+            reactive({
+                handleUpdateActiveName,
+            })
+        );
+
+        // onMounted
+        onMounted(() => {
+            addSubmenu();
+        });
+
+        // onBeforeUnmount
+        onBeforeUnmount(() => {
+            removeSubmenu();
+        });
+
         return {
             prefixCls,
 
@@ -268,6 +372,7 @@ export default {
             handleTitleClick,
             handleMouseenter,
             handleMouseleave,
+            handleMenuItemSelect,
         };
     },
     components: {
