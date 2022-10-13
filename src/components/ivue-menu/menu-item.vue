@@ -28,6 +28,7 @@ import {
     reactive,
 } from 'vue';
 import mixinsLink from '../../utils/mixins/mixins-link';
+import { findComponentUpward, findComponentsUpward } from '../../utils/helpers';
 
 // ts
 import { MenuContextKey } from './menu';
@@ -107,10 +108,10 @@ export default {
                 paddingLeft?: string;
             } = {};
 
-            if (!!Submenu && Menu.mode !== 'horizontal') {
-                // style.paddingLeft = `${
-                //     43 + (Submenu.length - 1) * 24
-                // }px`;
+            let len = findComponentsUpward(proxy, 'ivue-menu-submenu').length;
+
+            if (!Submenu.default && Menu.mode !== 'horizontal') {
+                styles.paddingLeft = `${43 + (len - 1) * 24}px`;
             }
 
             return styles;
@@ -135,7 +136,16 @@ export default {
             }
             // 没有打开新窗口
             else {
-                Menu.menuItemActive(props.name);
+                let parent = findComponentUpward(proxy, 'ivue-menu-submenu');
+
+                // 选择当前菜单
+                if (parent) {
+                    Submenu.handleMenuItemSelect(props.name);
+                }
+                // 激活子菜单
+                else {
+                    Menu.menuItemActive(props.name);
+                }
 
                 // 如果是 newWindow，直接新开窗口就行，无需发送状态
                 proxy.handleCheckClick(event, newWindow);
@@ -147,17 +157,15 @@ export default {
             // 激活
             if (props.name === name) {
                 data.active = true;
+
+                if (Submenu.activeName) {
+                    Submenu.activeName(name);
+                }
             }
             // 取消激活
             else {
                 data.active = false;
             }
-            //  if (this.name === name) {
-            //           this.active = true;
-            //           if (this.SubmenuInstance) this.SubmenuInstance.handleUpdateActiveName(name);
-            //       } else {
-            //           this.active = false;
-            //       }
         };
 
         // 添加菜单

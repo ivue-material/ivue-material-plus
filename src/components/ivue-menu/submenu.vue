@@ -26,7 +26,7 @@
             ref="dropDown"
             v-if="Menu.mode === 'horizontal'"
         >
-            <ul :class="`${prefixCls}-dropdown--list`">
+            <ul class="ivue-menu-dropdown--list">
                 <slot></slot>
             </ul>
         </drop-down>
@@ -142,7 +142,18 @@ export default {
 
         // 外部样式
         const wrapperClasses = computed(() => {
-            return [prefixCls];
+            return [
+                prefixCls,
+                {
+                    // 激活
+                    [`${prefixCls}--active`]:
+                        data.active && !Submenu.default,
+                    // 子菜单激活
+                    [`${prefixCls}--child-active`]: data.active,
+                    // 打开下拉框
+                    [`${prefixCls}--opened`]: data.opened,
+                },
+            ];
         });
 
         // 标题样式
@@ -267,9 +278,9 @@ export default {
         };
 
         // 更新激活的名称
-        const handleUpdateActiveName = (status: boolean | string | number) => {
-            if (findComponentUpward(this, 'ivue-menu-submenu')) {
-                Submenu.handleUpdateActiveName(status);
+        const activeName = (status: boolean | string | number) => {
+            if (findComponentUpward(proxy, 'ivue-menu-submenu')) {
+                Submenu.activeName(status);
             }
 
             // 子菜单列表
@@ -336,7 +347,8 @@ export default {
         provide(
             SubmenuContextKey,
             reactive({
-                handleUpdateActiveName,
+                activeName,
+                handleMenuItemSelect,
             })
         );
 
@@ -369,6 +381,7 @@ export default {
             dropDownStyle,
 
             // methods
+            activeName,
             handleTitleClick,
             handleMouseenter,
             handleMouseleave,

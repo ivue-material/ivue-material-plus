@@ -16,6 +16,69 @@ $name: 'ivue-menu';
     background: $white-color;
   }
 
+  // 黑色
+  &-dark {
+    background: #515a6e;
+  }
+
+  // primary
+  &-primary {
+    background: $primary-color;
+  }
+
+  &-dark.#{$name}-horizontal,
+  &-primary.#{$name}-horizontal {
+
+    .#{$name}-item {
+      color: rgba(255, 255, 255, .7);
+      border: none;
+
+      &:hover {
+        color: $white-color;
+        border: none;
+      }
+    }
+
+    .#{$name}-submenu {
+      color: rgba(255, 255, 255, .7);
+      border: none;
+
+      &:hover {
+        color: $white-color;
+        border: none;
+      }
+
+      &--active {
+        color: $white-color;
+      }
+
+      .#{$name}-item {
+        color: $text-color;
+
+        &--selected {
+          color: $primary-color;
+        }
+
+        &:hover {
+          background: $background-color-select-hover;
+        }
+      }
+    }
+
+    .#{$name}-item--active {
+      color: $white-color;
+    }
+  }
+
+  &-primary.#{$name}-horizontal {
+
+    .#{$name}-item,
+    .#{$name}-submenu {
+      color: $white-color;
+    }
+
+  }
+
   // 水平
   &-horizontal {
     height: 60px;
@@ -47,11 +110,34 @@ $name: 'ivue-menu';
         max-height: none;
       }
 
+      // 子选项
       .#{$name}-item {
-        padding: 7px 16px 8px;
-        font-size: 14px !important;
+        display: flex;
+        padding: 8px 16px;
+        font-size: 14px;
+        height: auto;
+        line-height: normal;
+        border-bottom: 0;
+        margin: 0;
+        line-height: normal;
+        clear: both;
+        color: $text-color;
+        white-space: nowrap;
+        list-style: none;
+        cursor: pointer;
+        transition: background .2s ease-in-out;
+        width: 100%;
+
+        &--active {
+          color: $primary-color;
+        }
+
+        &:hover {
+          background: $background-color-select-hover;
+        }
       }
 
+      // 标题
       &--title {
         display: flex;
         align-items: center;
@@ -60,6 +146,18 @@ $name: 'ivue-menu';
       // icon
       &--icon {
         transition: inherit;
+        transition: transform .2s ease-in-out,
+      }
+
+      // 激活
+      &--active {
+        color: $primary-color;
+        border-bottom: 2px solid $primary-color;
+      }
+
+      // 打开下拉框
+      &--opened .ivue-menu-submenu--icon {
+        transform: rotate(180deg);
       }
     }
 
@@ -92,6 +190,18 @@ $name: 'ivue-menu';
     z-index: 1;
     cursor: pointer;
     transition: all .2s ease-in-out;
+
+    &--group {
+      line-height: normal;
+
+      &__title {
+        height: 30px;
+        line-height: 30px;
+        padding-left: 8px;
+        font-size: 12px;
+        color: $legend-color;
+      }
+    }
   }
 
 
@@ -108,5 +218,10 @@ $name: 'ivue-menu';
     border-radius: 4px;
     box-shadow: 0 1px 6px rgb(0 0 0 / 20%);
     z-index: 900;
+
+    &--list {
+      display: flex;
+      flex-direction: column;
+    }
   }
 }

@@ -15,7 +15,8 @@ export interface SubmenuProxy {
     opened: boolean
     active: boolean | string | number
   },
-  name: number
+  name: number,
+  activeName: (status: boolean | string | number) => void
 }
 
 

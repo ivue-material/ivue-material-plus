@@ -168,20 +168,17 @@ export default {
             }
 
             // 子菜单列表
+            data.submenuList
+                .map((item) => item.submenu)
+                .forEach((item) => {
+                    item.activeName(false);
+                });
+
+            // 菜单列表
             data.menuItemList.forEach((item) => {
                 // 激活子菜单
                 item.activeName(data.currentActiveName);
             });
-
-            //  if (this.currentActiveName === undefined) {
-            //         this.currentActiveName = -1;
-            //     }
-            //     this.submenuList.map(item => item.submenu).forEach(item => {
-            //         item.handleUpdateActiveName(false);
-            //     });
-            //     this.menuItemList.map(item => item.menuitem).forEach(item => {
-            //         item.handleUpdateActiveName(this.currentActiveName);
-            //     });
         };
 
         // 激活子菜单

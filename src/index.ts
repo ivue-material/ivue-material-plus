@@ -52,7 +52,7 @@ import { IvueBackTop } from './components/ivue-back-top';
 import { IvueModal } from './components/ivue-modal';
 import { IvuePopover } from './components/ivue-popover';
 import { IvueInputNumber } from './components/ivue-input-number';
-import { IvueMenu, IvueMenuItem, IvueSubmenu } from './components/ivue-menu';
+import { IvueMenu, IvueMenuItem, IvueSubmenu,IvueMenuGroup } from './components/ivue-menu';
 
 import { IvueImage } from './components/ivue-image';
 import { IvueImagePreview } from './components/ivue-image-preview';
@@ -171,6 +171,7 @@ export {
     IvueMenu,
     IvueMenuItem,
     IvueSubmenu,
+    IvueMenuGroup,
 
     Ripple,
     install

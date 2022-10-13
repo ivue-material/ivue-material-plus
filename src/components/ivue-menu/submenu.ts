@@ -2,7 +2,8 @@ import type { InjectionKey } from 'vue';
 
 export type SubmenuContext = {
   default?: null,
-  handleUpdateActiveName?: (currentActiveName: number | string | boolean) => void
+  activeName?: (currentActiveName: number | string | boolean) => void
+  handleMenuItemSelect?: (name: string | number) => void
 }
 
 export const SubmenuContextKey: InjectionKey<SubmenuContext> =
