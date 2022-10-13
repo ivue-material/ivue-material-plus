@@ -361,3 +361,19 @@ export function doubleRaf(fn: FrameRequestCallback): void {
 
 // 是否是undefined
 export const isUndefined = (val: any): val is undefined => val === undefined;
+
+// Find components upward
+export function findComponentsUpward(context, componentName) {
+    const parents = [];
+    const parent = context.$parent;
+
+    if (parent) {
+        if (parent.$options.name === componentName) {
+            parents.push(parent);
+        }
+
+        return parents.concat(findComponentsUpward(parent, componentName));
+    } else {
+        return [];
+    }
+}

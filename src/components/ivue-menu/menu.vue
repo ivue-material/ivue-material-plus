@@ -7,6 +7,7 @@
 <script lang='ts'>
 import { computed, onMounted, reactive, provide, watch, nextTick } from 'vue';
 import { oneOf } from '../../utils/assist';
+import { findComponentsUpward } from '../../utils/helpers';
 
 // ts
 import { MenuContextKey, menuItemList } from './menu';
@@ -16,7 +17,7 @@ const prefixCls = 'ivue-menu';
 /* eslint-disable */
 export default {
     name: prefixCls,
-    emits: ['on-select'],
+    emits: ['on-select', 'on-open-change'],
     props: {
         /**
          * 主题，可选值为 light、dark、primary，其中 primary 只适用于 mode="horizontal"
@@ -70,12 +71,22 @@ export default {
         activeName: {
             type: [String, Number],
         },
+        /**
+         * 是否开启手风琴模式，开启后每次至多展开一个子菜单
+         *
+         * @type {Boolean}
+         */
+        accordion: {
+            type: Boolean,
+            default: false,
+        },
     },
     setup(props: any, { emit }) {
         // data
         const data = reactive<{
             openedNames: any[];
             menuItemList: menuItemList[];
+            submenuList: any[];
             currentActiveName: string | number;
             ready: boolean;
         }>({
@@ -91,6 +102,12 @@ export default {
              * @type {Array}
              */
             menuItemList: [],
+            /**
+             * 下拉菜单列表
+             *
+             * @type {Array}
+             */
+            submenuList: [],
             /**
              * 当前激活的名称
              *
@@ -180,6 +197,96 @@ export default {
             emit('on-select', name);
         };
 
+        // 更新打开的菜单名称
+        const updateOpenKeys = (name) => {
+            let names = [...data.openedNames];
+
+            const index = names.indexOf(name);
+            const submenuList = data.submenuList.map((item) => item.submenu);
+
+            // 手风琴模式
+            if (props.accordion) {
+                // 关闭下拉菜单
+                submenuList.forEach((item) => {
+                    item.opened = false;
+                });
+            }
+
+            //  开的 Submenu 的 name 集合 有当前菜单
+            if (index >= 0) {
+                let currentSubmenu = null;
+
+                // 关闭当前子菜单
+                submenuList.forEach((item) => {
+                    if (item.name === name) {
+                        currentSubmenu = item;
+
+                        item.opened = false;
+                    }
+                });
+
+                // 打开当前组件子菜单
+                findComponentsUpward(
+                    currentSubmenu,
+                    'ivue-menu-submenu'
+                ).forEach((item) => {
+                    item.opened = true;
+                });
+
+                // 子菜单列表全部关闭
+                currentSubmenu.childSubmenuList
+                    .map((item) => item.submenu)
+                    .forEach((item) => {
+                        item.opened = false;
+                    });
+            }
+            // 没有当前菜单
+            else {
+                // 手风琴模式
+                if (props.accordion) {
+                    let currentSubmenu = null;
+
+                    // 打开当前子菜单
+                    submenuList.forEach((item) => {
+                        if (item.name === name) {
+                            currentSubmenu = item;
+
+                            item.opened = true;
+                        }
+                    });
+
+                    findComponentsUpward(
+                        currentSubmenu,
+                        'ivue-menu-submenu'
+                    ).forEach((item) => {
+                        item.opened = true;
+                    });
+                } else {
+                    // 打开子菜单
+                    const submenuList = data.submenuList.map(
+                        (item) => item.submenu
+                    );
+
+                    submenuList.forEach((item) => {
+                        if (item.name === name) {
+                            item.opened = true;
+                        }
+                    });
+                }
+            }
+
+            // 获取当前打开的子菜单
+            let openedNames = submenuList
+                .filter((item) => item.opened)
+                .map((item) => item.name);
+
+            // 展开的 Submenu 的 name 集合
+            data.openedNames = [...openedNames];
+
+            console.log(submenuList);
+            emit('on-open-change', openedNames);
+        };
+
         // provide
 
         provide(
@@ -189,6 +296,7 @@ export default {
                 mode: props.mode,
                 menuItemActive,
                 handleEmitSelectEvent,
+                updateOpenKeys,
             })
         );
 
@@ -233,6 +341,7 @@ export default {
             // computed
             wrapperClasses,
             wrapperStyles,
+            updateOpenKeys,
         };
     },
 };

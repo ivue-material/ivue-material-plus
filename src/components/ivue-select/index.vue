@@ -483,7 +483,7 @@ export default defineComponent({
 
         // dom
         const selectWrapper = ref<HTMLElement | null>(null);
-        const reference = ref<HTMLElement | null>(null);
+        const reference = ref<HTMLDivElement>(null);
         const dropdown = ref(null);
 
         // vm

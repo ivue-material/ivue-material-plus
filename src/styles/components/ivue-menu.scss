@@ -71,4 +71,19 @@ $name: 'ivue-menu';
     transition: all .2s ease-in-out;
   }
 
+
+  // 下拉框
+  &-dropdown {
+    position: absolute;
+    width: inherit;
+    max-height: 200px;
+    overflow: auto;
+    margin: 5px 0;
+    padding: 5px 0;
+    background-color: $white-color;
+    box-sizing: border-box;
+    border-radius: 4px;
+    box-shadow: 0 1px 6px rgb(0 0 0 / 20%);
+    z-index: 900;
+  }
 }

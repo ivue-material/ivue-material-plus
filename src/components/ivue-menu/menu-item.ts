@@ -4,7 +4,6 @@ import {
   ComponentPublicInstance,
 } from 'vue';
 
-
 interface _ComponentPublicInstance extends ComponentPublicInstance {
   handleCheckClick: (event: Event, newWindow: boolean) => void
 }

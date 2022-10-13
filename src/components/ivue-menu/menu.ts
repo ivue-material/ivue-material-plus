@@ -13,6 +13,7 @@ export type MenuContext = {
   mode?: string
   menuItemActive?: (name: string | number) => void
   handleEmitSelectEvent?: (name: string | number) => void
+  updateOpenKeys?: (name: string | number) => void
 }
 
 export const MenuContextKey: InjectionKey<MenuContext> =
