@@ -48,9 +48,9 @@ export default {
         const wrapperStyles = computed(() => {
             let len = findComponentsUpward(proxy, 'ivue-menu-submenu').length;
 
-            if (!Submenu.default && Menu.mode !== 'horizontal') {
+            if (!Submenu.default && Menu.mode !== 'horizontal' && (len - 1) >= 0) {
                 return {
-                    paddingLeft: `${43 + (len - 1) * 28}px`,
+                    paddingLeft: `${43 + (len - 1) * 24}px`,
                 };
             }
 

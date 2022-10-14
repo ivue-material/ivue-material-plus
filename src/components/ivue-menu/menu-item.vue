@@ -110,7 +110,8 @@ export default {
 
             let len = findComponentsUpward(proxy, 'ivue-menu-submenu').length;
 
-            if (!Submenu.default && Menu.mode !== 'horizontal') {
+
+            if (Submenu.default !== null && Menu.mode !== 'horizontal') {
                 styles.paddingLeft = `${43 + (len - 1) * 24}px`;
             }
 

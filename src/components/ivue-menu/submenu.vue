@@ -6,17 +6,17 @@
             @click.stop="handleTitleClick"
             :style="titleStyle"
         >
+            <!-- title -->
             <slot name="title"></slot>
-            <ivue-icon :class="`${prefixCls}--icon`">expand_more</ivue-icon>
-            <!-- <Icon
-                :type="arrowType"
-                :custom="customArrowType"
-                :size="arrowSize"
-                :class="[prefixCls + '-submenu-title-icon']"
-            />-->
+            <!-- 箭头 -->
+            <ivue-icon :class="iconClasses">expand_more</ivue-icon>
         </div>
         <!-- 垂直打开 -->
-        <collapse-transition v-if="Menu.mode === 'vertical'"></collapse-transition>
+        <collapse-transition v-if="Menu.mode === 'vertical'">
+            <ul class="ivue-menu" v-show="data.opened">
+                <slot></slot>
+            </ul>
+        </collapse-transition>
         <!-- 水平打开 -->
         <drop-down
             :visible="data.opened"
@@ -48,7 +48,7 @@ import {
 } from 'vue';
 import CollapseTransition from '../../utils/collapse-transition';
 import { getStyle } from '../../utils/assist';
-import { findComponentUpward } from '../../utils/helpers';
+import { findComponentUpward, findComponentsUpward } from '../../utils/helpers';
 
 // 下拉框
 import DropDown from './drop-down.vue';
@@ -146,8 +146,7 @@ export default {
                 prefixCls,
                 {
                     // 激活
-                    [`${prefixCls}--active`]:
-                        data.active && !Submenu.default,
+                    [`${prefixCls}--active`]: data.active && !Submenu.default,
                     // 子菜单激活
                     [`${prefixCls}--child-active`]: data.active,
                     // 打开下拉框
@@ -158,7 +157,17 @@ export default {
 
         // 标题样式
         const titleStyle = computed(() => {
-            return {};
+            let styles: {
+                paddingLeft?: string;
+            } = {};
+
+            let len = findComponentsUpward(proxy, 'ivue-menu-submenu').length;
+
+            if (Submenu.default !== null && Menu.mode !== 'horizontal') {
+                styles.paddingLeft = `${43 + (len - 1) * 24}px`;
+            }
+
+            return styles;
         });
 
         // 下拉框样式
@@ -172,6 +181,17 @@ export default {
             }
 
             return style;
+        });
+
+        // icon样式
+        const iconClasses = computed(() => {
+            return [
+                `${prefixCls}--icon`,
+                {
+                    // 打开下拉框
+                    [`${prefixCls}--opened__icon`]: data.opened,
+                },
+            ];
         });
 
         // methods
@@ -379,6 +399,7 @@ export default {
             wrapperClasses,
             titleStyle,
             dropDownStyle,
+            iconClasses,
 
             // methods
             activeName,

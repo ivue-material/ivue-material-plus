@@ -186,6 +186,9 @@ export default {
             // 当前激活的名称
             data.currentActiveName = name;
 
+            // 更新打开的菜单名称
+            updateOpenKeys(name);
+
             emit('on-select', name);
         };
 
@@ -222,13 +225,15 @@ export default {
                     }
                 });
 
-                // 打开当前组件子菜单
-                findComponentsUpward(
-                    currentSubmenu,
-                    'ivue-menu-submenu'
-                ).forEach((item) => {
-                    item.data.opened = true;
-                });
+                if (currentSubmenu) {
+                    // 打开当前组件子菜单
+                    findComponentsUpward(
+                        currentSubmenu,
+                        'ivue-menu-submenu'
+                    ).forEach((item) => {
+                        item.data.opened = true;
+                    });
+                }
 
                 // 子菜单列表全部关闭
                 currentSubmenu.data.childSubmenuList
@@ -252,12 +257,14 @@ export default {
                         }
                     });
 
-                    findComponentsUpward(
-                        currentSubmenu,
-                        'ivue-menu-submenu'
-                    ).forEach((item) => {
-                        item.data.opened = true;
-                    });
+                    if (currentSubmenu) {
+                        findComponentsUpward(
+                            currentSubmenu,
+                            'ivue-menu-submenu'
+                        ).forEach((item) => {
+                            item.data.opened = true;
+                        });
+                    }
                 } else {
                     // 打开子菜单
                     const submenuList = data.submenuList.map(
@@ -289,6 +296,24 @@ export default {
             data.currentActiveName = name;
 
             emit('on-select', name);
+        };
+
+        // 展开子菜单
+        const updateOpened = () => {
+            const items = data.submenuList.map((item) => item.submenu);
+
+            if (items.length) {
+                items.forEach((item) => {
+                    // 展开子菜单
+                    if (data.openedNames.indexOf(item.name) > -1) {
+                        item.data.opened = true;
+                    }
+                    // 关闭子菜单
+                    else {
+                        item.data.opened = false;
+                    }
+                });
+            }
         };
 
         // provide
@@ -323,10 +348,24 @@ export default {
             }
         );
 
+        // 监听展开的 Submenu 的 name 集合
+        watch(
+            () => props.openNames,
+            (value) => {
+                data.openedNames = value;
+
+                // 展开菜单
+                updateOpened();
+            }
+        );
+
         // onMounted
         onMounted(() => {
             // 展开的 Submenu 的 name 集合
             data.openedNames = [...props.openNames];
+
+            // 展开菜单
+            updateOpened();
 
             nextTick(() => {
                 // 激活子菜单
@@ -347,6 +386,8 @@ export default {
             wrapperClasses,
             wrapperStyles,
             updateOpenKeys,
+            updateOpened,
+            updateActiveName,
         };
     },
 };
