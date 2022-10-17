@@ -215,7 +215,8 @@ export default defineComponent({
                 [`${prefixCls}--icon`]: props.icon,
                 [`${prefixCls}--outline`]: props.outline,
                 [`${prefixCls}--radius`]: props.radius,
-                [`${prefixCls}--${props.status}`]: props.status,
+                [`${prefixCls}--${props.status}`]: props.status && !props.flat,
+                [`${prefixCls}--${props.status}__color`]: props.status && (props.flat ||  props.outline),
             };
         });
 
@@ -303,11 +304,6 @@ export default defineComponent({
                 // 是否显示涟漪效果
                 if (this.rippleWorks) {
                     this.data.rippleActive = event;
-                }
-
-                // 激活数据
-                if (this.buttonGroup) {
-                    this.buttonGroup.register(this.index);
                 }
 
                 this.$emit('click', this.data.rippleActive, this.index);

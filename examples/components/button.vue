@@ -57,7 +57,7 @@
             <ivue-button status="light-primary" loading>Light Primary</ivue-button>
             <ivue-button status="dark-primary">Dark Primary</ivue-button>
             <ivue-button status="success" loading>Success</ivue-button>
-            <ivue-button status="warning">Warning</ivue-button>
+            <ivue-button status="warning" depressed>Warning</ivue-button>
             <ivue-button status="error">Error</ivue-button>
             <ivue-button disabled>disabled</ivue-button>
         </div>

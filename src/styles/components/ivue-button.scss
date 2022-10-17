@@ -186,7 +186,7 @@ $name: 'ivue-button';
     box-shadow: none;
 
     .ivue-button-content {
-      color: $text-color;
+      color: currentColor;
     }
   }
 
@@ -221,6 +221,10 @@ $name: 'ivue-button';
     background: #5B8EFF;
     color: $white-color;
 
+    &__color {
+      color: #5B8EFF;
+    }
+
     &.#{$name}--raised:not(.#{$name}--depressed):not(.#{$name}--flat):not([disabled]) {
       box-shadow: 0 10px 10px -5px rgba(78, 134, 255, .2);
 
@@ -236,6 +240,10 @@ $name: 'ivue-button';
   &--light-primary {
     background: linear-gradient(135deg, #71CDFF 0%, #5AB2FF 100%);
     color: $white-color;
+
+    &__color {
+      color: #71CDFF;
+    }
 
     &.#{$name}--raised:not(.#{$name}--depressed):not(.#{$name}--flat):not([disabled]) {
       box-shadow: 0 10px 10px -5px rgba(90, 178, 255, .2);
@@ -253,6 +261,10 @@ $name: 'ivue-button';
     background: linear-gradient(135deg, #3A9FF6 0%, #5B8EFF 100%);
     color: $white-color;
 
+    &__color {
+      color: #3A9FF6;
+    }
+
     &.#{$name}--raised:not(.#{$name}--depressed):not(.#{$name}--flat):not([disabled]) {
       box-shadow: 0 10px 10px -5px rgba(58, 159, 246, .2);
 
@@ -269,6 +281,9 @@ $name: 'ivue-button';
     background: linear-gradient(135deg, #27E2B2 0%, #0DDECE 100%);
     color: $white-color;
 
+    &__color {
+      color: #27E2B2;
+    }
 
     &.#{$name}--raised:not(.#{$name}--depressed):not(.#{$name}--flat):not([disabled]) {
       box-shadow: 0 10px 10px -5px rgba(35, 222, 174, .2);
@@ -286,6 +301,9 @@ $name: 'ivue-button';
     background: linear-gradient(135deg, #FFBD3C 0%, #FFA82D 100%);
     color: $white-color;
 
+    &__color {
+      color: #FFBD3C;
+    }
 
     &.#{$name}--raised:not(.#{$name}--depressed):not(.#{$name}--flat):not([disabled]) {
       box-shadow: 0 10px 10px -5px rgba(255, 182, 41, .2);
@@ -303,6 +321,9 @@ $name: 'ivue-button';
     background: linear-gradient(135deg, #FF617F 0%, #FF4772 100%);
     color: $white-color;
 
+    &__color {
+      color: #FF617F;
+    }
 
     &.#{$name}--raised:not(.#{$name}--depressed):not(.#{$name}--flat):not([disabled]) {
       box-shadow: 0 10px 10px -5px rgba(255, 86, 118, .2);
