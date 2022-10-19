@@ -4,9 +4,11 @@
   </a>
 </p>
 
-## IVue
+## IVue 2.0 Official website
 
 **<a href="https://lovevuerk.com/" target="_blank">https://lovevuerk.com/</a>**
+
+## IVue plus in preparation ~~~~~~
 
 IVue is a semantic component framework for Vue. It aims to provide clean, semantic and reusable components.
 iVue Created according to Google's **<a href="https://material.io/" target="_blank">Material Design Spec</a>**
