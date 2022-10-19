@@ -8,13 +8,7 @@
 </template>
 
 <script lang='ts'>
-import {
-    defineComponent,
-    onMounted,
-    ref,
-    computed,
-    reactive,
-} from 'vue';
+import { defineComponent, onMounted, ref, computed, reactive } from 'vue';
 import { useEventListener } from '@vueuse/core';
 
 const prefixCls = 'ivue-affix';
@@ -40,7 +34,6 @@ export default defineComponent({
          */
         offsetBottom: {
             type: Number,
-            default: -1,
         },
         /**
          * addEventListener 原生的 useCapture 选项
@@ -244,6 +237,9 @@ export default defineComponent({
 
         // mounted
         onMounted(() => {
+            // 初始化
+            handleScroll();
+
             // 监听滚动和缩放事件
             useEventListener(window, 'resize', handleScroll, props.useCapture);
             useEventListener(window, 'scroll', handleScroll, props.useCapture);

@@ -29,7 +29,6 @@ import "../src/styles/index.scss";
 // import "../dist/styles/index.css";
 // import "../dist/unplugin-vue-components/styles/ivue-page.css";
 
-// import "../dist/styles/color.css";
 import "../src/components/ivue-elevation/index";
 import "../src/components/ivue-layout/index";
 

@@ -2,7 +2,7 @@
     <div>
         <div>
             <p>loading按钮</p>
-            <ivue-button :color="['#5AB2FF', '#5B8EFF']" loading>Button</ivue-button>
+            <ivue-button :color="['#5AB2FF', '#5B8EFF']"  :ripple="false" isActive>Button</ivue-button>
         </div>
         <div>
             <p>方按钮</p>
