@@ -4,7 +4,7 @@
         :style="styles"
         :svgSrc="svgSrc"
         v-if="svgSrc"
-        @svg-loaded="$emit('svg-loaded')"
+        @svg-loaded="handleSvgLoaded"
     ></ivue-svg-loader>
     <i class="ivue-icon ivue-icon-font" :style="styles" v-else>
         <slot />
@@ -20,6 +20,7 @@ const prefixCls = 'ivue-icon';
 
 export default defineComponent({
     name: prefixCls,
+    emits: ['on-svg-loaded'],
     props: {
         /**
          * svg 链接
@@ -39,7 +40,9 @@ export default defineComponent({
             type: Number,
         },
     },
-    setup(props) {
+    setup(props, { emit }) {
+        // computed
+
         // 样式
         const styles = computed(() => {
             return {
@@ -47,8 +50,19 @@ export default defineComponent({
             };
         });
 
+        // methods
+
+        // 在获取SVG图标后立即触发
+        const handleSvgLoaded = () => {
+            emit('on-svg-loaded');
+        };
+
         return {
+            // computed
             styles,
+
+            // methods
+            handleSvgLoaded,
         };
     },
     components: {
