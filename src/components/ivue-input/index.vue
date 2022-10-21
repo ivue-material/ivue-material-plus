@@ -169,6 +169,19 @@ type Size = 'small' | 'large' | 'default';
 
 export default defineComponent({
     name: prefixCls,
+    emits: [
+        'update:modelValue',
+        'on-change',
+        'on-focus',
+        'on-blur',
+        'on-clear',
+        'on-enter',
+        'on-keyup',
+        'on-keypress',
+        'on-keydown',
+        'on-suffix',
+        'on-search'
+    ],
     // 声明事件
     props: {
         /**
@@ -602,6 +615,8 @@ export default defineComponent({
             emit('update:modelValue', '');
 
             setCurrentValue('');
+
+            emit('on-clear');
 
             emit('on-change', '');
         };

@@ -45,7 +45,6 @@
             <drop-down
                 :transfer="transfer"
                 :data-transfer="transfer"
-                :eventsEnabled="eventsEnabled"
                 :class="dropdownClasses"
                 :style="dropdownStyles"
                 v-transfer-dom
@@ -248,15 +247,6 @@ export default defineComponent({
          */
         transferClassName: {
             type: String,
-        },
-        /**
-         * 是否开启 Popper 的 eventsEnabled 属性，开启可能会牺牲一定的性能
-         *
-         * @type {Boolean}
-         */
-        eventsEnabled: {
-            type: Boolean,
-            default: false,
         },
         /**
          * 是否将弹层放置于 body 内，在 Tabs、

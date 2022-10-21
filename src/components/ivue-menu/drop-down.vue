@@ -27,7 +27,7 @@ import {
 } from 'vue';
 import { transferIndex, transferIncrease } from '../../utils/transfer-queue';
 
-import Popper from 'popper.js/dist/umd/popper.js';
+import { createPopper } from '@popperjs/core';
 
 const prefixCls = 'ivue-menu-dropdown';
 
@@ -189,36 +189,44 @@ export default {
 
         // 更新数据
         const update = () => {
+            // eslint-disable-next-line no-console
+            // console.log(' proxy.$parent.$refs.reference',  proxy.$parent.$refs.reference.$el);
             nextTick(() => {
                 // 是否已经注册了 popper
                 if (data.popper) {
                     data.popper.update();
                     data.popperStatus = true;
                 } else {
-                    data.popper = new Popper(
-                        proxy.$parent.$refs.reference,
+                    data.popper = createPopper(
+                        proxy.$parent.$el,
                         dropDown.value,
                         {
-                            // eventsEnabled
-                            eventsEnabled: props.eventsEnabled,
                             // 弹窗的展开方向，
                             placement: props.placement,
-                            modifiers: {
-                                computeStyle: {
-                                    // 如果为 true，它使用 CSS 3D 转换来定位 popper
-                                    gpuAcceleration: false,
+                            modifiers: [
+                                // 这决定了是否使用 GPU 加速样式来定位 popper
+                                {
+                                    name: 'computeStyles',
+                                    options: {
+                                        gpuAcceleration: false, // true by default
+                                    },
                                 },
-                                preventOverflow: {
-                                    boundariesElement: 'window',
+                                //检测溢出
+                                {
+                                    name: 'preventOverflow',
+                                    options: {
+                                        rootBoundary: 'viewport',
+                                    },
                                 },
-                            },
-                            onCreate: () => {
-                                resetTransformOrigin();
-
+                                {
+                                    name: 'offset',
+                                    options: {
+                                        offset: [0, 5],
+                                    },
+                                },
+                            ],
+                            onFirstUpdate: () => {
                                 nextTick(data.popper.update());
-                            },
-                            onUpdate: () => {
-                                resetTransformOrigin();
                             },
                         }
                     );
@@ -233,34 +241,12 @@ export default {
             if (data.popper) {
                 setTimeout(() => {
                     if (data.popper && !data.popperStatus) {
-                        data.popper.popper.style.display = 'none';
                         data.popper.destroy();
                         data.popper = null;
                     }
 
                     data.popperStatus = false;
                 }, 300);
-            }
-        };
-
-        // 重置动画位置
-        const resetTransformOrigin = () => {
-            if (!data.popper) {
-                return;
-            }
-
-            let x_placement = data.popper.popper.getAttribute('x-placement');
-            let placementStart = x_placement.split('-')[0];
-            let placementEnd = x_placement.split('-')[1];
-            const leftOrRight =
-                x_placement === 'left' || x_placement === 'right';
-
-            if (!leftOrRight) {
-                data.popper.popper.style.transformOrigin =
-                    placementStart === 'bottom' ||
-                    (placementStart !== 'top' && placementEnd === 'start')
-                        ? 'center top'
-                        : 'center bottom';
             }
         };
 
@@ -279,7 +265,7 @@ export default {
             emit('on-click', event);
         };
 
-         // beforeUnmount
+        // beforeUnmount
         onBeforeUnmount(() => {
             if (data.popper) {
                 data.popper.destroy();

@@ -33,6 +33,7 @@
             :filterMethod="filterMethod"
             placeholder="请输入"
         ></ivue-auto-complete>
+
         <h1>查询模式</h1>
         <ivue-auto-complete v-model="value4" placeholder="请输入">
             <div class="demo-auto-complete-item" v-for="(item, index) in data4" :key="index">
@@ -160,6 +161,7 @@ export default {
             return option.toUpperCase().indexOf(value.toUpperCase()) !== -1;
         },
         remoteMethod1(queryString) {
+            console.log('queryString', queryString)
             if(this.select === queryString) {
                 return
             }

@@ -59,7 +59,6 @@
                 :transfer="transfer"
                 :data-transfer="transfer"
                 :placement="placement"
-                :eventsEnabled="eventsEnabled"
                 :class="dropdownClasses"
                 v-transfer-dom
                 key="IvueSelectDropdown"
@@ -440,15 +439,6 @@ export default defineComponent({
                 ]);
             },
             default: 'bottom-start',
-        },
-        /**
-         * 是否开启 Popper 的 eventsEnabled 属性，开启可能会牺牲一定的性能
-         *
-         * @type {Boolean}
-         */
-        eventsEnabled: {
-            type: Boolean,
-            default: false,
         },
         /**
          * 开启 transfer 时，给浮层添加额外的 class 名称

@@ -9,7 +9,6 @@
             :searchMethod="searchMethod"
             :transfer="transfer"
             :capture="capture"
-            :eventsEnabled="eventsEnabled"
             :notFindText="''"
             :loading="loading"
             :loadingText="loadingText"
@@ -31,6 +30,7 @@
                         :clearable="clearable"
                         @on-focus="handleFocus"
                         @on-blur="handleBlur"
+                        @on-clear="handleClear"
                         ref="input"
                     >
                         <template #prefix v-if="$slots.prefix">
@@ -79,6 +79,7 @@ export default defineComponent({
         'on-select',
         'on-focus',
         'on-blur',
+        'on-clear'
     ],
     props: {
         /**
@@ -133,7 +134,7 @@ export default defineComponent({
                     'bottom-end',
                 ]);
             },
-            default: 'bottom-start',
+            default: 'top-start',
         },
         /**
          * 开启 transfer 时，给浮层添加额外的 class 名称
@@ -182,15 +183,6 @@ export default defineComponent({
                     getCurrentInstance().appContext.config.globalProperties;
                 return !global.$IVUE ? true : global.$IVUE.capture;
             },
-        },
-        /**
-         * 是否开启 Popper 的 eventsEnabled 属性，开启可能会牺牲一定的性能
-         *
-         * @type {Boolean}
-         */
-        eventsEnabled: {
-            type: Boolean,
-            default: false,
         },
         /**
          * 输入框name
@@ -242,7 +234,7 @@ export default defineComponent({
          */
         loadingText: {
             type: String,
-            default: '加载中',
+            default: '',
         },
     },
     setup(props: any, { emit }) {
@@ -331,6 +323,11 @@ export default defineComponent({
             emit('on-blur', event);
         };
 
+        // 清空时触发
+        const handleClear = () => {
+            emit('on-clear');
+        };
+
         // watch
 
         // 监听设置选择的值
@@ -381,6 +378,7 @@ export default defineComponent({
             handleClickOutside,
             handleFocus,
             handleBlur,
+            handleClear,
         };
     },
     components: {
