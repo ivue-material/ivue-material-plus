@@ -1,7 +1,7 @@
 $name: 'ivue-avatar';
 
 .#{$name} {
-  display: inline-block;
+  display: inline-flex;
   text-align: center;
   background: #ccc;
   color: #fff;
@@ -9,6 +9,8 @@ $name: 'ivue-avatar';
   position: relative;
   overflow: hidden;
   vertical-align: middle;
+  align-items: center;
+  justify-content: center;
   width: 32px;
   height: 32px;
   line-height: 32px;

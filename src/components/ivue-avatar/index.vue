@@ -25,6 +25,7 @@ import {
     ref,
     watch,
     nextTick,
+    onUpdated,
 } from 'vue';
 import Colorable from '../../utils/mixins/colorable';
 import { oneOf } from '../../utils/assist';
@@ -35,6 +36,7 @@ const prefixCls = 'ivue-avatar';
 export default defineComponent({
     name: prefixCls,
     mixins: [Colorable],
+    emits: ['on-error'],
     props: {
         /**
          * 类型
@@ -210,6 +212,16 @@ export default defineComponent({
         onMounted(() => {
             // 文字缩放
             setTextScale();
+        });
+
+        // onUpdated
+        onUpdated(() => {
+            const slot = slots.default ? slots.default() : null;
+
+            if (slot) {
+                // 文字缩放
+                setTextScale();
+            }
         });
 
         return {

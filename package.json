@@ -1,6 +1,6 @@
 {
   "name": "ivue-material-plus",
-  "version": "0.1.4",
+  "version": "0.1.6",
   "description": "A high quality UI components Library with Vue.js",
   "main": "dist/ivue-material-plus.min.js",
   "types": "dist/src/index.d.ts",
@@ -18,7 +18,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/qq282126990/ivue-ui"
+    "url": "https://github.com/qq282126990/ivue-ui-plus"
   },
   "author": "qq282126990",
   "dependencies": {
