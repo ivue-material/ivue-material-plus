@@ -1,21 +1,21 @@
 import {
   buildRoot
-} from '../../build-utils'
+} from '../../build-utils';
 import {
   run
-} from './process'
+} from './process';
 
 // 运行任务名称
 export const withTaskName = (name, fn) => {
   return Object.assign(fn, {
     displayName: name
-  })
-}
+  });
+};
 
 
 // 运行任务
 export const runTask = (name) => {
   return withTaskName(`shellTask:${name}`, () => {
-    return run(`pnpm run start ${name}`, buildRoot)
-  })
-}
+    return run(`pnpm run start ${name}`, buildRoot);
+  });
+};

@@ -1,24 +1,24 @@
 import {
   dest,
   src
-} from 'gulp'
-import gulpSass from 'gulp-sass'
-import dartSass from 'sass'
-import cleanCSS from 'gulp-clean-css'
-import autoprefixer from 'gulp-autoprefixer'
-import chalk from 'chalk'
+} from 'gulp';
+import gulpSass from 'gulp-sass';
+import dartSass from 'sass';
+import cleanCSS from 'gulp-clean-css';
+import autoprefixer from 'gulp-autoprefixer';
+import chalk from 'chalk';
 import {
   PKG_NAME
-} from '../../build-utils'
+} from '../../build-utils';
 
 import {
   resolve
-} from 'path'
+} from 'path';
 
 // 打包样式文件
 export const buildStyles = () => {
   // 编译sass
-  const sass = gulpSass(dartSass)
+  const sass = gulpSass(dartSass);
 
   return src(resolve('../', 'src/styles/components/*.scss'))
     // 导入 sass 模块路径
@@ -35,19 +35,27 @@ export const buildStyles = () => {
     // 缩小 CSS
     .pipe(
       cleanCSS({}, (details) => {
-        consola.success(
+        // eslint-disable-next-line no-console
+        console.success(
           `${chalk.cyan(details.name)}: ${chalk.yellow(
             details.stats.originalSize / 1000
           )} KB -> ${chalk.green(details.stats.minifiedSize / 1000)} KB`
-        )
+        );
       })
     )
     // 打包输出路径
     .pipe(dest(`../dist/${PKG_NAME}/styles`));
-}
+};
 
 // 打包字体
 export const buildFonts = () => {
   return src('../src/styles/material-icons/fonts/*.*')
     .pipe(dest(`../dist/${PKG_NAME}/styles/fonts`));
-}
+};
+
+
+// 复制resolvers
+export const buildResolversCopy = () => {
+  return src('../src/resolvers/*.*')
+    .pipe(dest('../resolvers'));
+};

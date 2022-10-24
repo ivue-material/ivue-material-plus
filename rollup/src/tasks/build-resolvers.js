@@ -1,23 +1,23 @@
 import {
   rollup
-} from 'rollup'
+} from 'rollup';
 import {
   nodeResolve
-} from '@rollup/plugin-node-resolve'
-import commonjs from '@rollup/plugin-commonjs'
-import esbuild from 'rollup-plugin-esbuild'
+} from '@rollup/plugin-node-resolve';
+import commonjs from '@rollup/plugin-commonjs';
+import esbuild from 'rollup-plugin-esbuild';
 
 import {
   resolversPath,
   outputResolversPath
-} from '../../build-utils'
+} from '../../build-utils';
 import {
   writeBundles
-} from '../utils'
+} from '../utils';
 
 import {
   target
-} from '../build-info'
+} from '../build-info';
 
 export const buildResolvers = async () => {
 
@@ -43,7 +43,7 @@ export const buildResolvers = async () => {
     // 是否应用tree-shaking
     // 除了使用 ES6 模块之外，Rollup 还静态分析代码中的 import，并将排除任何未实际使用的代码
     treeshake: false,
-  })
+  });
 
   await writeBundles(
     bundle, [{
@@ -57,7 +57,7 @@ export const buildResolvers = async () => {
       // 建一个单独的源映射文件
       sourcemap: true,
       // 用于从入口点创建的块的模式 mjs / js
-      entryFileNames: `[name].js`,
+      entryFileNames: '[name].js',
     }]
-  )
-}
+  );
+};
