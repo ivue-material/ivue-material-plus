@@ -66,7 +66,7 @@ export const buildComponents = async () => {
       // 使用节点解析算法定位模块的汇总插件
       nodeResolve({
         // 插件将操作的文件的扩展名
-        extensions: ['.mjs', '.js', '.json', '.ts'],
+        extensions: ['.mjs', '.js', '.json', '.ts', '.d.ts'],
       }),
       // 将 CommonJS 模块转换为 ES6
       commonjs(),

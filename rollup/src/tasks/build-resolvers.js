@@ -47,13 +47,15 @@ export const buildResolvers = async () => {
 
   await writeBundles(
     bundle, [{
+      module: 'CommonJS',
       // esm
-      format: 'esm',
+      format: 'cjs',
+      ext: 'js',
       // dist/ivue-material-plus/resolvers
       dir: outputResolversPath,
       // 指定导出模式（自动、默认、命名、无）
       // Specify export mode (auto, default, named, none)
-      exports: undefined,
+      exports: 'named',
       // 建一个单独的源映射文件
       sourcemap: true,
       // 用于从入口点创建的块的模式 mjs / js

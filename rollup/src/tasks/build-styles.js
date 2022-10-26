@@ -7,10 +7,11 @@ import dartSass from 'sass';
 import cleanCSS from 'gulp-clean-css';
 import autoprefixer from 'gulp-autoprefixer';
 import chalk from 'chalk';
+import consola from 'consola';
+
 import {
   PKG_NAME
 } from '../../build-utils';
-
 import {
   resolve
 } from 'path';
@@ -35,8 +36,7 @@ export const buildStyles = () => {
     // 缩小 CSS
     .pipe(
       cleanCSS({}, (details) => {
-        // eslint-disable-next-line no-console
-        console.success(
+        consola.success(
           `${chalk.cyan(details.name)}: ${chalk.yellow(
             details.stats.originalSize / 1000
           )} KB -> ${chalk.green(details.stats.minifiedSize / 1000)} KB`

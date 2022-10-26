@@ -1,5 +1,12 @@
 import type { ComponentResolver, ComponentInfo } from './types';
 
+export interface resolverOptions {
+  // use commonjs lib & source css or scss for ssr
+  ssr?: boolean
+  // 是否引入style
+  importStyle?: boolean
+}
+
 // 转换为驼峰
 function kebabCase(key) {
   const result = key.replace(/([A-Z])/g, ' $1').trim();
@@ -75,7 +82,7 @@ function getSideEffects(componentsName: string, options) {
 }
 
 // 请求组件
-const resolveComponent = (componentsName: string, options): ComponentInfo | undefined => {
+const resolveComponent = (componentsName: string, options: resolverOptions): ComponentInfo | undefined => {
   // 使用依赖组件
   let useDependentComponentsData = null;
 
@@ -88,7 +95,7 @@ const resolveComponent = (componentsName: string, options): ComponentInfo | unde
       if (_kebabCase === componentsName) {
         useDependentComponentsData = {
           name: dependent,
-          from: `${pakPath}/es`,
+          from: `${pakPath}/${options.ssr ? 'lib' : 'es'}`,
         };
       }
     });
@@ -100,17 +107,17 @@ const resolveComponent = (componentsName: string, options): ComponentInfo | unde
   }
 
   return {
-    from: `${pakPath}/es/${componentsName}`,
+    from: `${pakPath}/${options.ssr ? 'lib' : 'es'}`,
     sideEffects: getSideEffects(componentsName, options)
   };
 };
 
 // 请求指令
-const resolveDirective = (name: string) => {
+const resolveDirective = (name: string, options: resolverOptions) => {
   const directives = {
     // loading
     Loading: {
-      name: 'IvueLoadingDirective',
+      name: 'IvueLoading',
       importName: 'ivue-loading',
       styleName: 'ivue-loading',
       importStyle: true
@@ -155,7 +162,7 @@ const resolveDirective = (name: string) => {
 
   return {
     name: directive.name,
-    from: `${pakPath}/es/${directive.importName}`,
+    from: `${pakPath}/${options.ssr ? 'lib' : 'es'}`,
     sideEffects: getSideEffects(directive.styleName, {
       importStyle: directive.importStyle,
       singleFile: directive.singleFile
@@ -163,7 +170,13 @@ const resolveDirective = (name: string) => {
   };
 };
 
-export function IvueMaterialPlusResolver(): ComponentResolver[] {
+export function IvueMaterialPlusResolver(options: resolverOptions): ComponentResolver[] {
+
+  let optionsResolved = {
+    ssr: false,
+    ...options,
+  }
+
   return [{
     type: 'component',
     resolve: (name: string) => {
@@ -178,20 +191,22 @@ export function IvueMaterialPlusResolver(): ComponentResolver[] {
       // 没有样式组件
       if ([...noStylesComponents].includes(_kebabCase)) {
         return resolveComponent(_kebabCase, {
-          importStyle: false
+          importStyle: false,
+          ...optionsResolved
         });
       }
 
       // 有样式组件
       return resolveComponent(_kebabCase, {
-        importStyle: true
+        importStyle: true,
+        ...optionsResolved
       });
     },
   },
   {
     type: 'directive',
     resolve: (name: string) => {
-      return resolveDirective(name);
+      return resolveDirective(name, optionsResolved);
     },
   },
   ];

@@ -1,3 +1,7 @@
+'use strict';
+
+Object.defineProperty(exports, '__esModule', { value: true });
+
 function kebabCase(key) {
   const result = key.replace(/([A-Z])/g, " $1").trim();
   return result.split(" ").join("-").toLowerCase();
@@ -60,7 +64,7 @@ const resolveComponent = (componentsName, options) => {
       if (_kebabCase === componentsName) {
         useDependentComponentsData = {
           name: dependent,
-          from: `${pakPath}/es`
+          from: `${pakPath}/${options.ssr ? "lib" : "es"}`
         };
       }
     });
@@ -69,14 +73,14 @@ const resolveComponent = (componentsName, options) => {
     return useDependentComponentsData;
   }
   return {
-    from: `${pakPath}/es/${componentsName}`,
+    from: `${pakPath}/${options.ssr ? "lib" : "es"}`,
     sideEffects: getSideEffects(componentsName, options)
   };
 };
-const resolveDirective = (name) => {
+const resolveDirective = (name, options) => {
   const directives = {
     Loading: {
-      name: "IvueLoadingDirective",
+      name: "IvueLoading",
       importName: "ivue-loading",
       styleName: "ivue-loading",
       importStyle: true
@@ -113,14 +117,18 @@ const resolveDirective = (name) => {
   }
   return {
     name: directive.name,
-    from: `${pakPath}/es/${directive.importName}`,
+    from: `${pakPath}/${options.ssr ? "lib" : "es"}`,
     sideEffects: getSideEffects(directive.styleName, {
       importStyle: directive.importStyle,
       singleFile: directive.singleFile
     })
   };
 };
-function IvueMaterialPlusResolver() {
+function IvueMaterialPlusResolver(options) {
+  let optionsResolved = {
+    ssr: false,
+    ...options
+  };
   return [
     {
       type: "component",
@@ -131,22 +139,24 @@ function IvueMaterialPlusResolver() {
         const _kebabCase = kebabCase(name);
         if ([...noStylesComponents].includes(_kebabCase)) {
           return resolveComponent(_kebabCase, {
-            importStyle: false
+            importStyle: false,
+            ...optionsResolved
           });
         }
         return resolveComponent(_kebabCase, {
-          importStyle: true
+          importStyle: true,
+          ...optionsResolved
         });
       }
     },
     {
       type: "directive",
       resolve: (name) => {
-        return resolveDirective(name);
+        return resolveDirective(name, optionsResolved);
       }
     }
   ];
 }
 
-export { IvueMaterialPlusResolver };
+exports.IvueMaterialPlusResolver = IvueMaterialPlusResolver;
 //# sourceMappingURL=ivue-material-plus.js.map
