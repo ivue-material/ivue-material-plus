@@ -5,6 +5,8 @@ export interface resolverOptions {
   ssr?: boolean
   // 是否引入style
   importStyle?: boolean
+  // 组件名称
+  name?: string
 }
 
 // 转换为驼峰
@@ -107,6 +109,7 @@ const resolveComponent = (componentsName: string, options: resolverOptions): Com
   }
 
   return {
+    name: options.name,
     from: `${pakPath}/${options.ssr ? 'lib' : 'es'}`,
     sideEffects: getSideEffects(componentsName, options)
   };
@@ -160,6 +163,8 @@ const resolveDirective = (name: string, options: resolverOptions) => {
     return;
   }
 
+  console.log('directive.name', name)
+
   return {
     name: directive.name,
     from: `${pakPath}/${options.ssr ? 'lib' : 'es'}`,
@@ -191,6 +196,7 @@ export function IvueMaterialPlusResolver(options: resolverOptions): ComponentRes
       // 没有样式组件
       if ([...noStylesComponents].includes(_kebabCase)) {
         return resolveComponent(_kebabCase, {
+          name,
           importStyle: false,
           ...optionsResolved
         });
@@ -198,6 +204,7 @@ export function IvueMaterialPlusResolver(options: resolverOptions): ComponentRes
 
       // 有样式组件
       return resolveComponent(_kebabCase, {
+        name,
         importStyle: true,
         ...optionsResolved
       });
