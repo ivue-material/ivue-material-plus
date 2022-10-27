@@ -73,6 +73,7 @@ const resolveComponent = (componentsName, options) => {
     return useDependentComponentsData;
   }
   return {
+    name: options.name,
     from: `${pakPath}/${options.ssr ? "lib" : "es"}`,
     sideEffects: getSideEffects(componentsName, options)
   };
@@ -115,6 +116,7 @@ const resolveDirective = (name, options) => {
   if (!directive) {
     return;
   }
+  console.log("directive.name", name);
   return {
     name: directive.name,
     from: `${pakPath}/${options.ssr ? "lib" : "es"}`,
@@ -139,11 +141,13 @@ function IvueMaterialPlusResolver(options) {
         const _kebabCase = kebabCase(name);
         if ([...noStylesComponents].includes(_kebabCase)) {
           return resolveComponent(_kebabCase, {
+            name,
             importStyle: false,
             ...optionsResolved
           });
         }
         return resolveComponent(_kebabCase, {
+          name,
           importStyle: true,
           ...optionsResolved
         });

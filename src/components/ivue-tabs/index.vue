@@ -530,7 +530,7 @@ export default defineComponent({
         watch(
             () => activeIndex.value,
             (current, previous) => {
-                let reverse = current < previous;
+                const reverse = current < previous;
 
                 updateItems(reverse);
             }

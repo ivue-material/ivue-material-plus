@@ -45,7 +45,8 @@
   },
   // 排除文件
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "dist"
   ],
   "include": [
     "./**/*.ts",
