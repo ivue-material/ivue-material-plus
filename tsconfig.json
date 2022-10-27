@@ -46,7 +46,8 @@
   // 排除文件
   "exclude": [
     "node_modules",
-    "dist"
+    "dist",
+    "rollup"
   ],
   "include": [
     "./**/*.ts",

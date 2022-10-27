@@ -116,7 +116,6 @@ const resolveDirective = (name, options) => {
   if (!directive) {
     return;
   }
-  console.log("directive.name", name);
   return {
     name: directive.name,
     from: `${pakPath}/${options.ssr ? "lib" : "es"}`,

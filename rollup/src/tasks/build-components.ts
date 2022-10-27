@@ -13,6 +13,7 @@ import glob from 'fast-glob'
 import json from '@rollup/plugin-json';
 import css from 'rollup-plugin-css-porter';
 import postcss from 'rollup-plugin-postcss';
+import VueMacros from 'unplugin-vue-macros/rollup'
 
 import {
   epRoot,
@@ -53,16 +54,22 @@ export const buildComponents = async () => {
       // 解析 Json
       json(),
       // 解析 css
-      css(),
+      // css(),
       // 是一个使用 JS 插件转换样式的工具
       postcss(),
-      // 解析vue
-      vue({
-        // 不是生产环境
-        isProduction: false,
+      VueMacros({
+        setupComponent: false,
+        setupSFC: false,
+        plugins: {
+          // 解析vue
+          vue: vue({
+            // 不是生产环境
+            isProduction: false,
+          }),
+          // 解析 jsx
+          vueJsx: vueJsx(),
+        },
       }),
-      // 解析 jsx
-      vueJsx(),
       // 使用节点解析算法定位模块的汇总插件
       nodeResolve({
         // 插件将操作的文件的扩展名

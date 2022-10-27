@@ -86,7 +86,10 @@ function getSideEffects(componentsName: string, options) {
 // 请求组件
 const resolveComponent = (componentsName: string, options: resolverOptions): ComponentInfo | undefined => {
   // 使用依赖组件
-  let useDependentComponentsData = null;
+  let useDependentComponentsData: {
+    name: string,
+    from: string
+  } | null = null;
 
   useDependentComponents.forEach((item) => {
     item.dependent.forEach((dependent) => {

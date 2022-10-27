@@ -19,4 +19,11 @@ declare global {
         mozRequestAnimationFrame: AnimationFrameProvider
         msRequestAnimationFrame: AnimationFrameProvider
     }
+
+    namespace JSX {
+        interface IntrinsicAttributes {
+            class?: any
+            style?: any
+        }
+    }
 }

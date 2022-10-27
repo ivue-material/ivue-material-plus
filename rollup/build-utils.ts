@@ -23,7 +23,7 @@ export const pkgRoot = resolve(projRoot, 'src');
 export const resolversPath = resolve(projRoot, 'src/resolvers/ivue-material-plus.ts');
 
 // 输入模块的目录路径
-export const epRoot = resolve(pkgRoot, 'components');
+export const epRoot = resolve(pkgRoot);
 
 // 打包名称
 export const PKG_NAME = 'unplugin-vue-components';

@@ -9,7 +9,7 @@ import {
 
 // 运行 chalk
 export const run = async (command, cwd = projRoot) => {
-  return new Promise((resolve, reject) => {
+  return new Promise<void>((resolve, reject) => {
     const [cmd, ...args] = command.split(' ');
 
     // 开始运行提示

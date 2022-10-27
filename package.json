@@ -4,7 +4,7 @@
   "description": "A high quality UI components Library with Vue.js",
   "main": "dist/ivue-material-plus.min.js",
   "module": "dist/unplugin-vue-components/es/index.mjs",
-  "types": "dist/src/index.d.ts",
+  "types": "dist/unplugin-vue-components/es/index.d.ts",
   "files": [
     "dist",
     "src",
@@ -12,11 +12,10 @@
   ],
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "npm run build:prod",
-    "build12": "npm run build:prod && npm run build:style && npm run build:rollup",
+    "build": "npm run build:prod && npm run build:style && npm run build:rollup",
     "build:style": "gulp --gulpfile build/build-style.js",
     "build:prod": "vite build",
-    "build:rollup": "gulp --require @esbuild-kit/cjs-loader -f ./rollup/gulpfile.js"
+    "build:rollup": "gulp --require @esbuild-kit/cjs-loader -f ./rollup/gulpfile.ts"
   },
   "repository": {
     "type": "git",
@@ -55,8 +54,10 @@
     "rollup-plugin-terser": "^7.0.2",
     "rollup-plugin-typescript2": "^0.33.0",
     "rollup-plugin-vue": "^6.0.0",
+    "save": "^2.9.0",
     "tslib": "^2.3.1",
     "unbuild": "^0.8.9",
+    "unplugin-vue-macros": "^0.14.0",
     "vite-plugin-dts": "^1.4.1"
   },
   "peerDependencies": {
@@ -71,6 +72,8 @@
     "@commitlint/cli": "^17.1.2",
     "@commitlint/config-conventional": "^17.1.0",
     "@rollup/plugin-node-resolve": "^15.0.1",
+    "@types/fs-extra": "^9.0.13",
+    "@types/gulp": "^4.0.9",
     "@types/jest": "^29.2.0",
     "@types/lodash": "^4.14.186",
     "@typescript-eslint/eslint-plugin": "^5.41.0",

@@ -7,6 +7,7 @@ import {
 
 // 模块列表
 export const modules = ['esm', 'cjs']
+export type Module = typeof modules[number]
 
 // 打包配置
 export const buildConfig = {

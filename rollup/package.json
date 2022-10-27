@@ -3,11 +3,8 @@
   "version": "0.0.1",
   "private": true,
   "description": "",
-  "main": "./dist/index.cjs",
-  "module": "./dist/index.mjs",
-  "types": "./dist/index.d.ts",
   "scripts": {
-    "start": "gulp --require @esbuild-kit/cjs-loader -f gulpfile.js"
+    "start": "gulp --require @esbuild-kit/cjs-loader -f gulpfile.ts"
   },
   "peerDependencies": {
     "vue": "^3.2.25"

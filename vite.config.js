@@ -9,7 +9,9 @@ import path from 'path';
 const config = defineConfig({
   plugins: [
     vue(),
-    dts()
+    dts({
+      outputDir: path.resolve(__dirname, './dist/types'),
+    }),
   ],
   target: 'es2015',
   build: {
@@ -77,7 +79,7 @@ const config = defineConfig({
           }
         }
       ]
-    }
+    },
   },
   resolve: {
     extensions: ['.mjs', '.js', '.ts', '.jsx', '.tsx', '.json', '.vue']
