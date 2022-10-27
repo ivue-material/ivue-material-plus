@@ -175,7 +175,7 @@ const resolveDirective = (name: string, options: resolverOptions) => {
   };
 };
 
-export function IvueMaterialPlusResolver(options: resolverOptions): ComponentResolver[] {
+export function IvueMaterialPlusResolver(options?: resolverOptions): ComponentResolver[] {
 
   let optionsResolved = {
     ssr: false,

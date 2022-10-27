@@ -128,12 +128,15 @@ import {
     nextTick,
     watch,
     onMounted,
+    inject,
 } from 'vue';
 
 // 注册外部点击事件插件
 import { ClickOutside, TransferDom } from '../../utils/directives';
 
 import { oneOf } from '../../utils/assist';
+
+import { PopoverContextKey } from '../ivue-popover/popover';
 
 const prefixCls = 'ivue-select';
 
@@ -476,6 +479,11 @@ export default defineComponent({
         const reference = ref<HTMLDivElement>(null);
         const dropdown = ref(null);
 
+        // ivue-popover
+        const popover = inject(PopoverContextKey, {
+            default: null,
+        });
+
         // vm
         const { proxy }: any = getCurrentInstance();
 
@@ -665,7 +673,7 @@ export default defineComponent({
 
             // 判断是否有自动输入
             if (props.autoComplete) {
-                for (let option of data.options) {
+                for (const option of data.options) {
                     // 选项计数器
                     optionCounter = optionCounter + 1;
 
@@ -701,7 +709,7 @@ export default defineComponent({
             }
 
             // 选项的数据
-            for (let option of data.options) {
+            for (const option of data.options) {
                 // 选项计数器
                 optionCounter = optionCounter + 1;
 
@@ -1109,7 +1117,7 @@ export default defineComponent({
             if (filterQuery.length > 0 && filterQuery !== data.filterQuery) {
                 if (props.autoComplete) {
                     // 输入框是否获取焦点
-                    let isInputFocused =
+                    const isInputFocused =
                         document.hasFocus &&
                         document.hasFocus() &&
                         document.activeElement ===
@@ -1146,7 +1154,7 @@ export default defineComponent({
                 : [value, label, textContent].toString();
 
             // 把输入框数据转换成小写去除前后空格
-            let filterQuery = data.filterQuery.toLowerCase().trim();
+            const filterQuery = data.filterQuery.toLowerCase().trim();
 
             // 是否开启搜索，没有多选，没有输入
             if (props.filterable && !props.multiple && filterQuery === '') {
@@ -1170,12 +1178,12 @@ export default defineComponent({
                 // dropdown
                 const _dropdown = dropdown.value.$el;
                 // 底部距离
-                let bottomOverflowDistance =
+                const bottomOverflowDistance =
                     options.$el.getBoundingClientRect().bottom -
                     _dropdown.getBoundingClientRect().bottom;
 
                 // 顶部距离
-                let topOverflowDistance =
+                const topOverflowDistance =
                     options.$el.getBoundingClientRect().top -
                     _dropdown.getBoundingClientRect().top;
 
@@ -1509,6 +1517,15 @@ export default defineComponent({
                         }
                     });
                 }
+
+                // 在Popover嵌套中
+                if (popover.data) {
+                    popover.data.disableCloseUnderTransfer = true;
+
+                    setTimeout(() => {
+                        popover.handleCancel();
+                    }, 300);
+                }
             }
         );
 
@@ -1572,6 +1589,11 @@ export default defineComponent({
                     nextTick(() => {
                         data.filterQueryChange = false;
                     });
+                }
+
+                // 在Popover嵌套中
+                if (popover.data) {
+                    popover.data.closeDelay = state ? 300 : 0;
                 }
             }
         );
@@ -1722,6 +1744,9 @@ export default defineComponent({
             selectWrapper,
             reference,
             dropdown,
+
+            // inject
+            popover,
 
             // data
             data,

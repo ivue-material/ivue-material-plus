@@ -1,13 +1,42 @@
 <template>
     <div class="content">
-        <h1>基础用法</h1>
+        <ivue-select v-model="model1" style="width:200px" transfer>
+            <ivue-option
+                v-for="item in cityList"
+                :value="item.value"
+                :key="item.value"
+            >{{ item.label }}</ivue-option>
+        </ivue-select>
+        <ivue-popover class="button" content="Bottom Right text" v-model="visible">
+            <a>Click</a>
+            <template #title>
+                <div>
+                    <i>Custom title</i>
+                </div>
+            </template>
+            <template #content>
+                <ivue-select v-model="model1" style="width:200px" transfer>
+                    <ivue-option
+                        v-for="item in cityList"
+                        :value="item.value"
+                        :key="item.value"
+                    >{{ item.label }}</ivue-option>
+                </ivue-select>
+            </template>
+        </ivue-popover>
+        <!-- <h1>基础用法</h1>
         <div>
-            <ivue-popover trigger="hover" title="Title" content="content" disabled>
+            <ivue-popover trigger="hover" title="Title" content="content" >
                 <ivue-button>Hover</ivue-button>
             </ivue-popover>
         </div>
         <div>
-            <ivue-popover title="Title" content="content" transfer transferClassName="transferClassName">
+            <ivue-popover
+                title="Title"
+                content="content"
+                transfer
+                transferClassName="transferClassName"
+            >
                 <ivue-button>Click</ivue-button>
             </ivue-popover>
         </div>
@@ -79,7 +108,13 @@
                 </div>
             </template>
             <template #content>
-                <a @click="close">close</a>
+                <ivue-select v-model="model1" style="width:200px" transfer>
+                    <ivue-option
+                        v-for="item in cityList"
+                        :value="item.value"
+                        :key="item.value"
+                    >{{ item.label }}</ivue-option>
+                </ivue-select>
             </template>
         </ivue-popover>
         <h1>嵌套复杂内容</h1>
@@ -111,7 +146,7 @@
             @on-cancel="cancel"
         >
             <ivue-button>Delete</ivue-button>
-        </ivue-popover>
+        </ivue-popover>-->
     </div>
 </template>
 
@@ -120,6 +155,33 @@ export default {
     data() {
         return {
             visible: false,
+            model1: '',
+            cityList: [
+                {
+                    value: 'New York',
+                    label: 'New York',
+                },
+                {
+                    value: 'London',
+                    label: 'London',
+                },
+                {
+                    value: 'Sydney',
+                    label: 'Sydney',
+                },
+                {
+                    value: 'Ottawa',
+                    label: 'Ottawa',
+                },
+                {
+                    value: 'Paris',
+                    label: 'Paris',
+                },
+                {
+                    value: 'Canberra',
+                    label: 'Canberra',
+                },
+            ],
         };
     },
     methods: {

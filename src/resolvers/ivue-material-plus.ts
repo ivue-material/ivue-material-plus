@@ -163,8 +163,6 @@ const resolveDirective = (name: string, options: resolverOptions) => {
     return;
   }
 
-  console.log('directive.name', name)
-
   return {
     name: directive.name,
     from: `${pakPath}/${options.ssr ? 'lib' : 'es'}`,
@@ -175,7 +173,7 @@ const resolveDirective = (name: string, options: resolverOptions) => {
   };
 };
 
-export function IvueMaterialPlusResolver(options: resolverOptions): ComponentResolver[] {
+export function IvueMaterialPlusResolver(options?: resolverOptions): ComponentResolver[] {
 
   let optionsResolved = {
     ssr: false,

@@ -1,3 +1,7 @@
+
+import {
+    inject,
+} from 'vue';
 const CLICK = 'click';
 // 捕获实例
 const captureInstances = Object.create(null);
@@ -75,6 +79,7 @@ function inserted(el: Element, binding: Record<string, any>): void {
     // 事件名称
     let eventType;
     const modifiers = binding.modifiers;
+
 
     if (modifiers.click) {
         eventType = 'click';

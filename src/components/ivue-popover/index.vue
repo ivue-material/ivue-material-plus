@@ -87,6 +87,8 @@ import {
     getCurrentInstance,
     onMounted,
     nextTick,
+    provide,
+    inject,
 } from 'vue';
 import { useEventListener } from '@vueuse/core';
 
@@ -101,6 +103,9 @@ import { ClickOutside } from '../../utils/directives';
 // components
 import IvueIcon from '../ivue-icon';
 import IvueButton from '../ivue-button';
+
+// ts
+import { PopoverContextKey } from './popover';
 
 const prefixCls = 'ivue-popover';
 
@@ -296,6 +301,7 @@ export default defineComponent({
             disableCloseUnderTransfer: boolean;
             isInput: boolean;
             currentTargetFocus: boolean;
+            closeDelay: number;
         }>({
             /**
              * 延迟
@@ -327,6 +333,12 @@ export default defineComponent({
              * @type {Event}
              */
             currentTargetFocus: false,
+            /**
+             * 关闭延迟
+             *
+             * @type {Number}
+             */
+            closeDelay: 0,
         });
 
         // computed
@@ -358,7 +370,7 @@ export default defineComponent({
 
         // 悬浮框样式
         const popperStyles = computed(() => {
-            let styles: {
+            const styles: {
                 width?: string | number;
                 zIndex?: number;
             } = {};
@@ -489,26 +501,28 @@ export default defineComponent({
 
         // 点击外部
         const handleClickOutside = () => {
-            // 点击的是内容
-            if (data.disableCloseUnderTransfer) {
-                data.disableCloseUnderTransfer = false;
+            setTimeout(() => {
+                // 点击的是内容
+                if (data.disableCloseUnderTransfer) {
+                    data.disableCloseUnderTransfer = false;
 
-                return false;
-            }
+                    return false;
+                }
 
-            // 开启了对话框
-            if (props.confirm) {
+                // 开启了对话框
+                if (props.confirm) {
+                    visible.value = false;
+
+                    return;
+                }
+
+                // 不是点击事件
+                if (props.trigger !== 'click') {
+                    return false;
+                }
+
                 visible.value = false;
-
-                return;
-            }
-
-            // 不是点击事件
-            if (props.trigger !== 'click') {
-                return false;
-            }
-
-            visible.value = false;
+            }, data.closeDelay);
         };
 
         // transfer时点击
@@ -616,6 +630,12 @@ export default defineComponent({
                     }
                 });
             }
+        });
+
+        // provide
+        provide(PopoverContextKey, {
+            data,
+            handleCancel,
         });
 
         return {

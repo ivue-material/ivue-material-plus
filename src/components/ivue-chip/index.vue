@@ -106,7 +106,7 @@ export default defineComponent({
         const classes = computed(() => {
             const textColor = props.textColor || (props.outline && props.color);
 
-            let obj = {
+            const obj = {
                 [prefixCls]: true,
                 // 禁用
                 [`${prefixCls}--disabled`]: props.disabled,
