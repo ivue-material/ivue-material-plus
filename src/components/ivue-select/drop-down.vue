@@ -118,7 +118,7 @@ export default defineComponent({
 
         // computed
         const styles = computed(() => {
-            let style: any = {};
+            const style: any = {};
 
             if (props.transfer) {
                 style['z-index'] = 1060 + data.tIndex;
@@ -128,10 +128,12 @@ export default defineComponent({
         });
 
         const minWidth = computed(
-            () => select && `${getStyle(select.selectWrapper, 'width')}`
+            () => {
+                return select && `${getStyle(select.selectWrapper, 'width')}`;
+            }
         );
 
-        // methdos
+        // methods
 
         // 更新数据
         const update = () => {

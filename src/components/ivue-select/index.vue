@@ -485,7 +485,7 @@ export default defineComponent({
         });
 
         // vm
-        const { proxy }: any = getCurrentInstance();
+        const { proxy } = getCurrentInstance();
 
         // data
         const data: any = reactive<{
@@ -502,6 +502,7 @@ export default defineComponent({
             selectEmitter: any;
             hasExpectedValue: boolean;
             _filterQuery: string;
+            disableMenu: boolean;
         }>({
             /**
              * 是否显示菜单
@@ -581,6 +582,12 @@ export default defineComponent({
              * @type {String}
              */
             _filterQuery: '',
+            /**
+             * 禁用菜单
+             *
+             * @type {Boolean}
+             */
+            disableMenu: false,
         });
 
         // computed
@@ -895,6 +902,11 @@ export default defineComponent({
 
         // 点击菜单
         const handleToggleMenu = (event, force) => {
+            // 在Popover嵌套中
+            if (data.disableMenu && event) {
+                return false;
+            }
+
             // 选择组件是否禁用
             if (props.disabled) {
                 return false;
@@ -925,6 +937,11 @@ export default defineComponent({
 
         // 选项菜单点击
         const handleOptionClick = (option) => {
+            // 在Popover嵌套中
+            if (popover.data) {
+                data.disableMenu = true;
+            }
+
             // 判断是否开启了多选
             if (props.multiple) {
                 const selected = data.values.find(
@@ -1520,11 +1537,16 @@ export default defineComponent({
 
                 // 在Popover嵌套中
                 if (popover.data) {
+                    data.disableMenu = true;
                     popover.data.disableCloseUnderTransfer = true;
 
                     setTimeout(() => {
                         popover.handleCancel();
                     }, 300);
+
+                    setTimeout(() => {
+                        data.disableMenu = false;
+                    }, 1000);
                 }
             }
         );
@@ -1736,6 +1758,17 @@ export default defineComponent({
                 }
             }
         );
+
+        if (popover.data) {
+            watch(
+                () => popover.visible,
+                (value) => {
+                    if (value) {
+                        data.disableMenu = false;
+                    }
+                }
+            );
+        }
 
         return {
             prefixCls,

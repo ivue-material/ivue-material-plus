@@ -633,10 +633,14 @@ export default defineComponent({
         });
 
         // provide
-        provide(PopoverContextKey, {
-            data,
-            handleCancel,
-        });
+        provide(
+            PopoverContextKey,
+            reactive({
+                data,
+                visible,
+                handleCancel,
+            })
+        );
 
         return {
             prefixCls,
