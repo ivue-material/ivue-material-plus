@@ -134,7 +134,7 @@ export default defineComponent({
                     'bottom-end',
                 ]);
             },
-            default: 'top-start',
+            default: 'bottom-start',
         },
         /**
          * 开启 transfer 时，给浮层添加额外的 class 名称

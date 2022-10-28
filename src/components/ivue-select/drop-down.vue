@@ -127,11 +127,9 @@ export default defineComponent({
             return style;
         });
 
-        const minWidth = computed(
-            () => {
-                return select && `${getStyle(select.selectWrapper, 'width')}`;
-            }
-        );
+        const minWidth = computed(() => {
+            return select && `${getStyle(select.selectWrapper, 'width')}`;
+        });
 
         // methods
 
@@ -169,7 +167,9 @@ export default defineComponent({
                             },
                         ],
                         onFirstUpdate: () => {
-                            nextTick(data.popper.update());
+                            nextTick(() => {
+                                data.popper && data.popper.update();
+                            });
                         },
                     });
                 }
