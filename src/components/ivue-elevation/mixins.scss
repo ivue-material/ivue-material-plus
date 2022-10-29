@@ -1,6 +1,7 @@
 @import "./variables";
 
 @mixin ivue-elevation($value,
+  // color 颜色
   $umbra: $ivue-elevation-umbra-color,
   $penumbra:$ivue-elevation-penumbra-color,
   $ambient: $ivue-elevation-ambient-color) {
