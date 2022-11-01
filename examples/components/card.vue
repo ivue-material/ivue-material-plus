@@ -31,7 +31,7 @@
         <h1>无边框</h1>
         <p>通过设置属性bordered为 false ，可以不添加边框，建议在灰色背景下使用</p>
         <div style="background:#eee;padding: 20px">
-            <ivue-card :border="false">
+            <ivue-card :border="false" shadow>
                 <template #title>No border title</template>
                 <p>Content of no border type. Content of no border type. Content of no border type. Content of no border type.</p>
             </ivue-card>

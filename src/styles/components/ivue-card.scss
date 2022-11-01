@@ -15,6 +15,12 @@ $name: 'ivue-card';
     border-color: #eee;
   }
 
+  // 阴影
+  &-shadow {
+    box-shadow: 0 1px 6px rgba(0, 0, 0, 0.2);
+    border-color: #eee;
+  }
+
 
   // 是否显示边框，建议在灰色背景下使用
   &-border {

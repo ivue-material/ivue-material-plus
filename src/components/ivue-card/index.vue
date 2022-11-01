@@ -154,7 +154,8 @@ export default defineComponent({
                 prefixCls,
                 {
                     [`${prefixCls}-border`]: props.border && !props.shadow,
-                    [`${prefixCls}-dis-hover`]: props.disHover || props.shadow,
+                    [`${prefixCls}-dis-hover`]: props.disHover,
+                    [`${prefixCls}-shadow`]: props.shadow,
                 },
             ];
         });
