@@ -117,7 +117,7 @@ export default defineComponent({
          */
         replace: {
             type: Boolean,
-            default: true,
+            default: false,
         },
         /**
          * 圆角
