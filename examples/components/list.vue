@@ -4,9 +4,7 @@
             <ivue-list-item>Plain Text</ivue-list-item>
             <ivue-list-item rippleDisabled>Plain Text</ivue-list-item>
             <ivue-list-item @click="handleClick">click</ivue-list-item>
-            <ivue-list-item  type="button"
-                >button</ivue-list-item
-            >
+            <ivue-list-item type="button">button</ivue-list-item>
         </ivue-list>
         {{expandNews}}
         {{expandSingle}}
@@ -20,18 +18,13 @@
                 <span class="ivue-list-item-text">News</span>
                 <template v-slot:ivueExpand>
                     <ivue-list>
-                        <ivue-list-item class="ivue-inset"
-                            >World</ivue-list-item
-                        >
-                        <ivue-list-item class="ivue-inset"
-                            >World</ivue-list-item
-                        >
+                        <ivue-list-item class="ivue-inset">World</ivue-list-item>
+                        <ivue-list-item class="ivue-inset">World</ivue-list-item>
                     </ivue-list>
                 </template>
             </ivue-list-item>
 
-
-              <ivue-list-item
+            <ivue-list-item
                 ivueExpand
                 @ivue-expanded="handleExpanded"
                 @ivue-collapsed="handleCollapsed"
@@ -39,12 +32,8 @@
                 <span class="ivue-list-item-text">News</span>
                 <template v-slot:ivueExpand>
                     <ivue-list>
-                        <ivue-list-item class="ivue-inset"
-                            >World</ivue-list-item
-                        >
-                        <ivue-list-item class="ivue-inset"
-                            >World</ivue-list-item
-                        >
+                        <ivue-list-item class="ivue-inset">World</ivue-list-item>
+                        <ivue-list-item class="ivue-inset">World</ivue-list-item>
                     </ivue-list>
                 </template>
             </ivue-list-item>
@@ -54,17 +43,12 @@
                 v-model:ivueExpanded="expandNews"
                 @ivue-expanded="handleExpanded"
                 @ivue-collapsed="handleCollapsed"
-                ivueExpandSingle
             >
                 <span class="ivue-list-item-text">News</span>
                 <template v-slot:ivueExpand>
                     <ivue-list>
-                        <ivue-list-item class="ivue-inset"
-                            >World</ivue-list-item
-                        >
-                        <ivue-list-item class="ivue-inset"
-                            >World</ivue-list-item
-                        >
+                        <ivue-list-item class="ivue-inset">World</ivue-list-item>
+                        <ivue-list-item class="ivue-inset">World</ivue-list-item>
                     </ivue-list>
                 </template>
             </ivue-list-item>
@@ -74,19 +58,16 @@
 
 <script>
 export default {
-    data () {
+    data() {
         return {
             expandNews: false,
-            expandSingle: true
-        }
+            expandSingle: true,
+        };
     },
     methods: {
-        handleClick () {
-        },
-        handleExpanded () {
-        },
-        handleCollapsed () {
-        }
-    }
-}
+        handleClick() {},
+        handleExpanded() {},
+        handleCollapsed() {},
+    },
+};
 </script>

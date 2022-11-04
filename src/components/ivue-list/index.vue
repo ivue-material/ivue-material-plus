@@ -40,7 +40,7 @@ export default defineComponent({
 
         // 插入扩展
         const pushExpandable = (expandableListItem) => {
-            let expandableListItems = data.ivueList.expandable;
+            const expandableListItems = data.ivueList.expandable;
 
             // 寻找是否已经有了选项
             const findItem = expandableListItems.find((target) => {
@@ -56,7 +56,7 @@ export default defineComponent({
 
         // 删除扩展
         const removeExpandable = (expandableListItem) => {
-            let expandableListItems = data.ivueList.expandable;
+            const expandableListItems = data.ivueList.expandable;
 
             // 寻找是否已经有了选项
             const findItem = expandableListItems.find((target) => {

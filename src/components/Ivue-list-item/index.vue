@@ -44,7 +44,7 @@ export default defineComponent({
         };
 
         // 获取列表组件
-        let listComponent = createListComponent(data);
+        const listComponent = createListComponent(data);
 
         return () => h('li', {
             class: prefixCls

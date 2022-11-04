@@ -265,7 +265,7 @@ export default defineComponent({
         );
 
         // 按钮属性
-        let buttonAttrs: {
+        const buttonAttrs: {
             class?: Record<string, any>;
             href?: string;
             type?: string;
