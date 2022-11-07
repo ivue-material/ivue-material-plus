@@ -41,7 +41,16 @@
         <p>文字图标</p>
         <ivue-switch size="large">
             <template #open>
-                <span>开启</span>
+                <span>开</span>
+            </template>
+
+            <template #close>
+                <span>关</span>
+            </template>
+        </ivue-switch>
+          <ivue-switch size="long">
+            <template #open>
+                <span>开起</span>
             </template>
 
             <template #close>
@@ -50,11 +59,11 @@
         </ivue-switch>
         <ivue-switch>
             <template #open>
-                <span>开启</span>
+                <span>开</span>
             </template>
 
             <template #close>
-                <span>关闭</span>
+                <span>关</span>
             </template>
         </ivue-switch>
         <p>不可用</p>
@@ -88,6 +97,7 @@
         <ivue-switch loading :value="true" emboss embossLoadingColor="#F41D74"></ivue-switch>
         <ivue-switch loading :value="true" size="large"></ivue-switch>
         <ivue-switch loading :value="true" size="small"></ivue-switch>
+        <ivue-switch loading :value="true" size="long"></ivue-switch>
     </div>
 </template>
 

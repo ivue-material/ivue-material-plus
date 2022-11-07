@@ -105,7 +105,7 @@ export default defineComponent({
         size: {
             type: String as PropType<Size>,
             validator(value: string) {
-                return oneOf(value, ['large', 'small', 'default']);
+                return oneOf(value, ['large', 'small', 'default', 'long']);
             },
             default() {
                 return 'default';

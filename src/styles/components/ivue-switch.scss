@@ -43,10 +43,10 @@ $emboss-margin: 7px;
 
   &:focus {
     outline: 0;
-  }
 
-  &:focus:hover {
-    box-shadow: none;
+    &:hover {
+      box-shadow: none;
+    }
   }
 
   &:after {
@@ -58,11 +58,11 @@ $emboss-margin: 7px;
     position: absolute;
     cursor: pointer;
     @include transition;
-  }
 
-  &:active:after {
-    width: 28px;
-    @include transition;
+    &:after {
+      width: 28px;
+      @include transition;
+    }
   }
 
   &:before {
@@ -96,7 +96,7 @@ $emboss-margin: 7px;
     display: flex;
     color: $white-color;
     font-size: $font-base-size;
-    transform: translate3d(23px, 0, 0);
+    transform: translate3d(28px, 0, 0);
     will-change: transform;
 
     i {
@@ -159,9 +159,14 @@ $emboss-margin: 7px;
       height: $small-after-width;
     }
 
-    &:active:after {
-      width: 16px;
-      @include transition;
+    &:active{
+      &.#{$name}-checked:after {
+        transform: translate3d(10px, 0, 0);
+      }
+
+      &:after {
+        width: 16px;
+      }
     }
 
     &:before {
@@ -180,16 +185,17 @@ $emboss-margin: 7px;
     }
   }
 
-  &-small:active {
-    &.#{$name}-checked:after {
-      transform: translate3d(10px, 0, 0);
-    }
-  }
 
   /*大*/
   &-large {
     width: $defailt-after-width * 3;
     height: $large-height - 2;
+
+    &.#{$name}-checked:active {
+      &:after {
+        transform: translate3d($large-after-width + 2, 0, 0);
+      }
+    }
 
     &:active:after {
       width: 36px;
@@ -217,15 +223,26 @@ $emboss-margin: 7px;
     }
 
     .#{$name}-inner {
-      transform: translate3d($large-after-width + 2, 0, 0);
+      transform: translate3d($large-after-width + 5, 0, 0);
     }
   }
 
-  &-large:active {
+
+  // 长条
+  &-long {
+    width: $defailt-width + 15;
+
+    &:active {
+      &.#{$name}-checked:after {
+        transform: translate3d($defailt-after-width + 13px, 0, 0);
+      }
+    }
+
     &.#{$name}-checked:after {
-      transform: translate3d($large-after-width + 2, 0, 0);
+      transform: translate3d($defailt-after-width + 2 + 15, 0, 0);
     }
   }
+
 
   /*检查*/
   &-checked {
@@ -233,7 +250,7 @@ $emboss-margin: 7px;
     background: currentColor;
 
     .#{$name}-inner {
-      transform: translate3d(3px, 0, 0);
+      transform: translate3d(8px, 0, 0);
     }
 
     &:after {

@@ -29,6 +29,7 @@ module.exports = {
       'ts-ignore': false
     }],
     '@typescript-eslint/no-var-requires': 'off',
-    '@typescript-eslint/no-non-null-assertion': 'off'
+    '@typescript-eslint/no-non-null-assertion': 'off',
+    'vue/prefer-import-from-vue': 'off'
   }
 };
