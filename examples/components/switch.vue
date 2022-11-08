@@ -9,12 +9,7 @@
         ></ivue-switch>
 
         <p>flat</p>
-        <ivue-switch
-            gradient
-            v-model="switch1"
-            @on-change="handleChange"
-            emboss
-        >
+        <ivue-switch v-model="switch1" @on-change="handleChange" emboss>
             <template #open>
                 <span>开启</span>
             </template>
@@ -23,13 +18,7 @@
                 <span>关闭</span>
             </template>
         </ivue-switch>
-        <ivue-switch
-            color="red-accent-4"
-            v-model="switch1"
-            @on-change="handleChange"
-            emboss
-        ></ivue-switch>
-        {{ switch1 }}
+        <!-- <ivue-switch color="red-accent-4" v-model="switch1" @on-change="handleChange" emboss></ivue-switch> -->
 
         <p>大小</p>
         <ivue-switch size="large"></ivue-switch>
@@ -48,15 +37,7 @@
                 <span>关</span>
             </template>
         </ivue-switch>
-          <ivue-switch size="long">
-            <template #open>
-                <span>开起</span>
-            </template>
 
-            <template #close>
-                <span>关闭</span>
-            </template>
-        </ivue-switch>
         <ivue-switch>
             <template #open>
                 <span>开</span>
@@ -75,11 +56,12 @@
             loadingColor="#000"
             v-model="switch1"
             emboss
-            color="#F41D74"
+            :color="['#5AB2FF', '#5B8EFF']"
+            :false-color="['#FFA82D', '#FFBD3C']"
         ></ivue-switch>
         <ivue-switch
             loading
-            loadingColor="#000"
+            embossLoadingColor="#000"
             v-model="switch1"
             emboss
             color="#F41D74"
@@ -87,7 +69,7 @@
         ></ivue-switch>
         <ivue-switch
             loading
-            loadingColor="#000"
+            embossLoadingColor="#000"
             v-model="switch1"
             emboss
             color="#F41D74"
@@ -95,9 +77,12 @@
         ></ivue-switch>
 
         <ivue-switch loading :value="true" emboss embossLoadingColor="#F41D74"></ivue-switch>
-        <ivue-switch loading :value="true" size="large"></ivue-switch>
-        <ivue-switch loading :value="true" size="small"></ivue-switch>
-        <ivue-switch loading :value="true" size="long"></ivue-switch>
+        <ivue-switch loading v-model="switch1" size="large"></ivue-switch>
+        <ivue-switch loading v-model="switch1"></ivue-switch>
+        <ivue-switch loading v-model="switch1" size="small"></ivue-switch>
+
+    <ivue-switch v-model="switch1" :before-change="handleBeforeChange" />
+
     </div>
 </template>
 
@@ -114,7 +99,7 @@ export default {
         },
         handleBeforeChange() {
             return new Promise((resolve) => {
-                console.log('?');
+                resolve();
             });
         },
     },

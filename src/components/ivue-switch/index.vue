@@ -53,6 +53,15 @@ export default defineComponent({
             default: false,
         },
         /**
+         * 禁用水波纹
+         *
+         * @type {Boolean}
+         */
+        rippleDisabled: {
+            type: Boolean,
+            default: false,
+        },
+        /**
          * 加载中的开关
          *
          * @type {Boolean}
@@ -105,20 +114,11 @@ export default defineComponent({
         size: {
             type: String as PropType<Size>,
             validator(value: string) {
-                return oneOf(value, ['large', 'small', 'default', 'long']);
+                return oneOf(value, ['large', 'small', 'default']);
             },
             default() {
                 return 'default';
             },
-        },
-        /**
-         * 是否开启渐变
-         *
-         * @type {Boolean}
-         */
-        gradient: {
-            type: Boolean,
-            default: false,
         },
         /**
          * 返回 Promise 可以阻止切换
@@ -178,7 +178,6 @@ export default defineComponent({
                 {
                     [`${prefixCls}-emboss--track__checked`]:
                         data.currentValue === props.trueValue,
-                    [`${prefixCls}-emboss--track__gradient`]: props.gradient,
                 },
             ];
         });
@@ -190,7 +189,6 @@ export default defineComponent({
                 {
                     [`${prefixCls}-emboss--thumb__checked`]:
                         data.currentValue === props.trueValue,
-                    [`${prefixCls}-emboss--thumb__gradient`]: props.gradient,
                 },
             ];
         });
@@ -326,19 +324,30 @@ export default defineComponent({
         const genEmboss = () => {
             return h(
                 'div',
-                this.setTextColor(this.setColor, {
+                {
                     class: this.embossClass,
-                }),
+                },
                 [
-                    h('span', { class: this.embossTrackClass }),
-                    h('span', { class: this.embossThumbClass }, [
-                        h(
-                            'span',
-                            this.setTextColor(this.embossLoadingColor, {
-                                class: this.embossLodingClass,
-                            })
-                        ),
-                    ]),
+                    h(
+                        'span',
+                        this.setTextColor(this.setColor, {
+                            class: this.embossTrackClass,
+                        })
+                    ),
+                    h(
+                        'span',
+                        this.setTextColor(this.setColor, {
+                            class: this.embossThumbClass,
+                        }),
+                        [
+                            h(
+                                'span',
+                                this.setTextColor(this.embossLoadingColor, {
+                                    class: this.embossLodingClass,
+                                })
+                            ),
+                        ]
+                    ),
                     withDirectives(
                         h('span', {
                             class: this.embossRippleClass,
@@ -370,7 +379,7 @@ export default defineComponent({
         };
 
         return h(
-            'div',
+            'span',
             this.setTextColor(!this.emboss && this.setColor, {
                 class: this.wrapClasses,
                 tabindex: '0',
