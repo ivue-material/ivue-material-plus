@@ -36,7 +36,7 @@ export default defineComponent({
         /**
          * 当前下标
          *
-         * @type {Number, string}
+         * @type {Number, String}
          */
         name: {
             type: [Number, String],

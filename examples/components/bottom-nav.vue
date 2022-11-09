@@ -2,7 +2,7 @@
     <div>
         <p>有主题颜色</p>
         {{ bottomNav }}
-        <ivue-bottom-nav v-model="bottomNav" shift>
+        <ivue-bottom-nav v-model="bottomNav"  scale>
             <ivue-bottom-nav-item color="red-accent-4" name="1">
                 <span>Recents</span>
                 <ivue-icon>history</ivue-icon>
@@ -42,7 +42,7 @@
         </div>
 
         <p>基础</p>
-        <ivue-bottom-nav v-model="bottomNav" key="base" :height="'100'">
+        <ivue-bottom-nav v-model="bottomNav" key="base" :height="'10rem'">
             <ivue-bottom-nav-item color="red-accent-4" name="1">
                 <span>Recents</span>
                 <ivue-icon>history</ivue-icon>

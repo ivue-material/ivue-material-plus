@@ -41,9 +41,6 @@ export default defineComponent({
         height: {
             type: [Number, String],
             default: 56,
-            validator: (value: any) => {
-                return !isNaN(parseInt(value));
-            },
         },
         /**
          * 是否隐藏
@@ -74,6 +71,15 @@ export default defineComponent({
             type: Boolean,
             default: false,
         },
+        /**
+         * 导航缩放效果
+         *
+         * @type {Boolean}
+         */
+        scale: {
+            type: Boolean,
+            default: false,
+        },
     },
     setup(props: any, { emit }) {
         // data
@@ -95,6 +101,8 @@ export default defineComponent({
                 [`${prefixCls}--fixed`]: props.position === 'fixed',
                 // 控制可见性
                 [`${prefixCls}--active`]: props.visible,
+                // 导航缩放效果
+                [`${prefixCls}--active__scale`]: props.visible && props.scale,
                 // 不是激活状态时隐藏按钮上的文字
                 [`${prefixCls}--shift`]: props.shift,
             };
@@ -102,7 +110,7 @@ export default defineComponent({
 
         // 实时计算高度
         const computedHeight = computed(() => {
-            return parseInt(props.height);
+            return !Number.isNaN(Number(props.height)) ? `${props.height}px` : props.height;
         });
 
         // methods
@@ -167,10 +175,10 @@ export default defineComponent({
         // 监听变化
         watch(
             () => props.modelValue,
-            (index) => {
+            (value) => {
                 update();
 
-                emit('on-change', index);
+                emit('on-change', value);
             }
         );
 
@@ -217,7 +225,7 @@ export default defineComponent({
                     ...this.classes,
                 },
                 style: {
-                    height: `${this.computedHeight}px`,
+                    height: `${this.computedHeight}`,
                 },
             }),
             // 插槽

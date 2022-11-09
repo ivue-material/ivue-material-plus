@@ -31,6 +31,21 @@ $name: 'ivue-bottom-nav';
 
   &--active {
     transform: translate3d(0, 0, 0);
+
+    // 导航缩放效果
+    &__scale {
+      .ivue-button--active {
+        .ivue-icon {
+          transform: translate3d(0, -2px, 0) !important;
+        }
+
+        .ivue-button-content {
+          span {
+            transform: scale(1.2) !important;
+          }
+        }
+      }
+    }
   }
 
   &--is-color {
@@ -99,22 +114,6 @@ $name: 'ivue-bottom-nav';
 
       &:before {
         background-color: transparent;
-      }
-
-      .ivue-ripple {
-        padding-top: 6px;
-      }
-
-      .ivue-icon {
-        transform: translate3d(0, -2px, 0);
-      }
-
-      .ivue-button-content {
-
-        // font-size: 14px;
-        span {
-          transform: scale(1.2);
-        }
       }
     }
   }
