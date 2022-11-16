@@ -62,7 +62,7 @@
         <p>自定义模板</p>
 
         <ivue-select v-model="model9" style="width:200px" clearable>
-            <ivue-option value="New York" label="New York">
+            <ivue-option value="New York2">
                 <span>New York</span>
                 <span style="float:right;color:#ccc">America</span>
             </ivue-option>
@@ -147,8 +147,6 @@
         </ivue-select>
         {{model12}}
         <p>远程搜索</p>
-        {{model13}}
-        {{options1}}
         <ivue-select
             v-model="model13"
             filterable
@@ -163,7 +161,7 @@
                 :key="item.value"
             >{{ item.label }}</ivue-option>
         </ivue-select>
-
+        {{options1}}
         <ivue-select
             v-model="model14"
             filterable
@@ -246,7 +244,6 @@
                 :key="item.value"
             >{{ item.label }}</ivue-option>
         </ivue-select>
-
         {{cityList4}}
     </div>
 </template>
@@ -486,9 +483,9 @@ export default {
         maxTagPlaceholder(num) {
             return 'more ' + num;
         },
-        remoteMethod1(query) {
+        remoteMethod1(query, reset) {
             console.log('query');
-            console.log(query);
+            console.log(reset);
             if (query !== '') {
                 this.loading1 = true;
 
@@ -506,9 +503,21 @@ export default {
 
                 setTimeout(() => {
                     this.loading1 = false;
-                }, 2000);
+                }, 200);
+            }
+
+            if (reset) {
+                console.log('重置');
+                const list = this.list.map((item) => {
+                    return {
+                        value: item,
+                        label: item,
+                    };
+                });
+
+                this.options1 = list;
             } else {
-                this.options1 = [];
+                // this.options1 = [];
             }
         },
         remoteMethod2(query) {
@@ -580,8 +589,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
-.content{
+.content {
     position: relative;
     height: 100px;
     overflow: hidden;

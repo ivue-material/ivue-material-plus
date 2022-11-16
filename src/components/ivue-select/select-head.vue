@@ -7,7 +7,6 @@
             </slot>
         </span>
         <!-- 多选和设置了最大显示数时的方框 -->
-        <!-- eslint-disable vue/no-use-v-if-with-v-for -->
         <template v-for="(item, index) in selectedMultiple">
             <div
                 :class="`${prefixCls}-tag`"
@@ -32,15 +31,12 @@
             :class="`${prefixCls}-tag`"
             v-if="
                 maxTagCount !== undefined &&
-                selectedMultiple.length > maxTagCount
-            "
+                selectedMultiple.length > maxTagCount"
         >
             <span :class="`${prefixCls}-tag-text ${prefixCls}-max-tag`">
-                <template v-if="maxTagPlaceholder">
-                    {{
-                    maxTagPlaceholder(selectedMultiple.length - maxTagCount)
-                    }}
-                </template>
+                <template
+                    v-if="maxTagPlaceholder"
+                >{{ maxTagPlaceholder(selectedMultiple.length - maxTagCount) }}</template>
                 <template v-else>+{{ selectedMultiple.length - maxTagCount }}...</template>
             </span>
         </div>
@@ -258,9 +254,9 @@ export default defineComponent({
 
         // data
         const data = reactive<{
-            inputLength: number,
-            filterQuery: any,
-            isInputChange: boolean
+            inputLength: number;
+            filterQuery: any;
+            isInputChange: boolean;
         }>({
             /**
              * 输入框长度
@@ -363,7 +359,7 @@ export default defineComponent({
 
         // 输入框样式
         const inputStyles = computed(() => {
-            let style: any = {};
+            const style: any = {};
 
             if (props.multiple) {
                 if (showPlaceholder.value) {
@@ -389,7 +385,8 @@ export default defineComponent({
                 return false;
             }
 
-            select.handleOptionClick(value);
+            // 多选删除了
+            select.handleOptionClick(value, 'delete-multiple');
         };
 
         // 判断焦点发送事件

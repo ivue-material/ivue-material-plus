@@ -14,11 +14,11 @@
             @click="handleToggleMenu"
             @mouseenter="data.hasMouseHover = true"
             @mouseleave="data.hasMouseHover = false"
-            @keydown.down.stop.prevent="handldKeyDown"
-            @keydown.up.stop.prevent="handldKeyDown"
-            @keydown.enter.stop.prevent="handldKeyDown"
-            @keydown.esc.stop.prevent="handldKeyDown"
-            @keydown.tab="handldKeyDown"
+            @keydown.down.stop.prevent="handleKeyDown"
+            @keydown.up.stop.prevent="handleKeyDown"
+            @keydown.enter.stop.prevent="handleKeyDown"
+            @keydown.esc.stop.prevent="handleKeyDown"
+            @keydown.tab="handleKeyDown"
         >
             <slot name="input">
                 <input type="hidden" :name="name" :value="currentSelectValue" />
@@ -559,7 +559,7 @@ export default defineComponent({
              */
             hasMouseHover: false,
             /**
-             * 下一个搜索请求
+             * 上一次搜索输入
              *
              * @type {String}
              */
@@ -681,9 +681,6 @@ export default defineComponent({
             // 判断是否有自动输入
             if (props.autoComplete) {
                 for (const option of data.options) {
-                    // 选项计数器
-                    optionCounter = optionCounter + 1;
-
                     option.data.visible = true;
 
                     //如果没有 filterQueryChange ，则忽略选项
@@ -703,13 +700,19 @@ export default defineComponent({
                         option.data.visible = true;
                     }
 
-                    selectOptions.push(
-                        handleOption(
-                            option,
-                            selectedValues,
-                            optionCounter === currentIndex
-                        )
-                    );
+                    // 有显示选项 加入计数器
+                    if (option.data.visible) {
+                        // 选项计数器
+                        optionCounter = optionCounter + 1;
+
+                        selectOptions.push(
+                            handleOption(
+                                option,
+                                selectedValues,
+                                optionCounter === currentIndex
+                            )
+                        );
+                    }
                 }
 
                 return selectOptions;
@@ -717,11 +720,8 @@ export default defineComponent({
 
             // 选项的数据
             for (const option of data.options) {
-                // 选项计数器
-                optionCounter = optionCounter + 1;
-
                 //如果没有 filterQueryChange ，则忽略选项
-                if (data.filterQueryChange) {
+                if (data.filterQueryChange || data.filterQuery) {
                     const optionFilter = props.filterable
                         ? validateOption(option)
                         : option;
@@ -741,13 +741,19 @@ export default defineComponent({
                     option.data.visible = true;
                 }
 
-                selectOptions.push(
-                    handleOption(
-                        option,
-                        selectedValues,
-                        optionCounter === currentIndex
-                    )
-                );
+                // 有显示选项 加入计数器
+                if (option.data.visible) {
+                    // 选项计数器
+                    optionCounter = optionCounter + 1;
+
+                    selectOptions.push(
+                        handleOption(
+                            option,
+                            selectedValues,
+                            optionCounter === currentIndex
+                        )
+                    );
+                }
             }
 
             // 这是一个组件数组 [components]
@@ -901,7 +907,7 @@ export default defineComponent({
         };
 
         // 点击菜单
-        const handleToggleMenu = (event, force) => {
+        const handleToggleMenu = (event: Event, force?: boolean) => {
             // 在Popover嵌套中
             if (data.disableMenu && event) {
                 return false;
@@ -936,7 +942,7 @@ export default defineComponent({
         };
 
         // 选项菜单点击
-        const handleOptionClick = (option) => {
+        const handleOptionClick = (option, status?: string) => {
             // 在Popover嵌套中
             if (popover.data) {
                 data.disableMenu = true;
@@ -969,8 +975,22 @@ export default defineComponent({
                     data.values = data.values.concat(option);
                 }
 
+                // 多选项没有
+                if (data.values.length === 0) {
+                    // 重置焦点项
+                    data.focusIndex = -1;
+                }
+
                 // 鼠标点击选项元素后放回焦点
                 data.isFocused = true;
+
+                // 多选删除了
+                if (status === 'delete-multiple') {
+                    setTimeout(() => {
+                        // 重置焦点项
+                        data.focusIndex = -1;
+                    });
+                }
             }
             // 单选
             else {
@@ -1007,8 +1027,13 @@ export default defineComponent({
             dropdown.value.update();
 
             nextTick(() => {
-                // 获取焦点项
-                data.focusIndex = setFocusIndex(option);
+                // 有展开菜单才设置焦点
+                if (data.visibleMenu) {
+                    // 获取焦点项
+                    data.focusIndex = setFocusIndex(option);
+                } else {
+                    data.focusIndex = -1;
+                }
             });
 
             // 判断是否进行了过滤输入
@@ -1043,6 +1068,9 @@ export default defineComponent({
         const handleClearSingleSelect = () => {
             // 非多选清除数据
             if (!props.multiple) {
+                // 清除上一次搜索输入
+                data.lastSearchQuery = '';
+
                 emit('update:modelValue', '');
             }
 
@@ -1117,8 +1145,10 @@ export default defineComponent({
 
             //  不是自动完成
             if (!props.autoComplete) {
-                // 获取焦点项
-                data.focusIndex = setFocusIndex(option);
+                // 有展开菜单 -> 获取焦点项
+                if (data.visibleMenu) {
+                    data.focusIndex = setFocusIndex(option);
+                }
             }
 
             return {
@@ -1129,7 +1159,7 @@ export default defineComponent({
         };
 
         // 过滤输入框输入
-        const handleFilterQueryChange = (filterQuery) => {
+        const handleFilterQueryChange = (filterQuery: string) => {
             // 是否显示下拉菜单
             if (filterQuery.length > 0 && filterQuery !== data.filterQuery) {
                 if (props.autoComplete) {
@@ -1173,8 +1203,13 @@ export default defineComponent({
             // 把输入框数据转换成小写去除前后空格
             const filterQuery = data.filterQuery.toLowerCase().trim();
 
-            // 是否开启搜索，没有多选，没有输入
-            if (props.filterable && !props.multiple && filterQuery === '') {
+            // 是否开启搜索 && 没有多选 && 没有输入 && 没有上一个熟人
+            if (
+                props.filterable &&
+                !props.multiple &&
+                filterQuery === '' &&
+                !data.lastSearchQuery
+            ) {
                 return false;
             }
 
@@ -1183,7 +1218,7 @@ export default defineComponent({
         };
 
         // 设置滚动条滚动
-        const focusScroll = (index) => {
+        const focusScroll = (index: number) => {
             if (index < 0 || props.autoComplete) {
                 return;
             }
@@ -1224,7 +1259,7 @@ export default defineComponent({
         };
 
         // 按键
-        const handldKeyDown = (event) => {
+        const handleKeyDown = (event) => {
             const key = event.key || event.code;
             const keyCode = event.keyCode || event.which;
 
@@ -1632,6 +1667,11 @@ export default defineComponent({
         watch(
             () => data.filterQuery,
             (filterQuery) => {
+                // 没有输入内容取消焦点
+                if (filterQuery === '') {
+                    data.focusIndex = -1;
+                }
+
                 // API 搜索词改变时触发
                 emit('on-filter-query-change', filterQuery);
 
@@ -1641,7 +1681,9 @@ export default defineComponent({
                     (filterQuery !== data.lastSearchQuery ||
                         !data.lastSearchQuery);
 
+                // 是否有搜索方法
                 const shouldCallRemoteMethod =
+                    // 是否是有效查询
                     props.searchMethod && hasValidQuery;
 
                 // 是否有搜索方法
@@ -1651,14 +1693,32 @@ export default defineComponent({
                     props.searchMethod(filterQuery);
                 }
 
+                // 开启了远程搜索 && 有上一次输入 && 当前输入为空
+                if (
+                    data.lastSearchQuery &&
+                    filterQuery === '' &&
+                    props.searchMethod
+                ) {
+                    data.focusIndex = -1;
+
+                    props.searchMethod(filterQuery, 'reset');
+                }
+
                 // 正常搜索
                 if (filterQuery !== '' && isSearchMethod.value) {
                     data.lastSearchQuery = filterQuery;
                 }
 
                 // 输入为空隐藏下拉框 非多选
-                if (filterQuery === '' && !props.multiple) {
-                    data.visibleMenu = false;
+                if (
+                    filterQuery === '' &&
+                    !props.multiple &&
+                    !props.searchMethod
+                ) {
+                    // 没有获取焦点隐藏下拉框
+                    if (!data.isFocused) {
+                        data.visibleMenu = false;
+                    }
 
                     // 等菜单动画执行完再清除
                     nextTick(() => {
@@ -1804,7 +1864,7 @@ export default defineComponent({
             handleToggleMenu,
             handleClearSingleSelect,
             handleFilterQueryChange,
-            handldKeyDown,
+            handleKeyDown,
             handleCreateItem,
             setFocusIndex,
             setQuery,

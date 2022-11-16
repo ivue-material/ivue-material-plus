@@ -315,7 +315,6 @@ export default defineComponent({
         };
 
         // 创建新列表
-
         const handleCreateItem = () => {
             if (
                 props.allowCreate &&
