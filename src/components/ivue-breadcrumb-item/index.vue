@@ -2,7 +2,7 @@
 <script lang="ts">
 import { defineComponent, computed, inject, h } from 'vue';
 
-const prefixCls = 'ivue-breadcrumbs-item';
+const prefixCls = 'ivue-breadcrumb-item';
 
 interface ItemProps {
     to: string | Record<string, any>;
@@ -96,7 +96,7 @@ export default defineComponent({
                 h(
                     'span',
                     {
-                        class: 'ivue-breadcrumbs--divider',
+                        class: 'ivue-breadcrumb--divider',
                     },
                     typeof this.divider === 'function'
                         ? this.divider()

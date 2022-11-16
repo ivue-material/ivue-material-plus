@@ -16,6 +16,6 @@ export const withTaskName = (name, fn) => {
 // 运行任务
 export const runTask = (name) => {
   return withTaskName(`shellTask:${name}`, () => {
-    return run(`pnpm run start ${name}`, buildRoot);
+    return run(`npm run start ${name}`, buildRoot);
   });
 };

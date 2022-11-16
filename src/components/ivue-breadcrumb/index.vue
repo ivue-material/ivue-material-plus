@@ -13,7 +13,7 @@ interface BreadcrumbProps {
     justifyEnd: boolean;
 }
 
-const prefixCls = 'ivue-breadcrumbs';
+const prefixCls = 'ivue-breadcrumb';
 
 export default defineComponent({
     name: prefixCls,

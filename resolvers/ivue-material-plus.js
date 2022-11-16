@@ -12,7 +12,7 @@ const noStylesComponents = [
   "ivue-content",
   "ivue-carousel-item",
   "ivue-bottom-nav-item",
-  "ivue-breadcrumbs-item",
+  "ivue-breadcrumb-item",
   "ivue-checkbox-group",
   "ivue-collapse-panel",
   "ivue-count-down",

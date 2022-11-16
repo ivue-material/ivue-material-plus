@@ -1,63 +1,63 @@
 <template>
     <div>
         <p>基础</p>
-        <ivue-breadcrumbs>
+        <ivue-breadcrumb>
             <template #divider>
                 <ivue-icon>forward</ivue-icon>
             </template>
 
-            <ivue-breadcrumbs-item
+            <ivue-breadcrumb-item
                 :href="item.href"
                 :disabled="item.disabled"
                 v-for="item in items"
                 :key="item.text"
-                >{{ item.text }}</ivue-breadcrumbs-item
+                >{{ item.text }}</ivue-breadcrumb-item
             >
-            <ivue-breadcrumbs-item
+            <ivue-breadcrumb-item
                 :href="item.href"
                 :disabled="item.disabled"
                 v-for="item in items"
                 :key="item.text"
-                >{{ item.text }}</ivue-breadcrumbs-item
+                >{{ item.text }}</ivue-breadcrumb-item
             >
-        </ivue-breadcrumbs>
+        </ivue-breadcrumb>
 
-         <ivue-breadcrumbs>
-            <ivue-breadcrumbs-item
+         <ivue-breadcrumb>
+            <ivue-breadcrumb-item
                 :href="item.href"
                 :disabled="item.disabled"
                 :to="{ path: '/' }"
                 v-for="item in items"
                 :key="item.text"
-                >{{ item.text }}</ivue-breadcrumbs-item
+                >{{ item.text }}</ivue-breadcrumb-item
             >
-            <ivue-breadcrumbs-item
+            <ivue-breadcrumb-item
                 :href="item.href"
                 :disabled="item.disabled"
                 v-for="item in items"
                 :key="item.text"
-                >{{ item.text }}</ivue-breadcrumbs-item
+                >{{ item.text }}</ivue-breadcrumb-item
             >
-        </ivue-breadcrumbs>
+        </ivue-breadcrumb>
 
 
 
-        <ivue-breadcrumbs>
-            <ivue-breadcrumbs-item
+        <ivue-breadcrumb>
+            <ivue-breadcrumb-item
                 :href="item.href"
                 :disabled="item.disabled"
                 v-for="item in items"
                 :key="item.text"
-                >{{ item.text }}</ivue-breadcrumbs-item
+                >{{ item.text }}</ivue-breadcrumb-item
             >
-            <ivue-breadcrumbs-item
+            <ivue-breadcrumb-item
                 :href="item.href"
                 :disabled="item.disabled"
                 v-for="item in items"
                 :key="item.text"
-                >{{ item.text }}</ivue-breadcrumbs-item
+                >{{ item.text }}</ivue-breadcrumb-item
             >
-        </ivue-breadcrumbs>
+        </ivue-breadcrumb>
 
     </div>
 </template>

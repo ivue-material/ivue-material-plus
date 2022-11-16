@@ -1,6 +1,6 @@
 @import "../base.scss";
 
-$name: 'ivue-breadcrumbs';
+$name: 'ivue-breadcrumb';
 
 .#{$name} {
   align-items: center;
@@ -24,6 +24,7 @@ $name: 'ivue-breadcrumbs';
     font-weight: 700;
     transition: color .2s cubic-bezier(.645, .045, .355, 1);
     color: $title-color;
+    cursor: pointer;
   }
 
   >span {
