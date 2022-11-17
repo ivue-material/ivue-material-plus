@@ -5,7 +5,7 @@
         data-select="select-item"
         :class="classes"
         :style="styles"
-        v-ripple="!disabledRipple"
+        v-ripple="ripple"
         @click.stop="handleOptionClick"
         @mousedown.prevent
         @mouseenter="handleMouseenter"
@@ -45,11 +45,11 @@ export default defineComponent({
         /**
          * 启用/禁用涟漪
          *
-         * @type {null}
+         * @type {Boolean}
          */
-        disabledRipple: {
+        ripple: {
             type: Boolean,
-            default: true,
+            default: false,
         },
         /**
          * 是否禁用选项

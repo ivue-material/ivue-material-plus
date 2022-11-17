@@ -60,6 +60,7 @@
             @input="handleResetInputState"
             @keydown.delete="handleInputDelete"
             @keydown.enter="handleInputEnter"
+            ref="input"
         />
         <!-- 下拉图标 -->
         <transition name="ivue-select-fade">
@@ -211,7 +212,7 @@ export default defineComponent({
             default: '',
         },
         /**
-         * 外部输入框输入数据
+         * 外部过滤输入
          *
          * @type {String}
          */
@@ -247,7 +248,8 @@ export default defineComponent({
         },
     },
     setup(props: any, { slots, emit }) {
-        const wrapper = ref<HTMLElement | null>(null);
+        const wrapper = ref<HTMLElement>();
+        const input = ref<HTMLInputElement>();
 
         // inject
         const select: any = inject('ivue-select');
@@ -423,7 +425,7 @@ export default defineComponent({
 
         // 输入框删除
         const handleInputDelete = (event) => {
-            const targetValue = event.target.value;
+            const targetValue = (event.target as HTMLInputElement).value;
 
             if (
                 props.multiple &&
@@ -438,8 +440,8 @@ export default defineComponent({
         };
 
         // 点击确认
-        const handleInputEnter = () => {
-            emit('on-enter');
+        const handleInputEnter = (event: Event) => {
+            emit('on-enter', event);
         };
 
         // watch
@@ -513,6 +515,7 @@ export default defineComponent({
 
             // dom
             wrapper,
+            input,
 
             // data
             data,

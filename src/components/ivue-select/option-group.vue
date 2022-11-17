@@ -22,13 +22,25 @@ import {
     nextTick,
 } from 'vue';
 
+// type
+import type { Emitter, EventType } from 'mitt';
+
 const prefixCls = 'ivue-select-group';
+
+type Select = {
+    props: {
+        filterable: boolean;
+        filterableHiddenGroup: boolean;
+    };
+    options: Array<any>;
+    selectEmitter: Emitter<Record<EventType, unknown>>;
+};
 
 export default defineComponent({
     name: 'ivue-option-group',
     props: {
         /**
-         * 选项grop标题
+         * 选项group标题
          *
          * @type {String}
          */
@@ -48,29 +60,33 @@ export default defineComponent({
     },
     setup(props) {
         // inject
-        const select: any = inject('ivue-select');
+        const select: Select = inject('ivue-select');
 
-        const visible: any = ref(true);
+        // dom
+        const list = ref<HTMLElement>(null);
 
-        const list = ref(null);
+        // 显示
+        const visible = ref<boolean>(true);
 
         // methods
         const queryChange = () => {
             if (select.props.filterable) {
                 if (select.props.filterableHiddenGroup) {
                     setTimeout(() => {
-                        const children: any = list.value.children;
+                        const children = list.value.children;
 
-                        visible.value = [...children].some((option) => {
-                            const visible = option.dataset.visible;
-                            const _select = option.dataset.select;
+                        visible.value = [...children].some(
+                            (option: HTMLElement) => {
+                                const visible = option.dataset.visible;
+                                const _select = option.dataset.select;
 
-                            // 是否是选项组件
-                            if (_select) {
-                                // 当前选项是否显示
-                                return visible === 'true';
+                                // 是否是选项组件
+                                if (_select) {
+                                    // 当前选项是否显示
+                                    return visible === 'true';
+                                }
                             }
-                        });
+                        );
                     });
                 } else {
                     nextTick(() => {

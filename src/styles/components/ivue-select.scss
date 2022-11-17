@@ -361,7 +361,7 @@ $name: 'ivue-select';
     }
   }
 
-  /*下拉菜单*/
+  // 下拉菜单
   &-dropdown {
     position: absolute;
     padding: 5px 0;
@@ -376,6 +376,10 @@ $name: 'ivue-select';
     transform-origin: center top 0px;
     opacity: 1;
 
+    &[data-popper-placement="top"] {
+      transform-origin: center bottom 0px;
+    }
+
     &--transfer {
       z-index: 1060;
       width: auto;
@@ -386,12 +390,12 @@ $name: 'ivue-select';
     height: auto;
   }
 
-  /*下拉菜单列表*/
+  // 下拉菜单列表
   &-dropdown-list {
     width: 100%;
   }
 
-  /*没有数据时的提示*/
+  // 没有数据时的提示
   &-not-find {
     padding: 7px 16px;
     display: flex;
@@ -406,7 +410,7 @@ $name: 'ivue-select';
     }
   }
 
-  /*菜单数据列表*/
+  // 菜单数据列表
   &-item {
     position: relative;
     margin: 0;
@@ -424,15 +428,9 @@ $name: 'ivue-select';
 
     @media screen and (min-width: 800px) {
       &:hover {
-        // background: $background-color-select-hover;
         color: $white-color;
       }
     }
-
-    // &-focus {
-    //   // color: $white-color;
-    //   // background: $background-color-select-hover;
-    // }
 
     &--create {
       justify-content: space-between;
@@ -440,6 +438,7 @@ $name: 'ivue-select';
       .text {
         flex: 1;
         width: 100%;
+        margin: 0;
       }
 
       i {
@@ -449,7 +448,7 @@ $name: 'ivue-select';
       }
     }
 
-    /*选项菜单禁用样式*/
+    // 选项菜单禁用样式
     &-disabled {
       cursor: not-allowed;
       color: $input-disabled-color;
@@ -466,7 +465,7 @@ $name: 'ivue-select';
     }
   }
 
-  /*菜单数据列表group*/
+  // 菜单数据列表group
   &-group {
     list-style: none;
     margin: 0;
@@ -482,8 +481,7 @@ $name: 'ivue-select';
   }
 }
 
-/*下拉菜单动画*/
-
+// 下拉菜单动画
 .transition-drop-appear,
 .transition-drop-enter-active {
   animation-duration: .3s;
@@ -528,8 +526,7 @@ $name: 'ivue-select';
 }
 
 
-/*多选选项动画*/
-
+// 多选选项动画
 .multiple-transition-enter-active,
 .multiple-transition-leave-active {
   transition: opacity .3s ease-in-out;
@@ -540,8 +537,7 @@ $name: 'ivue-select';
   opacity: 0;
 }
 
-/*提示输入框动画*/
-
+// 提示输入框动画
 .ivue-select-fade-enter-active,
 .ivue-select-fade-leave-active {
   transition: opacity .3s ease-in-out;

@@ -41,11 +41,12 @@
                     :filterQueryProp="data.filterQuery"
                     :allowCreate="allowCreate"
                     :showCreateItem="showCreateItem"
-                    @on-clear="handleClearSingleSelect"
+                    @on-clear="clearSingleSelect"
                     @on-filter-query-change="handleFilterQueryChange"
                     @on-input-focus="data.isFocused = true"
                     @on-input-blur="data.isFocused = false"
                     @on-enter="handleCreateItem"
+                    ref="selectHead"
                 >
                     <template #prefix v-if="$slots.prefix">
                         <slot name="prefix"></slot>
@@ -138,6 +139,9 @@ import { oneOf } from '../../utils/assist';
 
 import { PopoverContextKey } from '../ivue-popover/popover';
 
+// type
+import type { Emitter, EventType } from 'mitt';
+
 const prefixCls = 'ivue-select';
 
 export default defineComponent({
@@ -201,7 +205,7 @@ export default defineComponent({
             default: false,
         },
         /**
-         * 是否开启多选多虑收起时清除输入
+         * 是否开启多选过滤收起时清除输入
          *
          * @type {Boolean}
          */
@@ -210,7 +214,7 @@ export default defineComponent({
             default: false,
         },
         /**
-         * 是否开启多选后的图表
+         * 设置多选删除图标
          *
          * @type {Boolean}
          */
@@ -309,7 +313,7 @@ export default defineComponent({
             default: false,
         },
         /**
-         * 是否开启还原输入框内容 图标
+         * 创建新条目按钮图标
          *
          * @type {Boolean}
          */
@@ -320,7 +324,7 @@ export default defineComponent({
         /**
          * 没有找到数据时的提示
          *
-         * @type {Boolean}
+         * @type {String}
          */
         notFindText: {
             type: String,
@@ -337,7 +341,7 @@ export default defineComponent({
         /**
          * 下拉图标
          *
-         * @type{String}
+         * @type {String}
          */
         arrowDownIcon: {
             type: String,
@@ -353,7 +357,7 @@ export default defineComponent({
             default: false,
         },
         /**
-         * 重置选择图标
+         * 清除选择图标
          *
          * @type {String}
          */
@@ -364,7 +368,7 @@ export default defineComponent({
         /**
          * 开启搜索时，隐藏group组件头
          *
-         * @type {String}
+         * @type {Boolean}
          */
         filterableHiddenGroup: {
             type: Boolean,
@@ -478,6 +482,7 @@ export default defineComponent({
         const selectWrapper = ref<HTMLElement | null>(null);
         const reference = ref<HTMLDivElement>(null);
         const dropdown = ref(null);
+        const selectHead = ref(null);
 
         // ivue-popover
         const popover = inject(PopoverContextKey, {
@@ -499,7 +504,7 @@ export default defineComponent({
             filterQuery: string;
             hasMouseHover: boolean;
             lastSearchQuery: string;
-            selectEmitter: any;
+            selectEmitter: Emitter<Record<EventType, unknown>>;
             hasExpectedValue: boolean;
             _filterQuery: string;
             disableMenu: boolean;
@@ -964,7 +969,7 @@ export default defineComponent({
                     data.lastSearchQuery = '';
                 }
 
-                // 当前是否有对应的选项
+                // 当前是否有对应的选项 && 不是创建新列表
                 if (selected) {
                     data.values = data.values.filter(
                         ({ value }) => value !== option.value
@@ -1065,7 +1070,7 @@ export default defineComponent({
         };
 
         // 清楚单项选择数据
-        const handleClearSingleSelect = () => {
+        const clearSingleSelect = () => {
             // 非多选清除数据
             if (!props.multiple) {
                 // 清除上一次搜索输入
@@ -1404,12 +1409,15 @@ export default defineComponent({
         };
 
         // 创建新列表
-        const handleCreateItem = () => {
+        const handleCreateItem = (event) => {
             if (
                 props.allowCreate &&
                 data.filterQuery !== '' &&
                 showCreateItem.value
             ) {
+                // 创建新列表点击确认阻止上层 key up Enter 事件触发
+                event.stopPropagation();
+
                 const filterQuery = data.filterQuery;
 
                 emit('on-create', filterQuery);
@@ -1423,8 +1431,9 @@ export default defineComponent({
                     disabled: false,
                 };
 
+                // 多选
                 if (props.multiple) {
-                    handleOptionClick(option);
+                    handleOptionClick(option, 'create-item');
                 } else {
                     // 单选时如果不在 nextTick 里执行，无法赋值
                     nextTick(() => {
@@ -1464,6 +1473,16 @@ export default defineComponent({
 
                 // 清空搜索关键词后，重新搜索相同的关键词没有触发远程搜索
                 data.lastSearchQuery = '';
+            }
+        };
+
+        // 获取焦点
+        const focus = () => {
+            if (props.filterable) {
+                selectHead.value.$refs.input.focus();
+
+                // 展开下拉框
+                handleToggleMenu(null, true);
             }
         };
 
@@ -1837,6 +1856,7 @@ export default defineComponent({
             selectWrapper,
             reference,
             dropdown,
+            selectHead,
 
             // inject
             popover,
@@ -1862,12 +1882,13 @@ export default defineComponent({
             handleHeaderFocus,
             handleOption,
             handleToggleMenu,
-            handleClearSingleSelect,
             handleFilterQueryChange,
             handleKeyDown,
             handleCreateItem,
             setFocusIndex,
             setQuery,
+            clearSingleSelect,
+            focus,
         };
     },
     components: {

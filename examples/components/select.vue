@@ -4,17 +4,20 @@
         <button @click="handleClear">clear</button>
         <div class="content">
             <ivue-select
+            filterable
                 v-model="model1"
                 style="width:200px"
                 transfer
+                placement="top"
                 labelAndValue
+                ref="selectdefault"
                 @on-change="handleChange"
             >
                 <ivue-option
                     v-for="item in cityList"
                     :value="item.value"
                     :key="item.value"
-                >{{ item.label }}</ivue-option>
+                ></ivue-option>
             </ivue-select>
         </div>
         <p>禁用</p>
@@ -41,8 +44,8 @@
         </ivue-select>
 
         <p>分组</p>
-        <ivue-select v-model="model7" style="width:200px">
-            <ivue-option-group label="Hot Cities">
+        <ivue-select v-model="model7" style="width:200px"  filterable  filterQueryProp="New York">
+            <ivue-option-group label="Hot Cities" disabled>
                 <ivue-option
                     v-for="item in cityList1"
                     :value="item.value"
@@ -130,7 +133,7 @@
         </ivue-select>
         {{model16}}
         <p>可搜索</p>
-        <ivue-select v-model="model11" style="width:200px" filterable ref="select">
+        <ivue-select v-model="model11" style="width:200px" filterable ref="select" :restore-input-option="false">
             <ivue-option
                 v-for="item in cityList"
                 :value="item.value"
@@ -204,6 +207,7 @@
             :searchMethod="remoteMethod4"
             :default-label="['北京', '深圳']"
             :loading="loading4"
+            ref="search"
             @on-set-default-options="setDefaultOptions"
         >
             <ivue-option
@@ -254,8 +258,8 @@ export default {
         return {
             cityList: [
                 {
-                    value: 'New York',
-                    label: 'New York',
+                    value: 'New York12',
+                    // label: 'New York',
                 },
                 {
                     value: 'London',
@@ -280,7 +284,7 @@ export default {
             ],
             cityList1: [
                 {
-                    value: 'New York',
+                    value: 'New York123',
                     label: 'New York',
                 },
                 {
@@ -471,12 +475,15 @@ export default {
             model18: [],
         };
     },
+    mounted() {
+        this.$refs.selectdefault.focus()
+    },
     methods: {
         handleChange(value) {
             console.log(value);
         },
         handleClear() {
-            this.$refs.select.handleClearSingleSelect();
+            this.$refs.selectdefault.clearSingleSelect();
 
             console.log(this.$refs.select.clearFlterQuery);
         },
@@ -521,6 +528,7 @@ export default {
             }
         },
         remoteMethod2(query) {
+            console.log('query', query)
             if (query !== '') {
                 this.loading2 = true;
                 setTimeout(() => {
@@ -539,7 +547,7 @@ export default {
                     );
                 }, 200);
             } else {
-                this.options2 = [];
+                // this.options2 = [];
             }
         },
         remoteMethod3(query) {
@@ -552,10 +560,13 @@ export default {
                     );
                 }, 200);
             } else {
-                this.options3 = [];
+                setTimeout(() => {
+                    this.options3 = this.list2;
+                }, 300)
             }
         },
         remoteMethod4(query) {
+            console.log('搜索方法',query)
             if (query !== '') {
                 this.loading4 = true;
                 setTimeout(() => {
@@ -565,7 +576,11 @@ export default {
                     );
                 }, 200);
             } else {
-                this.options4 = [];
+                this.$refs.search.handleToggleMenu()
+
+                setTimeout(() => {
+                    this.options4 = [];
+                }, 300)
             }
         },
         setDefaultOptions(options) {
