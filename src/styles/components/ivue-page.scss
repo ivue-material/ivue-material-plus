@@ -1,7 +1,12 @@
-@import "../custom.scss";
 @import 'ivue-select';
 
 $name: 'ivue-page';
+
+:root {
+  --#{$name}-shadow-color: rgba(91, 142, 255, 0.2);
+  --#{$name}-disabled-color: #F8F9FD;
+}
+
 
 .#{$name} {
   display: flex;
@@ -30,14 +35,14 @@ $name: 'ivue-page';
     line-height: 30px;
     list-style: none;
     cursor: pointer;
-    border: 1px solid $border-color;
+    border: 1px solid var(--ivue-border-color);
     border-radius: 4px;
     transition: all .2s ease-in-out;
-    color: $text-color;
+    color: var(--ivue-text-color);
 
     &:hover {
-      color: $primary-color;
-      border-color: $primary-color;
+      color: var(--ivue-primary-color);
+      border-color: var(--ivue-primary-color);
     }
 
 
@@ -49,15 +54,15 @@ $name: 'ivue-page';
 
     // 激活
     &--active {
-      color: $primary-color;
-      border-color: $primary-color;
+      color: var(--ivue-primary-color);
+      border-color: var(--ivue-primary-color);
     }
   }
 
   // 上一页 下一页
   &-prev,
   &-next {
-    color: $arrow-color;
+    color: var(--ivue-arrow-color);
 
     i {
       transition: none;
@@ -86,7 +91,7 @@ $name: 'ivue-page';
     // 缩略号
     .abbreviation {
       letter-spacing: 1px;
-      color: $disabled-color;
+      color: var(--ivue-disabled-color);
       text-align: center;
     }
 
@@ -106,8 +111,7 @@ $name: 'ivue-page';
         top: 0;
         bottom: 0;
         margin-left: 5px;
-        // display: none;
-        color: $primary-color;
+        color: var(--ivue-primary-color);
         font-size: 20px;
 
         &:first-child {
@@ -119,9 +123,6 @@ $name: 'ivue-page';
 
     &:hover {
       border-color: transparent;
-      // &::after {
-      //   display: none;
-      // }
 
       .abbreviation {
         display: none;
@@ -129,7 +130,7 @@ $name: 'ivue-page';
 
       .arrow {
         display: flex;
-        color: $primary-color;
+        color: var(--ivue-primary-color);
       }
     }
   }
@@ -232,22 +233,22 @@ $name: 'ivue-page';
 
       &:focus {
         outline: 0;
-        box-shadow: 0 0 0 2px transparentize($primary-color, 0.8);
+        box-shadow: 0 0 0 2px var(--#{$name}-shadow-color);
       }
 
       &:focus,
       &:hover {
-        border-color: $primary-color;
+        border-color: var(--ivue-primary-color);
       }
 
       &[disabled] {
-        background-color: #F8F9FD;
+        background-color: var(--#{$name}-disabled-color);
         opacity: 1;
-        cursor: $cursor-disabled !important;
-        color: $input-disabled-color;
+        cursor: var(--ivue-cursor-disabled) !important;
+        color: var(--ivue-input-disabled-color);
 
         &:hover {
-          border-color: $border-color;
+          border-color: var(--ivue-border-color);
         }
       }
     }
@@ -256,11 +257,11 @@ $name: 'ivue-page';
   // 禁用
   &-disabled {
     cursor: not-allowed;
-    color: $disabled-color;
+    color: var(--ivue-disabled-color);
 
     &:hover {
-      color: $disabled-color;
-      border-color: $border-color;
+      color: var(--ivue-disabled-color);
+      border-color: var(--ivue-border-color);
     }
   }
 
@@ -310,16 +311,16 @@ $name: 'ivue-page';
       height: 32px;
       line-height: 32px;
       font-size: 14px;
-      color: $text-color;
+      color: var(--ivue-text-color);
 
       // 输入框
       &__input {
         display: inline-block;
         padding: 4px 7px;
         font-size: 14px;
-        border: 1px solid $border-color;
-        color: $text-color;
-        background-color: $white-color;
+        border: 1px solid var(--ivue-border-color);
+        color: var(--ivue-text-color);
+        background-color: var(--ivue-white-color);
         background-image: none;
         position: relative;
         cursor: text;
@@ -331,22 +332,22 @@ $name: 'ivue-page';
 
         &:focus {
           outline: 0;
-          box-shadow: 0 0 0 2px transparentize($primary-color, 0.8);
+          box-shadow: 0 0 0 2px var(--#{$name}-shadow-color);
         }
 
         &:focus,
         &:hover {
-          border-color: $primary-color;
+          border-color: var(--ivue-primary-color);
         }
 
         &[disabled] {
-          background-color: #F8F9FD;
+          background-color: var(--#{$name}-disabled-color);
           opacity: 1;
-          cursor: $cursor-disabled !important;
-          color: $input-disabled-color;
+          cursor: var(--ivue-cursor-disabled) !important;
+          color: var(--ivue-input-disabled-color);
 
           &:hover {
-            border-color: $border-color;
+            border-color: var(--ivue-border-color);
           }
         }
       }

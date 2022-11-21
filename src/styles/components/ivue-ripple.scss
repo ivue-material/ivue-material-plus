@@ -1,4 +1,6 @@
-.ivue-ripple {
+$name: 'ivue-ripple';
+
+.#{$name} {
   position: absolute;
   width: 100%;
   height: 100%;
@@ -7,14 +9,14 @@
   box-sizing: border-box;
   color: inherit;
   border-radius: inherit;
-  -webkit-mask-image: radial-gradient(circle, #fff 100%, #000 100%);
+  -webkit-mask-image: radial-gradient(circle, var(--ivue-white-color) 100%, var(--ivue-black-color) 100%);
   overflow: hidden;
   z-index: 0;
   pointer-events: none;
   contain: strict;
 }
 
-.ivue-ripple-wave {
+.#{$name} -wave {
   position: absolute;
   top: 0;
   left: 0;

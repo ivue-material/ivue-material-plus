@@ -3,6 +3,11 @@
 
 $name: 'ivue-modal';
 
+:root {
+  --#{$name}-content-color: rgba(0, 0, 0, 0.15);
+  --#{$name}-mask-color: rgba(55, 55, 55, .6);
+}
+
 .#{$name} {
   position: relative;
   top: 0;
@@ -17,7 +22,7 @@ $name: 'ivue-modal';
     bottom: 0;
     left: 0;
     right: 0;
-    background-color: rgba(55, 55, 55, .6);
+    background-color: var(--#{$name}-mask-color);
     height: 100%;
     z-index: 1000;
   }
@@ -58,10 +63,10 @@ $name: 'ivue-modal';
   // 内容
   &-content {
     position: relative;
-    background-color: $white-color;
+    background-color: var(--ivue-white-color);
     border: 0;
     border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 4px 12px var(--#{$name}-content-color);
 
     &--no-mask {
       pointer-events: auto
@@ -85,7 +90,7 @@ $name: 'ivue-modal';
 
   // 头部
   &-header {
-    border-bottom: 1px solid $border-color;
+    border-bottom: 1px solid var(--ivue-border-color);
     padding: 14px 30px 14px 16px;
     line-height: 1;
 
@@ -94,7 +99,7 @@ $name: 'ivue-modal';
       display: inline-block;
       width: 100%;
       font-size: 16px;
-      color: $title-color;
+      color: var(--ivue-title-color);
       font-weight: bold;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -110,7 +115,7 @@ $name: 'ivue-modal';
 
   // 底部
   &-footer {
-    border-top: 1px solid $border-color;
+    border-top: 1px solid var(--ivue-border-color);
     padding: 12px 18px;
     text-align: right;
   }
@@ -182,7 +187,7 @@ $name: 'ivue-modal';
       &__title {
         margin-left: 12px;
         font-size: 16px;
-        color: $title-color;
+        color: var(--ivue-title-color);
         font-weight: bold;
       }
 
@@ -194,24 +199,24 @@ $name: 'ivue-modal';
       }
 
       &__success {
-        color: $success-color;
+        color: var(--ivue-success-color);
         display: inline-block;
       }
 
       &__info {
-        color: $primary-color;
+        color: var(--ivue-primary-color);
       }
 
       &__warning {
-        color: $warning-color;
+        color: var(--ivue-warning-color);
       }
 
       &__error {
-        color: $error-color;
+        color: var(--ivue-error-color);
       }
 
-      &__confirm{
-        color: $warning-color;
+      &__confirm {
+        color: var(--ivue-warning-color);
       }
     }
 
@@ -221,9 +226,9 @@ $name: 'ivue-modal';
       margin-top: 10px;
       padding-left: 40px;
       font-size: 14px;
-      color: $text-color;
+      color: var(--ivue-text-color);
 
-      &__render{
+      &__render {
         padding: 0;
         margin: 0;
       }

@@ -36,7 +36,8 @@ const noStylesComponents = [
   'ivue-radio-group',
   'ivue-option',
   'ivue-option-group',
-  'ivue-image-preview'
+  'ivue-image-preview',
+  'ivue-relative-time',
 ];
 
 // 使用依赖组件

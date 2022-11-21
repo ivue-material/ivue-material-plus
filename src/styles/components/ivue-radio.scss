@@ -1,8 +1,11 @@
-@import "../base.scss";
-
 $name: 'ivue-radio';
+
 $transition-time: .2s;
 $ease-in-out: ease-in-out;
+
+:root {
+  --#{$name}-disabled-bg: #e6e6e6;
+}
 
 .#{$name} {
   display: inline-block;
@@ -15,7 +18,7 @@ $ease-in-out: ease-in-out;
 
   // 显示边框
   &-border {
-    border: 1px solid $border-color;
+    border: 1px solid var(--ivue-border-color);
     border-radius: 4px;
     height: 32px;
     line-height: 30px;
@@ -35,16 +38,16 @@ $ease-in-out: ease-in-out;
 
     // 显示边框
     &--checked.#{$name}-border {
-      border-color: $primary-color;
+      border-color: var(--ivue-primary-color);
     }
 
     // 禁用
     &--disabled {
-      cursor: not-allowed;
+      cursor: var(--ivue-cursor-disabled);
     }
 
     &--disabled.#{$name}-border {
-      border-color: $border-color;
+      border-color: var(--ivue-border-color);
     }
   }
 
@@ -56,8 +59,8 @@ $ease-in-out: ease-in-out;
     position: relative;
     top: 0;
     left: 0;
-    background-color: $white-color;
-    border: 1px solid $border-color;
+    background-color: var(--ivue-white-color);
+    border: 1px solid var(--ivue-border-color);
     border-radius: 50%;
     transition: all $transition-time $ease-in-out;
 
@@ -132,9 +135,9 @@ $ease-in-out: ease-in-out;
         color: $title-color;
         transition: all $transition-time $ease-in-out;
         cursor: pointer;
-        border: 1px solid $border-color;
+        border: 1px solid var(--ivue-border-color);
         border-left: 0;
-        background: $white-color;
+        background: var(--ivue-white-color);
         position: relative;
 
         >span {
@@ -143,13 +146,13 @@ $ease-in-out: ease-in-out;
 
         &:hover {
           position: relative;
-          color: $primary-color;
+          color: var(--ivue-primary-color);
         }
 
         // 第一个角度
         &:first-child {
           border-radius: 4px 0 0 4px;
-          border: 1px solid $border-color;
+          border: 1px solid var(--ivue-border-color);
         }
 
         // 最后一个角度
@@ -174,44 +177,44 @@ $ease-in-out: ease-in-out;
 
       // 显示为实色填底
       &--solid .#{$name}-wrapper--checked:not(.ivue-radio-wrapper-disabled) {
-        background: $primary-color;
-        color: $white-color;
+        background: var(--ivue-primary-color);
+        color: var(--ivue-white-color);
       }
 
       // 选中
       .#{$name}-wrapper--checked {
-        background: $white-color;
-        border-color: $primary-color;
-        color: $primary-color;
-        box-shadow: -1px 0 0 0 $primary-color;
+        background: var(--ivue-white-color);
+        border-color: var(--ivue-primary-color);
+        color: var(--ivue-primary-color);
+        box-shadow: -1px 0 0 0 var(--ivue-primary-color);
         z-index: 1;
 
         &:first-child {
-          border-color: $primary-color;
+          border-color: var(--ivue-primary-color);
           box-shadow: none;
         }
       }
 
       // 禁用
       .#{$name}-wrapper--disabled {
-        border-color: $border-color;
-        background-color: $background-color-select-hover;
-        color: $disabled-color;
-        cursor: not-allowed;
+        border-color: var(--ivue-border-color);
+        background-color: var(--ivue-background-color-select-hover);
+        color: var(--ivue-disabled-color);
+        cursor: var(--ivue-cursor-disabled);
 
         &:hover,
         &:first-child {
-          border-color: $border-color;
-          background-color: $background-color-select-hover;
-          color: $disabled-color;
+          border-color: var(--ivue-border-color);
+          background-color: var(--ivue-background-color-select-hover);
+          color: var(--ivue-disabled-color);
         }
       }
 
       // 禁用和激活存在
       .#{$name}-wrapper--disabled.#{$name}-wrapper--checked {
-        color: $white-color;
-        background-color: #e6e6e6;
-        border-color: $border-color;
+        color: var(--ivue-white-color);
+        background-color: var(--#{$name}-disabled-bg);
+        border-color: var(--ivue-border-color);
         box-shadow: none !important;
       }
 
@@ -247,19 +250,19 @@ $ease-in-out: ease-in-out;
 
   // 禁用
   &-disabled {
-    cursor: not-allowed;
+    cursor: var(--ivue-cursor-disabled);
   }
 
   &-disabled &-inner {
-    border-color: $border-color;
-    background-color: $background-color-select-hover;
+    border-color: var(--ivue-border-color);
+    background-color: var(--ivue-background-color-select-hover);
 
     &::after {
-      background-color: $disabled-color;
+      background-color: var(--ivue-disabled-color);
     }
   }
 
   &-disabled &-input {
-    cursor: not-allowed;
+    cursor: var(--ivue-cursor-disabled);
   }
 }

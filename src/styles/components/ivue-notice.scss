@@ -1,14 +1,14 @@
-@import "../custom.scss";
-
 $name: 'ivue-notice';
-$notice-width: 335px;
-$notice-padding: 16px;
-$notice-margin-bottom: 10px;
-$have-icon: 51px;
+
+:root {
+  --#{$name}-shadow-color: rgba(0, 0, 0, .2);
+  --#{$name}-close-hover-color: #444444;
+  --#{$name}-desc-color: #444444;
+}
 
 .#{$name} {
   position: fixed;
-  width: $notice-width;
+  width: 335px;
   z-index: 1000;
 
   .#{$name}-icon {
@@ -25,24 +25,24 @@ $have-icon: 51px;
     }
 
     &-info {
-      color: $primary-color;
+      color: var(--ivue-primary-color);
     }
 
     &-warning {
-      color: $warning-color;
+      color: var(--ivue-warning-color);
     }
 
     &-error {
-      color: $error-color;
+      color: var(--ivue-error-color);
     }
   }
 
   &-notice {
-    padding: $notice-padding;
+    padding: 16px;
     border-radius: 8px;
-    box-shadow: 0 1px 6px rgba(0, 0, 0, .2);
+    box-shadow: 0 1px 6px var(--#{$name}-shadow-color);
     overflow: hidden;
-    background-color: #fff;
+    background-color: var(--ivue-white-color);
     transition: opacity .3s,
       transform .3s,
       left .3s,
@@ -64,7 +64,7 @@ $have-icon: 51px;
       right: 10px;
       top: 15px;
       outline: none;
-      color: #999;
+      color: var(--ivue-legend-color);
       cursor: pointer;
 
       i {
@@ -78,7 +78,7 @@ $have-icon: 51px;
 
 
         &:hover {
-          color: #444;
+          color: var(--#{$name}-close-hover-color);
         }
       }
     }
@@ -100,15 +100,15 @@ $have-icon: 51px;
   }
 
   &-content-have-icon {
-    margin-left: $have-icon;
+    margin-left: 51px;
   }
 
   .#{$name}-have-desc.#{$name}-have-icon &-title {
-    margin-left: $have-icon;
+    margin-left: 51px;
   }
 
   .#{$name}-have-desc.#{$name}-have-icon &-desc {
-    margin-left: $have-icon;
+    margin-left: 51px;
   }
 
   &-have-desc .#{$name}-icon {
@@ -126,16 +126,16 @@ $have-icon: 51px;
     padding-right: 10px;
     text-overflow: ellipsis;
     white-space: nowrap;
-    font-size: $font-default-size;
+    font-size: var(--ivue-font-default-size);
     line-height: 19px;
-    color: $title-color;
+    color: var(--ivue-title-color);
     overflow: hidden;
   }
 
   // 描述
   &-desc {
-    font-size: $font-base-size;
-    color: #515a6e;
+    font-size: var(--ivue-font-base-siz);
+    color: var(--ivue-text-color);
     text-align: justify;
     line-height: 1.5;
   }

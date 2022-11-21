@@ -1,7 +1,11 @@
-@import '../base.scss';
 @import '../components/ivue-icon.scss';
 
 $name: 'ivue-select';
+
+:root {
+  --#{$name}-loading-color: #9AB0C6;
+  --#{$name}-input-height: 36px;
+}
 
 .#{$name} {
   position: relative;
@@ -9,7 +13,7 @@ $name: 'ivue-select';
   width: 100%;
   box-sizing: border-box;
   vertical-align: middle;
-  color: $text-color;
+  color: var(--ivue-text-color);
   font-size: 12px;
   line-height: normal;
 
@@ -20,7 +24,7 @@ $name: 'ivue-select';
     align-items: center;
     justify-content: center;
     text-align: center;
-    color: #9AB0C6;
+    color: var(--#{$name}-loading-color);
     height: 100px;
 
     &--load {
@@ -41,16 +45,16 @@ $name: 'ivue-select';
     .#{$name}-selection {
       opacity: 1;
       cursor: not-allowed;
-      color: $input-disabled-color;
-      background-color: $input-disabled-bg;
+      color: var(--ivue-input-disabled-color);
+      background-color: var(--ivue-input-disabled-bg);
 
       &:hover {
-        border-color: transparentize($input-disabled-color, 0.8);
+        border-color: transparentize(#cccccc, 0.8);
       }
     }
 
     .#{$name}-arrow {
-      color: $input-disabled-color;
+      color: var(--ivue-input-disabled-color);
     }
   }
 
@@ -58,18 +62,18 @@ $name: 'ivue-select';
   &-default {
     .#{$name}-selection {
       position: relative;
-      height: $input-height-base;
+      height: var(--#{$name}-input-height);
 
       /*输入提示*/
       .#{$name}-placeholder {
-        color: $input-placeholder-color;
+        color: var(--ivue-input-placeholder-color);
       }
 
       .#{$name}-placeholder {
         display: block;
-        height: $input-height-base - 2px;
-        line-height: $input-height-base - 2px;
-        font-size: $font-small-size;
+        height: var(--#{$name}-input-height) - 2px;
+        line-height: var(--#{$name}-input-height) - 2px;
+        font-size: var(--ivue-font-small-size);
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
@@ -89,10 +93,10 @@ $name: 'ivue-select';
     .#{$name}-placeholder {
       position: absolute;
       display: block;
-      height: $input-height-base - 2px;
-      line-height: $input-height-base - 2px;
-      color: $input-placeholder-color;
-      font-size: $font-small-size;
+      height: var(--#{$name}-input-height) - 2px;
+      line-height: var(--#{$name}-input-height) - 2px;
+      color: var(--ivue-input-placeholder-color);
+      font-size: var(--ivue-font-small-size);
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
@@ -106,9 +110,9 @@ $name: 'ivue-select';
     box-sizing: border-box;
     outline: none;
     user-select: none;
-    border-radius: $border-radius-small;
-    border: 1px solid $border-color;
-    background-color: #fff;
+    border-radius: var(--ivue-border-radius-small);
+    border: 1px solid var(--ivue-border-color);
+    background-color: var(--ivue-white-color);
     min-height: 36px;
     cursor: pointer;
     transition: all .2s ease-in-out;
@@ -125,13 +129,13 @@ $name: 'ivue-select';
     padding: 0 8px;
     height: 24px;
     line-height: 22px;
-    font-size: $font-small-size;
+    font-size: var(--ivue-font-small-size);
     vertical-align: middle;
     opacity: 1;
     overflow: hidden;
-    border: 1px solid $border-multiple-color;
+    border: 1px solid var(--ivue-border-multiple-color);
     border-radius: 3px;
-    background: $background-color-multiple;
+    background: var(--ivue-background-color-multiple);
     cursor: pointer;
 
     &-close {
@@ -140,7 +144,7 @@ $name: 'ivue-select';
       top: -1px;
       margin-left: 2px;
       opacity: .6;
-      font-size: $font-base-size;
+      font-size: var(--ivue-font-base-size);
       width: auto;
       min-width: auto;
       height: auto;
@@ -154,12 +158,12 @@ $name: 'ivue-select';
     display: inline-block;
     position: relative;
     padding: 0 24px 0 8px;
-    font-size: $font-small-size;
+    font-size: var(--ivue-font-small-size);
     outline: none;
     border: none;
     box-sizing: border-box;
-    height: $input-height-base;
-    line-height: $input-height-base;
+    height: var(--#{$name}-input-height);
+    line-height: var(--#{$name}-input-height);
     color: $text-color;
     background-color: transparent;
     cursor: pointer;
@@ -167,7 +171,7 @@ $name: 'ivue-select';
 
     &[disabled] {
       cursor: not-allowed;
-      color: $input-disabled-color;
+      color: var(--ivue-input-disabled-color);
     }
   }
 
@@ -176,8 +180,8 @@ $name: 'ivue-select';
     padding-left: 4px;
     display: inline-block;
     vertical-align: middle;
-    height: $input-height-base - 2px;
-    line-height: $input-height-base - 2px;
+    height: var(--#{$name}-input-height) - 2px;
+    line-height: var(--#{$name}-input-height) - 2px;
   }
 
   // 有图标设置样式
@@ -308,13 +312,13 @@ $name: 'ivue-select';
 
   &-multiple &-input-filter {
     padding: 0 0 0 4px;
-    height: $input-height-base - 12px;
-    line-height: $input-height-base - 12px;
+    height: var(--#{$name}-input-height) - 12px;
+    line-height: var(--#{$name}-input-height) - 12px;
   }
 
   &-multiple &-input-filter-placeholder {
-    height: $input-height-base - 2px;
-    line-height: $input-height-base - 12px;
+    height: var(--#{$name}-input-height) - 2px;
+    line-height: var(--#{$name}-input-height) - 12px;
   }
 
   // 输入框箭头方向
@@ -340,9 +344,9 @@ $name: 'ivue-select';
     display: block;
     padding-left: 8px;
     padding-right: 24px;
-    height: $input-height-base - 2px;
-    line-height: $input-height-base - 2px;
-    font-size: $font-small-size;
+    height: var(--#{$name}-input-height) - 2px;
+    line-height: var(--#{$name}-input-height) - 2px;
+    font-size: var(--ivue-font-small-size);
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -417,7 +421,7 @@ $name: 'ivue-select';
     padding: 7px 16px;
     clear: both;
     line-height: normal;
-    font-size: $font-small-size;
+    font-size: var(--ivue-font-small-size);
     list-style: none;
     cursor: pointer;
     word-break: break-all;
@@ -451,10 +455,10 @@ $name: 'ivue-select';
     // 选项菜单禁用样式
     &-disabled {
       cursor: not-allowed;
-      color: $input-disabled-color;
+      color: var(--ivue-input-disabled-color);
 
       &:hover {
-        color: $input-disabled-color;
+        color: var(--ivue-input-disabled-color);
       }
     }
 
@@ -473,7 +477,7 @@ $name: 'ivue-select';
 
     &-title {
       padding-left: 8px;
-      font-size: $font-small-size;
+      font-size: var(--ivue-font-small-size);
       color: $legend-color;
       height: 30px;
       line-height: 30px;

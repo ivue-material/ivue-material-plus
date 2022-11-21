@@ -1,5 +1,3 @@
-@import "../base.scss";
-
 $name:'ivue-picker';
 
 .#{$name} {
@@ -20,7 +18,7 @@ $name:'ivue-picker';
     border-top-left-radius: 2px;
     border-top-right-radius: 2px;
     padding: 16px;
-    color: $white-color;
+    color: var(--ivue-white-color);
   }
 
   &-body {
@@ -62,8 +60,8 @@ $name:'ivue-picker';
 }
 
 .primary {
-  background-color: $primary-color;
-  border-color: $primary-color;
+  background-color: var(--ivue-primary-color);
+  border-color: var(--ivue-primary-color);
 }
 
 .#{$name}-fade-enter-active,

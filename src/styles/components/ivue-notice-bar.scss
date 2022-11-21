@@ -1,5 +1,3 @@
-@import "../custom.scss";
-
 $name: 'ivue-notice-bar';
 
 .#{$name} {
@@ -9,8 +7,8 @@ $name: 'ivue-notice-bar';
   height: 40px;
   font-size: 14px;
   line-height: 24px;
-  background: $primary-color;
-  color: $white-color;
+  background: var(--ivue-primary-color);
+  color: var(--ivue-white-color);
 
   &-left,
   &-right {

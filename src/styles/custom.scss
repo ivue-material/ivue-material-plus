@@ -5,16 +5,22 @@
   --ivue-success-color: #27E2B2;
   --ivue-warning-color: #FFBD3C;
   --ivue-error-color: #FF617F;
+  --ivue-black-color: #000000;
 
   --ivue-default-color: #DEE2E7;
   --ivue-title-color: #383D47;
   --ivue-text-color: #4A505E;
   --ivue-border-multiple-color: #e8eaec;
+
+  // background
   --ivue-background-color-select-hover: #f3f3f3;
   --ivue-background-color-multiple: #f7f7f7;
 
   // input
   --ivue-input-disabled-color: #c5c8ce;
+  --ivue-input-disabled-bg: #ededed;
+  --ivue-input-placeholder-color: #c5c8ce;
+
   --ivue-cursor-disabled: not-allowed;
   --ivue-border-color: #dcdee2;
   --ivue-legend-color: #999999;
