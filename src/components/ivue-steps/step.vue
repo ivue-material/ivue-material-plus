@@ -17,7 +17,7 @@
                 <i></i>
             </div>
 
-            <div :class="[`${prefixCls}-header-content`]">
+            <div :class="[`${prefixCls}-header-content`]" @click="handleClick">
                 <!-- 步骤数 还没完成或者没有错误显示-->
                 <span
                     v-if="!icon && !$slots.icon && data.currentStatus !== 'finish' && data.currentStatus !== 'error'"
@@ -53,9 +53,14 @@ import {
     inject,
     getCurrentInstance,
     onBeforeUnmount,
+    ComponentInternalInstance,
 } from 'vue';
 
 import { oneOf } from '../../utils/assist';
+
+// types
+import { StepsContextKey } from './steps';
+import { Props, Data } from './step';
 
 import IvueIcon from '../ivue-icon/index.vue';
 
@@ -63,6 +68,7 @@ const prefixCls = 'ivue-step';
 
 export default defineComponent({
     name: prefixCls,
+    emits: ['on-step'],
     props: {
         /**
          * 标题
@@ -87,6 +93,7 @@ export default defineComponent({
          * @type {String}
          */
         status: {
+            type: String,
             validator(value: string) {
                 return oneOf(value, ['wait', 'process', 'finish', 'error']);
             },
@@ -100,26 +107,18 @@ export default defineComponent({
             type: String,
         },
     },
-    setup(props: any, { slots }) {
+    setup(props: Props, { slots, emit }) {
         // inject
-        const steps: any = inject('ivue-steps');
+        const steps = inject(StepsContextKey);
 
         // options
         const options = steps.data.options;
 
         // vm
-        const { uid }: any = getCurrentInstance();
+        const { uid } = getCurrentInstance() as ComponentInternalInstance;
 
         // data
-        const data = reactive<{
-            stepNumber: string;
-            currentStatus: string;
-            nextError: boolean;
-            index: number;
-            textDirection: string;
-            alignCenter: boolean;
-            direction: string;
-        }>({
+        const data = reactive<Data>({
             /**
              * 步骤数
              *
@@ -153,7 +152,8 @@ export default defineComponent({
             /**
              * 步骤条方向
              *
-             * @default {horizontal}
+             * @type {String}
+             * @default horizontal
              */
             direction: steps.props.direction,
             /**
@@ -174,10 +174,12 @@ export default defineComponent({
                 {
                     [`${prefixCls}-custom`]: props.icon || slots.icon,
                     [`${prefixCls}-next-error`]: data.nextError,
-                    [`${prefixCls}-text-${data.textDirection}`]: !isVertical.value,
+                    [`${prefixCls}-text-${data.textDirection}`]:
+                        !isVertical.value,
                     [`${prefixCls}-${data.textDirection}-center`]:
                         data.alignCenter && !isVertical.value,
-                    [`${prefixCls}-last`]: isLast.value && !steps.props.space && !isCenter.value,
+                    [`${prefixCls}-last`]:
+                        isLast.value && !steps.props.space && !isCenter.value,
                 },
             ];
         });
@@ -205,15 +207,18 @@ export default defineComponent({
         const wrapStyles = computed(() => {
             const space = steps.props.space;
 
-            const style: Record<string, unknown> = {
+            const style: {
+                flexBasis: string;
+                maxWidth?: string;
+            } = {
                 flexBasis:
                     typeof space === 'number'
                         ? `${space}px`
                         : space
-                            ? space
-                            : `${
-                                100 / (options.length - (isCenter.value ? 0 : 1))
-                            }%`,
+                        ? space
+                        : `${
+                              100 / (options.length - (isCenter.value ? 0 : 1))
+                          }%`,
             };
 
             // 竖向
@@ -223,11 +228,18 @@ export default defineComponent({
 
             // 是否是最后一个元素
             if (isLast.value) {
-                style.maxWidth = 100 / stepsCount.value + '%';
+                style.maxWidth = `${100 / stepsCount.value}%`;
             }
 
             return style;
         });
+
+        // methods
+
+        // 点击
+        const handleClick = () => {
+            emit('on-step');
+        };
 
         // onBeforeUnmount
         onBeforeUnmount(() => {
@@ -235,7 +247,11 @@ export default defineComponent({
             steps.onOptionDestroy(data.index);
         });
 
-        const stepItemState = reactive({
+        // 步骤状态
+        const stepItemState = reactive<{
+            uid: number;
+            data: Data;
+        }>({
             uid: uid,
             data: data,
         });
@@ -251,6 +267,9 @@ export default defineComponent({
             // computed
             wrapClasses,
             wrapStyles,
+
+            // methods
+            handleClick,
         };
     },
     components: {

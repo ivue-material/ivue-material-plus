@@ -1,6 +1,5 @@
 import type { InjectionKey } from 'vue';
 
-
 export type CheckboxContext = {
   default?: null | string
   name?: string

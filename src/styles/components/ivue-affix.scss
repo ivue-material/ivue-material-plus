@@ -1,6 +1,4 @@
-@import "../custom.scss";
-
 .ivue-affix{
     position: fixed;
-    z-index: $zindex-affix;
+    z-index: 10;
 }

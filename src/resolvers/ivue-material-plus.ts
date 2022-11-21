@@ -20,6 +20,8 @@ const pakPath = 'ivue-material-plus/dist/unplugin-vue-components';
 
 // 颜色路径
 const basePath = 'ivue-material-plus/dist/styles/base.css';
+// 动画路径
+const animationPath = 'ivue-material-plus/dist/styles/animation.css';
 
 // 没有样式的组件
 const noStylesComponents = [
@@ -79,6 +81,7 @@ function getSideEffects(componentsName: string, options) {
     `${pakPath}/styles/reset.css`,
     `${pakPath}/styles/ivue-icon.css`,
     `${basePath}`,
+    `${animationPath}`,
     `${pakPath}/styles/${componentsName}.css`
   ];
 }

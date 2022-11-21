@@ -1,5 +1,3 @@
-@import "../custom.scss";
-
 $name: 'ivue-loading-bar';
 
 .#{$name} {
@@ -14,11 +12,11 @@ $name: 'ivue-loading-bar';
     transition: width .2s linear;
 
     &-color-primary {
-      background-color: $primary-color;
+      background-color: var(--ivue-primary-colo);
     }
 
     &-color-error {
-      background-color: $error-color;
+      background-color: var(--ivue-error-color);
     }
   }
 }

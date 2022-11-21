@@ -1,6 +1,8 @@
-@import "../custom.scss";
-
 $name: 'ivue-loading';
+
+:root {
+  --#{$name}-mask-color: rgba(255, 255, 255, 0.9);
+}
 
 .#{$name} {
 
@@ -8,7 +10,7 @@ $name: 'ivue-loading';
   &-mask {
     position: absolute;
     z-index: 2000;
-    background: hsla(0, 0%, 100%, .9);
+    background: var(--#{$name}-mask-color);
     margin: 0;
     top: 0;
     right: 0;
@@ -39,7 +41,7 @@ $name: 'ivue-loading';
     align-items: center;
     margin: auto;
     width: 100%;
-    color: $primary-color;
+    color: var(--ivue-primary-color);
 
     .circular {
       height: 42px;

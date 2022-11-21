@@ -1,6 +1,13 @@
-@import "../base.scss";
-
 $name: 'ivue-menu';
+
+:root {
+  --#{$name}-dark: #515a6e;
+  --#{$name}-vertical-item-color: rgba(255, 255, 255, .7);
+  --#{$name}-vertical-active-bg: #f0faff;
+  --#{$name}-group-title-color: rgba(255, 255, 255, .36);
+  --#{$name}-submenu-bg: #363e4f;
+  --#{$name}-dropdown-shadow-color: rgba(0, 0, 0, 0.2);
+}
 
 .#{$name} {
   position: relative;
@@ -9,23 +16,23 @@ $name: 'ivue-menu';
   padding: 0;
   outline: 0;
   list-style: none;
-  color: $text-color;
+  color: var(--ivue-text-color);
   font-size: 14px;
   z-index: 10;
 
   // 白色
   &-light {
-    background: $white-color;
+    background: var(--ivue-white-color);
   }
 
   // 黑色
   &-dark {
-    background: $dark;
+    background: var(--#{$name}-dark);
   }
 
   // primary
   &-primary {
-    background: $primary-color;
+    background: var(--ivue-primary-color);
   }
 
   &-dark.#{$name}-horizontal,
@@ -34,44 +41,44 @@ $name: 'ivue-menu';
 
     // 菜单
     .#{$name}-item {
-      color: rgba(255, 255, 255, .7);
+      color: var(--#{$name}-vertical-item-color);
       border: none;
 
       &:hover {
-        color: $white-color;
+        color: var(--ivue-white-color);
         border: none;
       }
     }
 
     // 子菜单
     .#{$name}-submenu {
-      color: rgba(255, 255, 255, .7);
+      color: var(--#{$name}-vertical-item-color);
       border: none;
 
       &:hover {
-        color: $white-color;
+        color: var(--ivue-white-color);
         border: none;
       }
 
       &--active {
-        color: $white-color;
+        color: var(--ivue-white-color);
       }
 
       .#{$name}-item {
-        color: $text-color;
+        color: var(--ivue-title-color);
 
         &--selected {
-          color: $primary-color;
+          color: var(--ivue-primary-color);
         }
 
         &:hover {
-          background: $background-color-select-hover;
+          background: var(--ivue-background-color-select-hover);
         }
       }
     }
 
     .#{$name}-item--active {
-      color: $white-color;
+      color: var(--ivue-white-color);
     }
   }
 
@@ -79,7 +86,7 @@ $name: 'ivue-menu';
 
     .#{$name}-item,
     .#{$name}-submenu {
-      color: $white-color;
+      color: var(--ivue-white-color);
     }
 
   }
@@ -96,15 +103,15 @@ $name: 'ivue-menu';
       padding: 0 20px;
       height: inherit;
       line-height: inherit;
-      color: $text-color;
+      color: var(--ivue-title-color);
       cursor: pointer;
       z-index: 3;
       transition: all .2s ease-in-out;
       border-bottom: 2px solid transparent;
 
       &:hover {
-        color: $primary-color;
-        border-bottom: 2px solid $primary-color;
+        color: var(--ivue-primary-color);
+        border-bottom: 2px solid var(--ivue-primary-color);
       }
     }
 
@@ -126,7 +133,7 @@ $name: 'ivue-menu';
         margin: 0;
         line-height: normal;
         clear: both;
-        color: $text-color;
+        color: var(--ivue-title-color);
         white-space: nowrap;
         list-style: none;
         cursor: pointer;
@@ -134,11 +141,11 @@ $name: 'ivue-menu';
         width: 100%;
 
         &--active {
-          color: $primary-color;
+          color: var(--ivue-primary-color);
         }
 
         &:hover {
-          background: $background-color-select-hover;
+          background: var(--ivue-background-color-select-hover);
         }
       }
 
@@ -156,8 +163,8 @@ $name: 'ivue-menu';
 
       // 激活
       &--active {
-        color: $primary-color;
-        border-bottom: 2px solid $primary-color;
+        color: var(--ivue-primary-color);
+        border-bottom: 2px solid var(--ivue-primary-color);
       }
 
       // 打开下拉框
@@ -167,8 +174,8 @@ $name: 'ivue-menu';
     }
 
     .#{$name}-item--active {
-      color: $primary-color;
-      border-bottom: 2px solid $primary-color;
+      color: var(--ivue-primary-color);
+      border-bottom: 2px solid var(--ivue-primary-color);
     }
   }
 
@@ -181,7 +188,7 @@ $name: 'ivue-menu';
       display: block;
       width: 100%;
       height: 1px;
-      background: $border-color;
+      background: var(--ivue-border-color);
     }
   }
 
@@ -204,17 +211,17 @@ $name: 'ivue-menu';
         z-index: 10;
         width: 2px;
         opacity: 0;
-        background: $primary-color;
+        background: var(--ivue-primary-color);
         transition: all .2s ease-in-out;
       }
 
       &:hover {
-        color: $primary-color;
+        color: var(--ivue-primary-color);
       }
 
       &--active:not(.ivue-menu-submenu) {
-        color: $primary-color;
-        background: #f0faff;
+        color: var(--ivue-primary-color);
+        background: var(--#{$name}-vertical-active-bg);
         z-index: 2;
 
         &::after {
@@ -222,7 +229,7 @@ $name: 'ivue-menu';
         }
       }
 
-      &--group__title{
+      &--group__title {
         padding-left: 24px;
       }
     }
@@ -236,7 +243,7 @@ $name: 'ivue-menu';
         transition: all .2s ease-in-out;
 
         &:hover {
-          color: $primary-color;
+          color: var(--ivue-primary-color);
         }
       }
 
@@ -266,7 +273,7 @@ $name: 'ivue-menu';
       display: block;
       width: 1px;
       height: 100%;
-      background: $border-color;
+      background: var(--ivue-border-color);
     }
   }
 
@@ -277,15 +284,14 @@ $name: 'ivue-menu';
       }
     }
 
-
     .#{$name}-item--active {
-      color: $white-color !important;
-      background: $primary-color !important;
+      color: var(--ivue-white-color) !important;
+      background: var(--ivue-primary-color) !important;
     }
 
     // group 标题
     .#{$name}-item--group__title {
-      color: rgba(255, 255, 255, .36);
+      color: var(--#{$name}-group-title-color);
     }
 
     // 子菜单
@@ -293,24 +299,24 @@ $name: 'ivue-menu';
 
       // title
       &--title {
-        background: $dark;
+        background: var(--#{$name}-dark);
 
         &:hover {
-          color: $white-color;
+          color: var(--ivue-white-color);
         }
       }
 
       // 展开
       &--opened {
-        background: #363e4f;
+        background: var(--#{$name}-submenu-bg);
       }
 
       .#{$name}-item {
-        color: rgba(255, 255, 255, .7);
+        color: var(--#{$name}-vertical-item-color);
 
         &:hover {
-          color: $white-color;
-          background: #363e4f;
+          color: var(--ivue-white-color);
+          background: var(--#{$name}-submenu-bg);
         }
       }
     }
@@ -336,7 +342,7 @@ $name: 'ivue-menu';
         line-height: 30px;
         padding-left: 8px;
         font-size: 12px;
-        color: $legend-color;
+        color: var(--ivue-legend-color);
       }
     }
   }
@@ -349,10 +355,10 @@ $name: 'ivue-menu';
     max-height: 200px;
     overflow: auto;
     padding: 5px 0;
-    background-color: $white-color;
+    background-color: var(--ivue-white-color);
     box-sizing: border-box;
     border-radius: 4px;
-    box-shadow: 0 1px 6px rgb(0 0 0 / 20%);
+    box-shadow: 0 1px 6px var(--#{$name}-dropdown-shadow-color);
     z-index: 900;
 
     &--list {

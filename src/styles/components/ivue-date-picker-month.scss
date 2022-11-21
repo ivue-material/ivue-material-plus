@@ -1,6 +1,8 @@
-@import "../animation/variables";
-
 $name: 'ivue-date-picker-month';
+
+:root {
+  --#{$name}-button-color: rgba(0, 0, 0, .87);
+}
 
 .#{$name} {
   position: relative;
@@ -16,7 +18,6 @@ $name: 'ivue-date-picker-month';
   &--table {
     td {
       position: relative;
-      /* width: 33.333333%;*/
       height: 56px;
       vertical-align: middle;
       text-align: center;
@@ -26,7 +27,7 @@ $name: 'ivue-date-picker-month';
         max-width: 160px;
         min-width: 40px;
         width: 100%;
-        color: rgba(0, 0, 0, 0.87);
+        color: var(--#{$name}-button-color);
       }
     }
   }

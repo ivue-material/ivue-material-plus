@@ -1,24 +1,27 @@
-@import "../base.scss";
-
 $name: 'ivue-input-number';
+
+:root {
+  --#{$name}-shadow-color: rgba(91, 142, 255, 0.2);
+  --#{$name}-outside-color: #f8f8f9;
+}
 
 .#{$name} {
   position: relative;
   display: inline-block;
   font-size: 14px;
   color: $text-color;
-  background-color: $white-color;
+  background-color: var(--ivue-white-color);
   transition: border .2s ease-in-out, background .2s ease-in-out, box-shadow .2s ease-in-out;
   width: 80px;
   height: 32px;
   line-height: 32px;
   vertical-align: middle;
-  border: 1px solid $border-color;
+  border: 1px solid var(--ivue-border-color);
   border-radius: 4px;
   overflow: hidden;
 
   &:hover {
-    border-color: $primary-color;
+    border-color: var(--ivue-primary-color);
 
     .#{$name}-internal--wrapper {
       opacity: 1;
@@ -27,14 +30,14 @@ $name: 'ivue-input-number';
 
   &:focus {
     outline: 0;
-    border-color: $primary-color;
-    box-shadow: 0 0 0 2px transparentize($primary-color, 0.8);
+    border-color: var(--ivue-primary-color);
+    box-shadow: 0 0 0 2px var(--#{$name}-shadow-color);
   }
 
   // 获取焦点
   &-focused {
-    border-color: $primary-color;
-    box-shadow: 0 0 0 2px transparentize($primary-color, 0.8);
+    border-color: var(--ivue-primary-color);
+    box-shadow: 0 0 0 2px var(--#{$name}-shadow-color);
   }
 
   // 输入框
@@ -46,7 +49,7 @@ $name: 'ivue-input-number';
     outline: 0;
     border: 0;
     border-radius: 4px;
-    color: $text-color;
+    color: var();
     transition: all .2s linear;
 
     &--wrapper {
@@ -67,10 +70,10 @@ $name: 'ivue-input-number';
     padding: 0;
     border-radius: 0;
     cursor: pointer;
-    color: $legend-color;
+    color: var(--ivue-legend-color);
 
     &:hover {
-      color: $primary-color;
+      color: var(--ivue-primary-color);
     }
 
     .ivue-icon {
@@ -90,8 +93,8 @@ $name: 'ivue-input-number';
       height: 100%;
       display: flex;
       flex-direction: column;
-      border-left: 1px solid $border-color;
-      background: $white-color;
+      border-left: 1px solid var(--ivue-border-color);
+      background: var(--ivue-white-color);
       opacity: 0;
       transition: opacity .2s ease-in-out;
 
@@ -104,7 +107,7 @@ $name: 'ivue-input-number';
         right: 0;
         height: 1px;
         margin: auto;
-        background: $border-color;
+        background: var(--ivue-border-color);
       }
     }
   }
@@ -112,7 +115,7 @@ $name: 'ivue-input-number';
   // 禁用
   .#{$name}-internal--disabled {
     cursor: not-allowed;
-    color: $disabled-color !important;
+    color: var(--ivue-disabled-color) !important;
     pointer-events: auto;
   }
 
@@ -130,7 +133,7 @@ $name: 'ivue-input-number';
       opacity: .8;
       background-color: $background-color-select-hover;
       cursor: not-allowed;
-      color: $disabled-color;
+      color: var(--ivue-disabled-color);
     }
   }
 
@@ -147,17 +150,17 @@ $name: 'ivue-input-number';
     bottom: 0;
     width: 32px;
     height: auto;
-    background-color: #f8f8f9;
-    color: #515a6e;
+    background-color: var(--#{$name}-outside-color);
+    color: var(--ivue-text-color);
     cursor: pointer;
     min-width: auto;
     padding: 0;
     border-radius: 0;
     cursor: pointer;
-    color: $legend-color;
+    color: var(--ivue-legend-color);
 
     &:hover {
-      color: $primary-color;
+      color: var(--ivue-primary-color);
     }
 
     .ivue-icon {
@@ -170,12 +173,12 @@ $name: 'ivue-input-number';
 
     &--up {
       right: 0;
-      border-left: 1px solid $border-color;
+      border-left: 1px solid var(--ivue-border-color);
     }
 
     &--down {
       left: 0;
-      border-right: 1px solid $border-color;
+      border-right: 1px solid var(--ivue-border-color);
     }
   }
 }

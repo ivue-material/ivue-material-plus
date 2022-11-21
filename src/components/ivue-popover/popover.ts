@@ -1,6 +1,5 @@
 import type { InjectionKey } from 'vue';
 
-
 export type PopoverContext = {
   data?: {
     disableCloseUnderTransfer: boolean

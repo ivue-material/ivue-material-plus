@@ -1,7 +1,8 @@
-@import "../custom.scss";
-@import "../animation/index.scss";
-
 $name: 'ivue-carousel-loop';
+
+:root {
+  --#{$name}-arrow-bg: rgba(31, 45, 61, .11);
+}
 
 .#{$name} {
   position: relative;
@@ -11,7 +12,6 @@ $name: 'ivue-carousel-loop';
   &:hover .#{$name}-arrow--hover {
     opacity: 1;
   }
-
 
   &-scroll {
     width: 100%;
@@ -33,7 +33,7 @@ $name: 'ivue-carousel-loop';
   &-list {
     position: relative;
     display: flex;
-    will-change: transform
+    will-change: transform;
   }
 
 
@@ -56,8 +56,8 @@ $name: 'ivue-carousel-loop';
     cursor: pointer;
     transform: translateY(-50%);
     transition: all .2s;
-    color: $white-color;
-    background-color: rgba(31, 45, 61, .11);
+    color: var(--ivue-white-color);
+    background-color: var(--#{$name}-arrow-bg);
     z-index: 15;
 
     i {

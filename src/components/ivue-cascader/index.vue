@@ -425,7 +425,7 @@ export default defineComponent({
 
         // 显示渲染
         const displayRender = computed(() => {
-            let label = [];
+            const label = [];
             for (let i = 0; i < data.selected.length; i++) {
                 label.push(data.selected[i].label);
             }
@@ -597,7 +597,7 @@ export default defineComponent({
 
                 data.selected = data.tmpSelected;
 
-                let newVal = [];
+                const newVal = [];
                 data.selected.forEach((item) => {
                     newVal.push(item.value);
                 });

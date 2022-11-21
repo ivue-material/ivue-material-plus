@@ -1,7 +1,9 @@
-@import "../custom.scss";
-@import "../animation/index.scss";
-
 $name: 'ivue-image';
+
+:root {
+  --#{$name}-mark-color: rgba(55, 55, 55, .6);
+  --#{$name}-preview-color: rgba(55, 55, 55, 0.4);
+}
 
 .#{$name} {
   position: relative;
@@ -38,11 +40,11 @@ $name: 'ivue-image';
     justify-content: center;
     font-size: 14px;
     z-index: 1;
-    color: $primary-color;
+    color: var(--ivue-primary-color);
   }
 
   &-error {
-    color: $error-color;
+    color: var(--ivue-error-color);
   }
 
   // 悬浮层
@@ -52,7 +54,7 @@ $name: 'ivue-image';
     top: 0;
     right: 0;
     bottom: 0;
-    background-color: rgba(0, 0, 0, .3);
+    background-color: var(--#{$name}-mark-colo);
     z-index: 1;
     color: $white-color;
     cursor: pointer;
@@ -81,7 +83,7 @@ $name: 'ivue-image';
       bottom: 0;
       left: 0;
       right: 0;
-      background-color: rgba(55, 55, 55, .6);
+      background-color: var(--#{$name}-mark-color);
       height: 100%;
     }
 
@@ -108,7 +110,7 @@ $name: 'ivue-image';
 
     // 加载错误
     &-error {
-      color: $error-color;
+      color: var(--ivue-error-color);
       font-size: 16px;
     }
 
@@ -152,7 +154,7 @@ $name: 'ivue-image';
       z-index: 1;
       font-size: 26px;
       cursor: pointer;
-      background: rgba(55, 55, 55, 0.4);
+      background: var(--#{$name}-preview-color);
     }
 
     .#{$name}-preview-close {
@@ -188,7 +190,7 @@ $name: 'ivue-image';
       z-index: 1;
       border-radius: 4px;
       overflow: hidden;
-      background: rgba(55, 55, 55, 0.4);
+      background: var(--#{$name}-preview-color);
       transform: translate(-50%);
       display: flex;
       flex-flow: row wrap;

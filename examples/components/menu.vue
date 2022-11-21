@@ -1,7 +1,7 @@
 <template>
     <div>
         <h1>顶部导航</h1>
-        <ivue-menu mode="horizontal" activeName="3-1">
+        <ivue-menu mode="horizontal" activeName="3-1" theme="dark">
             <ivue-menu-item name="1">内容管理1</ivue-menu-item>
             <ivue-menu-item name="2">内容管理2</ivue-menu-item>
 

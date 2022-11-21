@@ -1,6 +1,11 @@
-@import "../base.scss";
-
 $name: 'ivue-input';
+
+:root {
+  --#{$name}-shadow-color: rgba(91, 142, 255, 0.2);
+  --#{$name}-disabled-bg: #F8F9FD;
+  --#{$name}-word-count-color: #9AB0C6;
+}
+
 
 .#{$name}-wrapper {
   display: inline-block;
@@ -15,9 +20,9 @@ $name: 'ivue-input';
     font-size: inherit;
     font-weight: 400;
     line-height: 1;
-    color: #515a6e;
+    color: var(--ivue-text-color);
     text-align: center;
-    border: 1px solid $border-color;
+    border: 1px solid var(--ivue-border-color);
     border-radius: 4px;
     display: table-cell;
     width: 1px;
@@ -51,8 +56,8 @@ $name: 'ivue-input';
     position: absolute;
     right: 0;
     line-height: 1;
-    font-size: $font-default-size;
-    color: $arrow-color;
+    font-size: var(--ivue-font-default-size);
+    color: var(--ivue-arrow-color);
     height: 100%;
     width: 32px;
     transition: all .2s ease-in-out;
@@ -66,7 +71,7 @@ $name: 'ivue-input';
       height: 100%;
       display: flex;
       width: 100%;
-      font-size: $font-default-size;
+      font-size: var(--ivue-font-default-size);
       transition: all .2s ease-in-out;
 
       &--wrapper {
@@ -82,7 +87,7 @@ $name: 'ivue-input';
   }
 
   .is-suffix {
-    background-color: $white-color;
+    background-color: var(--ivue-white-color);
     z-index: 2;
   }
 
@@ -97,10 +102,10 @@ $name: 'ivue-input';
     z-index: 1;
 
     i {
-      font-size: $font-default-size;
+      font-size: var(--ivue-font-default-size);
       line-height: 32px;
       height: 100%;
-      color: $arrow-color;
+      color: var(--ivue-arrow-color);
     }
   }
 
@@ -108,7 +113,6 @@ $name: 'ivue-input';
     right: 0;
     left: auto;
   }
-
 
   // 小图标
   &-small {
@@ -118,7 +122,7 @@ $name: 'ivue-input';
     .#{$name}-prefix i,
     .#{$name}-suffix i {
       width: 24px;
-      font-size: $font-base-size;
+      font-size: var(--ivue-font-base-size);
       height: 100%;
       line-height: 24px;
     }
@@ -133,14 +137,11 @@ $name: 'ivue-input';
     .#{$name}-icon i,
     .#{$name}-prefix i,
     .#{$name}-suffix i {
-      font-size: $font-large-size;
+      font-size: var(--ivue-font-large-size);
       height: 100%;
       line-height: 40px;
     }
   }
-
-  &-default {}
-
 }
 
 // 输入框
@@ -148,11 +149,10 @@ $name: 'ivue-input';
   display: inline-block;
   position: relative;
   padding: 4px 7px;
-  font-size: $font-base-size;
-  border-radius: $border-radius-small;
-  // border: 1px solid $border-color;
+  font-size: var(--ivue-font-base-size);
+  border-radius: var(--ivue-border-radius-small);
   border: none;
-  color: $text-color;
+  color: var(--ivue-title-color);
   cursor: text;
   width: 100%;
   line-height: 1.5;
@@ -166,12 +166,12 @@ $name: 'ivue-input';
     width: 100%;
     padding: 0 !important;
     border-radius: $border-radius-small + 1;
-    border: 1px solid $border-color;
+    border: 1px solid var(--ivue-border-color);
     transition: border $ivue-transition-default, background $ivue-transition-default, box-shadow $ivue-transition-default;
     overflow: hidden;
 
     &:hover {
-      border-color: $primary-color;
+      border-color: var(--ivue-primary-color);
 
       .#{$name}-icon-clear {
         opacity: 1;
@@ -190,7 +190,7 @@ $name: 'ivue-input';
 
     &-disabled {
       &:hover {
-        border-color: $border-color
+        border-color: var(--ivue-border-color);
       }
     }
 
@@ -201,7 +201,7 @@ $name: 'ivue-input';
     padding: 2px 0;
 
     i {
-      background: $white-color;
+      background: var(--ivue-white-color);
     }
   }
 
@@ -209,33 +209,33 @@ $name: 'ivue-input';
     padding: 1px 7px;
     height: 24px;
     border-radius: 3px;
-    font-size: $font-base-size;
+    font-size: var(--ivue-font-base-size);
   }
 
   &-large {
-    font-size: $font-large-size;
+    font-size: var(--ivue-font-large-size);
     padding: 6px 7px;
     height: 40px;
   }
 
   &:focus {
     outline: 0;
-    box-shadow: 0 0 0 2px transparentize($primary-color, 0.8);
+    box-shadow: 0 0 0 2px var(--#{$name}-shadow-color);
   }
 
   &:focus,
   &:hover {
-    border-color: $primary-color;
+    border-color: var(--ivue-primary-color);
   }
 
   &[disabled] {
-    background-color: #F8F9FD;
+    background-color: var(--#{$name}-disabled-bg);
     opacity: 1;
-    cursor: $cursor-disabled !important;
-    color: $input-disabled-color;
+    cursor: var(--ivue-cursor-disabled) !important;
+    color: var(--ivue-input-disabled-color);
 
     &:hover {
-      border-color: $border-color;
+      border-color: var(--ivue-border-color);
     }
   }
 
@@ -245,7 +245,7 @@ $name: 'ivue-input';
 
 .#{$name}-textarea {
   max-width: 100%;
-  border: 1px solid $border-color;
+  border: 1px solid var(--ivue-border-color);
   height: auto;
   min-height: 32px;
   vertical-align: bottom;
@@ -267,13 +267,13 @@ $name: 'ivue-input';
   font-size: 14px;
 
   &-small {
-    font-size: $font-base-size;
+    font-size: var(--ivue-font-base-size);
 
     .#{$name}-search {
       padding: 0 12px !important;
 
       i {
-        font-size: $font-base-size;
+        font-size: var(--ivue-font-base-size);
       }
     }
 
@@ -286,26 +286,23 @@ $name: 'ivue-input';
   }
 
   &-large {
-    font-size: $font-large-size;
+    font-size: var(--ivue-font-large-size);
 
     .#{$name}-search {
       padding: 0 20px !important;
 
       i {
-        font-size: $font-large-size;
+        font-size: var(--ivue-font-large-size);
       }
     }
 
     .#{$name}-group-prepend,
     .#{$name}-group-append {
-      font-size: $font-large-size;
+      font-size: var(--ivue-font-large-size);
       padding: 6px 7px;
       height: 40px;
     }
   }
-
-  &-default {}
-
 }
 
 // 后置内容
@@ -329,11 +326,11 @@ $name: 'ivue-input';
   top: 2px;
   bottom: 2px;
   padding-left: 7px;
-  background: $white-color;
+  background: var(--ivue-white-color);
   z-index: 1;
   display: inline-flex;
   align-items: center;
-  color: #9AB0C6;
+  color: var(--#{$name}-word-count-color);
   font-size: 12px;
 }
 
@@ -342,28 +339,28 @@ $name: 'ivue-input';
 .#{$name}-search {
   cursor: pointer;
   padding: 0 16px !important;
-  background: #2d8cf0;
+  background: var(--ivue-primary-color);
   color: $white-color !important;
-  border-color: #2d8cf0 !important;
+  border-color: var(--ivue-primary-color) !important;
   transition: all .2s ease-in-out;
   position: relative;
   z-index: 2;
   border-radius: 3px !important;
 
   i {
-    font-size: $font-default-size;
+    font-size: var(--ivue-font-default-size);
     min-width: auto;
     width: auto;
     display: inline;
   }
 
   &:hover {
-    background: #57a3f3 !important;
-    border-color: #57a3f3 !important;
+    background: var(--ivue-primary-color) !important;
+    border-color: var(--ivue-primary-color) !important;
   }
 
   .#{$name}-wrapper:hover {
-    border-color: $primary-color;
+    border-color: var(--ivue-primary-color);
   }
 }
 

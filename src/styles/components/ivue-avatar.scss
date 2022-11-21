@@ -3,8 +3,8 @@ $name: 'ivue-avatar';
 .#{$name} {
   display: inline-flex;
   text-align: center;
-  background: #ccc;
-  color: #fff;
+  background: var(--ivue-disabled-color);
+  color: var(--ivue-white-color);
   white-space: nowrap;
   position: relative;
   overflow: hidden;
@@ -21,11 +21,7 @@ $name: 'ivue-avatar';
     height: 100%;
   }
 
-  /* slot */
-  &-text {
-  }
-
-  /* 圆形 */
+  /*  */
   &-circle {
     border-radius: 50%;
   }

@@ -1,6 +1,9 @@
-@import "../base.scss";
-
 $name: 'ivue-breadcrumb';
+
+:root {
+  --#{$name}-divider-color: rgba(0, 0, 0, 0.38);
+  --#{$name}-last-color: rgba(0, 0, 0, .38);
+}
 
 .#{$name} {
   align-items: center;
@@ -23,7 +26,7 @@ $name: 'ivue-breadcrumb';
   .is-link {
     font-weight: 700;
     transition: color .2s cubic-bezier(.645, .045, .355, 1);
-    color: $title-color;
+    color: var(--ivue-title-color);
     cursor: pointer;
   }
 
@@ -31,12 +34,11 @@ $name: 'ivue-breadcrumb';
     display: inline-flex;
   }
 
-
   &--divider {
     padding: 0 12px;
     display: flex;
     align-items: center;
-    color: $divider-color;
+    color: var(--ivue-breadcrumb-divider-color);
     font-weight: bold;
 
     .ivue-icon {
@@ -51,11 +53,11 @@ $name: 'ivue-breadcrumb';
       justify-content: center;
       display: inline-flex;
       text-decoration: none;
-      color: $text-color;
+      color: var(--ivue-text-color);
       transition: color $ivue-transition-default;
 
       &:hover {
-        color: $primary-color;
+        color: var(--ivue-primary-color);
       }
 
       .ivue-icon {
@@ -67,7 +69,7 @@ $name: 'ivue-breadcrumb';
 
     &:last-child {
       .#{$name}-item__inner {
-        color: rgba(0, 0, 0, .38);
+        color: var(--ivue-breadcrumb-last-color);
       }
 
       .#{$name}--divider {

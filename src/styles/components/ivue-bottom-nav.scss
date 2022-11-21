@@ -1,13 +1,16 @@
-@import "../base.scss";
-
 $name: 'ivue-bottom-nav';
+
+:root {
+  --#{$name}-shadow: rgba(0, 0, 0, .12);
+  --#{$name}-no-active: rgba(0, 0, 0, .54);
+}
 
 .#{$name} {
   bottom: 0;
   left: 0;
   display: flex;
   justify-content: center;
-  box-shadow: 0 3px 14px 2px rgba(0, 0, 0, .12);
+  box-shadow: 0 3px 14px 2px var(--#{$name}-shadow);
   width: 100%;
   transform: translate3d(0, 60px, 0);
   transition: all $ivue-transition-stand;
@@ -50,17 +53,17 @@ $name: 'ivue-bottom-nav';
 
   &--is-color {
 
-    /*没有激活时的状态*/
+    // 没有激活时的状态
     .ivue-button:not(.ivue-button--active) {
       opacity: .5;
       color: currentColor;
     }
   }
 
-  /*没有激活时的状态*/
+  // 没有激活时的状态
   &:not(.ivue-bottom-nav--is-color) {
     .ivue-button:not(.ivue-button--active) {
-      color: rgba(0, 0, 0, .54) !important;
+      color: var(--#{$name}-no-active) !important;
     }
   }
 
@@ -98,17 +101,13 @@ $name: 'ivue-bottom-nav';
     }
 
     .ivue-icon {
-      // position: absolute;
-      // left: 0;
-      // top: 0;
-      // right: 0;
       margin-top: 0;
       color: inherit;
       margin-bottom: 4px;
       transition: all .15s $ivue-transition-stand-timing;
     }
 
-    /*激活*/
+    // 激活
     &--active {
       opacity: 1;
 
@@ -130,8 +129,6 @@ $name: 'ivue-bottom-nav';
       }
 
       .ivue-button-content {
-
-        // font-size: 14px;
         span {
           will-change: transform, opacity;
         }
@@ -140,6 +137,7 @@ $name: 'ivue-bottom-nav';
   }
 }
 
+// shift
 .#{$name}--shift {
   .ivue-button:not(.ivue-button--active) .ivue-button-content {
     .ivue-icon {

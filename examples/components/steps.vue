@@ -2,8 +2,9 @@
     <div>
         <h1>基本用法，组件会根据current自动判断各步骤状态。</h1>
         <div class="content">
-            <ivue-steps :currentStep="1">
-                <ivue-step title="已完成" content="这里是该步骤的描述信息"></ivue-step>
+            {{current}}
+            <ivue-steps :currentStep="current">
+                <ivue-step title="已完成" content="这里是该步骤的描述信息" @on-step="next"></ivue-step>
                 <ivue-step title="进行中" content="这里是该步骤的描述信息"></ivue-step>
                 <ivue-step title="待进行" content="这里是该步骤的描述信息"></ivue-step>
                 <ivue-step title="待进行1" content="这里是该步骤的描述信息"></ivue-step>

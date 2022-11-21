@@ -189,7 +189,7 @@ export default defineComponent({
 
         // 方框 class
         const innerClasses = computed(() => {
-            let obj = {
+            const obj = {
                 [`${prefixCls}-focus`]: data.focusInner,
             };
 
@@ -205,7 +205,7 @@ export default defineComponent({
 
         // 方框 style
         const innerStyles = computed(() => {
-            let obj: {
+            const obj: {
                 color?: string;
             } = {};
 

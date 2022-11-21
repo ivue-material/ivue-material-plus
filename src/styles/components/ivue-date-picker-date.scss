@@ -3,6 +3,10 @@
 
 $name: 'ivue-date-picker-date';
 
+:root {
+  --#{$name}-button-color: rgba(0, 0, 0, 0.87);
+}
+
 .#{$name} {
   position: relative;
   padding: 0 12px;
@@ -30,19 +34,20 @@ $name: 'ivue-date-picker-date';
 
       button {
         text-align: center;
-        font-size: $font-small-size;
+        font-size: var(--ivue-font-small-size);
         height: 33px;
         width: 33px;
         min-width: 33px;
         font-size: 14px;
         margin: 0;
-        color: rgba(0, 0, 0, 0.87);
+        color: var(--#{$name}-button-color);
         border: 1px solid;
         border-color: transparent;
       }
     }
   }
 
+  // 标记
   &--note {
     position: absolute;
     left: 50%;

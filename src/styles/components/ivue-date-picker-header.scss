@@ -1,7 +1,8 @@
-@import "../custom.scss";
-@import "../animation/variables";
-
 $name: 'ivue-date-picker-header';
+
+:root {
+  --#{$name}-button-color: rgba(0, 0, 0, .87);
+}
 
 .#{$name} {
   position: relative;
@@ -20,7 +21,7 @@ $name: 'ivue-date-picker-header';
       transition: $ivue-transition-default;
       display: block;
       width: 100%;
-      font-size: $font-base-size;
+      font-size: var(--ivue-font-base-size);
     }
   }
 
@@ -29,12 +30,12 @@ $name: 'ivue-date-picker-header';
 
     strong {
       &:not(:hover) {
-        color: rgba(0, 0, 0, .87) !important;
+        color: var(--#{$name}-button-color) !important;
         background: none;
       }
 
       &:hover {
-        color: $primary-color;
+        color: var(--ivue-primary-color);
         background: none;
       }
     }
@@ -44,7 +45,7 @@ $name: 'ivue-date-picker-header';
     user-select: none;
 
     strong {
-      color: $disabled-color;
+      color: var(--ivue-disabled-color);
     }
   }
 

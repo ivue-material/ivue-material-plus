@@ -66,14 +66,18 @@ export default defineComponent({
 
         // 年份按钮
         const genYearBtn = () => {
-            return genPickerButton(
-                emit,
-                props.selectingYear,
-                true,
-                'selectingYear',
-                [props.year, props.yearIcon ? genYearIcon() : null],
-                false,
-                `${prefixCls}--year`
+            return h(
+                'div',
+                {},
+                genPickerButton(
+                    emit,
+                    props.selectingYear,
+                    true,
+                    'selectingYear',
+                    [props.year, props.yearIcon ? genYearIcon() : null],
+                    false,
+                    `${prefixCls}--year`
+                )
             );
         };
 

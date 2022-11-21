@@ -1,5 +1,5 @@
 <template>
-    <div :class="classes">
+    <div :class="wrapperClasses">
         <slot></slot>
     </div>
 </template>
@@ -16,6 +16,9 @@ import {
 } from 'vue';
 
 import { oneOf } from '../../utils/assist';
+
+// types
+import { StepsContextKey, Props, Data } from './steps';
 
 const prefixCls = 'ivue-steps';
 
@@ -34,9 +37,11 @@ export default defineComponent({
         /**
          * 步骤条方向
          *
+         * @type {string}
          * @default {horizontal}
          */
         direction: {
+            type: String,
             validator(value: string) {
                 return oneOf(value, ['horizontal', 'vertical']);
             },
@@ -77,19 +82,16 @@ export default defineComponent({
          * @type {String}
          */
         textDirection: {
+            type: String,
             validator(value: string) {
                 return oneOf(value, ['right', 'bottom']);
             },
             default: 'right',
         },
     },
-    setup(props: any) {
+    setup(props: Props) {
         // data
-        const data = reactive<{
-            options: Array<any>;
-            status: string;
-            initData: boolean;
-        }>({
+        const data = reactive<Data>({
             /**
              * 选项
              *
@@ -112,7 +114,7 @@ export default defineComponent({
 
         // computed
 
-        const classes = computed(() => {
+        const wrapperClasses = computed(() => {
             return [`${prefixCls}`, `${prefixCls}-${props.direction}`];
         });
 
@@ -194,7 +196,7 @@ export default defineComponent({
 
         // provide
         provide(
-            'ivue-steps',
+            StepsContextKey,
             reactive({
                 props,
                 data,
@@ -202,6 +204,7 @@ export default defineComponent({
             })
         );
 
+        // 初始化数据
         data.options = [];
 
         // onMounted
@@ -247,7 +250,7 @@ export default defineComponent({
             data,
 
             // computed
-            classes,
+            wrapperClasses,
 
             // methods
             updateChildProps,

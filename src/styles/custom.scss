@@ -1,5 +1,34 @@
-// z-index
-$zindex-affix: 10;
+:root {
+  --ivue-disabled-color: #cccccc;
+  --ivue-white-color: #ffffff;
+  --ivue-primary-color: #5B8EFF;
+  --ivue-success-color: #27E2B2;
+  --ivue-warning-color: #FFBD3C;
+  --ivue-error-color: #FF617F;
+
+  --ivue-default-color: #DEE2E7;
+  --ivue-title-color: #383D47;
+  --ivue-text-color: #4A505E;
+  --ivue-border-multiple-color: #e8eaec;
+  --ivue-background-color-select-hover: #f3f3f3;
+  --ivue-background-color-multiple: #f7f7f7;
+
+  // input
+  --ivue-input-disabled-color: #c5c8ce;
+  --ivue-cursor-disabled: not-allowed;
+  --ivue-border-color: #dcdee2;
+  --ivue-legend-color: #999999;
+  --ivue-arrow-color: #808695;
+
+  // size
+  --ivue-font-small-size: 12px;
+  --ivue-font-base-size: 14px;
+  --ivue-font-default-size: 16px;
+  --ivue-font-large-size: 18px;
+
+  // radius
+  --ivue-border-radius-small: 4px;
+}
 
 // button
 $ivue-button-min-width: 88px;
@@ -65,7 +94,7 @@ $border-radius-small: 4px;
 // extensible
 $extensible-color: #bfcbd9;
 
-// trantition
+// transition
 $ease-in-out: ease-in-out;
 
 // disabled
