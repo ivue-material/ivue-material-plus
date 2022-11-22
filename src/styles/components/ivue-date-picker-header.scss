@@ -1,12 +1,22 @@
 $name: 'ivue-date-picker-header';
 
 :root {
+  --#{$name}-padding: 4px 16px;
+
+
+  // button
+  --#{$name}-button-size: 36px;
+
+  // icon
+  --#{$name}-icon-font-size: 24px;
+
+  // color
   --#{$name}-button-color: rgba(0, 0, 0, .87);
 }
 
 .#{$name} {
   position: relative;
-  padding: 4px 16px;
+  padding: var(--#{$name}-padding);
   align-items: center;
   display: flex;
   justify-content: space-between;
@@ -50,13 +60,13 @@ $name: 'ivue-date-picker-header';
   }
 
   .ivue-button--icon {
-    width: 36px;
-    min-width: 36px;
-    height: 36px;
+    width: var(--#{$name}-button-size);
+    min-width: var(--#{$name}-button-size);
+    height: var(--#{$name}-button-size);
     margin: 0 !important;
   }
 
   .ivue-icon {
-    font-size: 24px !important;
+    font-size: var(--#{$name}-icon-font-size) !important;
   }
 }

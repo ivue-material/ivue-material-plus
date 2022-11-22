@@ -1,6 +1,5 @@
-$name: 'ivue-ripple';
 
-.#{$name} {
+.ivue-ripple {
   position: absolute;
   width: 100%;
   height: 100%;
@@ -16,7 +15,7 @@ $name: 'ivue-ripple';
   contain: strict;
 }
 
-.#{$name} -wave {
+.ivue-ripple-wave {
   position: absolute;
   top: 0;
   left: 0;

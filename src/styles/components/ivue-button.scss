@@ -6,11 +6,24 @@ $name: 'ivue-button';
 
 :root {
   --#{$name}-min-width: 88px;
+  --#{$name}-padding: 0 15px;
   --#{$name}-height: 36px;
   --#{$name}-radius: 5px;
   --#{$name}-font-size: 14px;
   --#{$name}-dense-height: 32px;
   --#{$name}-icon-size: 36px;
+
+  // 圆角
+  --#{$name}-set-radius: 18px;
+
+  // disabled
+  --#{$name}-disabled-color: rgba(0, 0, 0, .26);
+
+  // loading
+  --#{$name}-loading-size: 16px;
+  --#{$name}-loading-right: 5px;
+
+  // color
   --#{$name}-raised-disabled: #F8F9FD;
   --#{$name}-readonly-color: rgba(0, 0, 0, 0.12);
   --#{$name}-mask-color: rgba(255, 255, 255, .5);
@@ -96,7 +109,7 @@ $name: 'ivue-button';
   font-size: var(--#{$name}-font-size);
   font-weight: 500;
   color: currentColor;
-  padding: 0 15px;
+  padding: var(--#{$name}-padding);
 
   @import "./ivue-ripple.scss";
 
@@ -125,12 +138,12 @@ $name: 'ivue-button';
   // loading
   &-loading {
     position: relative;
-    width: 16px;
-    height: 16px;
+    width: var(--#{$name}-loading-size);
+    height: var(--#{$name}-loading-size);
 
     &--wrapper {
       position: relative;
-      margin-right: 5px;
+      margin-right: var(--#{$name}-loading-right);
     }
 
     .ivue-loading-mask {
@@ -147,7 +160,7 @@ $name: 'ivue-button';
   }
 
   &[disabled] {
-    color: rgba(0, 0, 0, .26);
+    color: var(--#{$name}-disabled-color);
     pointer-events: none;
   }
 
@@ -255,7 +268,7 @@ $name: 'ivue-button';
 
   // 圆角
   &--radius {
-    border-radius: 18px;
+    border-radius: var(--#{$name}-set-radius);
   }
 
   // 蒙版
@@ -434,6 +447,6 @@ $name: 'ivue-button';
   }
 
   .ivue-icon {
-    font-size: 14px;
+    font-size: var(--#{$name}-font-size);
   }
 }

@@ -53,7 +53,7 @@ export default {
                 loadingSpinner: this.renderIcon
             });
             setTimeout(() => {
-                loading.close();
+                // loading.close();
             }, 2000);
         },
         renderIcon() {

@@ -50,7 +50,7 @@ export default defineComponent({
         const genTitle = () => {
             return h(
                 'div',
-                proxy.setBackgroundColor(props.color || 'primary', {
+                proxy.setBackgroundColor(props.color || 'ivue-picker-primary', {
                     class: {
                         [`${prefixCls}-title`]: true,
                         [`${prefixCls}-title--landscape`]: proxy.landscape,

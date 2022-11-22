@@ -180,7 +180,7 @@ export default defineComponent({
         'on-keypress',
         'on-keydown',
         'on-suffix',
-        'on-search'
+        'on-search',
     ],
     // 声明事件
     props: {
@@ -800,6 +800,7 @@ export default defineComponent({
                 `${prefixCls}-wrapper`,
                 {
                     [`${prefixCls}-wrapper-${this.size}`]: !!this.size,
+                    [`${prefixCls}-wrapper-clearable`]: this.clearable,
                     [`${prefixCls}-type-${this.type}`]: this.type,
                     [`${prefixCls}-group`]:
                         this.prepend ||

@@ -1,26 +1,33 @@
 $name: 'ivue-card';
 
 :root {
-  --#{$name}-shadow: rgba(0, 0, 0, 0.2);
+  // size
+  --#{$name}-radius: 4px;
+  --#{$name}-font-size: 14px;
+  --#{$name}-top-bottom-padding: 14px;
+  --#{$name}-left-right-padding: 16px;
+
+  // color
+  --#{$name}-shadow: 0 1px 6px rgba(0, 0, 0, 0.2);
   --#{$name}-shadow-border-color: #eeeeee;
 }
 
 .#{$name} {
   display: block;
   background: var(--ivue-white-color);
-  border-radius: 4px;
-  font-size: 14px;
+  border-radius: var(--#{$name}-radius);
+  font-size: var(--#{$name}-font-size);
   position: relative;
-  transition: all .2s ease-in-out;
+  transition: var(--ivue-all-transition);
 
   &:hover {
-    box-shadow: 0 1px 6px var(--#{$name}-shadow);
+    box-shadow: var(--#{$name}-shadow);
     border-color: var(--#{$name}-shadow-border-color);
   }
 
   // 阴影
   &-shadow {
-    box-shadow: 0 1px 6px var(--#{$name}-shadow);
+    box-shadow: var(--#{$name}-shadow);
     border-color: var(--#{$name}-shadow-border-color);
   }
 
@@ -33,21 +40,21 @@ $name: 'ivue-card';
   // 标题
   &-title {
     border-bottom: 1px solid var(--ivue-border-multiple-color);
-    padding: 14px 16px;
+    padding: var(--#{$name}-top-bottom-padding) var(--#{$name}-left-right-padding);
     line-height: 1;
   }
 
   // 额外显示的内容，默认位置在右上角
   &-extra {
     position: absolute;
-    right: 16px;
-    top: 14px;
+    right: var(--#{$name}-left-right-padding);
+    top: var(--#{$name}-top-bottom-padding);
     line-height: 1;
   }
 
   // 内容
   &-body {
-    padding: 16px;
+    padding: var(--#{$name}-left-right-padding);
   }
 
   // 禁用鼠标悬停显示阴影

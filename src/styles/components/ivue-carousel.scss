@@ -2,11 +2,28 @@ $name: 'ivue-carousel';
 
 
 :root {
+  // size
+  --#{$name}-content-height: 200px;
+
+  // arrow
+  --#{$name}-arrow-size: 36px;
+  --#{$name}-arrow-icon-font-size: 24px;
+  --#{$name}-arrow-icon-left: 16px;
+  --#{$name}-arrow-icon-right: 16px;
+
+  // dots
+  --#{$name}-dot-padding: 7px;
+  --#{$name}-dot-width: 24px;
+  --#{$name}-dot-height: 3px;
+  --#{$name}-dot-radius-size: 6px;
+  --#{$name}-vertical-dot-padding: 4px 12px;
+  --#{$name}-vertical-dot-button-width: 2px;
+  --#{$name}-vertical-dot-button-height: 15px;
+
+  // color
   --#{$name}-arrow-bg: rgba(31, 45, 61, .11);
   --#{$name}-dots-outside-color: #8391a5;
 }
-
-$dot-padding: 7px;
 
 .#{$name} {
   position: relative;
@@ -22,7 +39,7 @@ $dot-padding: 7px;
   // 内容
   &-content {
     position: relative;
-    height: 200px;
+    height: var(--#{$name}-content-height);
     overflow: hidden;
   }
 
@@ -97,29 +114,28 @@ $dot-padding: 7px;
     outline: none;
     padding: 0;
     margin: 0;
-    width: 36px;
-    min-width: 36px;
-    height: 36px;
+    width: var(--#{$name}-arrow-size);
+    min-width: var(--#{$name}-arrow-size);
+    height: var(--#{$name}-arrow-size);
     border-radius: 50%;
     cursor: pointer;
     transform: translateY(-50%);
-    transition: all .2s;
+    transition: var(--ivue-all-transition);
     color: var(--ivue-white-color);
     background-color: var(--#{$name}-arrow-bg);
     z-index: 15;
 
     i {
-      font-size: 24px;
+      font-size: var(--#{$name}-arrow-icon-font-size);
     }
 
     &.left {
-      left: 16px;
+      left: var(--#{$name}-arrow-icon-left);
     }
 
     &.right {
-      right: 16px;
+      right: var(--#{$name}-arrow-icon-right);
     }
-
   }
 
   // 指示器
@@ -131,7 +147,7 @@ $dot-padding: 7px;
     padding: 0;
     margin: 0;
     width: 100%;
-    height: 3px + $dot-padding * 2;
+    height: calc(4px + var(--#{$name}-dot-padding) * 2);
     z-index: 15;
     pointer-events: none;
 
@@ -139,14 +155,14 @@ $dot-padding: 7px;
     &--inside {
       display: block;
       position: absolute;
-      bottom: 10px - $dot-padding;
+      bottom: calc(10px - var(--#{$name}-dot-padding));
     }
 
     // 外部
     &--outside {
       position: static;
       display: block;
-      margin-top: 10px - $dot-padding;
+      margin-top: calc(10px - var(--#{$name}-dot-padding));
 
       .#{$name}-dots--button {
         background: var(--#{$name}-dots-outside-color);
@@ -160,7 +176,7 @@ $dot-padding: 7px;
       vertical-align: top;
       text-align: center;
       margin: 0 4px;
-      padding: $dot-padding 0;
+      padding: var(--#{$name}-dot-padding) 0;
       cursor: pointer;
       pointer-events: auto;
 
@@ -188,13 +204,13 @@ $dot-padding: 7px;
 
       .#{$name}-dots--dot {
         display: list-item;
-        padding: 4px 12px;
+        padding: var(--#{$name}-vertical-dot-padding);
         margin: 0;
       }
 
       .#{$name}-dots--button {
-        width: 2px;
-        height: 15px;
+        width: var(--#{$name}-vertical-dot-button-width);
+        height: var(--#{$name}-vertical-dot-button-height);
       }
     }
 
@@ -211,24 +227,24 @@ $dot-padding: 7px;
     // 按钮
     &--button {
       border: 0;
-      width: 24px;
-      height: 3px;
+      width: var(--#{$name}-dot-width);
+      height: var(--#{$name}-dot-height);
       opacity: .5;
-      border-radius: 3px;
+      border-radius: var(--#{$name}-dot-height);
       outline: none;
       font-size: 0;
       display: block;
       cursor: pointer;
       color: transparent;
       background: var(--ivue-white-color);
-      transition: all .4s ease-in-out;
+      transition: all .4s var(--ivue-ease-in-out);
     }
 
     // 圆形
     &--radius {
       padding: 0;
-      width: 6px;
-      height: 6px;
+      width: var(--#{$name}-dot-radius-size);
+      height: var(--#{$name}-dot-radius-size);
       border-radius: 50%;
     }
 

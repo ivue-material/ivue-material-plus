@@ -1,6 +1,15 @@
 $name: 'ivue-bottom-nav';
 
 :root {
+  // item
+  --#{$name}-item-max-width: 168px;
+  --#{$name}-item-min-width: 80px;
+
+  // 导航缩放效果
+  --#{$name}-scale-icon: translate3d(0, -2px, 0);
+  --#{$name}-scale-content: scale(1.2);
+
+  // color
   --#{$name}-shadow: rgba(0, 0, 0, .12);
   --#{$name}-no-active: rgba(0, 0, 0, .54);
 }
@@ -12,13 +21,12 @@ $name: 'ivue-bottom-nav';
   justify-content: center;
   box-shadow: 0 3px 14px 2px var(--#{$name}-shadow);
   width: 100%;
-  transform: translate3d(0, 60px, 0);
   transition: all $ivue-transition-stand;
 
   &-item {
     margin: 0 !important;
-    max-width: 168px;
-    min-width: 80px;
+    max-width: var(--#{$name}-item-max-width);
+    min-width: var(--#{$name}-item-min-width);
     width: 100%;
     height: 100%;
   }
@@ -39,12 +47,12 @@ $name: 'ivue-bottom-nav';
     &__scale {
       .ivue-button--active {
         .ivue-icon {
-          transform: translate3d(0, -2px, 0) !important;
+          transform: var(--#{$name}-scale-icon) !important;
         }
 
         .ivue-button-content {
           span {
-            transform: scale(1.2) !important;
+            transform: var(--#{$name}-scale-content) !important;
           }
         }
       }
@@ -71,8 +79,8 @@ $name: 'ivue-bottom-nav';
     flex-shrink: 1;
     margin: 0 !important;
     text-transform: none;
-    max-width: 168px;
-    min-width: 80px;
+    max-width: var(--#{$name}-item-max-width);
+    min-width: var(--#{$name}-item-min-width);
     width: 100%;
     height: 100%;
     border-radius: 0;

@@ -1,12 +1,24 @@
 $name: 'ivue-notice-bar';
 
+:root {
+  --#{$name}-height: 40px;
+  --#{$name}-font-size: 14px;
+  --#{$name}-line-height: 24px;
+
+  // margin
+  --#{$name}-icon-margin: 0 5px;
+
+  // wrapable
+  --#{$name}-wrapable-padding: 8px 16px;
+}
+
 .#{$name} {
   position: relative;
   display: flex;
   align-items: center;
-  height: 40px;
-  font-size: 14px;
-  line-height: 24px;
+  height: var(--#{$name}-height);
+  font-size: var(--#{$name}-font-size);
+  line-height: var(--#{$name}-line-height);
   background: var(--ivue-primary-color);
   color: var(--ivue-white-color);
 
@@ -26,7 +38,7 @@ $name: 'ivue-notice-bar';
   // icon
   .#{$name}-icon {
     color: currentColor;
-    margin: 0 5px;
+    margin: var(--#{$name}-icon-margin)
   }
 
   // text
@@ -55,7 +67,7 @@ $name: 'ivue-notice-bar';
   // 换行
   &-wrapable {
     height: auto;
-    padding: 8px 16px;
+    padding: var(--#{$name}-wrapable-padding);
 
     .#{$name}-text {
       position: relative;

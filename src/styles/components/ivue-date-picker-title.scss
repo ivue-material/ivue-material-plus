@@ -1,6 +1,13 @@
 $name: 'ivue-date-picker-title';
 
 :root {
+  --#{$name}-year-margin-bottom: 8px;
+
+  // date
+  --#{$name}-date-font-size: 34px;
+  --#{$name}-date-padding-bottom: 16px;
+
+  // color
   --#{$name}-hover-color: rgba(255, 255, 255, .6);
 }
 
@@ -21,7 +28,7 @@ $name: 'ivue-date-picker-title';
     display: inline-flex;
     font-size: var(--ivue-font-base-size);
     font-weight: 500;
-    margin-bottom: 8px;
+    margin-bottom: var(--#{$name}-year-margin-bottom);
     cursor: pointer;
     transition: $ivue-transition-default;
 
@@ -30,17 +37,17 @@ $name: 'ivue-date-picker-title';
     }
 
     i {
-      margin: initial
+      margin: initial;
     }
   }
 
   &--date {
-    font-size: 34px;
+    font-size: var(--#{$name}-date-font-size);
     text-align: left;
     font-weight: 500;
     position: relative;
     overflow: hidden;
-    padding-bottom: 16px;
+    padding-bottom: var(--#{$name}-date-padding-bottom);
   }
 }
 

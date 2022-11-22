@@ -8,7 +8,6 @@ import Icon from '../components/icon';
 import Button from '../components/button';
 import Elevation from '../components/elevation';
 import Layout from '../components/layout';
-import List from '../components/list';
 import Carousel from '../components/carousel';
 import Switch from '../components/switch';
 import BottomNav from '../components/bottom-nav';
@@ -86,11 +85,6 @@ const routes = [{
     path: '/Layout',
     name: 'Layout',
     component: Layout
-  },
-  {
-    path: '/List',
-    name: 'List',
-    component: List
   },
   {
     path: '/Carousel',

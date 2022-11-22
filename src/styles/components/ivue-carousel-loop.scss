@@ -1,13 +1,25 @@
 $name: 'ivue-carousel-loop';
 
 :root {
+  // size
+  --#{$name}-height: 100px;
+
+  // arrow
+  --#{$name}-icon-font-size: 24px;
+  --#{$name}-icon-size: 36px;
+  --#{$name}-icon-left: 16px;
+  --#{$name}-icon-right: 16px;
+  --#{$name}-icon-outside-left: -52px;
+  --#{$name}-icon-outside-right: -52px;
+
+  // color
   --#{$name}-arrow-bg: rgba(31, 45, 61, .11);
 }
 
 .#{$name} {
   position: relative;
   width: 100%;
-  height: 100px;
+  height: var(--#{$name}-height);
 
   &:hover .#{$name}-arrow--hover {
     opacity: 1;
@@ -36,40 +48,38 @@ $name: 'ivue-carousel-loop';
     will-change: transform;
   }
 
-
   // 箭头
   .#{$name}-arrow {
     position: absolute;
     top: 50%;
     text-align: center;
-    font-size: 12px;
     font-family: inherit;
     line-height: inherit;
     border: none;
     outline: none;
     padding: 0;
     margin: 0;
-    width: 36px;
-    min-width: 36px;
-    height: 36px;
+    width: var(--#{$name}-icon-size);
+    min-width: var(--#{$name}-icon-size);
+    height:var(--#{$name}-icon-size);
     border-radius: 50%;
     cursor: pointer;
     transform: translateY(-50%);
-    transition: all .2s;
+    transition: var(--ivue-all-transition);
     color: var(--ivue-white-color);
     background-color: var(--#{$name}-arrow-bg);
     z-index: 15;
 
     i {
-      font-size: 24px;
+      font-size: var(--#{$name}-icon-font-size);
     }
 
     &.left {
-      left: 16px;
+      left: var(--#{$name}-icon-left);
     }
 
     &.right {
-      right: 16px;
+      right: var(--#{$name}-icon-right);
     }
 
     // 悬停
@@ -85,11 +95,11 @@ $name: 'ivue-carousel-loop';
     // 外部
     &--outside {
       &.left {
-        left: -52px;
+        left: var(--#{$name}-icon-outside-left);
       }
 
       &.right {
-        right: -52px;
+        right: var(--#{$name}-icon-outside-right);
       }
     }
   }

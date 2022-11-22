@@ -28,10 +28,6 @@
                 </li>
 
                 <li>
-                    <router-link to="/list">List</router-link>
-                </li>
-
-                <li>
                     <router-link to="/carousel">Carousel</router-link>
                 </li>
 

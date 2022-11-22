@@ -1,6 +1,12 @@
 $name: 'ivue-breadcrumb';
 
 :root {
+  // 字体大小
+  --#{$name}-font-size: 14px;
+  --#{$name}-icon-font-size: 16px;
+  --#{$name}-item-icon-font-size: 12px;
+
+  // color
   --#{$name}-divider-color: rgba(0, 0, 0, 0.38);
   --#{$name}-last-color: rgba(0, 0, 0, .38);
 }
@@ -13,7 +19,7 @@ $name: 'ivue-breadcrumb';
   list-style-type: none;
   margin: 0;
   padding: 18px 12px;
-  font-size: 14px;
+  font-size: var(--#{$name}-font-size);
 
   .ivue-icon {
     height: auto;
@@ -34,6 +40,7 @@ $name: 'ivue-breadcrumb';
     display: inline-flex;
   }
 
+  // divider
   &--divider {
     padding: 0 12px;
     display: flex;
@@ -42,10 +49,11 @@ $name: 'ivue-breadcrumb';
     font-weight: bold;
 
     .ivue-icon {
-      font-size: 16px;
+      font-size: var(--#{$name}-icon-font-size);
     }
   }
 
+  // item
   &-item {
     &__inner {
       font-weight: bold;
@@ -62,7 +70,7 @@ $name: 'ivue-breadcrumb';
 
       .ivue-icon {
         margin-right: 4px;
-        font-size: 12px;
+        font-size: var(--#{$name}-item-icon-font-size);
       }
     }
 

@@ -1,23 +1,44 @@
 $name: 'ivue-input-number';
 
 :root {
-  --#{$name}-shadow-color: rgba(91, 142, 255, 0.2);
+  --#{$name}-font-size: 14px;
+  --#{$name}-width: 80px;
+  --#{$name}-height: 32px;
+  --#{$name}-radius: 4px;
+
+  // internal
+  --#{$name}-internal-width: 22px;
+
+  // input
+  --#{$name}-input-padding: 0 7px;
+
+  // controls-outside
+  --#{$name}-controls-outside-width: 144px;
+  --#{$name}-controls-outside-padding: 0 32px;
+
+  // outside
+  --#{$name}-outside-width: 32px;
+
+  // color
+  --#{$name}-shadow: 0 0 0 2px rgba(91, 142, 255, 0.2);
   --#{$name}-outside-color: #f8f8f9;
 }
 
 .#{$name} {
   position: relative;
   display: inline-block;
-  font-size: 14px;
-  color: $text-color;
+  font-size: var(--#{$name}-font-size);
+  color: var(--ivue-text-color);
   background-color: var(--ivue-white-color);
-  transition: border .2s ease-in-out, background .2s ease-in-out, box-shadow .2s ease-in-out;
-  width: 80px;
-  height: 32px;
-  line-height: 32px;
+  transition: border var(--ivue-default-transition-time) var(--ivue-ease-in-out),
+    background var(--ivue-default-transition-time) var(--ivue-ease-in-out),
+    box-shadow var(--ivue-default-transition-time) var(--ivue-ease-in-out);
+  width: var(--#{$name}-width);
+  height: var(--#{$name}-height);
+  line-height: var(--#{$name}-height);
   vertical-align: middle;
   border: 1px solid var(--ivue-border-color);
-  border-radius: 4px;
+  border-radius: var(--#{$name}-radius);
   overflow: hidden;
 
   &:hover {
@@ -31,26 +52,26 @@ $name: 'ivue-input-number';
   &:focus {
     outline: 0;
     border-color: var(--ivue-primary-color);
-    box-shadow: 0 0 0 2px var(--#{$name}-shadow-color);
+    box-shadow: var(--#{$name}-shadow);
   }
 
   // 获取焦点
   &-focused {
     border-color: var(--ivue-primary-color);
-    box-shadow: 0 0 0 2px var(--#{$name}-shadow-color);
+    box-shadow: var(--#{$name}-shadow);
   }
 
   // 输入框
   &-input {
     width: 100%;
     height: 100%;
-    padding: 0 7px;
+    padding: var(--#{$name}-input-padding);
     text-align: left;
     outline: 0;
     border: 0;
-    border-radius: 4px;
-    color: var();
-    transition: all .2s linear;
+    border-radius: var(--#{$name}-radius);
+    color: var(--ivue-title-color);
+    transition: all var(--ivue-default-transition-time) linear;
 
     &--wrapper {
       display: flex;
@@ -80,8 +101,8 @@ $name: 'ivue-input-number';
       width: auto;
       min-width: auto;
       height: auto;
-      font-size: 14px;
-      transition: color .2s ease-in-out;
+      font-size: var(--#{$name}-font-size);
+      transition: color var(--ivue-default-transition-time) var(--ivue-ease-in-out);
     }
 
     // 外层
@@ -89,14 +110,14 @@ $name: 'ivue-input-number';
       position: absolute;
       top: 0;
       right: 0;
-      width: 22px;
+      width: var(--#{$name}-internal-width);
       height: 100%;
       display: flex;
       flex-direction: column;
       border-left: 1px solid var(--ivue-border-color);
       background: var(--ivue-white-color);
       opacity: 0;
-      transition: opacity .2s ease-in-out;
+      transition: opacity var(--ivue-default-transition-time) var(--ivue-ease-in-out);
 
       &::after {
         content: "";
@@ -114,7 +135,7 @@ $name: 'ivue-input-number';
 
   // 禁用
   .#{$name}-internal--disabled {
-    cursor: not-allowed;
+    cursor: var(--ivue-cursor-disabled);
     color: var(--ivue-disabled-color) !important;
     pointer-events: auto;
   }
@@ -122,7 +143,7 @@ $name: 'ivue-input-number';
   // 禁用
   &-disabled {
     &:hover {
-      border-color: $border-color;
+      border-color: var(--ivue-border-color);
 
       .#{$name}-internal--wrapper {
         display: none;
@@ -132,15 +153,15 @@ $name: 'ivue-input-number';
     .#{$name}-input {
       opacity: .8;
       background-color: $background-color-select-hover;
-      cursor: not-allowed;
+      cursor: var(--ivue-cursor-disabled);
       color: var(--ivue-disabled-color);
     }
   }
 
   // 按钮位置是否置于两侧
   &-controls-outside {
-    width: 144px;
-    padding: 0 32px;
+    width: var(--#{$name}-controls-outside-width);
+    padding: var(--#{$name}-controls-outside-padding);
   }
 
   // 外部按钮
@@ -148,11 +169,10 @@ $name: 'ivue-input-number';
     position: absolute;
     top: 0;
     bottom: 0;
-    width: 32px;
+    width: var(--#{$name}-outside-width);
     height: auto;
     background-color: var(--#{$name}-outside-color);
     color: var(--ivue-text-color);
-    cursor: pointer;
     min-width: auto;
     padding: 0;
     border-radius: 0;
@@ -167,8 +187,8 @@ $name: 'ivue-input-number';
       width: auto;
       min-width: auto;
       height: auto;
-      font-size: 14px;
-      transition: color .2s ease-in-out;
+      font-size: var(--#{$name}-font-size);
+      transition: color var(--ivue-default-transition-time) var(--ivue-ease-in-out);
     }
 
     &--up {

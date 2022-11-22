@@ -1,7 +1,7 @@
 <template>
     <div
         :class="wrapperClasses"
-        @mouseenter="handleMouseenter"
+        @mouseenter="() => handleMouseenter()"
         @mouseleave="handleMouseleave"
         v-click-outside:[capture]="handleClickOutside"
     >
@@ -88,7 +88,6 @@ import {
     onMounted,
     nextTick,
     provide,
-    inject,
 } from 'vue';
 import { useEventListener } from '@vueuse/core';
 

@@ -33,7 +33,13 @@
   --ivue-font-large-size: 18px;
 
   // radius
-  --ivue-border-radius-small: 4px;
+  --ivue-border-radius: 4px;
+
+  // transition
+  --ivue-all-transition: all .2s ease-in-out;
+
+  --ivue-default-transition-time: .2s;
+  --ivue-ease-in-out: ease-in-out;
 }
 
 // button

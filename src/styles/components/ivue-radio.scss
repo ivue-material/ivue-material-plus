@@ -4,12 +4,20 @@ $transition-time: .2s;
 $ease-in-out: ease-in-out;
 
 :root {
+  --#{$name}-margin-right: 4px;
+
+  // border
+  --#{$name}-border-height: 32px;
+  --#{$name}-border-line-height: 30px;
+  --#{$name}-border-padding: 0 15px;
+
+  // color
   --#{$name}-disabled-bg: #e6e6e6;
 }
 
 .#{$name} {
   display: inline-block;
-  margin-right: 4px;
+  margin-right: var(--#{$name}-margin-right);
   white-space: nowrap;
   position: relative;
   line-height: 1;
@@ -19,11 +27,11 @@ $ease-in-out: ease-in-out;
   // 显示边框
   &-border {
     border: 1px solid var(--ivue-border-color);
-    border-radius: 4px;
-    height: 32px;
-    line-height: 30px;
-    padding: 0 15px;
-    transition: all $transition-time $ease-in-out;
+    border-radius: var(--ivue-border-radius);
+    height: var(--#{$name}-border-height);
+    line-height: var(--#{$name}-border-line-height);
+    padding: var(--#{$name}-border-padding);
+    transition: var(--ivue-all-transition);
   }
 
   // 最外层

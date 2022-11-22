@@ -226,6 +226,7 @@ export default defineComponent({
                 },
                 style: {
                     height: `${this.computedHeight}`,
+                    transform: `translate3d(0, ${this.visible ? 0 : `calc(${this.computedHeight} + 4px)`}, 0)`
                 },
             }),
             // 插槽

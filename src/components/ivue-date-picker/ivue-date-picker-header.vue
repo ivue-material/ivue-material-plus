@@ -150,7 +150,7 @@ export default defineComponent({
             // 开始年份
             const startYear = Math.floor(displayedYear.value / 10) * 10;
             // 结束年份
-            let endYear = startYear + 9;
+            const endYear = startYear + 9;
 
             let disabled =
                 props.readonly ||

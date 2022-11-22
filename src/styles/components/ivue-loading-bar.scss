@@ -9,7 +9,7 @@ $name: 'ivue-loading-bar';
   z-index: 2000;
 
   &-inner {
-    transition: width .2s linear;
+    transition: width var(--ivue-default-transition-time) linear;
 
     &-color-primary {
       background-color: var(--ivue-primary-colo);

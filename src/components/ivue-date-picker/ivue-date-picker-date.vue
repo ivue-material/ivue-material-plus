@@ -334,7 +334,7 @@ export default defineComponent({
                 : props.textColor;
 
             const color =
-                (isSelected || isCurrent) && (props.color || 'primary');
+                (isSelected || isCurrent) && (props.color || 'ivue-picker-primary');
 
             const _staticClass = staticClass ? staticClass : '';
 
