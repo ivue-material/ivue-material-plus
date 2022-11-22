@@ -3,8 +3,27 @@
 $name: 'ivue-select';
 
 :root {
-  --#{$name}-loading-color: #9AB0C6;
+  // height
   --#{$name}-input-height: 36px;
+
+  // loading
+  --#{$name}-loading-color: #9AB0C6;
+
+  // visible
+  --#{$name}-visible-selection-color: rgba(91, 142, 255, 0.8);
+  --#{$name}-visible-selection-shadow-color: rgba(91, 142, 255, 0.2);
+  --#{$name}-disabled-selection-hover-color: rgba(204, 204, 204, 0.2);
+
+  // tag
+  --#{$name}-tag-border-color: #e8eaec;
+  --#{$name}-tag-border-bg: #F8F9FD;
+  --#{$name}-tag-icon-color: #BFCDD9;
+
+  // dropdown
+  --#{$name}-dropdown-shadow-color: rgba(0, 0, 0, .2);
+
+  // not-find
+  --#{$name}-not-find-color: #9AB0C6;
 }
 
 .#{$name} {
@@ -49,7 +68,7 @@ $name: 'ivue-select';
       background-color: var(--ivue-input-disabled-bg);
 
       &:hover {
-        border-color: transparentize(#cccccc, 0.8);
+        border-color: var(--#{$name}-disabled-selection-hover-color)
       }
     }
 
@@ -71,8 +90,8 @@ $name: 'ivue-select';
 
       .#{$name}-placeholder {
         display: block;
-        height: var(--#{$name}-input-height) - 2px;
-        line-height: var(--#{$name}-input-height) - 2px;
+        height: calc(var(--#{$name}-input-height) - 2px);
+        line-height: calc(var(--#{$name}-input-height) - 2px);
         font-size: var(--ivue-font-small-size);
         overflow: hidden;
         text-overflow: ellipsis;
@@ -93,8 +112,8 @@ $name: 'ivue-select';
     .#{$name}-placeholder {
       position: absolute;
       display: block;
-      height: var(--#{$name}-input-height) - 2px;
-      line-height: var(--#{$name}-input-height) - 2px;
+      height: calc(var(--#{$name}-input-height) - 2px);
+      line-height: calc(var(--#{$name}-input-height) - 2px);
       color: var(--ivue-input-placeholder-color);
       font-size: var(--ivue-font-small-size);
       overflow: hidden;
@@ -110,15 +129,15 @@ $name: 'ivue-select';
     box-sizing: border-box;
     outline: none;
     user-select: none;
-    border-radius: var(--ivue-border-radius-small);
+    border-radius: var(--ivue-border-radius);
     border: 1px solid var(--ivue-border-color);
     background-color: var(--ivue-white-color);
-    min-height: 36px;
+    min-height: var(--#{$name}-input-height);
     cursor: pointer;
     transition: all .2s ease-in-out;
 
     &:hover {
-      border-color: transparentize($primary-color, 0.2);
+      border-color: var(--#{$name}-visible-selection-color);
     }
   }
 
@@ -180,8 +199,8 @@ $name: 'ivue-select';
     padding-left: 4px;
     display: inline-block;
     vertical-align: middle;
-    height: var(--#{$name}-input-height) - 2px;
-    line-height: var(--#{$name}-input-height) - 2px;
+    height: calc(var(--#{$name}-input-height) - 2px);
+    line-height: calc(var(--#{$name}-input-height) - 2px);
   }
 
   // 有图标设置样式
@@ -199,9 +218,9 @@ $name: 'ivue-select';
     line-height: 22px;
     margin: 2px 4px 2px 0;
     padding: 0 8px;
-    border: 1px solid #e8eaec;
+    border: 1px solid var(--#{$name}-tag-border-color);
     border-radius: 3px;
-    background: #F8F9FD;
+    background: var(--#{$name}-tag-border-bg);
     font-size: 14px;
     vertical-align: middle;
     opacity: 1;
@@ -210,7 +229,7 @@ $name: 'ivue-select';
 
     // 文字
     &-text {
-      color: #4A505E;
+      color: var(--ivue-text-color);
       transition: color $ivue-transition-default;
     }
 
@@ -221,21 +240,21 @@ $name: 'ivue-select';
       height: auto;
       cursor: pointer;
       font-size: 14px;
-      color: #BFCDD9;
+      color: var(--#{$name}-tag-icon-color);
       line-height: 26px;
       transition: color $ivue-transition-default;
     }
 
     // hover
     &:hover {
-      background: $primary-color;
-      border-color: #5B8EFF;
+      background: var(--ivue-primary-color);
+      border-color: var(--ivue-primary-color);
 
 
       // 文字
       .#{$name}-tag-text,
       .ivue-icon {
-        color: $white-color;
+        color: var(--ivue-white-color);
       }
 
     }
@@ -300,7 +319,7 @@ $name: 'ivue-select';
         padding: 0 !important;
         font-size: 17px;
         color: currentColor;
-        transition: all .1s $ivue-transition-default-timing
+        transition: none;
       }
     }
   }
@@ -312,13 +331,13 @@ $name: 'ivue-select';
 
   &-multiple &-input-filter {
     padding: 0 0 0 4px;
-    height: var(--#{$name}-input-height) - 12px;
-    line-height: var(--#{$name}-input-height) - 12px;
+    height: calc(var(--#{$name}-input-height) - 2px);
+    line-height: calc(var(--#{$name}-input-height) - 12px);
   }
 
   &-multiple &-input-filter-placeholder {
-    height: var(--#{$name}-input-height) - 2px;
-    line-height: var(--#{$name}-input-height) - 12px;
+    height: calc(var(--#{$name}-input-height) - 2px);
+    line-height: calc(var(--#{$name}-input-height) - 12px);
   }
 
   // 输入框箭头方向
@@ -328,9 +347,9 @@ $name: 'ivue-select';
     bottom: 0;
     right: 0;
     line-height: 1;
-    font-size: $font-default-size;
+    font-size: var(--ivue-font-default-size);
     font-weight: bold;
-    color: $arrow-color;
+    color: var(--ivue-arrow-color);
     height: 100%;
     transition: all .2s ease-in-out;
   }
@@ -344,8 +363,8 @@ $name: 'ivue-select';
     display: block;
     padding-left: 8px;
     padding-right: 24px;
-    height: var(--#{$name}-input-height) - 2px;
-    line-height: var(--#{$name}-input-height) - 2px;
+    height: calc(var(--#{$name}-input-height) - 2px);
+    line-height: calc(var(--#{$name}-input-height) - 2px);
     font-size: var(--ivue-font-small-size);
     overflow: hidden;
     text-overflow: ellipsis;
@@ -354,9 +373,9 @@ $name: 'ivue-select';
 
   &-visible {
     .#{$name}-selection {
-      border-color: transparentize($primary-color, 0.2);
+      border-color: var(--#{$name}-visible-selection-color);
       outline: 0;
-      box-shadow: 0 0 0 2px transparentize($primary-color, 0.8);
+      box-shadow: 0 0 0 2px var(--#{$name}-visible-selection-shadow-color);
     }
 
     .#{$name}-arrow {
@@ -372,10 +391,10 @@ $name: 'ivue-select';
     width: inherit;
     max-height: 200px;
     overflow: auto;
-    background-color: #fff;
+    background-color: var(--ivue-white-color);
     box-sizing: border-box;
-    border-radius: $border-radius-small;
-    box-shadow: 0 1px 6px rgba(0, 0, 0, .2);
+    border-radius: var(--ivue-border-radius);
+    box-shadow: 0 1px 6px var(--#{$name}-dropdown-shadow-color);
     z-index: 999;
     transform-origin: center top 0px;
     opacity: 1;
@@ -406,7 +425,7 @@ $name: 'ivue-select';
     align-items: center;
     justify-content: center;
     text-align: center;
-    color: #9AB0C6;
+    color: var(--#{$name}-not-find-color);
     height: 100px;
 
     li {
@@ -427,12 +446,12 @@ $name: 'ivue-select';
     word-break: break-all;
     display: flex;
     align-items: center;
-    color: $text-color;
+    color: var(--ivue-text-color);
     transition: all $ivue-transition-default;
 
     @media screen and (min-width: 800px) {
       &:hover {
-        color: $white-color;
+        color: var(--ivue-white-color);
       }
     }
 
@@ -465,7 +484,7 @@ $name: 'ivue-select';
 
     &-selected {
       opacity: 1;
-      color: $white-color;
+      color: var(--ivue-white-color);
     }
   }
 
@@ -478,7 +497,7 @@ $name: 'ivue-select';
     &-title {
       padding-left: 8px;
       font-size: var(--ivue-font-small-size);
-      color: $legend-color;
+      color: var(--ivue-legend-color);
       height: 30px;
       line-height: 30px;
     }

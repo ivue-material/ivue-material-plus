@@ -1,12 +1,24 @@
 $name: 'ivue-collapse';
 
 :root {
+  --#{$name}-radius: 3px;
+
+  // header
+  --#{$name}-header-padding: 0 15px;
+  --#{$name}-header-height: 38px;
+  --#{$name}-header-font-size: 14px;
+  --#{$name}-header-icon-font-size: 25px;
+
+  // content
+  --#{$name}-content-padding: 15px;
+
+  // color
   --#{$name}-border-color: rgba(0, 0, 0, 0.12);
 }
 
 .#{$name} {
   background-color: var(--ivue-primary-color);
-  border-radius: 3px;
+  border-radius: var(--#{$name}-radius);
   border: 1px solid var(--#{$name}-border-color);
   overflow: hidden;
 
@@ -22,13 +34,13 @@ $name: 'ivue-collapse';
       display: flex;
       justify-content: space-between;
       align-content: center;
-      padding: 0 15px;
-      height: 38px;
-      line-height: 38px;
+      padding: var(--#{$name}-header-padding);
+      height: var(--#{$name}-header-height);
+      line-height: var(--#{$name}-header-height);
       color: var(--ivue-white-color);
-      font-size: 14px;
+      font-size: var(--#{$name}-header-font-size);
       cursor: pointer;
-      transition: all .2s ease-in-out;
+      transition: var(--ivue-all-transition);
 
       .ivue-icon {
         margin: 0;
@@ -36,19 +48,18 @@ $name: 'ivue-collapse';
         height: auto;
         min-width: auto;
         width: auto;
-        font-size: 25px;
-        transition: all .2s ease-in-out;
+        font-size: var(--#{$name}-header-icon-font-size);
+        transition: var(--ivue-all-transition);
       }
     }
 
     &--content {
-      padding: 0 15px;
-      color: #000;
+      padding: 0 var(--#{$name}-content-padding);
+      color: var(--ivue-title-color);
       background-color: var(--ivue-white-color);
 
       &-box {
-        padding-top: 15px;
-        padding-bottom: 15px;
+        padding: var(--#{$name}-content-padding) 0;
       }
     }
 
@@ -80,7 +91,7 @@ $name: 'ivue-collapse';
 }
 
 .collapse-transition {
-  transition: .2s height ease-in-out,
-    .2s padding-top ease-in-out,
-    .2s padding-bottom ease-in-out;
+  transition: .2s height var(--ivue-ease-in-out),
+    .2s padding-top var(--ivue-ease-in-out),
+    .2s padding-bottom var(--ivue-ease-in-out);
 }

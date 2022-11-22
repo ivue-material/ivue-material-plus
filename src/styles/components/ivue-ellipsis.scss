@@ -1,7 +1,11 @@
 $name: 'ivue-ellipsis';
 
+:root {
+  --#{$name}-font-size: 14px;
+}
+
 .#{$name} {
-  font-size: 14px;
+  font-size: var(--#{$name}-font-size);
 
   &-hidden {
     visibility: hidden;

@@ -1,16 +1,40 @@
 $name: 'ivue-message';
 
 :root {
-  --#{$name}-notice-content-color: rgba(0, 0, 0, .2);
+  --#{$name}-top: 16px;
+  --#{$name}-left: 50%;
+  --#{$name}-transform: translateX(-50%);
+
+  // close
+  --#{$name}-close-right: 4px;
+  --#{$name}-close-font-size: 16px;
+
+  // 内容
+  --#{$name}-notice-content-padding: 8px 16px;
+  --#{$name}-notice-content-shadow: 0 1px 6px rgba(0, 0, 0, .2);
+  --#{$name}-notice-content-text-margin-left: 5px;
+  --#{$name}-notice-closable-margin-right: 32px;
+
+
+  // icon
+  --#{$name}-icon-margin-right: 4px;
+  --#{$name}-icon-font-size: 18px;
+
+  // loading
+  --#{$name}-loading-margin-right: 4px;
+  --#{$name}-loading-width: 16px;
+
+  // color
+  --#{$name}-close-hover-color: #444444;
 }
 
 .#{$name} {
   position: fixed;
-  top: 16px;
-  left: 50%;
+  top: var(--#{$name}-top);
+  left: var(--#{$name}-left);
   font-size: var(--ivue-font-base-size);
   z-index: 1010;
-  transform: translateX(-50%);
+  transform: var(--#{$name}-transform);
   pointer-events: none;
   transition: opacity .3s, transform .4s, top .4s;
 
@@ -24,7 +48,7 @@ $name: 'ivue-message';
     // 关闭按钮
     &-close {
       position: absolute;
-      right: 4px;
+      right: var(--#{$name}-close-right);
       top: 0;
       bottom: 0;
       color: var(--ivue-legend-color);
@@ -33,14 +57,14 @@ $name: 'ivue-message';
       cursor: pointer;
 
       i {
-        font-size: 16px;
-        transition: color .2s ease;
+        font-size: var(--#{$name}-close-font-size);
+        transition: color var(--ivue-default-transition-time) var(--ivue-ease-in-out);
         width: auto;
         min-width: auto;
         height: auto;
 
         &:hover {
-          color: #444;
+          color: var(--#{$name}-close-hover-color);
         }
       }
     }
@@ -105,20 +129,20 @@ $name: 'ivue-message';
     display: flex;
     align-items: center;
     position: relative;
-    padding: 8px 16px;
+    padding: var(--#{$name}-notice-content-padding);
     pointer-events: all;
-    box-shadow: 0 1px 6px var(--#{$name}-notice-content-color);
+    box-shadow: var(--#{$name}-notice-content-shadow);
     background-color: var(--ivue-white-color);
-    border-radius: var(--ivue-border-radius-small);
+    border-radius: var(--ivue-border-radius);
 
     &-text {
-      margin-left: 5px;
+      margin-left: var(--#{$name}-notice-content-text-margin-left);
       display: inline-block;
     }
   }
 
   &-notice-closable &-notice-content-text {
-    margin-right: 32px;
+    margin-right: var(--#{$name}-notice-closable-margin-right);
   }
 
   &-content {
@@ -128,8 +152,8 @@ $name: 'ivue-message';
   }
 
   &-icon {
-    margin-right: 4px;
-    font-size: 18px;
+    margin-right: var(--#{$name}-icon-margin-right);
+    font-size: var(--#{$name}-icon-font-size);
     vertical-align: middle;
     width: auto;
     min-width: auto;
@@ -153,10 +177,10 @@ $name: 'ivue-message';
   }
 
   &-loading {
-    margin-right: 4px;
-    width: 16px;
-    vertical-align: middle;
+    margin-right: var(--#{$name}-loading-margin-right);
+    width: var(--#{$name}-loading-width);
     color: var(--ivue-primary-color);
+    vertical-align: middle;
   }
 
   .ivue-progress-circular-overlay {

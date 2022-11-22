@@ -3,8 +3,6 @@ import IvueInput from './ivue-input';
 import IvueIcon from './ivue-icon';
 import IvueButton from './ivue-button';
 import IvueContent from './ivue-content';
-import IvueList from './ivue-list';
-import IvueListItem from './Ivue-list-item';
 import IvueCarousel from './ivue-carousel';
 import IvueCarouselItem from './ivue-carousel-item';
 import IvueSwitch from './ivue-switch';
@@ -62,8 +60,6 @@ export {
   IvueIcon,
   IvueButton,
   IvueContent,
-  IvueList,
-  IvueListItem,
   IvueCarousel,
   IvueCarouselItem,
   IvueSwitch,

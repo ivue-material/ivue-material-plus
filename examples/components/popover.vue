@@ -1,6 +1,6 @@
 <template>
     <div class="content">
-        <ivue-select v-model="model1" style="width:200px" transfer>
+        <!-- <ivue-select v-model="model1" style="width:200px" transfer>
             <ivue-option
                 v-for="item in cityList"
                 :value="item.value"
@@ -23,8 +23,9 @@
                     >{{ item.label }}</ivue-option>
                 </ivue-select>
             </template>
-        </ivue-popover>
-        <!-- <h1>基础用法</h1>
+        </ivue-popover> -->
+
+        <h1>基础用法</h1>
         <div>
             <ivue-popover trigger="hover" title="Title" content="content" >
                 <ivue-button>Hover</ivue-button>
@@ -146,7 +147,7 @@
             @on-cancel="cancel"
         >
             <ivue-button>Delete</ivue-button>
-        </ivue-popover>-->
+        </ivue-popover>
     </div>
 </template>
 

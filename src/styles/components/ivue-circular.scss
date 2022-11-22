@@ -1,5 +1,9 @@
 $circular: 'ivue-circular';
 
+:root {
+  --#{$name}-transform: translateY(-50%);
+}
+
 .#{$circular} {
   position: relative;
   display: inline-block;
@@ -11,7 +15,7 @@ $circular: 'ivue-circular';
     position: absolute;
     left: 0;
     top: 50%;
-    transform: translateY(-50%);
+    transform: var(--#{$name}-transform);
     line-height: 1;
   }
 

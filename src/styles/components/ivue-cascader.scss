@@ -5,6 +5,48 @@
 $name: 'ivue-cascader';
 $input: 'ivue-input';
 
+
+:root {
+  --#{$name}-dropdown-padding: 5px 0;
+
+  // transfer
+  --#{$name}-dropdown-transfer-item-right: 24px;
+
+  // list
+  --#{$name}-dropdown-list-max-height: 190px;
+
+  // item
+  --#{$name}-dropdown-item-padding: 7px 16px;
+  --#{$name}-dropdown-item-font-size: 14px;
+
+  // item->icon
+  --#{$name}-dropdown-item-icon-font-size: 18px;
+  --#{$name}-dropdown-item-icon-right: 10px;
+
+  // item->loading
+  --#{$name}-dropdown-item-loading-size: 18px;
+
+  // not-found
+  --#{$name}-not-found-width: 200px;
+  --#{$name}-not-found-padding: 10px;
+
+  // label
+  --#{$name}-label-line-height: 32px;
+  --#{$name}-label-padding: 0 7px;
+  --#{$name}-label-font-size: 14px;
+
+  // arrow
+  --#{$name}-arrow-font-size: 18px;
+
+  // clearable
+  --#{$name}-clearable-font-size: 18px;
+
+  // menu
+  --#{$name}-menu-min-width: 100px;
+  --#{$name}-menu-height: 180px;
+  --#{$name}-menu-padding: 5px 0;
+}
+
 .#{$name} {
   line-height: normal;
   position: relative;
@@ -25,7 +67,7 @@ $input: 'ivue-input';
   }
 
   &-dropdown {
-    padding: 5px 0;
+    padding: var(--#{$name}-dropdown-padding);
 
     &--transfer {
       width: auto;
@@ -34,14 +76,13 @@ $input: 'ivue-input';
       overflow: visible;
 
       .#{$name}-menu--item {
-        padding-right: 24px;
-        transition: all .2s ease-in-out;
+        padding-right: var(--#{$name}-dropdown-transfer-item-right);
+        transition: var(--ivue-all-transition);
       }
     }
 
-
     &--list {
-      max-height: 190px;
+      max-height: var(--#{$name}-dropdown-list-max-height);
       box-sizing: border-box;
       overflow: auto;
       min-width: 100%;
@@ -52,10 +93,10 @@ $input: 'ivue-input';
       display: list-item;
       position: relative;
       margin: 0;
-      padding: 7px 16px;
+      padding: var(--#{$name}-dropdown-item-padding);
       clear: both;
       line-height: normal;
-      font-size: 14px;
+      font-size: var(--#{$name}-dropdown-item-font-size);
       list-style: none;
       cursor: pointer;
       word-break: break-all;
@@ -78,7 +119,7 @@ $input: 'ivue-input';
     }
 
     &-not-found {
-      width: 200px;
+      width: var(--#{$name}-not-found-width) !important;
     }
   }
 
@@ -89,16 +130,15 @@ $input: 'ivue-input';
     top: 0;
     width: 100%;
     height: 100%;
-    line-height: 32px;
-    padding: 0 7px;
+    line-height: var(--#{$name}-label-line-height);
+    padding: var(--#{$name}-label-padding);
     box-sizing: border-box;
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
     cursor: pointer;
-    font-size: 14px;
+    font-size: var(--#{$name}-label-font-size);
   }
-
 
   // 显示清除图片
   &-show-clear {
@@ -116,9 +156,9 @@ $input: 'ivue-input';
     bottom: 0;
     right: 0;
     left: 0;
-    font-size: 18px !important;
+    font-size: var(--#{$name}-arrow-font-size) !important;
     height: 100%;
-    transition: all .2s ease-in-out;
+    transition: var(--ivue-all-transition);
   }
 
   // 清除按钮
@@ -128,7 +168,7 @@ $input: 'ivue-input';
     bottom: 0;
     right: 0;
     left: 0;
-    font-size: 18px !important;
+    font-size: var(--#{$name}-clearable-font-size) !important;
     height: 100%;
     display: none;
   }
@@ -139,7 +179,7 @@ $input: 'ivue-input';
     border: none;
   }
 
-  /* 显示菜单 */
+  // 显示菜单
   &-visible {
     .#{$name}-arrow {
       transform: rotate(180deg);
@@ -157,10 +197,10 @@ $input: 'ivue-input';
   // 菜单
   &-menu {
     display: inline-block;
-    min-width: 100px;
-    height: 180px;
+    min-width: var(--#{$name}-menu-min-width);
+    height: var(--#{$name}-menu-height);
     margin: 0;
-    padding: 5px 0 !important;
+    padding: var(--#{$name}-menu-padding) !important;
     vertical-align: top;
     list-style: none;
     border-right: 1px solid var(--ivue-border-multiple-color);
@@ -177,15 +217,14 @@ $input: 'ivue-input';
       position: relative;
       margin: 0;
       line-height: normal;
-      padding: 7px 16px;
-      padding-right: 16px;
+      padding: var(--#{$name}-dropdown-item-padding);
       clear: both;
       color: var(--ivue-text-color);
       font-size: 14px !important;
       white-space: nowrap;
       list-style: none;
       cursor: pointer;
-      transition: all .2s ease-in-out;
+      transition: var(--ivue-all-transition);
 
       &:hover {
         background: var(--ivue-background-color-select-hover);
@@ -194,9 +233,9 @@ $input: 'ivue-input';
       .ivue-icon {
         position: absolute;
         top: 0;
-        right: 10px;
+        right: var(--#{$name}-dropdown-item-icon-right);
         height: 100%;
-        font-size: 18px;
+        font-size: var(--#{$name}-dropdown-item-icon-font-size);
         width: auto;
         min-width: auto;
         transition: none;
@@ -223,9 +262,9 @@ $input: 'ivue-input';
       // loading
       &-loading {
         position: absolute !important;
-        width: 18px;
-        height: 18px;
-        right: 10px;
+        width: var(--#{$name}-dropdown-item-loading-size);
+        height: var(--#{$name}-dropdown-item-loading-size);
+        right: var(--#{$name}-dropdown-item-icon-right);
         top: 0;
         bottom: 0;
         margin: auto 0;
@@ -251,13 +290,14 @@ $input: 'ivue-input';
     }
   }
 
+  // 没有数据提示
   &-not-found-tip {
-    padding: 10px 0;
+    padding: var(--#{$name}-not-found-padding);
     text-align: center;
     color: var(--ivue-disabled-color);
 
     &-text {
-      font-size: 14px;
+      font-size: var(--#{$name}-dropdown-item-font-size);
     }
   }
 

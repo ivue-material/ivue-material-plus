@@ -1,6 +1,13 @@
 $name: 'ivue-loading';
 
 :root {
+  --#{$name}-spinner-circular-size: 42px;
+  --#{$name}-font-size: 14px;
+
+  --#{$name}-fullscreen-circular-size: 50px;
+  --#{$name}-spinner-margin-top: -25px;
+
+  // color: ;
   --#{$name}-mask-color: rgba(255, 255, 255, 0.9);
 }
 
@@ -9,14 +16,14 @@ $name: 'ivue-loading';
   // 蒙版
   &-mask {
     position: absolute;
-    z-index: 2000;
-    background: var(--#{$name}-mask-color);
-    margin: 0;
     top: 0;
     right: 0;
     bottom: 0;
     left: 0;
-    transition: opacity .3s;
+    z-index: 2000;
+    background: var(--#{$name}-mask-color);
+    margin: 0;
+    transition: opacity .3s var(--ivue-ease-in-out);
   }
 
   // 父节点
@@ -44,8 +51,8 @@ $name: 'ivue-loading';
     color: var(--ivue-primary-color);
 
     .circular {
-      height: 42px;
-      width: 42px;
+      height: var(--#{$name}-spinner-circular-size);
+      width: var(--#{$name}-spinner-circular-size);
       animation: loading-rotate 2s linear infinite;
     }
 
@@ -70,7 +77,7 @@ $name: 'ivue-loading';
   &-text {
     color: currentColor;
     margin: 3px 0;
-    font-size: 14px;
+    font-size: var(--#{$name}-font-size);
   }
 }
 
@@ -110,11 +117,11 @@ $name: 'ivue-loading';
   position: fixed;
 
   .#{$name}-spinner {
-    margin-top: -25px;
+    margin-top: var(--#{$name}-spinner-margin-top);
   }
 
   .circular {
-    height: 50px;
-    width: 50px;
+    height: var(--#{$name}-fullscreen-circular-size);
+    width: var(--#{$name}-fullscreen-circular-size);
   }
 }

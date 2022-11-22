@@ -1,23 +1,37 @@
 $name:'ivue-picker';
 
+:root {
+  --#{$name}-radius: 2px;
+  --#{$name}-shadow: 0 2px 1px -1px rgba(0, 0, 0, .2),
+    0 1px 1px 0 rgba(0, 0, 0, .14),
+    0 1px 3px 0 rgba(0, 0, 0, .12);
+
+  // title
+  --#{$name}-title-padding: 16px;
+
+  // landscape
+  --#{$name}-landscape-title-width: 170px;
+
+}
+
 .#{$name} {
-  border-radius: 2px;
+  border-radius: var(--#{$name}-radius);
   contain: layout style;
   flex-direction: column;
   vertical-align: top;
 
   &-card {
     position: relative;
-    border-radius: 2px;
+    border-radius: var(--#{$name}-radius);
     min-width: 0;
     transition: $ivue-transition-default;
-    box-shadow: 0 2px 1px -1px rgba(0, 0, 0, .2), 0 1px 1px 0 rgba(0, 0, 0, .14), 0 1px 3px 0 rgba(0, 0, 0, .12);
+    box-shadow: var(--#{$name}-shadow)
   }
 
   &-title {
-    border-top-left-radius: 2px;
-    border-top-right-radius: 2px;
-    padding: 16px;
+    border-top-left-radius: var(--#{$name}-radiu);
+    border-top-right-radius: var(--#{$name}-radiu);
+    padding: var(--#{$name}-title-padding);
     color: var(--ivue-white-color);
   }
 
@@ -40,7 +54,7 @@ $name:'ivue-picker';
     display: flex;
   }
 
-  /*横向*/
+  // 横向
   &--landscape {
     .#{$name}-title {
       position: absolute;
@@ -50,16 +64,16 @@ $name:'ivue-picker';
       z-index: 1;
       border-top-right-radius: 0;
       border-bottom-right-radius: 0;
-      width: 170px;
+      width: var(--#{$name}-landscape-title-width);
     }
 
     .#{$name}-body {
-      margin-left: 170px;
+      margin-left: var(--#{$name}-landscape-title-width);
     }
   }
 }
 
-.primary {
+.#{$name}-primary {
   background-color: var(--ivue-primary-color);
   border-color: var(--ivue-primary-color);
 }

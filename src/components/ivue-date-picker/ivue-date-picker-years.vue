@@ -190,14 +190,14 @@ export default defineComponent({
 
         // 表格内容
         const genTBody = () => {
-            let children = [];
+            const children = [];
             // 一行3个
             const cols = Array(3).fill(null);
             // 4 行
             const rows = 12 / cols.length;
 
             // 开始年份
-            let startYear = Math.floor(displayedYear.value / 10) * 10;
+            const startYear = Math.floor(displayedYear.value / 10) * 10;
 
             for (let row = 0; row < rows; row++) {
                 const tds = cols.map((_, col) => {
@@ -279,7 +279,7 @@ export default defineComponent({
                 : props.textColor;
 
             const color =
-                (isSelected || isCurrent) && (props.color || 'primary');
+                (isSelected || isCurrent) && (props.color || 'ivue-picker-primary');
 
             return h(
                 'button',

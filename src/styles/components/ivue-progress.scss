@@ -1,6 +1,25 @@
 $name: 'ivue-progress';
 
 :root {
+  // show-info
+  --#{$name}-show-info-outer-padding-right: 55px;
+  --#{$name}-show-info-outer-margin-right: -55px;
+
+  // inner
+  --#{$name}-inner-radius: 100px;
+
+  // text
+  --#{$name}-font-size: 12px;
+  --#{$name}-text-margin: 0 6px;
+  --#{$name}-text-margin-left: 5px;
+
+  // active
+  --#{$name}-active-radius: 10px;
+
+  // vertical
+  --#{$name}-vertical-height: 100px;
+
+  // color
   --#{$name}-inner-color: #F8F9FD;
 }
 
@@ -22,8 +41,8 @@ $name: 'ivue-progress';
   }
 
   &-show-info &-outer {
-    padding-right: 55px;
-    margin-right: -55px;
+    padding-right: var(--#{$name}-show-info-outer-padding-right);
+    margin-right: var(--#{$name}-show-info-outer-margin-right);
   }
 
   // 内容
@@ -32,7 +51,7 @@ $name: 'ivue-progress';
     position: relative;
     width: 100%;
     background-color: var(--#{$name}-inner-color);
-    border-radius: 100px;
+    border-radius: var(--#{$name}-inner-radius);
     vertical-align: middle;
     overflow: hidden;
 
@@ -41,8 +60,8 @@ $name: 'ivue-progress';
       display: inline-block;
       vertical-align: middle;
       color: var(--ivue-white-color);
-      font-size: 12px;
-      margin: 0 6px;
+      font-size: var(--#{$name}-font-size);
+      margin: var(--#{$name}-text-margin);
     }
   }
 
@@ -50,7 +69,7 @@ $name: 'ivue-progress';
   &-bg {
     text-align: right;
     position: relative;
-    border-radius: 100px;
+    border-radius: var(--#{$name}-inner-radius);
     background-color: currentColor;
     transition: all .6s $ivue-transition-default-timing;
     animation-duration: 3s;
@@ -60,7 +79,7 @@ $name: 'ivue-progress';
     position: absolute;
     top: 0;
     left: 0;
-    border-radius: 100px;
+    border-radius: var(--#{$name}-inner-radius);
     background-color: var(--ivue-success-color);
     transition: all .6s $ivue-transition-default-timing;
     animation-duration: 3s;
@@ -68,14 +87,14 @@ $name: 'ivue-progress';
 
   &-text {
     display: flex;
-    margin-left: 5px;
+    margin-left: var(--#{$name}-text-margin-left);
     text-align: left;
     color: var(--ivue-text-color);
 
     .ivue-icon {
       min-width: auto;
       width: auto;
-      font-size: 12px;
+      font-size: var(--#{$name}-font-size);
       height: auto;
     }
   }
@@ -131,16 +150,15 @@ $name: 'ivue-progress';
       right: 0;
       bottom: 0;
       background: var(--ivue-white-color);
-      border-radius: 10px;
+      border-radius: var(--#{$name}-active-radius);
       opacity: 0;
       animation: ivue-progress-active 2s ease infinite;
     }
   }
 
-
   // 垂直
   &-vertical {
-    height: 100px;
+    height: var(--#{$name}-vertical-height);
     width: auto;
     flex-direction: column;
     justify-content: center;

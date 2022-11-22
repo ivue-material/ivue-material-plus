@@ -257,7 +257,7 @@ export default defineComponent({
                 : props.textColor;
 
             const color =
-                (isSelected || isCurrent) && (props.color || 'primary');
+                (isSelected || isCurrent) && (props.color || 'ivue-picker-primary');
 
             return h(
                 'button',

@@ -1,6 +1,25 @@
 $name: 'ivue-chip';
 
 :root {
+  // size
+  --#{$name}-radius: 32px;
+  --#{$name}-font-size: 14px;
+  --#{$name}-margin: 4px;
+
+  // content
+  --#{$name}-content-height: 32px;
+  --#{$name}-content-radius: 28px;
+  --#{$name}-content-padding: 0 12px;
+
+  // 正方形
+  --#{$name}-square-radius: 2px;
+
+  // close->content
+  --#{$name}-close-content-padding: 0 4px 0 12px;
+  --#{$name}-close-font-size: 20px;
+  --#{$name}-close-margin: 0 2px 0 8px;
+
+  // color
   --#{$name}-bg: #e0e0e0;
   --#{$name}-outline-color: #9e9e9e;
   --#{$name}-depressed-shadow: 0px 3px 1px -2px rgba(0, 0, 0, 0.2),
@@ -12,9 +31,9 @@ $name: 'ivue-chip';
   position: relative;
   display: inline-flex;
   align-items: center;
-  border-radius: 32px;
-  font-size: 14px;
-  margin: 4px;
+  border-radius: var(--#{$name}-radius);
+  font-size: var(--#{$name}-font-size);
+  margin: var(--#{$name}-margin);
   outline: none;
   vertical-align: middle;
   transition: $ivue-transition-stand;
@@ -36,8 +55,7 @@ $name: 'ivue-chip';
   }
 
   .ivue-icon {
-    margin-left: -6px;
-    margin-right: 8px;
+    margin: 0;
   }
 
   &--depressed {
@@ -54,11 +72,11 @@ $name: 'ivue-chip';
   &-content {
     display: flex;
     align-items: center;
-    border-radius: 28px;
+    border-radius: var(--#{$name}-content-radius);
     cursor: default;
     justify-content: space-between;
-    height: 32px;
-    padding: 0 12px;
+    height: var(--#{$name}-content-height);
+    padding: var(--#{$name}-content-padding);
     vertical-align: middle;
     white-space: nowrap;
     z-index: 1;
@@ -75,31 +93,31 @@ $name: 'ivue-chip';
     background-color: transparent !important;
     border: 1px solid currentColor;
     color: var(--#{$name}-outline-color);
-    height: 32px;
+    height: var(--#{$name}-content-height);
   }
 
   // 正方形
   &--square {
-    border-radius: 2px;
+    border-radius: var(--#{$name}-square-radius);
   }
 
   // 关闭按钮
   &--close &-content {
-    padding: 0 4px 0 12px;
+    padding: var(--#{$name}-close-content-padding);
   }
 
   &-close {
     align-items: center;
     color: inherit;
     display: flex;
-    font-size: 20px;
-    margin: 0 2px 0 8px;
+    font-size: var(--#{$name}-close-font-size);
+    margin: var(--#{$name}-close-margin);
     text-decoration: none;
     user-select: none;
 
     &>.ivue-icon {
       color: inherit;
-      font-size: 20px;
+      font-size: var(--#{$name}-close-font-size);
       opacity: 0.5;
       margin: 0;
       cursor: pointer;

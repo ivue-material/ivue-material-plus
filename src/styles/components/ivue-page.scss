@@ -3,7 +3,51 @@
 $name: 'ivue-page';
 
 :root {
-  --#{$name}-shadow-color: rgba(91, 142, 255, 0.2);
+  // total
+  --#{$name}-total-height: 32px;
+  --#{$name}-total-margin-right: 10px;
+  --#{$name}-total-font-size: 14px;
+
+  // item
+  --#{$name}-item-margin-right: 5px;
+  --#{$name}-item-line-height: 30px;
+  --#{$name}-item-radius: 4px;
+
+  // text
+  --#{$name}-item-text-padding: 0 6px;
+
+  // prev
+  --#{$name}-item-icon-font-size: 20px;
+
+  // abbreviation
+  --#{$name}-abbreviation-font-size: 12px;
+  --#{$name}-abbreviation-icon-font-size: 20px;
+
+  // 小型分页样式
+  --#{$name}-small-icon-line-height: 22px;
+
+  // simple
+  --#{$name}-simple-font-size: 18px;
+  --#{$name}-simple-sign-padding: 0 8px 0 2px;
+  --#{$name}-simple-input-width: 30px;
+  --#{$name}-simple-input-padding: 4px 7px;
+  --#{$name}-simple-input-margin: 0 8px;
+
+  // input
+  --#{$name}-input-shadow: 0 0 0 2px rgba(91, 142, 255, 0.2);
+
+  // icon
+  --#{$name}-icon-size: 24px;
+
+  // options
+  --#{$name}-options-margin-left: 15px;
+  --#{$name}-options-sizer-margin-right: 10px;
+
+  // elevator
+  --#{$name}-options-elevator-height: 32px;
+  --#{$name}-options-elevator-width: 50px;
+
+  // color
   --#{$name}-disabled-color: #F8F9FD;
 }
 
@@ -16,10 +60,10 @@ $name: 'ivue-page';
   // 数据总条数文字
   &-total {
     display: inline-block;
-    height: 32px;
-    line-height: 32px;
-    margin-right: 10px;
-    font-size: 14px;
+    height: var(--#{$name}-total-height);
+    line-height: var(--#{$name}-total-height);
+    margin-right: var(--#{$name}-total-margin-right);
+    font-size: var(--#{$name}-total-font-size);
   }
 
   // 选项
@@ -29,15 +73,15 @@ $name: 'ivue-page';
     justify-content: center;
     align-items: center;
     user-select: none;
-    margin-right: 5px;
-    min-width: 32px;
-    height: 32px;
-    line-height: 30px;
+    margin-right: var(--#{$name}-item-margin-right);
+    min-width: var(--#{$name}-total-height);
+    height: var(--#{$name}-total-height);
+    line-height: var(--#{$name}-item-line-height);
     list-style: none;
     cursor: pointer;
     border: 1px solid var(--ivue-border-color);
-    border-radius: 4px;
-    transition: all .2s ease-in-out;
+    border-radius: var(--#{$name}-item-radius);
+    transition: var(--ivue-all-transition);
     color: var(--ivue-text-color);
 
     &:hover {
@@ -45,11 +89,10 @@ $name: 'ivue-page';
       border-color: var(--ivue-primary-color);
     }
 
-
     // 文字
     &--text {
-      padding: 0 6px;
-      font-size: 14px;
+      padding: var(--#{$name}-item-text-padding);
+      font-size: var(--#{$name}-total-font-size);
     }
 
     // 激活
@@ -66,7 +109,7 @@ $name: 'ivue-page';
 
     i {
       transition: none;
-      font-size: 20px;
+      font-size: var(--#{$name}-item-icon-font-size);
     }
   }
 
@@ -82,10 +125,10 @@ $name: 'ivue-page';
     transition: none;
     box-shadow: none;
     overflow: hidden;
-    font-size: 12px;
+    font-size: var(--#{$name}-abbreviation-font-size);
 
     i {
-      font-size: 20px;
+      font-size: var(--#{$name}-abbreviation-icon-font-size);
     }
 
     // 缩略号
@@ -112,7 +155,7 @@ $name: 'ivue-page';
         bottom: 0;
         margin-left: 5px;
         color: var(--ivue-primary-color);
-        font-size: 20px;
+        font-size: var(--#{$name}-abbreviation-icon-font-size);
 
         &:first-child {
           margin-left: -1px;
@@ -142,9 +185,9 @@ $name: 'ivue-page';
     .#{$name}-prev,
     .#{$name}-next {
       margin: 0;
-      min-width: 24px;
-      height: 24px;
-      line-height: 22px;
+      min-width: var(--#{$name}-icon-size);
+      height: var(--#{$name}-icon-size);
+      line-height: var(--#{$name}-small-icon-line-height);
       border: 0;
     }
 
@@ -152,14 +195,14 @@ $name: 'ivue-page';
     .#{$name}-item {
       border: 0;
       margin: 0;
-      min-width: 24px;
-      height: 24px;
-      line-height: 24px;
+      min-width: var(--#{$name}-icon-size);
+      height: var(--#{$name}-icon-size);
+      line-height: var(--#{$name}-icon-size);
     }
 
     // 省略号
     .#{$name}-abbreviation .arrow .ivue-icon {
-      font-size: 14px;
+      font-size: var(--#{$name}-total-font-size);
       margin-left: 2px;
 
       &:first-child {
@@ -170,20 +213,19 @@ $name: 'ivue-page';
     // 选择页数
     .#{$name}-options--sizer {
       .ivue-select-default .ivue-select-selection {
-        height: 24px;
-        min-height: 24px;
+        height: var(--#{$name}-icon-size);
+        min-height: var(--#{$name}-icon-size);
       }
 
       .ivue-select-selection-value {
-        height: 24px;
-        line-height: 24px;
+        height: var(--#{$name}-icon-size);
+        line-height: var(--#{$name}-icon-size);
       }
     }
 
-
     // 跳转页数
     .#{$name}-options--elevator__input {
-      height: 24px;
+      height: var(--#{$name}-icon-size);
     }
   }
 
@@ -195,9 +237,9 @@ $name: 'ivue-page';
     .#{$name}-next {
       margin: 0;
       border: 0;
-      height: 24px;
+      height: var(--#{$name}-icon-size);
       line-height: normal;
-      font-size: 18px;
+      font-size: var(--#{$name}-simple-font-size);
     }
 
     // 页数
@@ -209,31 +251,31 @@ $name: 'ivue-page';
 
     // 符号
     &-sign {
-      padding: 0 8px 0 2px;
+      padding: var(--#{$name}-simple-sign-padding);
     }
 
     // 输入框
     &-input {
-      display: inline-block;
-      width: 30px;
-      height: 24px;
-      padding: 4px 7px;
-      font-size: 14px;
-      border: 1px solid $border-color;
-      color: $text-color;
-      background-color: $white-color;
-      background-image: none;
       position: relative;
+      display: inline-block;
+      width: var(--#{$name}-simple-input-width);
+      height: var(--#{$name}-icon-size);
+      padding: var(--#{$name}-simple-input-padding);
+      font-size: var(--#{$name}-total-font-size);
+      border: 1px solid var(--ivue-border-color);
+      color: var(--ivue-text-color);
+      background-color: var(--ivue-white-color);
+      background-image: none;
       cursor: text;
-      transition: all .2s ease-in-out;
-      border-radius: 4px;
-      margin: 0 8px;
+      transition: var(--ivue-all-transition);
+      border-radius: var(--ivue-border-radius);
+      margin: var(--#{$name}-simple-input-margin);
       text-align: center;
 
 
       &:focus {
         outline: 0;
-        box-shadow: 0 0 0 2px var(--#{$name}-shadow-color);
+        box-shadow: var(--#{$name}-input-shadow);
       }
 
       &:focus,
@@ -278,12 +320,12 @@ $name: 'ivue-page';
   &-options {
     display: inline-block;
     vertical-align: middle;
-    margin-left: 15px;
+    margin-left: var(--#{$name}-options-margin-left);
 
     // 显示分页
     &--sizer {
       display: inline-block;
-      margin-right: 10px;
+      margin-right: var(--#{$name}-options-sizer-margin-right);
 
       // 下拉框样式
       &__dropdown {
@@ -292,15 +334,15 @@ $name: 'ivue-page';
 
       // 下拉框样式
       .ivue-select-default .ivue-select-selection {
-        height: 32px;
-        min-height: 32px;
+        height: var(--#{$name}-total-height);
+        min-height: var(--#{$name}-total-height);
       }
 
       // 下拉框样式
       .ivue-select-selection-value {
-        height: 30px;
-        line-height: 30px;
-        font-size: 14px;
+        height: var(--#{$name}-item-line-height);
+        line-height: var(--#{$name}-item-line-height);
+        font-size: var(--#{$name}-total-font-size);
       }
     }
 
@@ -308,31 +350,31 @@ $name: 'ivue-page';
     &--elevator {
       display: inline-block;
       vertical-align: middle;
-      height: 32px;
-      line-height: 32px;
-      font-size: 14px;
+      height: var(--#{$name}-options-elevator-height);
+      line-height: var(--#{$name}-options-elevator-height);
+      font-size: var(--#{$name}-total-font-size);
       color: var(--ivue-text-color);
 
       // 输入框
       &__input {
         display: inline-block;
-        padding: 4px 7px;
-        font-size: 14px;
+        padding: var(--#{$name}-simple-input-padding);
+        font-size: var(--#{$name}-total-font-size);
         border: 1px solid var(--ivue-border-color);
         color: var(--ivue-text-color);
         background-color: var(--ivue-white-color);
         background-image: none;
         position: relative;
         cursor: text;
-        transition: all .2s ease-in-out;
-        border-radius: 4px;
+        transition: var(--ivue-all-transition);
+        border-radius: var(--ivue-border-radius);
         margin: 0 8px;
-        width: 50px;
-        height: 32px;
+        width: var(--#{$name}-options-elevator-width);
+        height: var(--#{$name}-total-height);
 
         &:focus {
           outline: 0;
-          box-shadow: 0 0 0 2px var(--#{$name}-shadow-color);
+          box-shadow: var(--#{$name}-input-shadow);
         }
 
         &:focus,

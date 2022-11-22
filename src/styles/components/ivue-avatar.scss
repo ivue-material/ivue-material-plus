@@ -1,5 +1,10 @@
 $name: 'ivue-avatar';
 
+:root {
+  --#{$name}-size: 32px;
+  --#{$name}-square-radius: 4px;
+}
+
 .#{$name} {
   display: inline-flex;
   text-align: center;
@@ -11,9 +16,9 @@ $name: 'ivue-avatar';
   vertical-align: middle;
   align-items: center;
   justify-content: center;
-  width: 32px;
-  height: 32px;
-  line-height: 32px;
+  width: var(--#{$name}-size);
+  height: var(--#{$name}-size);
+  line-height: var(--#{$name}-size);
 
   /* 图片 */
   &-img {
@@ -28,6 +33,6 @@ $name: 'ivue-avatar';
 
   /* 正方形 */
   &-square {
-    border-radius: 4px;
+    border-radius: var(--#{$name}-square-radius);
   }
 }

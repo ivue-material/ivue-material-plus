@@ -1,6 +1,28 @@
 $name: 'ivue-image';
 
 :root {
+  --#{$name}-font-size: 14px;
+
+  // preview
+  --#{$name}-preview-font-size: 16px;
+  --#{$name}-preview-icon-size: 40px;
+  --#{$name}-preview-icon-font-size: 26px;
+  --#{$name}-preview-close-position: 16px;
+  --#{$name}-preview-arrow-font-size: 35px;
+
+  // toolbar
+  --#{$name}-toolbar-bottom: 30px;
+  --#{$name}-toolbar-height: 40px;
+  --#{$name}-toolbar-radius: 4px;
+  --#{$name}-toolbar-transform: translate(-50%);
+
+  // toolbar-item
+  --#{$name}-toolbar-item-margin: 0 6px;
+  --#{$name}-toolbar-item-padding: 4px 8px;
+  --#{$name}-toolbar-item-width: 36px;
+  --#{$name}-toolbar-item-height: 40px;
+
+  // color
   --#{$name}-mark-color: rgba(55, 55, 55, .6);
   --#{$name}-preview-color: rgba(55, 55, 55, 0.4);
 }
@@ -38,7 +60,7 @@ $name: 'ivue-image';
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 14px;
+    font-size: var(--#{$name}-font-size);
     z-index: 1;
     color: var(--ivue-primary-color);
   }
@@ -56,12 +78,12 @@ $name: 'ivue-image';
     bottom: 0;
     background-color: var(--#{$name}-mark-colo);
     z-index: 1;
-    color: $white-color;
+    color: var(--ivue-white-color);
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 14px;
+    font-size: var(--#{$name}-font-size);
     transition: opacity .3s;
     opacity: 0;
     user-select: none;
@@ -111,7 +133,7 @@ $name: 'ivue-image';
     // 加载错误
     &-error {
       color: var(--ivue-error-color);
-      font-size: 16px;
+      font-size: var(--#{$name}-preview-font-size);
     }
 
     // 图片
@@ -146,52 +168,52 @@ $name: 'ivue-image';
     .#{$name}-preview-left,
     // 右按钮
     .#{$name}-preview-right {
-      width: 40px;
-      height: 40px;
-      line-height: 40px;
+      width: var(--#{$name}-preview-icon-size);
+      height: var(--#{$name}-preview-icon-size);
+      line-height: var(--#{$name}-preview-icon-size);
       border-radius: 50%;
-      color: $white-color;
+      color: var(--ivue-white-color);
       z-index: 1;
-      font-size: 26px;
+      font-size: var(--#{$name}-preview-icon-font-size);
       cursor: pointer;
       background: var(--#{$name}-preview-color);
     }
 
     .#{$name}-preview-close {
       position: absolute;
-      right: 16px;
-      top: 16px;
+      right: var(--#{$name}-preview-close-position);
+      top: var(--#{$name}-preview-close-position);
     }
 
     // 左按钮
     .#{$name}-preview-left {
       position: absolute;
       top: 50%;
-      left: 16px;
+      left: var(--#{$name}-preview-close-position);
       transform: translateY(-50%);
-      font-size: 35px;
+      font-size: var(--#{$name}-preview-arrow-font-size);
     }
 
     // 右按钮
     .#{$name}-preview-right {
       position: absolute;
       top: 50%;
-      right: 16px;
+      right: var(--#{$name}-preview-close-position);
       transform: translateY(-50%);
-      font-size: 35px;
+      font-size: var(--#{$name}-preview-arrow-font-size);
     }
 
     // 菜单
     &-toolbar {
       position: absolute;
       left: 50%;
-      bottom: 30px;
-      height: 40px;
+      bottom: var(--#{$name}-toolbar-bottom);
+      height: var(--#{$name}-toolbar-height);
       z-index: 1;
-      border-radius: 4px;
-      overflow: hidden;
+      border-radius: var(--#{$name}-toolbar-radius);
       background: var(--#{$name}-preview-color);
-      transform: translate(-50%);
+      transform: var(--#{$name}-toolbar-transform);
+      overflow: hidden;
       display: flex;
       flex-flow: row wrap;
       flex-wrap: nowrap;
@@ -202,11 +224,11 @@ $name: 'ivue-image';
         position: relative;
         max-width: 100%;
         min-height: 1px;
-        margin: 0 6px;
-        padding: 4px 8px;
-        width: 36px;
-        height: 40px;
-        color: $white-color;
+        margin: var(--#{$name}-toolbar-item-margin);
+        padding: var(--#{$name}-toolbar-item-padding);
+        width: var(--#{$name}-toolbar-item-width);
+        height: var(--#{$name}-toolbar-item-height);
+        color: var(--ivue-white-color);
         cursor: pointer;
         transition: opacity 0.1s ease-in-out;
         display: flex;

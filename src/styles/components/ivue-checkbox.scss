@@ -1,8 +1,35 @@
-@import "../animation/variables";
-
 $name: 'ivue-checkbox';
-$transition-time: .2s;
-$ease-in-out: ease-in-out;
+
+:root {
+  --#{$name}-font-size: 14px;
+  --#{$name}-right: 8px;
+  --#{$name}-text-padding-left: 4px;
+
+  // 方框
+  --#{$name}-inner-size: 16px;
+  --#{$name}-inner-radius: 2px;
+
+  // 选中效果
+  --#{$name}-inner-after-width: 4px;
+  --#{$name}-inner-after-height: 8px;
+  --#{$name}-inner-after-top: 2px;
+  --#{$name}-inner-after-left: 5px;
+
+  // indeterminate
+  --#{$name}-inner-before-width: 10px;
+  --#{$name}-inner-before-height: 2px;
+  --#{$name}-inner-before-top: 6px;
+  --#{$name}-inner-before-left: 2px;
+
+  // 内容
+  --#{$name}-label-text-margin: 0 4px;
+
+  // 边框
+  --#{$name}-border-height: 32px;
+  --#{$name}-border-line-height: 30px;
+  --#{$name}-border-radius: 4px;
+  --#{$name}-border-padding: 0 15px;
+}
 
 .#{$name} {
   display: inline-block;
@@ -14,18 +41,17 @@ $ease-in-out: ease-in-out;
 
   &-wrapper {
     cursor: pointer;
-    font-size: 14px;
+    font-size: var(--#{$name}-font-size);
     display: inline-block;
-    margin-right: 8px;
+    margin-right: var(--#{$name}-right);
 
     +span {
-      padding-left: 4px;
-
+      padding-left: var(--#{$name}-text-padding-left);
     }
 
     // 禁用
     &--disabled {
-      cursor: not-allowed;
+      cursor: var(--ivue-cursor-disabled);
     }
 
     // 激活边框
@@ -41,7 +67,7 @@ $ease-in-out: ease-in-out;
 
   // 禁用
   &-disabled {
-    cursor: not-allowed;
+    cursor: var(--ivue-cursor-disabled);
   }
 
 
@@ -64,41 +90,43 @@ $ease-in-out: ease-in-out;
   // 方框
   &-inner {
     display: inline-block;
-    width: 16px;
-    height: 16px;
+    width: var(--#{$name}-inner-size);
+    height: var(--#{$name}-inner-size);
     position: relative;
     top: 0;
     left: 0;
     border: 1px solid var(--ivue-border-color);
-    border-radius: 2px;
+    border-radius: var(--#{$name}-inner-radius);
     background-color: var(--ivue-white-color);
-    transition: border-color $transition-time $ease-in-out, background-color $transition-time $ease-in-out, box-shadow $transition-time $ease-in-out;
+    transition: border-color var(--ivue-default-transition-time) var(--ivue-ease-in-out),
+      background-color var(--ivue-default-transition-time) var(--ivue-ease-in-out),
+      box-shadow var(--ivue-default-transition-time) var(--ivue-ease-in-out);
 
     // 中间样式
     &::after {
       content: '';
-      display: table;
-      width: 4px;
-      height: 8px;
       position: absolute;
-      top: 2px;
-      left: 5px;
+      top: var(--#{$name}-inner-after-top);
+      left: var(--#{$name}-inner-after-left);
+      display: table;
+      width: var(--#{$name}-inner-after-width);
+      height: var(--#{$name}-inner-after-height);
       border: 2px solid var(--ivue-border-color);
       border-top: 0;
       border-left: 0;
       transform: rotate(45deg) scale(0);
-      transition: all $transition-time $ease-in-out;
+      transition: var(--ivue-all-transition);
     }
 
     // indeterminate
     &::before {
       content: '';
-      display: none;
-      width: 10px;
-      height: 2px;
       position: absolute;
-      left: 2px;
-      top: 6px;
+      top: var(--#{$name}-inner-before-top);
+      left: var(--#{$name}-inner-before-left);
+      display: none;
+      width: var(--#{$name}-inner-before-width);
+      height: var(--#{$name}-inner-before-height);
     }
   }
 
@@ -122,8 +150,7 @@ $ease-in-out: ease-in-out;
 
   // 内容
   &-label-text {
-    margin-right: 4px;
-    padding-left: 4px;
+    margin: var(--#{$name}-label-text-margin);
 
     // 禁用
     &--disabled {
@@ -145,7 +172,7 @@ $ease-in-out: ease-in-out;
 
   // 组合
   &-group {
-    font-size: 14px;
+    font-size: var(--#{$name}-font-size);
 
     &--item {
       display: inline-block;
@@ -155,11 +182,11 @@ $ease-in-out: ease-in-out;
   // 边框
   &-border {
     border: 1px solid var(--ivue-border-color);
-    border-radius: 4px;
-    height: 32px;
-    line-height: 30px;
-    padding: 0 15px;
-    transition: border $transition-time $ease-in-out;
+    border-radius: var(--#{$name}-border-radius);
+    height: var(--#{$name}-border-height);
+    line-height: var(--#{$name}-border-line-height);
+    padding: var(--#{$name}-border-padding);
+    transition: border var(--ivue-default-transition-time) var(--ivue-ease-in-out);
   }
 
   // indeterminate

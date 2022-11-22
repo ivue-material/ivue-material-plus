@@ -5,8 +5,6 @@ import { IvueInput } from './components/ivue-input';
 import { IvueIcon } from './components/ivue-icon';
 import { IvueButton } from './components/ivue-button';
 import { IvueContent } from './components/ivue-content';
-import { IvueList } from './components/ivue-list';
-import { IvueListItem } from './components/Ivue-list-item';
 import { IvueCarousel } from './components/ivue-carousel';
 import { IvueCarouselItem } from './components/ivue-carousel-item';
 import { IvueSwitch } from './components/ivue-switch';
@@ -113,8 +111,6 @@ export {
     IvueIcon,
     IvueButton,
     IvueContent,
-    IvueList,
-    IvueListItem,
     IvueCarousel,
     IvueCarouselItem,
     IvueSwitch,

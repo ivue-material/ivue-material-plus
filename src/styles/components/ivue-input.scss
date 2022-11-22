@@ -1,6 +1,53 @@
 $name: 'ivue-input';
 
 :root {
+  --#{$name}-padding: 4px 7px;
+  --#{$name}-height: 32px;
+
+  // small
+  --#{$name}-small-padding: 1px 7px;
+  --#{$name}-small-height: 24px;
+  --#{$name}-small-radius: 24px;
+  --#{$name}-small-search-padding: 0 12px;
+  --#{$name}-small-group-height: 24px;
+  --#{$name}-small-group-radius: 3px;
+
+  // large
+  --#{$name}-large-padding: 6px 7px;
+  --#{$name}-large-height: 40px;
+  --#{$name}-large-search-padding: 0 20px;
+
+  // group
+  --#{$name}-group-padding: 4px 7px;
+  --#{$name}-group-radius: 4px;
+  --#{$name}-group-font-size: 14px;
+
+  // prefix
+  --#{$name}-prefix-padding: 32px;
+  // suffix
+  --#{$name}-suffix-padding: 32px;
+
+  // 图标
+  --#{$name}-icon-width: 32px;
+
+  // 小图标
+  --#{$name}-small-icon-size: 24px;
+
+  // 大图标
+  --#{$name}-large-icon-size: 40px;
+
+  // textarea
+  --#{$name}-textarea-min-height: 32px;
+
+  // 字数统计
+  --#{$name}-word-count-right: 7px;
+  --#{$name}-word-count-top: 2px;
+  --#{$name}-word-count-font-size: 12px;
+
+  // search
+  --#{$name}-search-padding: 0 16px;
+
+  // color
   --#{$name}-shadow-color: rgba(91, 142, 255, 0.2);
   --#{$name}-disabled-bg: #F8F9FD;
   --#{$name}-word-count-color: #9AB0C6;
@@ -14,16 +61,25 @@ $name: 'ivue-input';
   line-height: normal;
   width: 100%;
 
+  &-clearable .#{$name}-content {
+    &:hover {
+      .#{$name}-password {
+        opacity: 0 !important;
+      }
+    }
+  }
+
+
   .#{$name}-group-prepend,
   .#{$name}-group-append {
-    padding: 4px 7px;
+    padding: var(--#{$name}-group-padding);
     font-size: inherit;
     font-weight: 400;
     line-height: 1;
     color: var(--ivue-text-color);
     text-align: center;
     border: 1px solid var(--ivue-border-color);
-    border-radius: 4px;
+    border-radius: var(--#{$name}-group-radius);
     display: table-cell;
     width: 1px;
     white-space: nowrap;
@@ -43,24 +99,27 @@ $name: 'ivue-input';
   }
 
   .#{$name}-with-prefix {
-    padding-left: 32px;
+    padding-left: var(--#{$name}-prefix-padding);
   }
 
   .#{$name}-with-suffix {
-    padding-right: 32px;
+    padding-right: var(--#{$name}-suffix-padding);
   }
 
   // 图标
   .#{$name}-icon,
   .#{$name}-clear {
     position: absolute;
+    top: 0;
+    bottom: 0;
     right: 0;
     line-height: 1;
     font-size: var(--ivue-font-default-size);
     color: var(--ivue-arrow-color);
-    height: 100%;
-    width: 32px;
-    transition: all .2s ease-in-out;
+    height: auto;
+    margin: 0;
+    width: var(--#{$name}-icon-width);
+    transition: var(--ivue-all-transition);
     cursor: pointer;
     z-index: 10;
     overflow: hidden;
@@ -72,18 +131,13 @@ $name: 'ivue-input';
       display: flex;
       width: 100%;
       font-size: var(--ivue-font-default-size);
-      transition: all .2s ease-in-out;
-
-      &--wrapper {
-        padding: 2px 0;
-      }
+      transition: var(--ivue-all-transition);
     }
   }
 
   .#{$name}-clear {
     top: 0;
     right: 1px;
-    padding: 2px 0;
   }
 
   .is-suffix {
@@ -96,14 +150,14 @@ $name: 'ivue-input';
     position: absolute;
     left: 0;
     top: 0;
-    width: 32px;
+    width: var(--#{$name}-suffix-padding);
     height: 100%;
     text-align: center;
     z-index: 1;
 
     i {
       font-size: var(--ivue-font-default-size);
-      line-height: 32px;
+      line-height: var(--#{$name}-suffix-padding);
       height: 100%;
       color: var(--ivue-arrow-color);
     }
@@ -117,14 +171,18 @@ $name: 'ivue-input';
   // 小图标
   &-small {
 
+    .#{$name}-content {
+      border-radius: var(--#{$name}-small-group-radius);
+    }
+
     .#{$name}-icon,
     .#{$name}-icon i,
     .#{$name}-prefix i,
     .#{$name}-suffix i {
-      width: 24px;
       font-size: var(--ivue-font-base-size);
-      height: 100%;
-      line-height: 24px;
+      width: var(--#{$name}-small-icon-size);
+      height: var(--#{$name}-small-icon-size);
+      line-height: var(--#{$name}-small-icon-size);
     }
 
 
@@ -138,8 +196,9 @@ $name: 'ivue-input';
     .#{$name}-prefix i,
     .#{$name}-suffix i {
       font-size: var(--ivue-font-large-size);
-      height: 100%;
-      line-height: 40px;
+      width: var(--#{$name}-large-icon-size);
+      height: var(--#{$name}-large-icon-size);
+      line-height: var(--#{$name}-large-icon-size);
     }
   }
 }
@@ -148,16 +207,18 @@ $name: 'ivue-input';
 .#{$name} {
   display: inline-block;
   position: relative;
-  padding: 4px 7px;
+  padding: var(--#{$name}-padding);
   font-size: var(--ivue-font-base-size);
-  border-radius: var(--ivue-border-radius-small);
+  border-radius: var(--ivue-border-radius);
   border: none;
   color: var(--ivue-title-color);
   cursor: text;
   width: 100%;
-  line-height: 1.5;
-  height: 32px;
-  transition: border $ivue-transition-default, background $ivue-transition-default, box-shadow $ivue-transition-default;
+  line-height: 1;
+  height: var(--#{$name}-height);
+  transition: border $ivue-transition-default,
+    background $ivue-transition-default,
+    box-shadow $ivue-transition-default;
 
   // input外壳
   &-content {
@@ -165,9 +226,11 @@ $name: 'ivue-input';
     display: inline-block;
     width: 100%;
     padding: 0 !important;
-    border-radius: $border-radius-small + 1;
+    border-radius: var(--ivue-border-radius);
     border: 1px solid var(--ivue-border-color);
-    transition: border $ivue-transition-default, background $ivue-transition-default, box-shadow $ivue-transition-default;
+    transition: border $ivue-transition-default,
+      background $ivue-transition-default,
+      box-shadow $ivue-transition-default;
     overflow: hidden;
 
     &:hover {
@@ -198,24 +261,27 @@ $name: 'ivue-input';
 
   // 密码
   &-password {
-    padding: 2px 0;
+    opacity: 1;
+    transition: var(--ivue-all-transition);
 
     i {
       background: var(--ivue-white-color);
     }
   }
 
+  // small
   &-small {
-    padding: 1px 7px;
-    height: 24px;
-    border-radius: 3px;
     font-size: var(--ivue-font-base-size);
+    padding: var(--#{$name}-small-padding);
+    height: var(--#{$name}-small-height);
+
   }
 
+  // large
   &-large {
     font-size: var(--ivue-font-large-size);
-    padding: 6px 7px;
-    height: 40px;
+    padding: var(--#{$name}-large-padding);
+    height: var(--#{$name}-large-height);
   }
 
   &:focus {
@@ -243,14 +309,16 @@ $name: 'ivue-input';
 }
 
 
+// textarea
 .#{$name}-textarea {
   max-width: 100%;
   border: 1px solid var(--ivue-border-color);
   height: auto;
-  min-height: 32px;
+  min-height: var(--#{$name}-textarea-min-height);
   vertical-align: bottom;
 }
 
+// textarea
 .#{$name}-type-textarea {
   .#{$name}-word-count {
     align-items: flex-end;
@@ -264,13 +332,13 @@ $name: 'ivue-input';
   width: 100%;
   border-collapse: separate;
   position: relative;
-  font-size: 14px;
+  font-size: var(--#{$name}-group-font-size);
 
   &-small {
     font-size: var(--ivue-font-base-size);
 
     .#{$name}-search {
-      padding: 0 12px !important;
+      padding: var(--#{$name}-small-search-padding) !important;
 
       i {
         font-size: var(--ivue-font-base-size);
@@ -279,9 +347,9 @@ $name: 'ivue-input';
 
     .#{$name}-group-prepend,
     .#{$name}-group-append {
-      padding: 1px 7px;
-      height: 24px;
-      border-radius: 3px;
+      padding: var(--#{$name}-small-padding);
+      height: var(--#{$name}-small-group-height);
+      border-radius: var(--#{$name}-small-group-radius);
     }
   }
 
@@ -289,7 +357,7 @@ $name: 'ivue-input';
     font-size: var(--ivue-font-large-size);
 
     .#{$name}-search {
-      padding: 0 20px !important;
+      padding: var(--#{$name}-large-search-padding) !important;
 
       i {
         font-size: var(--ivue-font-large-size);
@@ -299,8 +367,8 @@ $name: 'ivue-input';
     .#{$name}-group-prepend,
     .#{$name}-group-append {
       font-size: var(--ivue-font-large-size);
-      padding: 6px 7px;
-      height: 40px;
+      padding: var(--#{$name}-large-padding);
+      height: var(--#{$name}-large-height);
     }
   }
 }
@@ -322,30 +390,29 @@ $name: 'ivue-input';
 .#{$name}-word-count {
   text-align: center;
   position: absolute;
-  right: 7px;
-  top: 2px;
-  bottom: 2px;
-  padding-left: 7px;
+  right: var(--#{$name}-word-count-right);
+  top: var(--#{$name}-word-count-top);
+  bottom: var(--#{$name}-word-count-top);
+  padding-left: var(--#{$name}-word-count-right);
   background: var(--ivue-white-color);
   z-index: 1;
   display: inline-flex;
   align-items: center;
   color: var(--#{$name}-word-count-color);
-  font-size: 12px;
+  font-size: var(--#{$name}-word-count-font-size);
 }
 
 
 // 搜索输入框
 .#{$name}-search {
   cursor: pointer;
-  padding: 0 16px !important;
+  padding: var(--#{$name}-search-padding) !important;
   background: var(--ivue-primary-color);
-  color: $white-color !important;
+  color: var(--ivue-white-color) !important;
   border-color: var(--ivue-primary-color) !important;
-  transition: all .2s ease-in-out;
+  transition: var(--ivue-all-transition);
   position: relative;
   z-index: 2;
-  border-radius: 3px !important;
 
   i {
     font-size: var(--ivue-font-default-size);

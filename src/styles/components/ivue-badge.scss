@@ -1,6 +1,21 @@
 $name: 'ivue-badge';
 
 :root {
+  // 数值
+  --#{$name}-count-size: 20px;
+  --#{$name}-count-padding: 0 6px;
+  --#{$name}-count-font-size: 12px;
+
+  // 小红点
+  --#{$name}-dot-size: 8px;
+  --#{$name}-dot-position-top: -4px;
+  --#{$name}-dot-position-right: -8px;
+
+  // 状态
+  --#{$name}-status-dot-size: 6px;
+  --#{$name}-status-font-size: 14px;
+
+  // color
   --#{$name}-blue: #1890ff;
   --#{$name}-green: #52c41a;
   --#{$name}-red: #f5222d;
@@ -30,24 +45,24 @@ $colors: ('blue',
   position: relative;
   display: inline-block;
 
-  /*数值*/
+  // 数值
   &-count {
     position: absolute;
     transform: translateX(50%);
     transform-origin: -10% center;
     top: -10px;
     right: 0;
-    padding: 0 6px;
-    min-width: 20px;
-    height: 20px;
+    padding: var(--#{$name}-count-padding);
+    min-width: var(--#{$name}-count-size);
+    height: var(--#{$name}-count-size);
     border-radius: 10px;
-    font-size: 12px;
+    font-size: var(--#{$name}-count-font-size);
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: row;
     flex-wrap: wrap;
-    color: $white-color;
+    color: var(--ivue-white-color);
     transition: all $ivue-transition-default;
     z-index: 10;
 
@@ -59,7 +74,7 @@ $colors: ('blue',
       box-shadow: none;
 
       .ivue-icon {
-        height: 20px;
+        height: var(--#{$name}-count-size);
       }
     }
 
@@ -70,15 +85,15 @@ $colors: ('blue',
     }
   }
 
-  /*小红点*/
+  // 小红点
   &-dot {
     position: absolute;
     transform: translateX(-50%);
     transform-origin: 0 center;
-    top: -4px;
-    right: -8px;
-    width: 8px;
-    height: 8px;
+    top: var(--#{$name}-dot-position-top);
+    right: var(--#{$name}-dot-position-right);
+    width: var(--#{$name}-dot-size);
+    height: var(--#{$name}-dot-size);
     border-radius: 100%;
     box-shadow: 0 0 2px 1px var(--#{$name}-dot-color);
     transform-origin: 0 center;
@@ -86,21 +101,22 @@ $colors: ('blue',
     z-index: 10;
   }
 
+  // 状态
   &-status {
     display: flex;
     align-items: center;
 
     &--dot {
       position: relative;
-      width: 6px;
-      height: 6px;
+      width: var(--#{$name}-status-dot-size);
+      height:var(--#{$name}-status-dot-size);
       border-radius: 50%;
     }
 
     &--text {
       color: var(--ivue-title-color);
-      font-size: 14px;
-      margin-left: 6px;
+      font-size: var(--#{$name}-status-font-size);
+      margin-left: var(--#{$name}-status-dot-size);
     }
 
     // success
@@ -131,7 +147,7 @@ $colors: ('blue',
         height: 100%;
         border-radius: 50%;
         border: 1px solid var(--ivue-primary-color);
-        animation: aniStatusProcessing 1.2s infinite ease-in-out;
+        animation: aniStatusProcessing 1.2s infinite var(--ivue-ease-in-out);
       }
     }
 
