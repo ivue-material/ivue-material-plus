@@ -1,15 +1,41 @@
 $name: 'ivue-radio';
 
-$transition-time: .2s;
-$ease-in-out: ease-in-out;
-
 :root {
   --#{$name}-margin-right: 4px;
+
+  // wrapper
+  --#{$name}-wrapper-margin-right: 8px;
+  --#{$name}-wrapper-font-size: 14px;
+
+  // inner
+  --#{$name}-inner-size: 16px;
+  --#{$name}-inner-after-size: 10px;
+  --#{$name}-inner-after-position: 2px;
+  --#{$name}-inner-after-radius: 6px;
 
   // border
   --#{$name}-border-height: 32px;
   --#{$name}-border-line-height: 30px;
   --#{$name}-border-padding: 0 15px;
+
+  // group
+  --#{$name}-group-vertical-wrapper-size: 30px;
+  --#{$name}-group-radius: 4px;
+
+  // button
+  --#{$name}-button-wrapper-height: 32px;
+  --#{$name}-button-wrapper-line-height: 30px;
+  --#{$name}-button-wrapper-padding: 0 15px;
+
+  // large
+  --#{$name}-large-wrapper-height: 40px;
+  --#{$name}-large-wrapper-font-size: 16px;
+
+  // small
+  --#{$name}-small-wrapper-height: 24px;
+  --#{$name}-small-padding: 0 12px;
+  --#{$name}-small-radius: 3px;
+
 
   // color
   --#{$name}-disabled-bg: #e6e6e6;
@@ -36,8 +62,8 @@ $ease-in-out: ease-in-out;
 
   // 最外层
   &-wrapper {
-    margin-right: 8px;
-    font-size: 14px;
+    margin-right: var(--#{$name}-wrapper-margin-right);
+    font-size: var(--#{$name}-wrapper-font-size);
     vertical-align: middle;
     display: inline-block;
     position: relative;
@@ -62,31 +88,31 @@ $ease-in-out: ease-in-out;
   // 小圆点
   &-inner {
     display: inline-block;
-    width: 16px;
-    height: 16px;
+    width: var(--#{$name}-inner-size);
+    height: var(--#{$name}-inner-size);
     position: relative;
     top: 0;
     left: 0;
     background-color: var(--ivue-white-color);
     border: 1px solid var(--ivue-border-color);
     border-radius: 50%;
-    transition: all $transition-time $ease-in-out;
+    transition: var(--ivue-all-transition);
 
     // 中间圆点
     &::after {
       position: absolute;
-      width: 10px;
-      height: 10px;
-      left: 2px;
-      top: 2px;
-      border-radius: 6px;
+      width: var(--#{$name}-inner-after-size);
+      height: var(--#{$name}-inner-after-size);
+      left: var(--#{$name}-inner-after-position);
+      top: var(--#{$name}-inner-after-position);
+      border-radius: var(--#{$name}-inner-after-radius);
       display: table;
       border-top: 0;
       border-left: 0;
       content: '';
       background-color: currentColor;
       opacity: 0;
-      transition: all $transition-time $ease-in-out;
+      transition: var(--ivue-all-transition);
       transform: scale(0);
     }
   }
@@ -116,15 +142,15 @@ $ease-in-out: ease-in-out;
   // 组合
   &-group {
     display: inline-block;
-    font-size: 14px;
+    font-size: var(--#{$name}-wrapper-font-size);
     vertical-align: middle;
 
     // 垂直
     &--vertical {
       .#{$name}-wrapper {
         display: block;
-        height: 30px;
-        line-height: 30px;
+        height: var(--#{$name}-group-vertical-wrapper-size);
+        line-height: var(--#{$name}-group-vertical-wrapper-size);
       }
     }
 
@@ -134,19 +160,19 @@ $ease-in-out: ease-in-out;
       -webkit-text-size-adjust: none;
 
       .#{$name}-wrapper {
+        position: relative;
         display: inline-block;
-        height: 32px;
-        line-height: 30px;
+        height: var(--#{$name}-button-wrapper-height);
+        line-height: var(--#{$name}-button-wrapper-line-height);
         margin: 0;
-        padding: 0 15px;
-        font-size: 14px;
-        color: $title-color;
-        transition: all $transition-time $ease-in-out;
+        padding: var(--#{$name}-button-wrapper-padding);
+        font-size: var(--#{$name}-wrapper-font-size);
+        color: var(--ivue-title-color);
+        transition: var(--ivue-all-transition);
         cursor: pointer;
         border: 1px solid var(--ivue-border-color);
         border-left: 0;
         background: var(--ivue-white-color);
-        position: relative;
 
         >span {
           margin-right: 0;
@@ -159,13 +185,13 @@ $ease-in-out: ease-in-out;
 
         // 第一个角度
         &:first-child {
-          border-radius: 4px 0 0 4px;
+          border-radius: var(--#{$name}-group-radius) 0 0 var(--#{$name}-group-radius);
           border: 1px solid var(--ivue-border-color);
         }
 
         // 最后一个角度
         &:last-child {
-          border-radius: 0 4px 4px 0;
+          border-radius: 0 var(--#{$name}-group-radius) var(--#{$name}-group-radius) 0;
         }
       }
 
@@ -233,9 +259,9 @@ $ease-in-out: ease-in-out;
 
       // 外层
       .#{$name}-wrapper {
-        height: 40px;
-        line-height: 38px;
-        font-size: 16px;
+        height: var(--#{$name}-large-wrapper-height);
+        line-height: calc(var(--#{$name}-large-wrapper-height) - 2px);
+        font-size: var(--#{$name}-large-wrapper-font-size);
       }
     }
 
@@ -244,13 +270,13 @@ $ease-in-out: ease-in-out;
 
       // 外层
       .#{$name}-wrapper {
-        height: 24px;
-        line-height: 22px;
-        padding: 0 12px;
-        font-size: 14px;
+        height: var(--#{$name}-small-wrapper-height);
+        line-height: calc(var(--#{$name}-small-wrapper-height) - 2px);
+        padding: var(--#{$name}-small-padding);
+        font-size: var(--#{$name}-wrapper-font-size);
 
         &:first-child {
-          border-radius: 3px 0 0 3px;
+          border-radius: var(--#{$name}-small-radius) 0 0 var(--#{$name}-small-radius);
         }
       }
     }

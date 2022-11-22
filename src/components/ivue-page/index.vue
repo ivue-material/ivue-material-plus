@@ -20,7 +20,6 @@
                 :disabled="disabled"
                 @keydown="handleKeyDown"
                 @keyup="handleKeyUp"
-                @change="handleKeyUp"
             />
             <!-- 符号 -->
             <span :class="`${prefixCls}-simple-sign`">/</span>

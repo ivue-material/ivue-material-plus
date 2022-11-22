@@ -1,5 +1,5 @@
 <template>
-    <div :class="classes" ref="wrapper">
+    <div :class="wrapperClasses" ref="wrapper">
         <!-- 图标 -->
         <span :class="`${prefixCls}-prefix`" v-if="$slots.prefix || prefix">
             <slot name="prefix">
@@ -283,8 +283,9 @@ export default defineComponent({
         // computed
 
         // 外层样式
-        const classes = computed(() => {
+        const wrapperClasses = computed(() => {
             return {
+                [`${prefixCls}-head-wrapper`]: true,
                 // 开启了过滤 && 有图标
                 [`${prefixCls}-head-flex`]:
                     props.filterable && (slots.prefix || props.prefix),
@@ -521,7 +522,7 @@ export default defineComponent({
             data,
 
             // computed
-            classes,
+            wrapperClasses,
             selectedMultiple,
             defaultDisplayClasses,
             defaultDisplayValue,

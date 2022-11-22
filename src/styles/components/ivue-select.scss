@@ -203,6 +203,12 @@ $name: 'ivue-select';
     line-height: calc(var(--#{$name}-input-height) - 2px);
   }
 
+
+  &-head-wrapper {
+    display: inline-flex;
+    flex-wrap: wrap;
+  }
+
   // 有图标设置样式
   &-head-with-prefix {
     padding-left: 4px !important;
