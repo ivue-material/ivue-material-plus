@@ -66,7 +66,7 @@ import IvueOption from '../ivue-select/option.vue';
 
 import { oneOf } from '../../utils/assist';
 
-import { Select, Input } from './auto-complete';
+import { Select, Input, Props } from './auto-complete';
 
 const prefixCls = 'ivue-auto-complete';
 
@@ -124,6 +124,7 @@ export default defineComponent({
          * @type {String}
          */
         placement: {
+            type: String,
             validator(value: string) {
                 return oneOf(value, [
                     'top',
@@ -237,7 +238,7 @@ export default defineComponent({
             default: '',
         },
     },
-    setup(props: any, { emit }) {
+    setup(props: Props, { emit }) {
         // dom
 
         // select
@@ -247,7 +248,7 @@ export default defineComponent({
 
         // data
         const data: any = reactive<{
-            currentValue: string | number | Array<any>;
+            currentValue: string | number | any[];
             disableEmitChange: boolean;
         }>({
             /**
