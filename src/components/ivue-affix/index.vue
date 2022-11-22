@@ -11,6 +11,8 @@
 import { defineComponent, onMounted, ref, computed, reactive } from 'vue';
 import { useEventListener } from '@vueuse/core';
 
+import {Props, Data} from './ivue-affix';
+
 const prefixCls = 'ivue-affix';
 
 export default defineComponent({
@@ -46,14 +48,9 @@ export default defineComponent({
         },
     },
     // 组合式 API
-    setup(props: any, { emit }) {
+    setup(props: Props, { emit }) {
         // data
-        const data = reactive<{
-            affix: boolean;
-            slot: boolean;
-            styles: Record<string, any>;
-            slotStyle: Record<string, any>;
-        }>({
+        const data = reactive<Data>({
             // 组件状态是否开启固定
             affix: false,
             // slot 是否开启
