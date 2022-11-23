@@ -1,10 +1,20 @@
 @use "sass:math";
-
-@import "../base.scss";
-
+@import '../animation/variables.scss';
 @import "ivue-ripple.scss";
 
 $name: 'ivue-switch';
+
+:root {
+
+  // color
+  --#{$name}-bg: #858585;
+
+  // emboss
+  --#{$name}-disabled-emboss-thumb-color: #fafafa;
+  --#{$name}-disabled-emboss-track-color: rgba(0, 0, 0, 0.12);
+  --#{$name}-disabled-emboss-track-checked-color: rgba(0, 0, 0, 0.38);
+}
+
 $default-width: 44px;
 $default-after-width: 18px;
 
@@ -27,12 +37,12 @@ $emboss-margin: 7px;
   height: math.div($default-width, 2);
   border-radius: math.div($default-width, 2);
   vertical-align: middle;
-  border: 1px solid #858585;
-  background: #858585;
+  border: 1px solid var(--#{$name}-bg);
+  background: var(--#{$name}-bg);
   cursor: pointer;
   user-select: none;
   outline: none;
-  transition: all .2s ease-in-out 0s;
+  transition: var(--ivue-all-transition) 0s;
   -webkit-tap-highlight-color: transparent;
 
   &:focus {
@@ -51,8 +61,9 @@ $emboss-margin: 7px;
     width: $default-after-width;
     height: $default-after-width;
     border-radius: $default-after-width;
-    background: $white-color;
+    background: var(--ivue-white-color);
     cursor: pointer;
+
     @include transition;
 
   }
@@ -66,14 +77,14 @@ $emboss-margin: 7px;
 
   &:before {
     content: '';
+    position: absolute;
+    top: 2px;
+    left: 2px;
     display: none;
     width: 16px;
     height: 16px;
     border-radius: 50%;
     background-color: transparent;
-    position: absolute;
-    top: 2px;
-    left: 2px;
     z-index: 1;
     border: 1px solid currentColor;
     border-color: transparent transparent transparent currentColor;
@@ -87,7 +98,7 @@ $emboss-margin: 7px;
     background: currentColor;
   }
 
-  /*内部文字样式*/
+  // 内部文字样式
   &-inner {
     position: absolute;
     top: 0;
@@ -95,8 +106,8 @@ $emboss-margin: 7px;
     left: 23px;
     display: flex;
     align-items: center;
-    color: $white-color;
-    font-size: 12px;
+    color: var(--ivue-white-color);
+    font-size: var(--ivue-font-small-size);
 
     i {
       position: relative;
@@ -131,22 +142,22 @@ $emboss-margin: 7px;
 
   // 禁用
   &-disabled {
-    cursor: $cursor-disabled;
-    border-color: $background-color-select-hover !important;
-    background-color: $background-color-select-hover !important;
+    cursor: var(--ivue-cursor-disabled);
+    border-color: var(--ivue-background-color-select-hover) !important;
+    background-color: var(--ivue-background-color-select-hover) !important;
 
     &:after {
-      background: $disabled-color;
-      cursor: $cursor-disabled;
+      background: var(--ivue-disabled-color);
+      cursor: var(--ivue-cursor-disabled);
     }
 
     .#{$name}-inner {
-      color: $disabled-color;
+      color: var(--ivue-disabled-color);
     }
   }
 
 
-  /*小*/
+  // 小
   &-small {
     width: 28px;
     height: 16px;
@@ -185,7 +196,7 @@ $emboss-margin: 7px;
   }
 
 
-  /*大*/
+  // 大
   &-large {
     width: 56px;
 
@@ -254,7 +265,7 @@ $emboss-margin: 7px;
   }
 
 
-  /* 扁平化 */
+  // 扁平化
   &-emboss {
     position: relative;
     display: inline-flex;
@@ -262,7 +273,7 @@ $emboss-margin: 7px;
     height: $emboss-default-height;
     flex: 0 0 auto;
 
-    /* 外层 */
+    // 外层
     &--wrapper {
       position: relative;
       display: inline-flex;
@@ -276,12 +287,12 @@ $emboss-margin: 7px;
         position: relative;
         margin-left: 8px;
         left: 0;
-        color: $text-color;
+        color: var(--ivue-text-color);
       }
     }
 
 
-    /* loading */
+    // loading
     &--loading {
       position: absolute;
       top: 0;
@@ -299,7 +310,7 @@ $emboss-margin: 7px;
       background-color: transparent;
     }
 
-    /* 跟踪 */
+    // 跟踪
     &--track {
       position: absolute;
       left: 1px;
@@ -309,23 +320,23 @@ $emboss-margin: 7px;
       height: math.div($emboss-default-height, 2);
       border-radius: 8px;
       opacity: .6;
-      color: #858585;
+      color: var(--#{$name}-bg);
       background-color: currentColor;
       transition: $ivue-transition-default;
       transition-property: color, background-color;
 
-      /* 激活 */
+      // 激活
       &__checked {
         color: currentColor;
       }
     }
 
-    /* 指示器 */
+    // 指示器
     &--thumb {
       position: relative;
       width: $emboss-default-height;
       height: $emboss-default-height;
-      color: $white-color;
+      color: var(--ivue-white-color);
       border-radius: 50%;
       box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2),
         0px 4px 5px 0px rgba(0, 0, 0, 0.14),
@@ -335,14 +346,14 @@ $emboss-margin: 7px;
       transition: $ivue-transition-default;
       transition-property: color, transform;
 
-      /* 激活 */
+      // 激活
       &__checked {
         color: currentColor;
         transform: translate($emboss-default-height - (math.div($emboss-default-height, 4)), 0);
       }
     }
 
-    /* ripple */
+    // ripple
     &--ripple {
       position: absolute;
       top: calc(50% - 25px);
@@ -353,32 +364,32 @@ $emboss-margin: 7px;
       border-radius: 50%;
       transition: $ivue-transition-default;
 
-      /* 激活 */
+      // 激活
       &__checked {
         transform: translate($emboss-default-height - (math.div($emboss-default-height, 4)), 0);
       }
     }
 
-    /* 禁用 */
+    // 禁用
     &--disabled {
-      cursor: $cursor-disabled;
+      cursor: var(--ivue-cursor-disabled);
 
       .#{$name}-emboss--thumb {
-        color: #fafafa !important;
+        color: var(--#{$name}-disabled-emboss-thumb-color) !important;
       }
 
       .#{$name}-emboss--track {
-        caret-color: rgba(0, 0, 0, 0.12) !important;
-        color: rgba(0, 0, 0, 0.12) !important;
+        caret-color: var(--#{$name}-disabled-emboss-track-color) !important;
+        color: var(--#{$name}-disabled-emboss-track-color) !important;
 
         &__checked {
-          caret-color: rgba(0, 0, 0, 0.38) !important;
-          color: rgba(0, 0, 0, 0.38) !important;
+          caret-color: var(--#{$name}-disabled-emboss-track-checked-color) !important;
+          color: var(--#{$name}-disabled-emboss-track-checked-color) !important;
         }
       }
     }
 
-    /*小*/
+    // 小
     &--small {
       width: $emboss-small-width;
       height: $emboss-small-height;
@@ -416,7 +427,7 @@ $emboss-margin: 7px;
       }
     }
 
-    /*大*/
+    // 大
     &--large {
       width: $emboss-large-width;
       height: $emboss-large-height;

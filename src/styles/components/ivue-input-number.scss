@@ -152,7 +152,7 @@ $name: 'ivue-input-number';
 
     .#{$name}-input {
       opacity: .8;
-      background-color: $background-color-select-hover;
+      background-color: var(--ivue-background-color-select-hover);
       cursor: var(--ivue-cursor-disabled);
       color: var(--ivue-disabled-color);
     }

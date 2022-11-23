@@ -8,8 +8,8 @@ import IvueCarouselItem from './ivue-carousel-item';
 import IvueSwitch from './ivue-switch';
 import IvueBottomNav from './ivue-bottom-nav';
 import IvueBottomNavItem from './ivue-bottom-nav-item';
-import IvueBreadcrumbs from './ivue-breadcrumb';
-import IvueBreadcrumbsItem from './ivue-breadcrumb-item';
+import IvueBreadcrumb from './ivue-breadcrumb';
+import IvueBreadcrumbItem from './ivue-breadcrumb-item';
 import IvueUpload from './ivue-upload';
 import IvueProgress from './ivue-progress';
 import IvueCircular from './ivue-circular';
@@ -53,6 +53,7 @@ import { IvueTable, IvueTableColumn } from './ivue-table';
 import { IvueMenu, IvueMenuItem, IvueSubmenu, IvueMenuGroup } from './ivue-menu';
 
 import { Ripple } from './ivue-ripple';
+import { LineClamp } from './ivue-line-clamp';
 
 export {
   IvueAffix,
@@ -65,8 +66,8 @@ export {
   IvueSwitch,
   IvueBottomNav,
   IvueBottomNavItem,
-  IvueBreadcrumbs,
-  IvueBreadcrumbsItem,
+  IvueBreadcrumb,
+  IvueBreadcrumbItem,
   IvueSelect,
   IvueOption,
   IvueOptionGroup,
@@ -118,5 +119,6 @@ export {
   IvueSubmenu,
   IvueMenuGroup,
 
-  Ripple
+  Ripple,
+  LineClamp
 };

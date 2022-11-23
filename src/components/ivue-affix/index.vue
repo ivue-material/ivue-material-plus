@@ -11,7 +11,7 @@
 import { defineComponent, onMounted, ref, computed, reactive } from 'vue';
 import { useEventListener } from '@vueuse/core';
 
-import {Props, Data} from './ivue-affix';
+import {Props, Data} from './affix';
 
 const prefixCls = 'ivue-affix';
 

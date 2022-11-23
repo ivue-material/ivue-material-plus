@@ -1,10 +1,10 @@
-export type Props = {
+export interface Props {
   offsetTop: number;
   offsetBottom: number;
   useCapture: boolean;
-};
+}
 
-export type Data = {
+export interface Data {
   affix: boolean;
   slot: boolean;
   styles: {
@@ -17,4 +17,4 @@ export type Data = {
     width?: string;
     height?: string;
   };
-};
+}

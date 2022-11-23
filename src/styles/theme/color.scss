@@ -275,9 +275,10 @@ $shades : ("black": #000000,
   "white": #FFFFFF,
   "transparent": transparent);
 
-$primary : ("base": $primary-color);
 
-$warning : ("base": $warning-color);
+$primary : ("base": #5B8EFF);
+
+$warning : ("base": #FFBD3C);
 
 $colors : ("red": $red,
   "pink": $pink,

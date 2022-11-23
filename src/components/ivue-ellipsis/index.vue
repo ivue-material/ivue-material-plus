@@ -411,9 +411,9 @@ export default defineComponent({
             // 已经显示文本 && 有设置高度
             if (data.computedReady && props.height) {
                 // 限制的高度
-                let height = props.height;
+                const height = props.height;
                 // 文本
-                let text = props.text;
+                const text = props.text;
 
                 // 重新设置文本
                 textRef.value.innerText = text;

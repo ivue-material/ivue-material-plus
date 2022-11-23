@@ -31,6 +31,9 @@ import Colorable from '../../utils/mixins/colorable';
 import { oneOf } from '../../utils/assist';
 import IvueIcon from '../ivue-icon/index.vue';
 
+// types
+import { Props, Data, _ComponentInternalInstance } from './ivue-avatar';
+
 const prefixCls = 'ivue-avatar';
 
 export default defineComponent({
@@ -76,20 +79,16 @@ export default defineComponent({
             type: [Number, String],
         },
     },
-    setup(props: any, { emit, slots }) {
+    setup(props: Props, { emit, slots }) {
         // 当前实例
-        const { proxy }: any = getCurrentInstance();
+        const { proxy } = getCurrentInstance() as _ComponentInternalInstance;
 
         // dom
         const text = ref<HTMLDivElement>();
         const wrapper = ref<HTMLDivElement>();
 
         // data
-        const data: any = reactive<{
-            isSlotShow: boolean;
-            slotScale: number;
-            slotWidth: number;
-        }>({
+        const data = reactive<Data>({
             /**
              * 是否显示slot
              *
@@ -137,7 +136,7 @@ export default defineComponent({
                 const regexp = new RegExp(/[a-zA-Z]/g);
 
                 // 是否有单位
-                const isUnit = regexp.test(props.size);
+                const isUnit = regexp.test(`${props.size}`);
 
                 const size = !isUnit ? `${props.size}px` : props.size;
 

@@ -80,7 +80,7 @@ $name: 'ivue-collapse';
     border-radius: 0;
 
     .#{$name}-panel--header {
-      color: $title-color;
+      color: var(--ivue-title-color);
       border-bottom: 1px solid transparent;
     }
 

@@ -1,10 +1,10 @@
-$circular: 'ivue-circular';
+$name: 'ivue-circular';
 
 :root {
   --#{$name}-transform: translateY(-50%);
 }
 
-.#{$circular} {
+.#{$name} {
   position: relative;
   display: inline-block;
 

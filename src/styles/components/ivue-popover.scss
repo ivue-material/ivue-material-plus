@@ -425,7 +425,7 @@ $name:'ivue-popover';
     }
 
     .#{$name}-title {
-      color: $title-color;
+      color: var(--ivue-title-color);
       border-bottom-color: var(--ivue-border-color);
     }
 

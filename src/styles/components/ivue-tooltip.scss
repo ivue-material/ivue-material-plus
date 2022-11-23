@@ -1,9 +1,49 @@
-@import "../base.scss";
-
 $name: 'ivue-tooltip';
 
-$bg: rgba(56, 61, 71, 0.9);
-$light-border: rgba(56, 61, 71, 0.5);
+:root {
+  // top
+  --#{$name}-popper-top-padding: 5px 0 8px;
+  --#{$name}-popper-top-bottom: 3px;
+  --#{$name}-popper-top-border-width: 5px 5px 0;
+
+  // left
+  --#{$name}-popper-left-padding: 0 8px 0 5px;
+  --#{$name}-popper-left-right: 3px;
+  --#{$name}-popper-left-border-width: 5px 0 5px 5px;
+
+  // right
+  --#{$name}-popper-right-padding: 0 5px 0 8px;
+  --#{$name}-popper-right-left: 3px;
+  --#{$name}-popper-right-border-width: 5px 5px 5px 0;
+
+  // bottom
+  --#{$name}-popper-bottom-padding: 8px 0 5px;
+  --#{$name}-popper-bottom-top: 3px;
+  --#{$name}-popper-bottom-border-width: 0 5px 5px;
+
+  // inner
+  --#{$name}-inner-max-width: 250px;
+  --#{$name}-inner-min-height: 34px;
+  --#{$name}-inner-padding: 8px 12px;
+  --#{$name}-inner-radius: 4px;
+  --#{$name}-inner-shadow: 0 1px 6px rgba(0, 0, 0, 0.2);
+
+  // light top
+  --#{$name}-popper-light-top-border-width: 7px 7px 0;
+
+  // light left
+  --#{$name}-popper-light-left-border-width: 7px 0 7px 7px;
+
+  // light right
+  --#{$name}-popper-light-right-border-width: 7px 7px 7px 0;
+
+  // light bottom
+  --#{$name}-popper-light-bottom-border-width: 0 7px 7px;
+
+  // color
+  --#{$name}-inner-bg: rgba(56, 61, 71, 0.9);
+  --#{$name}-light-border-color: rgba(56, 61, 71, 0.5);
+}
 
 .#{$name} {
   display: inline-block;
@@ -19,173 +59,170 @@ $light-border: rgba(56, 61, 71, 0.5);
   &-popper {
     display: block;
     visibility: visible;
-    font-size: 14px;
+    font-size: var(--ivue-font-base-size);
     line-height: 1.5;
     z-index: 1060;
 
     // top
     &[data-popper-placement=top] {
-      padding: 5px 0 8px;
+      padding: var(--#{$name}-popper-top-padding);
 
       .#{$name}-arrow {
         left: 50%;
         margin-left: -5px;
-        bottom: 3px;
-        border-width: 5px 5px 0;
-        border-top-color: $bg;
+        bottom: var(--#{$name}-popper-top-bottom);
+        border-width: var(--#{$name}-popper-top-border-width);
+        border-top-color: var(--#{$name}-inner-bg);
       }
     }
 
     // top-start
     &[data-popper-placement=top-start] {
-      padding: 5px 0 8px;
+      padding: var(--#{$name}-popper-top-padding);
 
       .#{$name}-arrow {
         left: 16px;
-        bottom: 3px;
-        border-width: 5px 5px 0;
-        border-top-color: $bg;
+        bottom: var(--#{$name}-popper-top-bottom);
+        border-width: var(--#{$name}-popper-top-border-width);
+        border-top-color: var(--#{$name}-inner-bg);
       }
     }
 
     // top-end
     &[data-popper-placement=top-end] {
-      padding: 5px 0 8px;
+      padding: var(--#{$name}-popper-top-padding);
 
       .#{$name}-arrow {
         right: 16px;
-        bottom: 3px;
-        border-width: 5px 5px 0;
-        border-top-color: $bg;
+        bottom: var(--#{$name}-popper-top-bottom);
+        border-width: var(--#{$name}-popper-top-border-width);
+        border-top-color: var(--#{$name}-inner-bg);
       }
     }
 
     // left-start
     &[data-popper-placement=left-start] {
-      padding: 0 8px 0 5px;
+      padding: var(--#{$name}-popper-left-padding);
 
       .#{$name}-arrow {
         top: 8px;
-        right: 3px;
-        border-width: 5px 0 5px 5px;
-        border-left-color: $bg;
+        right: var(--#{$name}-popper-left-right);
+        border-width: var(--#{$name}-popper-left-border-width);
+        border-left-color: var(--#{$name}-inner-bg);
       }
     }
 
     // left
     &[data-popper-placement=left] {
-      padding: 0 8px 0 5px;
+      padding: var(--#{$name}-popper-left-padding);
 
       .#{$name}-arrow {
         top: 50%;
         margin-top: -5px;
-        right: 3px;
-        border-width: 5px 0 5px 5px;
-        border-left-color: $bg;
+        right: var(--#{$name}-popper-left-right);
+        border-width: var(--#{$name}-popper-left-border-width);
+        border-left-color: var(--#{$name}-inner-bg);
       }
     }
 
     // left-end
     &[data-popper-placement=left-end] {
-      padding: 0 8px 0 5px;
+      padding: var(--#{$name}-popper-left-padding);
 
       .#{$name}-arrow {
         bottom: 8px;
-        right: 3px;
-        border-width: 5px 0 5px 5px;
-        border-left-color: $bg;
+        right: var(--#{$name}-popper-left-right);
+        border-width: var(--#{$name}-popper-left-border-width);
+        border-left-color: var(--#{$name}-inner-bg);
       }
     }
 
     // right-start
     &[data-popper-placement=right-start] {
-      padding: 0 5px 0 8px;
+      padding: var(--#{$name}-popper-right-padding);
 
       .#{$name}-arrow {
         top: 8px;
-        left: 3px;
-        border-width: 5px 5px 5px 0;
-        border-right-color: $bg;
+        left: var(--#{$name}-popper-right-left);
+        border-width: var(--#{$name}-popper-right-border-width);
+        border-right-color: var(--#{$name}-inner-bg);
       }
     }
 
     // right
     &[data-popper-placement=right] {
-      padding: 0 5px 0 8px;
+      padding: var(--#{$name}-popper-right-padding);
 
       .#{$name}-arrow {
         top: 50%;
         margin-top: -5px;
-        left: 3px;
-        border-width: 5px 5px 5px 0;
-        border-right-color: $bg;
+        left: var(--#{$name}-popper-right-left);
+        border-width: var(--#{$name}-popper-right-border-width);
+        border-right-color: var(--#{$name}-inner-bg);
       }
     }
 
     // right-end
     &[data-popper-placement=right-end] {
-      padding: 0 5px 0 8px;
+      padding: var(--#{$name}-popper-right-padding);
 
       .#{$name}-arrow {
         bottom: 8px;
-        left: 3px;
-        border-width: 5px 5px 5px 0;
-        border-right-color: $bg;
+        left: var(--#{$name}-popper-right-left);
+        border-width: var(--#{$name}-popper-right-border-width);
+        border-right-color: var(--#{$name}-inner-bg);
       }
     }
 
     // bottom-start
     &[data-popper-placement=bottom-start] {
-      padding: 8px 0 5px;
+      padding: var(--#{$name}-popper-bottom-padding);
 
       .#{$name}-arrow {
         left: 16px;
-        top: 3px;
-        border-width: 0 5px 5px;
-        border-bottom-color: $bg;
+        top: var(--#{$name}-popper-bottom-top);
+        border-width: var(--#{$name}-popper-bottom-border-width);
+        border-bottom-color: var(--#{$name}-inner-bg);
       }
     }
 
     // bottom
     &[data-popper-placement=bottom] {
-      padding: 8px 0 5px;
+      padding: var(--#{$name}-popper-bottom-padding);
 
       .#{$name}-arrow {
         left: 50%;
         margin-left: -5px;
-        top: 3px;
-        border-width: 0 5px 5px;
-        border-bottom-color: $bg;
+        top: var(--#{$name}-popper-bottom-top);
+        border-width: var(--#{$name}-popper-bottom-border-width);
+        border-bottom-color: var(--#{$name}-inner-bg);
       }
     }
 
     // bottom-end
     &[data-popper-placement=bottom-end] {
-      padding: 8px 0 5px;
+      padding: var(--#{$name}-popper-bottom-padding);
 
       .#{$name}-arrow {
         right: 16px;
-        top: 3px;
-        border-width: 0 5px 5px;
-        border-bottom-color: $bg;
+        top: var(--#{$name}-popper-bottom-top);
+        border-width: var(--#{$name}-popper-bottom-border-width);
+        border-bottom-color: var(--#{$name}-inner-bg);
       }
     }
   }
 
-  // 内容
-  &-content {}
-
   // inner
   &-inner {
-    max-width: 250px;
-    min-height: 34px;
-    padding: 8px 12px;
-    color: $white-color;
+    max-width: var(--#{$name}-inner-max-width);
+    min-height: var(--#{$name}-inner-min-height);
+    padding: var(--#{$name}-inner-padding);
+    color: var(--ivue-white-color);
     text-align: left;
     text-decoration: none;
-    background-color: $bg;
-    border-radius: 4px;
-    box-shadow: 0 1px 6px rgb(0 0 0 / 20%);
+    background-color: var(--#{$name}-inner-bg);
+    border-radius: var(--#{$name}-inner-radius);
+    box-shadow: var(--#{$name}-inner-shadow);
     word-break: break-all;
     overflow: hidden;
   }
@@ -202,8 +239,8 @@ $light-border: rgba(56, 61, 71, 0.5);
   // light
   &-light {
     .#{$name}-inner {
-      background-color: $white-color;
-      color: $title-color;
+      background-color: var(--ivue-white-color);
+      color: var(--ivue-title-color);
     }
 
     .#{$name}-arrow {
@@ -221,14 +258,14 @@ $light-border: rgba(56, 61, 71, 0.5);
     // top
     &[data-popper-placement=top] {
       .#{$name}-arrow {
-        border-top-color: $white-color;
+        border-top-color: var(--ivue-white-color);
 
         &:after {
           left: 50%;
           margin-left: -7px;
           bottom: 0;
-          border-width: 7px 7px 0;
-          border-top-color: $light-border;
+          border-width: var(--#{$name}-popper-light-top-border-width);
+          border-top-color: var(--#{$name}-light-border-color);
         }
       }
     }
@@ -236,13 +273,13 @@ $light-border: rgba(56, 61, 71, 0.5);
     // top-start
     &[data-popper-placement=top-start] {
       .#{$name}-arrow {
-        border-top-color: $white-color;
+        border-top-color: var(--ivue-white-color);
 
         &:after {
           left: -7px;
           bottom: 0;
-          border-width: 7px 7px 0;
-          border-top-color: $light-border;
+          border-width: var(--#{$name}-popper-light-top-border-width);
+          border-top-color: var(--#{$name}-light-border-color);
         }
       }
     }
@@ -250,13 +287,13 @@ $light-border: rgba(56, 61, 71, 0.5);
     // top-end
     &[data-popper-placement=top-end] {
       .#{$name}-arrow {
-        border-top-color: $white-color;
+        border-top-color: var(--ivue-white-color);
 
         &:after {
           right: -7px;
           bottom: 0;
-          border-width: 7px 7px 0;
-          border-top-color: $light-border;
+          border-width: var(--#{$name}-popper-light-top-border-width);
+          border-top-color: var(--#{$name}-light-border-color);
         }
       }
     }
@@ -264,13 +301,13 @@ $light-border: rgba(56, 61, 71, 0.5);
     // left-start
     &[data-popper-placement=left-start] {
       .#{$name}-arrow {
-        border-left-color: $white-color;
+        border-left-color: var(--ivue-white-color);
 
         &:after {
           top: -7px;
           right: 0;
-          border-width: 7px 0 7px 7px;
-          border-left-color: $light-border;
+          border-width: var(--#{$name}-popper-light-left-border-width);
+          border-left-color: var(--#{$name}-light-border-color);
         }
       }
     }
@@ -278,14 +315,14 @@ $light-border: rgba(56, 61, 71, 0.5);
     // left
     &[data-popper-placement=left] {
       .#{$name}-arrow {
-        border-left-color: $white-color;
+        border-left-color: var(--ivue-white-color);
 
         &:after {
           top: 50%;
           margin-top: -7px;
           right: 0;
-          border-width: 7px 0 7px 7px;
-          border-left-color: $light-border;
+          border-width: var(--#{$name}-popper-light-left-border-width);
+          border-left-color: var(--#{$name}-light-border-color);
         }
       }
     }
@@ -293,13 +330,13 @@ $light-border: rgba(56, 61, 71, 0.5);
     // left-end
     &[data-popper-placement=left-end] {
       .#{$name}-arrow {
-        border-left-color: $white-color;
+        border-left-color: var(--ivue-white-color);
 
         &:after {
           bottom: -7px;
           right: 0;
-          border-width: 7px 0 7px 7px;
-          border-left-color: $light-border;
+          border-width: var(--#{$name}-popper-light-left-border-width);
+          border-left-color: var(--#{$name}-light-border-color);
         }
       }
     }
@@ -307,13 +344,13 @@ $light-border: rgba(56, 61, 71, 0.5);
     // right-start
     &[data-popper-placement=right-start] {
       .#{$name}-arrow {
-        border-right-color: $white-color;
+        border-right-color: var(--ivue-white-color);
 
         &:after {
           top: -7px;
           left: 0;
-          border-width: 7px 7px 7px 0;
-          border-right-color: $light-border;
+          border-width: var(--#{$name}-popper-light-right-border-width);
+          border-right-color: var(--#{$name}-light-border-color);
         }
       }
     }
@@ -321,14 +358,14 @@ $light-border: rgba(56, 61, 71, 0.5);
     // right
     &[data-popper-placement=right] {
       .#{$name}-arrow {
-        border-right-color: $white-color;
+        border-right-color: var(--ivue-white-color);
 
         &:after {
           top: 50%;
           margin-top: -7px;
           left: 0;
-          border-width: 7px 7px 7px 0;
-          border-right-color: $light-border;
+          border-width: var(--#{$name}-popper-light-right-border-width);
+          border-right-color: var(--#{$name}-light-border-color);
         }
       }
     }
@@ -336,28 +373,27 @@ $light-border: rgba(56, 61, 71, 0.5);
     // right-end
     &[data-popper-placement=right-end] {
       .#{$name}-arrow {
-        border-right-color: $white-color;
+        border-right-color: var(--ivue-white-color);
 
         &:after {
           bottom: -7px;
           left: 0;
-          border-width: 7px 7px 7px 0;
-          border-right-color: $light-border;
+          border-width: var(--#{$name}-popper-light-right-border-width);
+          border-right-color: var(--#{$name}-light-border-color);
         }
       }
     }
 
-
     // bottom-start
     &[data-popper-placement=bottom-start] {
       .#{$name}-arrow {
-        border-bottom-color: $white-color;
+        border-bottom-color: var(--ivue-white-color);
 
         &:after {
           left: -7px;
           top: 0;
-          border-width: 0 7px 7px;
-          border-bottom-color: $light-border;
+          border-width: var(--#{$name}-popper-light-bottom-border-width);
+          border-bottom-color: var(--#{$name}-light-border-color);
         }
       }
     }
@@ -365,14 +401,14 @@ $light-border: rgba(56, 61, 71, 0.5);
     // bottom
     &[data-popper-placement=bottom] {
       .#{$name}-arrow {
-        border-bottom-color: $white-color;
+        border-bottom-color: var(--ivue-white-color);
 
         &:after {
           left: 50%;
           margin-left: -7px;
           top: 0;
-          border-width: 0 7px 7px;
-          border-bottom-color: $light-border;
+          border-width: var(--#{$name}-popper-light-bottom-border-width);
+          border-bottom-color: var(--#{$name}-light-border-color);
         }
       }
     }
@@ -380,13 +416,13 @@ $light-border: rgba(56, 61, 71, 0.5);
     // bottom-end
     &[data-popper-placement=bottom-end] {
       .#{$name}-arrow {
-        border-bottom-color: $white-color;
+        border-bottom-color: var(--ivue-white-color);
 
         &:after {
           right: -7px;
           top: 0;
-          border-width: 0 7px 7px;
-          border-bottom-color: $light-border;
+          border-width: var(--#{$name}-popper-light-bottom-border-width);
+          border-bottom-color: var(--#{$name}-light-border-color);
         }
       }
     }

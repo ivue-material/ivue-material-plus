@@ -12,7 +12,9 @@ import IVue from '../src/index.ts'
 
 // import "./test.scss";
 
-import "../src/styles/index.scss";
+import "../src/styles/components/reset.scss";
+import "../src/styles/base.scss";
+import "../src/styles/components/index.scss";
 
 // import {
 //   IvueTable,

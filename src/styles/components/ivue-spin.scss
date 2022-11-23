@@ -1,10 +1,15 @@
-@import "../base.scss";
-
 $name: 'ivue-spin';
+
+:root {
+  --#{$name}-dot-size: 20px;
+
+  // color
+  --#{$name}-fix-bg: rgba(255, 255, 255, .9);
+}
 
 .#{$name} {
   display: inline-block;
-  color: $primary-color;
+  color: var(--ivue-primary-color);
   vertical-align: middle;
   text-align: center;
 
@@ -13,9 +18,9 @@ $name: 'ivue-spin';
     position: relative;
     display: block;
     border-radius: 50%;
-    background-color: $primary-color;
-    width: 20px;
-    height: 20px;
+    background-color: var(--ivue-primary-color);
+    width: var(--#{$name}-dot-size);
+    height: var(--#{$name}-dot-size);
     animation: ivue-spin-dot 1s 0s ease-in-out infinite;
 
     @keyframes ivue-spin-dot {
@@ -45,7 +50,7 @@ $name: 'ivue-spin';
     z-index: 20;
     width: 100%;
     height: 100%;
-    background-color: rgba(255, 255, 255, .9);
+    background-color: var(--#{$name}-fix-bg);
 
     .#{$name}-content {
       display: flex;

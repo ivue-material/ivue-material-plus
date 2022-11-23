@@ -1,6 +1,28 @@
-@import "../base.scss";
+@import '../animation/variables.scss';
 
 $name: 'ivue-upload';
+
+:root {
+  // content
+  --#{$name}-content-size: 100px;
+  --#{$name}-content-margin: 0 8px 8px 0;
+  --#{$name}-content-radius: 8px;
+
+  // loading
+  --#{$name}-loading-size: 22px;
+
+  // remove
+  --#{$name}-remove-size: 16px;
+
+  // color
+  --#{$name}-content-color: #9AB0C6;
+
+  // mask
+  --#{$name}-mask-color: rgba(50, 50, 51, .88);
+
+  // preview-cover
+  --#{$name}-preview-cover-color: rgba(0, 0, 0, .3);
+}
 
 .#{$name} {
   display: flex;
@@ -20,19 +42,19 @@ $name: 'ivue-upload';
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    width: 100px;
-    height: 100px;
-    margin: 0 8px 8px 0;
-    background: $white-color;
-    border-radius: 8px;
-    border: 2px solid #DEE2E7;
-    color: #9AB0C6;
+    width: var(--#{$name}-content-size);
+    height: var(--#{$name}-content-size);
+    margin: var(--#{$name}-content-margin);
+    background: var(--ivue-white-color);
+    border-radius: var(--#{$name}-content-radius);
+    border: 2px solid var(--ivue-default-color);
+    color: var(--#{$name}-content-color);
     cursor: pointer;
     transition: all $ivue-transition-default, color 1ms;
 
     &:hover {
-      border-color: $primary-color;
-      color: $primary-color;
+      border-color: var(--ivue-primary-color);
+      color: var(--ivue-primary-color);
     }
 
     // 图标
@@ -57,10 +79,10 @@ $name: 'ivue-upload';
 
     // 图片
     &-image {
-      width: 100px;
-      height: 100px;
+      width: var(--#{$name}-content-size);
+      height: var(--#{$name}-content-size);
       display: block;
-      border-radius: 8px;
+      border-radius: var(--#{$name}-content-radius);
       overflow: hidden;
 
       &__img {
@@ -81,14 +103,14 @@ $name: 'ivue-upload';
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      color: $white-color;
-      background-color: rgba(50, 50, 51, .88);
+      color: var(--ivue-white-color);
+      background-color: var(--#{$name}-mask-color);
 
       // 信息
       &__message {
         margin-top: 6px;
         padding: 0 4px;
-        font-size: 12px;
+        font-size: var(--ivue-font-small-size);
         line-height: 14px;
       }
 
@@ -107,13 +129,13 @@ $name: 'ivue-upload';
         position: relative;
         margin-top: 0;
         top: 0;
-        width: 22px;
-        height: 22px;
-        color: $white-color;
+        width: var(--#{$name}-loading-size);
+        height: var(--#{$name}-loading-size);
+        color: var(--ivue-white-color);
 
         .circular {
-          width: 22px;
-          height: 22px;
+          width: var(--#{$name}-loading-size);
+          height: var(--#{$name}-loading-size);
         }
       }
     }
@@ -123,13 +145,13 @@ $name: 'ivue-upload';
       position: absolute;
       top: 0;
       right: 0;
-      font-size: 12px;
-      color: $white-color;
+      font-size: var(--ivue-font-small-size);
+      color: var(--ivue-white-color);
       margin: 0;
-      width: 16px;
-      height: 16px;
+      width: var(--#{$name}-remove-size);
+      height: var(--#{$name}-remove-size);
       min-width: auto;
-      background: #000000;
+      background: var(--ivue-black-color);
       border-bottom-left-radius: 50%;
     }
 
@@ -146,32 +168,32 @@ $name: 'ivue-upload';
 
   // 禁用
   &-disabled {
-    border-color: $disabled-color;
-    color: $disabled-color;
+    border-color: var(--ivue-disabled-color);
+    color: var(--ivue-disabled-color);
 
     &:hover {
-      border-color: $disabled-color;
-      color: $disabled-color;
+      border-color: var(--ivue-disabled-color);
+      color: var(--ivue-disabled-color);
     }
   }
 
   &-drag {
     position: relative;
     text-align: center;
-    border: 2px dashed $border-color;
-    border-radius: $border-radius-small;
-    background-color: #fff;
+    border: 2px dashed var(--ivue-border-color);
+    border-radius: var(--ivue-border-radius);
+    background-color: var(--ivue-white-color);
     overflow: hidden;
     cursor: pointer;
     transition: border-color .2s ease;
 
     &:hover {
-      border: 2px dashed $primary-color;
+      border: 2px dashed var(--ivue-primary-color);
     }
   }
 
   &-dragOver {
-    border: 2px dashed $primary-color;
+    border: 2px dashed var(--ivue-primary-color);
   }
 
   .preview-cover {
@@ -180,12 +202,12 @@ $name: 'ivue-upload';
     box-sizing: border-box;
     text-align: center;
     width: 100%;
-    color: $white-color;
+    color: var(--ivue-white-color);
     font-size: 12px;
     padding: 4px;
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
-    background: rgba(0, 0, 0, .3);
+    background: var(--#{$name}-preview-cover-color);
   }
 }

@@ -10,7 +10,7 @@
 }
 
 // placeholder
-@mixin placeholder($color: $input-placeholder-color) {
+@mixin placeholder($color: #c5c8ce) {
       /*Firefox*/
       &::-moz-placeholder {
             color: $color;

@@ -8,6 +8,7 @@ function kebabCase(key) {
 }
 const pakPath = "ivue-material-plus/dist/unplugin-vue-components";
 const basePath = "ivue-material-plus/dist/styles/base.css";
+const animationPath = "ivue-material-plus/dist/styles/animation.css";
 const noStylesComponents = [
   "ivue-content",
   "ivue-carousel-item",
@@ -20,7 +21,11 @@ const noStylesComponents = [
   "ivue-radio-group",
   "ivue-option",
   "ivue-option-group",
-  "ivue-image-preview"
+  "ivue-image-preview",
+  "ivue-relative-time",
+  "ivue-submenu",
+  "ivue-menu-group",
+  "ivue-menu-item"
 ];
 const useDependentComponents = [
   {
@@ -53,6 +58,7 @@ function getSideEffects(componentsName, options) {
     `${pakPath}/styles/reset.css`,
     `${pakPath}/styles/ivue-icon.css`,
     `${basePath}`,
+    `${animationPath}`,
     `${pakPath}/styles/${componentsName}.css`
   ];
 }

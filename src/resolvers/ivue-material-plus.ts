@@ -38,6 +38,9 @@ const noStylesComponents = [
   'ivue-option-group',
   'ivue-image-preview',
   'ivue-relative-time',
+  'ivue-submenu',
+  'ivue-menu-group',
+  'ivue-menu-item'
 ];
 
 // 使用依赖组件

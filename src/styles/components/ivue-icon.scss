@@ -1,5 +1,10 @@
+@import '../animation/variables.scss';
+
 // 图标
 @import '../material-icons/material-icons.scss';
+
+// icon
+$icon-size: 24px;
 
 @mixin ivue-icon-size($size: $icon-size) {
   width: $size;

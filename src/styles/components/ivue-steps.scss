@@ -1,7 +1,28 @@
-@import "../base.scss";
+@import '../animation/variables.scss';
 
 $name: 'ivue-steps';
 $steps: 'ivue-step';
+
+:root {
+  // icon
+  --#{$name}-icon-size: 20px;
+
+  // horizontal
+  --#{$name}-horizontal-header-padding-left: 10px;
+  --#{$name}-horizontal-header-margin-left: -10px;
+
+  // vertical
+  --#{$name}-vertical-divider-padding: 30px 0 4px 0;
+  --#{$name}-vertical-divider-left: 13px;
+  --#{$name}-vertical-divider-width: 1px;
+  --#{$name}-vertical-header-content-margin-right: 16px;
+  --#{$name}-vertical-content-slot-padding-bottom: 12px;
+
+  // color
+  --#{$name}-title-color: #666666;
+  --#{$name}-border-color: #cccccc;
+
+}
 
 .#{$name} {
   display: flex;
@@ -17,36 +38,37 @@ $steps: 'ivue-step';
 
   // icon
   &-icon {
-    font-size: 20px;
+    font-size: var(--#{$name}-icon-size);
     top: 2px;
-    width: 20px;
-    height: 20px;
+    width: var(--#{$name}-icon-size);
+    height: var(--#{$name}-icon-size);
   }
 
-  /*横向*/
+  // 横向
   &.#{$name}-horizontal {
     .#{$steps}-item:not(:first-child) .#{$steps}-header {
-      padding-left: 10px;
-      margin-left: -10px;
+      padding-left: var(--#{$name}-horizontal-header-padding-left);
+      margin-left: var(--#{$name}-horizontal-header-margin-left);
     }
   }
 
-  /*纵向*/
+  // 纵向
   &.#{$name}-vertical {
     display: flex;
     flex-flow: column;
 
+    // divider
     .#{$steps}-divider {
       position: absolute;
-      left: 13px;
+      left: var(--#{$name}-vertical-divider-left);
       top: 0;
-      padding: 30px 0 4px 0;
+      padding:var(--#{$name}-vertical-divider-padding);
       height: 100%;
-      width: 1px;
+      width: var(--#{$name}-vertical-divider-width);
 
       >i {
         height: 100%;
-        width: 1px;
+        width: var(--#{$name}-vertical-divider-width);
 
         &:after {
           height: 0;
@@ -61,11 +83,12 @@ $steps: 'ivue-step';
       }
     }
 
+    // header
     .#{$steps}-header {
       float: left;
 
       &-content {
-        margin-right: 16px;
+        margin-right: var(--#{$name}-vertical-header-content-margin-right);
       }
     }
 
@@ -80,7 +103,7 @@ $steps: 'ivue-step';
     }
 
     .#{$steps}-content-slot {
-      padding-bottom: 12px;
+      padding-bottom: var(--#{$name}-vertical-content-slot-padding-bottom);
       padding-left: 0;
     }
   }
@@ -91,8 +114,8 @@ $steps: 'ivue-step';
 
   // 选项
   &-item {
-    display: flex;
     position: relative;
+    display: flex;
 
     &:last-child {
       .#{$steps}-divider {
@@ -123,14 +146,14 @@ $steps: 'ivue-step';
       .#{$steps}-icon {
         width: auto;
         min-width: auto;
-        color: $primary-color !important;
+        color: var(--ivue-primary-color) !important;
       }
     }
   }
 
   // 下划线
   &-header {
-    background-color: $white-color;
+    background-color: var(--ivue-white-color);
   }
 
   // 下划线
@@ -148,7 +171,7 @@ $steps: 'ivue-step';
       height: 1px;
       vertical-align: top;
       border-radius: 1px;
-      background-color: $border-multiple-color;
+      background-color: var(--ivue-border-multiple-color);
 
 
       &:after {
@@ -158,7 +181,7 @@ $steps: 'ivue-step';
         opacity: 0;
         width: 0;
         height: 100%;
-        background-color: $border-multiple-color;
+        background-color: var(--ivue-border-multiple-color);
         transition: all $ivue-transition-default;
       }
     }
@@ -169,10 +192,10 @@ $steps: 'ivue-step';
     display: inline-block;
     margin-bottom: 4px;
     padding-right: 10px;
-    font-size: $font-base-size;
+    font-size: var(--ivue-font-base-size);
     font-weight: bold;
-    color: $steps-title-color;
-    background-color: $white-color;
+    color: var(--#{$name}-title-color);
+    background-color: var(--ivue-white-color);
     transition: color .4s $ivue-transition-default-timing;
   }
 
@@ -197,9 +220,9 @@ $steps: 'ivue-step';
     align-items: center;
     margin-right: 8px;
     text-align: center;
-    font-size: $font-base-size;
+    font-size: var(--ivue-font-base-size);
     border-radius: 50%;
-    border: 1px solid $steps-border-color;
+    border: 1px solid var(--#{$name}-border-color);
     width: 26px;
     height: 26px;
     line-height: 24px;
@@ -209,7 +232,7 @@ $steps: 'ivue-step';
 
     // icon
     .#{$steps}-icon {
-      font-size: 16px;
+      font-size: var(--ivue-font-default-size);
     }
   }
 
@@ -217,22 +240,22 @@ $steps: 'ivue-step';
 
   // 插槽
   &-content-slot {
-    font-size: $font-small-size;
-    color: #999;
+    font-size: var(--ivue-font-small-size);
+    color: var(--ivue-legend-color);
     transition: color .4s $ivue-transition-default-timing;
   }
 
 
-  /*完成*/
+  // 完成状态
   &-status-finish {
 
     // 进度标志
     .#{$steps}-header-content {
-      border-color: $primary-color;
-      background-color: $white-color;
+      border-color: var(--ivue-primary-color);
+      background-color: var(--ivue-white-color);
 
       .#{$steps}-icon {
-        color: $primary-color;
+        color: var(--ivue-primary-color);
       }
     }
 
@@ -240,85 +263,74 @@ $steps: 'ivue-step';
     .#{$steps}-divider>i:after {
       opacity: 1;
       width: 100%;
-      background: $primary-color;
+      background: var(--ivue-primary-color);
     }
 
-    .#{$steps}-title {
-      color: $primary-color;
-    }
-
+    .#{$steps}-title,
     .#{$steps}-content-slot {
-      color: $primary-color;
+      color: var(--ivue-primary-color);
     }
   }
 
 
-  /*等待*/
+  // 等待状态
   &-status-wait {
     .#{$steps}-header-content {
-      background-color: $white-color;
+      background-color: var(--ivue-white-color);
 
       >.#{$steps}-icon,
       span {
-        color: $steps-border-color;
+        color: var(--#{$name}-border-color);
       }
     }
 
-    .#{$steps}-title {
-      color: $legend-color;
-    }
-
+    .#{$steps}-title,
     .#{$steps}-content-slot {
-      color: $legend-color;
+      color: var(--ivue-legend-color);
     }
   }
 
-  /*进行中*/
+  // 进行中状态
   &-status-process {
     .#{$steps}-header-content {
-      border-color: $primary-color;
-      background-color: $primary-color;
+      border-color: var(--ivue-primary-color);
+      background-color: var(--ivue-primary-color);
 
       >.#{$steps}-icon,
       span {
-        color: $white-color;
+        color: var(--ivue-white-color);
       }
     }
 
-    .#{$steps}-title {
-      color: $steps-title-color;
-    }
-
+    .#{$steps}-title,
     .#{$steps}-content-slot {
-      color: $steps-title-color;
+      color: var(--#{$name}-title-color);
     }
   }
 
-  /*错误*/
+  // 错误状态
   &-status-error {
     .#{$steps}-header-content {
-      border-color: $error-color;
-      background-color: $white-color;
+      border-color: var(--ivue-error-color);
+      background-color: var(--ivue-white-color);
 
       >.#{$steps}-icon {
-        color: $error-color;
+        color: var(--ivue-white-color);
       }
     }
 
-    .#{$steps}-title {
-      color: $error-color;
+    .#{$steps}-title,
+    .#{$steps}-content-slot {
+      color: var(--ivue-error-color);
     }
 
-    .#{$steps}-content-slot {
-      color: $error-color;
-    }
   }
 
   .#{$steps}-next-error {
 
     .#{$steps}-divider>i,
     .#{$steps}-divider>i:after {
-      background-color: $error-color;
+      background-color: var(--ivue-error-color);
     }
   }
 
@@ -347,7 +359,6 @@ $steps: 'ivue-step';
     // 下划线
     .#{$steps}-divider {
       padding: 0;
-
     }
 
     .#{$steps}-divider>i:after {

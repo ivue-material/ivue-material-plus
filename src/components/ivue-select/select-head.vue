@@ -285,7 +285,9 @@ export default defineComponent({
         // 外层样式
         const wrapperClasses = computed(() => {
             return {
+
                 [`${prefixCls}-head-wrapper`]: true,
+                [`${prefixCls}-head-is-prefix`]: slots.prefix || props.prefix,
                 // 开启了过滤 && 有图标
                 [`${prefixCls}-head-flex`]:
                     props.filterable && (slots.prefix || props.prefix),

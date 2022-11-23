@@ -3,7 +3,7 @@
  *
  * el: HTMLElement, value: string
  */
-function transform(el, value) {
+function transform(el: HTMLElement, value: string) {
     el.style['transform'] = value;
     el.style['webkitTransform'] = value;
 }
@@ -13,7 +13,7 @@ function transform(el, value) {
  *
  * el: HTMLElement, value: number
  */
-function opacity(el, value) {
+function opacity(el: HTMLElement, value: number) {
     el.style['opacity'] = value.toString();
 }
 

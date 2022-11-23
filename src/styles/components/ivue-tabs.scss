@@ -1,11 +1,37 @@
-@import "../base.scss";
+@import '../animation/variables.scss';
 
 $name: 'ivue-tabs';
+
+:root {
+
+  // arrow
+  --#{$name}-show-arrow-margin: 40px;
+
+  // container
+  --#{$name}-container-height: 36px;
+
+  // fixed-tabs
+  --#{$name}-fixed-tabs-min-width: 72px;
+
+  // fixed-tabs media
+  --#{$name}-fixed-tabs-media-min-width: 160px;
+
+  // tab
+  --#{$name}-tab-max-width: 264px;
+  --#{$name}-tab-padding: 8px 12px;
+
+  // slider
+  --#{$name}-slider-height: 4px;
+
+  // icon
+  --#{$name}-icon-width: 32px;
+  --#{$name}-icon-position: 4px;
+}
 
 .#{$name} {
   user-select: none;
 
-  /*导航*/
+  // 导航
   &-bar {
     position: relative;
   }
@@ -15,8 +41,8 @@ $name: 'ivue-tabs';
     display: flex;
 
     &--show-arrow {
-      margin-left: 40px;
-      margin-right: 40px;
+      margin-left: var(--#{$name}-show-arrow-margin);
+      margin-right: var(--#{$name}-show-arrow-margin);
       transition: all .6s cubic-bezier(.86, 0, .07, 1);
     }
   }
@@ -25,14 +51,14 @@ $name: 'ivue-tabs';
     position: relative;
     flex: 1 0 auto;
     display: flex;
-    height: 36px;
+    height: var(--#{$name}-container-height);
     list-style-type: none;
     white-space: nowrap;
     transition: transform .6s cubic-bezier(.86, 0, .07, 1);
 
     &--fixed-tabs {
       .#{$name}-tab {
-        min-width: 72px;
+        min-width: var(--#{$name}-fixed-tabs-min-width);
 
         &:first-child {
           margin-left: auto;
@@ -45,7 +71,7 @@ $name: 'ivue-tabs';
 
       @media only screen and (min-width: 600px) {
         .#{$name}-tab {
-          min-width: 160px;
+          min-width: var(--#{$name}-fixed-tabs-media-min-width);
         }
       }
 
@@ -89,30 +115,30 @@ $name: 'ivue-tabs';
 
   &-tab {
     position: relative;
-    padding: 8px 12px;
+    padding: var(--#{$name}-tab-padding);
     align-items: center;
     display: inline-flex;
     flex: 0 1 auto;
-    max-width: 264px;
+    max-width: var(--#{$name}-tab-max-width);
     box-sizing: border-box;
     width: auto;
     height: 100%;
     cursor: pointer;
     text-decoration: none;
     transition: color $ivue-transition-default;
-    color: $title-color;
+    color: var(--ivue-title-color);
     opacity: .7;
-    font-size: 14px;
+    font-size: var(--ivue-font-base-size);
     font-weight: 500;
 
     &-disabled {
       pointer-events: none;
-      color: $disabled-color;
+      color: var(--ivue-disabled-color);
     }
 
     &-active {
       opacity: 1;
-      color: $title-color;
+      color: var(--ivue-title-color);
     }
   }
 
@@ -125,8 +151,8 @@ $name: 'ivue-tabs';
 
   &-slider {
     width: 100%;
-    height: 4px;
-    border-radius: 4px;
+    height: var(--#{$name}-slider-height);
+    border-radius: var(--#{$name}-slider-height);
     background: currentColor;
   }
 
@@ -148,16 +174,16 @@ $name: 'ivue-tabs';
     height: 100%;
     user-select: none;
     cursor: pointer;
-    width: 32px;
-    color: $title-color;
+    width: var(--#{$name}-icon-width);
+    color: var(--ivue-title-color);
     transition: $ivue-transition-default;
 
     &--prev {
-      left: 4px;
+      left: var(--#{$name}-icon-position);
     }
 
     &--next {
-      right: 4px;
+      right: var(--#{$name}-icon-position);
     }
   }
 }

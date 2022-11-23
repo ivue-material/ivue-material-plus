@@ -61,7 +61,7 @@ $name: 'ivue-card';
   &-dis-hover {
     &:hover {
       box-shadow: none;
-      border-color: $border-multiple-color;
+      border-color: var(--ivue-border-multiple-color);
     }
   }
 }

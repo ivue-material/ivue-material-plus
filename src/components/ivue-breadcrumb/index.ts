@@ -1,7 +1,7 @@
 import { withInstall } from '../../utils/install';
-import Breadcrumbs from './index.vue';
+import Breadcrumb from './index.vue';
 
-export const IvueBreadcrumbs = withInstall(Breadcrumbs);
-export default IvueBreadcrumbs;
+export const IvueBreadcrumb = withInstall(Breadcrumb);
+export default IvueBreadcrumb;
 
 export * from './index.vue';

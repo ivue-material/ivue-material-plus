@@ -1,10 +1,21 @@
+@import '../mixins.scss';
+@import '../animation/variables.scss';
 @import '../components/ivue-icon.scss';
 
 $name: 'ivue-select';
 
 :root {
-  // height
+  // loading
+  --#{$name}-loading-padding: 7px 16px;
+  --#{$name}-loading-height: 100px;
+  --#{$name}-loading-load-size: 17px;
+
+
+  // input
   --#{$name}-input-height: 36px;
+
+  // close
+  --#{$name}-close-color: #666666;
 
   // loading
   --#{$name}-loading-color: #9AB0C6;
@@ -33,18 +44,18 @@ $name: 'ivue-select';
   box-sizing: border-box;
   vertical-align: middle;
   color: var(--ivue-text-color);
-  font-size: 12px;
+  font-size: var(--ivue-font-small-size);
   line-height: normal;
 
   // 加载中
   &-loading {
-    padding: 7px 16px;
+    padding: var(--#{$name}-loading-padding);
     display: flex;
     align-items: center;
     justify-content: center;
     text-align: center;
     color: var(--#{$name}-loading-color);
-    height: 100px;
+    height: var(--#{$name}-loading-height);
 
     &--load {
       display: flex;
@@ -53,8 +64,8 @@ $name: 'ivue-select';
       .load {
         margin-right: 10px;
         position: relative;
-        width: 17px;
-        height: 17px;
+        width: var(--#{$name}-loading-load-size);
+        height: var(--#{$name}-loading-load-size);
       }
     }
   }
@@ -83,7 +94,7 @@ $name: 'ivue-select';
       position: relative;
       height: var(--#{$name}-input-height);
 
-      /*输入提示*/
+      // 输入提示
       .#{$name}-placeholder {
         color: var(--ivue-input-placeholder-color);
       }
@@ -105,12 +116,14 @@ $name: 'ivue-select';
     }
   }
 
+
   // 多选样式
   &-multiple &-selection {
     padding: 0 24px 0 4px;
 
     .#{$name}-placeholder {
       position: absolute;
+      top: 0;
       display: block;
       height: calc(var(--#{$name}-input-height) - 2px);
       line-height: calc(var(--#{$name}-input-height) - 2px);
@@ -120,6 +133,13 @@ $name: 'ivue-select';
       text-overflow: ellipsis;
       white-space: nowrap;
       padding: 0 22px 0 4px;
+    }
+  }
+
+  // 头部开启prefix
+  &-head-is-prefix {
+    .#{$name}-placeholder {
+      position: relative !important;
     }
   }
 
@@ -134,7 +154,7 @@ $name: 'ivue-select';
     background-color: var(--ivue-white-color);
     min-height: var(--#{$name}-input-height);
     cursor: pointer;
-    transition: all .2s ease-in-out;
+    transition: var(--ivue-all-transition);
 
     &:hover {
       border-color: var(--#{$name}-visible-selection-color);
@@ -167,7 +187,7 @@ $name: 'ivue-select';
       width: auto;
       min-width: auto;
       height: auto;
-      color: #666;
+      color: var(--#{$name}-close-color);
       cursor: pointer;
     }
   }
@@ -183,9 +203,10 @@ $name: 'ivue-select';
     box-sizing: border-box;
     height: var(--#{$name}-input-height);
     line-height: var(--#{$name}-input-height);
-    color: $text-color;
+    color: var(--ivue-text-color);
     background-color: transparent;
     cursor: pointer;
+
     @include placeholder;
 
     &[disabled] {
@@ -203,9 +224,10 @@ $name: 'ivue-select';
     line-height: calc(var(--#{$name}-input-height) - 2px);
   }
 
-
+  // 多选头部外层
   &-head-wrapper {
     display: inline-flex;
+    align-items: center;
     flex-wrap: wrap;
   }
 
@@ -227,7 +249,7 @@ $name: 'ivue-select';
     border: 1px solid var(--#{$name}-tag-border-color);
     border-radius: 3px;
     background: var(--#{$name}-tag-border-bg);
-    font-size: 14px;
+    font-size: var(--ivue-font-base-size);
     vertical-align: middle;
     opacity: 1;
     overflow: hidden;
@@ -357,7 +379,7 @@ $name: 'ivue-select';
     font-weight: bold;
     color: var(--ivue-arrow-color);
     height: 100%;
-    transition: all .2s ease-in-out;
+    transition: var(--ivue-all-transition);
   }
 
   // 删除图标

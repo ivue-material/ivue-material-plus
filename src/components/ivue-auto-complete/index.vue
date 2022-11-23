@@ -66,7 +66,8 @@ import IvueOption from '../ivue-select/option.vue';
 
 import { oneOf } from '../../utils/assist';
 
-import { Select, Input, Props } from './auto-complete';
+// types
+import { Select, Input, Props, Data, Option } from './auto-complete';
 
 const prefixCls = 'ivue-auto-complete';
 
@@ -79,16 +80,16 @@ export default defineComponent({
         'on-select',
         'on-focus',
         'on-blur',
-        'on-clear'
+        'on-clear',
     ],
     props: {
         /**
          * 设置选择的值
          *
-         * @type {String, Number, Array}
+         * @type {String, Number}
          */
         modelValue: {
-            type: [String, Number, Array],
+            type: [String, Number],
             default: '',
         },
         /**
@@ -244,17 +245,14 @@ export default defineComponent({
         // select
         const select = ref<Select>();
         // input
-        const input = ref<Input>(null);
+        const input = ref<Input>();
 
         // data
-        const data: any = reactive<{
-            currentValue: string | number | any[];
-            disableEmitChange: boolean;
-        }>({
+        const data = reactive<Data>({
             /**
              * 当前输入值
              *
-             * @type {String | Number | Array}
+             * @type {String | Number}
              */
             currentValue: props.modelValue,
             /**
@@ -282,7 +280,7 @@ export default defineComponent({
         // methods
 
         // 搜索方法
-        const searchMethod = (query) => {
+        const searchMethod = (query: string) => {
             emit('on-search', query);
 
             if (props.remoteMethod) {
@@ -291,7 +289,7 @@ export default defineComponent({
         };
 
         // 被选中时调用，参数为选中项的 value 值
-        const handleSelect = (option) => {
+        const handleSelect = (option: Option) => {
             const value = option.value;
 
             if (value === undefined || value === null) {

@@ -10,8 +10,8 @@ import { IvueCarouselItem } from './components/ivue-carousel-item';
 import { IvueSwitch } from './components/ivue-switch';
 import { IvueBottomNav } from './components/ivue-bottom-nav';
 import { IvueBottomNavItem } from './components/ivue-bottom-nav-item';
-import { IvueBreadcrumbs } from './components/ivue-breadcrumb';
-import { IvueBreadcrumbsItem } from './components/ivue-breadcrumb-item';
+import { IvueBreadcrumb } from './components/ivue-breadcrumb';
+import { IvueBreadcrumbItem } from './components/ivue-breadcrumb-item';
 import { IvueSelect, IvueOption, IvueOptionGroup } from './components/ivue-select';
 import { IvueSteps, IvueStep } from './components/ivue-steps';
 import { IvueUpload } from './components/ivue-upload';
@@ -56,6 +56,7 @@ import { IvueImage } from './components/ivue-image';
 import { IvueImagePreview } from './components/ivue-image-preview';
 
 import { Ripple } from './components/ivue-ripple';
+import { LineClamp } from './components/ivue-line-clamp';
 
 // 指令
 import Directives from './utils/directives/index';
@@ -116,8 +117,8 @@ export {
     IvueSwitch,
     IvueBottomNav,
     IvueBottomNavItem,
-    IvueBreadcrumbs,
-    IvueBreadcrumbsItem,
+    IvueBreadcrumb,
+    IvueBreadcrumbItem,
     IvueSelect,
     IvueOption,
     IvueOptionGroup,
@@ -170,6 +171,8 @@ export {
     IvueMenuGroup,
 
     Ripple,
+    LineClamp,
+
     install
 };
 
