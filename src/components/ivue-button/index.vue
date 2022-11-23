@@ -15,15 +15,10 @@ import Colorable from '../../utils/mixins/colorable';
 import ripple from '../../utils/directives/ripple';
 import { oneOf } from '../../utils/assist';
 
-const prefixCls = 'ivue-button';
+// type
+import type { Props, Status, Data, ButtonAttrs } from './button';
 
-type Status =
-    | 'primary'
-    | 'light-primary'
-    | 'dark-primary'
-    | 'success'
-    | 'warning'
-    | 'error';
+const prefixCls = 'ivue-button';
 
 export default defineComponent({
     name: prefixCls,
@@ -169,12 +164,9 @@ export default defineComponent({
         },
     },
     // 组合式 API
-    setup(props: any) {
+    setup(props: Props) {
         // data
-        const data = reactive<{
-            rippleActive: boolean;
-            mobile: boolean;
-        }>({
+        const data = reactive<Data>({
             /**
              * 波纹效果激活
              *
@@ -216,7 +208,8 @@ export default defineComponent({
                 [`${prefixCls}--outline`]: props.outline,
                 [`${prefixCls}--radius`]: props.radius,
                 [`${prefixCls}--${props.status}`]: props.status && !props.flat,
-                [`${prefixCls}--${props.status}__color`]: props.status && (props.flat ||  props.outline),
+                [`${prefixCls}--${props.status}__color`]:
+                    props.status && (props.flat || props.outline),
             };
         });
 
@@ -265,15 +258,7 @@ export default defineComponent({
         );
 
         // 按钮属性
-        const buttonAttrs: {
-            class?: Record<string, any>;
-            href?: string;
-            type?: string;
-            disabled?: boolean;
-            onTouchstart: (event) => void;
-            onTouchmove: (event) => void;
-            onClick: (event) => void;
-        } = {
+        const buttonAttrs: ButtonAttrs = {
             class: {
                 [`${prefixCls}`]: true,
                 // 移动端

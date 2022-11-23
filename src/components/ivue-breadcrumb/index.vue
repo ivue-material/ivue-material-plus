@@ -7,11 +7,8 @@
 <script lang='ts'>
 import { defineComponent, computed, provide } from 'vue';
 
-interface BreadcrumbProps {
-    divider: string;
-    justifyCenter: boolean;
-    justifyEnd: boolean;
-}
+// types
+import { Props, BreadcrumbContextKey } from './breadcrumb';
 
 const prefixCls = 'ivue-breadcrumb';
 
@@ -46,7 +43,7 @@ export default defineComponent({
             default: false,
         },
     },
-    setup(props: BreadcrumbProps, { slots }) {
+    setup(props: Props, { slots }) {
         // computed
 
         // 居中样式
@@ -68,7 +65,7 @@ export default defineComponent({
         });
 
         // provide
-        provide('breadcrumb', {
+        provide(BreadcrumbContextKey, {
             props,
             divider: computedDivider.value,
         });

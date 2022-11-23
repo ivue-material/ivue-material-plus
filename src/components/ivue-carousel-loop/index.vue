@@ -68,6 +68,9 @@ import { oneOf } from '../../utils/assist';
 import IvueButton from '../ivue-button';
 import IvueIcon from '../ivue-icon';
 
+// types
+import type {Props, Data} from './carousel-loop';
+
 const prefixCls = 'ivue-carousel-loop';
 
 export default defineComponent({
@@ -181,31 +184,14 @@ export default defineComponent({
             default: 'always',
         },
     },
-    setup(props: any, { emit }) {
+    setup(props: Props, { emit }) {
         // dom
         const scroll = ref<HTMLDivElement>();
         const content = ref<HTMLDivElement>();
         const list = ref<HTMLDivElement>();
 
         // data
-        const data = reactive<{
-            timer: ReturnType<typeof setInterval> | null;
-            loop: boolean;
-            showCopyTrack: boolean;
-            listWidth: number;
-            contentWidth: number;
-            listTranslate: number;
-            listTranslateStart: boolean;
-            listCopyTranslate: number;
-            listCopyTranslateStart: boolean;
-            overflowWidth: number;
-            scrollDoneQuantity: number;
-            direction: string;
-            arrowInterval: ReturnType<typeof setInterval> | null;
-            arrowSetTimeout: ReturnType<typeof setTimeout> | null;
-            span: number;
-            slidingStart: boolean;
-        }>({
+        const data = reactive<Data>({
             /**
              * setInterval
              *

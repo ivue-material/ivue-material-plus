@@ -4,27 +4,30 @@ import type MenuItem from './menu-item.vue';
 import type DropDown from '../ivue-select/drop-down.vue';
 import type IvueCascaderMenu from './menu.vue';
 
-export type IvueInputInstance = InstanceType<typeof IvueInput>
-export type MenuItemInstance = InstanceType<typeof MenuItem>
-export type DropDownInstance = InstanceType<typeof DropDown>
-export type IvueCascaderMenuInstance = InstanceType<typeof IvueCascaderMenu>
+export type IvueInputInstance = InstanceType<typeof IvueInput>;
+export type MenuItemInstance = InstanceType<typeof MenuItem>;
+export type DropDownInstance = InstanceType<typeof DropDown>;
+export type IvueCascaderMenuInstance = InstanceType<typeof IvueCascaderMenu>;
 
 export type tmpItem = {
-  label?: string
-  value?: string
+  label?: string;
+  value?: string;
 }
 
 export type result = {
-  label?: string
-  value?: string
+  label?: string;
+  value?: string;
 }
 
-export type options = {
-  label?: string
-  value?: string
-  loading?: boolean
-  disabled?: boolean
-  children?: []
+export type Options = {
+  label?: string;
+  value?: string;
+  loading?: boolean;
+  disabled?: boolean;
+  children?: any[];
+  __label?: string;
+  __value?: string;
+  item?: Options;
 }
 
 export type CascaderContext = {
@@ -32,16 +35,50 @@ export type CascaderContext = {
     lastValue: boolean
     changeOnSelect: boolean
     fromInit: boolean
-  }) => void
-  updateResult: (result: any[]) => void
-  dropdown: HTMLElement | any
-  props: {
-    loadData: (item: options, callback: () => void) => void | null
-  }
+  }) => void;
+  updateResult: (result: any[]) => void;
+  dropdown: HTMLElement | any;
+  props: Props;
   data: {
     isLoadedChildren: boolean
-  }
+  };
 }
 
 export const CascaderContextKey: InjectionKey<CascaderContext> =
   Symbol('ivue-cascader');
+
+
+export interface Props {
+  options: Options[];
+  modelValue: any[];
+  name: string;
+  id: string;
+  filterable: boolean;
+  disabled: boolean;
+  renderFormat: any;
+  placeholder: string;
+  arrowDownIcon: string;
+  arrowDownIconClass: string;
+  clearableIcon: string;
+  clearableIconClass: string;
+  transferClassName: string;
+  transfer: boolean;
+  changeOnSelect: boolean;
+  trigger: string;
+  loadData?: any;
+  clearable: boolean;
+  notFoundText: string;
+}
+
+export interface Data {
+  visibleMenu: boolean;
+  currentValue: any[];
+  selected: tmpItem[];
+  queryData: string;
+  validDataStr: string;
+  isLoadedChildren: boolean;
+  tmpSelected: tmpItem[];
+  updatingValue: boolean;
+  isValueNull: boolean;
+  filterableSelect: boolean;
+}

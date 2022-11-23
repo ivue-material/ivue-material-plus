@@ -26,6 +26,9 @@ import { scrollTop } from '../../utils/assist';
 
 import IvueIcon from '../ivue-icon';
 
+// types
+import type { Props } from './back-top';
+
 const prefixCls = 'ivue-back-top';
 
 export default defineComponent({
@@ -78,7 +81,7 @@ export default defineComponent({
             default: 1000,
         },
     },
-    setup(props: any, { emit }) {
+    setup(props: Props, { emit }) {
         // 容器
         const container = shallowRef<Document | HTMLElement>();
 
@@ -86,7 +89,7 @@ export default defineComponent({
         const el = shallowRef<HTMLElement>();
 
         // 是否可以显示滚动顶部
-        const backTop = ref(false);
+        const backTop = ref<boolean>(false);
 
         // computed
 

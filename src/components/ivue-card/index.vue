@@ -33,6 +33,9 @@ import {
 import { oneOf } from '../../utils/assist';
 import { isClient } from '../../utils/helpers';
 
+// types
+import type { Props } from './card';
+
 const prefixCls = 'ivue-card';
 
 export default defineComponent({
@@ -137,14 +140,14 @@ export default defineComponent({
             default: true,
         },
     },
-    setup(props: any, { slots }) {
+    setup(props: Props, { slots }) {
         const { proxy } = getCurrentInstance() as ComponentInternalInstance;
 
         // 是否显示标题
-        const showTitle = ref(false);
+        const showTitle = ref<boolean>(false);
 
         // 额外显示的内容，默认位置在右上角
-        const showExtra = ref(false);
+        const showExtra = ref<boolean>(false);
 
         // computed
 
@@ -167,7 +170,7 @@ export default defineComponent({
                 const regexp = new RegExp(/[a-zA-Z]/g);
 
                 // 是否有单位
-                const isUnit = regexp.test(props.radius);
+                const isUnit = regexp.test(`${props.radius}`);
 
                 return {
                     borderRadius: !isUnit ? `${props.radius}px` : props.radius,
@@ -188,7 +191,7 @@ export default defineComponent({
                 const regexp = new RegExp(/[a-zA-Z]/g);
 
                 // 是否有单位
-                const isUnit = regexp.test(padding);
+                const isUnit = regexp.test(`${padding}`);
 
                 return {
                     padding: !isUnit ? `${padding}px` : padding,
@@ -205,7 +208,7 @@ export default defineComponent({
                 const regexp = new RegExp(/[a-zA-Z]/g);
 
                 // 是否有单位
-                const isUnit = regexp.test(props.padding);
+                const isUnit = regexp.test(`${props.padding}`);
 
                 return {
                     padding: !isUnit ? `${props.padding}px` : props.padding,
@@ -294,7 +297,7 @@ export default defineComponent({
                 } else {
                     event.preventDefault();
 
-                    const router = props.$router;
+                    const router = proxy.$router;
 
                     // 打开新窗口
                     if (openInNewWindow) {
@@ -314,8 +317,8 @@ export default defineComponent({
                             // 路由跳转
                             else {
                                 props.replace
-                                    ? router.replace(props.to, () => {})
-                                    : router.push(props.to, () => {});
+                                    ? router.replace(props.to)
+                                    : router.push(props.to);
                             }
                         }
                         // 跳转链接
@@ -335,7 +338,7 @@ export default defineComponent({
             let to = props.to;
 
             if (router) {
-                const current = props.$route;
+                const current = proxy.$route;
 
                 // 跳转路由
                 const route = router.resolve(props.to, current);
@@ -354,7 +357,7 @@ export default defineComponent({
         // onMounted
         onMounted(() => {
             // 是否显示头部
-            showTitle.value = props.title || slots.title !== undefined;
+            showTitle.value = !!props.title || slots.title !== undefined;
 
             // 额外显示的内容，默认位置在右上角
             showExtra.value = slots.extra !== undefined;

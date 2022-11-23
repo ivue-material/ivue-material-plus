@@ -9,3 +9,14 @@ export type BottomNavContext = {
 
 export const BottomNavContextKey: InjectionKey<BottomNavContext> =
   Symbol('ivue-bottom-nav');
+
+
+export interface Props {
+  name: number | string;
+}
+
+
+export interface Data {
+  isActive: boolean;
+  uid: number;
+}

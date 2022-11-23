@@ -5,7 +5,7 @@
                 v-for="(item, index) in options"
                 :item="item"
                 :tmpItem="data.tmpItem"
-                :key="getKey(index)"
+                :key="getKey() + index"
                 @click="handleClickItem"
                 @mouseenter="handleHoverItem"
             ></menu-item>
@@ -39,7 +39,7 @@ import MenuItem from './menu-item.vue';
 import {
     tmpItem,
     result,
-    options,
+    Options,
     MenuItemInstance,
     CascaderContextKey,
 } from './cascader';
@@ -122,7 +122,7 @@ export default defineComponent({
 
         // 获取基础项
         const getBaseItem = (item) => {
-            let backItem = Object.assign({}, item);
+            const backItem = Object.assign({}, item);
 
             if (backItem.children) {
                 delete backItem.children;
@@ -134,7 +134,7 @@ export default defineComponent({
         // 发现选择项
         const handleFindSelected = (params) => {
             const val = params.value;
-            let value = [...val];
+            const value = [...val];
 
             for (let i = 0; i < value.length; i++) {
                 for (let j = 0; j < props.options.length; j++) {
@@ -160,7 +160,7 @@ export default defineComponent({
 
         // 当前点击的选项
         const handleTriggerItem = (
-            item: options,
+            item: Options,
             fromInit = false as boolean,
             fromUser = false as boolean
         ) => {

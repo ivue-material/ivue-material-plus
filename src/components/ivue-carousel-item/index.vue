@@ -27,9 +27,10 @@ import {
     ref,
 } from 'vue';
 
-import { CarouselContextKey } from './carousel-item';
-
 import { isUndefined } from '../../utils/helpers';
+
+// types
+import { CarouselContextKey, Props } from './carousel-item';
 
 const prefixCls = 'ivue-carousel-item';
 
@@ -39,22 +40,22 @@ export default defineComponent({
         /**
          * 幻灯片的名字，可用作 setActiveItem 的参数
          *
-         * @type {String}
+         * @type {String | Number}
          */
         name: {
-            type: String,
+            type: [String, Number],
         },
         /**
          * 该幻灯片所对应指示器的文本
          *
-         * @type {String}
+         * @type {String | Number}
          */
         label: {
-            type: String,
+            type: [String, Number],
             default: '',
         },
     },
-    setup(props: any) {
+    setup(props: Props) {
         // instance
         const vm = getCurrentInstance();
 
@@ -175,7 +176,7 @@ export default defineComponent({
 
             const transform = [_translate, _scale].join(' ');
 
-            let style: {
+            const style: {
                 transform: string;
                 zIndex?: number;
             } = {

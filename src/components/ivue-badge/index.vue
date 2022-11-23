@@ -32,7 +32,14 @@
 import hexToRgba from 'hex-to-rgba';
 import { oneOf } from '../../utils/assist';
 
-import { defineComponent, computed, getCurrentInstance } from 'vue';
+import {
+    defineComponent,
+    computed,
+    getCurrentInstance,
+    ComponentInternalInstance,
+} from 'vue';
+
+import type { Props } from './badge';
 
 const prefixCls = 'ivue-badge';
 
@@ -69,13 +76,17 @@ export default defineComponent({
          *
          * @type {Number}
          */
-        count: Number,
+        count: {
+            type: Number,
+        },
         /**
          * 自定义的class名称，dot 模式下无效
          *
          * @type {String}
          */
-        className: String,
+        className: {
+            type: String,
+        },
         /**
          * 封顶的数字值
          *
@@ -147,9 +158,9 @@ export default defineComponent({
             type: String,
         },
     },
-    setup(props: any) {
+    setup(props: Props) {
         // 支持访问内部组件实例
-        const { proxy }: any = getCurrentInstance();
+        const { proxy } = getCurrentInstance() as ComponentInternalInstance;
 
         // computed
 
@@ -285,7 +296,7 @@ export default defineComponent({
             }
 
             // 显示的数字 >= 封顶的数字值 ? 封顶的数字值+ : 显示的数字
-            return parseInt(count) >= parseInt(overflowCount)
+            return parseInt(`${count}`) >= parseInt(`${overflowCount}`)
                 ? `${overflowCount}+`
                 : count;
         });
@@ -303,7 +314,7 @@ export default defineComponent({
             // 是否有数字
             if (count) {
                 // 是否等于0
-                status = !(parseInt(count) === 0);
+                status = !(parseInt(`${count}`) === 0);
             }
 
             // 是否显示成小红点
@@ -312,7 +323,7 @@ export default defineComponent({
 
                 if (count !== null) {
                     // 是否等于0
-                    if (parseInt(count) === 0) {
+                    if (parseInt(`${count}`) === 0) {
                         status = false;
                     }
                 }
@@ -335,7 +346,7 @@ export default defineComponent({
                 return true;
             }
 
-            if (showZero && parseInt(count) === 0) {
+            if (showZero && parseInt(`${count}`) === 0) {
                 return true;
             } else {
                 return false;

@@ -21,7 +21,7 @@ export interface Props {
   capture: boolean;
   name: string;
   list: any[];
-  filterMethod: any | boolean;
+  filterMethod?: any | boolean;
   remoteMethod?: any;
   loading: boolean;
   loadingText: string;

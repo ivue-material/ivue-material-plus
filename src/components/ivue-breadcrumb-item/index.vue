@@ -1,18 +1,11 @@
 <script lang="ts">
 import { defineComponent, computed, inject, h } from 'vue';
 
+// type
+import { BreadcrumbContextKey } from '../ivue-breadcrumb/breadcrumb';
+import type { Props } from './breadcrumb-item';
+
 const prefixCls = 'ivue-breadcrumb-item';
-
-interface ItemProps {
-    to: string | Record<string, any>;
-    replace: boolean;
-}
-
-interface BreadcrumbProps {
-    divider: string | any;
-    justifyCenter: boolean;
-    justifyEnd: boolean;
-}
 
 export default defineComponent({
     name: prefixCls,
@@ -33,12 +26,11 @@ export default defineComponent({
          */
         replace: {
             type: Boolean,
-
             default: false,
         },
     },
-    setup(props: ItemProps) {
-        const parent: BreadcrumbProps = inject('breadcrumb');
+    setup(props: Props) {
+        const parent = inject(BreadcrumbContextKey);
 
         // computed
 

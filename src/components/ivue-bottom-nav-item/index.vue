@@ -13,10 +13,6 @@
 </template>
 
 <script lang="ts">
-import IvueButton from '../../components/ivue-button/index.vue';
-import Colorable from '../../utils/mixins/colorable';
-import { BottomNavContextKey } from './bottom-nav-item';
-
 import {
     defineComponent,
     inject,
@@ -26,6 +22,12 @@ import {
     onMounted,
     onUnmounted,
 } from 'vue';
+
+import IvueButton from '../../components/ivue-button/index.vue';
+import Colorable from '../../utils/mixins/colorable';
+
+// types
+import { BottomNavContextKey, Props, Data } from './bottom-nav-item';
 
 const prefixCls = 'ivue-bottom-nav-item';
 
@@ -43,7 +45,7 @@ export default defineComponent({
             required: true,
         },
     },
-    setup(props: any) {
+    setup(props: Props) {
         // 支持访问内部组件实例
         const { proxy, uid } =
             getCurrentInstance() as ComponentInternalInstance;
@@ -53,10 +55,7 @@ export default defineComponent({
             inject(BottomNavContextKey);
 
         // data
-        const data = reactive<{
-            isActive: boolean;
-            uid: number;
-        }>({
+        const data = reactive<Data>({
             /**
              * 按钮是否激活状态
              *

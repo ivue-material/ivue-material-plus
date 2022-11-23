@@ -14,7 +14,7 @@ import { oneOf } from '../../utils/assist';
 
 // ts
 import { BottomNavContextKey } from '../ivue-bottom-nav-item/bottom-nav-item';
-import { BottomNavItemContext } from './bottom-nav';
+import type { BottomNavItemContext, Props } from './bottom-nav';
 
 const prefixCls = 'ivue-bottom-nav';
 
@@ -81,7 +81,7 @@ export default defineComponent({
             default: false,
         },
     },
-    setup(props: any, { emit }) {
+    setup(props: Props, { emit }) {
         // data
         const data: any = reactive<{
             items: Array<BottomNavItemContext>;
@@ -110,7 +110,9 @@ export default defineComponent({
 
         // 实时计算高度
         const computedHeight = computed(() => {
-            return !Number.isNaN(Number(props.height)) ? `${props.height}px` : props.height;
+            return !Number.isNaN(Number(props.height))
+                ? `${props.height}px`
+                : props.height;
         });
 
         // methods
@@ -226,7 +228,9 @@ export default defineComponent({
                 },
                 style: {
                     height: `${this.computedHeight}`,
-                    transform: `translate3d(0, ${this.visible ? 0 : `calc(${this.computedHeight} + 4px)`}, 0)`
+                    transform: `translate3d(0, ${
+                        this.visible ? 0 : `calc(${this.computedHeight} + 4px)`
+                    }, 0)`,
                 },
             }),
             // 插槽

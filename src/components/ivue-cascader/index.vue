@@ -115,12 +115,15 @@ import IvueIcon from '../ivue-icon/index.vue';
 import DropDown from '../ivue-select/drop-down.vue';
 import IvueCascaderMenu from './menu.vue';
 
-// ts
+// types
 import {
     IvueInputInstance,
     CascaderContextKey,
     DropDownInstance,
     IvueCascaderMenuInstance,
+    Props,
+    Data,
+    Options,
 } from './cascader';
 
 const prefixCls = 'ivue-cascader';
@@ -191,7 +194,7 @@ export default defineComponent({
          */
         renderFormat: {
             type: Function,
-            default(label: any) {
+            default(label: string[] | number[]) {
                 return label.join(' / ');
             },
         },
@@ -294,6 +297,7 @@ export default defineComponent({
          */
         loadData: {
             type: Function,
+            default: () => {},
         },
         /**
          * 清除按钮
@@ -314,7 +318,7 @@ export default defineComponent({
             default: '无匹配数据',
         },
     },
-    setup(props: any, { emit }) {
+    setup(props: Props, { emit }) {
         // dom
         const input = ref<IvueInputInstance>();
         const reference = ref<HTMLDivElement>();
@@ -322,18 +326,7 @@ export default defineComponent({
         const menu = ref<IvueCascaderMenuInstance>(null);
 
         // data
-        const data: any = reactive<{
-            visibleMenu: boolean;
-            currentValue: any[];
-            selected: any[];
-            queryData: string;
-            validDataStr: string;
-            isLoadedChildren: boolean;
-            tmpSelected: any[];
-            updatingValue: boolean;
-            isValueNull: boolean;
-            filterableSelect: boolean;
-        }>({
+        const data = reactive<Data>({
             /**
              * 是否显示菜单
              *
@@ -484,7 +477,7 @@ export default defineComponent({
             let selections = [];
 
             function getSelections(
-                arr: Array<any>,
+                arr: Options[],
                 label: string,
                 value: string
             ) {
@@ -638,11 +631,6 @@ export default defineComponent({
                 // 清除菜单选择数据
                 menu.value.handleClear();
             }, 300);
-
-            setTimeout(() => {
-                // 取消transition动画
-                data.transitionCss = true;
-            }, 1000);
         };
 
         // 获取焦点
@@ -658,7 +646,7 @@ export default defineComponent({
         };
 
         // 选择搜索选项
-        const handleSelectItem = (item) => {
+        const handleSelectItem = (item: Options) => {
             // 禁用
             if (item.disabled || item.item.disabled) {
                 return false;
@@ -691,7 +679,7 @@ export default defineComponent({
 
         // 排除 loading 后的 data，避免重复触发 updateSelect
         const getValidData = (data) => {
-            function deleteData(item) {
+            function deleteData(item: Options) {
                 const new_item = Object.assign({}, item);
                 if ('loading' in new_item) {
                     delete new_item.loading;
@@ -713,7 +701,7 @@ export default defineComponent({
                 return new_item;
             }
 
-            return data.map((item) => deleteData(item));
+            return data.map((item: Options) => deleteData(item));
         };
 
         // 更新选项 触发菜单 handleFindSelected 方法

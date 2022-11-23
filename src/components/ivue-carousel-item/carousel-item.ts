@@ -1,17 +1,12 @@
-import type { ExtractPropTypes, Ref, InjectionKey } from 'vue';
+import type { Ref, InjectionKey } from 'vue';
 
 import type CarouselItem from './index.vue';
 import type { CarouselItemContext } from '../ivue-carousel/carousel';
 
-export const carouselItemProps = {
-  name: { type: String, default: '' },
-  label: {
-    type: [String, Number],
-    default: '',
-  },
-} as const;
-
-export type CarouselItemProps = ExtractPropTypes<typeof carouselItemProps>
+export interface Props {
+  name: string | number;
+  label: string | number;
+}
 
 export type CarouselItemInstance = InstanceType<typeof CarouselItem>
 

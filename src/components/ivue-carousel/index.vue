@@ -95,7 +95,7 @@ import IvueButton from '../ivue-button';
 import IvueIcon from '../ivue-icon';
 
 // ts
-import { CarouselItemContext } from './carousel';
+import { CarouselItemContext, Props, Data } from './carousel';
 import { CarouselContextKey } from '../ivue-carousel-item/carousel-item';
 
 const prefixCls = 'ivue-carousel';
@@ -276,21 +276,14 @@ export default defineComponent({
             default: 0.83,
         },
     },
-    setup(props: any, { emit }) {
+    setup(props: Props, { emit }) {
         // dom
 
         // wrapper
         const wrapper = ref<HTMLDivElement>();
 
         // data
-        const data: any = reactive<{
-            items: Array<CarouselItemContext>;
-            activeIndex: number;
-            hover: boolean;
-            timer: ReturnType<typeof setInterval> | null;
-            contentHeight: number;
-            init: boolean;
-        }>({
+        const data = reactive<Data>({
             /**
              * 选项数量
              *
@@ -566,12 +559,12 @@ export default defineComponent({
         };
 
         // 点击导航器
-        const handleDotClick = (index) => {
+        const handleDotClick = (index: number) => {
             data.activeIndex = index;
         };
 
         // 导航器hover
-        const handleDotHover = (index) => {
+        const handleDotHover = (index: number) => {
             if (props.trigger === 'hover' && index !== data.activeIndex) {
                 data.activeIndex = index;
             }
@@ -791,7 +784,7 @@ export default defineComponent({
     },
     components: {
         IvueButton,
-        IvueIcon
+        IvueIcon,
     },
 });
 </script>
