@@ -7,7 +7,7 @@
 <script lang='ts'>
 import { defineComponent, computed, provide } from 'vue';
 
-// types
+// type
 import { Props, BreadcrumbContextKey } from './breadcrumb';
 
 const prefixCls = 'ivue-breadcrumb';

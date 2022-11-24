@@ -16,7 +16,13 @@
 <script lang='ts'>
 import { computed, defineComponent } from 'vue';
 import IvueIcon from '../ivue-icon/index.vue';
+import { isString } from '@vue/shared';
+
+// utils
 import { isCssColor } from '../../utils/helpers';
+
+// type
+import { Props, ColorStyle, BgStyle, Styles } from './chip';
 
 const prefixCls = 'ivue-chip';
 
@@ -25,7 +31,7 @@ export default defineComponent({
     emits: ['update:modelValue'],
     props: {
         /**
-         * v-modul
+         * v-model
          *
          * @type {Boolean}
          */
@@ -99,7 +105,7 @@ export default defineComponent({
             type: Boolean,
         },
     },
-    setup(props: any, { emit }) {
+    setup(props: Props, { emit }) {
         // computed
 
         // 外层样式
@@ -121,14 +127,14 @@ export default defineComponent({
             };
 
             // 文字样式
-            const isTextColor: any = setTextColor(textColor);
+            const isTextColor = setTextColor(textColor);
 
             if (isTextColor.color && !isCssColor(isTextColor.color)) {
                 obj[isTextColor.color] = true;
             }
 
             // 背景样式
-            if (props.color) {
+            if (isString(props.color)) {
                 obj[props.color] = true;
             }
 
@@ -139,10 +145,10 @@ export default defineComponent({
         const styles = computed(() => {
             const textColor = props.textColor || (props.outline && props.color);
 
-            let obj: any = {};
+            let obj: Styles = {};
 
             // 文字样式
-            const isTextColor: any = setTextColor(textColor);
+            const isTextColor = setTextColor(textColor);
 
             if (isTextColor.color && isCssColor(isTextColor.color)) {
                 obj.color = isTextColor.color;
@@ -162,8 +168,8 @@ export default defineComponent({
         // methods
 
         // 设置背景颜色
-        const setBackgroundColor = (color: string | any[]) => {
-            let style = {};
+        const setBackgroundColor = (color: string | string[]): BgStyle => {
+            let style: BgStyle = {};
 
             // 是否是数组
             if (Array.isArray(color)) {
@@ -172,7 +178,7 @@ export default defineComponent({
                 };
             } else if (isCssColor(color)) {
                 style = {
-                    'background-color': `${color}`,
+                    backgroundColor: `${color}`,
                 };
             }
 
@@ -180,8 +186,8 @@ export default defineComponent({
         };
 
         // 设置文字颜色
-        const setTextColor = (color: Record<string, any>) => {
-            let style = {};
+        const setTextColor = (color: string | string[]): ColorStyle => {
+            let style: ColorStyle = {};
 
             // 是否是数组
             if (Array.isArray(color)) {

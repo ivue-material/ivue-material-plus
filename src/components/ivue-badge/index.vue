@@ -39,6 +39,7 @@ import {
     ComponentInternalInstance,
 } from 'vue';
 
+// type
 import type { Props } from './badge';
 
 const prefixCls = 'ivue-badge';

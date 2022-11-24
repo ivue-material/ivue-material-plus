@@ -42,6 +42,9 @@ import { computed, defineComponent, reactive, watch, inject } from 'vue';
 import { isCssColor, setTextColor } from '../../utils/helpers';
 import { CheckboxContextKey } from '../ivue-checkbox-group/checkbox-group';
 
+// type
+import type { Props, Data } from './checkbox';
+
 const prefixCls = 'ivue-checkbox';
 
 export default defineComponent({
@@ -128,18 +131,14 @@ export default defineComponent({
             default: false,
         },
     },
-    setup(props: any, { emit }) {
+    setup(props: Props, { emit }) {
         // 组合
         const IvueCheckboxGroup = inject(CheckboxContextKey, {
             default: null,
         });
 
         // data
-        const data: any = reactive<{
-            focusInner: boolean;
-            groupName: string;
-            groupModel: Array<any>;
-        }>({
+        const data = reactive<Data>({
             /**
              * input 焦点
              *
@@ -259,14 +258,14 @@ export default defineComponent({
         // method
 
         // 改变
-        const handleChange = (event) => {
+        const handleChange = (event: Event) => {
             // 禁用
             if (props.disabled) {
                 return false;
             }
 
             // 是否选中
-            const checked = event.target.checked;
+            const checked = (event.target as HTMLInputElement).checked;
 
             // 设置 v-model
             const value = checked ? props.trueValue : props.falseValue;
@@ -312,7 +311,7 @@ export default defineComponent({
         if (IvueCheckboxGroup.props) {
             watch(
                 () => IvueCheckboxGroup.props.modelValue,
-                (value) => {
+                (value: string[]) => {
                     data.groupModel = value || [];
                 },
                 {

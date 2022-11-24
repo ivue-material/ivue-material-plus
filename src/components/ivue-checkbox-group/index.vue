@@ -6,7 +6,9 @@
 
 <script lang='ts'>
 import { computed, defineComponent, reactive, provide } from 'vue';
-import { CheckboxContextKey } from './checkbox-group';
+
+// type
+import { CheckboxContextKey, Props, Data } from './checkbox-group';
 
 const prefixCls = 'ivue-checkbox-group';
 
@@ -24,15 +26,13 @@ export default defineComponent({
             default: () => [],
         },
     },
-    setup(props: any, { emit }) {
+    setup(props: Props, { emit }) {
         // data
-        const data: any = reactive<{
-            currentValue: string | number;
-        }>({
+        const data = reactive<Data>({
             /**
              * 当前值
              *
-             * @type {Boolean}
+             * @type {Array}
              */
             currentValue: props.modelValue,
         });
@@ -47,7 +47,7 @@ export default defineComponent({
         // methods
 
         // 改变值
-        const handleChange = (value: any[]) => {
+        const handleChange = (value: (string | number)[]) => {
             data.currentValue = value;
 
             emit('update:modelValue', value);

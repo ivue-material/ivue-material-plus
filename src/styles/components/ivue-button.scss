@@ -1,4 +1,4 @@
-@import "ivue-loading.scss";
+// @import "ivue-loading.scss";
 
 @import '../animation/variables.scss';
 @import "../../components/ivue-elevation/mixins";
@@ -111,8 +111,6 @@ $name: 'ivue-button';
   font-weight: 500;
   color: currentColor;
   padding: var(--#{$name}-padding);
-
-  @import "./ivue-ripple.scss";
 
   // 内容
   &-content {

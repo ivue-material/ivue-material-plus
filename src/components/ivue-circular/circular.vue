@@ -1,6 +1,12 @@
 <template>
     <div :class="wrapClasses" :style="wrapStyles">
         <svg viewBox="0 0 100 100">
+            <defs v-if="strokeColorIsString">
+                <linearGradient :id="id" x1="100%" y1="0%" x2="0%" y2="0%">
+                    <stop offset="0%" :stop-color="`${strokeColor[0]}`" />
+                    <stop offset="100%" :stop-color="`${strokeColor[1]}`" />
+                </linearGradient>
+            </defs>
             <path
                 :d="pathString"
                 :stroke="trailColor"
@@ -31,6 +37,9 @@ import { computed, defineComponent, ref } from 'vue';
 
 import { oneOf } from '../../utils/assist';
 import { getRandomStr } from '../../utils/helpers';
+
+// type
+import { Props } from './circular';
 
 const prefixCls = 'ivue-circular';
 
@@ -97,7 +106,7 @@ export default defineComponent({
          * @type {String}
          */
         strokeLinecap: {
-            type: String,
+            type: null,
             validator(value: string) {
                 return oneOf(value, ['square', 'round']);
             },
@@ -113,15 +122,13 @@ export default defineComponent({
             default: '#5B8EFF',
         },
     },
-    setup(props: any) {
+    setup(props: Props) {
         // ref
-        const id = ref(`ivu-chart-circle-${getRandomStr(3)}`);
+        const id = ref<string>(`ivu-chart-circle-${getRandomStr(3)}`);
 
         // 外层样式
         const wrapClasses = computed(() => {
-            return [
-                prefixCls,
-            ];
+            return [prefixCls];
         });
 
         // 外层样式style
@@ -187,7 +194,7 @@ export default defineComponent({
                 color = `url(#${id.value})`;
             }
 
-            return color;
+            return color as string;
         });
 
         // 计算进度条宽度
@@ -224,9 +231,16 @@ export default defineComponent({
             return style;
         });
 
+        // 进度环的颜色是否是字符串
+        const strokeColorIsString = computed(() => {
+            return typeof props.strokeColor !== 'string';
+        });
+
         return {
             prefixCls,
 
+            // id
+            id,
             // computed
             wrapClasses,
             wrapStyles,
@@ -235,6 +249,7 @@ export default defineComponent({
             strokeValue,
             computedStrokeWidth,
             pathStyles,
+            strokeColorIsString,
         };
     },
 });

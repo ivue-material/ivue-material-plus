@@ -31,7 +31,7 @@ import Colorable from '../../utils/mixins/colorable';
 import { oneOf } from '../../utils/assist';
 import IvueIcon from '../ivue-icon/index.vue';
 
-// types
+// type
 import type { Props, Data, _ComponentInternalInstance } from './avatar';
 
 const prefixCls = 'ivue-avatar';

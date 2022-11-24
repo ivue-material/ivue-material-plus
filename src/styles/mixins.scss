@@ -1,27 +1,30 @@
 // 正方形
 @mixin square ($size) {
-      @include size($size, $size);
+  @include size($size, $size);
 }
 
 // size
 @mixin size($width, $height) {
-      width: $width;
-      height: $height;
+  width: $width;
+  height: $height;
 }
 
 // placeholder
 @mixin placeholder($color: #c5c8ce) {
-      /*Firefox*/
-      &::-moz-placeholder {
-            color: $color;
-            opacity: 1; // Override Firefox's unusual default opacity; see https://github.com/twbs/bootstrap/pull/11526
-      }
-      /*Internet Explorer 10+*/
-      &:-ms-input-placeholder {
-            color: $color;
-      }
-      /*Safari and Chrome*/
-      &::-webkit-input-placeholder {
-            color: $color;
-      }
+
+  /*Firefox*/
+  &::-moz-placeholder {
+    color: $color;
+    opacity: 1; // Override Firefox's unusual default opacity; see https://github.com/twbs/bootstrap/pull/11526
+  }
+
+  /*Internet Explorer 10+*/
+  &:-ms-input-placeholder {
+    color: $color;
+  }
+
+  /*Safari and Chrome*/
+  &::-webkit-input-placeholder {
+    color: $color;
+  }
 }

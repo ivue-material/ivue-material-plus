@@ -15,7 +15,7 @@
     </div>
 </template>
 
-<script  lang='ts'>
+<script lang='ts'>
 import {
     defineComponent,
     reactive,
@@ -29,8 +29,13 @@ import {
 
 import { isUndefined } from '../../utils/helpers';
 
-// types
-import { CarouselContextKey, Props } from './carousel-item';
+// type
+import {
+    CarouselContextKey,
+    Props,
+    Data,
+    WrapperStyles,
+} from './carousel-item';
 
 const prefixCls = 'ivue-carousel-item';
 
@@ -84,16 +89,7 @@ export default defineComponent({
         } = inject(CarouselContextKey);
 
         // data
-        const data = reactive<{
-            active: boolean;
-            animating: boolean;
-            translate: number;
-            scale: number;
-            ready: boolean;
-            inStage: boolean;
-            hover: boolean;
-            zIndex: number;
-        }>({
+        const data = reactive<Data>({
             /**
              * 是否激活
              *
@@ -176,10 +172,7 @@ export default defineComponent({
 
             const transform = [_translate, _scale].join(' ');
 
-            const style: {
-                transform: string;
-                zIndex?: number;
-            } = {
+            const style: WrapperStyles = {
                 transform,
             };
 

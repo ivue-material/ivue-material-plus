@@ -9,12 +9,12 @@ export type MenuItemInstance = InstanceType<typeof MenuItem>;
 export type DropDownInstance = InstanceType<typeof DropDown>;
 export type IvueCascaderMenuInstance = InstanceType<typeof IvueCascaderMenu>;
 
-export type tmpItem = {
+export type TmpItem = {
   label?: string;
   value?: string;
 }
 
-export type result = {
+export type Result = {
   label?: string;
   value?: string;
 }
@@ -31,12 +31,8 @@ export type Options = {
 }
 
 export type CascaderContext = {
-  handleResultChange?: (params: {
-    lastValue: boolean
-    changeOnSelect: boolean
-    fromInit: boolean
-  }) => void;
-  updateResult: (result: any[]) => void;
+  handleResultChange?: (params: ResultChange) => void;
+  updateResult: (result: Result[]) => void;
   dropdown: HTMLElement | any;
   props: Props;
   data: {
@@ -72,13 +68,19 @@ export interface Props {
 
 export interface Data {
   visibleMenu: boolean;
-  currentValue: any[];
-  selected: tmpItem[];
+  currentValue: string[];
+  selected: TmpItem[];
   queryData: string;
   validDataStr: string;
   isLoadedChildren: boolean;
-  tmpSelected: tmpItem[];
+  tmpSelected: TmpItem[];
   updatingValue: boolean;
   isValueNull: boolean;
   filterableSelect: boolean;
+}
+
+export interface ResultChange {
+  lastValue: boolean;
+  changeOnSelect: boolean;
+  fromInit: boolean;
 }

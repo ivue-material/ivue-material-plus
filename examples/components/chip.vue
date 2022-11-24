@@ -3,6 +3,7 @@
         <h1>基本用法</h1>
         <ivue-chip>Default</ivue-chip>
         <ivue-chip disabled>Disabled</ivue-chip>
+        <ivue-chip :color="['orange', 'green']" text-color="#ffffff" close>Close</ivue-chip>
         <ivue-chip color="orange" text-color="#ffffff" close>Close</ivue-chip>
         <ivue-chip outline color="green">Outline</ivue-chip>
         <ivue-chip outline>Outline</ivue-chip>

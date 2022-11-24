@@ -66,7 +66,7 @@ import IvueOption from '../ivue-select/option.vue';
 
 import { oneOf } from '../../utils/assist';
 
-// types
+// type
 import type { Select, Input, Props, Data, Option } from './auto-complete';
 
 const prefixCls = 'ivue-auto-complete';

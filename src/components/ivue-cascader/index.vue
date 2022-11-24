@@ -115,7 +115,7 @@ import IvueIcon from '../ivue-icon/index.vue';
 import DropDown from '../ivue-select/drop-down.vue';
 import IvueCascaderMenu from './menu.vue';
 
-// types
+// type
 import {
     IvueInputInstance,
     CascaderContextKey,
@@ -124,6 +124,8 @@ import {
     Props,
     Data,
     Options,
+    ResultChange,
+    Result,
 } from './cascader';
 
 const prefixCls = 'ivue-cascader';
@@ -322,8 +324,8 @@ export default defineComponent({
         // dom
         const input = ref<IvueInputInstance>();
         const reference = ref<HTMLDivElement>();
-        const dropdown = ref<DropDownInstance>(null);
-        const menu = ref<IvueCascaderMenuInstance>(null);
+        const dropdown = ref<DropDownInstance>();
+        const menu = ref<IvueCascaderMenuInstance>();
 
         // data
         const data = reactive<Data>({
@@ -577,7 +579,7 @@ export default defineComponent({
         };
 
         // 结果变化
-        const handleResultChange = (params) => {
+        const handleResultChange = (params: ResultChange) => {
             // lastValue: 是点击的最终值
             const lastValue = params.lastValue;
             // fromInit: 这是从更新值发出的
@@ -678,7 +680,7 @@ export default defineComponent({
         };
 
         // 排除 loading 后的 data，避免重复触发 updateSelect
-        const getValidData = (data) => {
+        const getValidData = (data: Options[]) => {
             function deleteData(item: Options) {
                 const new_item = Object.assign({}, item);
                 if ('loading' in new_item) {
@@ -718,12 +720,12 @@ export default defineComponent({
         };
 
         // 更新结果
-        const updateResult = (result: any[]) => {
+        const updateResult = (result: Result[]) => {
             data.tmpSelected = result;
         };
 
         // 发送事件
-        const emitValue = (val, oldVal) => {
+        const emitValue = (val: string[], oldVal: string) => {
             if (JSON.stringify(val) !== oldVal) {
                 emit(
                     'on-change',
@@ -786,7 +788,7 @@ export default defineComponent({
         // 监听当前的value
         watch(
             () => data.currentValue,
-            (value) => {
+            (value: string[] | null) => {
                 // 解决 value 置为 null 时，$emit:update:modelValue [] 而不是 null
                 if (data.isValueNull) {
                     data.isValueNull = false;

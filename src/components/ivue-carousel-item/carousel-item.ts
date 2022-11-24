@@ -8,6 +8,22 @@ export interface Props {
   label: string | number;
 }
 
+export interface Data {
+  active: boolean;
+  animating: boolean;
+  translate: number;
+  scale: number;
+  ready: boolean;
+  inStage: boolean;
+  hover: boolean;
+  zIndex: number;
+}
+
+export type WrapperStyles = {
+  transform: string;
+  zIndex?: number;
+}
+
 export type CarouselItemInstance = InstanceType<typeof CarouselItem>
 
 export type CarouselContext = {

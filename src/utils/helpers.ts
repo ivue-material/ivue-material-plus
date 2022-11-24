@@ -199,7 +199,7 @@ export function isCssColor(color) {
 }
 
 // 设置文字颜色
-export function setTextColor(color: Record<string, any>) {
+export function setTextColor(color: string | string[]) {
     let style: {
         color?: string
     } = {};

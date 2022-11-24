@@ -3,14 +3,18 @@
         {{ item.label }}
         <ivue-icon v-show="showArrow">{{ childrenIcon }}</ivue-icon>
         <!-- loading -->
-        <div :class="`${prefixCls}-loading`" v-ivueloading="true" v-if="showLoading"></div>
+        <div :class="`${prefixCls}-loading`" v-ivue-loading="true" v-if="showLoading"></div>
     </li>
 </template>
 
 <script lang='ts'>
 import { defineComponent, computed } from 'vue';
+
 import IvueIcon from '../ivue-icon/index.vue';
-import Ivueloading from '../ivue-loading/directive';
+import IvueLoading from '../ivue-loading/directive';
+
+// type
+import { Props } from './menu-item';
 
 const prefixCls = 'ivue-cascader-menu--item';
 
@@ -18,7 +22,7 @@ export default defineComponent({
     name: prefixCls,
     emits: ['click', 'mouseenter'],
     directives: {
-        Ivueloading,
+        IvueLoading,
     },
     props: {
         /**
@@ -47,7 +51,7 @@ export default defineComponent({
             default: 'keyboard_arrow_right',
         },
     },
-    setup(props: any, { emit }) {
+    setup(props: Props, { emit }) {
         // computed
 
         // 外层样式

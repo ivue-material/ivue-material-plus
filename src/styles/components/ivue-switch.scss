@@ -1,11 +1,9 @@
 @use "sass:math";
 @import '../animation/variables.scss';
-@import "ivue-ripple.scss";
 
 $name: 'ivue-switch';
 
 :root {
-
   // color
   --#{$name}-bg: #858585;
 

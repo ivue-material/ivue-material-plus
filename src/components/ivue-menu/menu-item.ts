@@ -1,4 +1,3 @@
-
 import {
   ComponentInternalInstance,
   ComponentPublicInstance,
@@ -8,10 +7,13 @@ interface _ComponentPublicInstance extends ComponentPublicInstance {
   handleCheckClick: (event: Event, newWindow: boolean) => void
 }
 
-interface _ComponentInternalInstance extends ComponentInternalInstance {
+export interface _ComponentInternalInstance extends ComponentInternalInstance {
   proxy: _ComponentPublicInstance | null;
 }
 
-export type {
-  _ComponentInternalInstance
-};
+export interface Props {
+  name: string | number;
+  disabled: boolean;
+  target: string,
+  to: string | any;
+}

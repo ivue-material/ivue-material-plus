@@ -68,7 +68,7 @@ import { oneOf } from '../../utils/assist';
 import IvueButton from '../ivue-button';
 import IvueIcon from '../ivue-icon';
 
-// types
+// type
 import type {Props, Data} from './carousel-loop';
 
 const prefixCls = 'ivue-carousel-loop';

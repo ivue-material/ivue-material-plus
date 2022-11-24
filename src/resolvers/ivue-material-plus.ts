@@ -67,6 +67,45 @@ const useDependentComponents = [
   }
 ];
 
+// 样式
+const sideEffects = [
+  // ivue-page
+  {
+    name: 'ivue-page',
+    sideEffects: ['ivue-select']
+  },
+  // ivue-modal
+  {
+    name: 'ivue-modal',
+    sideEffects: ['ivue-button', 'ivue-spin']
+  },
+  // ivue-cascader
+  {
+    name: 'ivue-cascader',
+    sideEffects: ['ivue-input', 'ivue-select', 'ivue-loading']
+  },
+  // ivue-auto-complete
+  {
+    name: 'ivue-auto-complete',
+    sideEffects: ['ivue-loading', 'ivue-input', 'ivue-select']
+  },
+  // ivue-button
+  {
+    name: 'ivue-button',
+    sideEffects: ['ivue-ripple']
+  },
+  // ivue-switch
+  {
+    name: 'ivue-switch',
+    sideEffects: ['ivue-ripple']
+  },
+  // ivue-table
+  {
+    name: 'ivue-table',
+    sideEffects: ['ivue-tooltip', 'ivue-checkbox', 'ivue-scrollbar']
+  },
+]
+
 // 设置样式文件
 function getSideEffects(componentsName: string, options) {
   // 没有样式文件
@@ -81,14 +120,25 @@ function getSideEffects(componentsName: string, options) {
     ];
   }
 
-  return [
+  let list = [
     `${pakPath}/styles/reset.css`,
     `${pakPath}/styles/ivue-icon.css`,
     `${basePath}`,
     `${animationPath}`,
     `${pakPath}/styles/${componentsName}.css`
   ];
+
+  sideEffects.forEach((item) => {
+    if (item.name === componentsName) {
+      item.sideEffects.forEach((sideEffectsItem) => {
+        list.push(`${pakPath}/styles/${sideEffectsItem}.css`)
+      })
+    }
+  })
+
+  return list;
 }
+
 
 // 请求组件
 const resolveComponent = (componentsName: string, options: resolverOptions): ComponentInfo | undefined => {

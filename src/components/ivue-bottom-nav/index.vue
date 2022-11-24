@@ -12,7 +12,7 @@ import {
 import Colorable from '../../utils/mixins/colorable';
 import { oneOf } from '../../utils/assist';
 
-// ts
+// type
 import { BottomNavContextKey } from '../ivue-bottom-nav-item/bottom-nav-item';
 import type { BottomNavItemContext, Props } from './bottom-nav';
 

@@ -94,7 +94,7 @@ import { oneOf } from '../../utils/assist';
 import IvueButton from '../ivue-button';
 import IvueIcon from '../ivue-icon';
 
-// ts
+// type
 import { CarouselItemContext, Props, Data } from './carousel';
 import { CarouselContextKey } from '../ivue-carousel-item/carousel-item';
 

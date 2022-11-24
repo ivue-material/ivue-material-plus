@@ -52,6 +52,8 @@ import { findComponentUpward, findComponentsUpward } from '../../utils/helpers';
 
 // 下拉框
 import DropDown from './drop-down.vue';
+import IvueIcon from '../ivue-icon/index.vue';
+
 // ts
 import { MenuContextKey, SubmenuProxy, SubmenuList } from './menu';
 import { SubmenuContextKey } from './submenu';
@@ -157,11 +159,11 @@ export default {
 
         // 标题样式
         const titleStyle = computed(() => {
-            let styles: {
+            const styles: {
                 paddingLeft?: string;
             } = {};
 
-            let len = findComponentsUpward(proxy, 'ivue-menu-submenu').length;
+            const len = findComponentsUpward(proxy, 'ivue-menu-submenu').length;
 
             if (Submenu.default !== null && Menu.mode !== 'horizontal') {
                 styles.paddingLeft = `${43 + (len - 1) * 24}px`;
@@ -172,7 +174,7 @@ export default {
 
         // 下拉框样式
         const dropDownStyle = computed(() => {
-            let style = {
+            const style = {
                 minWidth: 'auto',
             };
 
@@ -412,6 +414,7 @@ export default {
     components: {
         CollapseTransition,
         DropDown,
+        IvueIcon
     },
 };
 </script>

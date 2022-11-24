@@ -167,7 +167,7 @@ export default {
 
         // 外部样式
         const wrapperStyles = computed(() => {
-            let style: {
+            const style: {
                 minWidth?: string;
             } = {
                 ...props.styles,

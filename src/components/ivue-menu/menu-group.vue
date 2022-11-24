@@ -46,7 +46,7 @@ export default {
 
         // 外部样式
         const wrapperStyles = computed(() => {
-            let len = findComponentsUpward(proxy, 'ivue-menu-submenu').length;
+            const len = findComponentsUpward(proxy, 'ivue-menu-submenu').length;
 
             if (!Submenu.default && Menu.mode !== 'horizontal' && (len - 1) >= 0) {
                 return {

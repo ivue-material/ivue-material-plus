@@ -18,7 +18,7 @@
     </li>
 </template>
 
-<script lang='ts'>
+<script  lang='ts'>
 import {
     computed,
     getCurrentInstance,
@@ -33,11 +33,9 @@ import { findComponentUpward, findComponentsUpward } from '../../utils/helpers';
 // ts
 import { MenuContextKey } from './menu';
 import { SubmenuContextKey } from './submenu';
-import { _ComponentInternalInstance } from './menu-item';
+import { _ComponentInternalInstance, Props } from './menu-item';
 
 const prefixCls = 'ivue-menu-item';
-
-/* eslint-disable */
 
 export default {
     name: prefixCls,
@@ -62,7 +60,7 @@ export default {
             default: false,
         },
     },
-    setup(props: any) {
+    setup(props: Props) {
         // vm
         const { uid, proxy } =
             getCurrentInstance() as _ComponentInternalInstance;
@@ -104,12 +102,11 @@ export default {
 
         // 外部样式
         const wrapperStyles = computed(() => {
-            let styles: {
+            const styles: {
                 paddingLeft?: string;
             } = {};
 
-            let len = findComponentsUpward(proxy, 'ivue-menu-submenu').length;
-
+            const len = findComponentsUpward(proxy, 'ivue-menu-submenu').length;
 
             if (Submenu.default !== null && Menu.mode !== 'horizontal') {
                 styles.paddingLeft = `${43 + (len - 1) * 24}px`;
@@ -137,7 +134,7 @@ export default {
             }
             // 没有打开新窗口
             else {
-                let parent = findComponentUpward(proxy, 'ivue-menu-submenu');
+                const parent = findComponentUpward(proxy, 'ivue-menu-submenu');
 
                 // 选择当前菜单
                 if (parent) {

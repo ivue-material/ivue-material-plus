@@ -35,14 +35,9 @@ import {
 
 import MenuItem from './menu-item.vue';
 
-// ts
-import {
-    tmpItem,
-    result,
-    Options,
-    MenuItemInstance,
-    CascaderContextKey,
-} from './cascader';
+// type
+import { Options, CascaderContextKey, Result } from './cascader';
+import { Props, Data, _ComponentInternalInstance } from './menu';
 
 const prefixCls = 'ivue-cascader-menu';
 
@@ -90,21 +85,17 @@ export default defineComponent({
             type: String,
         },
     },
-    setup(props: any) {
+    setup(props: Props) {
         const menu = ref<HTMLElement | any>(null);
 
         // vm
-        const { ctx }: any = getCurrentInstance();
+        const { ctx } = getCurrentInstance() as _ComponentInternalInstance;
 
         // inject
         const cascader = inject(CascaderContextKey);
 
         // data
-        const data = reactive<{
-            tmpItem: tmpItem;
-            sublist: MenuItemInstance[];
-            result: result[];
-        }>({
+        const data = reactive<Data>({
             // 临时item
             tmpItem: {},
             // 子列表
@@ -121,7 +112,7 @@ export default defineComponent({
         };
 
         // 获取基础项
-        const getBaseItem = (item) => {
+        const getBaseItem = (item: Options) => {
             const backItem = Object.assign({}, item);
 
             if (backItem.children) {
@@ -132,7 +123,7 @@ export default defineComponent({
         };
 
         // 发现选择项
-        const handleFindSelected = (params) => {
+        const handleFindSelected = (params: { value: string[] }) => {
             const val = params.value;
             const value = [...val];
 
@@ -161,8 +152,8 @@ export default defineComponent({
         // 当前点击的选项
         const handleTriggerItem = (
             item: Options,
-            fromInit = false as boolean,
-            fromUser = false as boolean
+            fromInit = false,
+            fromUser = false
         ) => {
             // 禁用
             if (item.disabled) {
@@ -240,7 +231,7 @@ export default defineComponent({
         };
 
         // 点击选项
-        const handleClickItem = (item) => {
+        const handleClickItem = (item: Options) => {
             // 次级菜单展开方式 hover
             if (
                 props.trigger !== 'click' &&
@@ -255,7 +246,7 @@ export default defineComponent({
         };
 
         // 鼠标hover
-        const handleHoverItem = (item) => {
+        const handleHoverItem = (item: Options) => {
             if (
                 props.trigger !== 'hover' ||
                 !item.children ||
@@ -275,7 +266,7 @@ export default defineComponent({
         };
 
         // 更新结果
-        const emitUpdate = (result) => {
+        const emitUpdate = (result: Result[]) => {
             const name = ctx.$parent.$options.name;
 
             if (name === prefixCls) {
@@ -286,7 +277,7 @@ export default defineComponent({
         };
 
         // 更新结果
-        const updateResult = (item) => {
+        const updateResult = (item: Result[]) => {
             data.result = [data.tmpItem].concat(item);
 
             emitUpdate(data.result);
