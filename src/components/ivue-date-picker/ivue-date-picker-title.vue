@@ -1,10 +1,13 @@
 
 
 <script lang='ts'>
-import { defineComponent, reactive, h, Transition, watch } from 'vue';
+import { defineComponent, h, Transition, watch, ref } from 'vue';
 
 import { genPickerButton } from './picker-button';
 import { IvueIcon } from '../ivue-icon';
+
+// type
+import type { Props } from './ivue-date-picker-title';
 
 const prefixCls = 'ivue-date-picker-title';
 
@@ -17,7 +20,9 @@ export default defineComponent({
          *
          * @type {Boolean}
          */
-        selectingYear: Boolean,
+        selectingYear: {
+            type: Boolean,
+        },
         /**
          * 当前年份
          *
@@ -53,14 +58,9 @@ export default defineComponent({
             type: String,
         },
     },
-    setup(props: any, { emit }) {
-        // data
-        const data = reactive<{
-            isReversing: boolean;
-        }>({
-            // 日期
-            isReversing: false,
-        });
+    setup(props: Props, { emit }) {
+        // 是否使用反向动画
+        const isReversing = ref<boolean>(false);
 
         // methods
 
@@ -99,7 +99,7 @@ export default defineComponent({
             return h(
                 Transition,
                 {
-                    name: data.isReversing
+                    name: isReversing.value
                         ? 'picker-reverse-transition'
                         : 'picker-transition',
                 },
@@ -129,7 +129,7 @@ export default defineComponent({
         watch(
             () => props.value,
             (newVal, oldVal) => {
-                data.isReversing = newVal < oldVal;
+                isReversing.value = newVal < oldVal;
             }
         );
 

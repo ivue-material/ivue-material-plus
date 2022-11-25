@@ -25,7 +25,7 @@
             />
             <slot name="preview" v-if="preview && previewTip">
                 <div :class="`${prefixCls}-mark`">
-                    <span>预览</span>
+                    <span>{{ previewText }}</span>
                 </div>
             </slot>
         </div>
@@ -53,6 +53,9 @@ import {
 import { isClient, isElement } from '../../utils/helpers';
 import { oneOf } from '../../utils/assist';
 import ImagePreview from './image-preview.vue';
+
+// type
+import { Props, Data } from './image';
 
 const prefixCls = 'ivue-image';
 
@@ -85,7 +88,16 @@ export default defineComponent({
          */
         fit: {
             type: String,
-            values: ['', 'contain', 'cover', 'fill', 'none', 'scale-down'],
+            validator(value: string) {
+                return oneOf(value, [
+                    '',
+                    'contain',
+                    'cover',
+                    'fill',
+                    'none',
+                    'scale-down',
+                ]);
+            },
             default: '',
         },
         /**
@@ -154,6 +166,15 @@ export default defineComponent({
             default: false,
         },
         /**
+         * 图片预览文案
+         *
+         * @type {String}
+         */
+        previewText: {
+            type: String,
+            default: '预览',
+        },
+        /**
          * 是否显示预览提示和遮罩
          *
          * @type {Boolean}
@@ -168,7 +189,7 @@ export default defineComponent({
          * @type {String}
          */
         scrollContainer: {
-            type: String,
+            type: [String, Object],
             default: '',
         },
         /**
@@ -189,19 +210,12 @@ export default defineComponent({
             type: Array,
         },
     },
-    setup(props: any, { emit }) {
+    setup(props: Props, { emit }) {
         // dom
         const wrapper = ref<HTMLDivElement>();
 
         // data
-        const data: any = reactive<{
-            loadingImage: boolean;
-            loading: boolean;
-            imageError: boolean;
-            scrollElement: any;
-            observer: IntersectionObserver;
-            imagePreviewModal: boolean;
-        }>({
+        const data: any = reactive<Data>({
             /**
              * 加载中
              *
@@ -251,7 +265,7 @@ export default defineComponent({
                 const regexp = new RegExp(/[a-zA-Z]/g);
 
                 // 是否有单位
-                const isUnit = regexp.test(props.radius);
+                const isUnit = regexp.test(`${props.radius}`);
 
                 obj = {
                     borderRadius: !isUnit ? `${props.radius}px` : props.radius,
@@ -364,7 +378,7 @@ export default defineComponent({
 
         // 异步加载图片
         const handlerObserveImage = (entries) => {
-            for (let entry of entries) {
+            for (const entry of entries) {
                 // 元素是否与交集观察者的根相交
                 if (entry.isIntersecting) {
                     // 停止观察其所有目标元素的可见性变化
@@ -392,7 +406,7 @@ export default defineComponent({
         };
 
         // 切换
-        const handleImageSwitch = (params) => {
+        const handleImageSwitch = (params: { currentIndex: number }) => {
             emit('on-switch', params);
         };
 

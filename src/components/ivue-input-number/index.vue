@@ -78,6 +78,9 @@ import {
 import IvueIcon from '../ivue-icon';
 import IvueButton from '../ivue-button';
 
+// type
+import type { Props, Data } from './input-number';
+
 const prefixCls = 'ivue-input-number';
 
 export default defineComponent({
@@ -216,14 +219,9 @@ export default defineComponent({
             default: 1,
         },
     },
-    setup(props: any, { emit }) {
+    setup(props: Props, { emit }) {
         // data
-        const data = reactive<{
-            focused: boolean;
-            currentValue: number;
-            upDisabled: boolean;
-            downDisabled: boolean;
-        }>({
+        const data = reactive<Data>({
             /**
              * 获取焦点
              *
@@ -348,7 +346,7 @@ export default defineComponent({
         };
 
         // 改变值
-        const handleChange = (event) => {
+        const handleChange = (event: Event) => {
             // change 失焦时更改数据
             if (event.type === 'change' && props.activeChange) {
                 return;
@@ -359,7 +357,7 @@ export default defineComponent({
                 return;
             }
 
-            const target = event.target;
+            const target = event.target as HTMLInputElement;
 
             let value: string = target.value.trim();
 
@@ -395,7 +393,7 @@ export default defineComponent({
             }
             // 返回当前value
             else {
-                event.target.value = data.currentValue;
+                target.value = `${data.currentValue}`;
             }
         };
 

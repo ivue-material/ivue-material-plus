@@ -130,6 +130,9 @@ import { isClient, downloadFile } from '../../utils/helpers';
 import IvueSpin from '../ivue-spin';
 import IvueIcon from '../ivue-icon';
 
+// type
+import type { Props, Data } from './image-preview';
+
 const prefixCls = 'ivue-image-preview';
 
 export default defineComponent({
@@ -223,9 +226,9 @@ export default defineComponent({
             },
         },
     },
-    setup(props: any, { emit }) {
+    setup(props: Props, { emit }) {
         // dom
-        const wrapper = ref(null);
+        const wrapper = ref<HTMLElement>(null);
 
         // computed
 
@@ -326,7 +329,7 @@ export default defineComponent({
         };
 
         // 鼠标按下
-        const handleMousedown = (event) => {
+        const handleMousedown = (event: MouseEvent) => {
             const {
                 pageX,
                 pageY,
@@ -372,7 +375,7 @@ export default defineComponent({
         };
 
         // 手指按下
-        const handleTouchStart = (event) => {
+        const handleTouchStart = (event: TouchEvent) => {
             const { pageX, pageY } = event.touches[0];
 
             // 触发事件的位置
@@ -386,7 +389,7 @@ export default defineComponent({
         };
 
         // 手指移动
-        const handleTouchmove = throttle((event) => {
+        const handleTouchmove = throttle((event: TouchEvent) => {
             event.stopPropagation();
 
             const { pageX, pageY } = event.touches[0];
@@ -604,23 +607,7 @@ export default defineComponent({
         };
 
         // data
-        const data: any = reactive<{
-            maskIndex: number;
-            imageStatus: string;
-            currentIndex: number;
-            transition: boolean;
-            original: boolean;
-            startX: number;
-            startY: number;
-            imageTranslate: {
-                x: number;
-                y: number;
-            };
-            imageScale: number;
-            imageRotate: number;
-            prevOverflow: string;
-            downloading: boolean;
-        }>({
+        const data = reactive<Data>({
             /**
              * 蒙层zIndex
              *

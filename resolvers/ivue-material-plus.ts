@@ -25,7 +25,6 @@ const animationPath = 'ivue-material-plus/dist/styles/animation.css';
 
 // 没有样式的组件
 const noStylesComponents = [
-  'ivue-content',
   'ivue-carousel-item',
   'ivue-bottom-nav-item',
   'ivue-breadcrumb-item',

@@ -6,6 +6,9 @@
 import { defineComponent, onBeforeUnmount, onMounted, watch, ref } from 'vue';
 import { CountUp } from 'countup.js';
 
+// type
+import { Props } from './count-up';
+
 const prefixCls = 'ivue-count-up';
 
 // 选项
@@ -88,12 +91,12 @@ export default defineComponent({
             type: Function,
         },
     },
-    setup(props: any) {
+    setup(props: Props) {
         // dom
-        const wrapper = ref(null);
+        const wrapper = ref<HTMLSpanElement>(null);
 
         // data
-        const countUp = ref(null);
+        const countUp = ref<CountUp>(null);
 
         // methods
 
@@ -135,7 +138,7 @@ export default defineComponent({
         };
 
         // 更新结束值并设置动画
-        const update = (value) => {
+        const update = (value: number) => {
             if (countUp.value && countUp.value.update) {
                 // 判断是否有暂停
                 if (countUp.value.paused) {

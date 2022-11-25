@@ -11,10 +11,12 @@ function getImagePreviewInstance() {
 }
 
 // 显示
-ImagePreview.show = (props: any = {}) => {
+ImagePreview.show = (props: {
+  removeInstance?: () => any
+} = {}) => {
   const instance = getImagePreviewInstance();
 
-  props.removeInstance = function () {
+  props.removeInstance = () => {
     imagePreviewInstance = null;
   };
 

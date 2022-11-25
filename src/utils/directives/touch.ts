@@ -1,3 +1,17 @@
+interface Target extends Element {
+    _touchHandlers?: any;
+}
+
+type Handlers = {
+    left: () => void;
+    right: () => void;
+    up: () => void;
+    down: () => void;
+    start: () => void;
+    move: () => void;
+    end: () => void;
+}
+
 // 处理手势
 function handleGesture(wrapper) {
     const { touchstartX, touchendX, touchstartY, touchendY } = wrapper;
@@ -26,7 +40,7 @@ function handleGesture(wrapper) {
 }
 
 // 开始
-function touchstart(event, wrapper) {
+function touchstart(event: TouchEvent, wrapper) {
     const touch = event.changedTouches[0];
     wrapper.touchstartX = touch.clientX;
     wrapper.touchstartY = touch.clientY;
@@ -35,7 +49,7 @@ function touchstart(event, wrapper) {
 }
 
 // 结束
-function touchend(event, wrapper) {
+function touchend(event: TouchEvent, wrapper) {
     const touch = event.changedTouches[0];
     wrapper.touchendX = touch.clientX;
     wrapper.touchendY = touch.clientY;
@@ -47,7 +61,7 @@ function touchend(event, wrapper) {
 }
 
 // 移动
-function touchmove(event, wrapper) {
+function touchmove(event: TouchEvent, wrapper) {
     const touch = event.changedTouches[0];
     wrapper.touchmoveX = touch.clientX;
     wrapper.touchmoveY = touch.clientY;
@@ -56,7 +70,7 @@ function touchmove(event, wrapper) {
 }
 
 // 创建事件
-function createHandlers(value) {
+function createHandlers(value: Handlers) {
     const wrapper = {
         touchstartX: 0,
         touchstartY: 0,
@@ -76,17 +90,17 @@ function createHandlers(value) {
     };
 
     return {
-        touchstart: (e) => touchstart(e, wrapper),
-        touchend: (e) => touchend(e, wrapper),
-        touchmove: (e) => touchmove(e, wrapper)
+        touchstart: (e: TouchEvent) => touchstart(e, wrapper),
+        touchend: (e: TouchEvent) => touchend(e, wrapper),
+        touchmove: (e: TouchEvent) => touchmove(e, wrapper)
     };
 }
 
 // 指令定义
-function inserted(el: Element, binding: Record<string, any>): void {
+function inserted(el: Element, binding: Record<string, any>) {
     const value = binding.value;
 
-    const target: any = value.parent ? el.parentElement : el;
+    const target: Target = value.parent ? el.parentElement : el;
     const options = value.options || { passive: true };
 
     if (!target) {
@@ -105,8 +119,8 @@ function inserted(el: Element, binding: Record<string, any>): void {
 
 
 // 指令与元素解绑时调用
-function unbind(el: Element, binding: Record<string, any>): void {
-    const target: any = binding.value.parent ? el.parentElement : el;
+function unbind(el: Element, binding: Record<string, any>) {
+    const target: Target = binding.value.parent ? el.parentElement : el;
 
     if (!target || !target._touchHandlers) {
         return;

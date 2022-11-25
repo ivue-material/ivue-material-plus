@@ -1,4 +1,3 @@
-
 export interface Props {
   percent: number;
   size: number;

@@ -1,11 +1,11 @@
 <script lang='ts'>
 import {
     defineComponent,
-    reactive,
     computed,
     watch,
     Transition,
     h,
+    ref,
     getCurrentInstance,
 } from 'vue';
 import Colorable from '../../utils/mixins/colorable';
@@ -14,6 +14,9 @@ import MonthChange from '../../utils/month-change';
 
 import IvueButton from '../ivue-button/index.vue';
 import IvueIcon from '../ivue-icon/index.vue';
+
+// type
+import { Props, _ComponentInternalInstance } from './ivue-date-picker-header';
 
 const prefixCls = 'ivue-date-picker-header';
 
@@ -39,10 +42,20 @@ export default defineComponent({
             type: String,
             default: 'en-us',
         },
+        /**
+         * 左边按钮图标
+         *
+         * @type {String}
+         */
         nextIcon: {
             type: String,
             default: 'chevron_right',
         },
+        /**
+         * 右边按钮图标
+         *
+         * @type {String}
+         */
         prevIcon: {
             type: String,
             default: 'chevron_left',
@@ -52,25 +65,33 @@ export default defineComponent({
          *
          * @type {String}
          */
-        min: String,
+        min: {
+            type: String,
+        },
         /**
          * 最大年份或月份
          *
          * @type {String}
          */
-        max: String,
+        max: {
+            type: String,
+        },
         /**
          * 是否只读
          *
          * @type {Boolean}
          */
-        readonly: Boolean,
+        readonly: {
+            type: Boolean,
+        },
         /**
          * 当前激活的type
          *
          * @type {String}
          */
-        activeType: String,
+        activeType: {
+            type: String,
+        },
         /**
          * format
          *
@@ -78,7 +99,6 @@ export default defineComponent({
          */
         format: {
             type: Function,
-            default: null,
         },
         /**
          * 年月
@@ -89,18 +109,21 @@ export default defineComponent({
             type: String,
             required: true,
         },
+        /**
+         * 文字颜色
+         *
+         * @type {String | Array}
+         */
+        color: {
+            type: [String, Array],
+        },
     },
-    setup(props: any, { emit, slots }) {
+    setup(props: Props, { emit, slots }) {
         // 支持访问内部组件实例
-        const { proxy }: any = getCurrentInstance();
+        const { proxy } = getCurrentInstance() as _ComponentInternalInstance;
 
-        // data
-        const data = reactive<{
-            isReversing: boolean;
-        }>({
-            // 是否使用反向动画
-            isReversing: false,
-        });
+        // 是否使用反向动画
+        const isReversing = ref<boolean>(false);
 
         // computed
 
@@ -128,13 +151,13 @@ export default defineComponent({
 
         // 显示的年份
         const displayedYear = computed(() => {
-            const year = props.tableDate.split('-')[0] * 1;
+            const year = Number(props.tableDate.split('-')[0]) * 1;
 
             if (!props.max) {
                 return year;
             }
 
-            const max = props.max.split('-')[0] * 1;
+            const max = Number(props.max.split('-')[0]) * 1;
 
             if (year > max) {
                 return max;
@@ -160,7 +183,7 @@ export default defineComponent({
                 (change > 0 &&
                     props.max &&
                     (props.activeType === 'YEAR'
-                        ? endYear >= props.max
+                        ? endYear >= Number(props.max)
                         : calculateChange(change) > props.max));
 
             if (props.activeType === 'YEAR' || props.activeType === 'MONTH') {
@@ -205,8 +228,8 @@ export default defineComponent({
             if (!month) {
                 let number = year + sign;
 
-                if (props.max && number > props.max) {
-                    number = props.max;
+                if (props.max && number > Number(props.max)) {
+                    number = Number(props.max);
                 }
 
                 return `${number}`;
@@ -225,7 +248,10 @@ export default defineComponent({
             let endYear = null;
 
             if (props.max) {
-                endYear = startYear + 9 > props.max ? props.max : startYear + 9;
+                endYear =
+                    startYear + 9 > Number(props.max)
+                        ? props.max
+                        : startYear + 9;
             } else {
                 endYear = startYear + 9;
             }
@@ -250,7 +276,7 @@ export default defineComponent({
             const transition = h(
                 Transition,
                 {
-                    name: data.isReversing
+                    name: isReversing.value
                         ? 'tab-reverse-transition'
                         : 'tab-transition',
                 },
@@ -274,7 +300,7 @@ export default defineComponent({
         watch(
             () => props.value,
             (newVal, oldVal) => {
-                data.isReversing = newVal < oldVal;
+                isReversing.value = newVal < oldVal;
             }
         );
 

@@ -106,8 +106,14 @@
             设置属性 autosize，文本域会自动适应高度的变化。
             autosize也可以设定为一个对象，指定最小行数和最大行数。
         </p>
-        <ivue-input v-model="value1" type="textarea" :autoHeight="true" disabled></ivue-input>
-        <p>rows</p>
+        <ivue-input v-model="value1" type="textarea"  disabled></ivue-input>
+        <p>rows autoHeight</p>
+        <ivue-input
+            v-model="value1"
+            show-word-limit
+            :maxlength="1000"
+            type="textarea"
+        ></ivue-input>
         <ivue-input
             v-model="value1"
             show-word-limit

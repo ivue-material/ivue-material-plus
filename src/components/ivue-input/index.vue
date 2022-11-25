@@ -143,10 +143,14 @@ import {
     watch,
     onMounted,
 } from 'vue';
+import { isObject } from '@vue/shared';
 
 import { calcTextareaHeight } from '../../utils/calc-textarea-height';
 import { oneOf } from '../../utils/assist';
 import IvueIcon from '../ivue-icon/index.vue';
+
+// type
+import type { Props, TextareaStyles } from './input';
 
 function isCssColor(color) {
     return !!color && !!color.match(/^(#|(rgb|hsl)a?\()/);
@@ -187,10 +191,10 @@ export default defineComponent({
         /**
          * 绑定的值，可使用 v-model 双向绑定
          *
-         * @type {String, Number}
+         * @type {String}
          */
         modelValue: {
-            type: [String, Number],
+            type: String,
             default: '',
         },
         /**
@@ -435,11 +439,10 @@ export default defineComponent({
          * 自适应内容高度，仅在 textarea 类型下有效
          *  指定最小行数和最大行数
          *
-         * @type {String}
+         * @type {Object}
          */
         autoHeight: {
-            type: [Boolean, Object],
-            default: false,
+            type: Object,
         },
         /**
          * 是否显示边框
@@ -461,15 +464,15 @@ export default defineComponent({
         },
     },
     // 组合式 API
-    setup(props: any, { emit }) {
+    setup(props: Props, { emit }) {
         // 当前输入值
-        const currentValue = ref(props.modelValue);
+        const currentValue = ref<string>(props.modelValue);
 
         // 文本框样式
-        const textareaStyles = ref({});
+        const textareaStyles = ref<TextareaStyles>({});
 
         // 显示密码
-        const showPassword = ref(false);
+        const showPassword = ref<boolean>(false);
 
         // ref = textarea
         const textarea = ref<HTMLTextAreaElement>();
@@ -568,7 +571,7 @@ export default defineComponent({
             const autoHeight = props.autoHeight;
 
             // 是否是 textarea 是否开启了自适应高度
-            if (!autoHeight || props.type !== 'textarea') {
+            if (!isObject(autoHeight) || props.type !== 'textarea') {
                 return;
             }
 
@@ -584,12 +587,12 @@ export default defineComponent({
         };
 
         // 输入事件
-        const handleInput = ({ target }) => {
-            let value = target.value;
+        const handleInput = (event: Event) => {
+            let value = (event.target as HTMLInputElement).value;
 
             // 是否开启了 Number 类型
             if (props.number && value !== '') {
-                value = Number.isNaN(Number(value)) ? value : Number(value);
+                value = `${Number.isNaN(Number(value)) ? value : Number(value)}`;
             }
 
             // updated v-model
@@ -597,7 +600,7 @@ export default defineComponent({
 
             setCurrentValue(value);
 
-            emit('on-change', target.value);
+            emit('on-change', (event.target as HTMLInputElement).value);
         };
 
         // 输入框聚焦时触发
@@ -723,10 +726,6 @@ export default defineComponent({
         return {
             prefixCls,
             // computed
-            // prepend,
-            // class | style
-            // wrapClasses,
-            // inputClass,
             textareaStyles,
             upperLimit,
             textLength,

@@ -1,10 +1,11 @@
 
 import {
   h,
+  VNode
 } from 'vue';
 
 // 渲染点击按钮
-export const genPickerButton = (emit, propsValue, value, updateName, content, readonly = false, staticClass = '') => {
+export const genPickerButton = (emit, propsValue, value, updateName, content, readonly = false, staticClass = ''): VNode => {
   // 判读属性是否激活
   const active = propsValue === value;
 

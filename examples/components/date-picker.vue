@@ -56,7 +56,8 @@
         <ivue-date-picker v-model="picker" min="2010-06-15" max="2019-03-20"></ivue-date-picker>
         <h1>reactive 点击月份或者年份时日期月份或年份是否跟随改变</h1>
         <ivue-date-picker v-model="dates" reactive></ivue-date-picker>
-        <ivue-date-picker v-model="dates" locale="zh-CH" reactive :showCurrent="false"></ivue-date-picker>
+        <ivue-date-picker locale="zh-CH" reactive :showCurrent="true"></ivue-date-picker>
+        <ivue-date-picker locale="zh-CH" reactive :showCurrent="false"></ivue-date-picker>
 
         <h1>pickerDate</h1>
         <ivue-date-picker v-model="picker" v-model:pickerDate="pickerDate"></ivue-date-picker>

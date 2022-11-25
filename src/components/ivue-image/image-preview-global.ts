@@ -33,13 +33,13 @@ ImagePreview.newInstance = (properties) => {
          *
          * @type {Array}
          */
-        previewList: [] as any[],
+        previewList: [],
         /**
         * 打开预览的第一项
         *
         * @type {Number}
         */
-        initialIndex: 0 as number,
+        initialIndex: 0,
         /**
         * 图片预览操作栏选项，按数组顺序排序
         *
@@ -66,19 +66,6 @@ ImagePreview.newInstance = (properties) => {
         transfer: true,
       });
     },
-    render() {
-      return h(ImagePreview, Object.assign({}, _props, {
-        ref: 'imagePreview',
-        modelValue: this.visible,
-        previewList: this.previewList,
-        initialIndex: this.initialIndex,
-        toolbar: this.toolbar,
-        infinite: this.infinite,
-        maskClosable: this.maskClosable,
-        transfer: this.transfer,
-        'onOn-close': this.handleClose
-      }));
-    },
     created() {
       _instance = getCurrentInstance();
     },
@@ -101,6 +88,19 @@ ImagePreview.newInstance = (properties) => {
       },
       // 删除实例
       removeInstance() { }
+    },
+    render() {
+      return h(ImagePreview, Object.assign({}, _props, {
+        ref: 'imagePreview',
+        modelValue: this.visible,
+        previewList: this.previewList,
+        initialIndex: this.initialIndex,
+        toolbar: this.toolbar,
+        infinite: this.infinite,
+        maskClosable: this.maskClosable,
+        transfer: this.transfer,
+        'onOn-close': this.handleClose
+      }));
     },
   });
 

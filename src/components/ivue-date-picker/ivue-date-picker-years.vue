@@ -1,19 +1,23 @@
 <script lang='ts'>
 import {
     defineComponent,
-    reactive,
     computed,
     watch,
     Transition,
     h,
     withDirectives,
     resolveDirective,
+    ref,
+    VNode,
 } from 'vue';
 
 import Touch from '../../utils/directives/touch';
 import Colorable from '../../utils/mixins/colorable';
 import CreateNativeLocaleFormatter from '../../utils/create-native-locale-formatter';
 import isDateAllowed from '../../utils/is-date-allowed';
+
+// type
+import type { Props } from './ivue-date-picker-years';
 
 const prefixCls = 'ivue-date-picker-years';
 
@@ -29,7 +33,10 @@ export default defineComponent({
          *
          * @type {String,Array}
          */
-        value: [String, Array],
+        value: {
+            type: [String, Array],
+            required: true,
+        },
         /**
          * 年月
          *
@@ -53,13 +60,17 @@ export default defineComponent({
          *
          * @type {String}
          */
-        min: String,
+        min: {
+            type: String,
+        },
         /**
          * 最大年份或月份
          *
          * @type {String}
          */
-        max: String,
+        max: {
+            type: String,
+        },
         /**
          * 当前年份
          *
@@ -74,47 +85,74 @@ export default defineComponent({
          *
          * @type {String}
          */
-        activeType: String,
+        activeType: {
+            type: String,
+        },
         /**
          * 当前日期
          *
          * @type {String}
          */
-        current: String,
+        current: {
+            type: String,
+        },
         /**
          * 背景颜色
          *
          * @type {Function}
          */
-        backgroundColor: Function,
+        backgroundColor: {
+            type: Function,
+        },
         /**
          * 文字颜色
          *
          * @type {Function}
          */
-        textColor: Function,
+        textColor: {
+            type: Function,
+        },
+        /**
+         * 文字颜色
+         *
+         * @type {String | Array}
+         */
+        color: {
+            type: [String, Array],
+        },
+        /**
+         * 只读
+         *
+         * @type {Boolean}
+         */
+        readonly: {
+            type: Boolean,
+        },
+        /**
+         * 设置允许选择日期函数
+         *
+         * @type {Function}
+         */
+        allowedDates: {
+            type: Function,
+        },
     },
-    setup(props: any, { emit }) {
-        // data
-        const data = reactive<{
-            isReversing: boolean;
-        }>({
-            // 是否使用反向动画
-            isReversing: false,
-        });
+    setup(props: Props, { emit }) {
+        // 是否使用反向动画
+        const isReversing = ref<boolean>(false);
 
         // computed
 
         // 动画
         const computedTransition = computed(() => {
-            return data.isReversing
+            return isReversing.value
                 ? 'tab-reverse-transition'
                 : 'tab-transition';
         });
 
         // 显示的年份
         const displayedYear = computed(() => {
-            return props.tableDate.split('-')[0] * 1;
+            return Number(props.tableDate.split('-')[0]) * 1;
         });
 
         const formatter = computed(() => {
@@ -128,7 +166,7 @@ export default defineComponent({
         // methods
 
         // 计算表日期
-        const calculateTableDate = (value: any) => {
+        const calculateTableDate = (value: number) => {
             let _value = value;
             if (value > 0) {
                 _value = value + 9;
@@ -136,16 +174,16 @@ export default defineComponent({
                 _value = value - 9;
             }
 
-            return `${parseInt(props.tableDate) + parseInt(_value)}`;
+            return `${parseInt(props.tableDate) + parseInt(`${_value}`)}`;
         };
 
         // 点击
-        const touch = (value) => {
+        const touch = (value: number) => {
             emit('table-date', calculateTableDate(value));
         };
 
         // 内容
-        const genTable = (staticClass: string, children: Array<any>) => {
+        const genTable = (staticClass: string, children?: VNode[]) => {
             const transition = h(
                 Transition,
                 {
@@ -241,7 +279,7 @@ export default defineComponent({
         };
 
         // genButton
-        const genButton = (value) => {
+        const genButton = (value: string) => {
             // 是否选中
             const isSelected =
                 props.activeType === 'YEAR'
@@ -279,7 +317,8 @@ export default defineComponent({
                 : props.textColor;
 
             const color =
-                (isSelected || isCurrent) && (props.color || 'ivue-picker-primary');
+                (isSelected || isCurrent) &&
+                (!!props.color || 'ivue-picker-primary');
 
             return h(
                 'button',
@@ -305,7 +344,7 @@ export default defineComponent({
         watch(
             () => props.tableDate,
             (newVal, oldVal) => {
-                data.isReversing = newVal < oldVal;
+                isReversing.value = newVal < oldVal;
             }
         );
 

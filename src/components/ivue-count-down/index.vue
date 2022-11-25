@@ -10,10 +10,11 @@ import {
     reactive,
     onBeforeUnmount,
     onMounted,
-    PropType,
     computed,
     watch,
 } from 'vue';
+
+import { Props, Data } from './count-down';
 
 const prefixCls = 'ivue-count-down';
 
@@ -34,7 +35,7 @@ export default defineComponent({
          * @type {Date, Number}
          */
         target: {
-            type: [Date, Number] as PropType<any>,
+            type: [Date, Number],
         },
         /**
          * 自动倒计时间隔
@@ -55,12 +56,9 @@ export default defineComponent({
             default: 'date',
         },
     },
-    setup(props: any, { emit }) {
+    setup(props: Props, { emit }) {
         // data
-        const data: any = reactive<{
-            lastTime: number;
-            countDownTimer: any;
-        }>({
+        const data = reactive<Data>({
             /**
              * 结束时间
              *

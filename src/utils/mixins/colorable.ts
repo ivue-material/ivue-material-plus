@@ -1,5 +1,10 @@
 import { isCssColor } from '../../utils/helpers';
 
+type Style = {
+    style?: any;
+    class?: any;
+}
+
 export default {
     name: 'colorable',
     props: {
@@ -24,7 +29,7 @@ export default {
     },
     methods: {
         // 设置背景颜色
-        setBackgroundColor(color: string | any[], data: Record<string, any> = {}): any {
+        setBackgroundColor(color: string | any[], data: Style = {}): Style {
 
             // 是否是数组
             if (Array.isArray(color)) {
@@ -51,7 +56,7 @@ export default {
             return data;
         },
         // 设置文字颜色
-        setTextColor(color: Record<string, any>, data: Record<string, any>): any {
+        setTextColor(color: string | string[], data: Style = {}): Style {
 
             // 是否是数组
             if (Array.isArray(color)) {

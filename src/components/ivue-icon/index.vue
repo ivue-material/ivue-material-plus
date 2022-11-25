@@ -16,6 +16,9 @@ import { computed, defineComponent } from 'vue';
 
 import IvueSvgLoader from '../ivue-svg-loader/index';
 
+// type
+import { Props } from './icon';
+
 const prefixCls = 'ivue-icon';
 
 export default defineComponent({
@@ -29,7 +32,6 @@ export default defineComponent({
          */
         svgSrc: {
             type: String,
-            default: null,
         },
         /**
          * flex 项排序
@@ -40,7 +42,7 @@ export default defineComponent({
             type: Number,
         },
     },
-    setup(props, { emit }) {
+    setup(props: Props, { emit }) {
         // computed
 
         // 样式

@@ -20,6 +20,9 @@ import IvueDatePickerDate from './ivue-date-picker-date.vue';
 import IvueDatePickerMonth from './ivue-date-picker-month.vue';
 import IvueDatePickerYears from './ivue-date-picker-years.vue';
 
+// type
+import { Props, _ComponentInternalInstance, Data } from './date-picker';
+
 export default defineComponent({
     name: 'ivue-date-picker',
     mixins: [Colorable],
@@ -30,13 +33,17 @@ export default defineComponent({
          *
          * @type {Boolean}
          */
-        landscape: Boolean,
+        landscape: {
+            type: Boolean,
+        },
         /**
          * 头部颜色
          *
          * @type {String}
          */
-        headerColor: String,
+        headerColor: {
+            type: String,
+        },
         /**
          * 选择框宽度
          *
@@ -52,19 +59,25 @@ export default defineComponent({
          *
          * @type {Boolean}
          */
-        fullWidth: Boolean,
+        fullWidth: {
+            type: Boolean,
+        },
         /**
          * 隐藏日历头部
          *
          * @type {Boolean}
          */
-        noTitle: Boolean,
+        noTitle: {
+            type: Boolean,
+        },
         /**
          * 日期时间
          *
          * @type {Array, String}
          */
-        modelValue: [Array, String],
+        modelValue: {
+            type: [Array, String],
+        },
         /**
          * Function formatting the year in table header and pickup title
          *
@@ -72,7 +85,6 @@ export default defineComponent({
          */
         titleYearFormat: {
             type: Function,
-            default: null,
         },
         /**
          * Function formatting currently selected date in the picker title
@@ -81,22 +93,30 @@ export default defineComponent({
          */
         titleDateFormat: {
             type: Function,
-            default: null,
         },
-        // Function formatting the tableDate in the day/month table header
+        /**
+         * 在日/月表头中格式化 tableDate 的函数
+         *
+         * @type {Function}
+         */
         headerDateFormat: {
             type: Function,
-            default: null,
         },
-        // Function formatting the day in date picker table
+        /**
+         * 在日期选择器表中格式化日期的函数
+         *
+         * @type {Function}
+         */
         dayFormat: {
             type: Function,
-            default: null,
         },
-        // Function formatting month in the months table
+        /**
+         * 函数格式化月份表中的月份
+         *
+         * @type {Function}
+         */
         monthFormat: {
             type: Function,
-            default: null,
         },
         /**
          * 语言
@@ -110,9 +130,11 @@ export default defineComponent({
         /**
          * 是否支持日期多选
          *
-         * @type {Function}
+         * @type {Boolean}
          */
-        multiple: Boolean,
+        multiple: {
+            type: Boolean,
+        },
         /**
          * 日历显示的类型 默认显示为日期
          *
@@ -120,8 +142,8 @@ export default defineComponent({
          */
         type: {
             type: String,
-            default: 'date',
             validator: (type: string) => ['date', 'month'].includes(type),
+            default: 'date',
         },
         /**
          * 为年份标题添加图标
@@ -136,25 +158,33 @@ export default defineComponent({
          *
          * @type {Boolean}
          */
-        readonly: Boolean,
+        readonly: {
+            type: Boolean,
+        },
         /**
          * 用于监听月份或者年份的变化
          *
-         * @type {Boolean}
+         * @type {String}
          */
-        pickerDate: String,
+        pickerDate: {
+            type: String,
+        },
         /**
          * 最小年份或月份
          *
          * @type {String}
          */
-        min: String,
+        min: {
+            type: String,
+        },
         /**
          * 最大年份或月份
          *
          * @type {String}
          */
-        max: String,
+        max: {
+            type: String,
+        },
         /**
          * 头部按钮右图标
          *
@@ -187,14 +217,16 @@ export default defineComponent({
          *
          * @type {Function}
          */
-        allowedDates: Function,
+        allowedDates: {
+            type: Function,
+        },
         /**
          * 是否显示当前日期
          *
-         * @type {String}
+         * @type {Boolean}
          */
         showCurrent: {
-            type: [Boolean, String],
+            type: Boolean,
             default: true,
         },
         /**
@@ -218,23 +250,18 @@ export default defineComponent({
         /**
          * 点击月份或者年份时日期月份或年份是否跟随改变
          *
-         * @type {String}
+         * @type {Boolean}
          */
-        reactive: Boolean,
+        reactive: {
+            type: Boolean,
+        },
     },
-    setup(props: any, { emit }) {
+    setup(props: Props, { emit }) {
         // 支持访问内部组件实例
-        const { proxy }: any = getCurrentInstance();
+        const { proxy } = getCurrentInstance() as _ComponentInternalInstance;
 
         // data
-        const data = reactive<{
-            inputDay: string | number;
-            inputMonth: string | number;
-            inputYear: string | number;
-            now: any;
-            activeType: string;
-            tableDate: string;
-        }>({
+        const data = reactive<Data>({
             // 日期
             inputDay: null,
             // 输入年份
@@ -283,7 +310,7 @@ export default defineComponent({
             );
 
             // 日期换行
-            const landscapeFormatter = (date) =>
+            const landscapeFormatter = (date: string) =>
                 titleDateFormatter(date)
                     .replace(
                         /([^\d\s])([\d])/g,
@@ -297,13 +324,13 @@ export default defineComponent({
         // 默认多选日期格式
         const defaultTitleMultipleDateFormatter = computed(() => {
             if (props.modelValue.length < 2) {
-                return (dates: Array<any>) =>
+                return (dates: string[]) =>
                     dates.length
                         ? defaultTitleDateFormatter.value(dates[0])
                         : '0 selected';
             }
 
-            return (dates) => `${dates.length} selected`;
+            return (dates: string[]) => `${dates.length} selected`;
         });
 
         // 格式化日期
@@ -328,12 +355,16 @@ export default defineComponent({
 
         // 年份
         const tableYear = computed(() => {
-            return (props.pickerDate || data.tableDate).split('-')[0] * 1;
+            return (
+                Number((props.pickerDate || data.tableDate).split('-')[0]) * 1
+            );
         });
 
         // 月份
         const tableMonth = computed(() => {
-            return (props.pickerDate || data.tableDate).split('-')[1] - 1;
+            return (
+                Number((props.pickerDate || data.tableDate).split('-')[1]) - 1
+            );
         });
 
         // 最大月份
@@ -366,7 +397,7 @@ export default defineComponent({
                     props.type
                 );
             } else {
-                return props.showCurrent || null;
+                return null;
             }
         });
 
@@ -428,7 +459,7 @@ export default defineComponent({
         };
 
         // 点击日期事件
-        const emitInput = (newInput: string | Array<any>) => {
+        const emitInput = (newInput: string | string[]) => {
             const output = props.multiple
                 ? props.modelValue.indexOf(newInput) === -1
                     ? props.modelValue.concat([newInput])
@@ -453,7 +484,9 @@ export default defineComponent({
 
         // 检查设置为多选后value值是否正确
         const checkMultipleProp = () => {
-            if (props.modelValue == null) return;
+            if (props.modelValue == null) {
+                return;
+            }
 
             const valueType = props.modelValue.constructor.name;
             const expected = props.multiple ? 'Array' : 'String';
@@ -654,6 +687,9 @@ export default defineComponent({
                 color: props.color,
                 max: maxYear.value,
                 min: minYear.value,
+                readonly: props.readonly,
+                allowedDates:
+                    props.type === 'month' ? props.allowedDates : null,
                 locale: props.locale,
                 value: `${tableYear.value}`,
                 current: current.value,
@@ -760,7 +796,7 @@ export default defineComponent({
                     const output = (
                         props.multiple ? props.modelValue : [props.modelValue]
                     )
-                        .map((val) => sanitizeDateString(val, type))
+                        .map((val: string) => sanitizeDateString(val, type))
                         .filter(handleIsDateAllowed);
                     emit(
                         'update:modelValue',
@@ -795,6 +831,9 @@ export default defineComponent({
                 }
             );
         };
+    },
+    components: {
+        IvueDatePickerYears,
     },
 });
 </script>

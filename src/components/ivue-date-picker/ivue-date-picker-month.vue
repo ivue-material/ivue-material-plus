@@ -1,13 +1,14 @@
 <script lang='ts'>
 import {
     defineComponent,
-    reactive,
+    ref,
     computed,
     watch,
     Transition,
     h,
     withDirectives,
     resolveDirective,
+    VNode,
 } from 'vue';
 
 import Colorable from '../../utils/mixins/colorable';
@@ -15,6 +16,9 @@ import Touch from '../../utils/directives/touch';
 import isDateAllowed from '../../utils/is-date-allowed';
 import CreateNativeLocaleFormatter from '../../utils/create-native-locale-formatter';
 import Pad from '../../utils/pad';
+
+// type
+import type { Props } from './ivue-date-picker-month';
 
 const prefixCls = 'ivue-date-picker-month';
 
@@ -35,11 +39,14 @@ export default defineComponent({
             default: null,
         },
         /**
-         * 日期 时间
+         * 日期时间
          *
          * @type {String,Array}
          */
-        value: [String, Array],
+        value: {
+            type: [String, Array],
+            required: true,
+        },
         /**
          * 年月
          *
@@ -54,7 +61,9 @@ export default defineComponent({
          *
          * @type {String}
          */
-        activeType: String,
+        activeType: {
+            type: String,
+        },
         /**
          * 语言
          *
@@ -69,34 +78,76 @@ export default defineComponent({
          *
          * @type {String}
          */
-        current: String,
+        current: {
+            type: String,
+        },
         /**
          * 背景颜色
          *
          * @type {Function}
          */
-        backgroundColor: Function,
+        backgroundColor: {
+            type: Function,
+        },
         /**
          * 文字颜色
          *
          * @type {Function}
          */
-        textColor: Function,
+        textColor: {
+            type: Function,
+        },
+        /**
+         * 只读
+         *
+         * @type {Boolean}
+         */
+        readonly: {
+            type: Boolean,
+        },
+        /**
+         * 最小年份或月份
+         *
+         * @type {String}
+         */
+        min: {
+            type: String,
+        },
+        /**
+         * 最大年份或月份
+         *
+         * @type {String}
+         */
+        max: {
+            type: String,
+        },
+        /**
+         * 设置允许选择日期函数
+         *
+         * @type {Function}
+         */
+        allowedDates: {
+            type: Function,
+        },
+        /**
+         * 颜色
+         *
+         * @type {String | Array}
+         */
+        color: {
+            type: [String, Array],
+            default: '',
+        },
     },
-    setup(props: any, { emit }) {
-        // data
-        const data = reactive<{
-            isReversing: boolean;
-        }>({
-            // 是否使用反向动画
-            isReversing: false,
-        });
+    setup(props: Props, { emit }) {
+        // 是否使用反向动画
+        const isReversing = ref<boolean>(false);
 
         // computed
 
         // 动画
         const computedTransition = computed(() => {
-            return data.isReversing
+            return isReversing.value
                 ? 'tab-reverse-transition'
                 : 'tab-transition';
         });
@@ -115,7 +166,7 @@ export default defineComponent({
 
         // 显示的年份
         const displayedYear = computed(() => {
-            return props.tableDate.split('-')[0] * 1;
+            return Number(props.tableDate.split('-')[0]) * 1;
         });
 
         // methods
@@ -127,12 +178,12 @@ export default defineComponent({
         };
 
         // 点击
-        const touch = (value) => {
+        const touch = (value: number) => {
             emit('table-date', calculateTableDate(value));
         };
 
         // 内容
-        const genTable = (staticClass: string, children: Array<any>) => {
+        const genTable = (staticClass: string, children: VNode[]) => {
             const transition = h(
                 Transition,
                 {
@@ -167,7 +218,8 @@ export default defineComponent({
                     [
                         rippleDirective,
                         {
-                            left: (e) => e.offsetX < -15 && touch(1),
+                            left: (e) =>
+                                e.offsetX < -15 && touch(1),
                             right: (e) => e.offsetX > 15 && touch(-1),
                         },
                     ],
@@ -221,7 +273,7 @@ export default defineComponent({
         };
 
         // genButton
-        const genButton = (value) => {
+        const genButton = (value: string) => {
             // 是否选中
             const isSelected =
                 value === props.value ||
@@ -257,7 +309,8 @@ export default defineComponent({
                 : props.textColor;
 
             const color =
-                (isSelected || isCurrent) && (props.color || 'ivue-picker-primary');
+                (isSelected || isCurrent) &&
+                (props.color || 'ivue-picker-primary');
 
             return h(
                 'button',
@@ -283,7 +336,7 @@ export default defineComponent({
         watch(
             () => props.tableDate,
             (newVal, oldVal) => {
-                data.isReversing = newVal < oldVal;
+                isReversing.value = newVal < oldVal;
             }
         );
 

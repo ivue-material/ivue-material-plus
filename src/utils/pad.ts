@@ -1,5 +1,5 @@
 // 拼接字符串
-const padStart = (string: string, targetLength: number, padString: string) => {
+const padStart = (string: string | number, targetLength: number, padString: string) => {
       targetLength = targetLength >> 0;
       string = String(string);
       padString = String(padString);
@@ -17,4 +17,4 @@ const padStart = (string: string, targetLength: number, padString: string) => {
       return padString.slice(0, targetLength) + String(string);
 };
 
-export default (n, length = 2) => padStart(n, length, '0');
+export default (n: string | number, length = 2) => padStart(n, length, '0');

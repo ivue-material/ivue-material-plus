@@ -65,6 +65,9 @@ import { getStyle } from '../../utils/assist';
 
 import IvueTooltip from '../ivue-tooltip';
 
+// type
+import type { Props, Data } from './ellipsis';
+
 const prefixCls = 'ivue-ellipsis';
 
 export default defineComponent({
@@ -145,6 +148,7 @@ export default defineComponent({
          * @type {String}
          */
         placement: {
+            type: String,
             validator(value: string) {
                 return oneOf(value, [
                     'top',
@@ -200,18 +204,14 @@ export default defineComponent({
             type: [String, Number],
         },
     },
-    setup(props: any, { emit }) {
+    setup(props: Props, { emit }) {
         // dom
         const wrapper = ref<HTMLDivElement>();
         const textRef = ref<HTMLSpanElement>();
         const moreRef = ref<HTMLSpanElement>();
 
         // data
-        const data = reactive<{
-            computedReady: boolean;
-            computedText: string;
-            oversize: boolean;
-        }>({
+        const data = reactive<Data>({
             /**
              * 先隐形计算，计算好后，再根据配置显示
              *
@@ -478,6 +478,8 @@ export default defineComponent({
 
         // onMounted
         onMounted(() => {
+
+            // 初始化
             init();
 
             // 是否自动根据外层宽度动态改变

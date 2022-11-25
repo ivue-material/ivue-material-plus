@@ -33,6 +33,10 @@ import {
 import IvueIcon from '../ivue-icon/index.vue';
 import CollapseTransition from '../../utils/collapse-transition';
 
+// type
+import { CascaderContextKey } from './collapse';
+import { Data } from './panel';
+
 const prefixCls = 'ivue-collapse-panel';
 
 export default defineComponent({
@@ -66,21 +70,13 @@ export default defineComponent({
         },
     },
     setup(props: any) {
-        const IvueCollapse: {
-            pushExpandable: any;
-            removeExpandable: any;
-            toggle: any;
-        } = inject('IvueCollapse');
+        const IvueCollapse = inject(CascaderContextKey);
 
         // 支持访问内部组件实例
         const vm = getCurrentInstance() as ComponentInternalInstance;
 
         // data
-        const data: any = reactive<{
-            isActive: boolean;
-            index: number;
-            mounted: boolean;
-        }>({
+        const data = reactive<Data>({
             /**
              * 是否激活
              *

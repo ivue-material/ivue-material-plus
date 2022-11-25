@@ -1,12 +1,10 @@
 <script lang='ts'>
-import {
-    defineComponent,
-    Transition,
-    h,
-    getCurrentInstance,
-} from 'vue';
+import { defineComponent, Transition, h, getCurrentInstance } from 'vue';
 
 import Colorable from '../../utils/mixins/colorable';
+
+// type
+import { Props, _ComponentInternalInstance } from './ivue-picker';
 
 const prefixCls = 'ivue-picker';
 
@@ -19,7 +17,9 @@ export default defineComponent({
          *
          * @type {Boolean}
          */
-        fullWidth: Boolean,
+        fullWidth: {
+            type: Boolean,
+        },
         /**
          * 选择框宽度
          *
@@ -39,12 +39,15 @@ export default defineComponent({
          *
          * @type {Boolean}
          */
-        landscape: Boolean,
+        landscape: {
+            type: Boolean,
+        },
     },
-    setup(props: any, { slots }) {
-        // methods
+    setup(props: Props, { slots }) {
         // 支持访问内部组件实例
-        const { proxy }: any = getCurrentInstance();
+        const { proxy } = getCurrentInstance() as _ComponentInternalInstance;
+
+        // methods
 
         // 渲染标题
         const genTitle = () => {
@@ -68,7 +71,7 @@ export default defineComponent({
                     name: props.transition,
                 },
                 {
-                    default: () => slots.default()
+                    default: () => slots.default(),
                 }
             );
         };

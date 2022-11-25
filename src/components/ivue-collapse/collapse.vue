@@ -14,6 +14,10 @@ import {
     watch,
 } from 'vue';
 
+// type
+import { Props, Data, CascaderContextKey } from './collapse';
+import { PanelInstance } from './panel';
+
 const prefixCls = 'ivue-collapse';
 
 export default defineComponent({
@@ -47,15 +51,17 @@ export default defineComponent({
             default: false,
         },
     },
-    setup(props: any, { emit }) {
+    setup(props: Props, { emit }) {
         // 插入扩展
-        const pushExpandable = (expandableListItem) => {
-            let expandableListItems = data.childrenList.expandable;
+        const pushExpandable = (expandableListItem: PanelInstance) => {
+            const expandableListItems = data.childrenList.expandable;
 
             // 寻找是否已经有了选项
-            const findItem = expandableListItems.find((target) => {
-                return target.uid === expandableListItem.uid;
-            });
+            const findItem = expandableListItems.find(
+                (target: PanelInstance) => {
+                    return target.uid === expandableListItem?.uid;
+                }
+            );
 
             if (!findItem) {
                 data.childrenList.expandable = expandableListItems.concat([
@@ -65,17 +71,20 @@ export default defineComponent({
         };
 
         // 删除扩展
-        const removeExpandable = (expandableListItem) => {
-            let expandableListItems = data.childrenList.expandable;
+        const removeExpandable = (expandableListItem: PanelInstance) => {
+            const expandableListItems = data.childrenList.expandable;
 
             // 寻找是否已经有了选项
-            const findItem = expandableListItems.find((target) => {
-                return target.uid === expandableListItem.uid;
-            });
+            const findItem = expandableListItems.find(
+                (target: PanelInstance) => {
+                    return target.uid === expandableListItem.uid;
+                }
+            );
 
             if (findItem) {
                 data.childrenList.expandable = expandableListItems.filter(
-                    (target) => target.uid !== expandableListItem.uid
+                    (target: PanelInstance) =>
+                        target.uid !== expandableListItem.uid
                 );
             }
         };
@@ -91,14 +100,14 @@ export default defineComponent({
 
             // 手风琴效果
             if (accordion) {
-                if (!data.isActive) {
+                if (!obj.isActive) {
                     newActiveKey.push(name);
                 }
             }
             // 普通效果
             else {
                 // 获取当前需要激活的面板
-                let activeKey = getActiveKey();
+                const activeKey = getActiveKey();
 
                 // 面板的 index
                 const nameIndex = activeKey.indexOf(name);
@@ -131,10 +140,7 @@ export default defineComponent({
         };
 
         // data
-        const data: any = reactive<{
-            currentValue: Array<any> | string;
-            childrenList: Record<string, any>;
-        }>({
+        const data = reactive<Data>({
             /**
              * 当前值
              *
@@ -174,20 +180,15 @@ export default defineComponent({
             ];
         });
 
-        // onMounted
-        onMounted(() => {
-            setActive();
-        });
-
         // methods
 
         // 设置激活的面板
         const setActive = () => {
-            let activeKey = getActiveKey();
+            const activeKey = getActiveKey();
 
             const childrenList = data.childrenList.expandable;
 
-            childrenList.forEach((vm: any, index: number) => {
+            childrenList.forEach((vm: PanelInstance, index: number) => {
                 const { proxy } = vm;
 
                 // 子项名称
@@ -224,9 +225,6 @@ export default defineComponent({
             return activeKey;
         };
 
-        // provide
-        provide('IvueCollapse', data.childrenList);
-
         // watch
 
         // 监听 v-modal
@@ -244,6 +242,14 @@ export default defineComponent({
                 setActive();
             }
         );
+
+        // provide
+        provide(CascaderContextKey, data.childrenList);
+
+        // onMounted
+        onMounted(() => {
+            setActive();
+        });
 
         return {
             data,

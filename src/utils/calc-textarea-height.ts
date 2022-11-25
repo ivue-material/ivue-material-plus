@@ -109,7 +109,7 @@ export const calcTextareaHeight = (uiTextNode: Record<string, any>, minRows = nu
     let minHeight = Number.MIN_SAFE_INTEGER;
     let maxHeight = Number.MAX_SAFE_INTEGER;
     let height = hiddenTextarea.scrollHeight;
-    let overflowY;
+    let overflowY: string;
 
     // border-box: add border, since height = content + padding + border
     if (boxSizing === 'border-box') {

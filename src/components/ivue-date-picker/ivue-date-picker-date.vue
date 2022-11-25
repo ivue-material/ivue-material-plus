@@ -2,13 +2,14 @@
 <script lang='ts'>
 import {
     defineComponent,
-    reactive,
+    ref,
     computed,
     watch,
     Transition,
     h,
     withDirectives,
     resolveDirective,
+    VNode,
 } from 'vue';
 import Colorable from '../../utils/mixins/colorable';
 import MonthChange from '../../utils/month-change';
@@ -17,6 +18,9 @@ import CreateNativeLocaleFormatter from '../../utils/create-native-locale-format
 import { createRange } from '../../utils/helpers';
 import Pad from '../../utils/pad';
 import isDateAllowed from '../../utils/is-date-allowed';
+
+// type
+import type { Props } from './ivue-date-picker-date';
 
 const prefixCls = 'ivue-date-picker-date';
 
@@ -59,43 +63,57 @@ export default defineComponent({
          *
          * @type {String}
          */
-        activeType: String,
+        activeType: {
+            type: String,
+        },
         /**
          * 日期 时间
          *
          * @type {String,Array}
          */
-        value: [String, Array],
+        value: {
+            type: [String, Array],
+        },
         /**
          * 最小年份或月份
          *
          * @type {String}
          */
-        min: String,
+        min: {
+            type: String,
+        },
         /**
          * 最大年份或月份
          *
          * @type {String}
          */
-        max: String,
+        max: {
+            type: String,
+        },
         /**
          * 设置允许选择日期函数
          *
          * @type {Function}
          */
-        allowedDates: Function,
+        allowedDates: {
+            type: Function,
+        },
         /**
          * 当前日期
          *
          * @type {String}
          */
-        current: String,
+        current: {
+            type: String,
+        },
         /**
          * 只读
          *
          * @type {Boolean}
          */
-        readonly: Boolean,
+        readonly: {
+            type: Boolean,
+        },
         /**
          * 格式化函数
          *
@@ -103,20 +121,23 @@ export default defineComponent({
          */
         format: {
             type: Function,
-            default: null,
         },
         /**
          * 背景颜色
          *
          * @type {Function}
          */
-        backgroundColor: Function,
+        backgroundColor: {
+            type: Function,
+        },
         /**
          * 文字颜色
          *
          * @type {Function}
          */
-        textColor: Function,
+        textColor: {
+            type: Function,
+        },
         /**
          * 便签用于标记需要注意的日期
          *
@@ -124,7 +145,6 @@ export default defineComponent({
          */
         note: {
             type: [Array, Function],
-            default: null,
         },
         /**
          * 便签用于标记需要注意的日期的颜色
@@ -135,21 +155,24 @@ export default defineComponent({
             type: [String, Function, Object],
             default: 'warning',
         },
+        /**
+         * 文字颜色
+         *
+         * @type {String | Array}
+         */
+        color: {
+            type: [String, Array],
+        },
     },
-    setup(props: any, { emit }) {
-        // data
-        const data = reactive<{
-            isReversing: boolean;
-        }>({
-            // 是否使用反向动画
-            isReversing: false,
-        });
+    setup(props: Props, { emit }) {
+        // 是否使用反向动画
+        const isReversing = ref<boolean>(false);
 
         // computed
 
         // 动画
         const computedTransition = computed(() => {
-            return data.isReversing
+            return isReversing.value
                 ? 'tab-reverse-transition'
                 : 'tab-transition';
         });
@@ -164,7 +187,7 @@ export default defineComponent({
 
         // 每周日期
         const weekDays = computed(() => {
-            const first = parseInt(props.firstDayOfWeek, 10);
+            const first = parseInt(`${props.firstDayOfWeek}`, 10);
 
             return weekDayFormatter.value
                 ? // 2017-01-15 is Sunday
@@ -172,19 +195,19 @@ export default defineComponent({
                       weekDayFormatter.value(`2017-01-${first + i + 15}`)
                   )
                 : createRange(7).map(
-                      (i: any) =>
+                      (i: number) =>
                           ['S', 'M', 'T', 'W', 'T', 'F', 'S'][(i + first) % 7]
                   );
         });
 
         // 显示的年份
         const displayedYear = computed(() => {
-            return props.tableDate.split('-')[0] * 1;
+            return Number(props.tableDate.split('-')[0]) * 1;
         });
 
         // 显示月份
         const displayedMonth = computed(() => {
-            return props.tableDate.split('-')[1] - 1;
+            return Number(props.tableDate.split('-')[1]) - 1;
         });
 
         // 日期格式
@@ -202,7 +225,7 @@ export default defineComponent({
         // methods
 
         // 表格元素
-        const genTR = (children) => {
+        const genTR = (children: VNode[]) => {
             return [h('tr', {}, children)];
         };
 
@@ -226,22 +249,22 @@ export default defineComponent({
 
             const weekDay = firstDayOfTheMonth.getUTCDay();
 
-            return (weekDay - parseInt(props.firstDayOfWeek) + 7) % 7;
+            return (weekDay - parseInt(`${props.firstDayOfWeek}`) + 7) % 7;
         };
 
         // 计算表日期
-        const calculateTableDate = (dates) => {
+        const calculateTableDate = (dates: number) => {
             // Math.sign 返回一个数字的符号，表示该数字是正数，负数还是零
             return MonthChange(props.tableDate, Math.sign(dates || 1));
         };
 
         // 点击
-        const touch = (value) => {
+        const touch = (value: number) => {
             emit('table-date', calculateTableDate(value));
         };
 
         // 内容
-        const genTable = (staticClass: string, children: Array<any>) => {
+        const genTable = (staticClass: string, children: VNode[]) => {
             const transition = h(
                 Transition,
                 {
@@ -334,7 +357,8 @@ export default defineComponent({
                 : props.textColor;
 
             const color =
-                (isSelected || isCurrent) && (props.color || 'ivue-picker-primary');
+                (isSelected || isCurrent) &&
+                (props.color || 'ivue-picker-primary');
 
             const _staticClass = staticClass ? staticClass : '';
 
@@ -417,8 +441,8 @@ export default defineComponent({
         };
 
         // 渲染便签
-        const genNote = (date) => {
-            let noteColor;
+        const genNote = (date: string) => {
+            let noteColor = '';
 
             if (typeof props.noteColor === 'string') {
                 noteColor = props.noteColor;
@@ -442,7 +466,7 @@ export default defineComponent({
         watch(
             () => props.tableDate,
             (newVal, oldVal) => {
-                data.isReversing = newVal < oldVal;
+                isReversing.value = newVal < oldVal;
             }
         );
 
