@@ -8,10 +8,10 @@ export interface Data {
   affix: boolean;
   slot: boolean;
   styles: {
+    top?: string;
     bottom?: string;
     left?: string;
     width?: string;
-    top?: string;
   };
   slotStyle: {
     width?: string;

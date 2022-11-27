@@ -1,8 +1,10 @@
 <template>
     <div ref="wrapper">
+        <!-- slot -->
         <div ref="content" :class="classes" :style="data.styles">
             <slot></slot>
         </div>
+        <!-- slot样式 -->
         <div v-show="data.slot" :style="data.slotStyle"></div>
     </div>
 </template>
@@ -12,7 +14,7 @@ import { defineComponent, onMounted, ref, computed, reactive } from 'vue';
 import { useEventListener } from '@vueuse/core';
 
 // type
-import type {Props, Data} from './affix';
+import type { Props, Data } from './affix';
 
 const prefixCls = 'ivue-affix';
 
@@ -92,6 +94,15 @@ export default defineComponent({
 
         // method
 
+        // 初始化数据
+        const initData = () => {
+            data.slot = false;
+            data.slotStyle = {};
+
+            data.affix = false;
+            data.styles = {};
+        };
+
         // 获取滚动数值
         const getScroll = (target: Window, top: boolean) => {
             const prop = top ? 'pageYOffset' : 'pageXOffset';
@@ -123,7 +134,7 @@ export default defineComponent({
             // 视口高度
             const clientTop = docEl.clientTop || 0;
             //视口宽度
-            const clientLeft = docEl.clientTop || 0;
+            const clientLeft = docEl.clientLeft || 0;
 
             return {
                 // 元素上边到视窗上边的距离 + 滚动条的垂直位置 - 顶部边框的宽度(顶部边框的宽度)
@@ -159,6 +170,13 @@ export default defineComponent({
                 // 开启固定状态
                 data.affix = true;
 
+                // 固定状态样式
+                data.styles = {
+                    top: `${props.offsetTop}px`,
+                    left: `${elOffset.left}px`,
+                    width: `${wrapper.value.offsetWidth}px`,
+                };
+
                 // slot样式
                 data.slotStyle = {
                     width: `${content.value.clientWidth}px`,
@@ -166,13 +184,6 @@ export default defineComponent({
                 };
 
                 data.slot = true;
-
-                // 组样式
-                data.styles = {
-                    top: `${props.offsetTop}px`,
-                    left: `${elOffset.left}px`,
-                    width: `${wrapper.value.offsetWidth}px`,
-                };
 
                 // 在固定状态发生改变时触发
                 emit('on-change', true);
@@ -186,10 +197,8 @@ export default defineComponent({
                 // 开启固定状态
                 data.affix
             ) {
-                data.slot = false;
-                data.slotStyle = {};
-                data.affix = false;
-                data.styles = {};
+                // 初始化数据
+                initData();
 
                 // 在固定状态发生改变时触发
                 emit('on-change', false);
@@ -205,12 +214,22 @@ export default defineComponent({
                 // 没有开启固定状态
                 !data.affix
             ) {
+                // 开启固定状态
                 data.affix = true;
+                // 固定状态样式
                 data.styles = {
                     bottom: `${props.offsetBottom}px`,
                     left: `${elOffset.left}px`,
-                    width: `${elOffset.top}px`,
+                    width: `${wrapper.value.offsetWidth}px`,
                 };
+
+                // slot样式
+                data.slotStyle = {
+                    width: `${content.value.clientWidth}px`,
+                    height: `${content.value.clientHeight}px`,
+                };
+
+                data.slot = true;
 
                 // 在固定状态发生改变时触发
                 emit('on-change', true);
@@ -225,8 +244,8 @@ export default defineComponent({
                 // 开启固定状态
                 data.affix
             ) {
-                data.affix = false;
-                data.styles = {};
+                // 初始化数据
+                initData();
 
                 // 在固定状态发生改变时触发
                 emit('on-change', false);
@@ -244,11 +263,16 @@ export default defineComponent({
         });
 
         return {
-            data,
-            classes,
-            offsetType,
+            // ref
             wrapper,
             content,
+
+            // data
+            data,
+
+            // computed
+            classes,
+            offsetType,
         };
     },
 });
