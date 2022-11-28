@@ -18,7 +18,7 @@
     </li>
 </template>
 
-<script  lang='ts'>
+<script lang='ts'>
 import {
     computed,
     getCurrentInstance,

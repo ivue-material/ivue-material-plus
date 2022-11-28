@@ -28,14 +28,13 @@ import {
     getCurrentInstance,
     onMounted,
     onBeforeUnmount,
-    ComponentInternalInstance,
 } from 'vue';
 import IvueIcon from '../ivue-icon/index.vue';
 import CollapseTransition from '../../utils/collapse-transition';
 
 // type
 import { CascaderContextKey } from './collapse';
-import { Data } from './panel';
+import type { Data, PanelInstance } from './panel';
 
 const prefixCls = 'ivue-collapse-panel';
 
@@ -73,7 +72,7 @@ export default defineComponent({
         const IvueCollapse = inject(CascaderContextKey);
 
         // 支持访问内部组件实例
-        const vm = getCurrentInstance() as ComponentInternalInstance;
+        const vm = getCurrentInstance() as PanelInstance;
 
         // data
         const data = reactive<Data>({

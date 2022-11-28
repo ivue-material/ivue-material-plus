@@ -11,7 +11,7 @@ type options = {
     onClose?: () => any,
     render?: () => any,
     duration?: number,
-    position?: any,
+    position?: Position,
     offset?: number,
     id?: string,
     zIndex?: number,
@@ -40,7 +40,7 @@ let offset;
 let defaultDuration;
 
 
-function notice(type, options: options = {}) {
+function notice(type: Type, options: options = {}) {
     // key
     const id = `${prefixKey}${name}`;
 
@@ -136,7 +136,9 @@ const close = (
     // vm
     const { vm } = orientedNotifications[idx];
 
-    if (!vm) return;
+    if (!vm) {
+        return;
+    }
 
     // 在通知从 DOM 中移除之前调用用户的关闭函数。
     userOnClose?.(vm);
@@ -148,7 +150,9 @@ const close = (
     orientedNotifications.splice(idx, 1);
     const len = orientedNotifications.length;
 
-    if (len < 1) return;
+    if (len < 1) {
+        return;
+    }
 
     // 开始移除项
     for (let i = idx; i < len; i++) {

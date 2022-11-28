@@ -1,4 +1,5 @@
-import { InjectionKey, ComponentInternalInstance } from 'vue';
+import { InjectionKey } from 'vue';
+import { PanelInstance} from './panel';
 
 export interface Props {
   modelValue: string | any[];
@@ -8,12 +9,17 @@ export interface Props {
 
 export interface Data {
   currentValue: string | string[];
-  childrenList: Record<string, any>;
+  childrenList: {
+    expandable: any[];
+    pushExpandable: (expandableListItem: PanelInstance) => void;
+    removeExpandable: (expandableListItem: PanelInstance) => void;
+    toggle: (obj: { name: string; isActive: boolean }) => void
+  }
 }
 
 export type CollapseContext = {
-  pushExpandable: (vm: ComponentInternalInstance) => void;
-  removeExpandable: (vm: ComponentInternalInstance) => void;
+  pushExpandable: (expandableListItem: PanelInstance) => void;
+  removeExpandable: (expandableListItem: PanelInstance) => void;
   toggle: (obj: { name: string; isActive: boolean }) => void
 }
 

@@ -15,7 +15,7 @@ let instances;
 let color = 'primary';
 let failedColor = 'error';
 let height = 2;
-let timer;
+let timer: ReturnType<typeof setInterval> | null;
 
 const newInstance = (options: options) => {
 
@@ -116,7 +116,6 @@ export default {
       visible: true
     });
 
-
     // 设置进度
     timer = setInterval(() => {
       percent += Math.floor(Math.random() * 3 + 1);
@@ -135,7 +134,7 @@ export default {
 
   },
   // 更新
-  update(percent) {
+  update(percent: number) {
     clearTimer();
 
     update({

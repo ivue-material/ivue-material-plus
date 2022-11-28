@@ -1,18 +1,14 @@
 
-import Panel from './panel.vue';
+import { ComponentInternalInstance, ComponentPublicInstance } from 'vue';
 
-interface _Panel extends InstanceType<typeof Panel> {
-  uid: number;
-  proxy: {
-    name: string;
-    data: {
-      isActive: boolean;
-      index: number;
-    }
-  };
+export interface _ComponentPublicInstance extends ComponentPublicInstance {
+  name: string;
+  data: Data
 }
 
-export type PanelInstance = _Panel
+export interface PanelInstance extends ComponentInternalInstance {
+  proxy: _ComponentPublicInstance | null;
+}
 
 export interface Data {
   isActive: boolean;

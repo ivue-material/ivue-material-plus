@@ -6,7 +6,7 @@ export default {
     /**
      * 跳转的链接，支持 vue-router 对象
      *
-     * @type {Object}
+     * @type {Object | String}
      */
     to: {
       type: [Object, String]

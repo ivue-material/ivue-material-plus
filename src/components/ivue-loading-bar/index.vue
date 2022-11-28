@@ -8,6 +8,7 @@
 
 <script lang='ts'>
 import { defineComponent, computed, reactive } from 'vue';
+import type { Props, Data } from './types';
 
 const prefixCls = 'ivue-loading-bar';
 
@@ -42,13 +43,9 @@ export default defineComponent({
             default: 2,
         },
     },
-    setup(props: any) {
+    setup(props: Props) {
         // data
-        const data = reactive<{
-            percent: number;
-            status: string;
-            visible: boolean;
-        }>({
+        const data = reactive<Data>({
             /**
              * 百分比
              *
@@ -79,7 +76,8 @@ export default defineComponent({
                     [`${prefixCls}-inner-color-primary`]:
                         props.color === 'primary' && data.status === 'success',
                     [`${prefixCls}-inner-color-error`]:
-                        props.failedColor === 'error' && data.status === 'error',
+                        props.failedColor === 'error' &&
+                        data.status === 'error',
                 },
             ];
         });
@@ -93,7 +91,7 @@ export default defineComponent({
 
         // styles
         const styles = computed(() => {
-            let style = {
+            const style = {
                 width: `${data.percent}%`,
                 height: `${props.height}px`,
                 backgroundColor: '',

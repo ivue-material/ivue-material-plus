@@ -17,7 +17,6 @@ type options = {
     loadingIcon?: string
 }
 
-
 // 实例列表
 const instances: any = [];
 

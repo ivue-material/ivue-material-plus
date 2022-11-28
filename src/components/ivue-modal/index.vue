@@ -103,12 +103,13 @@ import { deepCopy } from '../../utils/assist';
 import { oneOf } from '../../utils/assist';
 import { useDraggable } from '../../hooks';
 
+// components
 import IvueIcon from '../ivue-icon';
 import IvueButton from '../ivue-button';
 import IvueSpin from '../ivue-spin';
 
 // ts
-import type { _ComponentInternalInstance } from './types';
+import { _ComponentInternalInstance, Props, Data } from './types';
 
 const prefixCls = 'ivue-modal';
 
@@ -311,6 +312,7 @@ export default defineComponent({
          * @type {String}
          */
         loadingType: {
+            type: String,
             validator(value: string) {
                 return oneOf(value, ['spin', 'button']);
             },
@@ -337,7 +339,7 @@ export default defineComponent({
         /**
          * 居中
          *
-         * @type {String}
+         * @type {Boolean}
          */
         center: {
             type: Boolean,
@@ -406,7 +408,7 @@ export default defineComponent({
             default: false,
         },
     },
-    setup(props: any, { emit, slots }) {
+    setup(props: Props, { emit, slots }) {
         // proxy
         const { proxy, uid } =
             getCurrentInstance() as _ComponentInternalInstance;
@@ -455,7 +457,7 @@ export default defineComponent({
 
         // 弹窗样式
         const modalStyles = computed(() => {
-            const width = parseInt(props.width);
+            const width = parseInt(`${props.width}`);
 
             let styleWidth: {
                 width?: string;
@@ -504,7 +506,7 @@ export default defineComponent({
 
             // 开启拖动没有开启全屏
             if (props.draggable && !props.fullscreen) {
-                const width = parseInt(props.width);
+                const width = parseInt(`${props.width}`);
 
                 // width
                 style = {
@@ -760,18 +762,7 @@ export default defineComponent({
         };
 
         // data
-        const data = reactive<{
-            visible: boolean;
-            modalIndex: number;
-            wrapperShow: boolean;
-            isMouseTriggerIn: boolean;
-            timer: ReturnType<typeof setTimeout> | null;
-            lastVisible: boolean;
-            dragData: Record<string, any>;
-            spinLoading: boolean;
-            buttonLoading: boolean;
-            resetRenderBody: boolean;
-        }>({
+        const data = reactive<Data>({
             /**
              * 显示/隐藏
              *

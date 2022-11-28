@@ -60,10 +60,10 @@
 <script lang='ts'>
 import { defineComponent, computed, reactive, onMounted, PropType } from 'vue';
 
-type Position = 'top-right' | 'top-left' | 'bottom-right' | 'bottom-left';
-type Type = 'normal' | 'info' | 'warning' | 'success' | 'error';
-
 import RenderCell from '../../utils/render';
+
+// type
+import { Props, Data, Position, Type } from './types';
 
 const prefixCls = 'ivue-message';
 
@@ -187,7 +187,7 @@ export default defineComponent({
         /**
          * 当前index
          *
-         * @type {Numebr}
+         * @type {Number}
          */
         zIndex: {
             type: Number,
@@ -218,7 +218,7 @@ export default defineComponent({
             type: String,
         },
     },
-    setup(props: any) {
+    setup(props: Props) {
         const radius = 20;
         const size = 20;
         const percent = 20;
@@ -229,12 +229,7 @@ export default defineComponent({
         const strokeWidth = (2 / +size) * viewBoxSize * 2;
 
         // data
-        const data = reactive<{
-            haveDesc: boolean;
-            closeTimer: ReturnType<typeof setTimeout> | null;
-            visible: boolean;
-            iconTypes: Record<string, string>;
-        }>({
+        const data = reactive<Data>({
             /**
              * 是否有描述
              *

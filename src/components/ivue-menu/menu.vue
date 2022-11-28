@@ -10,11 +10,10 @@ import { oneOf } from '../../utils/assist';
 import { findComponentsUpward } from '../../utils/helpers';
 
 // ts
-import { MenuContextKey, MenuItemList, SubmenuList } from './menu';
+import { MenuContextKey, Props, Data } from './menu';
 
 const prefixCls = 'ivue-menu';
 
-/* eslint-disable */
 export default {
     name: prefixCls,
     emits: ['on-select', 'on-open-change'],
@@ -81,15 +80,9 @@ export default {
             default: false,
         },
     },
-    setup(props: any, { emit }) {
+    setup(props: Props, { emit }) {
         // data
-        const data = reactive<{
-            openedNames: any[];
-            menuItemList: MenuItemList[];
-            submenuList: SubmenuList[];
-            currentActiveName: string | number;
-            ready: boolean;
-        }>({
+        const data = reactive<Data>({
             /**
              * 展开的 Submenu 的 name 集合
              *
@@ -146,7 +139,7 @@ export default {
 
         // 外部样式
         const wrapperStyles = computed(() => {
-            let style: {
+            const style: {
                 width?: string;
             } = {};
 
@@ -199,7 +192,7 @@ export default {
 
         // 更新打开的菜单名称
         const updateOpenKeys = (name) => {
-            let names = [...data.openedNames];
+            const names = [...data.openedNames];
 
             const index = names.indexOf(name);
             const submenuList = data.submenuList.map((item) => item.submenu);
@@ -280,7 +273,7 @@ export default {
             }
 
             // 获取当前打开的子菜单
-            let openedNames = submenuList
+            const openedNames = submenuList
                 .filter((item) => item.data.opened)
                 .map((item) => item.name);
 

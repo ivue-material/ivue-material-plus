@@ -44,14 +44,7 @@
 </template>
 
 <script lang='ts'>
-import {
-    defineComponent,
-    onBeforeUnmount,
-    computed,
-    reactive,
-    onMounted,
-    PropType,
-} from 'vue';
+import { defineComponent, computed, reactive, onMounted, PropType } from 'vue';
 import { EVENT_CODE } from '../../utils/helpers';
 import { useEventListener } from '@vueuse/core';
 
@@ -60,9 +53,13 @@ type Type = 'normal' | 'info' | 'warning' | 'success' | 'error';
 
 import RenderCell from '../../utils/render';
 
+// types
+import type { Props, Data } from './types';
+
 const prefixCls = 'ivue-notice';
 
 export default defineComponent({
+    name: prefixCls,
     emits: ['destroy'],
     props: {
         /**
@@ -195,14 +192,9 @@ export default defineComponent({
             type: String,
         },
     },
-    setup(props: any) {
+    setup(props: Props) {
         // data
-        const data: any = reactive<{
-            haveDesc: boolean;
-            closeTimer: any;
-            visible: boolean;
-            iconTypes: Record<string, string>;
-        }>({
+        const data: any = reactive<Data>({
             /**
              * 是否有描述
              *

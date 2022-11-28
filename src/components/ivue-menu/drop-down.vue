@@ -29,6 +29,9 @@ import { transferIndex, transferIncrease } from '../../utils/transfer-queue';
 
 import { createPopper } from '@popperjs/core';
 
+// type
+import type { Props, Data } from './drop-down';
+
 const prefixCls = 'ivue-menu-dropdown';
 
 export default {
@@ -84,7 +87,7 @@ export default {
         /**
          * 外部样式
          *
-         * @type {String}
+         * @type {Object}
          */
         styles: {
             type: Object,
@@ -108,7 +111,7 @@ export default {
             type: String,
         },
     },
-    setup(props: any, { emit }) {
+    setup(props: Props, { emit }) {
         // dom
         const dropDown = ref<HTMLDivElement>(null);
 
@@ -122,12 +125,7 @@ export default {
         };
 
         // data
-        const data = reactive<{
-            width: string;
-            zIndex: number;
-            popper: any;
-            popperStatus: boolean;
-        }>({
+        const data = reactive<Data>({
             /**
              * 宽度
              *
@@ -251,17 +249,17 @@ export default {
         };
 
         // 鼠标进入
-        const handleMouseenter = (event) => {
+        const handleMouseenter = (event: MouseEvent) => {
             emit('on-mouseenter', event);
         };
 
         // 鼠标离开
-        const handleMouseleave = (event) => {
+        const handleMouseleave = (event: MouseEvent) => {
             emit('on-mouseleave', event);
         };
 
         // 点击
-        const handleClick = (event) => {
+        const handleClick = (event: MouseEvent) => {
             emit('on-click', event);
         };
 

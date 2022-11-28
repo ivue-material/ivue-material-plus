@@ -16,7 +16,7 @@ import {
 
 // type
 import { Props, Data, CascaderContextKey } from './collapse';
-import { PanelInstance } from './panel';
+import type { PanelInstance } from './panel';
 
 const prefixCls = 'ivue-collapse';
 

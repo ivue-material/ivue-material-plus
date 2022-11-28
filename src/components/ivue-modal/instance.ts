@@ -13,6 +13,9 @@ import IvueIcon from '../ivue-icon';
 import IvueButton from '../ivue-button';
 import IvueSpin from '../ivue-spin';
 
+// types
+import { Props } from './types';
+
 const prefixCls = 'ivue-modal-instance';
 
 Modal.newInstance = (properties) => {
@@ -323,11 +326,11 @@ Modal.newInstance = (properties) => {
 
 
   Instance.mount(container);
+
   const modal: any = _instance.refs.modal;
 
-
   return {
-    show(props: any) {
+    show(props: Props) {
       // 显示取消按钮
       modal.$parent.showCancel = props.showCancel;
       // 图标类型

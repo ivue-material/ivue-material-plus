@@ -5,13 +5,11 @@ import { isString } from '@vue/shared';
 import { getStyle, addClass, removeClass } from '../../utils/assist';
 import { createLoadingComponent, LoadingInstance } from './createLoadingComponent';
 import { useZIndex } from '../../utils/helpers';
+import isServer from '../../utils/isServer';
 
 // ts
 import type { LoadingOptions, LoadingOptionsResolved } from './types';
 import type { CSSProperties } from 'vue';
-
-
-import isServer from '../../utils/isServer';
 
 // 全屏展示实例
 let fullscreenInstance: LoadingInstance | undefined = undefined;
@@ -155,7 +153,7 @@ const resolveOptions = (options: LoadingOptions): LoadingOptionsResolved => {
 // loading
 const Loading = function (options: LoadingOptions = {}): LoadingInstance {
     if (isServer) {
-        return undefined as any;
+        return undefined;
     }
 
     // 获取选项
@@ -196,8 +194,8 @@ const Loading = function (options: LoadingOptions = {}): LoadingInstance {
      * destroySelf function will remove 'ivue-loading-parent--relative',
      * and then the position of v-loading.body will be error.
      */
-    let loadingNumber: string | null =
-        resolved.parent.getAttribute('loading-number');
+    let loadingNumber: string = resolved.parent.getAttribute('loading-number');
+
     if (!loadingNumber) {
         loadingNumber = '1';
     } else {

@@ -3,7 +3,7 @@ import Loading from './loading';
 import directive from './directive';
 
 export const IvueLoading = {
-    install(app: App): any {
+    install(app: App) {
         app.directive('loading', directive);
         app.config.globalProperties.$loading = Loading;
     },
