@@ -34,7 +34,7 @@ import { oneOf } from '../../utils/assist';
 import { isClient } from '../../utils/helpers';
 
 // type
-import type { Props } from './card';
+import type { Props } from './types/card';
 
 const prefixCls = 'ivue-card';
 

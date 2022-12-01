@@ -1,13 +1,16 @@
 <template>
     <!-- 左右滚动 -->
-    <thumb :move="data.moveX" :ratio="ratioX" :barSize="barWidth" :always="always"></thumb>
+    <thumb :move="moveX" :ratio="ratioX" :barSize="barWidth" :always="always"></thumb>
     <!-- 上下滚动 -->
-    <thumb :move="data.moveY" :ratio="ratioY" :barSize="barHeight" :always="always" vertical></thumb>
+    <thumb :move="moveY" :ratio="ratioY" :barSize="barHeight" :always="always" vertical></thumb>
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive } from 'vue';
+import { defineComponent, ref } from 'vue';
 import Thumb from './thumb.vue';
+
+// type
+import { Props } from './types/bar';
 
 const prefixCls = 'ivue-scrollbar-bar';
 
@@ -63,25 +66,12 @@ export default defineComponent({
             default: 1,
         },
     },
-    setup(props: any) {
-        // data
-        const data: any = reactive<{
-            moveX: number;
-            moveY: number;
-        }>({
-            /**
-             * x移动的位置
-             *
-             * @type {Number}
-             */
-            moveX: 0,
-            /**
-             * y移动的位置
-             *
-             * @type {Number}
-             */
-            moveY: 0,
-        });
+    setup(props: Props) {
+        // x移动的位置
+        const moveX = ref<number>(0);
+
+        // y移动的位置
+        const moveY = ref<number>(0);
 
         // methods
 
@@ -92,18 +82,19 @@ export default defineComponent({
                 const offsetWidth = wrapper.offsetWidth - GAP;
 
                 // x移动的位置
-                data.moveX =
+                moveX.value =
                     ((wrapper.scrollLeft * 100) / offsetWidth) * props.ratioX;
 
                 // y移动的位置
-                data.moveY =
+                moveY.value =
                     ((wrapper.scrollTop * 100) / offsetHeight) * props.ratioY;
             }
         };
 
         return {
             // data
-            data,
+            moveX,
+            moveY,
 
             // methods
             handleScroll,

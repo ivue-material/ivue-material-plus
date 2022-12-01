@@ -10,7 +10,7 @@ export const genPickerButton = (emit, propsValue, value, updateName, content, re
   const active = propsValue === value;
 
   // 发送事件
-  const click = (event) => {
+  const click = (event: Event) => {
     event.stopPropagation();
 
     emit(`update:${updateName}`, value);

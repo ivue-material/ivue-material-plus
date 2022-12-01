@@ -40,10 +40,10 @@
 <script lang='ts'>
 import { computed, defineComponent, reactive, watch, inject } from 'vue';
 import { isCssColor, setTextColor } from '../../utils/helpers';
-import { CheckboxContextKey } from '../ivue-checkbox-group/checkbox-group';
+import { CheckboxContextKey } from '../ivue-checkbox-group/types/checkbox-group';
 
 // type
-import type { Props, Data } from './checkbox';
+import type { Props, Data } from './types/checkbox';
 
 const prefixCls = 'ivue-checkbox';
 

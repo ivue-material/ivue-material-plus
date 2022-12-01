@@ -44,7 +44,6 @@ import {
     reactive,
     computed,
     onMounted,
-    PropType,
     onActivated,
     nextTick,
     onUnmounted,
@@ -56,6 +55,9 @@ import { doubleRaf, raf, isCssColor } from '../../utils/helpers';
 import { on, off } from '../../utils/dom';
 import IvueIcon from '../ivue-icon';
 import { oneOf } from '../../utils/assist';
+
+// type
+import type { Props, Data } from './types/notice-bar';
 
 const prefixCls = 'ivue-notice-bar';
 
@@ -92,11 +94,11 @@ export default defineComponent({
         /**
          * 是否开启滚动播放，内容长度溢出时默认开启
          *
-         * @type {Boolean | Null}
+         * @type {Boolean}
          */
         scrollable: {
-            type: Boolean as PropType<boolean | null>,
-            default: null,
+            type: Boolean,
+            default: false,
         },
         /**
          * 模式
@@ -142,20 +144,12 @@ export default defineComponent({
             type: String,
         },
     },
-    setup(props: any, { emit }) {
+    setup(props: Props, { emit }) {
         // dom
         const contentWrapper = ref<HTMLElement>();
         const content = ref<HTMLElement>();
 
-        const data = reactive<{
-            show: boolean;
-            offset: number;
-            duration: number;
-            mounted: boolean | null;
-            contentWrapperWidth: number;
-            contentWidth: number;
-            startTimer: any;
-        }>({
+        const data = reactive<Data>({
             /**
              * 是否显示
              *
@@ -219,42 +213,6 @@ export default defineComponent({
             };
         });
 
-        // 设置背景颜色
-        const setBackgroundColor = (color: string | any[]) => {
-            let style = {};
-
-            // 是否是数组
-            if (Array.isArray(color)) {
-                style = {
-                    background: `linear-gradient(135deg,${color[0]} 0%, ${color[1]} 100%)`,
-                };
-            } else if (isCssColor(color)) {
-                style = {
-                    'background-color': `${color}`,
-                };
-            }
-
-            return style;
-        };
-
-        // 设置文字颜色
-        const setTextColor = (color: Record<string, any>) => {
-            let style = {};
-
-            // 是否是数组
-            if (Array.isArray(color)) {
-                style = {
-                    color: `${color[0]}`,
-                };
-            } else if (isCssColor(color)) {
-                style = {
-                    color: `${color}`,
-                };
-            }
-
-            return style;
-        };
-
         // 文字样式
         const textStyles = computed(() => {
             return {
@@ -275,6 +233,37 @@ export default defineComponent({
         });
 
         // methods
+
+        // 设置背景颜色
+        const setBackgroundColor = (color: string | any[]) => {
+            let style = {};
+
+            // 是否是数组
+            if (Array.isArray(color)) {
+                style = {
+                    background: `linear-gradient(135deg,${color[0]} 0%, ${color[1]} 100%)`,
+                };
+            } else if (isCssColor(color)) {
+                style = {
+                    'background-color': `${color}`,
+                };
+            }
+
+            return style;
+        };
+
+        // 设置文字颜色
+        const setTextColor = (color: string) => {
+            let style = {};
+
+            if (isCssColor(color)) {
+                style = {
+                    color: `${color}`,
+                };
+            }
+
+            return style;
+        };
 
         // 初始化数据
         const reset = () => {

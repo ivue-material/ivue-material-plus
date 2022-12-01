@@ -40,7 +40,7 @@ import {
 } from 'vue';
 
 // type
-import type { Props } from './badge';
+import type { Props } from './types/badge';
 
 const prefixCls = 'ivue-badge';
 

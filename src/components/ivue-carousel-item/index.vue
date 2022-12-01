@@ -35,7 +35,7 @@ import {
     Props,
     Data,
     WrapperStyles,
-} from './carousel-item';
+} from './types/carousel-item';
 
 const prefixCls = 'ivue-carousel-item';
 

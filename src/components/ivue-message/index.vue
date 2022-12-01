@@ -63,7 +63,7 @@ import { defineComponent, computed, reactive, onMounted, PropType } from 'vue';
 import RenderCell from '../../utils/render';
 
 // type
-import { Props, Data, Position, Type } from './types';
+import type { Props, Data, Position, Type } from './types/message';
 
 const prefixCls = 'ivue-message';
 

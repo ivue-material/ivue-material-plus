@@ -39,7 +39,7 @@ import { oneOf } from '../../utils/assist';
 import { getRandomStr } from '../../utils/helpers';
 
 // type
-import { Props } from './circular';
+import { Props } from './types/circular';
 
 const prefixCls = 'ivue-circular';
 

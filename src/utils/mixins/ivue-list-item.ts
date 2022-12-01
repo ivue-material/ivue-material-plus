@@ -1,4 +1,8 @@
-export default {
+import {
+    defineComponent,
+} from 'vue';
+
+export default defineComponent({
     props: {
         /**
          * 禁用
@@ -19,4 +23,4 @@ export default {
             default: false
         }
     }
-};
+});

@@ -16,7 +16,7 @@ import IvueButton from '../ivue-button/index.vue';
 import IvueIcon from '../ivue-icon/index.vue';
 
 // type
-import { Props, _ComponentInternalInstance } from './ivue-date-picker-header';
+import type { Props, _ComponentInternalInstance } from './types/ivue-date-picker-header';
 
 const prefixCls = 'ivue-date-picker-header';
 

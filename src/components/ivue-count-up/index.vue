@@ -7,7 +7,7 @@ import { defineComponent, onBeforeUnmount, onMounted, watch, ref } from 'vue';
 import { CountUp } from 'countup.js';
 
 // type
-import { Props } from './count-up';
+import { Props } from './types/count-up';
 
 const prefixCls = 'ivue-count-up';
 

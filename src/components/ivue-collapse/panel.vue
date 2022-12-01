@@ -33,8 +33,8 @@ import IvueIcon from '../ivue-icon/index.vue';
 import CollapseTransition from '../../utils/collapse-transition';
 
 // type
-import { CascaderContextKey } from './collapse';
-import type { Data, PanelInstance } from './panel';
+import { CascaderContextKey } from './types/collapse';
+import type { Data, PanelInstance } from './types/panel';
 
 const prefixCls = 'ivue-collapse-panel';
 

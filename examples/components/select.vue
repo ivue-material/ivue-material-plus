@@ -4,7 +4,7 @@
         <button @click="handleClear">clear</button>
         <div class="content">
             <ivue-select
-            filterable
+                filterable
                 v-model="model1"
                 style="width:200px"
                 transfer
@@ -13,11 +13,7 @@
                 ref="selectdefault"
                 @on-change="handleChange"
             >
-                <ivue-option
-                    v-for="item in cityList"
-                    :value="item.value"
-                    :key="item.value"
-                ></ivue-option>
+                <ivue-option v-for="item in cityList" :value="item.value" :key="item.value"></ivue-option>
             </ivue-select>
         </div>
         <p>禁用</p>
@@ -44,8 +40,8 @@
         </ivue-select>
 
         <p>分组</p>
-        <ivue-select v-model="model7" style="width:200px"  filterable  filterQueryProp="New York">
-            <ivue-option-group label="Hot Cities" disabled>
+        <ivue-select v-model="model7" style="width:200px" filterable filterQueryProp="New York">
+            <ivue-option-group label="Hot Cities">
                 <ivue-option
                     v-for="item in cityList1"
                     :value="item.value"
@@ -80,7 +76,7 @@
         </ivue-select>
         {{multiple}}
         <p>多选</p>
-        <ivue-select v-model="multiple" prefix="catching_pokemon"  multiple style="width:200px">
+        <ivue-select v-model="multiple" prefix="catching_pokemon" multiple style="width:200px">
             <ivue-option
                 v-for="item in cityList"
                 :value="item.value"
@@ -90,7 +86,7 @@
         {{model10}}
         <p>prefix</p>
 
-        <ivue-select v-model="model10" prefix="catching_pokemon"  style="width:200px">
+        <ivue-select v-model="model10" prefix="catching_pokemon" style="width:200px">
             <ivue-option
                 v-for="item in cityList"
                 :value="item.value"
@@ -133,7 +129,13 @@
         </ivue-select>
         {{model16}}
         <p>可搜索</p>
-        <ivue-select v-model="model11" style="width:200px" filterable ref="select" :restore-input-option="false">
+        <ivue-select
+            v-model="model11"
+            style="width:200px"
+            filterable
+            ref="select"
+            :restore-input-option="false"
+        >
             <ivue-option
                 v-for="item in cityList"
                 :value="item.value"
@@ -476,7 +478,7 @@ export default {
         };
     },
     mounted() {
-        this.$refs.selectdefault.focus()
+        this.$refs.selectdefault.focus();
     },
     methods: {
         handleChange(value) {
@@ -528,7 +530,7 @@ export default {
             }
         },
         remoteMethod2(query) {
-            console.log('query', query)
+            console.log('query', query);
             if (query !== '') {
                 this.loading2 = true;
                 setTimeout(() => {
@@ -562,11 +564,11 @@ export default {
             } else {
                 setTimeout(() => {
                     this.options3 = this.list2;
-                }, 300)
+                }, 300);
             }
         },
         remoteMethod4(query) {
-            console.log('搜索方法',query)
+            console.log('搜索方法', query);
             if (query !== '') {
                 this.loading4 = true;
                 setTimeout(() => {
@@ -576,11 +578,11 @@ export default {
                     );
                 }, 200);
             } else {
-                this.$refs.search.handleToggleMenu()
+                this.$refs.search.handleToggleMenu();
 
                 setTimeout(() => {
                     this.options4 = [];
-                }, 300)
+                }, 300);
             }
         },
         setDefaultOptions(options) {

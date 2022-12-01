@@ -30,7 +30,7 @@ import { transferIndex, transferIncrease } from '../../utils/transfer-queue';
 import { createPopper } from '@popperjs/core';
 
 // type
-import type { Props, Data } from './drop-down';
+import type { Props, Data } from './types/drop-down';
 
 const prefixCls = 'ivue-menu-dropdown';
 

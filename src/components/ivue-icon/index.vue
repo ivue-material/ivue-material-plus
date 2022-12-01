@@ -17,7 +17,7 @@ import { computed, defineComponent } from 'vue';
 import IvueSvgLoader from '../ivue-svg-loader/index';
 
 // type
-import { Props } from './icon';
+import { Props } from './types/icon';
 
 const prefixCls = 'ivue-icon';
 

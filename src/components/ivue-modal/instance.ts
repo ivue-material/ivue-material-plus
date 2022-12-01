@@ -13,8 +13,8 @@ import IvueIcon from '../ivue-icon';
 import IvueButton from '../ivue-button';
 import IvueSpin from '../ivue-spin';
 
-// types
-import { Props } from './types';
+// type
+import type { Props } from './types/modal';
 
 const prefixCls = 'ivue-modal-instance';
 

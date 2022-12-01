@@ -43,7 +43,7 @@ import Bar from './bar.vue';
 
 // ts
 import type { CSSProperties } from 'vue';
-import { BarInstance } from './scrollbar';
+import { BarInstance, Props, Data, ScrollbarContextKey } from './types/scrollbar';
 
 // top 2 + bottom 2
 const GAP = 4;
@@ -152,7 +152,7 @@ export default defineComponent({
             default: 20,
         },
     },
-    setup(props: any, { emit }) {
+    setup(props: Props, { emit }) {
         // dom
         const scrollbarWrapper = ref<HTMLDivElement>();
         const scrollbar = ref<HTMLDivElement>();
@@ -161,12 +161,7 @@ export default defineComponent({
         const bar = ref<BarInstance>();
 
         // data
-        const data = reactive<{
-            barHeight: string;
-            barWidth: string;
-            ratioX: number;
-            ratioY: number;
-        }>({
+        const data = reactive<Data>({
             /**
              * 滚动条高度
              *
@@ -364,10 +359,10 @@ export default defineComponent({
 
         // provide
         provide(
-            prefixCls,
+            ScrollbarContextKey,
             reactive({
-                scrollbar: scrollbar,
-                scrollbarWrapper: scrollbarWrapper,
+                scrollbar: scrollbar.value,
+                scrollbarWrapper: scrollbarWrapper.value,
             })
         );
 

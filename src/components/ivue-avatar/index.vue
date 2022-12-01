@@ -32,7 +32,7 @@ import { oneOf } from '../../utils/assist';
 import IvueIcon from '../ivue-icon/index.vue';
 
 // type
-import type { Props, Data, _ComponentInternalInstance } from './avatar';
+import type { Props, Data, _ComponentInternalInstance } from './types/avatar';
 
 const prefixCls = 'ivue-avatar';
 

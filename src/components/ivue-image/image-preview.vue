@@ -131,7 +131,7 @@ import IvueSpin from '../ivue-spin';
 import IvueIcon from '../ivue-icon';
 
 // type
-import type { Props, Data } from './image-preview';
+import type { Props, Data } from './types/image-preview';
 
 const prefixCls = 'ivue-image-preview';
 

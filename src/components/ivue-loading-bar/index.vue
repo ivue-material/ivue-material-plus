@@ -8,7 +8,9 @@
 
 <script lang='ts'>
 import { defineComponent, computed, reactive } from 'vue';
-import type { Props, Data } from './types';
+
+// type
+import type { Props, Data } from './types/index';
 
 const prefixCls = 'ivue-loading-bar';
 

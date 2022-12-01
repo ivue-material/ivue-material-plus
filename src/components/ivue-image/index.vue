@@ -55,7 +55,7 @@ import { oneOf } from '../../utils/assist';
 import ImagePreview from './image-preview.vue';
 
 // type
-import { Props, Data } from './image';
+import type { Props, Data } from './types/image';
 
 const prefixCls = 'ivue-image';
 

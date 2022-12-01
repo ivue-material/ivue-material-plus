@@ -1,141 +1,136 @@
-import { oneOf } from '../assist';
+import {
+  computed,
+} from 'vue';
 import { isClient } from '../helpers';
 
-export default {
-  props: {
-    /**
-     * 跳转的链接，支持 vue-router 对象
-     *
-     * @type {Object | String}
-     */
-    to: {
-      type: [Object, String]
-    },
-    /**
-     * 相当于 a 链接的 target 属性
-     *
-     * @type {String}
-     */
-    target: {
-      type: String,
-      validator(value: string) {
-        return oneOf(value, ['_blank', '_self', '_parent', '_top']);
-      },
-      default: '_self'
-    },
-  },
-  computed: {
-    // 链接
-    linkUrl() {
-      // 跳转的链接，支持 vue-router 对象
-      const type = typeof this.to;
+export const mixinsLink = (proxy, { to, replace, target }) => {
+  // computed
 
-      // 判断是否字符串
-      if (type !== 'string') {
-        return null;
-      }
+  // 链接
+  const linkUrl = computed(() => {
+    // 跳转的链接，支持 vue-router 对象
+    const type = typeof to;
 
-      /* absolute url 不需要路由 */
-      if (this.to.includes('//')) {
-        return this.to;
-      }
-
-      // router
-      const router = this.$router;
-
-      // 是否有路由
-      if (router) {
-        // 当前路由
-        const current = this.$route;
-
-        // 路由对象
-        const route = router.resolve(this.to, current);
-
-        return route ? route.href : this.to;
-      }
-
-      return this.to;
+    // 判断是否字符串
+    if (type !== 'string') {
+      return null;
     }
-  },
-  methods: {
-    // 打开新窗口
-    handleOpenTo() {
-      if (!isClient) {
-        return;
-      }
 
-      const router = this.$router;
-      let to = this.to;
+    // absolute url 不需要路由
+    if (to.includes('//')) {
+      return to;
+    }
+
+    // router
+    const router = proxy.$router;
+
+    // 是否有路由
+    if (router) {
+      // 当前路由
+      const current = proxy.$route;
+
+      // 路由对象
+      const route = router.resolve(to, current);
+
+      return route ? route.href : to;
+    }
+
+    return to;
+  });
+
+
+  // methods
+
+  // 打开新窗口
+  const handleOpenTo = () => {
+    if (!isClient) {
+      return;
+    }
+
+    const router = proxy.$router;
+    let _to = to;
+
+    // 路由对象
+    if (router) {
+      // 当前路由
+      const current = proxy.$route;
+
+      // 路由对象
+      const route = router.resolve(to, current);
+
+      _to = route ? route.href : to;
+    }
+
+    // 判断是否字符串
+    if (typeof to === 'string') {
+      return;
+    }
+
+    window.open(_to);
+  };
+
+
+  // 跳转新链接
+  const handleLink = (newWindow = false) => {
+    if (!isClient) {
+      return;
+    }
+
+    // 打开新窗口
+    if (newWindow) {
+      handleOpenTo();
+    }
+    // 没有打开新窗口
+    else {
+      const router = proxy.$router;
 
       // 路由对象
       if (router) {
-        // 当前路由
-        const current = this.$route;
-
-        // 路由对象
-        const route = router.resolve(this.to, current);
-
-        to = route ? route.href : this.to;
+        // href
+        if ((typeof to === 'string') && to.includes('//')) {
+          window.location.href = to;
+        }
+        // replace
+        else {
+          replace ?
+            proxy.$router.replace(to, () => { }) :
+            proxy.$router.push(to, () => { });
+        }
       }
-
-      // 判断是否字符串
-      if (typeof this.to === 'string') {
-        return;
+      // 普通链接
+      else {
+        window.location.href = to;
       }
+    }
+  };
 
-      window.open(to);
-    },
-    // 跳转新链接
-    handleLink(newWindow = false) {
 
-      if (!isClient) {
-        return;
-      }
+  // 检查点击事件
+  const handleCheckClick = (event: Event, newWindow = false) => {
+    // 跳转的链接
+    if (to) {
+      // 相当于 a 链接的 target 属性
+      if (target === '_blank') {
+        handleOpenTo();
 
-      // 打开新窗口
-      if (newWindow) {
-        this.handleOpenTo();
+        return false;
       }
       // 没有打开新窗口
       else {
-        const router = this.$router;
+        event.preventDefault();
 
-        // 路由对象
-        if (router) {
-          // href
-          if ((typeof this.to === 'string') && this.to.includes('//')) {
-            window.location.href = this.to;
-          }
-          // replace
-          else {
-            this.replace ?
-              this.$router.replace(this.to, () => {}) :
-              this.$router.push(this.to, () => {});
-          }
-        }
-        // 普通链接
-        else {
-          window.location.href = this.to;
-        }
-      }
-    },
-    // 检查点击事件
-    handleCheckClick(event: Event, newWindow = false as boolean) {
-      // 跳转的链接
-      if (this.to) {
-        // 相当于 a 链接的 target 属性
-        if (this.target === '_blank') {
-          this.handleOpenTo();
-
-          return false;
-        }
-        // 没有打开新窗口
-        else {
-          event.preventDefault();
-
-          this.handleLink(newWindow);
-        }
+        handleLink(newWindow);
       }
     }
-  },
+  };
+
+  return {
+    // computed
+    linkUrl,
+
+    // methods
+    handleOpenTo,
+    handleLink,
+    handleCheckClick
+  };
 };

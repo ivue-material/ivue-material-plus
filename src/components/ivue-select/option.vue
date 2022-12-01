@@ -29,9 +29,14 @@ import {
 
 import ripple from '../../utils/directives/ripple';
 
+// type
+import { Props, Data } from './types/option';
+import { SelectContextKey } from './types/select';
+import { SelectGroupContextKey } from './types/option-group';
+
 const prefixCls = 'ivue-select-item';
 
-function isCssColor(color) {
+function isCssColor(color: string) {
     return !!color && !!color.match(/^(#|(rgb|hsl)a?\()/);
 }
 
@@ -138,20 +143,17 @@ export default defineComponent({
             default: '',
         },
     },
-    setup(props: any, { emit }) {
+    setup(props: Props, { emit }) {
         // inject
-        const select: any = inject('ivue-select');
+        const select = inject(SelectContextKey);
 
         // 有选项组
-        const selectGroup = inject('ivue-select-group', { disabled: false });
+        const selectGroup = inject(SelectGroupContextKey, {
+            disabled: false,
+        });
 
         // data
-        const data = reactive<{
-            isFocused: boolean;
-            disabled: boolean;
-            hasMouseHover: boolean;
-            visible: boolean;
-        }>({
+        const data = reactive<Data>({
             /**
              * 是否获取到焦点
              *
@@ -277,10 +279,7 @@ export default defineComponent({
             }
             // 多选激活
             else {
-                return contains(
-                    select.props.modelValue as unknown[],
-                    props.value
-                );
+                return contains(select.props.modelValue, props.value);
             }
         });
 
@@ -326,21 +325,24 @@ export default defineComponent({
         };
 
         // 两个值是否相等
-        const isEqual = (a: unknown, b: unknown) => {
+        const isEqual = (a: string | number, b: string | number) => {
             if (!isObject.value) {
                 return a === b;
             }
         };
 
         // 是否包含元素
-        const contains = (arr = [], target) => {
+        const contains = (
+            arr: (string | number)[] = [],
+            target: string | number
+        ) => {
             if (!isObject.value) {
                 return arr && arr.indexOf(target) > -1;
             }
         };
 
         // 设置背景颜色
-        const setBackgroundColor = (color: string | any[]) => {
+        const setBackgroundColor = (color: string | string[]) => {
             let style = {};
 
             // 是否是数组
@@ -360,7 +362,7 @@ export default defineComponent({
         };
 
         // 设置文字颜色
-        const setTextColor = (color: Record<string, any>) => {
+        const setTextColor = (color: string | string[]) => {
             let style = {};
 
             // 是否是数组
@@ -368,7 +370,7 @@ export default defineComponent({
                 style = {
                     color: `${color[0]}`,
                 };
-            } else if (isCssColor(color)) {
+            } else if (isCssColor(`${color}`)) {
                 style = {
                     color: `${color}`,
                 };

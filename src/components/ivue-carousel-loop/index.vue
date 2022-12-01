@@ -69,7 +69,7 @@ import IvueButton from '../ivue-button';
 import IvueIcon from '../ivue-icon';
 
 // type
-import type {Props, Data} from './carousel-loop';
+import type {Props, Data} from './types/carousel-loop';
 
 const prefixCls = 'ivue-carousel-loop';
 

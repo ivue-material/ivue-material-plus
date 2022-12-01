@@ -25,7 +25,12 @@ import {
 import { getStyle } from '../../utils/assist';
 import { transferIndex, transferIncrease } from '../../utils/transfer-queue';
 
+// createPopper
 import { createPopper } from '@popperjs/core';
+
+// type
+import type { Props, Data } from './types/drop-down';
+import { SelectContextKey } from './types/select';
 
 const prefixCls = 'ivue-select-dropdown';
 
@@ -70,9 +75,9 @@ export default defineComponent({
             default: 'bottom-start',
         },
     },
-    setup(props: any) {
+    setup(props: Props) {
         // inject
-        const select: any = inject('ivue-select');
+        const select = inject(SelectContextKey);
 
         // vm
         const { proxy } = getCurrentInstance();
@@ -84,12 +89,7 @@ export default defineComponent({
         };
 
         // data
-        const data: any = reactive<{
-            width: string;
-            tIndex: number;
-            popper: any;
-            popperStatus: boolean;
-        }>({
+        const data = reactive<Data>({
             /**
              * 是否显示菜单
              *
@@ -118,7 +118,9 @@ export default defineComponent({
 
         // computed
         const styles = computed(() => {
-            const style: any = {};
+            const style: {
+                zIndex?: number;
+            } = {};
 
             if (props.transfer) {
                 style['z-index'] = 1060 + data.tIndex;
@@ -213,7 +215,7 @@ export default defineComponent({
             styles,
             minWidth,
 
-            // methdos
+            // methods
             update,
             destroy,
         };

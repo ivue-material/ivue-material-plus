@@ -1,7 +1,10 @@
-import { nextTick } from 'vue';
+import {
+  nextTick,
+  defineComponent,
+} from 'vue';
 import { createPopper } from '@popperjs/core';
 
-export default {
+export default defineComponent({
   emits: ['on-popper-show', 'on-popper-hide', 'on-created', 'update:modelValue'],
   props: {
     reference: Object,
@@ -174,4 +177,4 @@ export default {
       this.$emit('update:modelValue', value);
     }
   },
-};
+});

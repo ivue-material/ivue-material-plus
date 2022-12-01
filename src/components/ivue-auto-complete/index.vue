@@ -67,7 +67,7 @@ import IvueOption from '../ivue-select/option.vue';
 import { oneOf } from '../../utils/assist';
 
 // type
-import type { Select, Input, Props, Data, Option } from './auto-complete';
+import type { Select, Input, Props, Data, Option } from './types/auto-complete';
 
 const prefixCls = 'ivue-auto-complete';
 
@@ -86,10 +86,10 @@ export default defineComponent({
         /**
          * 设置选择的值
          *
-         * @type {String, Number}
+         * @type {String}
          */
         modelValue: {
-            type: [String, Number],
+            type: String,
             default: '',
         },
         /**
@@ -252,7 +252,7 @@ export default defineComponent({
             /**
              * 当前输入值
              *
-             * @type {String | Number}
+             * @type {String}
              */
             currentValue: props.modelValue,
             /**
@@ -296,7 +296,7 @@ export default defineComponent({
                 return;
             }
 
-            data.currentValue = value;
+            data.currentValue = `${value}`;
 
             // blur
             input.value.blur();

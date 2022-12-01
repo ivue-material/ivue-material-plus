@@ -6,7 +6,6 @@ type Style = {
 }
 
 export default {
-    name: 'colorable',
     props: {
         /**
          * 颜色

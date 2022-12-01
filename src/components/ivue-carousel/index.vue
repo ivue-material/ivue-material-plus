@@ -95,8 +95,8 @@ import IvueButton from '../ivue-button';
 import IvueIcon from '../ivue-icon';
 
 // type
-import { CarouselItemContext, Props, Data } from './carousel';
-import { CarouselContextKey } from '../ivue-carousel-item/carousel-item';
+import { CarouselItemContext, Props, Data } from './types/carousel';
+import { CarouselContextKey } from '../ivue-carousel-item/types/carousel-item';
 
 const prefixCls = 'ivue-carousel';
 

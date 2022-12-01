@@ -13,7 +13,7 @@ import {
 import { removeClass } from '../../utils/assist';
 
 // ts
-import type { LoadingOptionsResolved } from './types';
+import type { LoadingOptionsResolved } from './types/loading';
 
 export function createLoadingComponent(options: LoadingOptionsResolved) {
     // 离开后的时间

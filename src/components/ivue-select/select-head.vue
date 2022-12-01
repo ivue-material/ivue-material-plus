@@ -93,6 +93,10 @@ import {
 
 import IvueIcon from '../ivue-icon/index.vue';
 
+// type
+import { SelectContextKey } from './types/select';
+import type { Props, Data } from './types/select-head';
+
 const prefixCls = 'ivue-select';
 
 export default defineComponent({
@@ -247,19 +251,15 @@ export default defineComponent({
             default: false,
         },
     },
-    setup(props: any, { slots, emit }) {
+    setup(props: Props, { slots, emit }) {
         const wrapper = ref<HTMLElement>();
         const input = ref<HTMLInputElement>();
 
         // inject
-        const select: any = inject('ivue-select');
+        const select = inject(SelectContextKey);
 
         // data
-        const data = reactive<{
-            inputLength: number;
-            filterQuery: any;
-            isInputChange: boolean;
-        }>({
+        const data = reactive<Data>({
             /**
              * 输入框长度
              *
@@ -285,7 +285,6 @@ export default defineComponent({
         // 外层样式
         const wrapperClasses = computed(() => {
             return {
-
                 [`${prefixCls}-head-wrapper`]: true,
                 [`${prefixCls}-head-is-prefix`]: slots.prefix || props.prefix,
                 // 开启了过滤 && 有图标
@@ -352,7 +351,7 @@ export default defineComponent({
 
         // 选择单个选项
         const selectedSingle = computed(() => {
-            const selected: any = props.values[0];
+            const selected = props.values[0];
 
             return selected ? selected.label : '';
         });
@@ -364,7 +363,9 @@ export default defineComponent({
 
         // 输入框样式
         const inputStyles = computed(() => {
-            const style: any = {};
+            const style: {
+                width?: string;
+            } = {};
 
             if (props.multiple) {
                 if (showPlaceholder.value) {
@@ -427,7 +428,7 @@ export default defineComponent({
         };
 
         // 输入框删除
-        const handleInputDelete = (event) => {
+        const handleInputDelete = (event: Event) => {
             const targetValue = (event.target as HTMLInputElement).value;
 
             if (
@@ -452,7 +453,7 @@ export default defineComponent({
         // 监听最终渲染的数据
         watch(
             () => props.values,
-            ([value]: any) => {
+            ([value]) => {
                 // 开启了过滤
                 if (!props.filterable) {
                     return;
@@ -472,12 +473,12 @@ export default defineComponent({
 
                 if (
                     typeof value === 'undefined' ||
-                    value === '' ||
+                    (typeof value === 'string' && value === '') ||
                     value === null
                 ) {
                     data.filterQuery = '';
                 } else {
-                    data.filterQuery = value.label;
+                    data.filterQuery = `${value.label}`;
                 }
 
                 nextTick(() => {

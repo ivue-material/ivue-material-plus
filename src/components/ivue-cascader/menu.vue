@@ -36,8 +36,8 @@ import {
 import MenuItem from './menu-item.vue';
 
 // type
-import { Options, CascaderContextKey, Result } from './cascader';
-import { Props, Data, _ComponentInternalInstance } from './menu';
+import { Options, CascaderContextKey, Result } from './types/cascader';
+import type { Props, Data, _ComponentInternalInstance } from './types/menu';
 
 const prefixCls = 'ivue-cascader-menu';
 

@@ -15,8 +15,8 @@ const prefixCls = 'ivue-menu-item--group';
 import { findComponentsUpward } from '../../utils/helpers';
 
 // ts
-import { SubmenuContextKey } from './submenu';
-import { MenuContextKey } from './menu';
+import { SubmenuContextKey } from './types/submenu';
+import { MenuContextKey } from './types/menu';
 
 export default {
     name: 'prefixCls',

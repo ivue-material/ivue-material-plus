@@ -104,7 +104,7 @@ import IvueIcon from '../ivue-icon';
 import IvueButton from '../ivue-button';
 
 // ts
-import { PopoverContextKey } from './popover';
+import { PopoverContextKey, Props, Data } from './types/popover';
 
 const prefixCls = 'ivue-popover';
 
@@ -234,6 +234,7 @@ export default defineComponent({
          * @type {String}
          */
         placement: {
+            type: String,
             validator(value: string) {
                 return oneOf(value, [
                     'top',
@@ -284,24 +285,17 @@ export default defineComponent({
             default: 'Confirm',
         },
     },
-    setup(props: any, { emit, slots }) {
+    setup(props: Props, { emit, slots }) {
         // dom
-        const popper = ref(null);
-        const reference = ref(null);
+        const popper = ref<HTMLDivElement>(null);
+        const reference = ref<HTMLDivElement>(null);
 
         // data
 
         // 显示隐藏
-        const visible = ref(props.modelValue);
+        const visible = ref<boolean>(props.modelValue);
 
-        const data = reactive<{
-            timeout: ReturnType<typeof setTimeout> | null;
-            zIndex: number;
-            disableCloseUnderTransfer: boolean;
-            isInput: boolean;
-            currentTargetFocus: boolean;
-            closeDelay: number;
-        }>({
+        const data = reactive<Data>({
             /**
              * 延迟
              *

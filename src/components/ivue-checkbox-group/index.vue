@@ -8,7 +8,7 @@
 import { computed, defineComponent, reactive, provide } from 'vue';
 
 // type
-import { CheckboxContextKey, Props, Data } from './checkbox-group';
+import { CheckboxContextKey, Props, Data } from './types/checkbox-group';
 
 const prefixCls = 'ivue-checkbox-group';
 

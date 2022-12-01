@@ -92,7 +92,7 @@ import {
 } from 'vue';
 import { useEventListener } from '@vueuse/core';
 
-import ScrollbarMixins from './mixins-scrollbar';
+import { scrollbarMixins } from './mixins-scrollbar';
 
 import {
     transferIndex as modalIndex,
@@ -109,7 +109,7 @@ import IvueButton from '../ivue-button';
 import IvueSpin from '../ivue-spin';
 
 // ts
-import { _ComponentInternalInstance, Props, Data } from './types';
+import type { _ComponentInternalInstance, Props, Data } from './types/modal';
 
 const prefixCls = 'ivue-modal';
 
@@ -125,7 +125,6 @@ const dragData = {
 
 export default defineComponent({
     name: prefixCls,
-    mixins: [ScrollbarMixins],
     emits: [
         'update:modelValue',
         'on-cancel',
@@ -407,11 +406,23 @@ export default defineComponent({
             type: Boolean,
             default: false,
         },
+        /**
+         * 是否禁止对页面滚动条的修改
+         *
+         * @type {Boolean}
+         */
+        lockScroll: {
+            type: Boolean,
+            default: true,
+        },
     },
     setup(props: Props, { emit, slots }) {
         // proxy
         const { proxy, uid } =
             getCurrentInstance() as _ComponentInternalInstance;
+
+        // 滚动条
+        const { removeScrollEffect, addScrollEffect } = scrollbarMixins(props);
 
         // dom
         const headerRef = ref<HTMLElement | undefined>();
@@ -644,7 +655,7 @@ export default defineComponent({
             setLoading(false);
 
             // 删除滚动条修改
-            proxy.removeScrollEffect();
+            removeScrollEffect();
 
             // 隐藏
             emit('on-hidden');
@@ -863,7 +874,7 @@ export default defineComponent({
 
                     // 页面是否可以滚动
                     if (!props.scrollable) {
-                        proxy.addScrollEffect();
+                        addScrollEffect();
                     }
                 }
 
@@ -897,11 +908,11 @@ export default defineComponent({
             (value) => {
                 // 页面是否可以滚动
                 if (!value) {
-                    proxy.addScrollEffect();
+                    addScrollEffect();
                 }
                 // 删除滚动条修改
                 else {
-                    proxy.removeScrollEffect();
+                    removeScrollEffect();
                 }
             }
         );
@@ -935,7 +946,7 @@ export default defineComponent({
             removeModal();
 
             // 删除滚动条修改
-            proxy.removeScrollEffect();
+            removeScrollEffect();
         });
 
         return {

@@ -126,7 +126,7 @@ import {
     Options,
     ResultChange,
     Result,
-} from './cascader';
+} from './types/cascader';
 
 const prefixCls = 'ivue-cascader';
 

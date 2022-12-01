@@ -29,7 +29,10 @@ import {
     onMounted,
 } from 'vue';
 import { isCssColor, setTextColor } from '../../utils/helpers';
-import { RadioContextKey } from '../ivue-radio-group/radio-group';
+
+// type
+import type { Props, Data } from './types/radio';
+import { RadioContextKey } from '../ivue-radio-group/types/radio-group';
 
 const prefixCls = 'ivue-radio';
 
@@ -107,17 +110,15 @@ export default defineComponent({
             default: false,
         },
     },
-    setup(props: any, { emit }) {
+    setup(props: Props, { emit }) {
         // 组合
         const IvueRadioGroup = inject(RadioContextKey, {
             default: null,
         });
 
         // data
-        const data: any = reactive<{
-            focusInner: boolean;
-            groupName: string;
-        }>({
+
+        const data: any = reactive<Data>({
             /**
              * input 焦点
              *
@@ -175,7 +176,7 @@ export default defineComponent({
 
         // 圆点 class
         const innerClasses = computed(() => {
-            let obj = {
+            const obj = {
                 [`${prefixCls}-focus`]: data.focusInner,
             };
 
@@ -191,7 +192,7 @@ export default defineComponent({
 
         // 圆点 style
         const innerStyles = computed(() => {
-            let obj: any = {};
+            const obj: any = {};
 
             // 文字样式
             const isTextColor: any = setTextColor(props.color);
@@ -212,7 +213,7 @@ export default defineComponent({
         const currentValue = computed(() => {
             // 有组合
             if (IvueRadioGroup.name) {
-                return IvueRadioGroup.data.currentValue === props.label;
+                return IvueRadioGroup.currentValue.value === props.label;
             }
             // 没有组合
             else {

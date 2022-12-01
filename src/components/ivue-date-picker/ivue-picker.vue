@@ -4,7 +4,7 @@ import { defineComponent, Transition, h, getCurrentInstance } from 'vue';
 import Colorable from '../../utils/mixins/colorable';
 
 // type
-import { Props, _ComponentInternalInstance } from './ivue-picker';
+import type { Props, _ComponentInternalInstance } from './types/ivue-picker';
 
 const prefixCls = 'ivue-picker';
 

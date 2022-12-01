@@ -10,7 +10,7 @@ import { oneOf } from '../../utils/assist';
 import { findComponentsUpward } from '../../utils/helpers';
 
 // ts
-import { MenuContextKey, Props, Data } from './menu';
+import { MenuContextKey, Props, Data } from './types/menu';
 
 const prefixCls = 'ivue-menu';
 

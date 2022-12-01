@@ -27,7 +27,7 @@ import { scrollTop } from '../../utils/assist';
 import IvueIcon from '../ivue-icon';
 
 // type
-import type { Props } from './back-top';
+import type { Props } from './types/back-top';
 
 const prefixCls = 'ivue-back-top';
 

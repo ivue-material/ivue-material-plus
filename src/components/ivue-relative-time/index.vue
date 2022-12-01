@@ -1,21 +1,17 @@
 <template>
-    <span :class="prefixCls" @click="handleHash">{{ date }}</span>
+    <span :class="prefixCls">{{ date }}</span>
 </template>
 
 <script lang="ts">
-import {
-    defineComponent,
-    onBeforeUnmount,
-    onMounted,
-    Ref,
-    ref,
-    watch,
-} from 'vue';
+import { defineComponent, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 
 // utils
 import { oneOf } from '../../utils/assist';
 
 import { getRelativeTime, getDate } from './time';
+
+// type
+import { Props } from './types/relative-time';
 
 const prefixCls = 'ivue-relative-time';
 
@@ -89,12 +85,11 @@ export default defineComponent({
             type: Function,
         },
     },
-    setup(props: any) {
+    setup(props: Props) {
         // 时间
-        const date: Ref<string> = ref('');
-
+        const date = ref<string>('');
         // 计时器
-        const timer = ref(null);
+        const timer = ref<ReturnType<typeof setInterval> | null>(null);
 
         // methods
 
@@ -109,7 +104,7 @@ export default defineComponent({
             // 时间搓
             if (_typeof === 'number') {
                 const timestamp =
-                    props.time.toString() > 10 ? props.time : props.time * 1000;
+                    Number(props.time) > 10 ? props.time : props.time * 1000;
 
                 time = new Date(timestamp).getTime();
             }

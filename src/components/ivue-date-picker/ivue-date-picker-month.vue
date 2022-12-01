@@ -18,7 +18,7 @@ import CreateNativeLocaleFormatter from '../../utils/create-native-locale-format
 import Pad from '../../utils/pad';
 
 // type
-import type { Props } from './ivue-date-picker-month';
+import type { Props } from './types/ivue-date-picker-month';
 
 const prefixCls = 'ivue-date-picker-month';
 

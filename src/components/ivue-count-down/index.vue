@@ -14,7 +14,7 @@ import {
     watch,
 } from 'vue';
 
-import { Props, Data } from './count-down';
+import { Props, Data } from './types/count-down';
 
 const prefixCls = 'ivue-count-down';
 

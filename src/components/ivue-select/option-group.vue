@@ -23,18 +23,10 @@ import {
 } from 'vue';
 
 // type
-import type { Emitter, EventType } from 'mitt';
+import { SelectContextKey } from './types/select';
+import { Props, SelectGroupContextKey } from './types/option-group';
 
 const prefixCls = 'ivue-select-group';
-
-type Select = {
-    props: {
-        filterable: boolean;
-        filterableHiddenGroup: boolean;
-    };
-    options: Array<any>;
-    selectEmitter: Emitter<Record<EventType, unknown>>;
-};
 
 export default defineComponent({
     name: 'ivue-option-group',
@@ -58,9 +50,9 @@ export default defineComponent({
             default: false,
         },
     },
-    setup(props) {
+    setup(props: Props) {
         // inject
-        const select: Select = inject('ivue-select');
+        const select = inject(SelectContextKey);
 
         // dom
         const list = ref<HTMLElement>(null);
@@ -100,7 +92,7 @@ export default defineComponent({
 
         // provide
         provide(
-            'ivue-select-group',
+            SelectGroupContextKey,
             reactive({
                 ...toRefs(props),
             })

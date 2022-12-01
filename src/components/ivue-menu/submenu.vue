@@ -55,8 +55,8 @@ import DropDown from './drop-down.vue';
 import IvueIcon from '../ivue-icon/index.vue';
 
 // ts
-import { MenuContextKey, SubmenuProxy, SubmenuList } from './menu';
-import { SubmenuContextKey } from './submenu';
+import { MenuContextKey, SubmenuProxy } from './types/menu';
+import { SubmenuContextKey, Data, Props } from './types/submenu';
 
 const prefixCls = 'ivue-menu-submenu';
 
@@ -82,7 +82,7 @@ export default {
             default: false,
         },
     },
-    setup(props: any) {
+    setup(props: Props) {
         // vm
         const { proxy, uid } =
             getCurrentInstance() as ComponentInternalInstance;
@@ -101,13 +101,7 @@ export default {
         });
 
         // data
-        const data = reactive<{
-            opened: boolean;
-            dropWidth: number;
-            timeout: ReturnType<typeof setTimeout> | null;
-            childSubmenuList: SubmenuList[];
-            active: boolean | number | string;
-        }>({
+        const data = reactive<Data>({
             /**
              * 展开
              *
@@ -414,7 +408,7 @@ export default {
     components: {
         CollapseTransition,
         DropDown,
-        IvueIcon
+        IvueIcon,
     },
 };
 </script>

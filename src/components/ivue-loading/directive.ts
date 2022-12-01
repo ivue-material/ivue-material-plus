@@ -4,7 +4,7 @@ import Loading from './loading';
 
 // ts
 import { LoadingInstance } from './createLoadingComponent';
-import { LoadingOptions } from './types';
+import { LoadingOptions } from './types/loading';
 import type { Directive, DirectiveBinding, UnwrapRef } from 'vue';
 
 const INSTANCE_KEY = Symbol('IvueLoading');

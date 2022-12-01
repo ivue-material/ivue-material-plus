@@ -29,10 +29,13 @@
 </template>
 
 <script lang='ts'>
-import { defineComponent, computed, reactive, onMounted, watch } from 'vue';
+import { defineComponent, computed, ref, onMounted, watch } from 'vue';
 import { oneOf } from '../../utils/assist';
 
 import IvueIcon from '../ivue-icon/index.vue';
+
+// type
+import type { Props } from './types/progress';
 
 const prefixCls = 'ivue-progress';
 
@@ -45,6 +48,7 @@ export default defineComponent({
          * @type {String}
          */
         status: {
+            type: String,
             validator(value: string) {
                 return oneOf(value, [
                     'normal',
@@ -121,7 +125,7 @@ export default defineComponent({
         /**
          * 进度条阴影颜色
          *
-         * @type {String | Array}
+         * @type {String}
          */
         boxShadowColor: {
             type: String,
@@ -153,16 +157,9 @@ export default defineComponent({
             default: 3,
         },
     },
-    setup(props: any, { emit }) {
+    setup(props: Props, { emit }) {
         // data
-        const data = reactive({
-            /**
-             * 当前进度条状态
-             *
-             * @type {String}
-             */
-            currentStatus: props.status,
-        });
+        const currentStatus = ref<string>(props.status);
 
         // computed
 
@@ -170,7 +167,7 @@ export default defineComponent({
         const wrapClasses = computed(() => {
             return [
                 `${prefixCls}`,
-                `${prefixCls}-${data.currentStatus}`,
+                `${prefixCls}-${currentStatus.value}`,
                 {
                     [`${prefixCls}-show-info`]:
                         !props.hideInfo && !props.textInside,
@@ -234,7 +231,14 @@ export default defineComponent({
 
         //背景样式
         const bgStyles = computed(() => {
-            let style: any = {};
+            let style: {
+                height?: string;
+                width?: string;
+                boxShadow?: string;
+                animationDuration?: string;
+                backgroundColor?: string;
+                backgroundImage?: string;
+            } = {};
 
             // 垂直方向
             if (props.vertical) {
@@ -253,11 +257,9 @@ export default defineComponent({
             // 是否有进度条颜色
             if (props.strokeColor) {
                 if (typeof props.strokeColor === 'string') {
-                    style['background-color'] = props.strokeColor;
+                    style.backgroundColor = props.strokeColor;
                 } else {
-                    style[
-                        'background-image'
-                    ] = `linear-gradient(to right, ${props.strokeColor[0]} 0%, ${props.strokeColor[1]} 100%)`;
+                    style.backgroundImage = `linear-gradient(to right, ${props.strokeColor[0]} 0%, ${props.strokeColor[1]} 100%)`;
                 }
             }
 
@@ -271,17 +273,17 @@ export default defineComponent({
             let type = '';
 
             // 警告
-            if (data.currentStatus === 'warning') {
+            if (currentStatus.value === 'warning') {
                 type = 'warning';
             }
 
             // 错误
-            if (data.currentStatus === 'wrong') {
+            if (currentStatus.value === 'wrong') {
                 type = 'cancel';
             }
 
             // 成功
-            if (data.currentStatus === 'success') {
+            if (currentStatus.value === 'success') {
                 type = 'check_circle';
             }
 
@@ -291,9 +293,9 @@ export default defineComponent({
         // 是否有状态
         const isStatus = computed(() => {
             return (
-                data.currentStatus === 'wrong' ||
-                data.currentStatus === 'success' ||
-                data.currentStatus === 'warning'
+                currentStatus.value === 'wrong' ||
+                currentStatus.value === 'success' ||
+                currentStatus.value === 'warning'
             );
         });
 
@@ -303,14 +305,14 @@ export default defineComponent({
         const handleStatus = (init: boolean) => {
             // 初始化
             if (init) {
-                data.currentStatus = 'normal';
+                currentStatus.value = 'normal';
 
                 emit('on-status-change', 'normal');
             }
             // 成功状态
             else {
-                if (parseInt(props.percent, 10) == 100) {
-                    data.currentStatus = 'success';
+                if (parseInt(`${props.percent}`, 10) == 100) {
+                    currentStatus.value = 'success';
 
                     emit('on-status-change', 'success');
                 }
@@ -340,7 +342,7 @@ export default defineComponent({
         watch(
             () => props.status,
             (status) => {
-                data.currentStatus = status;
+                currentStatus.value = status;
             }
         );
 
@@ -348,7 +350,7 @@ export default defineComponent({
             prefixCls,
 
             // data
-            data,
+            currentStatus,
 
             // computed
             wrapClasses,

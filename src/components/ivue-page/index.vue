@@ -134,6 +134,9 @@ import { oneOf } from '../../utils/assist';
 import IvueIcon from '../ivue-icon/index.vue';
 import Options from './options.vue';
 
+// type
+import type { Props, Data } from './types/page';
+
 const prefixCls = 'ivue-page';
 
 export default defineComponent({
@@ -242,6 +245,7 @@ export default defineComponent({
          * @type {String}
          */
         placement: {
+            type: String,
             validator(value: string) {
                 return oneOf(value, ['top', 'bottom']);
             },
@@ -321,14 +325,9 @@ export default defineComponent({
             default: false,
         },
     },
-    setup(props: any, { slots, emit }) {
+    setup(props: Props, { slots, emit }) {
         // data
-        const data = reactive<{
-            currentPage: number;
-            currentPageSize: number;
-            showPrevMore: boolean;
-            showNextMore: boolean;
-        }>({
+        const data = reactive<Data>({
             // 当前页数
             currentPage: props.modelValue,
             // 当前每页条数

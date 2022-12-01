@@ -137,10 +137,17 @@ import { ClickOutside, TransferDom } from '../../utils/directives';
 
 import { oneOf } from '../../utils/assist';
 
-import { PopoverContextKey } from '../ivue-popover/popover';
-
 // type
-import type { Emitter, EventType } from 'mitt';
+import { PopoverContextKey } from '../ivue-popover/types/popover';
+import {
+    Props,
+    Data,
+    DropDownInstance,
+    SelectHeadInstance,
+    SelectContextKey,
+    OptionInstance,
+} from './types/select';
+import type { OptionData } from './types/option';
 
 const prefixCls = 'ivue-select';
 
@@ -171,7 +178,7 @@ export default defineComponent({
         /**
          * 远程搜索时，显示默认 label，详见示例
          *
-         * @type {}
+         * @type {String, Number, Array}
          */
         defaultLabel: {
             type: [String, Number, Array],
@@ -435,6 +442,7 @@ export default defineComponent({
          * @type {String}
          */
         placement: {
+            type: String,
             validator(value: string) {
                 return oneOf(value, [
                     'top',
@@ -474,41 +482,26 @@ export default defineComponent({
             default: '',
         },
     },
-    setup(props: any, { emit }) {
+    setup(props: Props, { emit }) {
+        // vm
+        const { proxy } = getCurrentInstance();
+
         // 事件发射器/发布订阅
         const selectEmitter = mitt();
 
         // dom
-        const selectWrapper = ref<HTMLElement | null>(null);
+        const selectWrapper = ref<HTMLDivElement>(null);
         const reference = ref<HTMLDivElement>(null);
-        const dropdown = ref(null);
-        const selectHead = ref(null);
+        const dropdown = ref<DropDownInstance>();
+        const selectHead = ref<SelectHeadInstance>();
 
         // ivue-popover
         const popover = inject(PopoverContextKey, {
             default: null,
         });
 
-        // vm
-        const { proxy } = getCurrentInstance();
-
         // data
-        const data: any = reactive<{
-            visibleMenu: boolean;
-            isFocused: boolean;
-            values: Array<any>;
-            options: Array<any>;
-            cachedOptions: Array<any>;
-            focusIndex: number;
-            filterQueryChange: boolean;
-            filterQuery: string;
-            hasMouseHover: boolean;
-            lastSearchQuery: string;
-            selectEmitter: Emitter<Record<EventType, unknown>>;
-            hasExpectedValue: boolean;
-            _filterQuery: string;
-            disableMenu: boolean;
-        }>({
+        const data = reactive<Data>({
             /**
              * 是否显示菜单
              *
@@ -533,12 +526,6 @@ export default defineComponent({
              * @type {Array}
              */
             options: [],
-            /**
-             * 缓存子选项dom
-             *
-             * @type {Array}
-             */
-            cachedOptions: [],
             /**
              * 焦点项
              *
@@ -653,7 +640,6 @@ export default defineComponent({
         // 显示没有数据时的文本
         const showNotFindText = computed(() => {
             // 是否禁用选择组件 | 是否支持搜索
-
             return (
                 selectOptions.value &&
                 selectOptions.value.length === 0 &&
@@ -682,6 +668,7 @@ export default defineComponent({
             const selectedValues = data.values
                 .filter(Boolean)
                 .map(({ value }) => value);
+
 
             // 判断是否有自动输入
             if (props.autoComplete) {
@@ -853,7 +840,7 @@ export default defineComponent({
         // methods
 
         // 点击外部
-        const handleClickOutside = (event) => {
+        const handleClickOutside = (event: Event) => {
             // 判断是否显示了菜单
             if (data.visibleMenu) {
                 if (event.type === 'mousedown') {
@@ -900,9 +887,12 @@ export default defineComponent({
         };
 
         // 提取选项数据
-        const handleOption = (option, values, isFocused: boolean) => {
+        const handleOption = (
+            option: OptionInstance,
+            values: string[],
+            isFocused: boolean
+        ) => {
             // 如果选项节点没有子组件就直接返回选项节点
-
             // 是否获取到焦点
             option.data.isFocused = isFocused;
 
@@ -930,7 +920,7 @@ export default defineComponent({
             // 菜单收起
             if (!data.visibleMenu) {
                 // 取消焦点
-                if (data.filterable) {
+                if (props.filterable) {
                     const input = proxy.$el.querySelector('input[type="text"]');
 
                     input.blur();
@@ -947,7 +937,7 @@ export default defineComponent({
         };
 
         // 选项菜单点击
-        const handleOptionClick = (option, status?: string) => {
+        const handleOptionClick = (option: OptionData, status?: string) => {
             // 在Popover嵌套中
             if (popover.data) {
                 data.disableMenu = true;
@@ -1058,7 +1048,7 @@ export default defineComponent({
         };
 
         // 设置选项焦点位置
-        const setFocusIndex = (option) => {
+        const setFocusIndex = (option: OptionData) => {
             return selectOptions.value.findIndex((item) => {
                 if (typeof option === 'object') {
                     // 判断是否有key 使用key匹配选项
@@ -1139,7 +1129,7 @@ export default defineComponent({
         };
 
         // 获取选项的值
-        const getOptionData = (value) => {
+        const getOptionData = (value: string | number) => {
             const option = data.options.find((option) => {
                 return option.value === value || option.getLabel === value;
             });
@@ -1152,7 +1142,7 @@ export default defineComponent({
             if (!props.autoComplete) {
                 // 有展开菜单 -> 获取焦点项
                 if (data.visibleMenu) {
-                    data.focusIndex = setFocusIndex(option);
+                    data.focusIndex = setFocusIndex(option as OptionData);
                 }
             }
 
@@ -1189,7 +1179,7 @@ export default defineComponent({
         };
 
         // 过滤选项组件
-        const validateOption = (options) => {
+        const validateOption = (options: OptionInstance) => {
             // value
             const value = options.value;
             // label
@@ -1257,7 +1247,7 @@ export default defineComponent({
         };
 
         // 选项销毁
-        const handleOptionDestroy = (index) => {
+        const handleOptionDestroy = (index: number) => {
             if (index > -1) {
                 data.options.splice(index, 1);
             }
@@ -1382,7 +1372,11 @@ export default defineComponent({
         };
 
         // 检查值是否相等
-        const checkValuesNotEqual = (value, publicValue, values) => {
+        const checkValuesNotEqual = (
+            value: OptionData,
+            publicValue: string[],
+            values: OptionData[]
+        ) => {
             const strValue = JSON.stringify(value);
             const strPublic = JSON.stringify(publicValue);
             const strValues = JSON.stringify(
@@ -1409,7 +1403,7 @@ export default defineComponent({
         };
 
         // 创建新列表
-        const handleCreateItem = (event) => {
+        const handleCreateItem = (event: Event) => {
             if (
                 props.allowCreate &&
                 data.filterQuery !== '' &&
@@ -1444,7 +1438,7 @@ export default defineComponent({
         };
 
         // 设置过滤输入框输入
-        const setQuery = (query) => {
+        const setQuery = (query: string) => {
             // 过滤输入框输入
             data._filterQuery = query;
 
@@ -1479,7 +1473,7 @@ export default defineComponent({
         // 获取焦点
         const focus = () => {
             if (props.filterable) {
-                selectHead.value.$refs.input.focus();
+                (selectHead.value.$refs.input as HTMLElement).focus();
 
                 // 展开下拉框
                 handleToggleMenu(null, true);
@@ -1535,7 +1529,7 @@ export default defineComponent({
 
         // provide
         provide(
-            'ivue-select',
+            SelectContextKey,
             reactive({
                 props,
                 selectWrapper,

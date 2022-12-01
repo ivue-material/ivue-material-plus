@@ -45,16 +45,13 @@
 
 <script lang='ts'>
 import { defineComponent, computed, reactive, onMounted, PropType } from 'vue';
-import { EVENT_CODE } from '../../utils/helpers';
 import { useEventListener } from '@vueuse/core';
 
-type Position = 'top-right' | 'top-left' | 'bottom-right' | 'bottom-left';
-type Type = 'normal' | 'info' | 'warning' | 'success' | 'error';
-
+import { EVENT_CODE } from '../../utils/helpers';
 import RenderCell from '../../utils/render';
 
 // types
-import type { Props, Data } from './types';
+import type { Props, Data, Position, Type } from './types/notice';
 
 const prefixCls = 'ivue-notice';
 
@@ -194,7 +191,7 @@ export default defineComponent({
     },
     setup(props: Props) {
         // data
-        const data: any = reactive<Data>({
+        const data = reactive<Data>({
             /**
              * 是否有描述
              *

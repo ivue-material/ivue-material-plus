@@ -15,8 +15,8 @@ import {
 } from 'vue';
 
 // type
-import { Props, Data, CascaderContextKey } from './collapse';
-import type { PanelInstance } from './panel';
+import { Props, Data, CascaderContextKey } from './types/collapse';
+import type { PanelInstance } from './types/panel';
 
 const prefixCls = 'ivue-collapse';
 

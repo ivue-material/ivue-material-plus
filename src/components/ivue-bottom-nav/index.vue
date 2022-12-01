@@ -13,8 +13,8 @@ import Colorable from '../../utils/mixins/colorable';
 import { oneOf } from '../../utils/assist';
 
 // type
-import { BottomNavContextKey } from '../ivue-bottom-nav-item/bottom-nav-item';
-import type { BottomNavItemContext, Props } from './bottom-nav';
+import { BottomNavContextKey } from '../ivue-bottom-nav-item/types/bottom-nav-item';
+import type { BottomNavItemContext, Props } from './types/bottom-nav';
 
 const prefixCls = 'ivue-bottom-nav';
 

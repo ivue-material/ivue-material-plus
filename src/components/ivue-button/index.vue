@@ -16,7 +16,7 @@ import ripple from '../../utils/directives/ripple';
 import { oneOf } from '../../utils/assist';
 
 // type
-import type { Props, Status, Data, ButtonAttrs } from './button';
+import type { Props, Status, Data, ButtonAttrs } from './types/button';
 
 const prefixCls = 'ivue-button';
 

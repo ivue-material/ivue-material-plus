@@ -66,7 +66,7 @@ import { getStyle } from '../../utils/assist';
 import IvueTooltip from '../ivue-tooltip';
 
 // type
-import type { Props, Data } from './ellipsis';
+import type { Props, Data } from './types/ellipsis';
 
 const prefixCls = 'ivue-ellipsis';
 

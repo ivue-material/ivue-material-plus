@@ -3,7 +3,7 @@
         <!-- 显示分页 -->
         <div :class="`${prefixCls}--sizer`" v-if="showSizer">
             <ivue-select
-                v-model="data.currentPageSize"
+                v-model="currentPageSize"
                 :placement="placement"
                 :transfer="transfer"
                 :disabled="disabled"
@@ -36,9 +36,12 @@
 </template>
 
 <script lang='ts'>
-import { defineComponent, reactive, watch, getCurrentInstance } from 'vue';
+import { defineComponent, ref, watch, getCurrentInstance } from 'vue';
 import { IvueSelect, IvueOption } from '../ivue-select/index';
 import { isValueNumber } from '../../utils/helpers';
+
+// type
+import type { Props } from './types/options';
 
 const prefixCls = 'ivue-page-options';
 
@@ -148,14 +151,9 @@ export default defineComponent({
             type: Number,
         },
     },
-    setup(props: any, { emit }) {
-        // data
-        const data = reactive<{
-            currentPageSize: number;
-        }>({
-            // 当前每页条数
-            currentPageSize: props.pageSize,
-        });
+    setup(props: Props, { emit }) {
+        // 当前每页条数
+        const currentPageSize = ref<number>(props.pageSize);
 
         // methods
 
@@ -208,7 +206,7 @@ export default defineComponent({
         watch(
             () => props.pageSize,
             (value) => {
-                data.currentPageSize = value;
+                currentPageSize.value = value;
             }
         );
 
@@ -216,7 +214,7 @@ export default defineComponent({
             prefixCls,
 
             // data
-            data,
+            currentPageSize,
 
             // methods
             handleChangeSize,

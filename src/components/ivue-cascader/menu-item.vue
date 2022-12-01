@@ -14,7 +14,7 @@ import IvueIcon from '../ivue-icon/index.vue';
 import IvueLoading from '../ivue-loading/directive';
 
 // type
-import { Props } from './menu-item';
+import type { Props } from './types/menu-item';
 
 const prefixCls = 'ivue-cascader-menu--item';
 

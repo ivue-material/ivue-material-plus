@@ -20,7 +20,7 @@ import Pad from '../../utils/pad';
 import isDateAllowed from '../../utils/is-date-allowed';
 
 // type
-import type { Props } from './ivue-date-picker-date';
+import type { Props } from './types/ivue-date-picker-date';
 
 const prefixCls = 'ivue-date-picker-date';
 

@@ -25,21 +25,21 @@ import {
     inject,
     onBeforeMount,
     onMounted,
-    reactive,
+    ref,
 } from 'vue';
-import mixinsLink from '../../utils/mixins/mixins-link';
+import { mixinsLink } from '../../utils/mixins/mixins-link';
 import { findComponentUpward, findComponentsUpward } from '../../utils/helpers';
+import { oneOf } from '../../utils/assist';
 
 // ts
-import { MenuContextKey } from './menu';
-import { SubmenuContextKey } from './submenu';
-import { _ComponentInternalInstance, Props } from './menu-item';
+import { MenuContextKey } from './types/menu';
+import { SubmenuContextKey } from './types/submenu';
+import { _ComponentInternalInstance, Props } from './types/menu-item';
 
 const prefixCls = 'ivue-menu-item';
 
 export default {
     name: prefixCls,
-    mixins: [mixinsLink],
     props: {
         /**
          * 菜单项的唯一标识，必填
@@ -59,6 +59,35 @@ export default {
             type: Boolean,
             default: false,
         },
+        /**
+         * 跳转的链接，支持 vue-router 对象
+         *
+         * @type {Object | String}
+         */
+        to: {
+            type: [Object, String],
+        },
+        /**
+         * 相当于 a 链接的 target 属性
+         *
+         * @type {String}
+         */
+        target: {
+            type: String,
+            validator(value: string) {
+                return oneOf(value, ['_blank', '_self', '_parent', '_top']);
+            },
+            default: '_self',
+        },
+        /**
+         * 路由跳转时，开启 replace 将不会向 history 添加新记录
+         *
+         * @type {Boolean}
+         */
+        replace: {
+            type: Boolean,
+            default: false,
+        },
     },
     setup(props: Props) {
         // vm
@@ -74,17 +103,12 @@ export default {
             default: null,
         });
 
-        // data
-        const data = reactive<{
-            active: boolean;
-        }>({
-            /**
-             * 激活
-             *
-             * @type {Boolean}
-             */
-            active: false,
-        });
+        // route link
+        const { handleCheckClick, handleOpenTo, handleLink, linkUrl } =
+            mixinsLink(proxy, props);
+
+        // 激活
+        const active = ref<boolean>(false);
 
         // computed
 
@@ -93,8 +117,8 @@ export default {
             return [
                 `${prefixCls}`,
                 {
-                    [`${prefixCls}--active`]: data.active,
-                    [`${prefixCls}--selected`]: data.active,
+                    [`${prefixCls}--active`]: active.value,
+                    [`${prefixCls}--selected`]: active.value,
                     [`${prefixCls}--disabled`]: props.disabled,
                 },
             ];
@@ -127,7 +151,7 @@ export default {
             // 打开新窗口
             if (newWindow || props.target === '_blank') {
                 // 如果是 newWindow，直接新开窗口就行，无需发送状态
-                proxy.handleCheckClick(event, newWindow);
+                handleCheckClick(event, newWindow);
 
                 // 发送选择事件
                 Menu.handleEmitSelectEvent(props.name);
@@ -146,7 +170,7 @@ export default {
                 }
 
                 // 如果是 newWindow，直接新开窗口就行，无需发送状态
-                proxy.handleCheckClick(event, newWindow);
+                handleCheckClick(event, newWindow);
             }
         };
 
@@ -154,7 +178,7 @@ export default {
         const activeName = (name: string | number) => {
             // 激活
             if (props.name === name) {
-                data.active = true;
+                active.value = true;
 
                 if (Submenu.activeName) {
                     Submenu.activeName(name);
@@ -162,7 +186,7 @@ export default {
             }
             // 取消激活
             else {
-                data.active = false;
+                active.value = false;
             }
         };
 
@@ -202,14 +226,18 @@ export default {
 
         return {
             // data
-            data,
+            active,
 
             // computed
             wrapperClasses,
             wrapperStyles,
+            linkUrl,
 
             // methods
             handleActive,
+            handleCheckClick,
+            handleOpenTo,
+            handleLink,
         };
     },
 };

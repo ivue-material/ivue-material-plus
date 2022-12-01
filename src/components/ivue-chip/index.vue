@@ -22,7 +22,7 @@ import { isString } from '@vue/shared';
 import { isCssColor } from '../../utils/helpers';
 
 // type
-import { Props, ColorStyle, BgStyle, Styles } from './chip';
+import { Props, ColorStyle, BgStyle, Styles } from './types/chip';
 
 const prefixCls = 'ivue-chip';
 

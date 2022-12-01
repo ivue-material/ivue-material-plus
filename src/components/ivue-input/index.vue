@@ -150,7 +150,7 @@ import { oneOf } from '../../utils/assist';
 import IvueIcon from '../ivue-icon/index.vue';
 
 // type
-import type { Props, TextareaStyles } from './input';
+import type { Props, TextareaStyles } from './types/input';
 
 function isCssColor(color) {
     return !!color && !!color.match(/^(#|(rgb|hsl)a?\()/);

@@ -27,7 +27,7 @@ import IvueButton from '../../components/ivue-button/index.vue';
 import Colorable from '../../utils/mixins/colorable';
 
 // type
-import { BottomNavContextKey, Props, Data } from './bottom-nav-item';
+import { BottomNavContextKey, Props, Data } from './types/bottom-nav-item';
 
 const prefixCls = 'ivue-bottom-nav-item';
 

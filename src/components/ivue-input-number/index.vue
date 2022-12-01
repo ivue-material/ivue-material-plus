@@ -79,7 +79,7 @@ import IvueIcon from '../ivue-icon';
 import IvueButton from '../ivue-button';
 
 // type
-import type { Props, Data } from './input-number';
+import type { Props, Data } from './types/input-number';
 
 const prefixCls = 'ivue-input-number';
 

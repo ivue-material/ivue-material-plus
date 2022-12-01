@@ -17,7 +17,7 @@ import CreateNativeLocaleFormatter from '../../utils/create-native-locale-format
 import isDateAllowed from '../../utils/is-date-allowed';
 
 // type
-import type { Props } from './ivue-date-picker-years';
+import type { Props } from './types/ivue-date-picker-years';
 
 const prefixCls = 'ivue-date-picker-years';
 

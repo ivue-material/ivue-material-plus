@@ -8,21 +8,21 @@
 import {
     computed,
     defineComponent,
-    reactive,
     watch,
     provide,
     PropType,
+    ref,
 } from 'vue';
 import { oneOf } from '../../utils/assist';
-import { RadioContextKey } from './radio-group';
+
+// type
+import { Props, Size, RadioContextKey } from './types/radio-group';
 
 const prefixCls = 'ivue-radio-group';
 
 let seed = 0;
 const now = Date.now();
 const getUuid = () => `${prefixCls}_${now}_${seed++}`;
-
-type Size = 'large' | 'small' | 'default';
 
 export default defineComponent({
     name: prefixCls,
@@ -61,6 +61,7 @@ export default defineComponent({
          * @type {String}
          */
         type: {
+            type: String,
             validator(value: string) {
                 return oneOf(value, ['button']);
             },
@@ -71,6 +72,7 @@ export default defineComponent({
          * @type {String}
          */
         buttonStyle: {
+            type: String,
             validator(value: string) {
                 return oneOf(value, ['default', 'solid']);
             },
@@ -91,18 +93,9 @@ export default defineComponent({
             },
         },
     },
-    setup(props: any, { emit }) {
-        // data
-        const data: any = reactive<{
-            currentValue: string | number;
-        }>({
-            /**
-             * 当前值
-             *
-             * @type {Boolean}
-             */
-            currentValue: props.modelValue,
-        });
+    setup(props: Props, { emit }) {
+        // 当前值
+        const currentValue = ref<string | number>(props.modelValue);
 
         // 外部样式
         const wrapperClasses = computed(() => {
@@ -129,7 +122,7 @@ export default defineComponent({
 
         // 改变值
         const handleChange = (value: string | number) => {
-            data.currentValue = value;
+            currentValue.value = value;
 
             emit('update:modelValue', value);
             emit('on-change', value);
@@ -142,8 +135,8 @@ export default defineComponent({
             () => props.modelValue,
             () => {
                 // 当F前值是否不相等
-                if (data.currentValue !== props.modelValue) {
-                    data.currentValue = props.modelValue;
+                if (currentValue.value !== props.modelValue) {
+                    currentValue.value = props.modelValue;
                 }
             }
         );
@@ -152,7 +145,7 @@ export default defineComponent({
 
         provide(RadioContextKey, {
             name: props.name,
-            data,
+            currentValue: currentValue,
             change: handleChange,
         });
 
@@ -160,7 +153,7 @@ export default defineComponent({
             prefixCls,
 
             // data
-            data,
+            currentValue,
 
             // computed
             wrapperClasses,

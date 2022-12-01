@@ -7,7 +7,7 @@ import { genPickerButton } from './picker-button';
 import { IvueIcon } from '../ivue-icon';
 
 // type
-import type { Props } from './ivue-date-picker-title';
+import type { Props } from './types/ivue-date-picker-title';
 
 const prefixCls = 'ivue-date-picker-title';
 

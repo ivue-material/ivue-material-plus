@@ -8,8 +8,8 @@ import { useZIndex } from '../../utils/helpers';
 import isServer from '../../utils/isServer';
 
 // ts
-import type { LoadingOptions, LoadingOptionsResolved } from './types';
 import type { CSSProperties } from 'vue';
+import type { LoadingOptions, LoadingOptionsResolved } from './types/loading';
 
 // 全屏展示实例
 let fullscreenInstance: LoadingInstance | undefined = undefined;

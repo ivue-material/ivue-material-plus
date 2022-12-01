@@ -31,6 +31,10 @@ import { useEventListener } from '@vueuse/core';
 
 import { on, off } from '../../utils/dom';
 
+// type
+import { ScrollbarContextKey, ScrollbarContext } from './types/scrollbar';
+import type { Props, Data } from './types/thumb';
+
 const prefixCls = 'ivue-scrollbar';
 
 // 鼠标按下
@@ -42,6 +46,7 @@ let mouseLeave = false;
 let originalOnSelectStart = document.onselectstart;
 
 export default defineComponent({
+    name: 'ivue-scrollbar-thumb',
     props: {
         /**
          * 偏移位置
@@ -88,19 +93,16 @@ export default defineComponent({
             default: false,
         },
     },
-    setup(props: any) {
+    setup(props: Props) {
         // IvueScrollbar
-        const IvueScrollbar: any = inject(prefixCls);
+        const IvueScrollbar = inject(ScrollbarContextKey) as ScrollbarContext;
 
         // dom
         const thumbWrapper = ref<HTMLDivElement>();
         const thumb = ref<HTMLDivElement>();
 
         // data
-        const data: any = reactive<{
-            thumbState: Partial<Record<'X' | 'Y', number>>;
-            visible: boolean;
-        }>({
+        const data = reactive<Data>({
             /**
              * 状态
              *

@@ -21,7 +21,7 @@ import IvueDatePickerMonth from './ivue-date-picker-month.vue';
 import IvueDatePickerYears from './ivue-date-picker-years.vue';
 
 // type
-import { Props, _ComponentInternalInstance, Data } from './date-picker';
+import { Props, _ComponentInternalInstance, Data } from './types/date-picker';
 
 export default defineComponent({
     name: 'ivue-date-picker',

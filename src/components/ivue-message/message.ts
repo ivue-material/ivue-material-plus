@@ -3,7 +3,6 @@ import { transferIndex, transferIncrease } from '../../utils/transfer-queue';
 
 import Message from './index.vue';
 
-
 type MessageType = 'success' | 'warning' | 'info' | 'error' | ''
 
 type options = {
