@@ -36,14 +36,22 @@
             :name="name"
             :previewSize="previewSize"
             :beforeDelete="beforeDelete"
-            @delete="handleRemove"
-            @preview="handleFileData"
+            :previewImageEnlarge="previewImageEnlarge"
+            @on-delete="handleRemove"
+            @on-preview="handlePreview"
             v-if="previewImage"
         >
             <template v-if="$slots['preview-cover']" #preview-cover="{ file }">
                 <slot name="preview-cover" :file="file"></slot>
             </template>
         </upload-list>
+
+        <!-- 放大图片 -->
+        <image-preview
+            :previewList="data.imagePreviewList"
+            :initialIndex="data.imagePreviewInitialIndex"
+            v-model="data.imagePreview"
+        ></image-preview>
     </div>
 </template>
 
@@ -52,6 +60,7 @@ import { defineComponent, computed, ref, reactive, PropType, watch } from 'vue';
 
 import IvueIcon from '../ivue-icon/index.vue';
 import UploadList from './upload-list.vue';
+import ImagePreview from '../ivue-image-preview';
 
 import { oneOf } from '../../utils/assist';
 import { isPromise } from '../../utils/validate';
@@ -250,6 +259,15 @@ export default defineComponent({
         beforeDelete: {
             type: Function as PropType<Interceptor>,
         },
+        /**
+         * 预览图片放大
+         *
+         * @type {Boolean}
+         */
+        previewImageEnlarge: {
+            type: Boolean,
+            default: true,
+        },
     },
     setup(props: Props, { emit }) {
         // dom
@@ -269,6 +287,24 @@ export default defineComponent({
              * @type {Boolean}
              */
             dragOver: false,
+            /**
+             * 图片预览
+             *
+             * @type {Boolean}
+             */
+            imagePreview: false,
+            /**
+             * 图片预览列表
+             *
+             * @type {Array}
+             */
+            imagePreviewList: [],
+            /**
+             * 图片预览下标
+             *
+             * @type {Number}
+             */
+            imagePreviewInitialIndex: 0,
         });
 
         // computed
@@ -545,8 +581,18 @@ export default defineComponent({
         };
 
         // 查看图片
-        const handleFileData = (file: File) => {
+        const handlePreview = (file: File, index: number) => {
             emit('on-preview', file);
+
+            if (props.previewImageEnlarge) {
+                data.imagePreviewList = [...props.modelValue].map((item) => {
+                    return item.url || item.content;
+                });
+
+                data.imagePreviewInitialIndex = index;
+
+                data.imagePreview = true;
+            }
         };
 
         // 监听数据变化
@@ -577,7 +623,7 @@ export default defineComponent({
             handleDragleave,
             handleChange,
             handleRemove,
-            handleFileData,
+            handlePreview,
             uploadFiles,
             renderUpload,
             getSizeStyle,
@@ -586,6 +632,7 @@ export default defineComponent({
     components: {
         UploadList,
         IvueIcon,
+        ImagePreview,
     },
 });
 </script>

@@ -5,7 +5,7 @@
                 <!-- 图片 -->
                 <div
                     :class="`${prefixCls}-image`"
-                    @click="handleFileData(file)"
+                    @click="handleFileData(file, index)"
                     :style="getSizeStyle(file.previewSize || previewSize)"
                 >
                     <img
@@ -15,30 +15,34 @@
                     />
                 </div>
                 <!-- 蒙层 -->
-                <div :class="`${prefixCls}-mask`" v-if="currentStatus(file)">
-                    <!-- 加载中 -->
-                    <div
-                        :class="`${prefixCls}-mask__loading`"
-                        v-ivue-loading="file.status === 'uploading'"
-                        v-if="file.status === 'uploading'"
-                    ></div>
-                    <!-- 错误图标 -->
-                    <template v-if="file.status === 'failed'">
-                        <ivue-icon :class="`${prefixCls}-mask__icon`" v-if="!failedIcon">cancel</ivue-icon>
-                        <i :class="[`${prefixCls}-mask__icon`, failedIcon]" v-else></i>
-                    </template>
-                    <!-- 描述的信息 -->
-                    <div
-                        :class="`${prefixCls}-mask__message`"
-                        v-if="file.message"
-                    >{{ file.message }}</div>
-                </div>
+                <transition name="fade">
+                    <div :class="`${prefixCls}-mask`" v-if="currentStatus(file)">
+                        <!-- 加载中 -->
+                        <div
+                            :class="`${prefixCls}-mask__loading`"
+                            v-ivue-loading="file.status === 'uploading'"
+                            v-if="file.status === 'uploading'"
+                        ></div>
+                        <!-- 错误图标 -->
+                        <template v-if="file.status === 'failed'">
+                            <ivue-icon :class="`${prefixCls}-mask__icon`" v-if="!failedIcon">cancel</ivue-icon>
+                            <i :class="[`${prefixCls}-mask__icon`, failedIcon]" v-else></i>
+                        </template>
+                        <!-- 描述的信息 -->
+                        <div
+                            :class="`${prefixCls}-mask__message`"
+                            v-if="file.message"
+                        >{{ file.message }}</div>
+                    </div>
+                </transition>
                 <!-- 删除按钮 -->
                 <ivue-icon
                     :class="`${prefixCls}-remove`"
                     @click.stop="handleRemove(file, index)"
                     v-if="isDeletable(file)"
                 >close</ivue-icon>
+                <!-- 预览图标 -->
+                <ivue-icon :class="`${prefixCls}-preview-icon`">visibility</ivue-icon>
                 <!-- 自定义覆盖在预览区域上方的内容 -->
                 <div class="preview-cover" v-if="$slots['preview-cover']">
                     <slot name="preview-cover" :file="file"></slot>
@@ -116,6 +120,15 @@ export default defineComponent({
          * @type {Number | String}
          */
         previewSize: [Number, String],
+        /**
+         * 预览图片放大
+         *
+         * @type {Boolean}
+         */
+        previewImageEnlarge: {
+            type: Boolean,
+            default: true,
+        },
     },
     setup(props: Props, { emit }) {
         // methods
@@ -140,6 +153,8 @@ export default defineComponent({
                 `${prefixCls}-status`,
                 {
                     [`${prefixCls}-status-finish`]: file.status === 'finished',
+                    [`${prefixCls}-preview`]:
+                        props.previewImageEnlarge && !currentStatus(file),
                 },
             ];
         };
@@ -170,13 +185,13 @@ export default defineComponent({
                 interceptor: beforeDelete,
                 // 数据
                 args: [item, { name, index }],
-                done: () => emit('delete', file, index),
+                done: () => emit('on-delete', file, index),
             });
         };
 
         // 返回文件数据
-        const handleFileData = (file: File) => {
-            emit('preview', file);
+        const handleFileData = (file: File, index: number) => {
+            emit('on-preview', file, index);
         };
 
         // 图片样式

@@ -45,6 +45,36 @@ const useDependentComponents = [
     dependent: ["IvueStep"]
   }
 ];
+const sideEffects = [
+  {
+    name: "ivue-page",
+    sideEffects: ["ivue-select"]
+  },
+  {
+    name: "ivue-modal",
+    sideEffects: ["ivue-button", "ivue-spin"]
+  },
+  {
+    name: "ivue-cascader",
+    sideEffects: ["ivue-input", "ivue-select", "ivue-loading"]
+  },
+  {
+    name: "ivue-auto-complete",
+    sideEffects: ["ivue-loading", "ivue-input", "ivue-select"]
+  },
+  {
+    name: "ivue-button",
+    sideEffects: ["ivue-ripple"]
+  },
+  {
+    name: "ivue-switch",
+    sideEffects: ["ivue-ripple"]
+  },
+  {
+    name: "ivue-table",
+    sideEffects: ["ivue-tooltip", "ivue-checkbox", "ivue-scrollbar"]
+  }
+];
 function getSideEffects(componentsName, options) {
   if (!options.importStyle) {
     return;
@@ -54,13 +84,21 @@ function getSideEffects(componentsName, options) {
       `${pakPath}/styles/${componentsName}.css`
     ];
   }
-  return [
+  let list = [
     `${pakPath}/styles/reset.css`,
     `${pakPath}/styles/ivue-icon.css`,
     `${basePath}`,
     `${animationPath}`,
     `${pakPath}/styles/${componentsName}.css`
   ];
+  sideEffects.forEach((item) => {
+    if (item.name === componentsName) {
+      item.sideEffects.forEach((sideEffectsItem) => {
+        list.push(`${pakPath}/styles/${sideEffectsItem}.css`);
+      });
+    }
+  });
+  return list;
 }
 const resolveComponent = (componentsName, options) => {
   let useDependentComponentsData = null;

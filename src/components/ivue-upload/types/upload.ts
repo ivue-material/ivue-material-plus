@@ -42,9 +42,13 @@ export interface Props {
   previewSize: number | string;
   previewImage: boolean;
   beforeDelete: any;
+  previewImageEnlarge: boolean;
 }
 
 export interface Data {
   fileList: UploaderFileListItem[]
   dragOver: boolean;
+  imagePreview: boolean;
+  imagePreviewList: string[];
+  imagePreviewInitialIndex: number;
 }

@@ -15,4 +15,5 @@ export interface Props {
   beforeDelete: any;
   name: number | string;
   previewSize?: number | string;
+  previewImageEnlarge: boolean;
 }
