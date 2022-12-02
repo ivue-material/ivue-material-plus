@@ -68,25 +68,15 @@ import {
     getSizeStyle,
 } from '../../utils/helpers';
 
+// type
+import {
+    Props,
+    Data,
+    UploaderAfterRead,
+    UploaderBeforeRead,
+} from './types/upload';
+
 const prefixCls = 'ivue-upload';
-
-type PromiseOrNot<T> = T | Promise<T>;
-
-export type UploaderAfterRead = (
-    items: UploaderFileListItem | UploaderFileListItem[],
-    detail: {
-        name: string | number;
-        index: number;
-    }
-) => void;
-
-export type UploaderBeforeRead = (
-    file: File | File[],
-    detail: {
-        name: string | number;
-        index: number;
-    }
-) => PromiseOrNot<File | File[] | undefined>;
 
 export default defineComponent({
     name: prefixCls,
@@ -261,15 +251,12 @@ export default defineComponent({
             type: Function as PropType<Interceptor>,
         },
     },
-    setup(props: any, { emit }) {
+    setup(props: Props, { emit }) {
         // dom
         const input = ref(null);
 
         // data
-        const data = reactive<{
-            fileList: Array<any>;
-            dragOver: boolean;
-        }>({
+        const data = reactive<Data>({
             /**
              * 当前选择状态
              *
@@ -338,7 +325,7 @@ export default defineComponent({
         };
 
         // 拖动
-        const handleDrop = (e) => {
+        const handleDrop = (e: DragEvent) => {
             data.dragOver = false;
 
             const files = e.dataTransfer.files;
@@ -366,7 +353,9 @@ export default defineComponent({
                 else {
                     uploadFiles(file);
                 }
-            } else {
+            }
+            // 多个文件上传
+            else {
                 const arr = [];
 
                 file.forEach((item) => {
@@ -449,7 +438,7 @@ export default defineComponent({
         };
 
         // 获取上传文件
-        const uploadFiles = (files) => {
+        const uploadFiles = (files: File | File[]) => {
             if (Array.isArray(files)) {
                 // 剩余数量
                 const remainCount = +props.maxCount - props.modelValue.length;
@@ -548,7 +537,7 @@ export default defineComponent({
         });
 
         // 删除函数
-        const handleRemove = (file, index) => {
+        const handleRemove = (file: File, index: number) => {
             data.fileList.splice(index, 1);
 
             emit('update:modelValue', data.fileList);
@@ -556,7 +545,7 @@ export default defineComponent({
         };
 
         // 查看图片
-        const handleFileData = (file) => {
+        const handleFileData = (file: File) => {
             emit('on-preview', file);
         };
 

@@ -5,19 +5,17 @@ import type {
   ColumnCls,
   rowStyle,
   Table,
-  DefaultRow
 } from '../table/defaults';
 
-
-interface TableBodyProps<T> {
-  store: Store<T>
+interface TableBodyProps {
+  store: Store
   stripe?: boolean
-  context: Table<T>
-  rowClassName: ColumnCls<T>
-  rowStyle: rowStyle<T>
-  fixed: string | any
-  highlight: boolean
-  tooltipEffect: string
+  context?: Table
+  rowClassName?: ColumnCls
+  rowStyle?: rowStyle
+  fixed?: string | any
+  highlight?: boolean
+  tooltipEffect?: string
 }
 
 export default {
@@ -28,7 +26,7 @@ export default {
    */
   store: {
     required: true,
-    type: Object as PropType<TableBodyProps<DefaultRow>['store']>,
+    type: Object as PropType<TableBodyProps['store']>,
   },
   /**
    * 是否为斑马纹 table
@@ -45,7 +43,7 @@ export default {
    * @type {String | Function}
    */
   rowClassName: {
-    type: [String, Function] as PropType<TableBodyProps<DefaultRow>['rowClassName']>,
+    type: [String, Function] as PropType<TableBodyProps['rowClassName']>,
   },
   /**
    * 行的 style 的回调方法，也可以使用一个固定的 Object 为所有行设置一样的 Style。。
@@ -53,7 +51,7 @@ export default {
    * @type {String | Function}
    */
   rowStyle: {
-    type: [Object, Function] as PropType<TableBodyProps<DefaultRow>['rowStyle']>,
+    type: [Object, Function] as PropType<TableBodyProps['rowStyle']>,
   }
 };
 

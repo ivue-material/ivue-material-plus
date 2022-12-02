@@ -1,21 +1,22 @@
 
 import { inject } from 'vue';
 
+import { getFixedColumnsClass, getFixedColumnOffset, ensurePosition } from '../utils';
 
-// ts
+// type
 import type { TableBodyProps } from './defaults';
 import type { TableColumnCtx } from '../table-column/defaults';
-import { getFixedColumnsClass, getFixedColumnOffset, ensurePosition } from '../utils';
+import { TableContextKey } from '../table/defaults';
 
 const prefixCls = 'ivue-table';
 
-function useStyles<T>(props: Partial<TableBodyProps<T>>) {
+function useStyles(props: Partial<TableBodyProps>) {
 
   // inject
-  const IvueTable: any = inject(prefixCls);
+  const IvueTable = inject(TableContextKey);
 
   // 行样式
-  const getRowStyle = (row: T, rowIndex: number) => {
+  const getRowStyle = (row: TableColumnCtx, rowIndex: number) => {
     const rowStyle = IvueTable?.props.rowStyle;
 
     // function
@@ -30,7 +31,7 @@ function useStyles<T>(props: Partial<TableBodyProps<T>>) {
   };
 
   // 行样式
-  const getRowClass = (row: T, rowIndex: number) => {
+  const getRowClass = (row: TableColumnCtx, rowIndex: number) => {
     const classes = [
       `${prefixCls}-row`,
       {
@@ -64,8 +65,8 @@ function useStyles<T>(props: Partial<TableBodyProps<T>>) {
 
   // 获取单元格样式
   const getTableSpan = (
-    row: T,
-    column: TableColumnCtx<T>,
+    row: TableColumnCtx,
+    column: TableColumnCtx,
     rowIndex: number,
     columnIndex: number
   ) => {
@@ -109,8 +110,8 @@ function useStyles<T>(props: Partial<TableBodyProps<T>>) {
   const getCellClass = (
     rowIndex: number,
     columnIndex: number,
-    row: T,
-    column: TableColumnCtx<T>
+    row: TableColumnCtx,
+    column: TableColumnCtx
   ) => {
     // 是否是嵌套的子列
     const fixedClasses = column.isSubColumn
@@ -148,8 +149,8 @@ function useStyles<T>(props: Partial<TableBodyProps<T>>) {
   const getCellStyle = (
     rowIndex: number,
     columnIndex: number,
-    row: T,
-    column: TableColumnCtx<T>
+    row: TableColumnCtx,
+    column: TableColumnCtx
   ) => {
 
     // 单元格的 style 的回调方法

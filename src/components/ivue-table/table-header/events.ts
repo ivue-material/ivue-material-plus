@@ -7,30 +7,29 @@ import {
 import { hasClass, removeClass, addClass } from '../../../utils/assist';
 import { on, off } from '../../../utils/dom';
 
-// ts
-import type { TableHeaderProps } from './index';
+// type
+import { TableContextKey } from '../table/defaults';
+
 import type { TableColumnCtx } from '../table-column/defaults';
+import type { DragState, SortOrder, TableHeaderProps } from './types';
 
-const prefixCls = 'ivue-table';
-
-function useEvent<T>(props: TableHeaderProps<T>, emit) {
-
+function useEvent(props: TableHeaderProps, emit) {
   // vm
   const vm = getCurrentInstance();
 
   // inject
-  const IvueTable: any = inject(prefixCls);
+  const IvueTable = inject(TableContextKey);
 
   // data
 
   // 当前鼠标移动到的拖动列
-  const draggingColumn: any = ref(null);
+  const draggingColumn = ref<TableColumnCtx>(null);
 
   // 拖动中
-  const dragging = ref(false);
+  const dragging = ref<boolean>(false);
 
   // 拖动开始
-  const dragState = ref({});
+  const dragState = ref<DragState>({});
 
   // 切换排序
   const toggleOrder = ({ order, sortOrders }) => {
@@ -48,7 +47,7 @@ function useEvent<T>(props: TableHeaderProps<T>, emit) {
   // 点击排序
   const handleSortClick = (
     event: Event,
-    column: TableColumnCtx<T>,
+    column: TableColumnCtx,
     givenOrder: string | boolean
   ) => {
     // stopPropagation
@@ -87,7 +86,7 @@ function useEvent<T>(props: TableHeaderProps<T>, emit) {
     const sortingColumn = states.sortingColumn.value;
 
     // 排序
-    let sortOrder;
+    let sortOrder: SortOrder;
 
     // 不是当前列
     if (
@@ -124,11 +123,11 @@ function useEvent<T>(props: TableHeaderProps<T>, emit) {
     states.sortOrder.value = sortOrder;
 
     // 改变排序
-    IvueTable?.store.commit('changeSortCondition');
+    IvueTable.store.commit('changeSortCondition');
   };
 
   // 头部点击
-  const handleHeaderClick = (event: Event, column: TableColumnCtx<T>) => {
+  const handleHeaderClick = (event: Event, column: TableColumnCtx) => {
     event.preventDefault();
 
     // 没有过滤筛选数据，只有排序
@@ -136,12 +135,12 @@ function useEvent<T>(props: TableHeaderProps<T>, emit) {
       handleSortClick(event, column, false);
     }
 
-    IvueTable?.emit('on-header-click', column, event);
+    IvueTable.emit('on-header-click', column, event);
   };
 
 
   // 鼠标按下
-  const handleMouseDown = (event: MouseEvent, column: TableColumnCtx<T>) => {
+  const handleMouseDown = (event: MouseEvent, column: TableColumnCtx) => {
 
     // 有子节点
     if (column.children && column.children.length > 0) {
@@ -157,7 +156,7 @@ function useEvent<T>(props: TableHeaderProps<T>, emit) {
       emit('on-drag-visible', true);
 
       // 表格节点
-      const tableDom = IvueTable?.vnode.el;
+      const tableDom = IvueTable.vnode.el;
 
       // 表格距离左边窗口的距离
       const tableLeft = tableDom.getBoundingClientRect().left;
@@ -190,10 +189,10 @@ function useEvent<T>(props: TableHeaderProps<T>, emit) {
       };
 
       // 拖拽时的虚线
-      const draggingDottedDom = IvueTable?.refs.draggingDotted as HTMLElement;
+      const draggingDottedDom = IvueTable.refs.draggingDotted as HTMLElement;
 
       // 设置拖拽时的虚线距离
-      draggingDottedDom.style.left = `${(dragState.value as any).startLeft}px`;
+      draggingDottedDom.style.left = `${dragState.value.startLeft}px`;
 
       // 禁止document选择事件
       document.onselectstart = () => {
@@ -208,10 +207,10 @@ function useEvent<T>(props: TableHeaderProps<T>, emit) {
       // 鼠标移动
       const handleDocumentMouseMove = (event) => {
         // 当前触发点相对浏览器可视区域左距离 - 开始拖动时 触发点相对浏览器可视区域左距离
-        const deltaLeft = event.clientX - (dragState.value as any).startMouseLeft;
+        const deltaLeft = event.clientX - dragState.value.startMouseLeft;
 
         // 可拖动最大值
-        let maxLeft = (dragState.value as any).startLeft + deltaLeft;
+        let maxLeft = dragState.value.startLeft + deltaLeft;
 
         // 最大表格宽度
         if (maxLeft >= tableDom.offsetWidth) {
@@ -226,7 +225,7 @@ function useEvent<T>(props: TableHeaderProps<T>, emit) {
       const handleDocumentMouseUp = () => {
         // 拖动中
         if (dragging.value) {
-          const { startColumnLeft, startLeft } = dragState.value as any;
+          const { startColumnLeft, startLeft } = dragState.value;
 
           // 拖拽时的虚线位置
           const draggingDottedDomLeft = Number.parseInt(draggingDottedDom.style.left, 10);
@@ -238,7 +237,7 @@ function useEvent<T>(props: TableHeaderProps<T>, emit) {
           column.width = columnWidth;
           column.columnWidth = columnWidth;
 
-          IvueTable?.emit(
+          IvueTable.emit(
             'on-header-dragend',
             // 设置列的宽度
             column.width,
@@ -294,7 +293,7 @@ function useEvent<T>(props: TableHeaderProps<T>, emit) {
   };
 
   // 鼠标移动
-  const handleMouseMove = (event: MouseEvent, column: TableColumnCtx<T>) => {
+  const handleMouseMove = (event: MouseEvent, column: TableColumnCtx) => {
     // 有子节点
     if (column.children && column.children.length > 0) {
       return;

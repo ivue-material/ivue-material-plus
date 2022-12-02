@@ -2,21 +2,12 @@ import { defineComponent, h, PropType } from 'vue';
 import useStyle from './styles';
 import IvueColgroup from '../colgroup';
 
-// ts
-import type { Store } from '../store';
-import type { DefaultRow, Sort, SummaryMethod } from '../table/defaults';
-
+// type
+import { TableFooter, Props } from './types';
+import type { TableColumnCtx } from '../table-column/defaults';
 
 const prefixCls = 'ivue-table-footer';
 
-export interface TableFooter<T> {
-  fixed: string
-  store: Store<T>
-  summaryMethod: SummaryMethod<T>
-  sumText: string
-  border: boolean
-  defaultSort: Sort
-}
 
 export default defineComponent({
   name: prefixCls,
@@ -36,14 +27,14 @@ export default defineComponent({
      */
     store: {
       required: true,
-      type: Object as PropType<TableFooter<DefaultRow>['store']>,
+      type: Object as PropType<TableFooter['store']>,
     },
     /**
      * 自定义的合计计算方法
      *
      * @type {Function}
      */
-    summaryMethod: Function as PropType<TableFooter<DefaultRow>['summaryMethod']>,
+    summaryMethod: Function as PropType<TableFooter['summaryMethod']>,
     /**
      * 合计行第一列的文本
      *
@@ -58,7 +49,7 @@ export default defineComponent({
      * @type {Object}
      */
     defaultSort: {
-      type: Object as PropType<TableFooter<DefaultRow>['defaultSort']>,
+      type: Object as PropType<TableFooter['defaultSort']>,
       default: () => {
         return {
           prop: '',
@@ -67,7 +58,7 @@ export default defineComponent({
       },
     },
   },
-  setup(props: any) {
+  setup(props: Props) {
     const {
       columns,
       getCellClass,
@@ -85,7 +76,7 @@ export default defineComponent({
 
     // 渲染td
     const renderTd = () => {
-      let sums: any = [];
+      let sums = [];
 
       // 没行的数据
       const data = props.store.states.data.value;
@@ -99,7 +90,7 @@ export default defineComponent({
       }
       // 没有自定义的合计计算方法
       else {
-        columns.value.forEach((column, index) => {
+        columns.value.forEach((column: TableColumnCtx, index: number) => {
 
           // 合计行第一列的文本
           if (index === 0) {
@@ -108,9 +99,11 @@ export default defineComponent({
             return;
           }
 
-          const values = data.map((item) => Number(item[column.property]));
+          const values = data.map((item) => {
+            return Number(item[column.property]);
+          });
 
-          const precisions: Array<number> = [];
+          const precisions: number[] = [];
           let notNumber = true;
 
           values.forEach((value) => {

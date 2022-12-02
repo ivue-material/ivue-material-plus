@@ -17,26 +17,13 @@ import useTableLayoutObserver from '../table-layout-observer';
 import FilterPanel from '../table/filter-panel.vue';
 
 // ts
-import type { PropType, ComponentInternalInstance, Ref } from 'vue';
-import type { Store } from '../store';
-import type { DefaultRow, Sort } from '../table/defaults';
+import { TableContextKey } from '../table/defaults';
+import type { TableColumnCtx } from '../table-column/defaults';
+import type { PropType } from 'vue';
+import type { TableHeader, FilterPanelInstance, TableHeaderProps } from './types';
 
 const prefixCls = 'ivue-table';
 
-export interface TableHeader extends ComponentInternalInstance {
-  state: {
-    handleColumnsChange
-    handleScrollableWidthChange
-  }
-  filterPanels: Ref<unknown>
-}
-
-export interface TableHeaderProps<T> {
-  fixed: string
-  store: Store<T>
-  border: boolean
-  defaultSort: Sort
-}
 
 export default defineComponent({
   props: {
@@ -56,7 +43,7 @@ export default defineComponent({
      */
     store: {
       required: true,
-      type: Object as PropType<TableHeaderProps<DefaultRow>['store']>,
+      type: Object as PropType<TableHeaderProps['store']>,
     },
     /**
      * 是否带有纵向边框
@@ -73,7 +60,7 @@ export default defineComponent({
      * @type {Object}
      */
     defaultSort: {
-      type: Object as PropType<TableHeaderProps<DefaultRow>['defaultSort']>,
+      type: Object as PropType<TableHeaderProps['defaultSort']>,
       default: () => {
         return {
           prop: '',
@@ -82,23 +69,23 @@ export default defineComponent({
       },
     },
   },
-  setup(props: any, { emit }) {
+  setup(props: TableHeaderProps, { emit }) {
     // vm
-    const vm: any = getCurrentInstance() as TableHeader;
+    const vm = getCurrentInstance() as TableHeader;
 
     // inject
-    const IvueTable: any = inject(prefixCls);
+    const IvueTable = inject(TableContextKey);
 
     // data
 
     // 过滤的列节点
-    const filterPanels = ref({});
+    const filterPanels = ref<Record<number, FilterPanelInstance>>({});
 
     const {
       // 获取当前列的行数
       columnRows,
       isGroup
-    } = useUtils(props as TableHeaderProps<unknown>);
+    } = useUtils(props);
 
     const {
       // 头部行样式
@@ -106,7 +93,7 @@ export default defineComponent({
       getHeaderCellStyle,
       getHeaderRowStyle,
       getHeaderRowClass
-    } = useStyle(props as TableHeaderProps<unknown>);
+    } = useStyle(props);
 
     // 事件
     const {
@@ -115,7 +102,7 @@ export default defineComponent({
       handleMouseDown,
       handleMouseMove,
       handleMouseOut
-    } = useEvent(props as TableHeaderProps<unknown>, emit);
+    } = useEvent(props, emit);
 
     // 布局改变监听
     const { handleColumnsChange, handleScrollableWidthChange } = useTableLayoutObserver(IvueTable);
@@ -146,7 +133,7 @@ export default defineComponent({
           // 上按钮
           h(IvueIcon, {
             class: `${prefixCls}-header--ascending`,
-            onClick: ($event) => {
+            onClick: ($event: Event) => {
               handleSortClick($event, column, 'ascending');
             }
           },
@@ -157,7 +144,7 @@ export default defineComponent({
           // 下按钮
           h(IvueIcon, {
             class: `${prefixCls}-header--descending`,
-            onClick: ($event) => {
+            onClick: ($event: Event) => {
               handleSortClick($event, column, 'descending');
             }
           },
@@ -170,8 +157,7 @@ export default defineComponent({
     };
 
     // 渲染头部
-    const renderHeader = (column, cellIndex) => {
-
+    const renderHeader = (column, cellIndex: number) => {
       // 是否有头部
       if (!column.renderHeader) {
         return column.label;
@@ -191,7 +177,7 @@ export default defineComponent({
     };
 
     // 渲染过滤
-    const renderFilter = (column) => {
+    const renderFilter = (column: TableColumnCtx) => {
       if (!column.filterable) {
         return null;
       }
@@ -213,9 +199,8 @@ export default defineComponent({
     };
 
     // 渲染 th
-    const renderTh = (list, rowSpan, rowIndex) => {
-      return list.map((column, cellIndex) => {
-
+    const renderTh = (list: TableColumnCtx[], rowSpan: number, rowIndex: number) => {
+      return list.map((column: TableColumnCtx, cellIndex: number) => {
         // 规定单元格可横跨的行数
         if (column.rowSpan > rowSpan) {
           rowSpan = column.rowSpan;
@@ -242,16 +227,16 @@ export default defineComponent({
           rowspan: column.rowSpan,
           // key
           key: `${column.id}-thead`,
-          onClick: ($event) => {
+          onClick: ($event: Event) => {
             // 头部点击
             handleHeaderClick($event, column);
           },
           // 鼠标按下
-          onMousedown: ($event) => {
+          onMousedown: ($event: MouseEvent) => {
             handleMouseDown($event, column);
           },
           // 鼠标移动
-          onMousemove: ($event) => {
+          onMousemove: ($event: MouseEvent) => {
             handleMouseMove($event, column);
           },
           // 鼠标退出
@@ -332,7 +317,7 @@ export default defineComponent({
           ['is-group']: isGroup
         }
       },
-      columnRows.map((item, rowIndex) => {
+      columnRows.map((item: TableColumnCtx, rowIndex: number) => {
         return h('tr',
           {
             class: getHeaderRowClass(rowIndex),

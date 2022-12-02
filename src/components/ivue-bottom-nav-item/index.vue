@@ -24,7 +24,6 @@ import {
 } from 'vue';
 
 import IvueButton from '../../components/ivue-button/index.vue';
-import Colorable from '../../utils/mixins/colorable';
 
 // type
 import { BottomNavContextKey, Props, Data } from './types/bottom-nav-item';
@@ -33,7 +32,6 @@ const prefixCls = 'ivue-bottom-nav-item';
 
 export default defineComponent({
     name: prefixCls,
-    mixins: [Colorable],
     props: {
         /**
          * 当前下标
@@ -43,6 +41,15 @@ export default defineComponent({
         name: {
             type: [Number, String],
             required: true,
+        },
+        /**
+         * 颜色
+         *
+         * @type {String | Array}
+         */
+        color: {
+            type: [String, Array],
+            default: '',
         },
     },
     setup(props: Props) {

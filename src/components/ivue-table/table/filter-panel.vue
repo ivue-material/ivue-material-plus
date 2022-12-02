@@ -92,6 +92,7 @@ import ClickOutside from '../../../utils/directives/click-outside';
 // ts
 import type { TableColumnCtx } from '../table-column/defaults';
 import type { Store } from '../store';
+import type { Props, Parent } from './types/filter-panel';
 
 const prefixCls = 'ivue-table-filter-panel';
 
@@ -115,7 +116,7 @@ export default defineComponent({
          * @type {Object}
          */
         column: {
-            type: Object as PropType<TableColumnCtx<unknown>>,
+            type: Object as PropType<TableColumnCtx>,
         },
         /**
          * 更新列数据
@@ -125,18 +126,23 @@ export default defineComponent({
         upDataColumn: {
             type: Function,
         },
+        /**
+         * store
+         *
+         * @type {Object}
+         */
         store: {
-            type: Object as PropType<Store<unknown>>,
+            type: Object as PropType<Store>,
         },
     },
-    setup(props: any) {
+    setup(props: Props) {
         // vm
         const vm = getCurrentInstance();
 
         // dom
         const tooltip = ref(null);
 
-        const parent: any = vm?.parent;
+        const parent: Parent = vm?.parent;
 
         // 当前列
         if (!parent.filterPanels.value[props.column.id]) {
@@ -163,14 +169,14 @@ export default defineComponent({
         });
 
         // 选择的过滤选项
-        const filteredValue: WritableComputedRef<unknown[]> = computed({
+        const filteredValue = computed({
             get() {
                 if (props.column) {
                     return props.column.filteredValue || [];
                 }
                 return [];
             },
-            set(value: unknown[]) {
+            set(value: string[]) {
                 // 更新列数据
                 if (props.column) {
                     props.upDataColumn('filteredValue', value);
@@ -211,7 +217,7 @@ export default defineComponent({
         // methods
 
         // 显示tooltip
-        const handleShowTooltip = (event) => {
+        const handleShowTooltip = (event: Event) => {
             event.stopPropagation();
 
             tooltipVisible.value = !tooltipVisible.value;
@@ -239,7 +245,7 @@ export default defineComponent({
         };
 
         // 过滤方法
-        const handleFilter = (filteredValue: unknown[]) => {
+        const handleFilter = (filteredValue: string[]) => {
             props.store.commit('filterChange', {
                 column: props.column,
                 values: filteredValue,
@@ -271,7 +277,7 @@ export default defineComponent({
         };
 
         // 是否激活
-        const isActive = (filter) => {
+        const isActive = (filter: { value: string }) => {
             return filter.value === filterValue.value;
         };
 

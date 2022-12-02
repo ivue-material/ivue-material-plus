@@ -71,6 +71,9 @@ import IvueIcon from '../ivue-icon/index.vue';
 import Slider from './slider.vue';
 import Touch from '../../utils/directives/touch';
 
+// type
+import { Props, Data, TabsContextKey } from './types/tabs';
+
 const prefixCls = 'ivue-tabs';
 
 export default defineComponent({
@@ -140,7 +143,6 @@ export default defineComponent({
          */
         height: {
             type: [String, Number],
-            default: null,
         },
         /**
          * 滑动条颜色
@@ -163,7 +165,7 @@ export default defineComponent({
         /**
          * 当前激活 tab 面板的 name，可以使用 v-model 双向绑定数据
          *
-         * @type {String,Number,Boolean}
+         * @type {String,Number}
          */
         modelValue: {
             type: [String, Number],
@@ -179,33 +181,20 @@ export default defineComponent({
             default: 40,
         },
     },
-    setup(props: any, { emit }) {
+    setup(props: Props, { emit }) {
         // dom
 
         // tabs-container
-        const container = ref<any>(null);
+        const container = ref<HTMLElement>(null);
 
         // tabs-wrapper
-        const wrapper = ref<any>(null);
+        const wrapper = ref<HTMLElement>(null);
 
         // tabs-bar
-        const bar = ref<any>(null);
+        const bar = ref<HTMLElement>(null);
 
         // data
-        const data: any = reactive<{
-            tabs: Array<any>;
-            tabsItem: Array<any>;
-            isOverflowing: boolean;
-            nextIconVisible: boolean;
-            prevIconVisible: boolean;
-            scrollOffset: number;
-            startX: number;
-            widths: any;
-            resizeTimeout: any;
-            sliderLeft: number;
-            sliderWidth: number;
-            isBooted: boolean;
-        }>({
+        const data = reactive<Data>({
             // tab导航数组
             tabs: [],
             // tab内容数组
@@ -258,7 +247,7 @@ export default defineComponent({
             const regexp = new RegExp(/[a-zA-Z]/g);
 
             // 是否有单位
-            const isUnit = regexp.test(props.arrowsMargin);
+            const isUnit = regexp.test(`${props.arrowsMargin}`);
 
             return {
                 'margin-left': hasArrows
@@ -306,21 +295,21 @@ export default defineComponent({
         };
 
         // 是否可以滚动
-        const overflowCheck = (e: any, fn: any) => {
+        const overflowCheck = (e, fn) => {
             data.isOverflowing && fn(e);
         };
 
         // 清除tab导航
-        const unregister = (name) => {
+        const unregister = (name: string) => {
             data.tabs = data.tabs.filter((o) => {
-                return o.data.name !== name;
+                return o.tabName !== name;
             });
         };
 
         // 清除tab item
-        const unregisterItems = (name) => {
+        const unregisterItems = (name: string) => {
             data.tabsItem = data.tabsItem.filter((o) => {
-                return o.data.name !== name;
+                return o.tabName !== name;
             });
         };
 
@@ -383,29 +372,30 @@ export default defineComponent({
             let newOffset = currentOffset;
 
             if (
-                parseInt(navBounding.right) < parseInt(navScrollBounding.right)
+                parseInt(`${navBounding.right}`) <
+                parseInt(`${navScrollBounding.right}`)
             ) {
                 newOffset =
                     container.value.offsetWidth -
-                    parseInt(navScrollBounding.width);
+                    parseInt(`${navScrollBounding.width}`);
             }
 
             if (
                 parseInt(activeTabBounding.left) <
-                parseInt(navScrollBounding.left)
+                parseInt(`${navScrollBounding.left}`)
             ) {
                 newOffset =
                     currentOffset -
-                    (parseInt(navScrollBounding.left) -
+                    (parseInt(`${navScrollBounding.left}`) -
                         parseInt(activeTabBounding.left));
             } else if (
                 parseInt(activeTabBounding.right) >
-                parseInt(navScrollBounding.right)
+                parseInt(`${navScrollBounding.right}`)
             ) {
                 newOffset =
                     currentOffset +
                     parseInt(activeTabBounding.right) -
-                    parseInt(navScrollBounding.right);
+                    parseInt(`${navScrollBounding.right}`);
             }
 
             if (currentOffset !== newOffset) {
@@ -437,7 +427,9 @@ export default defineComponent({
 
             return (
                 data.widths.container >
-                (props.showArrows ? offset - props.arrowsMargin : offset)
+                (props.showArrows
+                    ? offset - Number(props.arrowsMargin)
+                    : offset)
             );
         };
 
@@ -474,7 +466,7 @@ export default defineComponent({
                 return;
             }
 
-            updateValue(tab.data.name);
+            updateValue(tab.tabName);
         };
 
         // 更新当前激活的导航
@@ -484,7 +476,7 @@ export default defineComponent({
         };
 
         // 更新激活的item
-        const updateItems = (reverse) => {
+        const updateItems = (reverse: boolean) => {
             for (let index = data.tabsItem.length; --index >= 0; ) {
                 data.tabsItem[index].handleToggle(
                     activeIndex.value === index,
@@ -538,7 +530,7 @@ export default defineComponent({
 
         // provide
         provide(
-            'tabsGroup',
+            TabsContextKey,
             reactive({
                 props,
                 data,

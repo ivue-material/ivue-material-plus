@@ -1,9 +1,13 @@
-// @ts-nocheck
-import { h } from 'vue';
+import { h, defineComponent } from 'vue';
 
-// colgroup.props = ['columns', 'tableLayout'];
+import { TableColumnCtx } from './table-column/defaults';
 
-export default {
+type Props = {
+  columns: TableColumnCtx[];
+  tableLayout?: string;
+}
+
+export default defineComponent({
   props: {
     /**
      * 列数据
@@ -25,7 +29,7 @@ export default {
   },
   methods: {
     // 渲染col
-    renderCol(column) {
+    renderCol(column: TableColumnCtx) {
       // 是否是自动表格布局
       const isAuto = this.tableLayout === 'auto';
 
@@ -49,7 +53,7 @@ export default {
       return h('col', obj);
     },
   },
-  render(props) {
+  render(props: Props) {
     // 是否是自动表格布局
     const isAuto = props.tableLayout === 'auto';
 
@@ -69,5 +73,4 @@ export default {
       columns.map((column) => this.renderCol(column))
     );
   }
-
-};
+});

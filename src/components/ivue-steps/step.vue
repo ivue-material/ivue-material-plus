@@ -54,15 +54,15 @@ import {
     getCurrentInstance,
     onBeforeUnmount,
     ComponentInternalInstance,
+    onBeforeMount,
 } from 'vue';
+import IvueIcon from '../ivue-icon/index.vue';
 
 import { oneOf } from '../../utils/assist';
 
-// types
-import { StepsContextKey } from './steps';
-import { Props, Data } from './step';
-
-import IvueIcon from '../ivue-icon/index.vue';
+// type
+import { StepsContextKey } from './types/steps';
+import type { Props, Data } from './types/step';
 
 const prefixCls = 'ivue-step';
 
@@ -241,22 +241,22 @@ export default defineComponent({
             emit('on-step');
         };
 
+        // onBeforeMount
+        onBeforeMount(() => {
+            // 步骤状态
+            options.push(
+                reactive({
+                    uid: uid,
+                    data: data,
+                })
+            );
+        });
+
         // onBeforeUnmount
         onBeforeUnmount(() => {
             // 销毁选项
             steps.onOptionDestroy(data.index);
         });
-
-        // 步骤状态
-        const stepItemState = reactive<{
-            uid: number;
-            data: Data;
-        }>({
-            uid: uid,
-            data: data,
-        });
-
-        options.push(stepItemState);
 
         return {
             prefixCls,

@@ -7,13 +7,13 @@ import type { Table, Sort, Filter } from '../table/defaults';
 import type { TableColumnCtx } from '../table-column/defaults';
 
 // 监听props的数据
-interface WatcherPropsData<T> {
-  data: Ref<T[]>
+interface WatcherPropsData {
+  data: Ref<any[]>
   rowKey: Ref<string>
 }
 
 // 排序列
-function sortColumn<T>(array: TableColumnCtx<T>[]) {
+function sortColumn(array: TableColumnCtx[]) {
   array.forEach((item) => {
 
     // 当前index
@@ -30,9 +30,9 @@ function sortColumn<T>(array: TableColumnCtx<T>[]) {
 }
 
 // 设置列数
-function replaceColumn<T>(
-  array: TableColumnCtx<T>[],
-  column: TableColumnCtx<T>
+function replaceColumn(
+  array: TableColumnCtx[],
+  column: TableColumnCtx
 ) {
   return array.map((item) => {
     // id是否相同返回当前列
@@ -49,12 +49,12 @@ function replaceColumn<T>(
 }
 
 
-function useStore<T>() {
+function useStore() {
   // 获取当前实例
-  const vm = getCurrentInstance() as Table<T>;
+  const vm = getCurrentInstance() as Table;
 
   // 监听函数
-  const watcher = useWatcher<T>();
+  const watcher = useWatcher();
 
   // ts
   // 状态 ts
@@ -117,18 +117,18 @@ function useStore<T>() {
       vm.store.toggleAllSelection();
     },
     // 设置当前行hover
-    setHoverRow(states: states, row: T) {
+    setHoverRow(states: states, row: TableColumnCtx) {
       states.hoverRow.value = row;
     },
     // 插入列
     insertColumn(
       states: states,
-      column: TableColumnCtx<T>,
-      parent: TableColumnCtx<T>
+      column: TableColumnCtx,
+      parent: TableColumnCtx
     ) {
       const array = unref(states._columns);
 
-      let newColumns: TableColumnCtx<T>[] = [];
+      let newColumns: TableColumnCtx[] = [];
 
       // 不是组合头部
       if (!parent) {
@@ -176,8 +176,8 @@ function useStore<T>() {
     // 删除行
     removeColumn(
       states: states,
-      column: TableColumnCtx<T>,
-      parent: TableColumnCtx<T>
+      column: TableColumnCtx,
+      parent: TableColumnCtx
     ) {
       const array = unref(states._columns) || [];
 
@@ -216,16 +216,16 @@ function useStore<T>() {
 
     },
     // 单选选择当前行
-    setCurrentRow(_states, row: T) {
+    setCurrentRow(_states, row) {
       vm.store.updateCurrentRow(row);
     },
     // 多选
-    rowSelectedChanged(_states, row: T) {
+    rowSelectedChanged(_states, row) {
       vm.store.toggleRowSelection(row);
       vm.store.updateAllSelected();
     },
     // 改变排序
-    changeSortCondition(states: states, options: Sort) {
+    changeSortCondition(states, options: Sort) {
       const { sortingColumn, sortProp, sortOrder } = states;
 
       // 没有排序
@@ -276,7 +276,7 @@ function useStore<T>() {
       }
     },
     // 过滤改变
-    filterChange(states: states, options: Filter<T>) {
+    filterChange(states: states, options: Filter) {
       const { column, values, silent } = options;
 
       const newFilters = vm.store.updateFilters(column, values);
@@ -296,7 +296,7 @@ function useStore<T>() {
 
   // 调用数据
   const commit = (name: keyof typeof mutations, ...args) => {
-    const mutations: any = vm.store.mutations;
+    const mutations = vm.store.mutations;
 
     // 判断 mutations 是否存在当前方法
     if (mutations[name]) {
@@ -325,11 +325,11 @@ function useStore<T>() {
 
 export default useStore;
 
-class HelperStore<T> {
-  Return = useStore<T>()
+class HelperStore {
+  Return = useStore();
 }
 
-type Store<T> = HelperStore<T>['Return']
+type Store = HelperStore['Return']
 type StoreFilter = Record<string, string[]>
 
 export type { Store, WatcherPropsData, StoreFilter };

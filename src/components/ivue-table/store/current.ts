@@ -2,15 +2,14 @@ import { getCurrentInstance, ref, unref } from 'vue';
 import { getRowIdentity } from '../utils';
 
 // ts
-import type { Ref } from 'vue';
 import type { WatcherPropsData } from './index';
 import type { Table } from '../table/defaults';
 
-function useCurrent<T>(watcherData: WatcherPropsData<T>) {
-  const vm = getCurrentInstance() as Table<T>;
+function useCurrent(watcherData: WatcherPropsData) {
+  const vm = getCurrentInstance() as Table;
 
   // 当前行数据
-  const currentRow: Ref<T> | any = ref(null);
+  const currentRow = ref(null);
   // 当前行key
   const _currentRowKey = ref<string | null>(null);
 
@@ -60,7 +59,7 @@ function useCurrent<T>(watcherData: WatcherPropsData<T>) {
     const { data, rowKey } = watcherData;
 
     // 当前行数据
-    let _currentRow: Ref<T> | any = null;
+    let _currentRow = null;
 
     // 行数据的key
     if (rowKey.value) {
@@ -82,8 +81,7 @@ function useCurrent<T>(watcherData: WatcherPropsData<T>) {
   };
 
   // 当前选择的行
-  const updateCurrentRow = (_currentRow: T) => {
-
+  const updateCurrentRow = (_currentRow) => {
     // 上一个数据
     const oldCurrentRow = currentRow.value;
 

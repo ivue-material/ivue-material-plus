@@ -1,9 +1,4 @@
 
-import type {
-  ComponentInternalInstance,
-  ComponentPublicInstance,
-} from 'vue';
-
 export interface Props {
   value?: string | number;
   locale: string;
@@ -16,12 +11,5 @@ export interface Props {
   format?: any;
   tableDate?: string;
   color: string | any[];
-}
-
-interface _ComponentPublicInstance extends ComponentPublicInstance {
-  setTextColor: (color: any, data: any) => any
-}
-
-export interface _ComponentInternalInstance extends ComponentInternalInstance {
-  proxy: _ComponentPublicInstance | null;
+  textColor?: string;
 }

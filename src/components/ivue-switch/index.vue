@@ -3,24 +3,24 @@ import {
     defineComponent,
     h,
     PropType,
-    reactive,
     computed,
     watch,
     withDirectives,
     resolveDirective,
+    ref,
 } from 'vue';
 
 import { oneOf } from '../../utils/assist';
-import Colorable from '../../utils/mixins/colorable';
+import { colorable } from '../../utils/mixins/colorable';
 import ripple from '../../utils/directives/ripple';
 
-type Size = 'large' | 'small' | 'default';
+// type
+import { Size, Props } from './types/switch';
 
 const prefixCls = 'ivue-switch';
 
 export default defineComponent({
     name: prefixCls,
-    mixins: [Colorable],
     directives: {
         ripple,
     },
@@ -126,19 +126,31 @@ export default defineComponent({
          * @type {Function}
          */
         beforeChange: Function,
+        /**
+         * 颜色
+         *
+         * @type {String | Array}
+         */
+        color: {
+            type: [String, Array],
+            default: '',
+        },
+        /**
+         * 文字颜色
+         *
+         * @type {String}
+         */
+        textColor: {
+            type: String,
+            default: '#ffffff',
+        },
     },
-    setup(props: any, { emit }) {
-        // data
-        const data = reactive<{
-            currentValue: string | boolean | number;
-        }>({
-            /**
-             * 当前选择状态
-             *
-             * @type {String,Number,Boolean}
-             */
-            currentValue: props.modelValue,
-        });
+    setup(props: Props, { emit }) {
+        // mixins
+        const { setTextColor } = colorable(props);
+
+        // 当前选择状态
+        const currentValue = ref<string | boolean | number>(props.modelValue);
 
         // computed
 
@@ -155,7 +167,8 @@ export default defineComponent({
             return {
                 [`${prefixCls}`]: true,
                 [`${prefixCls}-false`]: props.falseColor,
-                [`${prefixCls}-checked`]: data.currentValue === props.trueValue,
+                [`${prefixCls}-checked`]:
+                    currentValue.value === props.trueValue,
                 [`${prefixCls}-disabled`]: props.disabled,
                 [`${prefixCls}-loading`]: props.loading,
                 [`${prefixCls}-${props.size}`]: props.size,
@@ -177,7 +190,7 @@ export default defineComponent({
                 `${prefixCls}-emboss--track`,
                 {
                     [`${prefixCls}-emboss--track__checked`]:
-                        data.currentValue === props.trueValue,
+                        currentValue.value === props.trueValue,
                 },
             ];
         });
@@ -188,13 +201,13 @@ export default defineComponent({
                 `${prefixCls}-emboss--thumb`,
                 {
                     [`${prefixCls}-emboss--thumb__checked`]:
-                        data.currentValue === props.trueValue,
+                        currentValue.value === props.trueValue,
                 },
             ];
         });
 
         // 进度条样式
-        const embossLodingClass = computed(() => {
+        const embossLoadingClass = computed(() => {
             return {
                 [`${prefixCls}-emboss--loading`]: props.loading,
             };
@@ -206,21 +219,21 @@ export default defineComponent({
                 `${prefixCls}-emboss--ripple`,
                 {
                     [`${prefixCls}-emboss--ripple__checked`]:
-                        data.currentValue === props.trueValue,
+                        currentValue.value === props.trueValue,
                 },
             ];
         });
 
         // 设置背景颜色
         const setColor = computed(() => {
-            let color = '';
+            let color;
 
             // 激活
-            if (data.currentValue === props.trueValue) {
+            if (currentValue.value === props.trueValue) {
                 color = props.color;
             }
 
-            if (data.currentValue === props.falseValue) {
+            if (currentValue.value === props.falseValue) {
                 color = props.falseColor;
             }
 
@@ -246,7 +259,7 @@ export default defineComponent({
         // methods
 
         // 切换状态
-        const toggle = (event) => {
+        const toggle = (event: Event) => {
             if (event) {
                 event.preventDefault();
             }
@@ -271,14 +284,15 @@ export default defineComponent({
             }
         };
 
+        // 切换状态
         const handleToggle = () => {
             const checked =
-                data.currentValue === props.trueValue
+                currentValue.value === props.trueValue
                     ? props.falseValue
                     : props.trueValue;
 
-            // 修改 v-modul
-            data.currentValue = checked;
+            // 修改 v-modal
+            currentValue.value = checked;
 
             emit('update:modelValue', checked);
 
@@ -293,20 +307,20 @@ export default defineComponent({
                     throw 'Value should be trueValue or falseValue.';
                 }
 
-                data.currentValue = value;
+                currentValue.value = value;
             }
         );
 
         return {
             // data
-            data,
+            currentValue,
 
             // computed
             wrapClasses,
             embossClass,
             embossTrackClass,
             embossThumbClass,
-            embossLodingClass,
+            embossLoadingClass,
             embossRippleClass,
             innerClasses,
             computedRipple,
@@ -314,6 +328,7 @@ export default defineComponent({
 
             // methods
             toggle,
+            setTextColor,
         };
     },
     render() {
@@ -343,7 +358,7 @@ export default defineComponent({
                             h(
                                 'span',
                                 this.setTextColor(this.embossLoadingColor, {
-                                    class: this.embossLodingClass,
+                                    class: this.embossLoadingClass,
                                 })
                             ),
                         ]
@@ -360,8 +375,8 @@ export default defineComponent({
 
         // 渲染内容
         const genInner = () => {
-            const name = this.data.currentValue === this.trueValue;
-            const close = this.data.currentValue === this.falseValue;
+            const name = this.currentValue === this.trueValue;
+            const close = this.currentValue === this.falseValue;
 
             return h(
                 'span',

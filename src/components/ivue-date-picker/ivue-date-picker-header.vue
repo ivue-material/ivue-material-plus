@@ -6,9 +6,9 @@ import {
     Transition,
     h,
     ref,
-    getCurrentInstance,
 } from 'vue';
-import Colorable from '../../utils/mixins/colorable';
+
+import { colorable } from '../../utils/mixins/colorable';
 import CreateNativeLocaleFormatter from '../../utils/create-native-locale-formatter';
 import MonthChange from '../../utils/month-change';
 
@@ -16,12 +16,13 @@ import IvueButton from '../ivue-button/index.vue';
 import IvueIcon from '../ivue-icon/index.vue';
 
 // type
-import type { Props, _ComponentInternalInstance } from './types/ivue-date-picker-header';
+import type {
+    Props,
+} from './types/ivue-date-picker-header';
 
 const prefixCls = 'ivue-date-picker-header';
 
 export default defineComponent({
-    mixins: [Colorable],
     emits: ['toggle', 'input'],
     props: {
         /**
@@ -119,8 +120,8 @@ export default defineComponent({
         },
     },
     setup(props: Props, { emit, slots }) {
-        // 支持访问内部组件实例
-        const { proxy } = getCurrentInstance() as _ComponentInternalInstance;
+        // mixins
+        const { setTextColor } = colorable(props);
 
         // 是否使用反向动画
         const isReversing = ref<boolean>(false);
@@ -258,7 +259,7 @@ export default defineComponent({
 
             const header = h(
                 'strong',
-                proxy.setTextColor(color, {
+                setTextColor(color, {
                     key: String(props.value),
                     onClick: () => {
                         emit('toggle');

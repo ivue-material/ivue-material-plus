@@ -39,7 +39,6 @@
 <script lang='ts'>
 import {
     defineComponent,
-    reactive,
     onMounted,
     getCurrentInstance,
     computed,
@@ -51,12 +50,11 @@ import {
 import { transferIndex, transferIncrease } from '../../utils/transfer-queue';
 import { oneOf } from '../../utils/assist';
 import Popper from '../../utils/mixins/popper';
-
-// ts
-import { _ComponentInternalInstance } from './types';
-
 // 注册外部点击事件插件
 import { ClickOutside } from '../../utils/directives';
+
+// ts
+import { _ComponentInternalInstance, Props } from './types/tooltip';
 
 const prefixCls = 'ivue-tooltip';
 
@@ -212,6 +210,7 @@ export default defineComponent({
          * @type {String}
          */
         placement: {
+            type: String,
             validator(value: string) {
                 return oneOf(value, [
                     'top',
@@ -231,36 +230,21 @@ export default defineComponent({
             default: 'bottom',
         },
     },
-    setup(props: any) {
-        // dom
-        const popper = ref(null);
-        const reference = ref(null);
-
+    setup(props: Props) {
         // 支持访问内部组件实例
         const { proxy } = getCurrentInstance() as _ComponentInternalInstance;
 
-        // data
+        // dom
+        const popper = ref<HTMLElement>(null);
+        const reference = ref<HTMLElement>(null);
+
+        // 延迟
+        const timeout = ref<ReturnType<typeof setTimeout> | null>(null);
+        // 当前元素index
+        const zIndex = ref<number>(0);
 
         // 显示隐藏
-        const visible = ref(props.modelValue);
-
-        const data = reactive<{
-            timeout: any;
-            zIndex: number;
-        }>({
-            /**
-             * 延迟
-             *
-             * @type {Function}
-             */
-            timeout: null,
-            /**
-             * 当前元素index
-             *
-             * @type {Number}
-             */
-            zIndex: 0,
-        });
+        const visible = ref<boolean>(props.modelValue);
 
         // computed
 
@@ -281,11 +265,11 @@ export default defineComponent({
 
         // 悬浮框样式
         const popperStyles = computed(() => {
-            let styles = {};
+            const styles = {};
 
             // 是否将弹层放置于 body 内
             if (props.transfer) {
-                styles['z-index'] = 1060 + data.zIndex;
+                styles['z-index'] = 1060 + zIndex.value;
             }
 
             return styles;
@@ -326,27 +310,27 @@ export default defineComponent({
                 }
             }
 
-            if (data.timeout) {
-                clearTimeout(data.timeout);
+            if (timeout.value) {
+                clearTimeout(timeout.value);
             }
 
             // 延迟时间
-            data.timeout = setTimeout(() => {
+            timeout.value = setTimeout(() => {
                 visible.value = true;
             }, props.delay);
 
-            data.zIndex = handleGetIndex();
+            zIndex.value = handleGetIndex();
         };
 
         // 隐藏
         const handleClosePopper = () => {
             // 清除延迟
-            if (data.timeout) {
-                clearTimeout(data.timeout);
+            if (timeout.value) {
+                clearTimeout(timeout.value);
 
                 // 鼠标离开时Tooltip不会关闭
                 if (!props.controlled) {
-                    data.timeout = setTimeout(() => {
+                    timeout.value = setTimeout(() => {
                         visible.value = false;
                     }, 100);
                 }
@@ -370,8 +354,8 @@ export default defineComponent({
             // 是否显示
             if (visible.value) {
                 // 清除定时器
-                if (data.timeout) {
-                    clearTimeout(data.timeout);
+                if (timeout.value) {
+                    clearTimeout(timeout.value);
                 }
 
                 return;
@@ -426,7 +410,7 @@ export default defineComponent({
 
         // onMounted
         onMounted(() => {
-            data.zIndex = handleGetIndex();
+            zIndex.value = handleGetIndex();
 
             // 是否总是可见
             if (props.always) {
@@ -442,7 +426,6 @@ export default defineComponent({
             reference,
 
             // data
-            data,
             visible,
 
             // computed

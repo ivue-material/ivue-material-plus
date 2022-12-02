@@ -6,17 +6,18 @@ import { toggleRowStatus, getKeysMap, getRowIdentity } from '../utils';
 import type { Ref } from 'vue';
 import type { WatcherPropsData } from './index';
 import type { Table } from '../table/defaults';
+import type { TableColumnCtx } from '../table-column/defaults';
 
 // 展开行数据
-function useExpand<T>(watcherData: WatcherPropsData<T>) {
+function useExpand(watcherData: WatcherPropsData) {
   // vm
-  const vm = getCurrentInstance() as Table<T>;
+  const vm = getCurrentInstance() as Table;
 
   // 是否默认展开所有行，当 Table 包含展开行存在或者为树形表格时有效
   const defaultExpandAll = ref(false);
 
   // 展开的行
-  const expandRows: Ref<T[]> = ref([]);
+  const expandRows = ref<TableColumnCtx[]>([]);
 
   // 更新展开行
   const updateExpandRows = () => {
@@ -33,7 +34,7 @@ function useExpand<T>(watcherData: WatcherPropsData<T>) {
     else if (rowKey) {
       const expandRowsMap = getKeysMap(expandRows.value, rowKey);
 
-      expandRows.value = data.reduce((prev: T[], row: T) => {
+      expandRows.value = data.reduce((prev, row) => {
         // 获取rowKey对应的数据
         const rowId = getRowIdentity(row, rowKey);
 
@@ -53,7 +54,7 @@ function useExpand<T>(watcherData: WatcherPropsData<T>) {
   };
 
   // 切换行展开
-  const toggleRowExpansion = (row: T, expanded?: boolean) => {
+  const toggleRowExpansion = (row, expanded?: boolean) => {
     const changed = toggleRowStatus(expandRows.value, row, expanded);
 
     // 当用户对某一行展开或者关闭的时候会触发该事件
@@ -75,7 +76,7 @@ function useExpand<T>(watcherData: WatcherPropsData<T>) {
     const keysMap = getKeysMap(data, rowKey);
 
     // 展开的行
-    expandRows.value = rowKeys.reduce((prev: T[], cur: string) => {
+    expandRows.value = rowKeys.reduce((prev, cur: string) => {
 
       // 当前内容
       const info = keysMap[cur];
@@ -90,7 +91,7 @@ function useExpand<T>(watcherData: WatcherPropsData<T>) {
   };
 
   // 当前行是否有展开
-  const isRowExpanded = (row: T): boolean => {
+  const isRowExpanded = (row): boolean => {
     const rowKey = watcherData.rowKey.value;
     // 行key
     if (rowKey) {

@@ -11,7 +11,6 @@ import {
     VNode,
 } from 'vue';
 
-import Colorable from '../../utils/mixins/colorable';
 import Touch from '../../utils/directives/touch';
 import isDateAllowed from '../../utils/is-date-allowed';
 import CreateNativeLocaleFormatter from '../../utils/create-native-locale-formatter';
@@ -24,7 +23,6 @@ const prefixCls = 'ivue-date-picker-month';
 
 export default defineComponent({
     name: prefixCls,
-    mixins: [Colorable],
     directives: { Touch },
     // 声明事件
     emits: ['table-date', 'input'],
@@ -218,8 +216,7 @@ export default defineComponent({
                     [
                         rippleDirective,
                         {
-                            left: (e) =>
-                                e.offsetX < -15 && touch(1),
+                            left: (e) => e.offsetX < -15 && touch(1),
                             right: (e) => e.offsetX > 15 && touch(-1),
                         },
                     ],

@@ -10,10 +10,10 @@ import {
 
 // ts
 import type { Table } from './table/defaults';
-import type { TableHeader } from './table-header';
+import type { TableHeader } from './table-header/types';
 import type TableLayout from './table-layout';
 
-function useLayoutObserver<T>(root: Table<T>) {
+function useLayoutObserver(root: Table) {
 
   // vm
   const vm = getCurrentInstance() as TableHeader;
@@ -22,7 +22,7 @@ function useLayoutObserver<T>(root: Table<T>) {
 
   // 表格布局
   const tableLayout = computed(() => {
-    const layout = root.layout as TableLayout<T>;
+    const layout = root.layout as TableLayout;
 
     if (!layout) {
       throw new Error('Can not find table layout.');
@@ -34,7 +34,7 @@ function useLayoutObserver<T>(root: Table<T>) {
   // methods
 
   // 列宽度改变
-  const handleColumnsChange = (layout: TableLayout<T>) => {
+  const handleColumnsChange = (layout: TableLayout) => {
     // 获取col
     const cols = root.vnode.el?.querySelectorAll('colgroup > col') || [];
 
@@ -64,7 +64,7 @@ function useLayoutObserver<T>(root: Table<T>) {
   };
 
   // 设置滚动宽度
-  const handleScrollableWidthChange = (layout: TableLayout<T>) => {
+  const handleScrollableWidthChange = (layout: TableLayout) => {
     const cols =
       root.vnode.el?.querySelectorAll('colgroup > col[name=gutter]') || [];
 

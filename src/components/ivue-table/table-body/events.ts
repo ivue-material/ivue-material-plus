@@ -9,20 +9,21 @@ import { hasClass, getStyle } from '../../../utils/assist';
 // ts
 import type { TableBodyProps } from './defaults';
 import type { TableColumnCtx } from '../table-column/defaults';
+import { TableContextKey } from '../table/defaults';
 
 const prefixCls = 'ivue-table';
 
-function useEvents<T>(props: Partial<TableBodyProps<T>>) {
+function useEvents(props: Partial<TableBodyProps>) {
   // inject
-  const IvueTable: any = inject(prefixCls);
+  const IvueTable = inject(TableContextKey);
 
   // 触发事件
-  const handleEvent = (event: Event, row: T, name: string) => {
+  const handleEvent = (event: Event, row: TableColumnCtx, name: string) => {
 
     // 获取单元格
     const cell: HTMLElement = getCell(event);
 
-    let column: TableColumnCtx<T> | any;
+    let column: TableColumnCtx;
 
 
     if (cell) {
@@ -46,7 +47,7 @@ function useEvents<T>(props: Partial<TableBodyProps<T>>) {
   };
 
   // 点击行
-  const handleClickTr = (event: Event, row: T) => {
+  const handleClickTr = (event: Event, row: TableColumnCtx) => {
     // 当前选择的row
     props.store?.commit('setCurrentRow', row);
 
@@ -57,7 +58,7 @@ function useEvents<T>(props: Partial<TableBodyProps<T>>) {
   // 鼠标进入
   const handleCellMouseEnter = (
     event: MouseEvent,
-    row: T
+    row: TableColumnCtx
   ) => {
     const cell = getCell(event);
 
@@ -140,7 +141,7 @@ function useEvents<T>(props: Partial<TableBodyProps<T>>) {
   };
 
   // 鼠标离开
-  const handleCellMouseLeave = (event) => {
+  const handleCellMouseLeave = (event: MouseEvent) => {
     const cell = getCell(event);
 
     // 是否有单元格

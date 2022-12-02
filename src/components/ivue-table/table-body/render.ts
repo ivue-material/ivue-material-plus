@@ -1,5 +1,5 @@
-
-import { h, inject, computed } from 'vue';
+useRender;
+import { h, inject, computed,VNode } from 'vue';
 import useStyles from './styles';
 import useEvents from './events';
 import { getRowIdentity } from '../utils';
@@ -7,11 +7,14 @@ import { getRowIdentity } from '../utils';
 // ts
 import type { TableProps, RenderRowData, TreeNode } from '../table/defaults';
 import type { TableBodyProps } from './defaults';
+import type { TableColumnCtx } from '../table-column/defaults';
 
-function useRender<T>(props: Partial<TableBodyProps<T>> | any) {
+import { TableContextKey,Table } from '../table/defaults';
+
+function useRender(props: Partial<TableBodyProps>) {
 
   // inject
-  const IvueTable: any = inject('ivue-table');
+  const IvueTable = inject(TableContextKey);
 
   // 样式
   const {
@@ -44,8 +47,8 @@ function useRender<T>(props: Partial<TableBodyProps<T>> | any) {
   // methods
 
   // 获取行key
-  const getRowKey = (row: T, index: number) => {
-    const rowKey = (IvueTable.props as Partial<TableProps<T>>).rowKey;
+  const getRowKey = (row: TableColumnCtx, index: number) => {
+    const rowKey = (IvueTable.props as Partial<TableProps>).rowKey;
 
     // 有自定义 rowKey
     if (rowKey) {
@@ -58,20 +61,20 @@ function useRender<T>(props: Partial<TableBodyProps<T>> | any) {
 
   // 渲染行
   const rowRender = (
-    row: T,
+    row: TableColumnCtx,
     $index: number,
-    treeRowData?: TreeNode | any,
+    treeRowData?: TreeNode,
     // 展开状态
     expanded = false
   ) => {
     const { store } = props;
 
-    const { columns, indent } = store?.states;
+    const { columns, indent } = store.states;
 
     // 行样式
     const rowClasses = getRowClass(row, $index);
 
-    let display: any = true;
+    let display = true;
 
     // 是否是子节点数据
     if (treeRowData) {
@@ -123,7 +126,7 @@ function useRender<T>(props: Partial<TableBodyProps<T>> | any) {
         const patchKey = columnData.columnKey || columnData.rawColumnKey || '';
 
         // data
-        const data: RenderRowData<T> = {
+        const data: RenderRowData = {
           store: props?.store,
           _self: props.context || IvueTable,
           column: columnData,
@@ -188,13 +191,13 @@ function useRender<T>(props: Partial<TableBodyProps<T>> | any) {
   };
 
   // 渲染行
-  const wrappedRowRender = (row: T, $index: number) => {
+  const wrappedRowRender = (row: TableColumnCtx, $index: number): any => {
     const store = props.store;
 
-    const { isRowExpanded, assertRowKey }: any = store;
+    const { isRowExpanded, assertRowKey } = store;
 
     const { treeData, lazyTreeNodeMap, childrenColumnName, rowKey } =
-      store?.states;
+      store.states;
 
     const columns = store?.states.columns.value;
 
@@ -279,7 +282,7 @@ function useRender<T>(props: Partial<TableBodyProps<T>> | any) {
       let childrenData = treeData.value[rowKeyData];
 
       // 每一行的节点数据
-      let treeRowData: any = null;
+      let treeRowData = null;
 
       // 子节点数据
       if (childrenData) {

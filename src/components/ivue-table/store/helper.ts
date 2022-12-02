@@ -26,12 +26,12 @@ const initialState = {
 };
 
 // 创建 store
-export function createStore<T>(table: Table<T>, props: TableProps<T>) {
+export function createStore(table: Table, props: TableProps) {
   if (!table) {
     throw new Error('Table is required.');
   }
 
-  const store = useStore<T>();
+  const store = useStore();
 
   // 用于多选表格，切换全选和全不选
   // 将 toggleAllSelection 设置为实例属性
@@ -49,7 +49,7 @@ export function createStore<T>(table: Table<T>, props: TableProps<T>) {
 }
 
 // 监听表格props
-function proxyTableProps<T>(store: Store<T>, props: TableProps<T>) {
+function proxyTableProps(store: Store, props: TableProps) {
   Object.keys(initialState).forEach((key) => {
     watch(
       () => getArrKeysValue(props, key),
@@ -61,7 +61,7 @@ function proxyTableProps<T>(store: Store<T>, props: TableProps<T>) {
 }
 
 // 设置stats值
-function setStatesValue<T>(value, propsKey: string, store: Store<T>) {
+function setStatesValue(value, propsKey: string, store: Store) {
   // 最新值
   let newVal = value;
 
@@ -78,7 +78,7 @@ function setStatesValue<T>(value, propsKey: string, store: Store<T>) {
 }
 
 // 获取对应的值
-function getArrKeysValue<T>(props: TableProps<T>, keys: string) {
+function getArrKeysValue(props: TableProps, keys: string) {
   // 分割字符串成数组赋值
   if (keys.includes('.')) {
     const keyList = keys.split('.');

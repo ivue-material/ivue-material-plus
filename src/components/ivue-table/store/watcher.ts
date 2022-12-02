@@ -22,13 +22,14 @@ import type { Ref } from 'vue';
 import type { TableColumnCtx } from '../table-column/defaults';
 import type { Table } from '../table/defaults';
 import type { StoreFilter } from './index';
+import type { SortOrder } from '../table-header/types/index';
 
 
 // 扁平化数组
-const flattenColumns = (columns) => {
-  const result: any[] = [];
+const flattenColumns = (columns: TableColumnCtx[]) => {
+  const result = [];
 
-  columns.forEach((column) => {
+  columns.forEach((column: TableColumnCtx) => {
     // 有子项
     if (column.children) {
       // eslint-disable-next-line prefer-spread
@@ -67,63 +68,63 @@ const sortData = (data, states) => {
   );
 };
 
-function useWatcher<T>() {
+function useWatcher() {
   // vm
-  const vm = getCurrentInstance() as Table<T>;
+  const vm = getCurrentInstance() as Table;
 
   // data
 
   // 显示的数据
-  const data: Ref<T[]> = ref([]);
-  const _data: Ref<T[]> = ref([]);
+  const data = ref<TableColumnCtx[]>([]);
+  const _data = ref<TableColumnCtx[]>([]);
   // 行数据的 Key
-  const rowKey: Ref<string | any> = ref(null);
+  const rowKey = ref<string | null>(null);
   // 选择或取消选择所有行的值
-  const selectOnIndeterminate = ref(false);
+  const selectOnIndeterminate = ref<boolean>(false);
   // 选择全部
-  const isAllSelected = ref(false);
+  const isAllSelected = ref<boolean>(false);
   // 选择列表
-  const selection: any = ref([]);
+  const selection = ref<TableColumnCtx[]>([]);
   // 是否有固定列
-  const isFixedColumns = ref(false);
+  const isFixedColumns = ref<boolean>(false);
   // hover行
-  const hoverRow = ref(null);
+  const hoverRow = ref<TableColumnCtx>(null);
   // 列数据
-  const originColumns: Ref<TableColumnCtx<T>[]> = ref([]);
+  const originColumns = ref<TableColumnCtx[]>([]);
   // 列
-  const columns: Ref<TableColumnCtx<T>[]> = ref([]);
+  const columns = ref<TableColumnCtx[]>([]);
   // 备份列
-  const _columns: Ref<TableColumnCtx<T>[]> = ref([]);
+  const _columns = ref<TableColumnCtx[]>([]);
   // 固定列
-  const fixedColumns: Ref<TableColumnCtx<T>[]> = ref([]);
+  const fixedColumns = ref<TableColumnCtx[]>([]);
   // 右边固定列
-  const rightFixedColumns: Ref<TableColumnCtx<T>[]> = ref([]);
+  const rightFixedColumns = ref<TableColumnCtx[]>([]);
 
   // 固定列长度
-  const leafColumnsLength = ref(0);
+  const leafColumnsLength = ref<number>(0);
   // 固定列长度
-  const fixedLeafColumnsLength = ref(0);
+  const fixedLeafColumnsLength = ref<number>(0);
   // 右边固定列长度
-  const rightFixedLeafColumnsLength = ref(0);
+  const rightFixedLeafColumnsLength = ref<number>(0);
 
   // 仅对 type=selection 的列有效，
   // 类型为 Function，Function 的返回值用来决定这一行的 CheckBox 是否可以勾选
-  const selectable: Ref<(row: T, index: number) => boolean> | any = ref(null);
+  const selectable: Ref<(row: TableColumnCtx, index: number) => boolean> | any = ref(null);
 
   // 保存数据更新前选中的值
-  const reserveSelection = ref(false);
+  const reserveSelection = ref<boolean>(false);
 
   // 排序的key 对应列内容的字段名
-  const sortProp = ref(null);
+  const sortProp = ref<string | null>(null);
 
   // 需要排序的列
-  const sortingColumn: any = ref(null);
+  const sortingColumn = ref<TableColumnCtx | null>(null);
 
   // 排序
-  const sortOrder = ref(null);
+  const sortOrder = ref<SortOrder>(null);
 
   // 过滤的数据
-  const filteredData: Ref<T[]> = ref([]);
+  const filteredData = ref<any[]>([]);
 
   // 选择过滤的列
   // 例子
@@ -312,7 +313,7 @@ function useWatcher<T>() {
   };
 
   // 选择多选
-  const isSelected = (row) => {
+  const isSelected = (row: TableColumnCtx) => {
     return selection.value.includes(row);
   };
 
@@ -323,7 +324,7 @@ function useWatcher<T>() {
 
   // 多选选择的行
   const toggleRowSelection = (
-    row: T,
+    row: any,
     selected: any = undefined,
     emitChange = true
   ) => {
@@ -696,7 +697,7 @@ function useWatcher<T>() {
 
 
   // 展开行与 TreeTable 都要使用
-  const toggleRowExpansionAdapter = (row: T, expanded: boolean) => {
+  const toggleRowExpansionAdapter = (row: TableColumnCtx, expanded: boolean) => {
 
     // 是否是展开列
     const hasExpandColumn = columns.value.some(({ type }) => type === 'expand');

@@ -8,14 +8,18 @@
 import {
     defineComponent,
     computed,
-    reactive,
     inject,
     onMounted,
     onBeforeUnmount,
     getCurrentInstance,
+    ref,
 } from 'vue';
 
 import ripple from '../../utils/directives/ripple';
+
+// type
+import { Props } from './types/tab';
+import { TabsContextKey } from './types/tabs';
 
 const prefixCls = 'ivue-tabs-tab';
 
@@ -62,20 +66,15 @@ export default defineComponent({
             default: '',
         },
     },
-    setup(props: any) {
+    setup(props: Props) {
         // inject
-        const tabsGroup: any = inject('tabsGroup');
+        const tabsGroup = inject(TabsContextKey);
 
         // vm
         const { proxy, uid } = getCurrentInstance();
 
-        // data
-        const data: any = reactive<{
-            name: string | number;
-        }>({
-            // 当前 name
-            name: props.name || uid,
-        });
+        // 当前 name
+        const tabName = ref<string | number>(props.name || uid);
 
         // computed
         const wrapClasses = computed(() => {
@@ -103,7 +102,7 @@ export default defineComponent({
 
         // 激活
         const isActive = computed(() => {
-            if (tabsGroup.props.modelValue === data.name) {
+            if (tabsGroup.props.modelValue === tabName.value) {
                 return true;
             }
 
@@ -125,14 +124,14 @@ export default defineComponent({
 
         // onBeforeUnmount
         onBeforeUnmount(() => {
-            tabsGroup.unregister(data.name);
+            tabsGroup.unregister(tabName.value);
         });
 
         return {
             prefixCls,
 
             // data
-            data,
+            tabName,
 
             // computed
             wrapClasses,

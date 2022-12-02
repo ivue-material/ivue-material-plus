@@ -1,4 +1,5 @@
 import IvueSpin from './spin';
+import { Options } from './types/spin';
 
 let spinInstance;
 
@@ -12,20 +13,20 @@ function getSpinInstance(render = undefined) {
 }
 
 // loading 加载中
-function loading(options) {
+function loading(options: Options) {
     const render = ('render' in options) ? options.render : undefined;
     const instance = getSpinInstance(render);
 
-    instance.show(options);
+    instance.show();
 }
 
 // 显示
-IvueSpin.show = function (props = {}) {
+IvueSpin.show = (props: Options = {}) => {
     return loading(props);
 };
 
 // 隐藏
-IvueSpin.hide = function () {
+IvueSpin.hide = () => {
     // 没有实例
     if (!spinInstance) {
         return false;

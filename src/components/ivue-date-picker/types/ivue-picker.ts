@@ -10,15 +10,10 @@ export interface Props {
   transition: string;
   landscape: boolean;
   color: string | any[];
-}
-
-type Style = {
-  style?: any;
-  class?: any;
+  textColor?: string;
 }
 
 interface _ComponentPublicInstance extends ComponentPublicInstance {
-  setBackgroundColor: (color: string | any[], obj: Style) => any;
   landscape: boolean;
 }
 

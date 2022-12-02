@@ -4,7 +4,7 @@
         :style="styles"
         :svgSrc="svgSrc"
         v-if="svgSrc"
-        @svg-loaded="handleSvgLoaded"
+        @on-svg-loaded="handleSvgLoaded"
     ></ivue-svg-loader>
     <i class="ivue-icon ivue-icon-font" :style="styles" v-else>
         <slot />

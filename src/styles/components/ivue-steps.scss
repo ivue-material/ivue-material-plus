@@ -312,7 +312,7 @@ $steps: 'ivue-step';
   &-status-error {
     .#{$steps}-header-content {
       border-color: var(--ivue-error-color);
-      background-color: var(--ivue-white-color);
+      background-color: var(--ivue-error-color);
 
       >.#{$steps}-icon {
         color: var(--ivue-white-color);

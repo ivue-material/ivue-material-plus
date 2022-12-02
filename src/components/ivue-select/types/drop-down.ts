@@ -1,4 +1,3 @@
-
 export interface Props {
   className?: string;
   transfer: boolean;

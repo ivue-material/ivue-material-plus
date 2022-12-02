@@ -1,11 +1,12 @@
 
 
 import type { Store } from '../store';
+import type { TableColumnCtx } from '../table-column/defaults';
 
-function useUtils<T>(store: Store<T>) {
+function useUtils(store: Store) {
 
   // 设置当前选择的行
-  const setCurrentRow = (row: T) => {
+  const setCurrentRow = (row: TableColumnCtx) => {
     store.commit('setCurrentRow', row);
   };
 
@@ -15,7 +16,7 @@ function useUtils<T>(store: Store<T>) {
   };
 
   // 选中当前行
-  const toggleRowSelection = (row: T, selected: boolean) => {
+  const toggleRowSelection = (row: TableColumnCtx, selected: boolean) => {
     store.toggleRowSelection(row, selected, false);
     store.updateAllSelected();
   };
@@ -41,7 +42,7 @@ function useUtils<T>(store: Store<T>) {
   };
 
   // 切换行展开
-  const toggleRowExpansion = (row: T, expanded: boolean) => {
+  const toggleRowExpansion = (row: TableColumnCtx, expanded: boolean) => {
     store.toggleRowExpansionAdapter(row, expanded);
   };
 

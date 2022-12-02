@@ -1,7 +1,7 @@
 <script lang='ts'>
 import { defineComponent, Transition, h, getCurrentInstance } from 'vue';
 
-import Colorable from '../../utils/mixins/colorable';
+import { colorable } from '../../utils/mixins/colorable';
 
 // type
 import type { Props, _ComponentInternalInstance } from './types/ivue-picker';
@@ -10,7 +10,6 @@ const prefixCls = 'ivue-picker';
 
 export default defineComponent({
     name: prefixCls,
-    mixins: [Colorable],
     props: {
         /**
          * 强制100％宽度
@@ -42,8 +41,20 @@ export default defineComponent({
         landscape: {
             type: Boolean,
         },
+        /**
+         * 颜色
+         *
+         * @type {String | Array}
+         */
+        color: {
+            type: [String, Array],
+            default: '',
+        },
     },
     setup(props: Props, { slots }) {
+        // mixins
+        const { setBackgroundColor } = colorable(props);
+
         // 支持访问内部组件实例
         const { proxy } = getCurrentInstance() as _ComponentInternalInstance;
 
@@ -53,7 +64,7 @@ export default defineComponent({
         const genTitle = () => {
             return h(
                 'div',
-                proxy.setBackgroundColor(props.color || 'ivue-picker-primary', {
+                setBackgroundColor(props.color || 'ivue-picker-primary', {
                     class: {
                         [`${prefixCls}-title`]: true,
                         [`${prefixCls}-title--landscape`]: proxy.landscape,

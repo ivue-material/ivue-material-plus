@@ -143,7 +143,7 @@ import TableFooter from './table-footer';
 import defaultProps from './table/defaults';
 
 // ts
-import type { Table } from './table/defaults';
+import { Table, TableContextKey } from './table/defaults';
 import type { TableColumnCtx } from './table-column/defaults';
 
 const prefixCls = 'ivue-table';
@@ -170,22 +170,20 @@ export default defineComponent({
         'on-cell-click',
         'on-row-click',
     ],
-    setup(props: any) {
-        type Row = typeof props.data[number];
-
+    setup(props) {
         // vm
-        const table = getCurrentInstance() as Table<Row>;
+        const table = getCurrentInstance() as Table;
 
         // 设置id
         const tableId = `${prefixCls}-${tableIdSeed++}`;
         table.tableId = tableId;
 
         // store
-        const store = createStore<Row>(table, props);
+        const store = createStore(table, props);
         table.store = store;
 
         // 表格布局
-        const layout = new TableLayout<Row>({
+        const layout = new TableLayout({
             // table store
             store: table.store,
             // table vm
@@ -222,7 +220,7 @@ export default defineComponent({
             handleMousewheel,
             handleDragVisible,
             handleBindEvents,
-        } = useStyle<Row>(props, layout, store, table);
+        } = useStyle(props, layout, store, table);
 
         // 去抖更新布局
         const debouncedUpdateLayout = debounce(updateLayout, 50);
@@ -252,7 +250,7 @@ export default defineComponent({
             clearFilter,
             // 切换行展开
             toggleRowExpansion,
-        } = useUtils<Row>(store);
+        } = useUtils(store);
 
         // computed
 
@@ -317,7 +315,7 @@ export default defineComponent({
 
             // 初始化过滤的数据
             store.states.columns.value.forEach(
-                (column: TableColumnCtx<any>) => {
+                (column: TableColumnCtx) => {
                     if (column.filteredValue && column.filteredValue.length) {
                         table.store.commit('filterChange', {
                             column,
@@ -339,7 +337,7 @@ export default defineComponent({
         });
 
         // provide
-        provide('ivue-table', table);
+        provide(TableContextKey, table);
 
         return {
             prefixCls,

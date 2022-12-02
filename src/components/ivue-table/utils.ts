@@ -3,8 +3,9 @@ import { get } from 'lodash-unified';
 
 import { useZIndex } from '../../utils/helpers';
 
-// ts
+// type
 import type { TableColumnCtx } from './table-column/defaults';
+import type { Store } from './store';
 
 // 是否是对象
 const isObject = function (obj: unknown): boolean {
@@ -12,12 +13,11 @@ const isObject = function (obj: unknown): boolean {
 };
 
 // 获取数组的key
-export const getKeysMap = function <T>(
-  array: T[],
+export const getKeysMap = function (
+  array: any[],
   rowKey: string
-): Record<string, { row: T; index: number }> {
+): Record<string, { row: any; index: number }> {
   const arrayMap = {};
-
   // arrayMap
   (array || []).forEach((row, index) => {
     // 获取rowKey对应的数据
@@ -29,9 +29,9 @@ export const getKeysMap = function <T>(
 
 
 // 获取rowKey对应的数据
-export const getRowIdentity = <T>(
-  row: T,
-  rowKey: string | ((row: T) => any)
+export const getRowIdentity = (
+  row,
+  rowKey
 ): string => {
   if (!row) {
     throw new Error('Row is required when get row identity');
@@ -102,12 +102,12 @@ export function parseMinWidth(minWidth: number | string): number | string {
 }
 
 // 固定列样式
-export const getFixedColumnsClass = <T>(
+export const getFixedColumnsClass = (
   namespace: string,
   index: number,
   fixed: string | boolean,
   store: any,
-  columns?: TableColumnCtx<T>[]
+  columns?: TableColumnCtx[]
 ) => {
   const classes: string[] = [];
 
@@ -140,11 +140,11 @@ export const getFixedColumnsClass = <T>(
 };
 
 // 是否是固定列
-export const isFixedColumn = <T>(
+export const isFixedColumn = (
   index: number,
   fixed: string | boolean,
   store: any,
-  realColumns?: TableColumnCtx<T>[]
+  realColumns?: TableColumnCtx[]
 ) => {
   let start = 0;
   let after = index;
@@ -170,7 +170,7 @@ export const isFixedColumn = <T>(
 
 
   let fixedLayout;
-  const columns: any = store.states.columns;
+  const columns = store.states.columns;
 
   switch (fixed) {
     // 左固定列
@@ -208,11 +208,11 @@ export const isFixedColumn = <T>(
 };
 
 // 固定列偏移位置
-export const getFixedColumnOffset = <T>(
+export const getFixedColumnOffset = (
   index: number,
   fixed: string | boolean,
-  store: any,
-  realColumns?: TableColumnCtx<T>[]
+  store: Store,
+  realColumns?: TableColumnCtx[]
 ) => {
 
   const { direction, start = 0 } = isFixedColumn(
@@ -228,7 +228,10 @@ export const getFixedColumnOffset = <T>(
   }
 
   // styles
-  const styles: any = {};
+  const styles: {
+    left?: string;
+    right?: string;
+  } = {};
 
   // 左边
   const isLeft = direction === 'left';
@@ -252,7 +255,7 @@ export const getFixedColumnOffset = <T>(
 };
 
 // 偏移的位置
-function getOffset<T>(offset: number, column: TableColumnCtx<T>) {
+function getOffset(offset: number, column: TableColumnCtx) {
   return (
     offset +
     (column.columnWidth === null || Number.isNaN(column.columnWidth)
@@ -263,7 +266,7 @@ function getOffset<T>(offset: number, column: TableColumnCtx<T>) {
 
 
 // 设置定位位置
-export const ensurePosition = (style, key: string) => {
+export const ensurePosition = (style: Record<any, string>, key: string) => {
   if (!style) {
     return;
   }
@@ -275,9 +278,9 @@ export const ensurePosition = (style, key: string) => {
 
 
 // 修改当前行的状态
-export function toggleRowStatus<T>(
-  statusArr: T[],
-  row: T,
+export function toggleRowStatus(
+  statusArr: any[],
+  row: any,
   newVal: boolean
 ): boolean {
   let changed = false;
@@ -329,13 +332,13 @@ export const getCell = (event: Event) => {
 };
 
 // 单元格
-export const getColumnByCell = <T>(
+export const getColumnByCell = (
   table: {
-    columns: TableColumnCtx<T>[]
+    columns: TableColumnCtx[]
   },
   cell: HTMLElement,
   namespace: string
-): null | TableColumnCtx<T> => {
+): null | TableColumnCtx => {
 
   // 获取列id
   const matches = (cell.className || '').match(
@@ -351,15 +354,15 @@ export const getColumnByCell = <T>(
 };
 
 // 通过id寻找对应的列数据
-export const getColumnById = <T>(
+export const getColumnById = (
   // 列数组
   table: {
-    columns: TableColumnCtx<T>[]
+    columns: TableColumnCtx[]
   },
   // 列id
   columnId: string
-): null | TableColumnCtx<T> => {
-  let column: any = null;
+): null | TableColumnCtx => {
+  let column: TableColumnCtx = null;
 
   // 根据id获取当前列
   table.columns.forEach((item) => {
@@ -373,13 +376,13 @@ export const getColumnById = <T>(
 };
 
 // 通过key寻找对应的列数据
-export const getColumnByKey = function <T>(
+export const getColumnByKey = function (
   table: {
-    columns: TableColumnCtx<T>[]
+    columns: TableColumnCtx[]
   },
   columnKey: string
-): TableColumnCtx<T> {
-  let column: any = null;
+): TableColumnCtx {
+  let column: TableColumnCtx = null;
 
   for (let i = 0; i < table.columns.length; i++) {
     const item = table.columns[i];
@@ -461,7 +464,7 @@ export const createTablePopper = (
   // 渲染内容
   const content = renderContent();
 
-  let popperInstance: any = null;
+  let popperInstance = null;
 
   popperInstance = createPopper(trigger, content, {
     strategy: 'absolute',
@@ -514,12 +517,12 @@ export const createTablePopper = (
 
 
 // 排序数据
-export const orderBy = <T>(
-  array: T[],
+export const orderBy = (
+  array: any[],
   sortKey: string,
   reverse: string | number,
   sortMethod,
-  sortBy: string | (string | ((a: T, b: T, array?: T[]) => number))[]
+  sortBy: string | (string | ((a: any, b: any, array?: any[]) => number))[]
 ) => {
 
   // 没有排序的key 对应列内容的字段名
@@ -541,7 +544,7 @@ export const orderBy = <T>(
   }
 
   // 获取key
-  let getKey: any = null;
+  let getKey = null;
 
   // 没有自定义排序方法
   if (!sortMethod) {

@@ -3,23 +3,23 @@ import { inject } from 'vue';
 import { getFixedColumnsClass, getFixedColumnOffset, ensurePosition } from '../utils';
 
 // ts
-import type { TableHeaderProps } from './index';
+import type { TableHeaderProps } from './types';
 import type { TableColumnCtx } from '../table-column/defaults';
+import { TableContextKey } from '../table/defaults';
 
 const prefixCls = 'ivue-table';
 
-function useStyle<T>(props: TableHeaderProps<T>) {
+function useStyle(props: TableHeaderProps) {
   // inject
-  const IvueTable: any = inject(prefixCls);
+  const IvueTable = inject(TableContextKey);
 
   // 头部行样式
   const getHeaderCellStyle = (
     rowIndex: number,
     columnIndex: number,
-    row: T,
-    column: TableColumnCtx<T>
+    row: TableColumnCtx[],
+    column: TableColumnCtx
   ) => {
-
     let headerCellStyles = IvueTable?.props.headerCellStyle ?? {};
 
     if (typeof headerCellStyles === 'function') {
@@ -34,11 +34,11 @@ function useStyle<T>(props: TableHeaderProps<T>) {
     // fixedStyle
     const fixedStyle = column.isSubColumn
       ? null
-      : getFixedColumnOffset<T>(
+      : getFixedColumnOffset(
         columnIndex,
         column.fixed,
         props.store,
-        row as unknown as TableColumnCtx<T>[]
+        row
       );
 
     // 左边
@@ -53,19 +53,18 @@ function useStyle<T>(props: TableHeaderProps<T>) {
   const getHeaderCellClass = (
     rowIndex: number,
     columnIndex: number,
-    row: T,
-    column: TableColumnCtx<T>
+    row: TableColumnCtx[],
+    column: TableColumnCtx
   ) => {
-
     // 固定列样式
     const fixedClasses = column.isSubColumn
       ? []
-      : getFixedColumnsClass<T>(
+      : getFixedColumnsClass(
         prefixCls,
         columnIndex,
         column.fixed,
         props.store,
-        row as unknown as TableColumnCtx<T>[]
+        row
       );
 
     // class
@@ -122,7 +121,7 @@ function useStyle<T>(props: TableHeaderProps<T>) {
 
   // 表头行的 style 的回调方法
   const getHeaderRowStyle = (rowIndex: number) => {
-    const headerRowStyle = IvueTable?.props.headerRowStyle;
+    const headerRowStyle = IvueTable.props.headerRowStyle;
 
     // 方法
     if (typeof headerRowStyle === 'function') {
@@ -136,7 +135,7 @@ function useStyle<T>(props: TableHeaderProps<T>) {
   const getHeaderRowClass = (rowIndex: number): string => {
     const classes: string[] = [];
 
-    const headerRowClassName = IvueTable?.props.headerRowClassName;
+    const headerRowClassName = IvueTable.props.headerRowClassName;
 
     // 字符串
     if (typeof headerRowClassName === 'string') {

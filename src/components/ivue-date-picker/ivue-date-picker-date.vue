@@ -11,7 +11,7 @@ import {
     resolveDirective,
     VNode,
 } from 'vue';
-import Colorable from '../../utils/mixins/colorable';
+
 import MonthChange from '../../utils/month-change';
 import Touch from '../../utils/directives/touch';
 import CreateNativeLocaleFormatter from '../../utils/create-native-locale-formatter';
@@ -26,7 +26,6 @@ const prefixCls = 'ivue-date-picker-date';
 
 export default defineComponent({
     name: prefixCls,
-    mixins: [Colorable],
     directives: { Touch },
     // 声明事件
     emits: ['table-date', 'input'],

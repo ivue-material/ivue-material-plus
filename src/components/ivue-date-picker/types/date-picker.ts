@@ -1,9 +1,3 @@
-
-import type {
-  ComponentInternalInstance,
-  ComponentPublicInstance,
-} from 'vue';
-
 export interface Props {
   landscape?: boolean;
   headerColor?: string;
@@ -43,13 +37,4 @@ export interface Data {
   now: Date;
   activeType: string;
   tableDate: string;
-}
-
-interface _ComponentPublicInstance extends ComponentPublicInstance {
-  setBackgroundColor: (color: string | string[]) => any;
-  setTextColor: () => any
-}
-
-export interface _ComponentInternalInstance extends ComponentInternalInstance {
-  proxy: _ComponentPublicInstance | null;
 }

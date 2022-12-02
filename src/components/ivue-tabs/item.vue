@@ -1,6 +1,6 @@
 <template>
     <transition :name="computedTransition">
-        <div class="ivue-tabs-content" v-show="data.isActive" ref="content">
+        <div class="ivue-tabs-content" v-show="isActive" ref="content">
             <slot></slot>
         </div>
     </transition>
@@ -9,7 +9,6 @@
 <script lang='ts'>
 import {
     defineComponent,
-    reactive,
     onMounted,
     onBeforeUnmount,
     inject,
@@ -18,70 +17,66 @@ import {
     ref,
 } from 'vue';
 
+// type
+import { TabsContextKey } from './types/tabs';
+import type { Props } from './types/item';
+
 export default defineComponent({
     name: 'ivue-tab-item',
     props: {
+        /**
+         * 前进transition
+         *
+         * @type {String}
+         */
         transition: {
-            type: [Boolean, String],
+            type: String,
             default: 'tab-transition',
         },
+        /**
+         * 反向transition
+         *
+         * @type {String}
+         */
         reverseTransition: {
-            type: [Boolean, String],
+            type: String,
             default: 'tab-reverse-transition',
         },
     },
-    setup(props) {
-        // inject
-        const tabsGroup: any = inject('tabsGroup');
-
-        const content = ref(null);
-
+    setup(props: Props) {
         // vm
         const { proxy, uid } = getCurrentInstance();
 
+        // inject
+        const tabsGroup = inject(TabsContextKey);
+
         // data
-        const data: any = reactive<{
-            isActive: boolean;
-            reverse: boolean;
-            name: string | number;
-        }>({
-            /**
-             * 是否激活
-             *
-             * @type  {Boolean}
-             */
-            isActive: false,
-            /**
-             * 方向
-             *
-             * @type {Boolean}
-             */
-            reverse: false,
-            /**
-             * 当前 name
-             *
-             * @type {Number}
-             */
-            name: uid,
-        });
+        const content = ref<HTMLElement>(null);
+
+        // 是否激活
+        const isActive = ref<boolean>(false);
+        // 方向
+        const reverse = ref<boolean>(false);
+        // 当前 name
+        const name = ref<number>(uid);
 
         // computed
 
         const computedTransition = computed(() => {
-            return data.reverse ? props.reverseTransition : props.transition;
+            return reverse.value ? props.reverseTransition : props.transition;
         });
 
         // methods
 
         // 切换
         const handleToggle = (
-            isActive: boolean,
-            reverse: boolean,
-            showTransition
+            _isActive: boolean,
+            _reverse: boolean,
+            showTransition: boolean
         ) => {
-            data.reverse = reverse;
+            reverse.value = _reverse;
 
-            data.isActive = isActive;
+            isActive.value = _isActive;
 
             content.value.style.transition = !showTransition ? 'none' : null;
         };
@@ -94,7 +89,7 @@ export default defineComponent({
 
         // onBeforeUnmount
         onBeforeUnmount(() => {
-            tabsGroup.unregisterItems(data.name);
+            tabsGroup.unregisterItems(name.value);
         });
 
         return {
@@ -102,7 +97,7 @@ export default defineComponent({
             content,
 
             // data
-            data,
+            isActive,
 
             // computed
             computedTransition,

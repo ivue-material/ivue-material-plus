@@ -15,37 +15,38 @@ import {
 } from '../config';
 import { parseWidth, parseMinWidth } from '../utils';
 
-// ts
-import type { TableColumn, TableColumnCtx } from './defaults';
+// type
+import type { TableColumn, TableColumnCtx, ColumnParent } from './defaults';
+import type { Table, RenderRowData } from '../table/defaults';
 import type { ComputedRef } from 'vue';
 
 const prefixCls = 'ivue-table';
 
-function useRender<T>(
-  props: TableColumnCtx<T>,
+function useRender(
+  props: TableColumnCtx,
   slots,
-  parentDom: ComputedRef<any>
+  parentDom: ComputedRef<Table>
 ) {
-  const vm = getCurrentInstance() as TableColumn<T>;
+  const vm = getCurrentInstance() as TableColumn;
 
   // 列id
-  const columnId = ref('');
+  const columnId = ref<string>('');
   // 是否是嵌套的子列
-  const isSubColumn = ref(false);
+  const isSubColumn = ref<boolean>(false);
   // 对齐方向
   const align = ref<string>();
   // 表头对齐方式
   const headerAlign = ref<string>();
   // 对应列的宽度
-  const columnWidth = ref(parseWidth(props.width));
+  const columnWidth = ref<string | number>(parseWidth(props.width));
   // 对应列的最小宽度
-  const columnMinWidth = ref(parseMinWidth(props.minWidth));
+  const columnMinWidth = ref<string | number>(parseMinWidth(props.minWidth));
 
   // computed
 
   // 列的父级
   const columnParent = computed(() => {
-    let parent: any = vm.vnode.vParent || vm.parent;
+    let parent: ColumnParent = vm.vnode.vParent || vm.parent;
 
     // 没有表格id 没有列id
     while (parent && !parent.tableId && !parent.columnId) {
@@ -76,7 +77,7 @@ function useRender<T>(
   // 获取props值
   const getPropsData = (...propsKey: unknown[]) => {
 
-    return propsKey.reduce((prev: any, cur) => {
+    return propsKey.reduce((prev: TableColumnCtx, cur) => {
       // 数组
       if (Array.isArray(cur)) {
         cur.forEach((key) => {
@@ -89,7 +90,7 @@ function useRender<T>(
   };
 
   // 检查子列表
-  const checkSubColumn = (children: TableColumn<T> | TableColumn<T>[]) => {
+  const checkSubColumn = (children: TableColumn | TableColumn[]) => {
     // 数组
     if (Array.isArray(children)) {
       children.forEach((child) => check(child));
@@ -100,7 +101,7 @@ function useRender<T>(
     }
 
     // 检查是否是列表组件
-    function check(item: TableColumn<T>) {
+    function check(item: TableColumn) {
       if (item?.type?.name === `${prefixCls}-column`) {
         item.vParent = vm;
       }
@@ -108,7 +109,7 @@ function useRender<T>(
   };
 
   // 列渲染
-  const columnRender = (column: TableColumnCtx<T>) => {
+  const columnRender = (column: TableColumnCtx) => {
     // renderHeader 属性不推荐使用。
 
     // 不是多选框
@@ -149,8 +150,8 @@ function useRender<T>(
       originRenderCell = originRenderCell || defaultRenderCell;
 
       // 渲染行
-      column.renderCell = (data) => {
-        let children: any = null;
+      column.renderCell = (data: RenderRowData) => {
+        let children = null;
 
         // 有默认插槽
         if (slots.default) {
@@ -197,7 +198,7 @@ function useRender<T>(
   };
 
   // 设置列宽度
-  const setColumnWidth = (column: TableColumnCtx<T>) => {
+  const setColumnWidth = (column: TableColumnCtx) => {
     if (columnWidth.value) {
       column.width = columnWidth.value;
     }
@@ -221,7 +222,7 @@ function useRender<T>(
   };
 
   // 设置列 props
-  const setColumnProps = (column: TableColumnCtx<T>) => {
+  const setColumnProps = (column: TableColumnCtx) => {
 
     // 对应列的类型
     const type = column.type;
@@ -252,7 +253,7 @@ function useRender<T>(
 
 
   // 获取列节点index
-  const getColumnDomIndex = (children, el) => {
+  const getColumnDomIndex = (children: HTMLElement[], el) => {
     return Array.prototype.indexOf.call(children, el);
   };
 

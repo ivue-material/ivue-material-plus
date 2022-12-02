@@ -9,35 +9,41 @@ import {
 import { useResizeObserver, useEventListener } from '@vueuse/core';
 
 // ts
-import type { Table, TableProps } from './defaults';
+import type { Table, TableProps, RenderExpanded } from './defaults';
 import type TableLayout from '../table-layout';
 import type { Store } from '../store';
 
-function useStyle<T>(
-  props: TableProps<T>,
-  layout: TableLayout<T>,
-  store: Store<T>,
-  table: Table<T>
+function useStyle(
+  props: TableProps,
+  layout: TableLayout,
+  store: Store,
+  table: Table
 ) {
+  // 滚动组件样式
+  const scrollbarContentStyle = {
+    display: 'inline-block',
+    verticalAlign: 'middle',
+  };
+
   // data
 
   // 拖动中
-  const dragging = ref(false);
+  const dragging = ref<boolean>(false);
 
   // 是否可以展开
-  const renderExpanded = ref(null);
+  const renderExpanded = ref<RenderExpanded | null>(null);
 
   // 表格可滚动高度
-  const tableScrollHeight = ref(0);
+  const tableScrollHeight = ref<number>(0);
 
   // 中间内容的高度
-  const bodyScrollHeight = ref(0);
+  const bodyScrollHeight = ref<number>(0);
 
   // 表格头部滚动高度
-  const headerScrollHeight = ref(0);
+  const headerScrollHeight = ref<number>(0);
 
   // 表格底部滚动高度
-  const footerScrollHeight = ref(0);
+  const footerScrollHeight = ref<number>(0);
 
   // 表格缩放
   const resizeState = ref<{
@@ -51,16 +57,10 @@ function useStyle<T>(
   });
 
   // 表格宽度
-  const tableWidth = ref();
+  const tableWidth = ref<number>(0);
 
   // 是否拥有多级表头
-  const isGroup = ref(false);
-
-  // 滚动组件样式
-  const scrollbarContentStyle = {
-    display: 'inline-block',
-    verticalAlign: 'middle',
-  };
+  const isGroup = ref<boolean>(false);
 
 
   // computed

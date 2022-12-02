@@ -14,6 +14,8 @@ export interface Props {
   isActive: boolean;
   status: string;
   loading: boolean;
+  color?: string | any[];
+  textColor?: string;
 }
 
 export type Status =

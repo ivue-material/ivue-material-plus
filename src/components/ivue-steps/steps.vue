@@ -13,12 +13,13 @@ import {
     onMounted,
     watch,
     nextTick,
+    onBeforeMount,
 } from 'vue';
 
 import { oneOf } from '../../utils/assist';
 
-// types
-import { StepsContextKey, Props, Data } from './steps';
+// type
+import { StepsContextKey, Props, Data } from './types/steps';
 
 const prefixCls = 'ivue-steps';
 
@@ -204,8 +205,10 @@ export default defineComponent({
             })
         );
 
-        // 初始化数据
-        data.options = [];
+        onBeforeMount(() => {
+            // 初始化数据
+            data.options = [];
+        });
 
         // onMounted
         onMounted(() => {

@@ -76,13 +76,13 @@ Spin.newInstance = (props = {}) => {
   return {
     // 显示
     show() {
-      spin.data.visible = true;
+      spin.visible = true;
 
       tIndex = handleGetIndex();
     },
     // 删除
     remove(callback = () => { }) {
-      spin.data.visible = false;
+      spin.visible = false;
 
       setTimeout(() => {
         Instance.unmount();

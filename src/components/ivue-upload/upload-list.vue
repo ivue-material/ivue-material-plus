@@ -19,7 +19,7 @@
                     <!-- 加载中 -->
                     <div
                         :class="`${prefixCls}-mask__loading`"
-                        v-ivueloading="file.status === 'uploading'"
+                        v-ivue-loading="file.status === 'uploading'"
                         v-if="file.status === 'uploading'"
                     ></div>
                     <!-- 错误图标 -->
@@ -50,17 +50,20 @@
 
 <script lang='ts'>
 import { defineComponent, PropType } from 'vue';
-import Ivueloading from '../ivue-loading/directive';
+import IvueLoading from '../ivue-loading/directive';
 import IvueIcon from '../ivue-icon/index.vue';
 import { callInterceptor, Interceptor } from '../../utils/interceptor';
 import { isImageFile, getSizeStyle } from '../../utils/helpers';
+
+// type
+import { Props, File } from './types/upload-list';
 
 const prefixCls = 'ivue-upload-list';
 
 export default defineComponent({
     name: prefixCls,
     directives: {
-        Ivueloading,
+        IvueLoading,
     },
     props: {
         /**
@@ -69,7 +72,7 @@ export default defineComponent({
          * @type {Array}
          */
         files: {
-            type: Array,
+            type: Array as PropType<File[]>,
             default: () => [],
         },
         /**
@@ -114,11 +117,11 @@ export default defineComponent({
          */
         previewSize: [Number, String],
     },
-    setup(props: any, { emit }) {
+    setup(props: Props, { emit }) {
         // methods
 
         // 有删除
-        const isDeletable = (file) => {
+        const isDeletable = (file: File) => {
             // 自定义单个图片预览
             if (typeof file.deletable !== 'undefined') {
                 if (file.deletable && file.status !== 'uploading') {
@@ -132,7 +135,7 @@ export default defineComponent({
         };
 
         // 文件上传状态
-        const fileStatusClass = (file) => {
+        const fileStatusClass = (file: File) => {
             return [
                 `${prefixCls}-status`,
                 {
@@ -142,7 +145,7 @@ export default defineComponent({
         };
 
         // 获取当前状态
-        const currentStatus = (item) => {
+        const currentStatus = (item: File) => {
             const { status } = item;
 
             if (status === 'uploading' || status === 'failed') {
@@ -157,7 +160,7 @@ export default defineComponent({
         };
 
         // 删除按钮
-        const handleRemove = (file, index) => {
+        const handleRemove = (file: File, index: number) => {
             const item = file;
             const { name, beforeDelete } = props;
 
@@ -172,12 +175,12 @@ export default defineComponent({
         };
 
         // 返回文件数据
-        const handleFileData = (file) => {
+        const handleFileData = (file: File) => {
             emit('preview', file);
         };
 
         // 图片样式
-        const imgStyle = (file) => {
+        const imgStyle = (file: File) => {
             let obj = {};
 
             if (file.imageFit) {

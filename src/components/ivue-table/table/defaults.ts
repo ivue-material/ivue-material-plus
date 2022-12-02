@@ -4,76 +4,74 @@ import type {
   VNode,
   Ref,
   PropType,
-  CSSProperties
+  CSSProperties,
+  InjectionKey
 } from 'vue';
 import type { TableColumnCtx } from '../table-column/defaults';
 import type { Store } from '../store/index';
 import type TableLayout from '../table-layout';
 
-// 泛型
-export type DefaultRow = any
-
 // 列表行hover状态
-type HoverState<T> = NonNullable<{
+type HoverState = NonNullable<{
   cell: HTMLElement
-  column: TableColumnCtx<T>
-  row: T
+  column: TableColumnCtx
+  row: TableColumnCtx
 }>
 
 // 渲染可展开的按钮的内容
-type RenderExpanded<T> = ({
+type RenderExpanded = ({
   row,
   $index,
   store,
   expanded,
-}: Column<T>) => VNode
+}: Column) => VNode
 
 // 列表行
-type Column<T> = { row: T; $index: number; store: Store<T>; expanded: boolean }
+type Column = { row: TableColumnCtx; $index: number; store: Store; expanded: boolean }
 
 // 列表行样式
-type ColumnCls<T> = string | ((data: { row: T; rowIndex: number }) => string)
+type ColumnCls = string | ((data: { row: TableColumnCtx; rowIndex: number }) => string)
 
-type ColumnStyle<T> =
+type ColumnStyle =
   | CSSProperties
-  | ((data: { row: T; rowIndex: number }) => CSSProperties)
+  | ((data: { row: TableColumnCtx; rowIndex: number }) => CSSProperties)
 
 
 // 自定义的合计计算方法
-type SummaryMethod<T> = (data: {
-  columns: TableColumnCtx<T>[]
-  data: T[]
+type SummaryMethod = (data: {
+  columns: TableColumnCtx[]
+  data: any[]
 }) => string[]
 
 // 设置表格单元、行和列的布局方式
 type Layout = 'fixed' | 'auto'
 
-type CellStyle<T> =
+type CellStyle =
   | CSSProperties
   | ((data: {
-    row: T
+    row: TableColumnCtx
     rowIndex: number
-    column: TableColumnCtx<T>
+    column: TableColumnCtx
     columnIndex: number
   }) => CSSProperties)
 
-type CellCls<T> =
+type CellCls =
   | string
   | ((data: {
-    row: T
+    row: TableColumnCtx
     rowIndex: number
-    column: TableColumnCtx<T>
+    column: TableColumnCtx
     columnIndex: number
   }) => string)
 
 // refs
 interface TableRefs {
-  tableWrapper: HTMLElement
-  headerWrapper: HTMLElement
-  footerWrapper: HTMLElement
-  fixedBodyWrapper: HTMLElement
-  rightFixedBodyWrapper: HTMLElement
-  bodyWrapper: HTMLElement
+  tableWrapper?: HTMLElement
+  headerWrapper?: HTMLElement
+  footerWrapper?: HTMLElement
+  fixedBodyWrapper?: HTMLElement
+  rightFixedBodyWrapper?: HTMLElement
+  bodyWrapper?: HTMLElement
   [key: string]: any
 }
 
@@ -89,13 +87,13 @@ interface TreeNode {
 
 
 // 渲染行数据
-interface RenderRowData<T> {
+interface RenderRowData {
   treeNode?: TreeNode
-  store: Store<T>
-  _self: Table<T>
+  store: Store
+  _self: Table
   expanded: boolean
-  column: TableColumnCtx<T>
-  row: T
+  column: TableColumnCtx
+  row: TableColumnCtx
   $index: number
   cellIndex: number
 }
@@ -104,51 +102,53 @@ interface RenderRowData<T> {
 interface TableState {
   isGroup: Ref<boolean>
   resizeState: Ref<{
-    width: any
-    height: any
+    width: null | number
+    height: null | number
   }>
   updateLayout: () => void
   debouncedUpdateLayout: () => void
 }
 
 // 过滤
-interface Filter<T> {
-  column: TableColumnCtx<T>
+interface Filter {
+  column: TableColumnCtx
   values: string[]
-  silent: any
+  silent: boolean
 }
 
 
 interface Sort {
   prop: string
   order: 'ascending' | 'descending'
-  init?: any
-  silent?: any
+  init?: boolean
+  silent?: boolean
 }
 
 // 表格 data
-interface Table<T> extends ComponentInternalInstance {
+interface Table extends ComponentInternalInstance {
   // onMounted 是否渲染完成
-  $ready: boolean
+  $ready?: boolean
   // 列表行hover状态
-  hoverState?: HoverState<T> | null
+  hoverState?: HoverState | null
   // 渲染可展开的按钮的内容
-  renderExpanded: RenderExpanded<T>
+  renderExpanded?: RenderExpanded
   // store
-  store: Store<T>
+  store?: Store
   // layout
-  layout: TableLayout<T>
+  layout?: TableLayout
   // refs
   refs: TableRefs
   // id
-  tableId: string
+  tableId?: string
+  // 行id
+  columnId?: string
   // 表格状态
-  state: TableState,
+  state?: TableState
 }
 
 // 表格 props
-interface TableProps<T> {
-  data: T[]
+interface TableProps {
+  data: any[]
   // 列的宽度是否自撑开
   fit?: boolean
   // 是否带有纵向边框
@@ -164,7 +164,7 @@ interface TableProps<T> {
     children?: string
   },
   // 行数据的 Key
-  rowKey?: string | ((row: T) => string)
+  rowKey?: string | ((row: TableColumnCtx) => string)
   // 是否默认展开所有行，当 Table 包含展开行存在或者为树形表格时有效
   defaultExpandAll?: boolean
   // 在多选表格中，当仅有部分行被选中时，点击表头的多选框时的行为。
@@ -182,28 +182,28 @@ interface TableProps<T> {
   // 它的 prop 属性指定默认的排序的列，order 指定默认排序的顺序
   defaultSort?: Sort
   // 内容
-  context?: Table<T>
+  context?: Table
   // 是否为斑马纹 table
   stripe?: boolean
   // 行的 className 的回调方法，也可以使用字符串为所有行设置一个固定的 className。
-  rowClassName?: ColumnCls<T>
+  rowClassName?: ColumnCls
   // 行的 style 的回调方法，也可以使用一个固定的 Object 为所有行设置一样的 Style
-  rowStyle?: ColumnStyle<T>
+  rowStyle?: ColumnStyle
   // 是否要高亮当前行
   highlightCurrentRow?: boolean,
   // 以通过该属性设置 Table 目前的展开行
   expandRowKeys?: any[],
   // 加载子节点数据的函数
-  load?: (row: T, treeNode: TreeNode, resolve: (data: T[]) => void) => void
+  load?: (row: TableColumnCtx, treeNode: TreeNode, resolve: (data: any[]) => void) => void
   // 合计行第一列的文本
   sumText?: string
   // 自定义的合计计算方法
-  summaryMethod?: SummaryMethod<T>
+  summaryMethod?: SummaryMethod
   // 合并行或列的计算方法
   spanMethod?: (data: {
-    row: T
+    row: TableColumnCtx
     rowIndex: number
-    column: TableColumnCtx<T>
+    column: TableColumnCtx
     columnIndex: number
   }) =>
     | number[]
@@ -213,24 +213,27 @@ interface TableProps<T> {
     }
     | undefined
   // 表头单元格的 style 的回调方法，也可以使用一个固定的 Object 为所有表头单元格设置一样的 Style
-  headerCellStyle?: CellStyle<T>
+  headerCellStyle?: CellStyle
   // 表头单元格的 className 的回调方法，也可以使用字符串为所有表头单元格设置一个固定的 className
-  headerCellClassName?: CellCls<T>
+  headerCellClassName?: CellCls
   // 表头行的 style 的回调方法，也可以使用一个固定的 Object 为所有表头行设置一样的 Style
-  headerRowStyle?: ColumnStyle<T>
+  headerRowStyle?: ColumnStyle
   // 表头行的 className 的回调方法
-  headerRowClassName?: ColumnCls<T>
+  headerRowClassName?: ColumnCls
   // 单元格的 style 的回调方法
-  cellStyle?: CellStyle<T>
+  cellStyle?: CellStyle
   // 单元格的 className 的回调方法
-  cellClassName?: CellCls<T>
+  cellClassName?: CellCls
 }
 
 // 行样式
-type rowClass<T> = string | ((data: { row: T; rowIndex: number }) => string)
+type rowClass = string | ((data: { row: TableColumnCtx; rowIndex: number }) => string)
 
 // 行的 style 的回调方法，也可以使用一个固定的 Object 为所有行设置一样的 Style。
-type rowStyle<T> = | CSSProperties | ((data: { row: T; rowIndex: number }) => CSSProperties)
+type rowStyle = | CSSProperties | ((data: { row: TableColumnCtx; rowIndex: number }) => CSSProperties)
+
+export const TableContextKey: InjectionKey<Table> =
+  Symbol('ivue-table');
 
 export default {
   /**
@@ -239,7 +242,7 @@ export default {
    * @type {Array}
    */
   data: {
-    type: Array as PropType<DefaultRow[]>,
+    type: Array as PropType<TableColumnCtx[]>,
     default: () => {
       return [];
     },
@@ -301,7 +304,7 @@ export default {
    * @type {Object}
    */
   treeProps: {
-    type: Object as PropType<TableProps<DefaultRow>['treeProps']>,
+    type: Object as PropType<TableProps['treeProps']>,
     default: () => {
       return {
         hasChildren: 'hasChildren',
@@ -314,7 +317,7 @@ export default {
    *
    * @type {String, Function}
    */
-  rowKey: [String, Function] as PropType<TableProps<DefaultRow>['rowKey']>,
+  rowKey: [String, Function] as PropType<TableProps['rowKey']>,
   /**
    * 是否默认展开所有行，当 Table 包含展开行存在或者为树形表格时有效
    *
@@ -379,7 +382,7 @@ export default {
    * @type {object}
    */
   defaultSort: {
-    type: Object as PropType<TableProps<DefaultRow>['defaultSort']>,
+    type: Object as PropType<TableProps['defaultSort']>,
   },
   /**
    * 提示
@@ -414,7 +417,7 @@ export default {
    * @type {String | Function}
    */
   rowClassName: {
-    type: [String, Function] as PropType<TableProps<DefaultRow>['rowClassName']>,
+    type: [String, Function] as PropType<TableProps['rowClassName']>,
   },
   /**
    * 行的 style 的回调方法，也可以使用一个固定的 Object 为所有行设置一样的 Style。
@@ -422,7 +425,7 @@ export default {
    * @type {Object, Function}
    */
   rowStyle: {
-    type: [Object, Function] as PropType<TableProps<DefaultRow>['rowStyle']>,
+    type: [Object, Function] as PropType<TableProps['rowStyle']>,
   },
   /**
    * 是否要高亮当前行
@@ -439,7 +442,7 @@ export default {
    * @type {Array}
    */
   expandRowKeys: {
-    type: Array as PropType<TableProps<DefaultRow>['expandRowKeys']>,
+    type: Array as PropType<TableProps['expandRowKeys']>,
   },
   /**
    * 加载子节点数据的函数
@@ -447,7 +450,7 @@ export default {
    * @type {Function}
    */
   load: {
-    type: Function as PropType<TableProps<DefaultRow>['load']>
+    type: Function as PropType<TableProps['load']>
   },
   /**
    * 合计行第一列的文本
@@ -464,7 +467,7 @@ export default {
    * @type {Function}
    */
   summaryMethod: {
-    type: Function as PropType<TableProps<DefaultRow>['summaryMethod']>,
+    type: Function as PropType<TableProps['summaryMethod']>,
   },
   /**
    * 合并行或列的计算方法
@@ -472,7 +475,7 @@ export default {
    * @type {Function}
    */
   spanMethod: {
-    type: Function as PropType<TableProps<DefaultRow>['spanMethod']>
+    type: Function as PropType<TableProps['spanMethod']>
   },
   /**
    * 表头单元格的 style 的回调方法，
@@ -481,7 +484,7 @@ export default {
    * @type {Object, Function}
    */
   headerCellStyle: {
-    type: [Object, Function] as PropType<TableProps<DefaultRow>['headerCellStyle']>,
+    type: [Object, Function] as PropType<TableProps['headerCellStyle']>,
   },
   /**
    * 表头单元格的 className 的回调方法，
@@ -490,7 +493,7 @@ export default {
    * @type {String, Function}
    */
   headerCellClassName: {
-    type: [String, Function] as PropType<TableProps<DefaultRow>['headerCellClassName']>,
+    type: [String, Function] as PropType<TableProps['headerCellClassName']>,
   },
   /**
    * 表头行的 style 的回调方法，
@@ -499,7 +502,7 @@ export default {
    * @type {Object, Function}
    */
   headerRowStyle: {
-    type: [Object, Function] as PropType<TableProps<DefaultRow>['headerRowStyle']>
+    type: [Object, Function] as PropType<TableProps['headerRowStyle']>
   },
   /**
    * 表头行的 className 的回调方法
@@ -507,7 +510,7 @@ export default {
    * @type {String, Function}
    */
   headerRowClassName: {
-    type: [String, Function] as PropType<TableProps<DefaultRow>['headerRowClassName']>,
+    type: [String, Function] as PropType<TableProps['headerRowClassName']>,
   },
   /**
    * 单元格的 style 的回调方法
@@ -515,7 +518,7 @@ export default {
    * @type {Object, Function}
    */
   cellStyle: {
-    type: [Object, Function] as PropType<TableProps<DefaultRow>['cellStyle']>,
+    type: [Object, Function] as PropType<TableProps['cellStyle']>,
   },
   /**
    * 单元格的 className 的回调方法
@@ -523,7 +526,7 @@ export default {
    * @type {String, Function}
    */
   cellClassName: {
-    type: [String, Function] as PropType<TableProps<DefaultRow>['cellClassName']>,
+    type: [String, Function] as PropType<TableProps['cellClassName']>,
   }
 };
 
@@ -537,5 +540,7 @@ export type {
   rowStyle,
   ColumnCls,
   Filter,
-  SummaryMethod
+  SummaryMethod,
+  TableRefs,
+  RenderExpanded
 };

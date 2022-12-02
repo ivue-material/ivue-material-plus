@@ -3,7 +3,8 @@ import { hasOwn } from '@vue/shared';
 
 // ts
 import type { ComputedRef } from 'vue';
-import type { TableColumnCtx, TableColumn, ValueOf } from './defaults';
+import type { TableColumn, TableColumnCtx } from './defaults';
+import type { Table } from '../table/defaults';
 import { parseWidth, parseMinWidth } from '../utils';
 
 
@@ -16,13 +17,12 @@ function getAllAliases(props, aliases) {
 }
 
 // useWatcher
-function useWatcher<T>(
-  parentDom: ComputedRef<any>,
-  _props: any
+function useWatcher(
+  parentDom: ComputedRef<Table>,
+  _props: TableColumnCtx
 ) {
-
   // vm
-  const vm = getCurrentInstance() as TableColumn<T>;
+  const vm = getCurrentInstance() as TableColumn;
 
   // 注册复杂观察者
   const registerComplexWatchers = () => {
@@ -50,7 +50,7 @@ function useWatcher<T>(
         watch(
           () => _props[columnKey],
           (newVal) => {
-            let value: ValueOf<TableColumnCtx<T>> = newVal;
+            let value: string | number = newVal;
 
             // 对应列的宽度
             if (columnKey === 'width' && key === 'columnWidth') {
@@ -63,7 +63,7 @@ function useWatcher<T>(
             }
 
             // 修改 width ｜ minWidth 时触发
-            vm.columnConfig.value[columnKey as any] = value;
+            vm.columnConfig.value[columnKey as string] = value;
 
             // 更新其他props值
             vm.columnConfig.value[key] = value;
@@ -112,7 +112,7 @@ function useWatcher<T>(
         watch(
           () => _props[columnKey],
           (newVal) => {
-            // 更新行的porps
+            // 更新行的 props
             vm.columnConfig.value[key] = newVal;
           }
         );

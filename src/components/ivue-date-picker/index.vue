@@ -5,10 +5,9 @@ import {
     computed,
     watch,
     h,
-    getCurrentInstance,
 } from 'vue';
 
-import Colorable from '../../utils/mixins/colorable';
+import { colorable } from '../../utils/mixins/colorable';
 import CreateNativeLocaleFormatter from '../../utils/create-native-locale-formatter';
 import Pad from '../../utils/pad';
 import isDateAllowed from '../../utils/is-date-allowed';
@@ -21,11 +20,10 @@ import IvueDatePickerMonth from './ivue-date-picker-month.vue';
 import IvueDatePickerYears from './ivue-date-picker-years.vue';
 
 // type
-import { Props, _ComponentInternalInstance, Data } from './types/date-picker';
+import { Props, Data } from './types/date-picker';
 
 export default defineComponent({
     name: 'ivue-date-picker',
-    mixins: [Colorable],
     emits: ['update:modelValue', 'update:pickerDate', 'change'],
     props: {
         /**
@@ -257,8 +255,8 @@ export default defineComponent({
         },
     },
     setup(props: Props, { emit }) {
-        // 支持访问内部组件实例
-        const { proxy } = getCurrentInstance() as _ComponentInternalInstance;
+        // mixins
+        const { setBackgroundColor, setTextColor } = colorable(props);
 
         // data
         const data = reactive<Data>({
@@ -644,8 +642,8 @@ export default defineComponent({
                 readonly: props.readonly,
                 current: current.value,
                 format: props.dayFormat,
-                backgroundColor: proxy.setBackgroundColor,
-                textColor: proxy.setTextColor,
+                backgroundColor: setBackgroundColor,
+                textColor: setTextColor,
                 note: props.note,
                 noteColor: props.noteColor,
                 color: props.color,
@@ -673,8 +671,8 @@ export default defineComponent({
                     : null,
                 activeType: data.activeType,
                 format: props.monthFormat,
-                backgroundColor: proxy.setBackgroundColor,
-                textColor: proxy.setTextColor,
+                backgroundColor: setBackgroundColor,
+                textColor: setTextColor,
                 onInput: monthClick,
                 onTableDate: (value: string) => (data.tableDate = value),
             });
@@ -695,8 +693,8 @@ export default defineComponent({
                 current: current.value,
                 activeType: data.activeType,
                 year: `${data.inputYear}`,
-                backgroundColor: proxy.setBackgroundColor,
-                textColor: proxy.setTextColor,
+                backgroundColor: setBackgroundColor,
+                textColor: setTextColor,
                 onInput: yearClick,
                 onTableDate: (value: string) => (data.tableDate = value),
             });

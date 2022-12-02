@@ -1,6 +1,6 @@
 import { inject } from 'vue';
 
-import type { TableFooter } from './index';
+import type { TableFooter } from './types';
 
 import {
   ensurePosition,
@@ -10,11 +10,12 @@ import {
 
 // ts
 import type { TableColumnCtx } from '../table-column/defaults';
+import {  TableContextKey } from '../table/defaults';
 
 const prefixCls = 'ivue-table';
 
-function useStyle<T>(props: TableFooter<T>) {
-  const table: any = inject(prefixCls);
+function useStyle(props: TableFooter) {
+  const table = inject(TableContextKey);
 
   const store = table.store;
 
@@ -22,7 +23,7 @@ function useStyle<T>(props: TableFooter<T>) {
   const columns = store.states.columns;
 
   // class
-  const getCellClass = (columns: TableColumnCtx<T>[], cellIndex: number) => {
+  const getCellClass = (columns: TableColumnCtx[], cellIndex: number) => {
     const column = columns[cellIndex];
 
     const classes = [
@@ -50,7 +51,7 @@ function useStyle<T>(props: TableFooter<T>) {
   };
 
   // styles
-  const getCellStyle = (column: TableColumnCtx<T>, cellIndex: number) => {
+  const getCellStyle = (column: TableColumnCtx, cellIndex: number) => {
     const fixedStyle = getFixedColumnOffset(
       cellIndex,
       column.fixed,

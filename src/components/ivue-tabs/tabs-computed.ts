@@ -1,6 +1,9 @@
 import { computed } from 'vue';
 
-export default (props, data) => {
+// type
+import { Props, Data } from './types/tabs';
+
+export default (props: Props, data: Data) => {
       // 是否有箭头
       const hasArrows = computed((): boolean => {
             return props.showArrows && data.isOverflowing;
@@ -14,7 +17,7 @@ export default (props, data) => {
             const regexp = new RegExp(/[a-zA-Z]/g);
 
             // 是否有单位
-            const isUnit = regexp.test(height);
+            const isUnit = regexp.test(`${height}`);
 
             return {
                   height: !isUnit ? `${height}px` : height,

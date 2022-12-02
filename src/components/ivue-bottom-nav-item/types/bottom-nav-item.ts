@@ -1,10 +1,12 @@
 import type { InjectionKey } from 'vue';
-import type { BottomNavItemContext } from '../../ivue-bottom-nav/types/bottom-nav';
+import type BottomNavItem from './index.vue';
+
+export type BottomNavItemInstance = InstanceType<typeof BottomNavItem>
 
 export type BottomNavContext = {
-  updateValue: (value: number | string) => void
-  addItem: (item: BottomNavItemContext) => void
-  removeItem: (uid: number | undefined) => void
+  updateValue: (value: number | string) => void;
+  addItem: (item: BottomNavItemInstance) => void;
+  removeItem: (uid: number | undefined) => void;
 }
 
 export const BottomNavContextKey: InjectionKey<BottomNavContext> =
@@ -13,6 +15,8 @@ export const BottomNavContextKey: InjectionKey<BottomNavContext> =
 
 export interface Props {
   name: number | string;
+  color?: string | any[];
+  textColor?: string;
 }
 
 

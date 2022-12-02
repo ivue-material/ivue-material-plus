@@ -11,8 +11,8 @@ export interface Props {
   readonly?: boolean;
   format?: any;
   backgroundColor?: any;
-  textColor?: any;
   note?: any[] | any;
   noteColor?: any;
   color: string | any[];
+  textColor?: any;
 }

@@ -9,16 +9,13 @@ import Loading from './loading.vue';
 // ts
 import type { VNode } from 'vue';
 import type { TableColumnCtx } from './table-column/defaults';
-import type { TreeNode } from './table/defaults';
+import type { RenderRowData } from './table/defaults';
 import type { Store } from './store';
 
 const defaultClassNames = {
   selection: 'ivue-table-column--selection',
   expand: 'ivue-table--expand-column',
 };
-
-
-export type ArrayTable<T> = T | T[]
 
 // 行样式
 export const cellStyles = {
@@ -44,7 +41,6 @@ export const cellStyles = {
     order: '',
   },
 };
-
 
 // 合并选项
 export function mergeOptions<T, K>(defaults: T, config: K): T & K {
@@ -87,13 +83,13 @@ export function compose(...funcs) {
 }
 
 // 渲染行
-export function defaultRenderCell<T>({
+export function defaultRenderCell({
   row,
   column,
   $index,
 }: {
-  row: Record<string, any>
-  column: TableColumnCtx<T>
+  row: any
+  column: TableColumnCtx
   $index: number
 }) {
   // 字段名称 对应列内容的字段名
@@ -110,11 +106,11 @@ export function defaultRenderCell<T>({
 }
 
 // 获取props
-export const getProp = <T = any>(
-  obj: Record<string, any>,
-  path: ArrayTable<string>,
+export const getProp = (
+  obj: any,
+  path: any,
   defaultValue?: any
-): { value: T } => {
+): { value } => {
   return {
     get value() {
       return get(obj, path, defaultValue);
@@ -127,16 +123,12 @@ export const getProp = <T = any>(
 
 
 // 列
-export function treeCellPrefix<T>(
+export function treeCellPrefix(
   {
     row,
     treeNode,
     store,
-  }: {
-    row: T
-    treeNode: TreeNode
-    store: Store<T>
-  },
+  }: RenderRowData,
   createPlaceholder = false
 ) {
 
@@ -239,7 +231,7 @@ export const cellForced = {
   // 多选
   selection: {
     // 渲染头部
-    renderHeader<T>({ store }: { store: Store<T> }) {
+    renderHeader({ store }: { store: Store }) {
       return h(IvueCheckbox, {
         // 没有数据禁用
         disabled: store.states.data.value && store.states.data.value.length === 0,
@@ -256,15 +248,15 @@ export const cellForced = {
       });
     },
     // 渲染单元格
-    renderCell<T>({
+    renderCell({
       row,
       column,
       store,
       $index
     }: {
-      row: T
-      column: TableColumnCtx<T>
-      store: Store<T>
+      row: any
+      column: TableColumnCtx
+      store: Store
       $index: string
     }) {
       return h(IvueCheckbox, {
@@ -287,12 +279,12 @@ export const cellForced = {
   // 索引
   index: {
     // 渲染头部
-    renderHeader<T>({ column }: { column: TableColumnCtx<T> }) {
+    renderHeader({ column }: { column: TableColumnCtx }) {
       return column.label || '#';
     },
     // 渲染单元格
-    renderCell<T>({ column, $index, }: {
-      column: TableColumnCtx<T>
+    renderCell({ column, $index, }: {
+      column: TableColumnCtx
       $index: number
     }) {
       let i = $index + 1;
@@ -313,17 +305,17 @@ export const cellForced = {
   },
   expand: {
     // 渲染头部
-    renderHeader<T>({ column }: { column: TableColumnCtx<T> }) {
+    renderHeader({ column }: { column: TableColumnCtx }) {
       return column.label || '';
     },
-    renderCell<T>({
+    renderCell({
       row,
       store,
       expanded,
     }: {
-      row: T
-      store: Store<T>
-      expanded: boolean
+      row: TableColumnCtx;
+      store: Store;
+      expanded: boolean;
     }) {
       // 切换展开
       const handleToggleRowExpansion = (event: Event) => {

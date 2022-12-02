@@ -19,7 +19,6 @@
 import {
     defineComponent,
     computed,
-    getCurrentInstance,
     onMounted,
     reactive,
     ref,
@@ -27,18 +26,17 @@ import {
     nextTick,
     onUpdated,
 } from 'vue';
-import Colorable from '../../utils/mixins/colorable';
+import { colorable } from '../../utils/mixins/colorable';
 import { oneOf } from '../../utils/assist';
 import IvueIcon from '../ivue-icon/index.vue';
 
 // type
-import type { Props, Data, _ComponentInternalInstance } from './types/avatar';
+import type { Props, Data } from './types/avatar';
 
 const prefixCls = 'ivue-avatar';
 
 export default defineComponent({
     name: prefixCls,
-    mixins: [Colorable],
     emits: ['on-error'],
     props: {
         /**
@@ -78,10 +76,19 @@ export default defineComponent({
         size: {
             type: [Number, String],
         },
+        /**
+         * 颜色
+         *
+         * @type {String | Array}
+         */
+        color: {
+            type: [String, Array],
+            default: '',
+        },
     },
     setup(props: Props, { emit, slots }) {
-        // 当前实例
-        const { proxy } = getCurrentInstance() as _ComponentInternalInstance;
+        // mixins
+        const { setBackgroundColor } = colorable(props);
 
         // dom
         const text = ref<HTMLDivElement>();
@@ -113,7 +120,7 @@ export default defineComponent({
 
         // 外层样式
         const wrapperClasses = computed(() => {
-            const _class = proxy.setBackgroundColor(props.color).class;
+            const _class = setBackgroundColor(props.color).class;
 
             return [
                 prefixCls,
@@ -126,7 +133,7 @@ export default defineComponent({
 
         // 外层样式
         const wrapperStyles = computed(() => {
-            const _style = proxy.setBackgroundColor(props.color).style;
+            const _style = setBackgroundColor(props.color).style;
 
             // 大小
             let sizeStyle = {};

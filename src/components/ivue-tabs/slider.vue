@@ -7,7 +7,10 @@
 <script lang='ts'>
 import { defineComponent, computed } from 'vue';
 
-function isCssColor(color) {
+// type
+import { Props } from './types/slider';
+
+function isCssColor(color: string) {
     return !!color && !!color.match(/^(#|(rgb|hsl)a?\()/);
 }
 
@@ -17,10 +20,10 @@ export default defineComponent({
         /**
          * 颜色
          *
-         * @type {String | Array}
+         * @type {String}
          */
         color: {
-            type: [String, Array],
+            type: String,
             default: '',
         },
         /**
@@ -42,15 +45,15 @@ export default defineComponent({
             default: 0,
         },
     },
-    setup(props: any) {
+    setup(props: Props) {
         // computed
 
         const sliderWrapperStyles = computed(() => {
             const regexp = new RegExp(/[a-zA-Z]/g);
 
             // 是否有单位
-            const isUnitSliderLeft = regexp.test(props.sliderLeft);
-            const isUnitSliderWidth = regexp.test(props.sliderWidth);
+            const isUnitSliderLeft = regexp.test(`${props.sliderLeft}`);
+            const isUnitSliderWidth = regexp.test(`${props.sliderWidth}`);
 
             return {
                 left: !isUnitSliderLeft
@@ -66,7 +69,7 @@ export default defineComponent({
         const sliderClasses = computed(() => {
             return {
                 'ivue-tabs-slider': true,
-                [props.color]: !isCssColor(props.color),
+                [`${props.color}`]: !isCssColor(props.color),
             };
         });
 
@@ -82,7 +85,6 @@ export default defineComponent({
 
             return style;
         });
-
 
         return {
             // computed

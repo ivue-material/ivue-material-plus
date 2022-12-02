@@ -1,8 +1,4 @@
-import type {
-  ComponentPublicInstance
-} from 'vue';
-
-export type BottomNavItemContext = ComponentPublicInstance | null;
+import type { BottomNavItemInstance } from '../../ivue-bottom-nav-item/types/bottom-nav-item';
 
 export interface Props {
   modelValue: number | string;
@@ -11,4 +7,10 @@ export interface Props {
   position: string;
   shift: boolean;
   scale: boolean;
+  color?: string | any[];
+  textColor?: string;
+}
+
+export interface Data {
+  items: BottomNavItemInstance[];
 }

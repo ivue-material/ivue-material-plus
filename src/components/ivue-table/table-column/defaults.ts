@@ -1,11 +1,11 @@
 
 import type { VNode, ComponentInternalInstance, Ref, PropType } from 'vue';
-import type { Table, DefaultRow } from '../table/defaults';
+import type { Table, TableRefs } from '../table/defaults';
 
 // 插槽内容 slots
-type SlotsContent<T> = { column: TableColumnCtx<T>; $index: number }
+type SlotsContent = { column: TableColumnCtx; $index: number }
 
-type FilterMethods<T> = (value, row: T, column: TableColumnCtx<T>) => void
+type FilterMethods = (value, row: any, column: TableColumnCtx) => void
 
 // 数据过滤的选项
 // 数组格式，数组中的元素需要有 text 和 value 属性。 数组中的每个元素都需要有 text 和 value 属性。
@@ -15,17 +15,14 @@ type Filters = {
   value: string
 }[]
 
-// ValueOf
-type ValueOf<T> = T[keyof T]
-
 // 列参数
-interface TableColumnCtx<T> {
+interface TableColumnCtx {
   id: string
   prop: string
   label: string
   width: string | number
   minWidth: string | number
-  children?: TableColumnCtx<T>[]
+  children?: TableColumnCtx[]
   isSubColumn: boolean,
   type: string
   sortable: boolean | string
@@ -34,17 +31,17 @@ interface TableColumnCtx<T> {
   headerAlign: string
   showOverflowTooltip: boolean
   filters: Filters
-  filterMethod: FilterMethods<T>
+  filterMethod: FilterMethods
   filterValue: string[]
   filterPlacement: string
   filterOpened?: boolean
   index: number | ((index: number) => number)
   rawColumnKey: string
-  renderHeader: (data: SlotsContent<T>) => VNode
+  renderHeader: (data: SlotsContent) => VNode
   renderCell: (data: any) => void
   formatter: (
     row: Record<string, any>,
-    column: TableColumnCtx<T>,
+    column: TableColumnCtx,
     cellValue,
     index: number
   ) => VNode | string,
@@ -58,30 +55,42 @@ interface TableColumnCtx<T> {
   colSpan: number
   order: string | null
   labelClassName: string
-  columns: TableColumnCtx<T>[]
+  columns: TableColumnCtx[]
   resizable: boolean
-  selectable: (row: T, index: number | string) => boolean
+  selectable: (row: any, index: number | string) => boolean
   reserveSelection: boolean
   sortOrders: ('ascending' | 'descending' | null)[]
-  sortBy: string | ((row: T, index: number) => string) | string[]
-  sortMethod: (a: T, b: T) => number
+  sortBy: string | ((row: any, index: number) => string) | string[]
+  sortMethod: (a: any, b: any) => number
   columnKey: string,
-  filterable: boolean | FilterMethods<T> | Filters
+  filterable: boolean | FilterMethods | Filters
   filterMultiple: boolean
   filteredValue: string[]
 }
 
 // 列节点内容
-interface TableColumn<T> extends ComponentInternalInstance {
+interface TableColumn extends ComponentInternalInstance {
   vnode: {
-    vParent: TableColumn<T> | Table<T>
+    vParent: TableColumn | Table
   } & VNode
-  vParent: TableColumn<T> | Table<T>
+  vParent: TableColumn | Table
   columnId: string
-  columnConfig: Ref<Partial<TableColumnCtx<T>>>
+  columnConfig: Ref<Partial<TableColumnCtx>>
 }
 
-export type { TableColumnCtx, TableColumn, ValueOf };
+
+interface ColumnParent {
+  columnConfig?: Ref<Partial<TableColumnCtx>>;
+  tableId?: string;
+  vnode?: {
+    vParent?: TableColumn | Table
+  } & VNode;
+  parent?: Table;
+  refs?: TableRefs;
+  columnId?: string;
+}
+
+export type { TableColumnCtx, TableColumn, ColumnParent };
 
 export default {
   /**
@@ -183,7 +192,7 @@ export default {
    * @type {Array}
    */
   filters: {
-    type: Array as PropType<TableColumnCtx<DefaultRow>['filters']>,
+    type: Array as PropType<TableColumnCtx['filters']>,
   },
   /**
    * 数据过滤使用的方法
@@ -194,7 +203,7 @@ export default {
    * @type {Function}
    */
   filterMethod: {
-    type: Function as PropType<TableColumnCtx<DefaultRow>['filterMethod']>,
+    type: Function as PropType<TableColumnCtx['filterMethod']>,
   },
   /**
    * 选中的数据过滤项
@@ -204,7 +213,7 @@ export default {
    * @type {Array}
    */
   filterValue: {
-    type: Array as PropType<TableColumnCtx<DefaultRow>['filterValue']>,
+    type: Array as PropType<TableColumnCtx['filterValue']>,
   },
   /**
   * 过滤弹出框的定位
@@ -221,7 +230,7 @@ export default {
    * @type {Number, Function}
    */
   index: {
-    type: [Number, Function] as PropType<TableColumnCtx<DefaultRow>['index']>,
+    type: [Number, Function] as PropType<TableColumnCtx['index']>,
   },
   /**
    * 列标题 Label 区域渲染使用的 Function
@@ -229,7 +238,7 @@ export default {
    * @type {Function}
    */
   renderHeader: {
-    type: Function as PropType<TableColumnCtx<DefaultRow>['renderHeader']>,
+    type: Function as PropType<TableColumnCtx['renderHeader']>,
   },
   /**
    * 用来格式化内容
@@ -237,7 +246,7 @@ export default {
    * @type {Function}
    */
   formatter: {
-    type: Function as PropType<TableColumnCtx<DefaultRow>['formatter']>,
+    type: Function as PropType<TableColumnCtx['formatter']>,
   },
   /**
    * 列的 className
@@ -280,7 +289,7 @@ export default {
    * @type {Function}
    */
   selectable: {
-    type: Function as PropType<TableColumnCtx<DefaultRow>['selectable']>,
+    type: Function as PropType<TableColumnCtx['selectable']>,
   },
   /**
    * 保存数据更新前选中的值
@@ -297,7 +306,7 @@ export default {
    * @type {Array}
    */
   sortOrders: {
-    type: Array as PropType<TableColumnCtx<DefaultRow>['sortOrders']>,
+    type: Array as PropType<TableColumnCtx['sortOrders']>,
     default: () => {
       return ['ascending', 'descending', null];
     },
@@ -308,7 +317,7 @@ export default {
    * @type {String, Function, Array}
    */
   sortBy: {
-    type: [String, Function, Array] as PropType<TableColumnCtx<DefaultRow>['sortBy']>,
+    type: [String, Function, Array] as PropType<TableColumnCtx['sortBy']>,
   },
   /**
    * 自定义排序方法
@@ -316,7 +325,7 @@ export default {
    * @type {Function}
    */
   sortMethod: {
-    type: Function as PropType<TableColumnCtx<DefaultRow>['sortMethod']>,
+    type: Function as PropType<TableColumnCtx['sortMethod']>,
   },
   /**
    * column 的 key， column 的 key
@@ -343,6 +352,6 @@ export default {
    * @type {Array}
    */
   filteredValue: {
-    type: Array as PropType<TableColumnCtx<DefaultRow>['filteredValue']>,
+    type: Array as PropType<TableColumnCtx['filteredValue']>,
   }
 };

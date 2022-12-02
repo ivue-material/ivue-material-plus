@@ -7,7 +7,7 @@ import {
   onMounted,
   onBeforeMount,
   Fragment,
-  onBeforeUnmount
+  onBeforeUnmount,
 } from 'vue';
 import {
   isString,
@@ -20,9 +20,9 @@ import useWatcher from './watcher';
 
 import { cellStyles, mergeOptions, compose } from '../config';
 
-// ts
+// type
 import type { TableColumn, TableColumnCtx } from './defaults';
-import type { DefaultRow } from '../table/defaults';
+import type { Table } from '../table/defaults';
 
 const prefixCls = 'ivue-table-column';
 let columnIdSeed = 1;
@@ -30,19 +30,19 @@ let columnIdSeed = 1;
 export default defineComponent({
   name: prefixCls,
   props: defaultProps,
-  setup(props: any, { slots }) {
-    const vm = getCurrentInstance() as TableColumn<DefaultRow>;
+  setup(props: TableColumnCtx, { slots }) {
+    const vm = getCurrentInstance() as TableColumn;
 
     // data
 
     // 列参数
-    const columnConfig = ref<Partial<TableColumnCtx<DefaultRow>>>({});
+    const columnConfig = ref<Partial<TableColumnCtx>>({});
 
     // computed
 
     // 获取父级元素
     const parentDom = computed(() => {
-      let parent = vm.parent as any;
+      let parent = vm.parent as Table;
 
       // 没有表格id
       while (parent && !parent.tableId) {
@@ -51,30 +51,6 @@ export default defineComponent({
 
       return parent;
     });
-
-    // 开始渲染
-    const {
-      // data
-      columnId,
-      isSubColumn,
-      align,
-      headerAlign,
-
-      // computed
-      columnParent,
-
-      // methods
-      getPropsData,
-      getColumnDomIndex,
-      columnRender,
-      setColumnWidth,
-      setColumnProps,
-    } = useRender(props as unknown as TableColumnCtx<unknown>, slots, parentDom);
-
-    const { registerNormalWatchers, registerComplexWatchers } = useWatcher(
-      parentDom,
-      props
-    );
 
     // methods
 
@@ -181,7 +157,7 @@ export default defineComponent({
       ];
 
       // 获取props值
-      let column: any = getPropsData(basicProps, sortProps, selectProps, filterProps);
+      let column = getPropsData(basicProps, sortProps, selectProps, filterProps);
 
       // 合并props值
       column = mergeOptions(defaults, column);
@@ -229,6 +205,31 @@ export default defineComponent({
       );
     });
 
+    // 开始渲染
+    const {
+      // data
+      columnId,
+      isSubColumn,
+      align,
+      headerAlign,
+
+      // computed
+      columnParent,
+
+      // methods
+      getPropsData,
+      getColumnDomIndex,
+      columnRender,
+      setColumnWidth,
+      setColumnProps,
+    } = useRender(props, slots, parentDom);
+
+    const { registerNormalWatchers, registerComplexWatchers } = useWatcher(
+      parentDom,
+      props
+    );
+
+
     // 获取父级
     const parent = columnParent.value;
     // 设置列id
@@ -239,6 +240,7 @@ export default defineComponent({
 
     // 列参数
     vm.columnConfig = columnConfig;
+
   },
   render() {
     try {

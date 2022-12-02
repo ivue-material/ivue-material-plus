@@ -9,18 +9,20 @@ import {
     provide,
 } from 'vue';
 
-import Colorable from '../../utils/mixins/colorable';
+import { colorable } from '../../utils/mixins/colorable';
 import { oneOf } from '../../utils/assist';
 
 // type
-import { BottomNavContextKey } from '../ivue-bottom-nav-item/types/bottom-nav-item';
-import type { BottomNavItemContext, Props } from './types/bottom-nav';
+import {
+    BottomNavContextKey,
+    BottomNavItemInstance,
+} from '../ivue-bottom-nav-item/types/bottom-nav-item';
+import type { Props, Data } from './types/bottom-nav';
 
 const prefixCls = 'ivue-bottom-nav';
 
 export default defineComponent({
     name: prefixCls,
-    mixins: [Colorable],
     // 声明事件
     emits: ['update:modelValue', 'on-change'],
     props: {
@@ -80,12 +82,21 @@ export default defineComponent({
             type: Boolean,
             default: false,
         },
+        /**
+         * 颜色
+         *
+         * @type {String | Array}
+         */
+        color: {
+            type: [String, Array],
+            default: '',
+        },
     },
     setup(props: Props, { emit }) {
+        const { setBackgroundColor } = colorable(props);
+
         // data
-        const data: any = reactive<{
-            items: Array<BottomNavItemContext>;
-        }>({
+        const data = reactive<Data>({
             // 导航数组
             items: [],
         });
@@ -158,7 +169,7 @@ export default defineComponent({
         };
 
         // 添加选项
-        const addItem = (item: BottomNavItemContext) => {
+        const addItem = (item: BottomNavItemInstance) => {
             data.items.push(item);
         };
 
@@ -216,6 +227,7 @@ export default defineComponent({
 
             // methods
             updateValue,
+            setBackgroundColor,
         };
     },
     render() {

@@ -7,33 +7,33 @@ import type { Ref } from 'vue';
 import type { Store } from './store';
 import type { Table } from './table/defaults';
 import type { TableColumnCtx } from './table-column/defaults';
-import type { TableHeader } from './table-header';
+import type { TableHeader } from './table-header/types';
 
-class TableLayout<T> {
-  store!: Store<T>
-  table!: Table<T>
-  fit: boolean | undefined
-  showHeader: boolean | undefined
-  scrollX: Ref<boolean>
-  scrollY: Ref<boolean>
-  bodyWidth: Ref<null | number>
-  observers: TableHeader[]
-  height: Ref<null | number>
-  gutterWidth: number
+class TableLayout {
+  store!: Store;
+  table!: Table;
+  fit: boolean | undefined;
+  showHeader: boolean | undefined;
+  scrollX: Ref<boolean>;
+  scrollY: Ref<boolean>;
+  bodyWidth: Ref<null | number>;
+  observers: TableHeader[];
+  height: Ref<null | number>;
+  gutterWidth: number;
 
   constructor(options: Record<string, any>) {
 
     // 表格 scrollX
-    this.scrollX = ref(false);
+    this.scrollX = ref<boolean>(false);
 
     // 表格 scrollY
-    this.scrollY = ref(false);
+    this.scrollY = ref<boolean>(false);
 
     // 表格宽度
-    this.bodyWidth = ref(null);
+    this.bodyWidth = ref<null | number>(null);
 
     // 表格高度
-    this.height = ref(null);
+    this.height = ref<null | number>(null);
 
     // 观察者列表
     this.observers = [];
@@ -59,8 +59,8 @@ class TableLayout<T> {
 
 
   // 扁平化列
-  getFlattenColumns(): TableColumnCtx<T>[] {
-    const flattenColumns: any = [];
+  getFlattenColumns(): TableColumnCtx[] {
+    const flattenColumns = [];
 
     // 列
     const columns = this.table.store.states.columns.value;

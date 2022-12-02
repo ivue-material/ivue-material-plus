@@ -2,15 +2,16 @@
 
 import { computed, inject } from 'vue';
 
-// ts
-import type { TableHeaderProps } from './index';
+// type
+import type { TableHeaderProps } from './types';
 import type { TableColumnCtx } from '../table-column/defaults';
+import { TableContextKey } from '../table/defaults';
 
 // 获取所有列
-const getAllColumns = <T>(
-  columns: TableColumnCtx<T>[]
-): TableColumnCtx<T>[] => {
-  const result: TableColumnCtx<T>[] = [];
+const getAllColumns = (
+  columns: TableColumnCtx[]
+): TableColumnCtx[] => {
+  const result: TableColumnCtx[] = [];
 
   columns.forEach((column) => {
     // 有子项
@@ -30,13 +31,13 @@ const getAllColumns = <T>(
 };
 
 // 转换行
-const convertToRows = <T>(
-  originColumns: TableColumnCtx<T>[]
-): TableColumnCtx<T>[] => {
+const convertToRows = (
+  originColumns: TableColumnCtx[]
+): TableColumnCtx[] => {
   let maxLevel = 1;
 
   // 遍历
-  const traverse = (column: TableColumnCtx<T>, parent: TableColumnCtx<T> | undefined) => {
+  const traverse = (column: TableColumnCtx, parent: TableColumnCtx | undefined) => {
     // 父
     if (parent) {
       column.level = parent.level + 1;
@@ -75,14 +76,14 @@ const convertToRows = <T>(
   });
 
   // 行数据
-  const rows: any[] = [];
+  const rows = [];
 
   for (let i = 0; i < maxLevel; i++) {
     rows.push([]);
   }
 
   // 获取所有列
-  const allColumns: TableColumnCtx<T>[] = getAllColumns(originColumns);
+  const allColumns: TableColumnCtx[] = getAllColumns(originColumns);
 
   allColumns.forEach((item) => {
     // 没有子项
@@ -105,9 +106,9 @@ const convertToRows = <T>(
 };
 
 
-function useUtils<T>(props: TableHeaderProps<T>) {
+function useUtils(props: TableHeaderProps) {
   // inject
-  const IvueTable: any = inject('ivue-table');
+  const IvueTable = inject(TableContextKey);
 
   // 获取当前列的行数
   const columnRows = computed(() => {

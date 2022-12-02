@@ -11,7 +11,7 @@ import {
 
 import IvueButtonContent from './content.vue';
 
-import Colorable from '../../utils/mixins/colorable';
+import { colorable } from '../../utils/mixins/colorable';
 import ripple from '../../utils/directives/ripple';
 import { oneOf } from '../../utils/assist';
 
@@ -22,7 +22,6 @@ const prefixCls = 'ivue-button';
 
 export default defineComponent({
     name: prefixCls,
-    mixins: [Colorable],
     directives: {
         ripple,
     },
@@ -162,9 +161,21 @@ export default defineComponent({
             type: Boolean,
             default: false,
         },
+        /**
+         * 颜色
+         *
+         * @type {String | Array}
+         */
+        color: {
+            type: [String, Array],
+            default: '',
+        },
     },
     // 组合式 API
     setup(props: Props) {
+        // mixins
+        const { setBackgroundColor, setTextColor } = colorable(props);
+
         // data
         const data = reactive<Data>({
             /**
@@ -243,6 +254,10 @@ export default defineComponent({
             activeButton,
             btnClasses,
             computedRipple,
+
+            // methods
+            setBackgroundColor,
+            setTextColor,
         };
     },
     render() {

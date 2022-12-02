@@ -12,7 +12,6 @@ import {
 } from 'vue';
 
 import Touch from '../../utils/directives/touch';
-import Colorable from '../../utils/mixins/colorable';
 import CreateNativeLocaleFormatter from '../../utils/create-native-locale-formatter';
 import isDateAllowed from '../../utils/is-date-allowed';
 
@@ -23,7 +22,6 @@ const prefixCls = 'ivue-date-picker-years';
 
 export default defineComponent({
     name: prefixCls,
-    mixins: [Colorable],
     directives: { Touch },
     // 声明事件
     emits: ['table-date', 'input'],

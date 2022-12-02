@@ -5,30 +5,30 @@ import { getRowIdentity, walkTreeNode } from '../utils';
 
 // ts
 import type { WatcherPropsData } from './index';
-import type { Table, TableProps } from '../table/defaults';
+import type { Table, TableProps, TreeNode } from '../table/defaults';
 
-function useTree<T>(watcherData: WatcherPropsData<T>) {
-  const vm = getCurrentInstance() as Table<T>;
+function useTree(watcherData: WatcherPropsData) {
+  const vm = getCurrentInstance() as Table;
 
   // data
 
   // 展示树形数据时，树节点的缩进
-  const indent = ref(16);
+  const indent = ref<number>(16);
 
   // 是否懒加载子节点数据
-  const lazy = ref(false);
+  const lazy = ref<boolean>(false);
 
   // 树数据
-  const treeData = ref({});
+  const treeData = ref<TreeNode>({});
 
   // 懒加载子节点数据
-  const lazyColumnIdentifier = ref('hasChildren');
+  const lazyColumnIdentifier = ref<string>('hasChildren');
 
   // 子节点数据
-  const childrenColumnName = ref('children');
+  const childrenColumnName = ref<string>('children');
 
   // 懒加载节点
-  const lazyTreeNodeMap = ref({});
+  const lazyTreeNodeMap = ref<any>({});
 
   // 以通过该属性设置 Table 目前的展开行
   const expandRowKeys = ref<string[]>([]);
@@ -158,8 +158,8 @@ function useTree<T>(watcherData: WatcherPropsData<T>) {
   };
 
   // 懒加载数据
-  const loadData = (row: T, key: string, treeNode) => {
-    const { load } = vm.props as unknown as TableProps<T>;
+  const loadData = (row: any, key: string, treeNode) => {
+    const { load } = vm.props as unknown as TableProps;
 
     // 加载子节点数据的函数 && 没加载完成
     if (load && !treeData.value[key].loaded) {
@@ -321,7 +321,7 @@ function useTree<T>(watcherData: WatcherPropsData<T>) {
   };
 
   // 切换树节点展开
-  const toggleTreeExpansion = (row: T, expanded?: boolean) => {
+  const toggleTreeExpansion = (row, expanded?: boolean) => {
     // 检查 rowKey 是否存在
     vm.store.assertRowKey();
 

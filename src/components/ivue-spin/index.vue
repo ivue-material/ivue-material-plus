@@ -18,10 +18,13 @@
 import {
     defineComponent,
     computed,
-    reactive,
     watch,
     getCurrentInstance,
+    ref,
 } from 'vue';
+
+// type
+import { Props } from './types/spin';
 
 const prefixCls = 'ivue-spin';
 
@@ -71,17 +74,9 @@ export default defineComponent({
             default: false,
         },
     },
-    setup(props: any) {
-        // data
-        const data = reactive<{
-            visible: boolean;
-            showText: boolean;
-        }>({
-            // 使用 $IvueSpin 时显示
-            visible: false,
-            // 是否显示文本
-            showText: false,
-        });
+    setup(props: Props) {
+        // 使用 $IvueSpin 时显示
+        const visible = ref<boolean>(false);
 
         // computed
 
@@ -105,7 +100,7 @@ export default defineComponent({
                 const regexp = new RegExp(/[a-zA-Z]/g);
 
                 // 是否有单位
-                const isUnit = regexp.test(props.size);
+                const isUnit = regexp.test(`${props.size}`);
 
                 const size = !isUnit ? `${props.size}px` : props.size;
 
@@ -122,7 +117,7 @@ export default defineComponent({
         // 是否全屏显示
         const fullscreenVisible = computed(() => {
             if (props.fullscreen) {
-                return data.visible;
+                return visible.value;
             } else {
                 return true;
             }
@@ -132,7 +127,7 @@ export default defineComponent({
 
         // 监听显示
         watch(
-            () => data.visible,
+            () => visible.value,
             (value) => {
                 // overflow
                 if (value) {
@@ -149,7 +144,7 @@ export default defineComponent({
             prefixCls,
 
             // data
-            data,
+            visible,
 
             // computed
             wrapperClass,
