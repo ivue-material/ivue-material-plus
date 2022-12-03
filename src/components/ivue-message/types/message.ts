@@ -28,3 +28,14 @@ export interface Data {
 
 export type Position = 'top-right' | 'top-left' | 'bottom-right' | 'bottom-left';
 export type Type = 'normal' | 'info' | 'warning' | 'success' | 'error' | 'loading';
+
+export type Options = {
+  content?: string,
+  offset?: number,
+  onClose?: () => any,
+  type?: Type,
+  duration?: number,
+  id?: string,
+  zIndex?: number,
+  loadingIcon?: string
+}

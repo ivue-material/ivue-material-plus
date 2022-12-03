@@ -10,12 +10,14 @@
                 name="123"
                 preview-size="100px"
                 :maxCount="2"
+                :bodyOverflow="false"
                 :before-delete="handleDelete"
             ></ivue-upload>
             {{fileList1}}
         </div>
 
         <h1>拖动</h1>
+        {{fileList3}}
         <ivue-upload v-model="fileList3" multiple type="drag"></ivue-upload>
 
         <h1>accept</h1>
@@ -99,7 +101,10 @@
         <h1>自定义预览样式</h1>
         <div>
             <ivue-upload v-model="fileList3">
-                <template #preview-cover="{ file }">{{file.file && file.file.name}}</template>
+                <template #preview-cover="{ file }">{{file}}</template>
+                <template #preview-image>
+                    <div>image</div>
+                </template>
             </ivue-upload>
         </div>
 
@@ -185,7 +190,7 @@ export default {
             fileList7: [],
             fileList8: [
                 {
-                    url: 'https://img01.yzcdn.cn/vant/leaf.jpg',
+                    url: 'https://file.iviewui.com/images/image-demo-1.jpg',
                     deletable: false,
                 },
                 {

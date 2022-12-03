@@ -3,21 +3,11 @@ import { transferIndex, transferIncrease } from '../../utils/transfer-queue';
 
 import Message from './index.vue';
 
-type MessageType = 'success' | 'warning' | 'info' | 'error' | ''
-
-type options = {
-    content?: string,
-    offset?: number,
-    onClose?: () => any,
-    type?: MessageType,
-    duration?: number,
-    id?: string,
-    zIndex?: number,
-    loadingIcon?: string
-}
+// type
+import type { Type, Options } from './types/message'
 
 // 实例列表
-const instances: any = [];
+const instances = [];
 
 let name = 1;
 let offset;
@@ -25,7 +15,7 @@ let defaultDuration;
 
 const prefixKey = 'ivue_message_key_';
 
-const message = (type, options: options) => {
+const message = (type: Type, options: Options) => {
 
     // 纯字符串
     if (typeof options === 'string') {
@@ -38,7 +28,7 @@ const message = (type, options: options) => {
     let verticalOffset = offset || options.offset || 20;
 
     // 遍历实例累加位移位置
-    instances.forEach(({ vm }: any) => {
+    instances.forEach(({ vm }) => {
         verticalOffset += (vm.el.offsetHeight || 0) + 16;
     });
 
@@ -163,23 +153,23 @@ const closeAll = (): void => {
 };
 
 export default {
-    info(options: options) {
+    info(options: Options) {
         message('info', options);
     },
-    success(options: options) {
+    success(options: Options) {
         return message('success', options);
     },
-    warning(options: options) {
+    warning(options: Options) {
         return message('warning', options);
     },
-    error(options: options) {
+    error(options: Options) {
         return message('error', options);
     },
-    loading(options: options) {
+    loading(options: Options) {
         return message('loading', options);
     },
     // 全局配置
-    config(options: options) {
+    config(options: Options) {
         // 偏移位置
         if (options.offset) {
             offset = options.offset;

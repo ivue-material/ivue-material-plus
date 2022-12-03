@@ -127,6 +127,7 @@ import {
     ResultChange,
     Result,
 } from './types/cascader';
+import { SelectContextKey } from '../ivue-select/types/select';
 
 const prefixCls = 'ivue-cascader';
 
@@ -837,7 +838,7 @@ export default defineComponent({
 
         // provide
         provide(
-            'ivue-select',
+            SelectContextKey,
             reactive({
                 props,
                 reference,

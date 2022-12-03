@@ -25,3 +25,17 @@ export interface Data {
 
 export type Position = 'top-right' | 'top-left' | 'bottom-right' | 'bottom-left';
 export type Type = 'normal' | 'info' | 'warning' | 'success' | 'error';
+
+export type Options = {
+  title?: string,
+  desc?: string,
+  onClose?: () => any,
+  render?: () => any,
+  duration?: number,
+  position?: Position,
+  offset?: number,
+  id?: string,
+  zIndex?: number,
+  type?: Type,
+  closable?: boolean
+}

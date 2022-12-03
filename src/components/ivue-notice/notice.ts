@@ -3,23 +3,8 @@ import { transferIndex, transferIncrease } from '../../utils/transfer-queue';
 
 import Notice from './index.vue';
 
-type Type = 'normal' | 'info' | 'warning' | 'success' | 'error'
-
-type options = {
-    title?: string,
-    desc?: string,
-    onClose?: () => any,
-    render?: () => any,
-    duration?: number,
-    position?: Position,
-    offset?: number,
-    id?: string,
-    zIndex?: number,
-    type?: Type,
-    closable?: boolean
-}
-
-type Position = 'top-right' | 'top-left' | 'bottom-right' | 'bottom-left';
+// type
+import type { Type, Position, Options } from './types/notice'
 
 
 const prefixKey = 'ivue_notice_key_';
@@ -40,7 +25,7 @@ let offset;
 let defaultDuration;
 
 
-function notice(type: Type, options: options = {}) {
+function notice(type: Type, options: Options = {}) {
     // key
     const id = `${prefixKey}${name}`;
 
@@ -177,19 +162,19 @@ const closeAll = (): void => {
 };
 
 const notification = {
-    open(options: options) {
+    open(options: Options) {
         return notice('normal', options);
     },
-    info(options: options) {
+    info(options: Options) {
         return notice('info', options);
     },
-    warning(options: options) {
+    warning(options: Options) {
         return notice('warning', options);
     },
-    success(options: options) {
+    success(options: Options) {
         return notice('success', options);
     },
-    error(options: options) {
+    error(options: Options) {
         return notice('error', options);
     },
     // 全局配置

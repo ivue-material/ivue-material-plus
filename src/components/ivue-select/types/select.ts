@@ -11,38 +11,38 @@ export type OptionInstance = InstanceType<typeof Option>;
 export type SelectHeadInstance = InstanceType<typeof SelectHead>;
 
 export interface Props {
-  modelValue: any;
-  defaultLabel: any;
-  selectedColor: string | any[];
-  hoverColor: string | any[];
-  multiple: boolean;
-  multipleFilterableClear: boolean;
-  multipleIcon: string;
-  disabled: boolean;
-  capture: boolean;
-  filterable: boolean;
+  modelValue?: any;
+  defaultLabel?: any;
+  selectedColor?: string | any[];
+  hoverColor?: string | any[];
+  multiple?: boolean;
+  multipleFilterableClear?: boolean;
+  multipleIcon?: string;
+  disabled?: boolean;
+  capture?: boolean;
+  filterable?: boolean;
   name?: string;
-  labelAndValue: boolean;
+  labelAndValue?: boolean;
   prefix?: string;
   maxTagCount?: number;
-  placeholder: string;
-  allowCreate: boolean;
-  allowCreateIcon: string;
-  notFindText: string;
-  searchMethod: any;
-  arrowDownIcon: string;
-  clearable: boolean;
-  resetSelectIcon: string;
-  filterableHiddenGroup: boolean;
-  loading: boolean;
-  loadingText: string;
-  filterByLabel: boolean;
-  restoreInputOption: boolean;
-  transfer: boolean;
-  placement: string;
-  transferClassName: string;
-  autoComplete: boolean;
-  filterQueryProp: string;
+  placeholder?: string;
+  allowCreate?: boolean;
+  allowCreateIcon?: string;
+  notFindText?: string;
+  searchMethod?: any;
+  arrowDownIcon?: string;
+  clearable?: boolean;
+  resetSelectIcon?: string;
+  filterableHiddenGroup?: boolean;
+  loading?: boolean;
+  loadingText?: string;
+  filterByLabel?: boolean;
+  restoreInputOption?: boolean;
+  transfer?: boolean;
+  placement?: string;
+  transferClassName?: string;
+  autoComplete?: boolean;
+  filterQueryProp?: string;
 }
 
 
@@ -63,16 +63,16 @@ export interface Data {
 }
 
 export type SelectContext = {
-  props: Props;
-  selectWrapper: HTMLDivElement;
-  reference: HTMLDivElement;
-  dropVisible: boolean;
-  options: OptionInstance[];
-  values: OptionData[];
-  focusIndex: number;
-  handleOptionClick: (option: OptionData, status?: string) => void;
-  selectEmitter: Emitter<Record<EventType, unknown>>;
-  onOptionDestroy: (index: number) => void;
+  props?: Props;
+  reference?: HTMLDivElement;
+  selectWrapper?: HTMLDivElement;
+  dropVisible?: boolean;
+  options?: OptionInstance[];
+  values?: OptionData[];
+  focusIndex?: number;
+  handleOptionClick?: (option: OptionData, status?: string) => void;
+  selectEmitter?: Emitter<Record<EventType, unknown>>;
+  onOptionDestroy?: (index: number) => void;
 }
 
 export const SelectContextKey: InjectionKey<SelectContext> =

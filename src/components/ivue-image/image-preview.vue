@@ -225,10 +225,105 @@ export default defineComponent({
                     : global.$IVUE.image.toolbar;
             },
         },
+        /**
+         * 防止body滚动
+         *
+         * @type {Boolean}
+         */
+        bodyOverflow: {
+            type: Boolean,
+            default: true,
+        },
     },
     setup(props: Props, { emit }) {
         // dom
         const wrapper = ref<HTMLElement>(null);
+
+        // 蒙版index
+        const getMaskIndex = () => {
+            transferIncrease();
+
+            return transferIndex;
+        };
+
+        // data
+        const data = reactive<Data>({
+            /**
+             * 蒙层zIndex
+             *
+             * @type {Number}
+             */
+            maskIndex: getMaskIndex(),
+            /**
+             * 图片状态
+             *
+             * @type {String}
+             */
+            imageStatus: 'loading',
+            /**
+             * 当前index
+             *
+             * @type {Number}
+             */
+            currentIndex: 0,
+            /**
+             * 图片transition
+             *
+             * @type {Boolean}
+             */
+            transition: true,
+            /**
+             * 按原尺寸显示
+             *
+             * @type {Boolean}
+             */
+            original: false,
+            /**
+             * X轴
+             *
+             * @type {Number}
+             */
+            startX: 0,
+            /**
+             * Y轴
+             *
+             * @type {Number}
+             */
+            startY: 0,
+            /**
+             * 图片移动位置
+             *
+             * @type {Object}
+             */
+            imageTranslate: {
+                x: 0,
+                y: 0,
+            },
+            /**
+             * 图片缩放大小
+             *
+             * @type {Number}
+             */
+            imageScale: 1,
+            /**
+             * 图片旋转角度
+             *
+             * @type {NUmber}
+             */
+            imageRotate: 0,
+            /**
+             * 防止body滚动
+             *
+             * @type {String}
+             */
+            prevOverflow: '',
+            /**
+             * 下载中
+             *
+             * @type {Boolean}
+             */
+            downloading: false,
+        });
 
         // computed
 
@@ -293,13 +388,6 @@ export default defineComponent({
         });
 
         // methods
-
-        // 蒙版index
-        const getMaskIndex = () => {
-            transferIncrease();
-
-            return transferIndex;
-        };
 
         // 点击蒙层
         const handleClickMask = () => {
@@ -437,6 +525,11 @@ export default defineComponent({
 
         // 鼠标滚动
         const handleWheel = (event) => {
+            // 不设置防止body滚动
+            if (!props.bodyOverflow) {
+                event.preventDefault();
+            }
+
             // 显示弹窗
             if (!props.modelValue) {
                 return;
@@ -606,85 +699,6 @@ export default defineComponent({
             });
         };
 
-        // data
-        const data = reactive<Data>({
-            /**
-             * 蒙层zIndex
-             *
-             * @type {Number}
-             */
-            maskIndex: getMaskIndex(),
-            /**
-             * 图片状态
-             *
-             * @type {String}
-             */
-            imageStatus: 'loading',
-            /**
-             * 当前index
-             *
-             * @type {Number}
-             */
-            currentIndex: 0,
-            /**
-             * 图片transition
-             *
-             * @type {Boolean}
-             */
-            transition: true,
-            /**
-             * 按原尺寸显示
-             *
-             * @type {Boolean}
-             */
-            original: false,
-            /**
-             * X轴
-             *
-             * @type {Number}
-             */
-            startX: 0,
-            /**
-             * Y轴
-             *
-             * @type {Number}
-             */
-            startY: 0,
-            /**
-             * 图片移动位置
-             *
-             * @type {Object}
-             */
-            imageTranslate: {
-                x: 0,
-                y: 0,
-            },
-            /**
-             * 图片缩放大小
-             *
-             * @type {Number}
-             */
-            imageScale: 1,
-            /**
-             * 图片旋转角度
-             *
-             * @type {NUmber}
-             */
-            imageRotate: 0,
-            /**
-             * 防止body滚动
-             *
-             * @type {String}
-             */
-            prevOverflow: '',
-            /**
-             * 下载中
-             *
-             * @type {Boolean}
-             */
-            downloading: false,
-        });
-
         // watch
 
         // 监听弹窗显示
@@ -702,11 +716,14 @@ export default defineComponent({
                     // 按原尺寸显示
                     data.original = false;
 
-                    // 获取body样式
-                    data.prevOverflow = getBodyOverflow();
+                    // 设置防止body滚动
+                    if (props.bodyOverflow) {
+                        // 获取body样式
+                        data.prevOverflow = getBodyOverflow();
 
-                    // 设置body样式
-                    setBodyOverflow('hidden');
+                        // 设置body样式
+                        setBodyOverflow('hidden');
+                    }
 
                     // 蒙层zIndex
                     data.maskIndex = getMaskIndex();
@@ -722,8 +739,11 @@ export default defineComponent({
                 }
                 // 隐藏
                 else {
-                    // 重新设置body样式
-                    setBodyOverflow(data.prevOverflow);
+                    // 设置防止body滚动
+                    if (props.bodyOverflow) {
+                        // 重新设置body样式
+                        setBodyOverflow(data.prevOverflow);
+                    }
 
                     // 鼠标滚动
                     off(wrapper.value, 'wheel', handleWheel);

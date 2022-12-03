@@ -25,7 +25,7 @@ export type UploaderBeforeRead = (
 
 export interface Props {
   type: string;
-  accept?: string;
+  accept: string;
   dragAccept?: any[];
   multiple: boolean;
   disabled: boolean;
@@ -44,6 +44,7 @@ export interface Props {
   beforeDelete: any;
   previewImageEnlarge: boolean;
   previewImageInitialIndex?: number;
+  bodyOverflow: boolean;
 }
 
 export interface Data {

@@ -24,6 +24,7 @@ export function readFileContent(file: File, resultType: UploaderResultType) {
         // 文件类型
         if (resultType === 'file') {
             resolve();
+
             return;
         }
 

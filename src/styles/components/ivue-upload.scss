@@ -75,7 +75,8 @@ $name: 'ivue-upload';
 
   // 列表
   &-list {
-    display: contents;
+    display: flex;
+    flex-wrap: wrap;
 
     // 图片
     &-image {
@@ -96,12 +97,28 @@ $name: 'ivue-upload';
     &-preview {
       position: relative;
 
+      &--image {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        z-index: 12;
+        opacity: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        pointer-events: none;
+        color: var(--ivue-white-color);
+        transition: var(--ivue-all-transition);
+      }
+
       &:hover::after {
         opacity: 1;
       }
 
       &:hover {
-        .#{$name}-list-preview-icon {
+        .#{$name}-list-preview--image {
           opacity: 1;
         }
       }
@@ -116,23 +133,14 @@ $name: 'ivue-upload';
         opacity: 0;
         transition: var(--ivue-all-transition);
         background-color: var(--#{$name}-mask-color);
-        z-index: 0;
+        z-index: 10;
         pointer-events: none;
       }
 
       // 预览图标
       &-icon {
-        position: absolute;
-        top: 0;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        z-index: 5;
         font-size: var(--#{$name}-loading-size);
         color: var(--ivue-white-color);
-        transition: var(--ivue-all-transition);
-        opacity: 0;
-        pointer-events: none;
       }
     }
 

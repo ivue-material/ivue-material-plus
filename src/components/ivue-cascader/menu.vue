@@ -37,7 +37,11 @@ import MenuItem from './menu-item.vue';
 
 // type
 import { Options, CascaderContextKey, Result } from './types/cascader';
-import type { Props, Data, _ComponentInternalInstance } from './types/menu';
+import type {
+    Props,
+    Data,
+    _ComponentInternalInstance,
+} from './types/menu';
 
 const prefixCls = 'ivue-cascader-menu';
 
@@ -86,7 +90,7 @@ export default defineComponent({
         },
     },
     setup(props: Props) {
-        const menu = ref<HTMLElement | any>(null);
+        const menu = ref();
 
         // vm
         const { ctx } = getCurrentInstance() as _ComponentInternalInstance;

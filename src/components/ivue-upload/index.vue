@@ -2,13 +2,14 @@
     <div :class="prefixCls">
         <slot></slot>
 
-        <!-- 输入框 -->
+        <!-- 上传框左边 -->
         <div
             :class="inputWrapClasses"
             @click="handleClickInput"
             @drop.prevent="handleDrop"
             @dragover.prevent="handleDragOver"
             @dragleave.prevent="handleDragleave"
+            v-if="uploadDirection === 'left'"
             v-show="renderUpload"
         >
             <input
@@ -41,16 +42,50 @@
             @on-preview="handlePreview"
             v-if="previewImage"
         >
+            <!-- 自定义覆盖在预览区域上方的内容 -->
             <template v-if="$slots['preview-cover']" #preview-cover="{ file }">
                 <slot name="preview-cover" :file="file"></slot>
+            </template>
+            <!-- 自定义预览图片区域内容 -->
+            <template v-if="$slots['preview-image']" #preview-image>
+                <slot name="preview-image"></slot>
             </template>
         </upload-list>
         <!-- 放大图片 -->
         <image-preview
+            transfer
+            :bodyOverflow="bodyOverflow"
             :previewList="data.imagePreviewList"
             :initialIndex="data.imagePreviewInitialIndex"
             v-model="data.imagePreview"
         ></image-preview>
+
+        <!-- 上传框右边 -->
+        <div
+            :class="inputWrapClasses"
+            @click="handleClickInput"
+            @drop.prevent="handleDrop"
+            @dragover.prevent="handleDragOver"
+            @dragleave.prevent="handleDragleave"
+            v-if="uploadDirection === 'right'"
+            v-show="renderUpload"
+        >
+            <input
+                type="file"
+                ref="input"
+                :class="`${prefixCls}-input`"
+                :accept="accept"
+                :multiple="multiple"
+                @change="handleChange"
+            />
+            <slot>
+                <div :class="inputContentClasses" :style="getSizeStyle(previewSize)">
+                    <!-- 图标 -->
+                    <ivue-icon :class="`${prefixCls}-content__icon`">cloud_upload</ivue-icon>
+                    <p :class="`${prefixCls}-content__text`">点击上传</p>
+                </div>
+            </slot>
+        </div>
     </div>
 </template>
 
@@ -119,9 +154,10 @@ export default defineComponent({
          */
         accept: {
             type: String,
+            default: 'image/*',
         },
         /**
-         * 拖拽接受的上传类型
+         * 拖拽接受的上传类型后缀
          *
          * @type {Array}
          */
@@ -275,6 +311,27 @@ export default defineComponent({
         previewImageInitialIndex: {
             type: Number,
             default: -1,
+        },
+        /**
+         * 防止body滚动
+         *
+         * @type {Boolean}
+         */
+        bodyOverflow: {
+            type: Boolean,
+            default: true,
+        },
+        /**
+         * 上传方向
+         *
+         * @type {String}
+         */
+        uploadDirection: {
+            type: String,
+            validator(value: string) {
+                return oneOf(value, ['left', 'right']);
+            },
+            default: 'right',
         },
     },
     setup(props: Props, { emit }) {
@@ -483,6 +540,7 @@ export default defineComponent({
 
         // 获取上传文件
         const uploadFiles = (files: File | File[]) => {
+            // 多个文件
             if (Array.isArray(files)) {
                 // 剩余数量
                 const remainCount = +props.maxCount - props.modelValue.length;
@@ -512,7 +570,9 @@ export default defineComponent({
                     // 文件读取完成后的回调函数
                     onAfterRead(fileList);
                 });
-            } else {
+            }
+            // 单个文件
+            else {
                 // 读取文件数据
                 readFileContent(files, props.resultType).then((content) => {
                     const result: UploaderFileListItem = {

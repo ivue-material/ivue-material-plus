@@ -6,6 +6,7 @@ export interface Props {
   previewList: any[];
   infinite: boolean;
   toolbar: any[];
+  bodyOverflow: boolean;
 }
 
 export interface Data {

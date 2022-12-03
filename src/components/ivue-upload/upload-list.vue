@@ -4,7 +4,7 @@
             <li :class="fileStatusClass(file)" v-show="isImageFile(file)">
                 <!-- 图片 -->
                 <div
-                    :class="`${prefixCls}-image`"
+                    :class="imageClass(file)"
                     @click="handleFileData(file, index)"
                     :style="getSizeStyle(file.previewSize || previewSize)"
                 >
@@ -13,6 +13,14 @@
                         :class="`${prefixCls}-image__img`"
                         :style="imgStyle(file)"
                     />
+
+                    <!-- 自定义预览图片区域内容 -->
+                    <div :class="`${prefixCls}-preview--image`">
+                        <slot name="preview-image">
+                            <!-- 预览图标 -->
+                            <ivue-icon :class="`${prefixCls}-preview-icon`">visibility</ivue-icon>
+                        </slot>
+                    </div>
                 </div>
                 <!-- 蒙层 -->
                 <transition name="fade">
@@ -41,8 +49,7 @@
                     @click.stop="handleRemove(file, index)"
                     v-if="isDeletable(file)"
                 >close</ivue-icon>
-                <!-- 预览图标 -->
-                <ivue-icon :class="`${prefixCls}-preview-icon`">visibility</ivue-icon>
+
                 <!-- 自定义覆盖在预览区域上方的内容 -->
                 <div class="preview-cover" v-if="$slots['preview-cover']">
                     <slot name="preview-cover" :file="file"></slot>
@@ -133,6 +140,17 @@ export default defineComponent({
     setup(props: Props, { emit }) {
         // methods
 
+        // 文件上传状态
+        const imageClass = (file: File) => {
+            return [
+                `${prefixCls}-image`,
+                {
+                    [`${prefixCls}-preview`]:
+                        props.previewImageEnlarge && !currentStatus(file),
+                },
+            ];
+        };
+
         // 有删除
         const isDeletable = (file: File) => {
             // 自定义单个图片预览
@@ -153,8 +171,6 @@ export default defineComponent({
                 `${prefixCls}-status`,
                 {
                     [`${prefixCls}-status-finish`]: file.status === 'finished',
-                    [`${prefixCls}-preview`]:
-                        props.previewImageEnlarge && !currentStatus(file),
                 },
             ];
         };
@@ -211,6 +227,7 @@ export default defineComponent({
             prefixCls,
 
             // methods
+            imageClass,
             fileStatusClass,
             currentStatus,
             handleRemove,
