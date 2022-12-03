@@ -1,7 +1,5 @@
 <template>
     <div :class="prefixCls">
-        <slot></slot>
-
         <!-- 上传框左边 -->
         <div
             :class="inputWrapClasses"

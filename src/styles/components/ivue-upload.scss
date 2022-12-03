@@ -18,7 +18,7 @@ $name: 'ivue-upload';
   --#{$name}-content-color: #9AB0C6;
 
   // mask
-  --#{$name}-mask-color: rgba(50, 50, 51, .88);
+  --#{$name}-mask-color: rgba(50, 50, 51, .5);
 
   // preview-cover
   --#{$name}-preview-cover-color: rgba(0, 0, 0, .3);
@@ -248,21 +248,5 @@ $name: 'ivue-upload';
 
   &-dragOver {
     border: 2px dashed var(--ivue-primary-color);
-  }
-
-  .preview-cover {
-    position: absolute;
-    bottom: 0;
-    box-sizing: border-box;
-    text-align: center;
-    width: 100%;
-    color: var(--ivue-white-color);
-    font-size: 12px;
-    padding: 4px;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    background: var(--#{$name}-preview-cover-color);
-    z-index: 9;
   }
 }

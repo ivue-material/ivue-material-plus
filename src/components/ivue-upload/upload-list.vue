@@ -51,9 +51,9 @@
                 >close</ivue-icon>
 
                 <!-- 自定义覆盖在预览区域上方的内容 -->
-                <div class="preview-cover" v-if="$slots['preview-cover']">
+                <template v-if="$slots['preview-cover']">
                     <slot name="preview-cover" :file="file"></slot>
-                </div>
+                </template>
             </li>
         </template>
     </ul>
