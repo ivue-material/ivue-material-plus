@@ -37,9 +37,10 @@
     ],
     // 允许从没有设置默认导出的模块中默认导入
     "allowSyntheticDefaultImports": true,
-    // "types": [
-    //   "webpack-env"
-    // ],
+    "types": [
+      "web-bluetooth",
+      "vue"
+    ],
     // 中存在的resolveJsonModule选项
     "resolveJsonModule": true
   },

@@ -43,6 +43,7 @@ export interface Props {
   previewImage: boolean;
   beforeDelete: any;
   previewImageEnlarge: boolean;
+  previewImageInitialIndex?: number;
 }
 
 export interface Data {

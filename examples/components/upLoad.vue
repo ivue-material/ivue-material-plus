@@ -115,7 +115,7 @@
 
         <h1>自定义单个图片预览</h1>
         <div>
-            <ivue-upload v-model="fileList8"></ivue-upload>
+            <ivue-upload v-model="fileList8" :previewImageInitialIndex="0"></ivue-upload>
         </div>
     </div>
 </template>

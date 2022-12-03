@@ -45,7 +45,6 @@
                 <slot name="preview-cover" :file="file"></slot>
             </template>
         </upload-list>
-
         <!-- 放大图片 -->
         <image-preview
             :previewList="data.imagePreviewList"
@@ -267,6 +266,15 @@ export default defineComponent({
         previewImageEnlarge: {
             type: Boolean,
             default: true,
+        },
+        /**
+         * 预览图片开始位置下标
+         *
+         * @type {Boolean}
+         */
+        previewImageInitialIndex: {
+            type: Number,
+            default: -1,
         },
     },
     setup(props: Props, { emit }) {
@@ -589,7 +597,15 @@ export default defineComponent({
                     return item.url || item.content;
                 });
 
-                data.imagePreviewInitialIndex = index;
+                // 传入了预览图片开始位置下标
+                if (props.previewImageInitialIndex !== -1) {
+                    data.imagePreviewInitialIndex =
+                        props.previewImageInitialIndex;
+                }
+                // 默认预览图片开始位置下标
+                else {
+                    data.imagePreviewInitialIndex = index;
+                }
 
                 data.imagePreview = true;
             }
