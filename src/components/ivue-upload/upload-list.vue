@@ -132,9 +132,18 @@ export default defineComponent({
          *
          * @type {Boolean}
          */
-        previewImageEnlarge: {
+        previewFullImage: {
             type: Boolean,
             default: true,
+        },
+        /**
+         * 预览图裁剪模式
+         *
+         * @type {String}
+         */
+        imageFit: {
+            type: String,
+            default: 'cover',
         },
     },
     setup(props: Props, { emit }) {
@@ -146,7 +155,7 @@ export default defineComponent({
                 `${prefixCls}-image`,
                 {
                     [`${prefixCls}-preview`]:
-                        props.previewImageEnlarge && !currentStatus(file),
+                        props.previewFullImage && !currentStatus(file),
                 },
             ];
         };
@@ -198,7 +207,7 @@ export default defineComponent({
             // 拦截器
             callInterceptor({
                 // 拦截参数
-                interceptor: beforeDelete,
+                interceptor: item.beforeDelete || beforeDelete,
                 // 数据
                 args: [item, { name, index }],
                 done: () => emit('on-delete', file, index),
@@ -214,11 +223,9 @@ export default defineComponent({
         const imgStyle = (file: File) => {
             let obj = {};
 
-            if (file.imageFit) {
-                obj = {
-                    'object-fit': file.imageFit,
-                };
-            }
+            obj = {
+                'object-fit': file.imageFit || props.imageFit,
+            };
 
             return obj;
         };

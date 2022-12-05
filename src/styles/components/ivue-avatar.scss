@@ -3,6 +3,7 @@ $name: 'ivue-avatar';
 :root {
   --#{$name}-size: 32px;
   --#{$name}-square-radius: 4px;
+  --#{$name}-image-object-fit: cover;
 }
 
 .#{$name} {
@@ -24,6 +25,7 @@ $name: 'ivue-avatar';
   &-img {
     width: 100%;
     height: 100%;
+    object-fit: var(--#{$name}-image-object-fit);
   }
 
   /*  */

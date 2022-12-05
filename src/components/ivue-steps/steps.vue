@@ -69,15 +69,6 @@ export default defineComponent({
             default: '',
         },
         /**
-         * 进行居中对齐
-         *
-         * @type {Boolean}
-         */
-        alignCenter: {
-            type: Boolean,
-            default: false,
-        },
-        /**
          * 文字方向
          *
          * @type {String}
@@ -85,7 +76,7 @@ export default defineComponent({
         textDirection: {
             type: String,
             validator(value: string) {
-                return oneOf(value, ['right', 'bottom']);
+                return oneOf(value, ['right', 'bottom-center', 'bottom']);
             },
             default: 'right',
         },

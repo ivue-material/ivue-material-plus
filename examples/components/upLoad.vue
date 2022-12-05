@@ -9,16 +9,20 @@
                 accept="image/*"
                 name="123"
                 preview-size="100px"
-                :maxCount="2"
+                :maxCount="4"
                 :bodyOverflow="false"
                 :before-delete="handleDelete"
+                :deletable="false"
+                capture="camera"
+                ref="upload"
             ></ivue-upload>
             {{fileList1}}
         </div>
+        <ivue-button @click="handleUpload">upload</ivue-button>
 
         <h1>拖动</h1>
         {{fileList3}}
-        <ivue-upload v-model="fileList3" multiple type="drag"></ivue-upload>
+        <ivue-upload v-model="fileList3" :drag-accept="['jpeg']" multiple type="drag"></ivue-upload>
 
         <h1>accept</h1>
         <ivue-upload
@@ -26,7 +30,7 @@
             multiple
             :dragAccept="['jpg']"
             type="drag"
-            @on-upload-error="handleError"
+            @on-drag-upload-error="handleError"
         ></ivue-upload>
 
         <h1>resultType</h1>
@@ -37,7 +41,7 @@
             resultType="url"
             :dragAccept="['jpg']"
             type="drag"
-            @on-upload-error="handleError"
+            @on-drag-upload-error="handleError"
         ></ivue-upload>
 
         <h1>文件预览</h1>
@@ -196,8 +200,9 @@ export default {
                 {
                     url: 'https://img01.yzcdn.cn/vant/sand.jpg',
                     deletable: true,
-                    beforeDelete: () => {
-                        console.log(自定义单个预览图片的事件和样式);
+                    beforeDelete: (data,details) => {
+                        console.log('自定义单个预览图片的事件和样式',data);
+                        console.log('details',details);
                     },
                 },
                 {
@@ -217,9 +222,10 @@ export default {
             console.log(file);
             return file.size >= maxSize;
         },
-        onOversize(file) {
-            console.log(file);
-            alert('文件大小不能超过 100kb');
+        onOversize(file, detail) {
+            console.log('file',file);
+            console.log('detail', detail);
+            // alert('文件大小不能超过 100kb');
         },
         afterRead(file, detail) {
             // 此时可以自行将文件上传至服务器
@@ -269,6 +275,9 @@ export default {
         handleError() {
             console.log('类型错误');
         },
+        handleUpload() {
+            this.$refs.upload.handleClickInput()
+        }
     },
 };
 </script>

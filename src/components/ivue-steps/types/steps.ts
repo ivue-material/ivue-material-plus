@@ -5,7 +5,6 @@ export type StepsContext = {
   props: {
     textDirection: string;
     direction: string;
-    alignCenter: boolean;
     space: number | string;
   }
   data?: {
@@ -28,7 +27,6 @@ export type Props = {
   direction: string;
   status: string;
   space: number | string;
-  alignCenter: boolean;
   textDirection: string;
 }
 

@@ -41,3 +41,15 @@ export type TextareaStyles = {
   maxHeight?: string;
   overflowY?: any;
 }
+
+
+export type Type = 'text'
+  | 'textarea'
+  | 'password'
+  | 'url'
+  | 'email'
+  | 'date'
+  | 'hidden';
+
+
+export type Size = 'small' | 'large' | 'default';

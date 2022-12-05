@@ -73,15 +73,20 @@
 
         <h1>进行居中对齐</h1>
         <div class="content">
-            <p>文字左居中</p>
-            <ivue-steps :currentStep="current" alignCenter>
+            <ivue-steps :currentStep="current">
                 <ivue-step title="已完成" content="这里是该步骤的描述信息"></ivue-step>
                 <ivue-step title="进行中" content="这里是该步骤的描述信息"></ivue-step>
                 <ivue-step title="待进行" content="这里是该步骤的描述信息"></ivue-step>
                 <ivue-step title="待进行1" content="这里是该步骤的描述信息"></ivue-step>
             </ivue-steps>
             <p>文字底部居中</p>
-            <ivue-steps :currentStep="current" alignCenter textDirection="bottom">
+            <ivue-steps :currentStep="current" textDirection="bottom">
+                <ivue-step title="已完成" content="这里是该步骤的描述信息"></ivue-step>
+                <ivue-step title="进行中" content="这里是该步骤的描述信息"></ivue-step>
+                <ivue-step title="待进行" content="这里是该步骤的描述信息"></ivue-step>
+                <ivue-step title="待进行1" content="这里是该步骤的描述信息"></ivue-step>
+            </ivue-steps>
+            <ivue-steps :currentStep="current" textDirection="bottom-center">
                 <ivue-step title="已完成" content="这里是该步骤的描述信息"></ivue-step>
                 <ivue-step title="进行中" content="这里是该步骤的描述信息"></ivue-step>
                 <ivue-step title="待进行" content="这里是该步骤的描述信息"></ivue-step>
@@ -94,9 +99,10 @@
             <ivue-steps :currentStep="current" alignCenter>
                 <ivue-step title="已完成">
                     <template #title>插槽标题</template>
-                    <h1 class="slot">
-                        插槽内容这里是该步骤的描述信息
-                    </h1>
+                    <template #icon>插槽标题</template>
+                    <template #content>
+                        <h1 class="slot">插槽内容这里是该步骤的描述信息</h1>
+                    </template>
                 </ivue-step>
                 <ivue-step title="进行中" content="这里是该步骤的描述信息"></ivue-step>
                 <ivue-step title="待进行" content="这里是该步骤的描述信息"></ivue-step>
@@ -133,7 +139,7 @@ export default {
     margin: 30px 0;
 }
 
-.slot{
+.slot {
     font-size: 12px;
 }
 </style>

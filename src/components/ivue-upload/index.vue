@@ -4,7 +4,7 @@
         <div
             :class="inputWrapClasses"
             @click="handleClickInput"
-            @drop.prevent="handleDrop"
+            @drop.prevent="handleDrag"
             @dragover.prevent="handleDragOver"
             @dragleave.prevent="handleDragleave"
             v-if="uploadDirection === 'left'"
@@ -16,7 +16,9 @@
                 :class="`${prefixCls}-input`"
                 :accept="accept"
                 :multiple="multiple"
+                :capture="capture"
                 @change="handleChange"
+                v-if="!readonly"
             />
             <slot>
                 <div :class="inputContentClasses" :style="getSizeStyle(previewSize)">
@@ -35,7 +37,8 @@
             :name="name"
             :previewSize="previewSize"
             :beforeDelete="beforeDelete"
-            :previewImageEnlarge="previewImageEnlarge"
+            :previewFullImage="previewFullImage"
+            :imageFit="imageFit"
             @on-delete="handleRemove"
             @on-preview="handlePreview"
             v-if="previewImage"
@@ -49,6 +52,7 @@
                 <slot name="preview-image"></slot>
             </template>
         </upload-list>
+
         <!-- 放大图片 -->
         <image-preview
             transfer
@@ -56,13 +60,14 @@
             :previewList="data.imagePreviewList"
             :initialIndex="data.imagePreviewInitialIndex"
             v-model="data.imagePreview"
+            @on-close="handleClosePreview"
         ></image-preview>
 
         <!-- 上传框右边 -->
         <div
             :class="inputWrapClasses"
             @click="handleClickInput"
-            @drop.prevent="handleDrop"
+            @drop.prevent="handleDrag"
             @dragover.prevent="handleDragOver"
             @dragleave.prevent="handleDragleave"
             v-if="uploadDirection === 'right'"
@@ -74,7 +79,9 @@
                 :class="`${prefixCls}-input`"
                 :accept="accept"
                 :multiple="multiple"
+                :capture="capture"
                 @change="handleChange"
+                v-if="!readonly"
             />
             <slot>
                 <div :class="inputContentClasses" :style="getSizeStyle(previewSize)">
@@ -126,7 +133,8 @@ export default defineComponent({
         'on-oversize',
         'on-delete',
         'on-preview',
-        'on-upload-error',
+        'on-drag-upload-error',
+        'on-close-preview',
     ],
     props: {
         /**
@@ -179,6 +187,23 @@ export default defineComponent({
         disabled: {
             type: Boolean,
             default: false,
+        },
+        /**
+         * 是否将上传区域设置为只读状态
+         *
+         * @type {Boolean}
+         */
+        readonly: {
+            type: Boolean,
+            default: false,
+        },
+        /**
+         * 图片选取模式，可选值为 camera (直接调起摄像头)
+         *
+         * @type {String}
+         */
+        capture: {
+            type: String as PropType<any>,
         },
         /**
          * 文件读取结果类型，可选值为 file text dataUrl url
@@ -297,7 +322,7 @@ export default defineComponent({
          *
          * @type {Boolean}
          */
-        previewImageEnlarge: {
+        previewFullImage: {
             type: Boolean,
             default: true,
         },
@@ -330,6 +355,24 @@ export default defineComponent({
                 return oneOf(value, ['left', 'right']);
             },
             default: 'right',
+        },
+        /**
+         * 预览图裁剪模式
+         *
+         * @type {String}
+         */
+        imageFit: {
+            type: String,
+            validator(value: string) {
+                return oneOf(value, [
+                    'contain',
+                    'cover',
+                    'fill',
+                    'none',
+                    'scale-down',
+                ]);
+            },
+            default: 'cover',
         },
     },
     setup(props: Props, { emit }) {
@@ -384,6 +427,7 @@ export default defineComponent({
             return [
                 {
                     [`${prefixCls}-content`]: true,
+                    [`${prefixCls}-readonly`]: props.readonly,
                     [`${prefixCls}-disabled`]: props.disabled,
                     [`${prefixCls}-drag`]: props.type === 'drag',
                     [`${prefixCls}-dragOver`]:
@@ -408,7 +452,7 @@ export default defineComponent({
 
         // 点击输入框
         const handleClickInput = () => {
-            if (props.disabled) {
+            if (props.disabled || props.readonly) {
                 return;
             }
 
@@ -424,7 +468,7 @@ export default defineComponent({
         };
 
         // 拖动
-        const handleDrop = (e: DragEvent) => {
+        const handleDrag = (e: DragEvent) => {
             data.dragOver = false;
 
             const files = e.dataTransfer.files;
@@ -445,7 +489,7 @@ export default defineComponent({
                     }
                     // 上传错误提示
                     else {
-                        emit('on-upload-error');
+                        emit('on-drag-upload-error', file);
                     }
                 }
                 // 没有限制
@@ -456,6 +500,7 @@ export default defineComponent({
             // 多个文件上传
             else {
                 const arr = [];
+                const errArr = [];
 
                 file.forEach((item) => {
                     // 接受的上传类型
@@ -471,14 +516,18 @@ export default defineComponent({
                         if (findIndex > -1) {
                             arr.push(item);
                         }
+                        // 错误文件
+                        else {
+                            errArr.push(item);
+                        }
                     } else {
                         arr.push(item);
                     }
                 });
 
                 // 多选
-                if (arr.length === 0) {
-                    emit('on-upload-error');
+                if (errArr.length === 0) {
+                    emit('on-drag-upload-error', errArr);
                 } else {
                     uploadFiles(arr);
                 }
@@ -650,7 +699,7 @@ export default defineComponent({
         const handlePreview = (file: File, index: number) => {
             emit('on-preview', file);
 
-            if (props.previewImageEnlarge) {
+            if (props.previewFullImage) {
                 data.imagePreviewList = [...props.modelValue].map((item) => {
                     return item.url || item.content;
                 });
@@ -667,6 +716,11 @@ export default defineComponent({
 
                 data.imagePreview = true;
             }
+        };
+
+        // 关闭全屏图片预览时触发
+        const handleClosePreview = () => {
+            emit('on-close-preview');
         };
 
         // 监听数据变化
@@ -689,18 +743,19 @@ export default defineComponent({
             // computed
             inputWrapClasses,
             inputContentClasses,
+            renderUpload,
 
             // methods
             handleClickInput,
-            handleDrop,
+            handleDrag,
             handleDragOver,
             handleDragleave,
             handleChange,
             handleRemove,
             handlePreview,
             uploadFiles,
-            renderUpload,
             getSizeStyle,
+            handleClosePreview,
         };
     },
     components: {

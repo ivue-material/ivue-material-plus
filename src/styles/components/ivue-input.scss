@@ -58,8 +58,9 @@ $name: 'ivue-input';
 
 
 .#{$name}-wrapper {
-  display: inline-block;
   position: relative;
+  display: inline-flex;
+  align-items: center;
   vertical-align: middle;
   line-height: normal;
   width: 100%;
@@ -315,6 +316,7 @@ $name: 'ivue-input';
 // textarea
 .#{$name}-textarea {
   max-width: 100%;
+  line-height: 1.5;
   border: 1px solid var(--ivue-border-color);
   height: auto;
   min-height: var(--#{$name}-textarea-min-height);
@@ -353,6 +355,17 @@ $name: 'ivue-input';
       padding: var(--#{$name}-small-padding);
       height: var(--#{$name}-small-group-height);
       border-radius: var(--#{$name}-small-group-radius);
+
+      .ivue-select {
+        margin: -2px -7px;
+      }
+
+      .ivue-select-default .ivue-select-selection,
+      .ivue-select-selection-value {
+        height: var(--#{$name}-small-height);
+        line-height: var(--#{$name}-small-height);
+        min-height: var(--#{$name}-small-height);
+      }
     }
   }
 
@@ -372,6 +385,17 @@ $name: 'ivue-input';
       font-size: var(--ivue-font-large-size);
       padding: var(--#{$name}-large-padding);
       height: var(--#{$name}-large-height);
+
+      .ivue-select {
+        margin: -6px -7px;
+      }
+
+      .ivue-select-default .ivue-select-selection,
+      .ivue-select-selection-value {
+        height: var(--#{$name}-large-height);
+        line-height: var(--#{$name}-large-height);
+        min-height: var(--#{$name}-large-height);
+      }
     }
   }
 }
@@ -387,6 +411,46 @@ $name: 'ivue-input';
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
 }
+
+.#{$name}-group-append,
+.#{$name}-group-prepend {
+
+  // 有选择框
+  .ivue-select {
+    margin: -5px -7px;
+  }
+
+  .ivue-select-visible .ivue-select-selection {
+    box-shadow: none;
+  }
+
+  .ivue-select-default .ivue-select-selection {
+    height: var(--#{$name}-height);
+    min-height: var(--#{$name}-height);
+    border: none;
+    background: none;
+  }
+
+  .ivue-select-selection-value {
+    display: block;
+    height: var(--#{$name}-height);
+    line-height: var(--#{$name}-height);
+    font-size: var(--#{$name}-group-font-size);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .ivue-select-item {
+    font-size: var(--#{$name}-group-font-size);
+  }
+
+  .ivue-select-head-wrapper {
+    display: block;
+  }
+}
+
+.ivue-input-group-large {}
 
 
 // 字数统计

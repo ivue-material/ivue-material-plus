@@ -38,7 +38,7 @@
             <div :class="[`${prefixCls}-title`]">
                 <slot name="title">{{ title }}</slot>
             </div>
-            <slot>
+            <slot name="content">
                 <div :class="[`${prefixCls}-content-slot`]">{{ content }}</div>
             </slot>
         </div>
@@ -156,12 +156,6 @@ export default defineComponent({
              * @default horizontal
              */
             direction: steps.props.direction,
-            /**
-             * 进行居中对齐
-             *
-             * @type {Boolean}
-             */
-            alignCenter: steps.props.alignCenter,
         });
 
         // computed
@@ -176,8 +170,7 @@ export default defineComponent({
                     [`${prefixCls}-next-error`]: data.nextError,
                     [`${prefixCls}-text-${data.textDirection}`]:
                         !isVertical.value,
-                    [`${prefixCls}-${data.textDirection}-center`]:
-                        data.alignCenter && !isVertical.value,
+                    [`${prefixCls}-${data.textDirection}`]: !isVertical.value,
                     [`${prefixCls}-last`]:
                         isLast.value && !steps.props.space && !isCenter.value,
                 },
@@ -186,7 +179,7 @@ export default defineComponent({
 
         // 进行居中对齐
         const isCenter = computed(() => {
-            return steps.props.alignCenter;
+            return data.textDirection.includes('center');
         });
 
         // 是否竖向

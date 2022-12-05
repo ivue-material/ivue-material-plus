@@ -66,8 +66,16 @@
                     v-if="password"
                     @click="handleShowPassword"
                 >
-                    <i class="ivue-icon" v-if="showPassword">{{ passwordIcon.on }}</i>
-                    <i class="ivue-icon" v-else>{{ passwordIcon.off }}</i>
+                    <template v-if="showPassword">
+                        <slot name="password-on">
+                            <i class="ivue-icon">{{ passwordIcon.on }}</i>
+                        </slot>
+                    </template>
+                    <template v-else>
+                        <slot name="password-off">
+                            <i class="ivue-icon">{{ passwordIcon.off }}</i>
+                        </slot>
+                    </template>
                 </div>
                 <!-- 尾部图标 -->
                 <span :class="[`${prefixCls}-suffix`]" v-if="showSuffix" @click.stop="handleSuffix">
@@ -150,26 +158,13 @@ import { oneOf } from '../../utils/assist';
 import IvueIcon from '../ivue-icon/index.vue';
 
 // type
-import type { Props, TextareaStyles } from './types/input';
+import type { Props, TextareaStyles, Type, Size } from './types/input';
 
 function isCssColor(color) {
     return !!color && !!color.match(/^(#|(rgb|hsl)a?\()/);
 }
 
 const prefixCls = 'ivue-input';
-
-type Type =
-    | 'text'
-    | 'textarea'
-    | 'password'
-    | 'url'
-    | 'email'
-    | 'date'
-    | 'hidden';
-
-type AutoComplete = 'on' | 'off';
-
-type Size = 'small' | 'large' | 'default';
 
 export default defineComponent({
     name: prefixCls,
@@ -250,10 +245,7 @@ export default defineComponent({
          * @type {String}
          */
         autocomplete: {
-            type: String as PropType<AutoComplete>,
-            validator(value: string) {
-                return oneOf(value, ['on', 'off']);
-            },
+            type: String,
             default: 'off',
         },
         /**
@@ -592,7 +584,9 @@ export default defineComponent({
 
             // 是否开启了 Number 类型
             if (props.number && value !== '') {
-                value = `${Number.isNaN(Number(value)) ? value : Number(value)}`;
+                value = `${
+                    Number.isNaN(Number(value)) ? value : Number(value)
+                }`;
             }
 
             // updated v-model
@@ -863,7 +857,7 @@ export default defineComponent({
         prependColor() {
             let _color = {};
 
-            if (this.prependBgColor) {
+            if (!isCssColor(this.prependBgColor)) {
                 _color = { [this.prependBgColor]: true };
             }
 
@@ -882,7 +876,7 @@ export default defineComponent({
         appendColor() {
             let _color = {};
 
-            if (this.appendBgColor) {
+            if (!isCssColor(this.appendBgColor)) {
                 _color = { [this.appendBgColor]: true };
             }
 

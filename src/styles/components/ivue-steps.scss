@@ -44,14 +44,6 @@ $steps: 'ivue-step';
     height: var(--#{$name}-icon-size);
   }
 
-  // 横向
-  &.#{$name}-horizontal {
-    .#{$steps}-item:not(:first-child) .#{$steps}-header {
-      padding-left: var(--#{$name}-horizontal-header-padding-left);
-      margin-left: var(--#{$name}-horizontal-header-margin-left);
-    }
-  }
-
   // 纵向
   &.#{$name}-vertical {
     display: flex;
@@ -335,7 +327,7 @@ $steps: 'ivue-step';
   }
 
   // 文字方向底部
-  &-text-bottom {
+  &-text-bottom, &-text-bottom-center {
     flex-direction: column;
 
     // 头部
@@ -366,7 +358,7 @@ $steps: 'ivue-step';
     }
   }
 
-  // 居中
+  // 文字底部居中
   &-bottom-center {
 
     // 头部

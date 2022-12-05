@@ -1,5 +1,52 @@
 <template>
     <div>
+        <ivue-input class="input" v-model="value" placeholder="Enter something...">
+            <template #prepend>
+                <ivue-select v-model="select1" style="width: 80px">
+                    <ivue-option value="http">http://</ivue-option>
+                    <ivue-option value="https">https://</ivue-option>
+                </ivue-select>
+            </template>
+            <template #append>
+                <ivue-select v-model="select2" style="width: 70px">
+                    <ivue-option value="com">.com</ivue-option>
+                    <ivue-option value="org">.org</ivue-option>
+                    <ivue-option value="io">.io</ivue-option>
+                </ivue-select>
+            </template>
+        </ivue-input>
+        <p>large</p>
+        <ivue-input class="input" size="large" v-model="value" placeholder="Enter something...">
+            <template #prepend>
+                <ivue-select v-model="select1" style="width: 80px">
+                    <ivue-option value="http">http://</ivue-option>
+                    <ivue-option value="https">https://</ivue-option>
+                </ivue-select>
+            </template>
+            <template #append>
+                <ivue-select v-model="select2" style="width: 70px">
+                    <ivue-option value="com">.com</ivue-option>
+                    <ivue-option value="org">.org</ivue-option>
+                    <ivue-option value="io">.io</ivue-option>
+                </ivue-select>
+            </template>
+        </ivue-input>
+        <p>small</p>
+        <ivue-input class="input" size="small" v-model="value" placeholder="Enter something...">
+            <template #prepend>
+                <ivue-select v-model="select1" style="width: 80px">
+                    <ivue-option value="http">http://</ivue-option>
+                    <ivue-option value="https">https://</ivue-option>
+                </ivue-select>
+            </template>
+            <template #append>
+                <ivue-select v-model="select2" style="width: 70px">
+                    <ivue-option value="com">.com</ivue-option>
+                    <ivue-option value="org">.org</ivue-option>
+                    <ivue-option value="io">.io</ivue-option>
+                </ivue-select>
+            </template>
+        </ivue-input>
         <p>
             基本用法，可以使用 v-model 实现数据的双向绑定。可以直接设置 style
             来改变输入框的宽度，默认 100%。
@@ -50,7 +97,14 @@
 
         <ivue-input v-model="value1" show-word-limit :maxlength="10"></ivue-input>
         <p>在 type="password" 时，开启属性 password 可以切换显示隐藏密码</p>
-        <ivue-input v-model="value1" type="password" clearable password size="large"></ivue-input>
+        <ivue-input v-model="value1" type="password" password size="large">
+            <template #password-on>
+                <p>on</p>
+            </template>
+            <template #password-off>
+                <p>off</p>
+            </template>
+        </ivue-input>
         <ivue-input v-model="value1" type="password" password size="small"></ivue-input>
         <ivue-input v-model="value1" type="password" password></ivue-input>
         <p>通过设置 prefix 和 suffix 及同名 slot 设置前缀及后缀图标。</p>
@@ -106,14 +160,9 @@
             设置属性 autosize，文本域会自动适应高度的变化。
             autosize也可以设定为一个对象，指定最小行数和最大行数。
         </p>
-        <ivue-input v-model="value1" type="textarea"  disabled></ivue-input>
+        <ivue-input v-model="value1" type="textarea" disabled></ivue-input>
         <p>rows autoHeight</p>
-        <ivue-input
-            v-model="value1"
-            show-word-limit
-            :maxlength="1000"
-            type="textarea"
-        ></ivue-input>
+        <ivue-input v-model="value1" show-word-limit :maxlength="1000" type="textarea"></ivue-input>
         <ivue-input
             v-model="value1"
             show-word-limit
@@ -141,6 +190,9 @@ export default {
     data() {
         return {
             value1: 'View UI’s birthday is July 28',
+            select1: 'http',
+            select2: 'com',
+            select3: 'day',
         };
     },
     methods: {

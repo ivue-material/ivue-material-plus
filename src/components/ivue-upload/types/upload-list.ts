@@ -6,6 +6,7 @@ export interface File {
   message?: string;
   deletable? :string;
   imageFit?: string;
+  beforeDelete?: any;
 }
 
 export interface Props {
@@ -15,5 +16,6 @@ export interface Props {
   beforeDelete: any;
   name: number | string;
   previewSize?: number | string;
-  previewImageEnlarge: boolean;
+  previewFullImage: boolean;
+  imageFit: string;
 }

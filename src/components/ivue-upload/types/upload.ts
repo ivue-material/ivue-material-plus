@@ -42,9 +42,12 @@ export interface Props {
   previewSize: number | string;
   previewImage: boolean;
   beforeDelete: any;
-  previewImageEnlarge: boolean;
+  previewFullImage: boolean;
   previewImageInitialIndex?: number;
   bodyOverflow: boolean;
+  imageFit: string;
+  readonly: boolean;
+  capture?: string;
 }
 
 export interface Data {

@@ -12,6 +12,5 @@ export type Data = {
   nextError: boolean;
   index: number;
   textDirection: string;
-  alignCenter: boolean;
   direction: string;
 }

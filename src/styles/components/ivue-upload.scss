@@ -73,6 +73,14 @@ $name: 'ivue-upload';
     }
   }
 
+  // 只读
+  &-readonly {
+    &:hover {
+      border-color: var(--ivue-default-color);
+      color: var(--#{$name}-content-color);
+    }
+  }
+
   // 列表
   &-list {
     display: flex;
@@ -89,7 +97,6 @@ $name: 'ivue-upload';
       &__img {
         width: 100%;
         height: 100%;
-        object-fit: cover;
       }
     }
 
@@ -224,6 +231,7 @@ $name: 'ivue-upload';
   &-disabled {
     border-color: var(--ivue-disabled-color);
     color: var(--ivue-disabled-color);
+    cursor: not-allowed;
 
     &:hover {
       border-color: var(--ivue-disabled-color);
