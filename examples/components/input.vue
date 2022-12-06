@@ -1,6 +1,6 @@
 <template>
     <div>
-        <ivue-input class="input" v-model="value" placeholder="Enter something...">
+        <ivue-input class="input"  v-model="value1" placeholder="Enter something...">
             <template #prepend>
                 <ivue-select v-model="select1" style="width: 80px">
                     <ivue-option value="http">http://</ivue-option>
@@ -32,7 +32,7 @@
             </template>
         </ivue-input>
         <p>small</p>
-        <ivue-input class="input" size="small" v-model="value" placeholder="Enter something...">
+        <ivue-input class="input" number size="small" v-model="value" placeholder="Enter something...">
             <template #prepend>
                 <ivue-select v-model="select1" style="width: 80px">
                     <ivue-option value="http">http://</ivue-option>
@@ -52,7 +52,13 @@
             来改变输入框的宽度，默认 100%。
         </p>
 
-        <ivue-input v-model="value1" placeholder="Enter something..." @on-enter="handleEnter"></ivue-input>
+        <ivue-popover>
+            <ivue-input v-model="value1" placeholder="Enter something..." @on-enter="handleEnter"></ivue-input>
+            <template #content>
+                {{value1}}
+            </template>
+        </ivue-popover>
+
         <p>
             输入框有三种尺寸：大、默认（中）、小
             通过设置size为large和small设置为大和小尺寸，不设置为默认（中）尺寸。
@@ -162,14 +168,13 @@
         </p>
         <ivue-input v-model="value1" type="textarea" disabled></ivue-input>
         <p>rows autoHeight</p>
-        <ivue-input v-model="value1" show-word-limit :maxlength="1000" type="textarea"></ivue-input>
-        <ivue-input
+        <ivue-input v-model="value" autoHeight type="textarea"></ivue-input>
+        <!-- <ivue-input
             v-model="value1"
             show-word-limit
-            :maxlength="1000"
             type="textarea"
             :autoHeight="{ minRows: 2, maxRows: 5 }"
-        ></ivue-input>
+        ></ivue-input> -->
 
         <p>通过设置属性border可以不显示边框</p>
         <ivue-input v-model="value1" :border="false"></ivue-input>
@@ -182,6 +187,8 @@
         <button @click="handleFocus('preventScroll')">Focus prevent scroll</button>
 
         <ivue-input ref="input" v-model="value1"></ivue-input>
+        <p>inputFunction</p>
+        <ivue-input ref="input" v-model="value1" :inputFunction="inputFunction"></ivue-input>
     </div>
 </template>
 
@@ -189,6 +196,7 @@
 export default {
     data() {
         return {
+            value: '',
             value1: 'View UI’s birthday is July 28',
             select1: 'http',
             select2: 'com',
@@ -217,6 +225,9 @@ export default {
         handleEnter() {
             console.log('handleEnter');
         },
+        inputFunction(value) {
+           return value = value.replace(/[^\d]+/g, '');
+        }
     },
 };
 </script>

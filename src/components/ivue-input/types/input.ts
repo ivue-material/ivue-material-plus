@@ -27,12 +27,11 @@ export interface Props {
   search: boolean;
   enterButton: boolean | string;
   rows: number;
-  autoHeight: {
-    minRows?: string;
-    maxRows?: string;
-  };
+  autoHeight: any;
   border: boolean;
   isValue: boolean;
+  wrap: string;
+  inputFunction: any;
 }
 
 export type TextareaStyles = {
@@ -41,15 +40,5 @@ export type TextareaStyles = {
   maxHeight?: string;
   overflowY?: any;
 }
-
-
-export type Type = 'text'
-  | 'textarea'
-  | 'password'
-  | 'url'
-  | 'email'
-  | 'date'
-  | 'hidden';
-
 
 export type Size = 'small' | 'large' | 'default';

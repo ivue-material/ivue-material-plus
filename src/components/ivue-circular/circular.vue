@@ -58,10 +58,10 @@ export default defineComponent({
         /**
          * 圆圈大小，单位 px
          *
-         * @type {Number}
+         * @type {String | Number}
          */
         size: {
-            type: Number,
+            type: [String, Number],
             default: 120,
         },
         /**
@@ -74,7 +74,7 @@ export default defineComponent({
             default: false,
         },
         /**
-         * 进度环的线宽，单位 px
+         * 进度环的线宽
          *
          * @type {Number}
          */
@@ -92,7 +92,7 @@ export default defineComponent({
             default: '#F8F9FD',
         },
         /**
-         * 进度环背景的线宽，单位 px
+         * 进度环背景的线宽
          *
          * @type {Number}
          */
@@ -113,7 +113,7 @@ export default defineComponent({
             default: 'round',
         },
         /**
-         * 进度环的颜色，4.0.0 版本开始支持传入数组显示为渐变色
+         * 进度环的颜色
          *
          * @type {String | Array}
          */
@@ -133,9 +133,14 @@ export default defineComponent({
 
         // 外层样式style
         const wrapStyles = computed(() => {
+            const regexp = new RegExp(/[a-zA-Z]/g);
+
+            // 是否有单位
+            const isUnit = regexp.test(`${props.size}`);
+
             return {
-                height: `${props.size}px`,
-                width: `${props.size}px`,
+                height: !isUnit ? `${props.size}px` : props.size,
+                width: !isUnit ? `${props.size}px` : props.size,
             };
         });
 

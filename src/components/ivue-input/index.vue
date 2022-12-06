@@ -123,6 +123,7 @@
                 :rows="rows"
                 :maxlength="maxlength"
                 :spellcheck="spellcheck"
+                :wrap="wrap"
                 @keyup.enter="handleEnter"
                 @keyup="handleKeyup"
                 @keypress="handleKeypress"
@@ -151,14 +152,13 @@ import {
     watch,
     onMounted,
 } from 'vue';
-import { isObject } from '@vue/shared';
 
 import { calcTextareaHeight } from '../../utils/calc-textarea-height';
 import { oneOf } from '../../utils/assist';
 import IvueIcon from '../ivue-icon/index.vue';
 
 // type
-import type { Props, TextareaStyles, Type, Size } from './types/input';
+import type { Props, TextareaStyles, Size } from './types/input';
 
 function isCssColor(color) {
     return !!color && !!color.match(/^(#|(rgb|hsl)a?\()/);
@@ -193,23 +193,12 @@ export default defineComponent({
             default: '',
         },
         /**
-         * 输入框类型，可选值为 text、password、textarea、url、email、date
+         * 输入框类型
          *
          * @type {String}
          */
         type: {
-            type: String as PropType<Type>,
-            validator(value: string) {
-                return oneOf(value, [
-                    'text',
-                    'textarea',
-                    'password',
-                    'url',
-                    'email',
-                    'date',
-                    'hidden',
-                ]);
-            },
+            type: String,
             default: 'text',
         },
         /**
@@ -291,7 +280,7 @@ export default defineComponent({
             default: false,
         },
         /**
-         * 将用户的输入转换为 Number 类型
+         * 只允许用户输入number
          *
          * @type {Boolean}
          */
@@ -429,12 +418,13 @@ export default defineComponent({
         },
         /**
          * 自适应内容高度，仅在 textarea 类型下有效
-         *  指定最小行数和最大行数
+         * 指定最小行数和最大行数
          *
          * @type {Object}
          */
         autoHeight: {
-            type: Object,
+            type: [Boolean, Object],
+            default: false,
         },
         /**
          * 是否显示边框
@@ -453,6 +443,25 @@ export default defineComponent({
         isValue: {
             type: Boolean,
             default: false,
+        },
+        /**
+         * 原生的 wrap 属性，可选值为 hard 和 soft，仅在 textarea 下生效
+         *
+         * @type {String}
+         */
+        wrap: {
+            validator(value: string) {
+                return oneOf(value, ['hard', 'soft']);
+            },
+            default: 'soft',
+        },
+        /**
+         * 自定义输入方法
+         *
+         * @type {Boolean}
+         */
+        inputFunction: {
+            type: Function,
         },
     },
     // 组合式 API
@@ -563,7 +572,7 @@ export default defineComponent({
             const autoHeight = props.autoHeight;
 
             // 是否是 textarea 是否开启了自适应高度
-            if (!isObject(autoHeight) || props.type !== 'textarea') {
+            if (!autoHeight || props.type !== 'textarea') {
                 return;
             }
 
@@ -583,10 +592,17 @@ export default defineComponent({
             let value = (event.target as HTMLInputElement).value;
 
             // 是否开启了 Number 类型
-            if (props.number && value !== '') {
-                value = `${
-                    Number.isNaN(Number(value)) ? value : Number(value)
-                }`;
+            if (props.number) {
+                value = value.replace(/[^\d]+/g, '');
+
+                (event.target as HTMLInputElement).value = value;
+            }
+
+            // 自定义输入方法
+            if (props.inputFunction) {
+                value = props.inputFunction(value);
+
+                (event.target as HTMLInputElement).value = value;
             }
 
             // updated v-model

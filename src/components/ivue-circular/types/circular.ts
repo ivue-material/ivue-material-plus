@@ -1,6 +1,6 @@
 export interface Props {
   percent: number;
-  size: number;
+  size: number | string;
   dashboard: boolean;
   strokeWidth: number;
   trailColor: string;
