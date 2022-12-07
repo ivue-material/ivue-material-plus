@@ -26,7 +26,7 @@ $name: 'ivue-progress';
 }
 
 .#{$name} {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   position: relative;
   font-size: var(--ivue-font-small-size);
