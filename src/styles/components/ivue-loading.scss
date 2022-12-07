@@ -50,6 +50,13 @@ $name: 'ivue-loading';
     width: 100%;
     color: var(--ivue-primary-color);
 
+    &--content{
+      display: flex;
+      justify-content: center;
+      flex-direction: column;
+      align-items: center;
+    }
+
     .circular {
       height: var(--#{$name}-spinner-circular-size);
       width: var(--#{$name}-spinner-circular-size);
@@ -76,7 +83,7 @@ $name: 'ivue-loading';
   // 文字
   &-text {
     color: currentColor;
-    margin: 3px 0;
+    margin: 5px 0;
     font-size: var(--#{$name}-font-size);
   }
 }

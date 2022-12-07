@@ -7,8 +7,9 @@
             class="conetn1"
             v-loading="show"
             ivue-loading-text="拼命加载中"
-            ivue-loading-icon-class="ivue-icon red"
-            ivue-loading-icon-text="nightlight_round"
+            ivue-loading-icon-text="`<butto>show</butto>`"
+            ivue-loading-icon-class="red"
+            ivue-loading-spinner="hello"
         ></div>
         <button @click="show = !show">show</button>
         <h1>整页加载</h1>
@@ -18,11 +19,19 @@
                 @click="openFullScreen1"
                 v-loading.fullscreen.lock="fullscreenLoading"
             >指令方式</ivue-button>
-            <ivue-button
-                :color="['#5AB2FF', '#5B8EFF']"
-                @click="openFullScreen2"
-            >服务方式</ivue-button>
+            <ivue-button :color="['#5AB2FF', '#5B8EFF']" @click="openFullScreen2">服务方式</ivue-button>
         </div>
+
+        <ivue-table
+            v-loading="true"
+            :data="tableData"
+            ivue-loading-text="Loading..."
+            ivue-loading-background="rgba(0, 0, 0, 0.8)"
+        >
+            <ivue-table-column prop="date" label="Date" width="180" />
+            <ivue-table-column prop="name" label="Name" width="180" />
+            <ivue-table-column prop="address" label="Address" />
+        </ivue-table>
     </div>
 </template>
 
@@ -34,6 +43,23 @@ export default {
         return {
             fullscreenLoading: false,
             show: true,
+            tableData: [
+                {
+                    date: '2016-05-02',
+                    name: 'John Smith',
+                    address: 'No.1518,  Jinshajiang Road, Putuo District',
+                },
+                {
+                    date: '2016-05-04',
+                    name: 'John Smith',
+                    address: 'No.1518,  Jinshajiang Road, Putuo District',
+                },
+                {
+                    date: '2016-05-01',
+                    name: 'John Smith',
+                    address: 'No.1518,  Jinshajiang Road, Putuo District',
+                },
+            ],
         };
     },
     methods: {
@@ -47,14 +73,17 @@ export default {
         openFullScreen2() {
             const loading = this.$loading({
                 lock: true,
+                body: true,
+                visible: false,
                 text: 'Loading',
-                spinner: 'el-icon-loading',
                 background: 'rgba(0, 0, 0, 0.7)',
-                loadingSpinner: this.renderIcon
+                loadingSpinner: this.renderIcon,
             });
             setTimeout(() => {
                 // loading.close();
             }, 2000);
+
+
         },
         renderIcon() {
             return h('ivue-icon', {}, ['menu']);
@@ -64,7 +93,7 @@ export default {
 </script>
 
 <style lang="scss">
-.card{
+.card {
     height: 10000px;
 }
 .conetn1 {

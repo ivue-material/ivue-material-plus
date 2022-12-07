@@ -44,9 +44,16 @@
 </template>
 
 <script lang='ts'>
-import { defineComponent, computed, reactive, onMounted, PropType } from 'vue';
+import {
+    defineComponent,
+    computed,
+    reactive,
+    onMounted,
+    PropType,
+} from 'vue';
 import { useEventListener } from '@vueuse/core';
 
+import { oneOf } from '../../utils/assist';
 import { EVENT_CODE } from '../../utils/helpers';
 import RenderCell from '../../utils/render';
 
@@ -103,29 +110,12 @@ export default defineComponent({
             type: Function,
         },
         /**
-         * 是否有图标
-         *
-         * @type {Boolean}
-         */
-        haveIcon: {
-            type: Boolean,
-        },
-        /**
          * 关闭方法
          *
          * @type {Function}
          */
         onClose: {
             type: Function,
-        },
-        /**
-         * 通知栏样式
-         *
-         * @type {String}
-         */
-        styles: {
-            type: Object,
-            default: () => {},
         },
         /**
          * 组件名称
@@ -161,6 +151,14 @@ export default defineComponent({
          */
         position: {
             type: String as PropType<Position>,
+            validator(value: string) {
+                return oneOf(value, [
+                    'top-right',
+                    'top-left',
+                    'bottom-right',
+                    'bottom-left',
+                ]);
+            },
             default: 'top-right',
         },
         /**

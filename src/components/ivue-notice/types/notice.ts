@@ -4,9 +4,7 @@ export interface Props {
   className?: string;
   closable: boolean;
   render?: any;
-  haveIcon: boolean;
   onClose?: any;
-  styles?: any;
   id: string;
   duration: number;
   offset: number;
@@ -27,15 +25,16 @@ export type Position = 'top-right' | 'top-left' | 'bottom-right' | 'bottom-left'
 export type Type = 'normal' | 'info' | 'warning' | 'success' | 'error';
 
 export type Options = {
-  title?: string,
-  desc?: string,
-  onClose?: () => any,
-  render?: () => any,
-  duration?: number,
-  position?: Position,
-  offset?: number,
-  id?: string,
-  zIndex?: number,
-  type?: Type,
-  closable?: boolean
+  title?: string;
+  desc?: string;
+  onClose?: () => any;
+  render?: () => any;
+  duration?: number;
+  position?: Position;
+  offset?: number;
+  id?: string;
+  zIndex?: number;
+  type?: Type;
+  closable?: boolean;
+  name?: string
 }

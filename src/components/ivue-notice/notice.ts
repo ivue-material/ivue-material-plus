@@ -1,10 +1,10 @@
-import { createVNode, VNode, render, ComponentPublicInstance } from 'vue';
+import { createVNode, VNode, render, ComponentPublicInstance, nextTick } from 'vue';
 import { transferIndex, transferIncrease } from '../../utils/transfer-queue';
 
 import Notice from './index.vue';
 
 // type
-import type { Type, Position, Options } from './types/notice'
+import type { Type, Position, Options } from './types/notice';
 
 
 const prefixKey = 'ivue_notice_key_';
@@ -21,13 +21,25 @@ const notifications = {
 // 每个通知之间的间隙大小
 const GAP_SIZE = 16;
 
-let offset;
-let defaultDuration;
+let offset: number;
+let defaultDuration: number;
 
+// 存储自定义的通知id列表
+const notificationsId: Record<string, boolean> = {};
 
 function notice(type: Type, options: Options = {}) {
     // key
-    const id = `${prefixKey}${name}`;
+    const id = options.id || `${prefixKey}${name}`;
+
+    // 通知列表开启了自定义id,不重复创建
+    if (notificationsId[id]) {
+        return;
+    }
+
+    // 有自定义id
+    if (id) {
+        notificationsId[id] = true;
+    }
 
     // 标题
     options.title = options.title || '';
@@ -40,7 +52,10 @@ function notice(type: Type, options: Options = {}) {
     // duration
     options.duration = defaultDuration || options.duration;
 
-    name++;
+    // 没有id
+    if (!options.id) {
+        name++;
+    }
 
     // 偏移距离
     let verticalOffset = offset || options.offset || 0;
@@ -53,7 +68,6 @@ function notice(type: Type, options: Options = {}) {
         });
 
     verticalOffset += GAP_SIZE;
-
 
     // 获取Index
     const handleGetIndex = () => {
@@ -83,6 +97,11 @@ function notice(type: Type, options: Options = {}) {
 
     // 清除通知元素防止内存泄漏
     vm.props.onDestroy = () => {
+
+        if (id) {
+            delete notificationsId[id];
+        }
+
         render(null, container);
     };
 
@@ -100,12 +119,12 @@ function notice(type: Type, options: Options = {}) {
   * 由transition@before-leave 事件发出，以便我们可以获取当前的notification.offsetHeight，如果它被调用
   * 通过@after-leave DOM 元素将从页面中删除，因此我们无法再获取 offsetHeight。
   * @param {String} id 要关闭的通知 id
-  * @param {Position} 定位定位策略
+  * @param {Position} 定位策略
   * @param {Function} userOnClose 用户关闭时调用的回调
   */
 const close = (
     id: string,
-    position: Position,
+    position: Position = 'top-right',
     userOnClose?: (vm: VNode) => void,
 ): void => {
     // 将 vm 插入通知列表时存储索引
@@ -130,12 +149,15 @@ const close = (
 
     // 请注意，这称为@before-leave，这就是我们能够获取此属性的原因。
     const removedHeight = vm.el.offsetHeight;
-
     const verticalPos = position.split('-')[0];
-    orientedNotifications.splice(idx, 1);
+    // 移除当前通知
+    const _orientedNotifications = orientedNotifications.splice(idx, 1);
     const len = orientedNotifications.length;
 
+    // 关闭单个通知
     if (len < 1) {
+        _orientedNotifications[0].vm.component.proxy.data.visible = false;
+
         return;
     }
 
@@ -178,7 +200,7 @@ const notification = {
         return notice('error', options);
     },
     // 全局配置
-    config(options) {
+    config(options: Options) {
         // 偏移位置
         if (options.offset) {
             offset = options.offset;

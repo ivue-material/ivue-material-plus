@@ -8,12 +8,12 @@ module.exports = {
       chunks: ['chunk-vendors', 'chunk-common', 'index']
     }
   },
-  css: {
-    loaderOptions: {
-      // 给 sass-loader 传递选项
-      sass: {
+  // css: {
+  //   loaderOptions: {
+  //     // 给 sass-loader 传递选项
+  //     sass: {
 
-      },
-    }
-  }
+  //     },
+  //   }
+  // }
 };

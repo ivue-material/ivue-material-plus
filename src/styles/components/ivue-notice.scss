@@ -162,6 +162,7 @@ $name: 'ivue-notice';
     line-height: var(--#{$name}-title-line-height);
     color: var(--ivue-title-color);
     overflow: hidden;
+    font-weight: bold;
   }
 
   // 描述
@@ -173,7 +174,6 @@ $name: 'ivue-notice';
   }
 
   &-have-desc &-title {
-    font-weight: bold;
     margin-bottom: var(--#{$name}-have-desc-title-margin-bottom);
   }
 }

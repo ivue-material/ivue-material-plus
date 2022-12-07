@@ -127,8 +127,6 @@ const resolveOptions = (options: LoadingOptions): LoadingOptionsResolved => {
         parent: target === document.body || options.body ? document.body : target,
         // 遮罩背景色
         background: options.background || '',
-        // 自定义加载图标类名
-        spinner: options.spinner || false,
         // 显示在加载图标下方的加载文案
         text: options.text || '',
         // 全屏遮罩
@@ -141,7 +139,7 @@ const resolveOptions = (options: LoadingOptions): LoadingOptionsResolved => {
         visible: options.visible ?? true,
         // 自定义加载图标类名
         iconClass: options.iconClass,
-        // 图标 slot
+        // 自定义加载图标内容
         iconText: options.iconText,
         // 获取当前 target
         target,

@@ -153,11 +153,13 @@ export function createLoadingComponent(options: LoadingOptionsResolved) {
                                 }, [
                                 h('div', {
                                     class: 'ivue-loading-spinner',
+                                }, h('div', {
+                                    class: 'ivue-loading-spinner--content',
                                 }, [
                                     // 图标渲染函数
                                     data.loadingSpinner ? data.loadingSpinner() : !data.iconClass ? spinner : noSpinner,
                                     data.text ? spinnerText : null,
-                                ]),
+                                ])),
                             ]),
                             [[vShow, data.visible]])
                     ])

@@ -163,7 +163,7 @@
                 <li>
                     <router-link to="/input-number">InputNumber</router-link>
                 </li>
-                  <li>
+                <li>
                     <router-link to="/menu">Menu</router-link>
                 </li>
             </ul>
@@ -182,8 +182,6 @@ export default {
 </script>
 
 <style lang="scss">
-$material-icons-font-path: '~@/styles/material-icons/fonts/material-icons' !default;
-
 nav {
     margin-bottom: 40px;
 

@@ -4,7 +4,6 @@ import type { MaybeRef } from '@vueuse/core';
 export type LoadingOptionsResolved = {
     parent: LoadingParentElement;
     background: MaybeRef<string>;
-    spinner: MaybeRef<boolean | string>;
     iconClass?: string;
     iconText?: string;
     text: MaybeRef<string>;

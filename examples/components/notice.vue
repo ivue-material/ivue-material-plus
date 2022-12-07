@@ -54,14 +54,13 @@ import { h } from 'vue';
 
 export default {
     mounted() {
-            this.$notice.config({
-                offset: 100,
-                // duration: 2000
-            })
+        this.$notice.config({
+            offset: 100,
+        });
     },
     methods: {
         showCloseAll() {
-            this.$notice.closeAll()
+            this.$notice.closeAll();
         },
         showClose() {
             this.$notice.open({
@@ -129,12 +128,21 @@ export default {
             });
         },
         open(nodesc) {
-            this.$notice.open({
+            this.$notice.success({
                 title: 'Notification title',
+                styles: 'color:red',
                 desc: nodesc
                     ? ''
                     : 'Here is the notification description. Here is the notification description. ',
+                duration: 0,
+                id: 'id',
             });
+
+
+            this.setTimeout && clearTimeout(this.setTimeout)
+            this.setTimeout = setTimeout(() => {
+                this.$notice.close('id');
+            }, 1000);
         },
         info(nodesc) {
             this.$notice.info({
@@ -142,6 +150,7 @@ export default {
                 desc: nodesc
                     ? ''
                     : 'Here is the notification description. Here is the notification description. ',
+                duration: 1000,
             });
         },
         success(nodesc) {
