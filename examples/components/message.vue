@@ -54,7 +54,7 @@ import { h } from 'vue';
 export default {
     mounted() {
         this.$message.config({
-            offset: 200,
+            // top: 200,
         });
     },
     methods: {
@@ -62,14 +62,27 @@ export default {
             this.$message.closeAll();
         },
         info() {
-            this.$message.info({
+            const info = this.$message.info({
                 content: '这是一条带背景色的通知',
+                duration: 0,
+                id: 'id',
             });
+
+            if (this.setTimeout) {
+                return;
+            }
+
+            this.setTimeout = setTimeout(() => {
+                info && info.close('id');
+                console.log('this.$message');
+
+                clearTimeout(this.setTimeout);
+                this.setTimeout = null;
+            }, 1000);
         },
         success() {
             this.$message.success({
                 content: '这是一条带背景色的通知',
-                duration: 0,
             });
         },
         warning() {
@@ -91,11 +104,11 @@ export default {
             });
         },
         loading() {
-            const msg = this.$message.loading({
+            this.$message.loading({
                 content: 'Loading...',
+                loadingIcon: 'hello',
                 duration: 0,
             });
-            setTimeout(msg, 3000);
         },
         time() {
             this.$message.info({
@@ -112,6 +125,7 @@ export default {
         },
         renderFunc() {
             this.$message.info({
+                content: 'Tips for manual closing',
                 render: () => {
                     return h('span', [
                         'This is created by ',

@@ -55,7 +55,7 @@ import { h } from 'vue';
 export default {
     mounted() {
         this.$notice.config({
-            offset: 100,
+            // duration: 1000,
         });
     },
     methods: {
@@ -124,33 +124,34 @@ export default {
             this.$notice.open({
                 title: 'Notification title',
                 desc: 'This notification does not automatically close, and you need to click the close button to close.',
-                duration: 0,
             });
         },
         open(nodesc) {
-            this.$notice.success({
+            const success = this.$notice.success({
                 title: 'Notification title',
                 styles: 'color:red',
                 desc: nodesc
                     ? ''
                     : 'Here is the notification description. Here is the notification description. ',
-                duration: 0,
                 id: 'id',
+                duration: 0,
             });
 
+            console.log('12');
 
-            this.setTimeout && clearTimeout(this.setTimeout)
-            this.setTimeout = setTimeout(() => {
-                this.$notice.close('id');
+            // this.setTimeout && clearTimeout(this.setTimeout)
+            setTimeout(() => {
+                console.log(success)
+                success && success.close('id');
             }, 1000);
         },
         info(nodesc) {
             this.$notice.info({
+                duration: 0,
                 title: 'Notification title',
                 desc: nodesc
                     ? ''
                     : 'Here is the notification description. Here is the notification description. ',
-                duration: 1000,
             });
         },
         success(nodesc) {
@@ -172,7 +173,6 @@ export default {
         error(nodesc) {
             this.$notice.error({
                 title: 'Notification title',
-                duration: 0,
                 desc: nodesc
                     ? ''
                     : 'Here is the notification description. Here is the notification description. ',

@@ -6,32 +6,25 @@ export interface Props {
   closable: boolean;
   background: boolean;
   render?: any;
-  haveIcon?: boolean;
   onClose?: any;
-  styles?: any;
   id: string;
   duration: number;
-  offset: number;
-  position: string;
+  top: number;
   zIndex: number;
-  title?: string;
-  desc?: string;
   loadingIcon?: string;
 }
 
 export interface Data {
-  haveDesc: boolean;
   closeTimer: ReturnType<typeof setTimeout> | null;
   visible: boolean;
   iconTypes: Record<string, string>;
 }
 
-export type Position = 'top-right' | 'top-left' | 'bottom-right' | 'bottom-left';
 export type Type = 'normal' | 'info' | 'warning' | 'success' | 'error' | 'loading';
 
 export type Options = {
   content?: string,
-  offset?: number,
+  top?: number,
   onClose?: () => any,
   type?: Type,
   duration?: number,

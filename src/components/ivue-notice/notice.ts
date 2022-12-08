@@ -28,17 +28,14 @@ let defaultDuration: number;
 const notificationsId: Record<string, boolean> = {};
 
 function notice(type: Type, options: Options = {}) {
-    // key
-    const id = options.id || `${prefixKey}${name}`;
+    // 自定义id
+    const customizeId = options.id;
+    // 每一个的id
+    const id = customizeId || `${prefixKey}${name}`;
 
     // 通知列表开启了自定义id,不重复创建
-    if (notificationsId[id]) {
+    if (notificationsId[customizeId]) {
         return;
-    }
-
-    // 有自定义id
-    if (id) {
-        notificationsId[id] = true;
     }
 
     // 标题
@@ -53,7 +50,7 @@ function notice(type: Type, options: Options = {}) {
     options.duration = defaultDuration || options.duration;
 
     // 没有id
-    if (!options.id) {
+    if (!customizeId) {
         name++;
     }
 
@@ -95,13 +92,13 @@ function notice(type: Type, options: Options = {}) {
     const vm: VNode = createVNode(Notice, options);
     const container = document.createElement('div');
 
+    // 有自定义id
+    if (customizeId) {
+        notificationsId[customizeId] = true;
+    }
+
     // 清除通知元素防止内存泄漏
     vm.props.onDestroy = () => {
-
-        if (id) {
-            delete notificationsId[id];
-        }
-
         render(null, container);
     };
 
@@ -112,6 +109,10 @@ function notice(type: Type, options: Options = {}) {
     render(vm, container);
 
     document.body.appendChild(container.firstElementChild);
+
+    return {
+        close
+    };
 }
 
 /**
@@ -131,7 +132,13 @@ const close = (
     const orientedNotifications = notifications[position];
 
     // 当前的下标
-    const idx = orientedNotifications.findIndex(({ vm }) => vm.component.props.id === id);
+    const idx = orientedNotifications.findIndex(({ vm }) => {
+        if (!vm) {
+            return;
+        }
+
+        return vm.component.props.id === id;
+    });
 
     if (idx === -1) {
         return;
@@ -150,14 +157,21 @@ const close = (
     // 请注意，这称为@before-leave，这就是我们能够获取此属性的原因。
     const removedHeight = vm.el.offsetHeight;
     const verticalPos = position.split('-')[0];
+
+    // 有自定义id删除
+    if (notificationsId[id]) {
+        // 隐藏自定义的通知
+        orientedNotifications[idx].vm.component.proxy.data.visible = false;
+
+        delete notificationsId[id];
+    }
+
     // 移除当前通知
-    const _orientedNotifications = orientedNotifications.splice(idx, 1);
-    const len = orientedNotifications.length;
+    notifications[position].splice(idx, 1);
 
-    // 关闭单个通知
+    const len = notifications[position].length;
+
     if (len < 1) {
-        _orientedNotifications[0].vm.component.proxy.data.visible = false;
-
         return;
     }
 
@@ -166,6 +180,8 @@ const close = (
         // 新位置等于当前的 offsetTop 减去移除的高度加上 16px（每个项目之间的间隙大小）
         const { el, component } = orientedNotifications[i].vm;
         const pos = parseInt(el.style[verticalPos], 10) - removedHeight - GAP_SIZE;
+
+        // 修改偏移位置触发向上移动动画
         component.props.offset = pos;
     }
 };
@@ -178,7 +194,7 @@ const closeAll = (): void => {
 
         orientedNotifications.forEach(({ vm }) => {
             // same as the previous close method, we'd like to make sure lifecycle gets handle properly.
-            (vm.component.proxy.data as ComponentPublicInstance<{ visible: boolean; }>).visible = false;
+            vm.component.proxy.data.visible = false;
         });
     }
 };

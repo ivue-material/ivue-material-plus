@@ -41,12 +41,12 @@
                     <i
                         :class="`ivue-icon ${prefixCls}-icon ${prefixCls}-icon-${type}`"
                     >{{ data.iconTypes[type] }}</i>
-                    <!-- 内容 -->
-                    <div :class="`${baseClasses}-content-text`" v-html="content"></div>
                     <!-- render 渲染 -->
                     <div :class="`${baseClasses}-content-text`" v-if="renderFunc">
                         <render-cell :render="renderFunc"></render-cell>
                     </div>
+                    <!-- 内容 -->
+                    <div :class="`${baseClasses}-content-text`" v-html="content" v-else></div>
                     <!-- 关闭按钮 -->
                     <div :class="`${baseClasses}-close`" @click="handleClose" v-show="closable">
                         <i class="ivue-icon">close</i>
@@ -63,7 +63,7 @@ import { defineComponent, computed, reactive, onMounted, PropType } from 'vue';
 import RenderCell from '../../utils/render';
 
 // type
-import type { Props, Data, Position, Type } from './types/message';
+import type { Props, Data, Type } from './types/message';
 
 const prefixCls = 'ivue-message';
 
@@ -124,29 +124,12 @@ export default defineComponent({
             type: Function,
         },
         /**
-         * 是否有图标
-         *
-         * @type {Boolean}
-         */
-        haveIcon: {
-            type: Boolean,
-        },
-        /**
          * 关闭方法
          *
          * @type {Function}
          */
         onClose: {
             type: Function,
-        },
-        /**
-         * 通知栏样式
-         *
-         * @type {String}
-         */
-        styles: {
-            type: Object,
-            default: () => {},
         },
         /**
          * 组件名称
@@ -171,18 +154,9 @@ export default defineComponent({
          *
          * @type {Number}
          */
-        offset: {
+        top: {
             type: Number,
             default: 0,
-        },
-        /**
-         * 自定义弹出位置
-         *
-         * @type {String}
-         */
-        position: {
-            type: String as PropType<Position>,
-            default: 'top-right',
         },
         /**
          * 当前index
@@ -192,22 +166,6 @@ export default defineComponent({
         zIndex: {
             type: Number,
             default: 0,
-        },
-        /**
-         * 标题
-         *
-         * @type {String}
-         */
-        title: {
-            type: String,
-        },
-        /**
-         * 描述
-         *
-         * @type {String}
-         */
-        desc: {
-            type: String,
         },
         /**
          * loading icon
@@ -230,12 +188,6 @@ export default defineComponent({
 
         // data
         const data = reactive<Data>({
-            /**
-             * 是否有描述
-             *
-             * @type {Boolean}
-             */
-            haveDesc: false,
             /**
              * 关闭时间
              *
@@ -279,7 +231,6 @@ export default defineComponent({
                     [`${props.className}`]: !!props.className,
                     [`${_baseClass}-closable`]: props.closable,
                     [`${_baseClass}-have-background`]: props.background,
-                    [`${_baseClass}-have-desc`]: data.haveDesc,
                     [`${_baseClass}-have-background-${props.type}`]:
                         props.background,
                 },
@@ -289,18 +240,9 @@ export default defineComponent({
         // 外层样式
         const wrapperStyles = computed(() => {
             return {
-                top: `${props.offset}px`,
+                top: `${props.top}px`,
                 'z-index': props.zIndex,
             };
-        });
-
-        // 有描述
-        const haveDesc = computed(() => {
-            return props.render && !props.title
-                ? ''
-                : props.desc || props.render
-                ? `${prefixCls}-have-desc`
-                : '';
         });
 
         // 内容样式
@@ -385,7 +327,6 @@ export default defineComponent({
             contentHaveIcon,
             renderFunc,
             wrapperStyles,
-            haveDesc,
 
             // methods
             handleClose,

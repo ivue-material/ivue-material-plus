@@ -1,3 +1,9 @@
+const {
+  relative
+} = require('path');
+
+const isProduction = process.env.NODE_ENV === 'production';
+
 module.exports = {
   assetsDir: '',
   pages: {
@@ -8,12 +14,22 @@ module.exports = {
       chunks: ['chunk-vendors', 'chunk-common', 'index']
     }
   },
-  // css: {
-  //   loaderOptions: {
-  //     // 给 sass-loader 传递选项
-  //     sass: {
+  chainWebpack: (config) => {
+    // dev环境
+    if (!isProduction) {
 
-  //     },
-  //   }
-  // }
+      const oneOfsMap = config.module.rule('scss').oneOfs.store;
+
+      oneOfsMap.forEach((item) => {
+        item
+          .use('sass-loader')
+          .loader('sass-loader')
+          .options({
+            // dev覆盖字体路径
+            additionalData: '$material-icons-font-path: "~@/styles/material-icons/fonts/material-icons" !default;'
+          })
+          .end();
+      });
+    }
+  }
 };

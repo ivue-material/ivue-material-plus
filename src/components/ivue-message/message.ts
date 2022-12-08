@@ -4,18 +4,34 @@ import { transferIndex, transferIncrease } from '../../utils/transfer-queue';
 import Message from './index.vue';
 
 // type
-import type { Type, Options } from './types/message'
+import type { Type, Options } from './types/message';
 
 // 实例列表
 const instances = [];
 
 let name = 1;
-let offset;
+let top;
 let defaultDuration;
 
 const prefixKey = 'ivue_message_key_';
 
+// 存储自定义的通知id列表
+const notificationsId: Record<string, any> = {};
+
 const message = (type: Type, options: Options) => {
+    // 自定义id
+    const customizeId = options.id;
+
+    // 每一个的id
+    const id = customizeId || `${prefixKey}${name++}`;
+
+    // 通知列表开启了自定义id,不重复创建
+    if (notificationsId[customizeId]) {
+        return;
+    }
+
+    // 用户设置的关闭回调
+    const userOnClose = options.onClose;
 
     // 纯字符串
     if (typeof options === 'string') {
@@ -25,7 +41,7 @@ const message = (type: Type, options: Options) => {
     }
 
     // 距离顶部位置
-    let verticalOffset = offset || options.offset || 20;
+    let verticalOffset = top || options.top || 20;
 
     // 遍历实例累加位移位置
     instances.forEach(({ vm }) => {
@@ -37,11 +53,6 @@ const message = (type: Type, options: Options) => {
 
     // duration
     options.duration = defaultDuration || options.duration;
-
-    // 每一个的id
-    const id = `${prefixKey}${name++}`;
-    // 用户设置的关闭回调
-    const userOnClose = options.onClose;
 
     // 获取Index
     const handleGetIndex = () => {
@@ -60,20 +71,24 @@ const message = (type: Type, options: Options) => {
         onClose: () => {
             close(id, userOnClose);
         },
-        offset: verticalOffset,
+        top: verticalOffset,
         id: id,
         zIndex: 1010 + tIndex,
     };
 
     // 实例对象
-    const vm: any = createVNode(
+    const vm = createVNode(
         Message,
         options,
         isVNode(options.content) ?
             { default: () => message } :
             null);
-
     const container = document.createElement('div') as HTMLElement;
+
+    // 有自定义id
+    if (customizeId) {
+        notificationsId[id] = { vm };
+    }
 
     // 清除通知元素防止内存泄漏
     vm.props.onDestroy = () => {
@@ -89,6 +104,11 @@ const message = (type: Type, options: Options) => {
     instances.push({ vm });
 
     document.body.appendChild(container.firstElementChild as HTMLElement);
+
+    // 返回关闭方法
+    return {
+        close
+    };
 };
 
 
@@ -97,7 +117,6 @@ const message = (type: Type, options: Options) => {
   * 由transition@before-leave 事件发出，以便我们可以获取当前的notification.offsetHeight，如果它被调用
   * 通过@after-leave DOM 元素将从页面中删除，因此我们无法再获取 offsetHeight。
   * @param {String} id 要关闭的通知 id
-  * @param {Position} 定位定位策略
   * @param {Function} userOnClose 用户关闭时调用的回调
   */
 const close = (
@@ -108,7 +127,13 @@ const close = (
     const orientedNotifications = instances;
 
     // 当前的下标
-    const idx = orientedNotifications.findIndex(({ vm }) => vm.component.props.id === id);
+    const idx = orientedNotifications.findIndex(({ vm }) => {
+        if (!vm) {
+            return;
+        }
+
+        return vm.component.props.id === id;
+    });
 
     if (idx === -1) {
         return;
@@ -117,7 +142,9 @@ const close = (
     // vm
     const { vm } = orientedNotifications[idx];
 
-    if (!vm) return;
+    if (!vm) {
+        return;
+    }
 
     // 在通知从 DOM 中移除之前调用用户的关闭函数。
     userOnClose?.(vm);
@@ -125,20 +152,33 @@ const close = (
     // 请注意，这称为@before-leave，这就是我们能够获取此属性的原因。
     const removedHeight = vm.el.offsetHeight;
 
+    // 有自定义id删除
+    if (notificationsId[id]) {
+        // 隐藏自定义的通知
+        orientedNotifications[idx].vm.component.proxy.data.visible = false;
+
+        delete notificationsId[id];
+    }
+
+    // 移除当前通知
     orientedNotifications.splice(idx, 1);
+
     const len = orientedNotifications.length;
 
-    if (len < 1) return;
+    if (len < 1) {
+        return;
+    }
 
     // 开始移除项
     for (let i = idx; i < len; i++) {
         // 新位置等于当前的 offsetTop 减去移除的高度加上 16px（每个项目之间的间隙大小）
         const { el, component } = orientedNotifications[i].vm;
         const pos = parseInt(el.style['top'], 10) - removedHeight - 16;
-        component.props.offset = pos;
+
+        // 修改偏移位置触发向上移动动画
+        component.props.top = pos;
     }
 };
-
 
 // 关闭所有
 const closeAll = (): void => {
@@ -147,14 +187,14 @@ const closeAll = (): void => {
     for (const key in instances) {
         instances.forEach(({ vm }) => {
             // same as the previous close method, we'd like to make sure lifecycle gets handle properly.
-            (vm.component.proxy.data as ComponentPublicInstance<{ visible: boolean; }>).visible = false;
+            vm.component.proxy.data.visible = false;
         });
     }
 };
 
 export default {
     info(options: Options) {
-        message('info', options);
+        return message('info', options);
     },
     success(options: Options) {
         return message('success', options);
@@ -171,8 +211,8 @@ export default {
     // 全局配置
     config(options: Options) {
         // 偏移位置
-        if (options.offset) {
-            offset = options.offset;
+        if (options.top) {
+            top = options.top;
         }
 
         // 延迟时间
