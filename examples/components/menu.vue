@@ -20,7 +20,14 @@
         </ivue-menu>
         <h1>侧栏导航</h1>
         <ivue-menu @on-open-change="handleOpenChange" @on-select="handleSelect">
-            <ivue-menu-item name="1">内容管理1</ivue-menu-item>
+            <ivue-menu-item name="1" to="scrollbar">内容管理1</ivue-menu-item>
+            <ivue-menu-item name="scrollbar" to="scrollbar">
+                <template #link>
+                    <router-link to="/scrollbar">
+                        sadd
+                    </router-link>
+                </template>
+            </ivue-menu-item>
             <ivue-submenu name="3">
                 <template #title>统计分析</template>
                 <ivue-menu-group title="使用">

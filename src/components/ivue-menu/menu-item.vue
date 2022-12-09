@@ -1,17 +1,21 @@
 <template>
     <!-- 链接 -->
-    <a
-        v-if="to"
-        :class="wrapperClasses"
-        :style="wrapperStyles"
-        :href="linkUrl"
-        :target="target"
-        @click.exact="handleActive($event, false)"
-        @click.ctrl="handleActive($event, true)"
-        @click.meta="handleActive($event, true)"
-    >
-        <slot></slot>
-    </a>
+    <li v-if="$router && to">
+        <slot name="link">
+            <a
+                :class="wrapperClasses"
+                :style="wrapperStyles"
+                :href="linkUrl"
+                :target="target"
+                @click.exact="handleActive($event, false)"
+                @click.ctrl="handleActive($event, true)"
+                @click.meta="handleActive($event, true)"
+            >
+                <slot></slot>
+            </a>
+        </slot>
+    </li>
+
     <!-- 普通标签 -->
     <li v-else :class="wrapperClasses" :style="wrapperStyles" @click="handleActive">
         <slot></slot>

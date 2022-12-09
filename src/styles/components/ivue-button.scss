@@ -110,6 +110,7 @@ $name: 'ivue-button';
   font-size: var(--#{$name}-font-size);
   font-weight: 500;
   color: currentColor;
+  cursor: pointer;
   padding: var(--#{$name}-padding);
 
   // 内容

@@ -15,8 +15,9 @@ $name: 'ivue-menu';
 
   // item
   --#{$name}-item-font-size: 14px;
-  --#{$name}-item-group-title-font-size: 12px;
+  --#{$name}-item-group-title-font-size: 14px;
   --#{$name}-item-group-title-padding-left: 8px;
+  --#{$name}-item-group-title-height: 48px;
 
   // dropdown
   --#{$name}-dropdown-max-height: 200px;
@@ -26,8 +27,8 @@ $name: 'ivue-menu';
 
   // color
   --#{$name}-dark: #515a6e;
-  --#{$name}-vertical-item-color: rgba(255, 255, 255, .7);
-  --#{$name}-vertical-active-bg: #f0faff;
+  --#{$name}-vertical-item-color: rgba(255, 255, 255, 0.5);
+  --#{$name}-vertical-active-bg: rgb(153 202 248 / 35%);
   --#{$name}-group-title-color: rgba(255, 255, 255, .36);
   --#{$name}-submenu-bg: #363e4f;
 }
@@ -167,6 +168,12 @@ $name: 'ivue-menu';
           color: var(--ivue-primary-color);
         }
 
+        &--group__title {
+          font-size: 12px;
+          height: 30px;
+          line-height: 30px;
+        }
+
         &:hover {
           background: var(--ivue-background-color-select-hover);
         }
@@ -223,6 +230,8 @@ $name: 'ivue-menu';
       z-index: 1;
       transition: var(--ivue-all-transition);
       cursor: pointer;
+      text-overflow: ellipsis;
+      overflow: hidden;
 
       &::after {
         content: '';
@@ -253,6 +262,7 @@ $name: 'ivue-menu';
       }
 
       &--group__title {
+        text-align: left;
         padding-left: var(--#{$name}-vertical-group-title-padding-left);
       }
     }
@@ -264,6 +274,7 @@ $name: 'ivue-menu';
         cursor: pointer;
         z-index: 1;
         transition: var(--ivue-all-transition);
+        text-align: left;
 
         &:hover {
           color: var(--ivue-primary-color);
@@ -355,7 +366,13 @@ $name: 'ivue-menu';
     font-size: var(--#{$name}-font-size);
     z-index: 1;
     cursor: pointer;
+    text-align: left;
     transition: var(--ivue-all-transition);
+    color: var(--ivue-text-color);
+
+    &-router-link {
+      color: currentColor;
+    }
 
     &--group {
       line-height: normal;
