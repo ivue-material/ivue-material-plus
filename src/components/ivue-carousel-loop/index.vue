@@ -61,6 +61,7 @@ import {
     onMounted,
     onUnmounted,
     watch,
+    onUpdated,
 } from 'vue';
 
 import { oneOf } from '../../utils/assist';
@@ -69,7 +70,7 @@ import IvueButton from '../ivue-button';
 import IvueIcon from '../ivue-icon';
 
 // type
-import type {Props, Data} from './types/carousel-loop';
+import type { Props, Data } from './types/carousel-loop';
 
 const prefixCls = 'ivue-carousel-loop';
 
@@ -184,7 +185,7 @@ export default defineComponent({
             default: 'always',
         },
     },
-    setup(props: Props, { emit }) {
+    setup(props: Props, { emit, slots }) {
         // dom
         const scroll = ref<HTMLDivElement>();
         const content = ref<HTMLDivElement>();
@@ -342,6 +343,9 @@ export default defineComponent({
             // 溢出宽度
             data.overflowWidth = data.listWidth - data.contentWidth;
 
+            // 初始化列表动画
+            data.listTranslate = 0;
+
             // 超过长度显示复制的内容
             if (scrollWidth - offsetWidth > 0) {
                 data.showCopyTrack = true;
@@ -360,6 +364,9 @@ export default defineComponent({
 
                 data.listCopyTranslate = -data.listWidth;
             }
+
+            // 自动滚动
+            startTime();
         };
 
         // 设置列表动画
@@ -619,13 +626,23 @@ export default defineComponent({
             }
         );
 
+        watch(
+            () => slots.default(),
+            () => {
+                // 清除定时器
+                clearTimer();
+
+                nextTick(() => {
+                    // 初始化数据
+                    initData();
+                });
+            }
+        );
+
         // onMounted
         onMounted(() => {
             // 初始化数据
             initData();
-
-            // 自动滚动
-            startTime();
         });
 
         // onUnmounted
