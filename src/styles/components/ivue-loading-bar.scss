@@ -12,7 +12,7 @@ $name: 'ivue-loading-bar';
     transition: width var(--ivue-default-transition-time) linear;
 
     &-color-primary {
-      background-color: var(--ivue-primary-colo);
+      background-color: var(--ivue-primary-color);
     }
 
     &-color-error {

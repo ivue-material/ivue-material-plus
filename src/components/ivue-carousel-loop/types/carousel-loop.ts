@@ -10,6 +10,7 @@ export interface Props {
   slidingEndNext: boolean;
   scrollQuantity: number;
   arrow: string;
+  dataList: any[];
 }
 
 

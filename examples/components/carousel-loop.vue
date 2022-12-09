@@ -1,14 +1,22 @@
 <template>
     <div class="content">
         <h1>基础用法</h1>
-        <ivue-carousel-loop class="red">
-            <div class="image" :style="{width:`${10 * index}px`}" v-for="(i, index) in urlList" :key="i">
+        <ivue-carousel-loop class="red" :dataList="urlList">
+            <div
+                class="image"
+                :style="{width:`${10 * index}px`}"
+                v-for="(i, index) in urlList"
+                :key="i"
+            >
                 <span>{{index}}</span>
                 <img :src="i" />
             </div>
         </ivue-carousel-loop>
+
         <ivue-button @click="handleCLick">Add</ivue-button>
-        <!-- <h1>按钮位置</h1>
+        {{urlList}}
+
+        <h1>按钮位置</h1>
         <div class="card">
             <p>hover</p>
             <ivue-carousel-loop arrow="hover">
@@ -79,7 +87,7 @@
                 <span>{{index}}</span>
                 <img :src="i" />
             </div>
-        </ivue-carousel-loop> -->
+        </ivue-carousel-loop>
     </div>
 </template>
 
@@ -99,9 +107,11 @@ export default {
     },
     methods: {
         handleCLick() {
-            this.urlList.push('https://file.iviewui.com/images/image-demo-5.jpg')
-        }
-    }
+            this.urlList.push(
+                'https://file.iviewui.com/images/image-demo-5.jpg'
+            );
+        },
+    },
 };
 </script>
 

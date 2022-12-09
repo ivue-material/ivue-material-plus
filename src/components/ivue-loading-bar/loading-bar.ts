@@ -43,7 +43,8 @@ const newInstance = (options: options) => {
     update(options: options) {
       const data = vm.component.proxy.data;
 
-      if (options.percent) {
+      if (options.percent !== undefined) {
+
         data.percent = options.percent;
       }
 
@@ -100,7 +101,7 @@ const hide = () => {
       update({
         percent: 0
       });
-    }, 200);
+    }, 500);
   }, 800);
 };
 
@@ -108,6 +109,11 @@ const hide = () => {
 export default {
   // 开始
   start() {
+    // 如果已经开始了不执行
+    if (timer) {
+      return;
+    }
+
     let percent = 0;
 
     update({
@@ -153,17 +159,20 @@ export default {
       visible: true
     });
 
-
+    // 隐藏组件
     hide();
   },
   // 错误
   error() {
     clearTimer();
+
     update({
       percent: 100,
       status: 'error',
       visible: true
     });
+
+    // 隐藏组件
     hide();
   },
   // 公共参数

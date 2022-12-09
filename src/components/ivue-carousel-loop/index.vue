@@ -61,7 +61,6 @@ import {
     onMounted,
     onUnmounted,
     watch,
-    onUpdated,
 } from 'vue';
 
 import { oneOf } from '../../utils/assist';
@@ -183,6 +182,14 @@ export default defineComponent({
                 return oneOf(value, ['hover', 'always', 'never', 'outside']);
             },
             default: 'always',
+        },
+        /**
+         * 外部数据传入用于监听数据变化更新滚动动画
+         *
+         * @type {Array}
+         */
+        dataList: {
+            type: Array,
         },
     },
     setup(props: Props, { emit, slots }) {
@@ -310,19 +317,19 @@ export default defineComponent({
         // 总宽度
         const overallWidth = computed(() => {
             // 总宽度 = 已经滚动成功次数 > 0 ? 列表宽度 + 父级宽度 : 列表宽度
-            let overallWidth = 0;
+            let allWidth = 0;
 
             // 向左
             if (data.span < 0) {
-                overallWidth = data.listWidth;
+                allWidth = data.listWidth;
             }
 
             // 向右
             if (data.span > 0) {
-                overallWidth = data.contentWidth;
+                allWidth = data.contentWidth;
             }
 
-            return overallWidth;
+            return allWidth;
         });
 
         // methods
@@ -626,8 +633,9 @@ export default defineComponent({
             }
         );
 
+        // 监听数据变化
         watch(
-            () => slots.default(),
+            () => props.dataList || slots.default(),
             () => {
                 // 清除定时器
                 clearTimer();
@@ -636,6 +644,10 @@ export default defineComponent({
                     // 初始化数据
                     initData();
                 });
+            },
+            {
+                // 深度监听
+                deep: true,
             }
         );
 

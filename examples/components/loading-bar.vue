@@ -15,7 +15,7 @@ export default {
         start() {
             this.$LoadingBar.start();
             setTimeout(() => {
-                this.$LoadingBar.finish();
+                // this.$LoadingBar.finish();
             }, 1000);
         },
         finish() {
