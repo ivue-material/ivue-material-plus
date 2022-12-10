@@ -130,7 +130,7 @@ export function createLoadingComponent(options: LoadingOptionsResolved) {
                 const noSpinner = h('i', { class: data.iconClass }, data.iconText);
 
                 // 需要渲染的文字
-                const spinnerText = h('p', { class: 'ivue-loading-text' }, [data.text]);
+                const spinnerText = h('span', { class: 'ivue-loading-text' }, [data.text]);
 
 
                 // 渲染

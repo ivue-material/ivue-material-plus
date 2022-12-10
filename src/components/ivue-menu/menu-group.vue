@@ -1,7 +1,9 @@
 <template>
     <li :class="prefixCls">
         <!-- 标题 -->
-        <div :class="`${prefixCls}__title`" :style="wrapperStyles">{{ title }}</div>
+        <div :class="`${prefixCls}__title`" :style="wrapperStyles">
+            <slot name="title">{{ title }}</slot>
+        </div>
         <ul>
             <slot></slot>
         </ul>
@@ -48,7 +50,11 @@ export default {
         const wrapperStyles = computed(() => {
             const len = findComponentsUpward(proxy, 'ivue-menu-submenu').length;
 
-            if (!Submenu.default && Menu.mode !== 'horizontal' && (len - 1) >= 0) {
+            if (
+                !Submenu.default &&
+                Menu.mode !== 'horizontal' &&
+                len - 1 >= 0
+            ) {
                 return {
                     paddingLeft: `${43 + (len - 1) * 24}px`,
                 };

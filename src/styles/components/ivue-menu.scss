@@ -369,6 +369,7 @@ $name: 'ivue-menu';
     text-align: left;
     transition: var(--ivue-all-transition);
     color: var(--ivue-text-color);
+    user-select: none;
 
     &-router-link {
       color: currentColor;

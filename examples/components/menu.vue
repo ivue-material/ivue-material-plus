@@ -21,6 +21,8 @@
         <h1>侧栏导航</h1>
         <ivue-menu @on-open-change="handleOpenChange" @on-select="handleSelect">
             <ivue-menu-item name="1" to="scrollbar">内容管理1</ivue-menu-item>
+            <ivue-menu-item name="1" :to="{name: 'scrollbar'}">内容管理1</ivue-menu-item>
+            qwqw
             <ivue-menu-item name="scrollbar" to="scrollbar">
                 <template #link>
                     <router-link to="/scrollbar">
@@ -118,6 +120,8 @@
                 <ivue-menu-item name="3-3">时段分析</ivue-menu-item>
             </ivue-menu-group>
             <ivue-menu-group title="使用">
+                <template #title>内容管理</template>
+
                 <ivue-menu-item name="3-1">新增和启动</ivue-menu-item>
                 <ivue-menu-item name="3-2">活跃分析</ivue-menu-item>
                 <ivue-menu-item name="3-3">时段分析</ivue-menu-item>
