@@ -15,9 +15,9 @@
                 :class="tabWrapperClasses"
                 :style="tabWrapperStyles"
                 v-touch="{
-                    start: e => overflowCheck(e, onTouchStart),
-                    move: e => overflowCheck(e, onTouchMove),
-                    end: e => overflowCheck(e, onTouchEnd)
+                    start: (e) => overflowCheck(e, onTouchStart),
+                    move: (e) => overflowCheck(e, onTouchMove),
+                    end: (e) => overflowCheck(e, onTouchEnd)
                 }"
                 ref="wrapper"
             >
@@ -43,8 +43,8 @@
         <div
             class="ivue-tabs-items"
             v-touch="{
-                left: e => handleSwipeItem('next'),
-                right: e => handleSwipeItem('prev'),
+                left: () => handleSwipeItem('next'),
+                right: () => handleSwipeItem('prev'),
             }"
         >
             <slot name="content"></slot>
@@ -83,6 +83,15 @@ export default defineComponent({
     emits: ['update:modelValue'],
     props: {
         /**
+         * 当前激活 tab 面板的 name，可以使用 v-model 双向绑定数据
+         *
+         * @type {String,Number}
+         */
+        modelValue: {
+            type: [String, Number],
+            default: '',
+        },
+        /**
          * 导航内容居中
          *
          * @type {Boolean}
@@ -110,15 +119,6 @@ export default defineComponent({
             default: true,
         },
         /**
-         * 右边按钮
-         *
-         * @type {String}
-         */
-        nextIcon: {
-            type: String,
-            default: 'chevron_right',
-        },
-        /**
          * 左边按钮
          *
          * @type {String}
@@ -128,11 +128,29 @@ export default defineComponent({
             default: 'chevron_left',
         },
         /**
-         * 设置一个较高的最小宽度
+         * 右边按钮
+         *
+         * @type {String}
+         */
+        nextIcon: {
+            type: String,
+            default: 'chevron_right',
+        },
+        /**
+         * 固定宽度标签
          *
          * @type {Boolean}
          */
-        fixedTabs: {
+        fixedWidth: {
+            type: Boolean,
+            default: false,
+        },
+        /**
+         * 自动适应宽度标签
+         *
+         * @type {Boolean}
+         */
+        autoWidth: {
             type: Boolean,
             default: false,
         },
@@ -161,15 +179,6 @@ export default defineComponent({
         hideSlider: {
             type: Boolean,
             default: false,
-        },
-        /**
-         * 当前激活 tab 面板的 name，可以使用 v-model 双向绑定数据
-         *
-         * @type {String,Number}
-         */
-        modelValue: {
-            type: [String, Number],
-            default: '',
         },
         /**
          * 调整显示箭头时设置的前后滚动的间距
@@ -223,11 +232,8 @@ export default defineComponent({
             sliderWidth: 0,
             // 控制内容初始化动画效果
             isBooted: false,
-        });
-
-        // onMounted
-        onMounted(() => {
-            initDate();
+            // 是否初始化完成
+            isInit: false,
         });
 
         // computed
@@ -238,7 +244,6 @@ export default defineComponent({
         const tabWrapperClasses = computed(() => {
             return {
                 'ivue-tabs-wrapper': true,
-                'ivue-tabs-wrapper--show-arrow': hasArrows.value,
             };
         });
 
@@ -250,27 +255,29 @@ export default defineComponent({
             const isUnit = regexp.test(`${props.arrowsMargin}`);
 
             return {
-                'margin-left': hasArrows
+                'margin-left': hasArrows.value
                     ? !isUnit
                         ? `${props.arrowsMargin}px`
                         : props.arrowsMargin
                     : '',
-                'margin-right': hasArrows
+                'margin-right': hasArrows.value
                     ? !isUnit
                         ? `${props.arrowsMargin}px`
                         : props.arrowsMargin
                     : '',
+                transition: data.isInit ? '' : 'none 0s',
             };
         });
 
         // tab样式
         const tabContainerClasses = computed(() => {
             return {
-                'ivue-tabs-container': true,
-                'ivue-tabs-container--centered': props.centered,
-                'ivue-tabs-container--right': props.right,
-                'ivue-tabs-container--overflow': data.isOverflowing,
-                'ivue-tabs-container--fixed-tabs': props.fixedTabs,
+                [`${prefixCls}-container`]: true,
+                [`${prefixCls}-container--centered`]: props.centered,
+                [`${prefixCls}-container--right`]: props.right,
+                [`${prefixCls}-container--overflow`]: data.isOverflowing,
+                [`${prefixCls}-container--fixed-width`]: props.fixedWidth,
+                [`${prefixCls}-container--auto-width`]: props.autoWidth,
             };
         });
 
@@ -413,8 +420,8 @@ export default defineComponent({
 
         // 检查是否有icon
         const checkIcons = () => {
-            data.nextIconVisible = checkNextIcon();
             data.prevIconVisible = checkPrevIcon();
+            data.nextIconVisible = checkNextIcon();
         };
 
         // 检查右边按钮
@@ -427,9 +434,7 @@ export default defineComponent({
 
             return (
                 data.widths.container >
-                (props.showArrows
-                    ? offset - Number(props.arrowsMargin)
-                    : offset)
+                (hasArrows.value ? offset - Number(props.arrowsMargin) : offset)
             );
         };
 
@@ -470,7 +475,7 @@ export default defineComponent({
         };
 
         // 更新当前激活的导航
-        const updateValue = (value) => {
+        const updateValue = (value: string | number) => {
             // updated v-model
             emit('update:modelValue', value);
         };
@@ -510,9 +515,22 @@ export default defineComponent({
             }
         );
 
-        // 监听设置一个较高的最小宽度
+        // data
         watch(
-            () => props.fixedTabs,
+            () => data.tabsItem,
+            () => {
+                nextTick(() => {
+                    onResize();
+                });
+            },
+            {
+                deep: true,
+            }
+        );
+
+        // 监听固定标签
+        watch(
+            () => props.fixedWidth,
             () => {
                 callSlider();
             }
@@ -547,6 +565,15 @@ export default defineComponent({
             if (data.tabs) {
                 onResize();
             }
+        });
+
+        // onMounted
+        onMounted(() => {
+            nextTick(() => {
+                data.isInit = true;
+            });
+
+            initDate();
         });
 
         return {

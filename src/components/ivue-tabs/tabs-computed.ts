@@ -25,14 +25,27 @@ export default (props: Props, data: Data) => {
             };
       });
 
+      // 没有找到可以激活的tab
+      const noFindActiveTab = computed(() => {
+            return data.tabs.findIndex((tab, index: number) => {
+                  return tab.tabName === props.modelValue || index === props.modelValue;
+            });
+      });
+
       // 激活的Index
       const activeIndex = computed(() => {
+
             return data.tabs.findIndex((tab, index: number) => {
                   if (!props.modelValue) {
                         return index === 0;
                   }
 
-                  return tab.name === props.modelValue || index === props.modelValue;
+                  // 没有找到可以激活的tab 默认激活第一项
+                  if (noFindActiveTab.value === -1) {
+                        return index === 0;
+                  }
+
+                  return tab.tabName === props.modelValue || index === props.modelValue;
             });
       });
 

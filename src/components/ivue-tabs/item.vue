@@ -78,7 +78,9 @@ export default defineComponent({
 
             isActive.value = _isActive;
 
-            content.value.style.transition = !showTransition ? 'none' : null;
+            if(content.value) {
+                content.value.style.transition = !showTransition ? 'none' : null;
+            }
         };
 
         // onMounted

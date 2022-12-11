@@ -29,8 +29,10 @@ export default {
         },
         config() {
             this.$LoadingBar.config({
-                color: 'red',
-                height: 100,
+                color: '#27E2B2',
+                failedColor: '#FFBD3C',
+                height: 5,
+                duration: 2000
             });
         },
         destroy() {

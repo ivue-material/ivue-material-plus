@@ -3,18 +3,14 @@
 $name: 'ivue-tabs';
 
 :root {
-
-  // arrow
-  --#{$name}-show-arrow-margin: 40px;
-
   // container
   --#{$name}-container-height: 36px;
 
   // fixed-tabs
-  --#{$name}-fixed-tabs-min-width: 72px;
+  --#{$name}-fixed-width-min-width: 72px;
 
   // fixed-tabs media
-  --#{$name}-fixed-tabs-media-min-width: 160px;
+  --#{$name}-fixed-width-media-min-width: 160px;
 
   // tab
   --#{$name}-tab-max-width: 264px;
@@ -39,12 +35,8 @@ $name: 'ivue-tabs';
   &-wrapper {
     overflow: hidden;
     display: flex;
-
-    &--show-arrow {
-      margin-left: var(--#{$name}-show-arrow-margin);
-      margin-right: var(--#{$name}-show-arrow-margin);
-      transition: all .6s cubic-bezier(.86, 0, .07, 1);
-    }
+    border-bottom: 1px solid var(--ivue-border-color);
+    transition: all .6s cubic-bezier(.86, 0, .07, 1);
   }
 
   &-container {
@@ -56,27 +48,15 @@ $name: 'ivue-tabs';
     white-space: nowrap;
     transition: transform .6s cubic-bezier(.86, 0, .07, 1);
 
-    &--fixed-tabs {
+    &--fixed-width {
       .#{$name}-tab {
-        min-width: var(--#{$name}-fixed-tabs-min-width);
-
-        &:first-child {
-          margin-left: auto;
-        }
-
-        &:last-child {
-          margin-right: auto
-        }
+        min-width: var(--#{$name}-fixed-width-min-width);
       }
 
       @media only screen and (min-width: 600px) {
         .#{$name}-tab {
-          min-width: var(--#{$name}-fixed-tabs-media-min-width);
+          min-width: var(--#{$name}-fixed-width-media-min-width);
         }
-      }
-
-      .#{$name}-slider-wrapper+.#{$name}-tab {
-        margin-left: auto
       }
 
       .#{$name}-tab {
@@ -85,6 +65,13 @@ $name: 'ivue-tabs';
         white-space: normal;
         text-align: center;
         vertical-align: middle;
+      }
+    }
+
+    &--auto-width{
+      .#{$name}-tab {
+        flex: 1;
+        justify-content: center;
       }
     }
   }
@@ -144,7 +131,7 @@ $name: 'ivue-tabs';
 
   &-slider-wrapper {
     position: absolute;
-    bottom: 1px;
+    bottom: 0;
     margin: 0;
     transition: $ivue-transition-default;
   }

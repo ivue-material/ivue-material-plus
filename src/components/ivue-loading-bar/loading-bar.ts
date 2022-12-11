@@ -2,20 +2,28 @@ import { createVNode, render } from 'vue';
 import LoadingBar from './index.vue';
 
 type options = {
-  percent?: number,
-  status?: string,
-  color?: string,
-  failedColor?: string,
-  height?: number,
-  visible?: boolean
+  percent?: number;
+  status?: string;
+  color?: string;
+  failedColor?: string;
+  height?: number;
+  visible?: boolean;
+  duration?: number;
 }
 
 // 实例列表
 let instances;
+
+// 进度条的颜色
 let color = 'primary';
+// 失败时的进度条颜色
 let failedColor = 'error';
+// 进度条高度
 let height = 2;
+// 隐藏时的持续时间
+let duration = 800;
 let timer: ReturnType<typeof setInterval> | null;
+
 
 const newInstance = (options: options) => {
 
@@ -102,7 +110,7 @@ const hide = () => {
         percent: 0
       });
     }, 500);
-  }, 800);
+  }, duration);
 };
 
 
@@ -187,6 +195,10 @@ export default {
 
     if (options.height) {
       height = options.height;
+    }
+
+    if (options.duration) {
+      duration = options.duration;
     }
   },
   // 销毁

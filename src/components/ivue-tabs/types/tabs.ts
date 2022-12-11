@@ -6,12 +6,13 @@ export interface Props {
   showArrows: boolean;
   nextIcon: string;
   prevIcon: string;
-  fixedTabs: boolean;
+  fixedWidth: boolean;
   height?: string | number;
   sliderColor: string;
   hideSlider: boolean;
   modelValue: string | number;
   arrowsMargin: string | number;
+  autoWidth: boolean;
 }
 
 export interface Data {
@@ -27,6 +28,7 @@ export interface Data {
   sliderLeft: number;
   sliderWidth: number;
   isBooted: boolean;
+  isInit: boolean;
 }
 
 export type TabsContext = {

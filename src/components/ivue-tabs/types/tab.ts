@@ -1,4 +1,3 @@
-
 export interface Props {
   disabled: boolean;
   rippleDisabled: boolean;

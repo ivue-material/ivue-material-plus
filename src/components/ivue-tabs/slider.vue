@@ -5,7 +5,7 @@
 </template>
 
 <script lang='ts'>
-import { defineComponent, computed } from 'vue';
+import { defineComponent, computed, ref, onMounted } from 'vue';
 
 // type
 import { Props } from './types/slider';
@@ -46,6 +46,9 @@ export default defineComponent({
         },
     },
     setup(props: Props) {
+        // 是否初始化完成
+        const isInit = ref(false);
+
         // computed
 
         const sliderWrapperStyles = computed(() => {
@@ -62,7 +65,7 @@ export default defineComponent({
                 width: !isUnitSliderWidth
                     ? `${props.sliderWidth}px`
                     : props.sliderWidth,
-                transition: props.sliderLeft !== 0 ? null : 'none',
+                transition: isInit.value ? '' : 'none 0s',
             };
         });
 
@@ -84,6 +87,12 @@ export default defineComponent({
             }
 
             return style;
+        });
+
+        onMounted(() => {
+            setTimeout(() => {
+                isInit.value = true;
+            });
         });
 
         return {
