@@ -60,7 +60,6 @@ import { LineClamp } from './components/ivue-line-clamp';
 // 指令
 import Directives from './utils/directives/index';
 import * as components from './components';
-
 // 版本
 import * as  packageJson from '../package.json';
 
