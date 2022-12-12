@@ -146,12 +146,18 @@ $name: 'ivue-button';
       margin-right: var(--#{$name}-loading-right);
     }
 
+
     .ivue-loading-mask {
       background: none;
     }
 
     .ivue-loading-spinner {
-      color: var(--ivue-white-color)
+      color: var(--ivue-white-color);
+
+      .circular {
+        width: 100%;
+        height: 100%;
+      }
     }
   }
 
