@@ -74,10 +74,7 @@ $colors: ('blue',
       color: inherit;
       border-color: transparent;
       box-shadow: none;
-
-      .ivue-icon {
-        height: var(--#{$name}-count-size);
-      }
+      height: auto;
     }
 
     &--alone {

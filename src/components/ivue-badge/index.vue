@@ -2,7 +2,7 @@
     <!-- 状态点 -->
     <span :class="prefixCls" v-if="dot">
         <slot></slot>
-        <sup :style="styles" :class="dotClasses"></sup>
+        <sup :style="styles" :class="dotClasses" v-show="showBadge"></sup>
     </span>
     <!-- 状态点的颜色 -->
     <span v-else-if="status" :class="statusWrapperClasses">
@@ -16,10 +16,15 @@
     <span :class="prefixCls" v-else>
         <slot></slot>
         <transition :name="`${prefixCls}-fade`">
-            <sup v-if="$slots.count" :style="slotsStyles" :class="countSlotsClasses">
+            <sup
+                :style="slotsStyles"
+                :class="countSlotsClasses"
+                v-if="$slots.count"
+                v-show="showBadge"
+            >
                 <slot name="count"></slot>
             </sup>
-            <sup v-else-if="hasCount" :style="styles" :class="countClasses" v-show="showBadge">
+            <sup :style="styles" :class="countClasses" v-else-if="hasCount" v-show="showBadge">
                 <sup>
                     <slot name="text">{{ finalCount }}</slot>
                 </sup>
@@ -54,13 +59,10 @@ const initColorList = [
     'red',
     'yellow',
     'pink',
-    'magenta',
-    'volcano',
     'orange',
     'gold',
     'lime',
     'cyan',
-    'geekblue',
     'purple',
     'success',
     'processing',
@@ -98,7 +100,7 @@ export default defineComponent({
             default: 99,
         },
         /**
-         * 当数值为0是是否显示
+         * 当数值为0时是否显示
          *
          * @type {Boolean}
          */
