@@ -5,4 +5,5 @@ export interface Props {
   date: string;
   value: string;
   yearIcon: string;
+  readonly: boolean;
 }

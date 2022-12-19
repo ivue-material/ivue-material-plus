@@ -316,7 +316,7 @@ export default defineComponent({
 
             const color =
                 (isSelected || isCurrent) &&
-                (!!props.color || 'ivue-picker-primary');
+                (!!props.color || 'primary');
 
             return h(
                 'button',

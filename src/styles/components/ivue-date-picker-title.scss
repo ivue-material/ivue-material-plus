@@ -34,12 +34,13 @@ $name: 'ivue-date-picker-title';
     cursor: pointer;
     transition: $ivue-transition-default;
 
-    &:hover {
+    &:hover:not(.ivue-picker-readonly) {
       color: var(--#{$name}-hover-color);
     }
 
     i {
       margin: initial;
+      transition: none;
     }
   }
 

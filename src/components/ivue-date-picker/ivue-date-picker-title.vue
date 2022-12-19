@@ -57,6 +57,14 @@ export default defineComponent({
         yearIcon: {
             type: String,
         },
+        /**
+         * 是否只读
+         *
+         * @type {Boolean}
+         */
+        readonly: {
+            type: Boolean,
+        },
     },
     setup(props: Props, { emit }) {
         // 是否使用反向动画
@@ -75,7 +83,7 @@ export default defineComponent({
                     true,
                     'selectingYear',
                     [props.year, props.yearIcon ? genYearIcon() : null],
-                    false,
+                    props.readonly,
                     `${prefixCls}--year`
                 )
             );

@@ -1,11 +1,5 @@
 <script lang='ts'>
-import {
-    defineComponent,
-    reactive,
-    computed,
-    watch,
-    h,
-} from 'vue';
+import { defineComponent, reactive, computed, watch, h } from 'vue';
 
 import { colorable } from '../../utils/mixins/colorable';
 import CreateNativeLocaleFormatter from '../../utils/create-native-locale-formatter';
@@ -24,7 +18,7 @@ import { Props, Data } from './types/date-picker';
 
 export default defineComponent({
     name: 'ivue-date-picker',
-    emits: ['update:modelValue', 'update:pickerDate', 'change'],
+    emits: ['update:modelValue', 'update:pickerDate', 'on-change'],
     props: {
         /**
          * 日历方向
@@ -50,7 +44,7 @@ export default defineComponent({
         width: {
             type: [Number, String],
             default: 290,
-            validator: (value: any) => parseInt(value, 10) > 0,
+            validator: (value: number | string) => parseInt(`${value}`, 10) > 0,
         },
         /**
          * 强制100％宽度
@@ -225,7 +219,7 @@ export default defineComponent({
          */
         showCurrent: {
             type: Boolean,
-            default: true,
+            default: false,
         },
         /**
          * 便签用于标记需要注意的日期
@@ -252,6 +246,15 @@ export default defineComponent({
          */
         reactive: {
             type: Boolean,
+        },
+        /**
+         * 颜色
+         *
+         * @type {String}
+         */
+        color: {
+            type: String,
+            default: '',
         },
     },
     setup(props: Props, { emit }) {
@@ -466,7 +469,14 @@ export default defineComponent({
 
             emit('update:modelValue', output);
 
-            props.multiple || emit('change', newInput);
+            // 多选
+            if(props.multiple) {
+                emit('on-change', output);
+            }
+            // 单选
+            else {
+                emit('on-change', newInput);
+            }
         };
 
         // Adds leading zero to month/day if necessary, returns 'YYYY' if type = 'year',
@@ -586,6 +596,7 @@ export default defineComponent({
         // 渲染标题内容
         const genPickerTitle = () => {
             return h(IvueDatePickerTitle, {
+                readonly: props.readonly,
                 date: props.modelValue
                     ? formatters.value.titleDate(props.modelValue)
                     : '',
@@ -613,7 +624,6 @@ export default defineComponent({
                 min:
                     data.activeType === 'DATE' ? minMonth.value : minYear.value,
                 color: props.color,
-
                 nextIcon: props.nextIcon,
                 prevIcon: props.prevIcon,
                 readonly: props.readonly,
