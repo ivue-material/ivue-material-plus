@@ -255,7 +255,7 @@ export default defineComponent({
             type: String,
         },
         /**
-         * 是否将弹层放置于 body 内，在 Tabs、
+         * 是否将弹层放置于 body 内、
          * 带有 fixed 的 Table 列内使用时，
          * 建议添加此属性，它将不受父级样式影响，
          * 从而达到更好的效果
@@ -283,7 +283,7 @@ export default defineComponent({
             default: false,
         },
         /**
-         * 次级菜单展开方式，可选值为 click 或 hover
+         * 菜单展开方式，可选值为 click 或 hover
          *
          * @type {String}
          */

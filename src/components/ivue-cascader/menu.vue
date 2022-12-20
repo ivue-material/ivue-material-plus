@@ -5,7 +5,7 @@
                 v-for="(item, index) in options"
                 :item="item"
                 :tmpItem="data.tmpItem"
-                :key="getKey() + index"
+                :key="index"
                 @click="handleClickItem"
                 @mouseenter="handleHoverItem"
             ></menu-item>
@@ -37,15 +37,9 @@ import MenuItem from './menu-item.vue';
 
 // type
 import { Options, CascaderContextKey, Result } from './types/cascader';
-import type {
-    Props,
-    Data,
-    _ComponentInternalInstance,
-} from './types/menu';
+import type { Props, Data, _ComponentInternalInstance } from './types/menu';
 
 const prefixCls = 'ivue-cascader-menu';
-
-let key = 1;
 
 export default defineComponent({
     name: prefixCls,
@@ -109,11 +103,6 @@ export default defineComponent({
         });
 
         // methods
-
-        // 获取key
-        const getKey = () => {
-            return key++;
-        };
 
         // 获取基础项
         const getBaseItem = (item: Options) => {
@@ -212,12 +201,10 @@ export default defineComponent({
                     fromInit: fromInit,
                 });
 
-                // 点选每级菜单选项值都会发生变化 清除选择的数据
-                if (props.changeOnSelect) {
-                    nextTick(() => {
-                        menu.value.handleClear();
-                    });
-                }
+                // 重新选择时清楚之前的数据
+                nextTick(() => {
+                    menu.value.handleClear();
+                });
             } else {
                 // 子列表
                 data.sublist = [];
@@ -304,7 +291,6 @@ export default defineComponent({
             data,
 
             // methods
-            getKey,
             handleClickItem,
             handleHoverItem,
             handleFindSelected,

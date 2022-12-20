@@ -16,22 +16,22 @@ $input: 'ivue-input';
   --#{$name}-dropdown-list-max-height: 190px;
 
   // item
-  --#{$name}-dropdown-item-padding: 7px 16px;
+  --#{$name}-dropdown-item-padding: 7px 21px;
   --#{$name}-dropdown-item-font-size: 14px;
 
   // item->icon
   --#{$name}-dropdown-item-icon-font-size: 18px;
-  --#{$name}-dropdown-item-icon-right: 10px;
+  --#{$name}-dropdown-item-icon-right: 5px;
 
   // item->loading
-  --#{$name}-dropdown-item-loading-size: 18px;
+  --#{$name}-dropdown-item-loading-size: 15px;
 
   // not-found
   --#{$name}-not-found-width: 200px;
   --#{$name}-not-found-padding: 10px;
 
   // label
-  --#{$name}-label-line-height: 32px;
+  --#{$name}-label-line-height: 34px;
   --#{$name}-label-padding: 0 7px;
   --#{$name}-label-font-size: 14px;
 
@@ -145,6 +145,10 @@ $input: 'ivue-input';
     &:hover {
       .#{$name}-arrow:nth-of-type(2) {
         display: none;
+      }
+
+      .#{$name}-clearable {
+        display: inline-block;
       }
     }
   }
