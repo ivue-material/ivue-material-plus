@@ -52,9 +52,7 @@ export default defineComponent({
          */
         options: {
             type: Array,
-            default() {
-                return [];
-            },
+            default: () => [],
         },
         /**
          * 是否禁用选择组件
@@ -87,7 +85,8 @@ export default defineComponent({
         const menu = ref();
 
         // vm
-        const { ctx } = getCurrentInstance() as _ComponentInternalInstance;
+        const { ctx, proxy } =
+            getCurrentInstance() as _ComponentInternalInstance;
 
         // inject
         const cascader = inject(CascaderContextKey);
@@ -258,10 +257,10 @@ export default defineComponent({
 
         // 更新结果
         const emitUpdate = (result: Result[]) => {
-            const name = ctx.$parent.$options.name;
+            const name = proxy.$parent.$options.name;
 
             if (name === prefixCls) {
-                ctx.$parent.updateResult(result);
+                proxy.$parent.updateResult(result);
             } else {
                 cascader.updateResult(result);
             }

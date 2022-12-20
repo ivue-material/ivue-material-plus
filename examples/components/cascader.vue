@@ -53,7 +53,7 @@
 export default {
     data() {
         return {
-            value1: [],
+            value1: ['beijing', 'gugong'],
             value2: ['jiangsu', 'nanjing', 'fuzimiao'],
             value3: [],
             value4: [],

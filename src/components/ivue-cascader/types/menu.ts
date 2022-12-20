@@ -15,5 +15,6 @@ export interface Data {
 }
 
 export interface _ComponentInternalInstance extends ComponentInternalInstance {
-  ctx: any
+  ctx: any,
+  proxy: any
 }

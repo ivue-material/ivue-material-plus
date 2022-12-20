@@ -1,7 +1,7 @@
 <template>
     <div :class="classes" v-outside="handleClickOutside">
         <!-- 输入框 -->
-        <div :class="`${prefixCls}-input`" ref="reference" @click="handleToggleOpen">
+        <div :class="inputClasses" ref="reference" @click="handleToggleOpen">
             <input type="hidden" :name="name" :value="data.currentValue" />
 
             <slot>
@@ -144,9 +144,7 @@ export default defineComponent({
          */
         options: {
             type: Array,
-            default() {
-                return [];
-            },
+            default: () => [],
         },
         /**
          * 当前已选项的数据
@@ -197,7 +195,7 @@ export default defineComponent({
          */
         renderFormat: {
             type: Function,
-            default(label: string[] | number[]) {
+            default: (label: string[] | number[]) => {
                 return label.join(' / ');
             },
         },
@@ -409,12 +407,21 @@ export default defineComponent({
                 `${prefixCls}`,
                 {
                     [`${prefixCls}-visible`]: data.visibleMenu,
-                    [`${prefixCls}-show-clear`]: showCloseIcon.value,
                     [`${prefixCls}-disabled`]: props.disabled,
                     [`${prefixCls}-not-found`]:
                         props.filterable &&
                         data.queryData !== '' &&
                         !querySelections.value.length,
+                },
+            ];
+        });
+
+        // input样式
+        const inputClasses = computed(() => {
+            return [
+                `${prefixCls}-input`,
+                {
+                    [`${prefixCls}-show-clear`]: showCloseIcon.value,
                 },
             ];
         });
@@ -871,6 +878,7 @@ export default defineComponent({
 
             // computed
             classes,
+            inputClasses,
             displayRender,
             displayInputRender,
             inputPlaceholder,
