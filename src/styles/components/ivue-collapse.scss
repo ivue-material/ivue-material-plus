@@ -60,6 +60,7 @@ $name: 'ivue-collapse';
 
       &-box {
         padding: var(--#{$name}-content-padding) 0;
+        word-break: break-all;
       }
     }
 
