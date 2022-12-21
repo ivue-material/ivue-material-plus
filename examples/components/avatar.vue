@@ -31,7 +31,7 @@ const ColorList = ['#f56a00', '#7265e6', '#ffbf00', '#00a2ae'];
 export default {
     data() {
         return {
-            input: 40,
+            input: '40',
             user: UserList[0],
             color: ColorList[0],
         };

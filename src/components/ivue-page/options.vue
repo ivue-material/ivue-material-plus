@@ -13,7 +13,7 @@
                 <ivue-option
                     v-for="(item, index) in pageSizeOpts"
                     :key="index"
-                    :value="item"
+                    :value="(item as string | number)"
                 >{{ `${item} ${pageSizeText}` }}</ivue-option>
             </ivue-select>
         </div>

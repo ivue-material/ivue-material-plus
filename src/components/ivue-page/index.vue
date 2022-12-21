@@ -142,9 +142,9 @@ const prefixCls = 'ivue-page';
 export default defineComponent({
     name: prefixCls,
     emits: [
-        'on-prev',
         'update:modelValue',
         'on-change',
+        'on-prev',
         'on-next',
         'on-page-size-change',
     ],
@@ -228,7 +228,7 @@ export default defineComponent({
                     value % 2 === 1
                 );
             },
-            default: 7,
+            default: 5,
         },
         /**
          * 显示分页，用来改变page-size
