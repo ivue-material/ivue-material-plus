@@ -31,7 +31,7 @@
             />
         </span>
         <!-- 内容 -->
-        <span :class="textClasses" v-show="label">
+        <span :class="textClasses">
             <slot>{{ label }}</slot>
         </span>
     </label>

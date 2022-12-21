@@ -1,8 +1,8 @@
 <template>
     <div>
         <h1>单独使用</h1>
+        <ivue-checkbox v-model="single">ivue-checkbox</ivue-checkbox>
         <ivue-checkbox v-model="single" label="ivue-checkbox"></ivue-checkbox>
-        <ivue-checkbox v-model="single" label="ivue-checkbox">12</ivue-checkbox>
         {{single}}
         <h1>组合使用</h1>
         <ivue-checkbox-group v-model="social">

@@ -14,7 +14,3 @@ export const CheckboxContextKey: InjectionKey<CheckboxContext> =
 export interface Props {
   modelValue: any[];
 }
-
-export interface Data {
-  currentValue: (string | number)[];
-}

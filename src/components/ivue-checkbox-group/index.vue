@@ -5,10 +5,10 @@
 </template>
 
 <script lang='ts'>
-import { computed, defineComponent, reactive, provide } from 'vue';
+import { computed, defineComponent, ref, provide } from 'vue';
 
 // type
-import { CheckboxContextKey, Props, Data } from './types/checkbox-group';
+import { CheckboxContextKey, Props } from './types/checkbox-group';
 
 const prefixCls = 'ivue-checkbox-group';
 
@@ -27,15 +27,9 @@ export default defineComponent({
         },
     },
     setup(props: Props, { emit }) {
-        // data
-        const data = reactive<Data>({
-            /**
-             * 当前值
-             *
-             * @type {Array}
-             */
-            currentValue: props.modelValue,
-        });
+
+        // 当前值
+        const currentValue = ref<any[]>(props.modelValue);
 
         // computed
 
@@ -48,7 +42,7 @@ export default defineComponent({
 
         // 改变值
         const handleChange = (value: (string | number)[]) => {
-            data.currentValue = value;
+            currentValue.value = value;
 
             emit('update:modelValue', value);
             emit('on-change', value);
@@ -64,7 +58,7 @@ export default defineComponent({
 
         return {
             // data
-            data,
+            currentValue,
 
             // computed
             wrapperClasses,
