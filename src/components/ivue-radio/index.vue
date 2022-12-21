@@ -82,6 +82,7 @@ export default defineComponent({
          */
         disabled: {
             type: Boolean,
+            default: false,
         },
         /**
          * 颜色
@@ -235,9 +236,6 @@ export default defineComponent({
 
             // 设置 v-model
             const value = checked ? props.trueValue : props.falseValue;
-
-            console.log('/??', value);
-            console.log('/??', value);
 
             emit('update:modelValue', value);
 

@@ -52,7 +52,7 @@
         </ivue-radio-group>
         <br />
         <br />
-        <ivue-radio-group v-model="phone2" type="button" button-style="solid">
+        <ivue-radio-group v-model="phone2" vertical type="button" button-style="solid">
             <ivue-radio label="Apple"></ivue-radio>
             <ivue-radio label="2"></ivue-radio>
             <ivue-radio label="1" disabled></ivue-radio>
@@ -60,7 +60,7 @@
             <ivue-radio label="Android"></ivue-radio>
         </ivue-radio-group>
         <h1>显示边框</h1>
-        <ivue-radio-group v-model="phone3">
+        <ivue-radio-group vertical v-model="phone3">
             <ivue-radio label="Apple" border></ivue-radio>
             <ivue-radio label="2" border disabled></ivue-radio>
             <ivue-radio label="1" border></ivue-radio>

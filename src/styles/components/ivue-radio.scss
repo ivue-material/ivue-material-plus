@@ -152,6 +152,11 @@ $name: 'ivue-radio';
         height: var(--#{$name}-group-vertical-wrapper-size);
         line-height: var(--#{$name}-group-vertical-wrapper-size);
       }
+
+      .#{$name}-border {
+        margin-right: 0;
+        margin-bottom: var(--#{$name}-wrapper-margin-right);
+      }
     }
 
     // 按钮
