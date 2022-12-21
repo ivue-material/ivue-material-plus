@@ -4,6 +4,7 @@
         v-click-outside:[capture]="handleClickOutside"
         @click="handleClickShowPopper"
         @mouseenter="handleMouseenter"
+        @mousemove="handleMousemove"
         @mouseleave="handleMouseleave"
     >
         <!-- 描述 -->
@@ -65,7 +66,7 @@ export default defineComponent({
     directives: { ClickOutside },
     props: {
         /**
-         * 是否将弹层放置于 body 内，在 Tabs、
+         * 是否将弹层放置于 body 内
          * 带有 fixed 的 Table 列内使用时，
          * 建议添加此属性，它将不受父级样式影响，
          * 从而达到更好的效果
@@ -82,15 +83,6 @@ export default defineComponent({
                     ? false
                     : global.$IVUE.transfer;
             },
-        },
-        /**
-         * 是否显示
-         *
-         * @type {Boolean}
-         */
-        modelValue: {
-            type: Boolean,
-            default: false,
         },
         /**
          * 是否禁用提示框
@@ -244,7 +236,10 @@ export default defineComponent({
         const zIndex = ref<number>(0);
 
         // 显示隐藏
-        const visible = ref<boolean>(props.modelValue);
+        const visible = ref<boolean>(false);
+
+        // 鼠标类型
+        const mouseType = ref<string>('');
 
         // computed
 
@@ -317,6 +312,7 @@ export default defineComponent({
             // 延迟时间
             timeout.value = setTimeout(() => {
                 visible.value = true;
+                mouseType.value = event.type;
             }, props.delay);
 
             zIndex.value = handleGetIndex();
@@ -332,6 +328,7 @@ export default defineComponent({
                 if (!props.controlled) {
                     timeout.value = setTimeout(() => {
                         visible.value = false;
+                        mouseType.value = '';
                     }, 100);
                 }
             }
@@ -372,6 +369,21 @@ export default defineComponent({
             }
 
             handleClosePopper();
+        };
+
+        // 鼠标移动
+        const handleMousemove = () => {
+            if(mouseType.value !== 'mouseenter') {
+                return;
+            }
+
+            if (timeout.value) {
+                clearTimeout(timeout.value);
+            }
+
+            if (!visible.value) {
+                visible.value = true;
+            }
         };
 
         // 点击显示
@@ -441,6 +453,7 @@ export default defineComponent({
             handleClickOutside,
             handleMouseenter,
             handleMouseleave,
+            handleMousemove,
         };
     },
 });

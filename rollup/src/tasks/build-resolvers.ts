@@ -47,10 +47,8 @@ export const buildResolvers = async () => {
 
   await writeBundles(
     bundle, [{
-      module: 'CommonJS',
       // esm
       format: 'cjs',
-      ext: 'js',
       // dist/ivue-material-plus/resolvers
       dir: outputResolversPath,
       // 指定导出模式（自动、默认、命名、无）

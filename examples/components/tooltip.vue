@@ -1,7 +1,10 @@
 <template>
     <div class="content">
         <h1>基础用法</h1>
-        <ivue-tooltip content="21">
+        <ivue-tooltip
+            controlled
+            content="21Top Left textTop Left textTop Left textTop Left textTop Left text"
+        >
             balloon appears when the mouse passes over this text
             balloon appears when the mouse passes over this text
             balloon appears when the mouse passes over this text
@@ -89,6 +92,7 @@
             manual
             placement="bottom"
             transfer
+            capture
             transferClassName="123"
             content="Can disable text prompts"
         >

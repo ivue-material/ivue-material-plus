@@ -14,7 +14,6 @@ export interface _ComponentInternalInstance extends ComponentInternalInstance {
 
 export interface Props {
   transfer: boolean;
-  modelValue: boolean;
   disabled: boolean;
   always: boolean;
   delay: number;

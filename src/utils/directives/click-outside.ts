@@ -1,7 +1,3 @@
-
-import {
-    inject,
-} from 'vue';
 const CLICK = 'click';
 // 捕获实例
 const captureInstances = Object.create(null);
@@ -47,7 +43,7 @@ const commonHandler = function _onCommonHandler(context, instances, event) {
 
     };
 
-    const key = function _key(eventName) {
+    const key = function _key(eventName: string) {
         return instances[eventName].forEach(item);
     };
 
@@ -65,7 +61,7 @@ const nonCaptureEventHandler = function onNonCaptureEvent(event) {
 };
 
 // 获取事件处理程序
-const getEventHandler = function _getEventHandler(useCapture) {
+const getEventHandler = function _getEventHandler(useCapture: boolean) {
     return useCapture ? captureEventHandler : nonCaptureEventHandler;
 };
 
@@ -150,7 +146,7 @@ function unbind(el: Element): void {
             // 判断是否使用事件捕获
             const useCapture = instances === captureInstances;
 
-            const keys = function _keys(eventName) {
+            const keys = function _keys(eventName: string) {
                 // 查找元素实例
                 const newInstance = instances[eventName].filter(compareElements);
 

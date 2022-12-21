@@ -78,7 +78,6 @@ import {
     watch,
     PropType,
     computed,
-    WritableComputedRef,
     getCurrentInstance,
 } from 'vue';
 import IvueTooltip from '../../ivue-tooltip/index.vue';
