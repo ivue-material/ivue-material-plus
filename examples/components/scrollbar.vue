@@ -2,6 +2,10 @@
     <div>
         <h1>基础用法</h1>
         <p>通过 height 属性设置滚动条高度，若不设置则根据父容器高度自适应</p>
+        <ivue-scrollbar height="400px"  tag="span" contentClass="red">
+            <p v-for="item in 20" :key="item" class="scrollbar-demo-item">{{ item }}</p>
+        </ivue-scrollbar>
+        <p>native</p>
         <ivue-scrollbar height="400px" native tag="span" contentClass="red">
             <p v-for="item in 20" :key="item" class="scrollbar-demo-item">{{ item }}</p>
         </ivue-scrollbar>

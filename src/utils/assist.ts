@@ -36,8 +36,8 @@ function typeOf(obj) {
 
 // 判断参数是否是其中之一
 export const oneOf = (
-    value: string,
-    validList: Array<string>
+    value: string | boolean,
+    validList: Array<string | boolean>
 ) => {
     for (let i = 0; i < validList.length; i++) {
         if (value === validList[i]) {

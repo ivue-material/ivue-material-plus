@@ -2,6 +2,8 @@
 import type { VNode, ComponentInternalInstance, Ref, PropType } from 'vue';
 import type { Table, TableRefs } from '../table/defaults';
 
+import { oneOf } from '../../../utils/assist';
+
 // 插槽内容 slots
 type SlotsContent = { column: TableColumnCtx; $index: number }
 
@@ -145,6 +147,13 @@ export default {
    */
   sortable: {
     type: [Boolean, String],
+    validator(value: string | boolean) {
+      return oneOf(value, [
+        'custom',
+        false,
+        true
+      ]);
+    },
     default: false,
   },
   /**

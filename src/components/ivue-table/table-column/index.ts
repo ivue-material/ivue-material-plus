@@ -229,7 +229,6 @@ export default defineComponent({
       props
     );
 
-
     // 获取父级
     const parent = columnParent.value;
     // 设置列id
@@ -244,13 +243,13 @@ export default defineComponent({
   },
   render() {
     try {
-      const slotsList: any = this.$slots.default?.({
+      const slotsList = this.$slots.default?.({
         row: {},
         column: {},
         $index: -1,
       });
 
-      const slot: any[] = [];
+      const slot = [];
 
       // 有插槽
       if (Array.isArray(slotsList)) {

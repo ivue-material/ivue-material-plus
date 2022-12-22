@@ -559,6 +559,7 @@ export const orderBy = (
         return sortBy.map((by) => {
           // string
           if (typeof by === 'string') {
+            // 获取对象中的属性
             return get(value, by);
           }
           // 函数

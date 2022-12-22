@@ -317,7 +317,9 @@ export default {
    *
    * @type {String, Function}
    */
-  rowKey: [String, Function] as PropType<TableProps['rowKey']>,
+  rowKey: {
+    type: [String, Function] as PropType<TableProps['rowKey']>,
+  },
   /**
    * 是否默认展开所有行，当 Table 包含展开行存在或者为树形表格时有效
    *

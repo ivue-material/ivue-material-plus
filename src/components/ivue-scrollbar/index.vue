@@ -43,7 +43,12 @@ import Bar from './bar.vue';
 
 // ts
 import type { CSSProperties } from 'vue';
-import { BarInstance, Props, Data, ScrollbarContextKey } from './types/scrollbar';
+import {
+    BarInstance,
+    Props,
+    Data,
+    ScrollbarContextKey,
+} from './types/scrollbar';
 
 // top 2 + bottom 2
 const GAP = 4;
@@ -361,8 +366,8 @@ export default defineComponent({
         provide(
             ScrollbarContextKey,
             reactive({
-                scrollbar: scrollbar.value,
-                scrollbarWrapper: scrollbarWrapper.value,
+                scrollbar: scrollbar,
+                scrollbarWrapper: scrollbarWrapper,
             })
         );
 

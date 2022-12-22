@@ -114,11 +114,11 @@ $name:'ivue-table';
 
     .ivue-table--expand-icon {
       width: 20px;
-      height: 23px;
+      height: 20px;
       align-items: center;
 
       .ivue-icon {
-        line-height: 23px;
+        line-height: 20px;
       }
     }
   }
@@ -503,18 +503,23 @@ $name:'ivue-table';
     // icon
     &-icon {
       position: relative;
-      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
       color: var(--ivue-arrow-color);
       font-size: 12px;
       transition: all $ivue-transition-default;
       height: 20px;
-      display: flex;
+      cursor: pointer;
+      vertical-align: middle;
 
       .ivue-icon {
+        display: inline-block;
         width: auto;
         height: auto;
         min-width: auto;
         font-size: 20px;
+        vertical-align: initial;
       }
 
       // 展开完成

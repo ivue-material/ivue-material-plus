@@ -4,6 +4,7 @@
         <ivue-table
             :data="tableData"
             style="width: 100%"
+            height="10rem"
             resizable
             border
             :rowStyle="headerCellStyle"
@@ -139,9 +140,7 @@
                 prop="date"
                 label="Date"
                 sortable
-                :sortOrders="['ascending', 'descending']"
-                :sortMethod="sortMethod"
-                :sortBy="['name']"
+                :sortBy="['name', 'date']"
                 width="180"
                 align="center"
                 headerAlign="center"
@@ -188,7 +187,9 @@
         <h1>自定义列模板</h1>
         <ivue-table :data="tableData" style="width: 100%">
             <ivue-table-column prop="date" label="Date">
-                <template #default="scope">插槽{{ scope.row }}{{ scope.$index }}</template>
+                <template #default="scope">插槽
+
+                    {{ scope.row }}{{ scope.$index }}</template>
             </ivue-table-column>
             <ivue-table-column prop="name" label="Name" align="right" headerAlign="center"></ivue-table-column>
             <ivue-table-column prop="address" label="Address"></ivue-table-column>
@@ -198,7 +199,7 @@
         <ivue-table :data="tableData" style="width: 100%">
             <ivue-table-column prop="date" label="Date">
                 <template #header>自定义表头</template>
-                <template #default="scope">插槽{{ scope.row }}</template>
+                <template #default="scope">插槽{{ scope.$index }}</template>
             </ivue-table-column>
             <ivue-table-column prop="name" label="Name" align="right" headerAlign="center"></ivue-table-column>
             <ivue-table-column prop="address" label="Address"></ivue-table-column>
@@ -932,7 +933,7 @@ export default {
 
             return false;
         },
-        formatter(row) {
+        formatter(row, column, value, $index) {
             return `测试${row.address}`;
         },
         onHeaderClick(column, event) {
@@ -1016,6 +1017,7 @@ export default {
             }, 1000);
         },
         getSummaries(param) {
+            console.log('param', param)
             const { columns, data } = param;
             const sums = [];
 
