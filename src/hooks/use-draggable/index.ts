@@ -25,7 +25,7 @@ export const useDraggable = (
     }
 
     const rect = targetRef.value.getBoundingClientRect();
-    console.log('rect', rect)
+
     dragData.rect = rect;
 
     // 初始位置

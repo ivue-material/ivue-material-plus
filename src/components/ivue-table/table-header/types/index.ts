@@ -25,8 +25,9 @@ export interface TableHeader extends ComponentInternalInstance {
 }
 
 export interface TableHeaderProps {
-  fixed: string
-  store: Store
-  border: boolean
-  defaultSort: Sort
+  fixed: string;
+  store: Store;
+  border: boolean;
+  defaultSort: Sort;
+  tooltipStop: boolean;
 }

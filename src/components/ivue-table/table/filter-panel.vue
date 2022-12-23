@@ -133,6 +133,14 @@ export default defineComponent({
         store: {
             type: Object as PropType<Store>,
         },
+        /**
+         * tooltip点击是否阻止当前事件在捕获和冒泡阶段的进一步传播
+         *
+         * @type {Boolean}
+         */
+        tooltipStop: {
+            type: Boolean,
+        },
     },
     setup(props: Props) {
         // vm
@@ -217,7 +225,10 @@ export default defineComponent({
 
         // 显示tooltip
         const handleShowTooltip = (event: Event) => {
-            event.stopPropagation();
+            // tooltip点击是否阻止当前事件在捕获和冒泡阶段的进一步传播
+            if (props.tooltipStop) {
+                event.stopPropagation();
+            }
 
             tooltipVisible.value = !tooltipVisible.value;
         };

@@ -3,7 +3,6 @@
 $name:'ivue-table';
 
 :root {
-
   // color
   --#{$name}-placeholder-color: #9AB0C6;
   --#{$name}-row-hover-cell-bg: #eeeeee;
@@ -174,7 +173,6 @@ $name:'ivue-table';
   .is-filterable {
     cursor: inherit;
   }
-
 
   // 升序
   .ascending {
@@ -377,7 +375,6 @@ $name:'ivue-table';
     }
   }
 
-
   .cell.#{$name}-tooltip {
     white-space: nowrap;
     min-width: 50px;
@@ -386,6 +383,12 @@ $name:'ivue-table';
 
   .ivue-tooltip {
     display: flex;
+  }
+
+  .ivue-tooltip-arrow{
+    &::after{
+      display: none;
+    }
   }
 
   // 过滤弹窗
@@ -576,9 +579,7 @@ $name:'ivue-table';
         color: var(--ivue-text-color);
       }
     }
-
   }
-
 }
 
 // 滚动

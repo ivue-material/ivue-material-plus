@@ -110,8 +110,6 @@ export default defineComponent({
         showOverflowTooltip: props.showOverflowTooltip,
         // filter 相关属性
         filterable: props.filters || props.filterMethod,
-        // 选中的数据过滤项
-        filterValue: [],
         // 过滤弹出框的定位
         filterPlacement: '',
         // 过滤开启

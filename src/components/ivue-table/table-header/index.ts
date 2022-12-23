@@ -14,6 +14,7 @@ import useStyle from './styles';
 import useEvent from './events';
 import useTableLayoutObserver from '../table-layout-observer';
 
+// 过滤组件
 import FilterPanel from '../table/filter-panel.vue';
 
 // ts
@@ -67,6 +68,14 @@ export default defineComponent({
           order: '',
         };
       },
+    },
+    /**
+     * tooltip点击是否阻止当前事件在捕获和冒泡阶段的进一步传播
+     *
+     * @type {Boolean}
+     */
+    tooltipStop: {
+      type: Boolean,
     },
   },
   setup(props: TableHeaderProps, { emit }) {
@@ -191,6 +200,8 @@ export default defineComponent({
           store: props.store,
           // 过滤弹出框的定位
           placement: column.filterPlacement,
+          // tooltip点击是否阻止当前事件在捕获和冒泡阶段的进一步传播
+          tooltipStop: props.tooltipStop,
           // 更新列数据
           upDataColumn: (key: string, value: boolean) => {
             column[key] = value;

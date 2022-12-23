@@ -411,6 +411,7 @@ export const createTablePopper = (
   parentNode: HTMLElement | undefined,
   trigger: HTMLElement,
   popperContent: string,
+  tooltipTheme,
   popperOptions: any,
 ) => {
   // 下一个zindex数值
@@ -435,7 +436,7 @@ export const createTablePopper = (
   const renderContent = (): HTMLDivElement => {
     // wrapper
     const wrapper = document.createElement('div');
-    wrapper.className = 'ivue-tooltip-popper';
+    wrapper.className = `ivue-tooltip-popper ivue-tooltip-${tooltipTheme}`;
     wrapper.style.zIndex = String(nextZIndex());
 
     // content

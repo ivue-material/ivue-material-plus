@@ -2,15 +2,14 @@
     <div>
         <h1>基础表格</h1>
         <ivue-table
-            :data="tableData"
+            :data="tableData4"
             style="width: 100%"
             height="10rem"
             resizable
             border
-            :rowStyle="headerCellStyle"
-            rowClassName="red"
         >
-            <ivue-table-column prop="date" label="Date" width="180"></ivue-table-column>
+            <ivue-table-column prop="date" label="Date" width="180">
+            </ivue-table-column>
             <ivue-table-column prop="name" label="Name" width="180"></ivue-table-column>
             <ivue-table-column prop="address" label="Address"></ivue-table-column>
         </ivue-table>
@@ -133,6 +132,7 @@
         <ivue-table
             ref="table"
             :data="tableData4"
+            :default-sort="{ prop: 'date' }"
             style="width: 100%"
             @on-header-click="onHeaderClick"
         >
@@ -159,6 +159,8 @@
                 width="180"
                 sortable
                 columnKey="date"
+                :filtered-value="['2016-05-01']"
+
                 :filters="[
                     { text: '2016-05-01', value: '2016-05-01' },
                     { text: '2016-05-02', value: '2016-05-02' },

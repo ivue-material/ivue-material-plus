@@ -9,7 +9,8 @@ export interface Props {
   placement: string;
   column?: TableColumnCtx;
   upDataColumn: any;
-  store?: Store
+  store?: Store;
+  tooltipStop?: boolean;
 }
 
 export interface Parent extends ComponentInternalInstance {

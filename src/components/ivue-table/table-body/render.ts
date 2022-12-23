@@ -1,5 +1,5 @@
 useRender;
-import { h, inject, computed,VNode } from 'vue';
+import { h, inject, computed } from 'vue';
 import useStyles from './styles';
 import useEvents from './events';
 import { getRowIdentity } from '../utils';
@@ -9,7 +9,7 @@ import type { TableProps, RenderRowData, TreeNode } from '../table/defaults';
 import type { TableBodyProps } from './defaults';
 import type { TableColumnCtx } from '../table-column/defaults';
 
-import { TableContextKey,Table } from '../table/defaults';
+import { TableContextKey } from '../table/defaults';
 
 function useRender(props: Partial<TableBodyProps>) {
 

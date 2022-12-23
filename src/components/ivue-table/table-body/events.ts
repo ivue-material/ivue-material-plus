@@ -132,6 +132,7 @@ function useEvents(props: Partial<TableBodyProps>) {
         IvueTable?.refs.tableWrapper,
         cell,
         cell?.innerText || cell?.textContent,
+        props.tooltipTheme,
         {
           placement: 'top',
           strategy: 'fixed',

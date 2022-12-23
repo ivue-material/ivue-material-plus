@@ -34,7 +34,6 @@ interface TableColumnCtx {
   showOverflowTooltip: boolean
   filters: Filters
   filterMethod: FilterMethods
-  filterValue: string[]
   filterPlacement: string
   filterOpened?: boolean
   index: number | ((index: number) => number)
@@ -104,6 +103,9 @@ export default {
    */
   type: {
     type: String,
+    validator(value: string | boolean) {
+      return oneOf(value, ['selection', 'index', 'expand', 'default']);
+    },
     default: 'default',
   },
   /**
@@ -148,11 +150,7 @@ export default {
   sortable: {
     type: [Boolean, String],
     validator(value: string | boolean) {
-      return oneOf(value, [
-        'custom',
-        false,
-        true
-      ]);
+      return oneOf(value, ['custom', false, true]);
     },
     default: false,
   },
@@ -161,7 +159,9 @@ export default {
    *
    * @type {String}
    */
-  property: String,
+  property: {
+    type: String,
+  },
   /**
    * 对齐方式
    *
@@ -171,6 +171,9 @@ export default {
    */
   align: {
     type: String,
+    validator(value: string | boolean) {
+      return oneOf(value, ['left', 'center', 'right']);
+    },
     default: 'left',
   },
   /**
@@ -182,6 +185,9 @@ export default {
    */
   headerAlign: {
     type: String,
+    validator(value: string | boolean) {
+      return oneOf(value, ['left', 'center', 'right', '']);
+    },
     default: '',
   },
   /**
@@ -213,16 +219,6 @@ export default {
    */
   filterMethod: {
     type: Function as PropType<TableColumnCtx['filterMethod']>,
-  },
-  /**
-   * 选中的数据过滤项
-   * 如果需要自定义表头过滤的渲染方式
-   * 可能会需要此属性。
-   *
-   * @type {Array}
-   */
-  filterValue: {
-    type: Array as PropType<TableColumnCtx['filterValue']>,
   },
   /**
   * 过滤弹出框的定位
@@ -271,7 +267,10 @@ export default {
    * @type {Boolean | String}
    */
   fixed: {
-    type: [Boolean, String]
+    type: [Boolean, String],
+    validator(value: string | boolean) {
+      return oneOf(value, ['left', 'right', true, false]);
+    },
   },
   /**
    * 当前列标题的自定义类名
@@ -357,6 +356,8 @@ export default {
   },
   /**
    * 选中的数据过滤项
+   * 如果需要自定义表头过滤的渲染方式
+   * 可能会需要此属性。
    *
    * @type {Array}
    */

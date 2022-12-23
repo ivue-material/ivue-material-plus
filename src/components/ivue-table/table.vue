@@ -29,6 +29,7 @@
                         :border="border"
                         :defaultSort="defaultSort"
                         :store="store"
+                        :tooltipStop="tooltipStop"
                         @on-drag-visible="handleDragVisible"
                         ref="tableHeaderContent"
                     ></table-header>
@@ -72,6 +73,7 @@
                             :stripe="stripe"
                             :rowClassName="rowClassName"
                             :rowStyle="rowStyle"
+                            :tooltipTheme="tooltipTheme"
                         ></table-body>
                     </table>
                     <!-- 没有数据 -->

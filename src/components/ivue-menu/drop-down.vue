@@ -187,8 +187,6 @@ export default {
 
         // 更新数据
         const update = () => {
-            // eslint-disable-next-line no-console
-            // console.log(' proxy.$parent.$refs.reference',  proxy.$parent.$refs.reference.$el);
             nextTick(() => {
                 // 是否已经注册了 popper
                 if (data.popper) {

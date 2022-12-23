@@ -8,14 +8,14 @@ import type {
 } from '../table/defaults';
 
 interface TableBodyProps {
-  store: Store
-  stripe?: boolean
-  context?: Table
-  rowClassName?: ColumnCls
-  rowStyle?: rowStyle
-  fixed?: string | any
-  highlight?: boolean
-  tooltipEffect?: string
+  store: Store;
+  stripe?: boolean;
+  context?: Table;
+  rowClassName?: ColumnCls;
+  rowStyle?: rowStyle;
+  fixed?: string | any;
+  highlight?: boolean;
+  tooltipTheme?: 'dark' | 'light';
 }
 
 export default {
@@ -52,6 +52,14 @@ export default {
    */
   rowStyle: {
     type: [Object, Function] as PropType<TableBodyProps['rowStyle']>,
+  },
+  /**
+  * tooltip主题
+  *
+  * @type {String}
+  */
+  tooltipTheme: {
+    type: String as PropType<TableBodyProps['tooltipTheme']>,
   }
 };
 

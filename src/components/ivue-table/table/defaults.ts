@@ -7,6 +7,8 @@ import type {
   CSSProperties,
   InjectionKey
 } from 'vue';
+import { oneOf } from '../../../utils/assist';
+
 import type { TableColumnCtx } from '../table-column/defaults';
 import type { Store } from '../store/index';
 import type TableLayout from '../table-layout';
@@ -16,7 +18,7 @@ type HoverState = NonNullable<{
   cell: HTMLElement
   column: TableColumnCtx
   row: TableColumnCtx
-}>
+}>;
 
 // 渲染可展开的按钮的内容
 type RenderExpanded = ({
@@ -24,27 +26,27 @@ type RenderExpanded = ({
   $index,
   store,
   expanded,
-}: Column) => VNode
+}: Column) => VNode;
 
 // 列表行
-type Column = { row: TableColumnCtx; $index: number; store: Store; expanded: boolean }
+type Column = { row: TableColumnCtx; $index: number; store: Store; expanded: boolean };
 
 // 列表行样式
-type ColumnCls = string | ((data: { row: TableColumnCtx; rowIndex: number }) => string)
+type ColumnCls = string | ((data: { row: TableColumnCtx; rowIndex: number }) => string);
 
 type ColumnStyle =
   | CSSProperties
-  | ((data: { row: TableColumnCtx; rowIndex: number }) => CSSProperties)
+  | ((data: { row: TableColumnCtx; rowIndex: number }) => CSSProperties);
 
 
 // 自定义的合计计算方法
 type SummaryMethod = (data: {
   columns: TableColumnCtx[]
   data: any[]
-}) => string[]
+}) => string[];
 
 // 设置表格单元、行和列的布局方式
-type Layout = 'fixed' | 'auto'
+type Layout = 'fixed' | 'auto';
 
 type CellStyle =
   | CSSProperties
@@ -53,7 +55,7 @@ type CellStyle =
     rowIndex: number
     column: TableColumnCtx
     columnIndex: number
-  }) => CSSProperties)
+  }) => CSSProperties);
 
 type CellCls =
   | string
@@ -62,27 +64,27 @@ type CellCls =
     rowIndex: number
     column: TableColumnCtx
     columnIndex: number
-  }) => string)
+  }) => string);
 
 // refs
 interface TableRefs {
-  tableWrapper?: HTMLElement
-  headerWrapper?: HTMLElement
-  footerWrapper?: HTMLElement
-  fixedBodyWrapper?: HTMLElement
-  rightFixedBodyWrapper?: HTMLElement
-  bodyWrapper?: HTMLElement
-  [key: string]: any
+  tableWrapper?: HTMLElement;
+  headerWrapper?: HTMLElement;
+  footerWrapper?: HTMLElement;
+  fixedBodyWrapper?: HTMLElement;
+  rightFixedBodyWrapper?: HTMLElement;
+  bodyWrapper?: HTMLElement;
+  [key: string]: any;
 }
 
 // 树节点
 interface TreeNode {
-  expanded?: boolean
-  loading?: boolean
-  noLazyChildren?: boolean
-  indent?: number
-  level?: number
-  display?: boolean
+  expanded?: boolean;
+  loading?: boolean;
+  noLazyChildren?: boolean;
+  indent?: number;
+  level?: number;
+  display?: boolean;
 }
 
 
@@ -100,105 +102,105 @@ interface RenderRowData {
 
 // 表格状态
 interface TableState {
-  isGroup: Ref<boolean>
+  isGroup: Ref<boolean>;
   resizeState: Ref<{
     width: null | number
     height: null | number
-  }>
-  updateLayout: () => void
-  debouncedUpdateLayout: () => void
+  }>;
+  updateLayout: () => void;
+  debouncedUpdateLayout: () => void;
 }
 
 // 过滤
 interface Filter {
-  column: TableColumnCtx
-  values: string[]
-  silent: boolean
+  column: TableColumnCtx;
+  values: string[];
+  silent: boolean;
 }
 
 
 interface Sort {
-  prop: string
-  order: 'ascending' | 'descending'
-  init?: boolean
-  silent?: boolean
+  prop: string;
+  order: 'ascending' | 'descending';
+  init?: boolean;
+  silent?: boolean;
 }
 
 // 表格 data
 interface Table extends ComponentInternalInstance {
   // onMounted 是否渲染完成
-  $ready?: boolean
+  $ready?: boolean;
   // 列表行hover状态
-  hoverState?: HoverState | null
+  hoverState?: HoverState | null;
   // 渲染可展开的按钮的内容
-  renderExpanded?: RenderExpanded
+  renderExpanded?: RenderExpanded;
   // store
-  store?: Store
+  store?: Store;
   // layout
-  layout?: TableLayout
+  layout?: TableLayout;
   // refs
-  refs: TableRefs
+  refs: TableRefs;
   // id
-  tableId?: string
+  tableId?: string;
   // 行id
-  columnId?: string
+  columnId?: string;
   // 表格状态
-  state?: TableState
+  state?: TableState;
 }
 
 // 表格 props
 interface TableProps {
-  data: any[]
+  data: any[];
   // 列的宽度是否自撑开
-  fit?: boolean
+  fit?: boolean;
   // 是否带有纵向边框
-  border: boolean
+  border: boolean;
   // Table 的最大高度。 合法的值为数字或者单位为 px 的高度。
-  maxHeight: string | number
+  maxHeight: string | number;
   // 是否显示表头
-  showHeader?: boolean,
+  showHeader?: boolean;
   // 渲染嵌套数据的配置选项
   // { hasChildren: 'hasChildren', children: 'children' }
   treeProps?: {
     hasChildren?: string
     children?: string
-  },
+  };
   // 行数据的 Key
-  rowKey?: string | ((row: TableColumnCtx) => string)
+  rowKey?: string | ((row: TableColumnCtx) => string);
   // 是否默认展开所有行，当 Table 包含展开行存在或者为树形表格时有效
-  defaultExpandAll?: boolean
+  defaultExpandAll?: boolean;
   // 在多选表格中，当仅有部分行被选中时，点击表头的多选框时的行为。
   // 若为 true，则选中所有行；若为 false，则取消选择所有行
-  selectOnIndeterminate?: boolean,
+  selectOnIndeterminate?: boolean;
   // 是否懒加载子节点数据
-  lazy?: boolean,
+  lazy?: boolean;
   // 是否在表尾显示合计行
-  showSummary?: boolean,
+  showSummary?: boolean;
   // 设置表格单元、行和列的布局方式
-  tableLayout: Layout,
+  tableLayout: Layout;
   // Table 的高度 默认为自动高度
-  height?: string | number,
+  height?: string | number;
   // 默认的排序列的 prop 和顺序。
   // 它的 prop 属性指定默认的排序的列，order 指定默认排序的顺序
-  defaultSort?: Sort
+  defaultSort?: Sort;
   // 内容
-  context?: Table
+  context?: Table;
   // 是否为斑马纹 table
-  stripe?: boolean
+  stripe?: boolean;
   // 行的 className 的回调方法，也可以使用字符串为所有行设置一个固定的 className。
-  rowClassName?: ColumnCls
+  rowClassName?: ColumnCls;
   // 行的 style 的回调方法，也可以使用一个固定的 Object 为所有行设置一样的 Style
-  rowStyle?: ColumnStyle
+  rowStyle?: ColumnStyle;
   // 是否要高亮当前行
-  highlightCurrentRow?: boolean,
+  highlightCurrentRow?: boolean;
   // 以通过该属性设置 Table 目前的展开行
-  expandRowKeys?: any[],
+  expandRowKeys?: any[];
   // 加载子节点数据的函数
-  load?: (row: TableColumnCtx, treeNode: TreeNode, resolve: (data: any[]) => void) => void
+  load?: (row: TableColumnCtx, treeNode: TreeNode, resolve: (data: any[]) => void) => void;
   // 合计行第一列的文本
-  sumText?: string
+  sumText?: string;
   // 自定义的合计计算方法
-  summaryMethod?: SummaryMethod
+  summaryMethod?: SummaryMethod;
   // 合并行或列的计算方法
   spanMethod?: (data: {
     row: TableColumnCtx
@@ -211,19 +213,23 @@ interface TableProps {
       rowspan: number
       colspan: number
     }
-    | undefined
+    | undefined;
   // 表头单元格的 style 的回调方法，也可以使用一个固定的 Object 为所有表头单元格设置一样的 Style
-  headerCellStyle?: CellStyle
+  headerCellStyle?: CellStyle;
   // 表头单元格的 className 的回调方法，也可以使用字符串为所有表头单元格设置一个固定的 className
-  headerCellClassName?: CellCls
+  headerCellClassName?: CellCls;
   // 表头行的 style 的回调方法，也可以使用一个固定的 Object 为所有表头行设置一样的 Style
-  headerRowStyle?: ColumnStyle
+  headerRowStyle?: ColumnStyle;
   // 表头行的 className 的回调方法
-  headerRowClassName?: ColumnCls
+  headerRowClassName?: ColumnCls;
   // 单元格的 style 的回调方法
-  cellStyle?: CellStyle
+  cellStyle?: CellStyle;
   // 单元格的 className 的回调方法
-  cellClassName?: CellCls
+  cellClassName?: CellCls;
+  // tooltip 主题
+  tooltipTheme?: 'dark' | 'light';
+  // tooltip点击是否阻止当前事件在捕获和冒泡阶段的进一步传播
+  tooltipStop?: boolean
 }
 
 // 行样式
@@ -275,7 +281,7 @@ export default {
    * @type {String | Number}
    */
   height: {
-    type: [String, Number] as PropType<any>,
+    type: [String, Number],
     default: null,
   },
   /**
@@ -284,7 +290,7 @@ export default {
    * @type {String, Number}
    */
   maxHeight: {
-    type: [String, Number] as PropType<any>,
+    type: [String, Number],
     default: null,
   },
   /**
@@ -375,6 +381,9 @@ export default {
    */
   tableLayout: {
     type: String as PropType<Layout>,
+    validator(value: string) {
+      return oneOf(value, ['fixed', 'auto']);
+    },
     default: 'fixed',
   },
   /**
@@ -529,6 +538,27 @@ export default {
    */
   cellClassName: {
     type: [String, Function] as PropType<TableProps['cellClassName']>,
+  },
+  /**
+   * tooltip主题
+   *
+   * @type {String}
+   */
+  tooltipTheme: {
+    type: String as PropType<TableProps['tooltipTheme']>,
+    validator(value: string) {
+      return oneOf(value, ['dark', 'light']);
+    },
+    default: 'dark'
+  },
+  /**
+  * tooltip点击是否阻止当前事件在捕获和冒泡阶段的进一步传播
+  *
+  * @type {String}
+  */
+  tooltipStop: {
+    type: Boolean,
+    default: false
   }
 };
 
