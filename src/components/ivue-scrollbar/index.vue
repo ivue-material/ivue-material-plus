@@ -57,41 +57,42 @@ const prefixCls = 'ivue-scrollbar';
 
 export default defineComponent({
     name: prefixCls,
+    emits: ['on-scroll'],
     props: {
         /**
          * 包裹容器的自定义类名
          *
-         * @type {String | Array}
+         * @type {String}
          */
         wrapperClass: {
-            type: [String, Array],
+            type: String,
             default: '',
         },
         /**
          * 包裹容器的自定义样式
          *
-         * @type {String | Object | Array}
+         * @type {String | Object}
          */
         wrapperStyle: {
-            type: [String, Object, Array],
+            type: [String, Object],
             default: '',
         },
         /**
          * 视图的自定义类名
          *
-         * @type {String | Array}
+         * @type {String}
          */
         contentClass: {
-            type: [String, Array],
+            type: String,
             default: '',
         },
         /**
-         * 视图的自定义类名
+         * 视图的自定义样式
          *
-         * @type {String | Object | Array}
+         * @type {String | Object}
          */
         contentStyle: {
-            type: [String, Object, Array],
+            type: [String, Object],
             default: '',
         },
         /**
@@ -101,6 +102,7 @@ export default defineComponent({
          */
         native: {
             type: Boolean,
+            default: false,
         },
         /**
          * 滚动条高度

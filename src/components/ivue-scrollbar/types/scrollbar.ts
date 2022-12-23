@@ -4,9 +4,9 @@ import type Bar from './bar.vue';
 export type BarInstance = InstanceType<typeof Bar>
 
 export interface Props {
-  wrapperClass: string | any[];
+  wrapperClass: string;
   wrapperStyle: any;
-  contentClass: string | any[];
+  contentClass: string;
   contentStyle: any;
   native?: boolean;
   height: string | number;
