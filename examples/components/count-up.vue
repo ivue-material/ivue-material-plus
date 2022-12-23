@@ -48,7 +48,9 @@ export default {
             this.$refs.count.reset();
         },
         handleStart() {
-            this.$refs.count.start();
+            this.$refs.count.start(() => {
+                console.log('...')
+            });
         },
         handleUpdate() {
             this.$refs.count.update(this.update);

@@ -43,7 +43,6 @@ export default defineComponent({
          */
         startValue: {
             type: Number,
-            required: false,
             default: 0,
         },
         /**
