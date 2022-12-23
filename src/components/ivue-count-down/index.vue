@@ -13,6 +13,7 @@ import {
     computed,
     watch,
 } from 'vue';
+import { oneOf } from '../../utils/assist';
 
 import { Props, Data } from './types/count-down';
 
@@ -20,6 +21,7 @@ const prefixCls = 'ivue-count-down';
 
 export default defineComponent({
     name: prefixCls,
+    emits: ['on-end'],
     props: {
         /**
          * 自定义显示格式
@@ -53,6 +55,9 @@ export default defineComponent({
          */
         type: {
             type: String,
+            validator(value: string) {
+                return oneOf(value, ['date', 'number']);
+            },
             default: 'date',
         },
     },
