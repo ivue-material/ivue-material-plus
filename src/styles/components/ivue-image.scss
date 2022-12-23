@@ -87,6 +87,7 @@ $name: 'ivue-image';
     transition: opacity .3s;
     opacity: 0;
     user-select: none;
+    background-color: var(--#{$name}-mark-color);
   }
 
 

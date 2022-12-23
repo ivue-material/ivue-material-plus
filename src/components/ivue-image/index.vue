@@ -215,7 +215,7 @@ export default defineComponent({
         const wrapper = ref<HTMLDivElement>();
 
         // data
-        const data: any = reactive<Data>({
+        const data = reactive<Data>({
             /**
              * 加载中
              *
@@ -363,13 +363,13 @@ export default defineComponent({
             // 或者两个元素的相交部分大小发生变化时，该回调方法会被触发执行 handlerObserveImage
             // 我们网站的主线程不需要再为了监听元素相交而辛苦劳作，浏览器会自行优化元素相交管理。
             data.observer = new IntersectionObserver(handlerObserveImage, {
-                // 指定根 (root) 元素，用于检查目标的可见性
-                root: data.scrollElement,
-                // 根 (root) 元素的外边距
-                rootMargin: '0px',
-                // 可以是单一的 number 也可以是 number 数组，
-                // target 元素和 root 元素相交程度达到该值的时候
-                // IntersectionObserver 注册的回调函数将会被执行
+                    // 指定根 (root) 元素，用于检查目标的可见性
+                    root: data.scrollElement,
+                    // 根 (root) 元素的外边距
+                    rootMargin: '0px',
+                    // 可以是单一的 number 也可以是 number 数组，
+                    // target 元素和 root 元素相交程度达到该值的时候
+                    // IntersectionObserver 注册的回调函数将会被执行
                 threshold: 0,
             });
 
@@ -417,9 +417,9 @@ export default defineComponent({
 
         // onMounted
         onMounted(() => {
-            if (isClient) {
-                props.lazy ? lazyImage() : initLoadImage();
-            }
+                if (isClient) {
+                    props.lazy ? lazyImage() : initLoadImage();
+                }
         });
 
         // onBeforeUnmount

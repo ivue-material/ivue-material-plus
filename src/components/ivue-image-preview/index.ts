@@ -24,7 +24,6 @@ ImagePreview.show = (props: {
   instance.show(props);
 };
 
-
 export const IvueImagePreview = withInstallFunction(ImagePreview, '$IvueImagePreview');
 export default IvueImagePreview;
 

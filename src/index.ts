@@ -49,7 +49,7 @@ import { IvueBackTop } from './components/ivue-back-top';
 import { IvueModal } from './components/ivue-modal';
 import { IvuePopover } from './components/ivue-popover';
 import { IvueInputNumber } from './components/ivue-input-number';
-import { IvueMenu, IvueMenuItem, IvueSubmenu,IvueMenuGroup } from './components/ivue-menu';
+import { IvueMenu, IvueMenuItem, IvueSubmenu, IvueMenuGroup } from './components/ivue-menu';
 
 import { IvueImage } from './components/ivue-image';
 import { IvueImagePreview } from './components/ivue-image-preview';
@@ -93,7 +93,6 @@ const install = (app: App, opts: any = {}): void => {
 
     // 注册组件
     Object.keys(components).forEach(key => {
-
         if (components[key].render) {
             app.component(key, components[key]);
             app.component(key, components[key].install(app));
@@ -102,6 +101,7 @@ const install = (app: App, opts: any = {}): void => {
         else if (components[key].install) {
             app.component(key, components[key].install(app));
         }
+
     });
 };
 
