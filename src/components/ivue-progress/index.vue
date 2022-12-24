@@ -41,6 +41,7 @@ const prefixCls = 'ivue-progress';
 
 export default defineComponent({
     name: prefixCls,
+    emits: ['on-status-change'],
     props: {
         /**
          * 状态，可选值为normal、active、wrong、success
