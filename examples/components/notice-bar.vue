@@ -2,13 +2,14 @@
     <div>
         <h1>基础用法</h1>
         <ivue-notice-bar
-            background="#27E2B2"
-            textColor="#FFBD3C"
+            :background="['#B6A6D4','#E1C2C4']"
+            textColor="#22184C"
             leftIcon="volume_up"
             mode="link"
             text="无论我们能活多久，我们能够享受的只有无法分割的此刻，此外别无其他。"
             @on-replay="handleReplay"
-        ></ivue-notice-bar>
+        >
+        </ivue-notice-bar>
         <h1>滚动播放</h1>
         <!-- 文字较短时，通过设置 scrollable 属性开启滚动播放 -->
         <ivue-notice-bar scrollable text="米袋虽空——樱花开哉！"></ivue-notice-bar>

@@ -2,7 +2,7 @@
     <div :class="wrapperClasses" :style="wrapperStyles" v-show="data.show">
         <!-- icon -->
         <div :class="`${prefixCls}-left`">
-            <slot name="prevIcon">
+            <slot name="leftIcon">
                 <ivue-icon :class="`${prefixCls}-icon`" v-if="leftIcon">{{ leftIcon }}</ivue-icon>
             </slot>
         </div>

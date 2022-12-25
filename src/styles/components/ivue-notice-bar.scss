@@ -38,6 +38,10 @@ $name: 'ivue-notice-bar';
   // icon
   .#{$name}-icon {
     color: currentColor;
+    height: auto;
+    min-width: auto;
+    width: auto;
+    font-size: 18px;
     margin: var(--#{$name}-icon-margin)
   }
 
