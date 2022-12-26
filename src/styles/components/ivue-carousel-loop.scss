@@ -98,5 +98,14 @@ $name: 'ivue-carousel-loop';
         right: var(--#{$name}-icon-outside-right);
       }
     }
+
+    // slot
+    &--slot{
+      width: auto;
+      min-width: auto;
+      height: auto;
+      border-radius: 0;
+      background: none;
+    }
   }
 }

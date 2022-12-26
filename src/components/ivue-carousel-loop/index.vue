@@ -1,20 +1,23 @@
 <template>
     <div :class="prefixCls" @mouseenter="handleMouseenter" @mouseleave="handleMouseleave">
         <!-- 按钮 -->
-        <ivue-button
-            :class="[
-                `${prefixCls}-arrow left`,
-                `${prefixCls}-arrow--${arrow}`
-            ]"
-            flat
-            icon
-            @click="handleArrowClick('left')"
-            v-if="data.showCopyTrack"
-        >
-            <slot name="leftArrow">
+        <template v-if="data.showCopyTrack">
+            <ivue-button
+                :class="leftButtonClasses"
+                flat
+                icon
+                @click="handleArrowClick('left')"
+                v-if="!$slots.leftArrow"
+            >
                 <ivue-icon>{{ leftArrow }}</ivue-icon>
-            </slot>
-        </ivue-button>
+            </ivue-button>
+            <template v-if="$slots.leftArrow">
+                <div :class="leftButtonClasses" @click="handleArrowClick('left')">
+                    <slot name="leftArrow"></slot>
+                </div>
+            </template>
+        </template>
+
         <!-- scroll -->
         <div :class="`${prefixCls}-scroll`" ref="scroll">
             <!-- 内容 -->
@@ -34,20 +37,24 @@
         </div>
 
         <!-- 按钮 -->
-        <ivue-button
-            :class="[
-                `${prefixCls}-arrow right`,
-                `${prefixCls}-arrow--${arrow}`
-            ]"
-            flat
-            icon
-            @click="handleArrowClick('right')"
-            v-if="data.showCopyTrack"
-        >
-            <slot name="rightArrow">
-                <ivue-icon>{{ rightArrow }}</ivue-icon>
-            </slot>
-        </ivue-button>
+        <template v-if="data.showCopyTrack">
+            <ivue-button
+                :class="rightButtonClasses"
+                flat
+                icon
+                @click="handleArrowClick('right')"
+                v-if="!$slots.rightArrow"
+            >
+                <slot name="rightArrow">
+                    <ivue-icon>{{ rightArrow }}</ivue-icon>
+                </slot>
+            </ivue-button>
+            <template v-if="$slots.rightArrow">
+                <div :class="rightButtonClasses" @click="handleArrowClick('right')">
+                    <slot name="rightArrow"></slot>
+                </div>
+            </template>
+        </template>
     </div>
 </template>
 
@@ -105,7 +112,7 @@ export default defineComponent({
             default: true,
         },
         /**
-         * 自动切换的时间间隔，单位为毫秒
+         * 自动滚动的时间间隔，单位为毫秒
          *
          * @type {Number}
          */
@@ -126,7 +133,7 @@ export default defineComponent({
             default: 'right',
         },
         /**
-         * 鼠标悬浮时暂停自动切换
+         * 鼠标悬浮时暂停自动滚动
          *
          * @type {Boolean}
          */
@@ -144,7 +151,7 @@ export default defineComponent({
             default: 200,
         },
         /**
-         * 滑动速率
+         * 滑动速率（毫秒）
          *
          * @type {Number}
          */
@@ -170,7 +177,7 @@ export default defineComponent({
             type: Number,
         },
         /**
-         * 切换箭头显示时机
+         * 箭头显示时机
          *
          * @type {String}
          *
@@ -312,6 +319,28 @@ export default defineComponent({
             return {
                 transform: `translateX(${data.listCopyTranslate}px)`,
             };
+        });
+
+        // 左按钮
+        const leftButtonClasses = computed(() => {
+            return [
+                `${prefixCls}-arrow left`,
+                `${prefixCls}-arrow--${props.arrow}`,
+                {
+                    [`${prefixCls}-arrow--slot`]: slots.leftArrow,
+                },
+            ];
+        });
+
+        // 右按钮
+        const rightButtonClasses = computed(() => {
+            return [
+                `${prefixCls}-arrow right`,
+                `${prefixCls}-arrow--${props.arrow}`,
+                {
+                    [`${prefixCls}-arrow--slot`]: slots.leftArrow,
+                },
+            ];
         });
 
         // 总宽度
@@ -596,8 +625,11 @@ export default defineComponent({
                     // 清除 setInterval
                     clearArrowInterval();
 
-                    // 重新开始自动滚动
-                    startTime();
+                    // 没有鼠标悬浮时暂停自动切换
+                    if (!props.pauseOnHover) {
+                        // 重新开始自动滚动
+                        startTime();
+                    }
                 },
                 // 几秒后停止 滑动速率 * 每一次滚动偏移大小
                 props.slidingSpeed * props.offset
@@ -662,7 +694,7 @@ export default defineComponent({
                     // 初始化数据
                     initData();
                 });
-            },
+            }
         );
 
         // onMounted
@@ -691,6 +723,8 @@ export default defineComponent({
             // computed
             listStyles,
             listCopyStyles,
+            leftButtonClasses,
+            rightButtonClasses,
 
             // methods
             startTime,
