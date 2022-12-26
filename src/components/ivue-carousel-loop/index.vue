@@ -96,7 +96,7 @@ export default defineComponent({
             default: 'keyboard_arrow_right',
         },
         /**
-         * 是否自动切换
+         * 是否自动滚动
          *
          * @type {Boolean}
          */
@@ -649,6 +649,20 @@ export default defineComponent({
                 // 深度监听
                 deep: true,
             }
+        );
+
+        // 监听是否自动滚动
+        watch(
+            () => props.autoplay,
+            () => {
+                // 清除定时器
+                clearTimer();
+
+                nextTick(() => {
+                    // 初始化数据
+                    initData();
+                });
+            },
         );
 
         // onMounted

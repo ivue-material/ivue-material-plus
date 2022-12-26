@@ -1,9 +1,6 @@
 $name: 'ivue-carousel-loop';
 
 :root {
-  // size
-  --#{$name}-height: 100px;
-
   // arrow
   --#{$name}-icon-font-size: 24px;
   --#{$name}-icon-size: 36px;
@@ -19,7 +16,6 @@ $name: 'ivue-carousel-loop';
 .#{$name} {
   position: relative;
   width: 100%;
-  height: var(--#{$name}-height);
 
   &:hover .#{$name}-arrow--hover {
     opacity: 1;

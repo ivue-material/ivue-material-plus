@@ -1,6 +1,19 @@
 <template>
     <div class="content">
         <h1>基础用法</h1>
+        <ivue-carousel-loop class="carousel-loop-demo"
+
+        :autoplay="false"
+         :dataList="urlList">
+            <ivue-image
+                v-for="(image, index) in urlList"
+                style="width: 100px;"
+                :src="image"
+                fit="cover"
+                :key="index"
+            ></ivue-image>
+        </ivue-carousel-loop>
+
         <ivue-carousel-loop class="red" :dataList="urlList">
             <div
                 class="image"
@@ -14,8 +27,8 @@
         </ivue-carousel-loop>
 
         <ivue-button @click="handleCLick">Add</ivue-button>
-        {{urlList}}
 
+        {{urlList}}
         <h1>按钮位置</h1>
         <div class="card">
             <p>hover</p>
@@ -99,9 +112,9 @@ export default {
                 'https://file.iviewui.com/images/image-demo-1.jpg',
                 'https://file.iviewui.com/images/image-demo-2.jpg',
                 'https://file.iviewui.com/images/image-demo-3.jpg',
-                // 'https://file.iviewui.com/images/image-demo-4.jpg',
-                // 'https://file.iviewui.com/images/image-demo-5.jpg',
-                // 'https://file.iviewui.com/images/image-demo-6.jpg',
+                'https://file.iviewui.com/images/image-demo-4.jpg',
+                'https://file.iviewui.com/images/image-demo-5.jpg',
+                'https://file.iviewui.com/images/image-demo-6.jpg',
             ],
         };
     },
@@ -116,6 +129,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.carousel-loop-demo {
+    width: 200px;
+}
+
 .image {
     width: 100px;
     height: 100px;
