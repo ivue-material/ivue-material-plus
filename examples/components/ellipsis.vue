@@ -1,7 +1,14 @@
 <template>
     <div>
         <h1>tooltip</h1>
-        <ivue-ellipsis :text="text" :height="30" autoResize tooltip></ivue-ellipsis>
+        <ivue-ellipsis :text="text" :height="30"  tooltip>
+            <template #suffix>
+                suffix
+            </template>
+            <template #more>
+                more
+            </template>
+        </ivue-ellipsis>
         <p>transfer</p>
         <ivue-ellipsis :text="text" autoResize tooltip theme="light" transfer></ivue-ellipsis>
         <h1>按照字符数省略</h1>
@@ -15,10 +22,10 @@
         <h1>禁用</h1>
         <ivue-ellipsis
             :text="text"
-            :lines="3"
             disabled
             style="width:400px;margin: 0 auto;"
-            v-line-clamp="1"
+            v-line-clamp="2"
+            tooltip
         ></ivue-ellipsis>
         <h1>是否自动根据外层宽度动态改变</h1>
         <ivue-ellipsis :text="text" :height="30" autoResize></ivue-ellipsis>

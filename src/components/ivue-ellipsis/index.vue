@@ -3,6 +3,7 @@
         <template v-if="data.computedReady">
             <!-- tooltip -->
             <ivue-tooltip
+                :class="`${prefixCls}-tooltip--wrapper`"
                 :content="text"
                 :placement="placement"
                 :theme="theme"
@@ -174,6 +175,9 @@ export default defineComponent({
          */
         theme: {
             type: String,
+            validator(value: string) {
+                return oneOf(value, ['dark', 'light']);
+            },
             default: 'dark',
         },
         /**
@@ -478,7 +482,6 @@ export default defineComponent({
 
         // onMounted
         onMounted(() => {
-
             // 初始化
             init();
 

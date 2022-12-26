@@ -6,8 +6,19 @@ $name: 'ivue-ellipsis';
 
 .#{$name} {
   font-size: var(--#{$name}-font-size);
+  line-height: 1.5;
 
   &-hidden {
     visibility: hidden;
+  }
+
+  &-tooltip {
+    &--wrapper {
+      display: block;
+
+      .ivue-tooltip-rel {
+        display: block;
+      }
+    }
   }
 }
