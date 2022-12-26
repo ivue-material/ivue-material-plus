@@ -7,6 +7,7 @@
             v-model="modal"
             :beforeClose="beforeClose"
             resetBody
+            close-icon="cancel_presentation"
             title="Common Modal dialog box title"
         >
             <TestModal></TestModal>
@@ -123,7 +124,14 @@
         </ivue-modal>
         <h1>拖拽移动</h1>
         <ivue-button @click="modal13 = true">拖拽移动1</ivue-button>
-        <ivue-modal v-model="modal13" draggable scrollable title="Modal 1" transfer>
+        <ivue-modal
+            v-model="modal13"
+            draggable
+            scrollable
+            reset-drag-position
+            title="Modal 1"
+            transfer
+        >
             <div>Modal 1</div>
             <div>Can be dragged off the screen</div>
         </ivue-modal>
@@ -169,6 +177,7 @@ export default {
             modal13: false,
             modal14: false,
             modal15: false,
+            value1: '',
         };
     },
     methods: {

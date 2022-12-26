@@ -107,17 +107,19 @@ $name: 'ivue-modal';
     // 拖动
     &--drag {
       position: absolute;
+
+      .#{$name}-header {
+        cursor: move;
+      }
     }
+
 
     // 拖动中
     &--dragging {
       user-select: none;
     }
 
-    // 头部
-    .#{$name}-header {
-      cursor: move;
-    }
+
   }
 
   // 头部

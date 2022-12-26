@@ -284,7 +284,7 @@ export default defineComponent({
          */
         cancelText: {
             type: String,
-            default: 'Cancel',
+            default: '取消',
         },
         /**
          * 确定按钮文字
@@ -293,7 +293,7 @@ export default defineComponent({
          */
         confirmText: {
             type: String,
-            default: 'Confirm',
+            default: '确认',
         },
         /**
          * 点击确定按钮时，确定按钮是否显示 loading 状态，
@@ -886,7 +886,12 @@ export default defineComponent({
 
                 // 拖动的数据用于重新设置初始化拖动位置
                 if (value && props.resetDragPosition) {
-                    data.dragData = deepCopy(dragData);
+                    data.dragData.x = null;
+                    data.dragData.y = null;
+                    data.dragData.dragX = null;
+                    data.dragData.dragY = null;
+                    data.dragData.dragging = false;
+                    data.dragData.rect = null;
                 }
             }
         );

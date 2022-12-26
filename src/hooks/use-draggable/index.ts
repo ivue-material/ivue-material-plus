@@ -24,6 +24,7 @@ export const useDraggable = (
       return false;
     }
 
+
     const rect = targetRef.value.getBoundingClientRect();
 
     dragData.rect = rect;
