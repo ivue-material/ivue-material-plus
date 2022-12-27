@@ -267,7 +267,7 @@ export default defineComponent({
             },
         },
         /**
-         * 关闭文案
+         * 关闭按钮文案
          *
          * @type {String}
          */
@@ -276,7 +276,7 @@ export default defineComponent({
             default: '取消',
         },
         /**
-         * 确定按钮文字
+         * 确定按钮文案
          *
          * @type {String}
          */
