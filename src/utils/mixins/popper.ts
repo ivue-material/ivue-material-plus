@@ -11,7 +11,7 @@ export default defineComponent({
       type: Object,
     },
     popper: {
-      type:  Object,
+      type: Object,
     },
     /**
      * 弹窗的展开方向
@@ -125,7 +125,9 @@ export default defineComponent({
 
       // 创建
       options.onFirstUpdate = () => {
-        nextTick(this.updatePopper);
+        nextTick(() => {
+          this.updatePopper();
+        });
 
         this.$emit('on-created', this);
       };

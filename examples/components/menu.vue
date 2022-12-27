@@ -1,7 +1,7 @@
 <template>
     <div>
         <h1>顶部导航</h1>
-        <ivue-menu mode="horizontal" activeName="3-1" theme="dark">
+        <ivue-menu :openNames="['3','3-1']" ref="menu">
             <ivue-menu-item name="1">内容管理1</ivue-menu-item>
             <ivue-menu-item name="2">内容管理2</ivue-menu-item>
 
@@ -18,16 +18,14 @@
                 </ivue-menu-group>
             </ivue-submenu>
         </ivue-menu>
+        <ivue-button @click="updateOpened">updateOpened</ivue-button>
         <h1>侧栏导航</h1>
-        <ivue-menu @on-open-change="handleOpenChange" @on-select="handleSelect">
+        <ivue-menu @on-open-change="handleOpenChange" @on-select="handleSelect" theme="primary">
             <ivue-menu-item name="1" to="scrollbar">内容管理1</ivue-menu-item>
-            <ivue-menu-item name="1" :to="{name: 'scrollbar'}">内容管理1</ivue-menu-item>
-            qwqw
+            <ivue-menu-item name="1" :to="{name: 'scrollbar'}">内容管理1</ivue-menu-item>qwqw
             <ivue-menu-item name="scrollbar" to="scrollbar">
                 <template #link>
-                    <router-link to="/scrollbar">
-                        sadd
-                    </router-link>
+                    <router-link to="/scrollbar">sadd</router-link>
                 </template>
             </ivue-menu-item>
             <ivue-submenu name="3">
@@ -138,7 +136,10 @@ export default {
         },
         handleSelect(name) {
             console.log(name);
-        }
+        },
+        updateOpened() {
+                this.$refs.menu.updateOpened('1');
+        },
     },
 };
 </script>

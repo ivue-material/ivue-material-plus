@@ -58,9 +58,7 @@ export default {
          */
         openNames: {
             type: Array,
-            default() {
-                return [];
-            },
+            default: () => [],
         },
         /**
          * 激活菜单的 name 值
@@ -154,7 +152,12 @@ export default {
         // methods
 
         // 激活当前子菜单
-        const updateActiveName = () => {
+        const updateActiveName = (activeName?: string | number) => {
+            // 是否有需要激活的name
+            if (activeName) {
+                data.currentActiveName = activeName;
+            }
+
             // 没有菜单
             if (data.currentActiveName === undefined) {
                 data.currentActiveName = -1;
@@ -292,7 +295,13 @@ export default {
         };
 
         // 展开子菜单
-        const updateOpened = () => {
+        const updateOpened = (openedNames?: any[]) => {
+
+            // 是否有需要激活的菜单
+            if (openedNames) {
+                data.openedNames = openedNames;
+            }
+
             const items = data.submenuList.map((item) => item.submenu);
 
             if (items.length) {

@@ -222,7 +222,9 @@ export default {
                                 },
                             ],
                             onFirstUpdate: () => {
-                                nextTick(data.popper.update());
+                                nextTick(() => {
+                                    data.popper && data.popper.update();
+                                });
                             },
                         }
                     );
