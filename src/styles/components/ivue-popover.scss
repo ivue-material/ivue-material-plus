@@ -102,7 +102,6 @@ $name:'ivue-popover';
   --#{$name}-footer-button-padding: 0 7px;
   --#{$name}-footer-button-last-margin-left: 8px;
 
-
   // light
 
   // top
@@ -385,11 +384,12 @@ $name:'ivue-popover';
     // message
     &--message {
       margin-left: var(--#{$name}-body-message-margin-left);
+      line-height: var(--#{$name}-body-icon-font-size);
     }
 
     .#{$name}-body--icon {
       font-size: var(--#{$name}-body-icon-font-size);
-      color: var(--ivue-white-color);
+      color: var(--ivue-warning-color);
       width: auto;
       height: auto;
       min-width: auto;

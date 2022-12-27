@@ -7,8 +7,12 @@ import { createPopper } from '@popperjs/core';
 export default defineComponent({
   emits: ['on-popper-show', 'on-popper-hide', 'on-created', 'update:modelValue'],
   props: {
-    reference: Object,
-    popper: Object,
+    reference: {
+      type: Object,
+    },
+    popper: {
+      type:  Object,
+    },
     /**
      * 弹窗的展开方向
      *

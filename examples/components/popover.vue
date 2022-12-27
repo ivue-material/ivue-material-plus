@@ -23,11 +23,17 @@
                     >{{ item.label }}</ivue-option>
                 </ivue-select>
             </template>
-        </ivue-popover> -->
+        </ivue-popover>-->
 
         <h1>基础用法</h1>
         <div>
-            <ivue-popover trigger="hover" title="Title" content="content" >
+            <ivue-popover
+                trigger="hover"
+                title="Title"
+                theme="dark"
+                content="漫画叙述了一只来自22世纪的猫型机器人——哆啦A梦，受主人野比世修的托付，回到20世纪，借助从四维口袋里拿出来的各种未来道具，来帮助世修的高祖父——小学生野比大雄化解身边的种种困难问题，以及生活中和妈妈野比玉子、身边的小伙伴静香、胖虎、小夫发生的轻松幽默搞笑感人的故事"
+                v-model="visible"
+            >
                 <ivue-button>Hover</ivue-button>
             </ivue-popover>
         </div>
@@ -101,7 +107,7 @@
             <ivue-button>Bottom Right</ivue-button>
         </ivue-popover>
         <h1>从浮层内关闭</h1>
-        <ivue-popover class="button" content="Bottom Right text" v-model="visible">
+        <ivue-popover class="button" content="Bottom Right text" v-model="visible" >
             <a>Click</a>
             <template #title>
                 <div>
@@ -119,16 +125,14 @@
             </template>
         </ivue-popover>
         <h1>嵌套复杂内容</h1>
-        <ivue-popover placement="right" width="200">
+        <ivue-popover placement="right" width="900px">
             <ivue-button>Click</ivue-button>
             <template #content>
-                <div class="table">
-                    1231231
-                    1231231
-                    1231231
-                    1231231
-                    1231231
-                </div>
+                <ivue-table :data="tableData4" style="width: 100%" height="10rem" resizable border>
+                    <ivue-table-column prop="date" label="Date" width="180"></ivue-table-column>
+                    <ivue-table-column prop="name" label="Name" width="180"></ivue-table-column>
+                    <ivue-table-column prop="address" label="Address"></ivue-table-column>
+                </ivue-table>
             </template>
         </ivue-popover>
         <h1>自动换行</h1>
@@ -142,7 +146,7 @@
         <h1>确认框</h1>
         <ivue-popover
             confirm
-            title="Are you sure you want to delete this item?"
+            title="Are you sure you want to delete this Are you sure you want to delete this Are you sure you want to delete this item?"
             @on-confirm="confirm"
             @on-cancel="cancel"
         >
@@ -155,7 +159,7 @@
 export default {
     data() {
         return {
-            visible: false,
+            visible: true,
             model1: '',
             cityList: [
                 {
@@ -181,6 +185,64 @@ export default {
                 {
                     value: 'Canberra',
                     label: 'Canberra',
+                },
+            ],
+            tableData4: [
+                {
+                    date: '2016-05-03',
+                    name: '1',
+                    state: 'California',
+                    city: 'Los Angeles',
+                    address: 'No. 189, Grove St, Los Angeles',
+                    zip: 'CA 90036',
+                },
+                {
+                    date: '2016-05-02',
+                    name: '3',
+                    state: 'California',
+                    city: 'Los Angeles',
+                    address: 'No. 189, Grove St, Los Angeles',
+                    zip: 'CA 90036',
+                },
+                {
+                    date: '2016-05-04',
+                    name: '0',
+                    state: 'California',
+                    city: 'Los Angeles',
+                    address: 'No. 189, Grove St, Los Angeles',
+                    zip: 'CA 90036',
+                },
+                {
+                    date: '2016-05-01',
+                    name: 'Tom',
+                    state: 'California',
+                    city: 'Los Angeles',
+                    address: 'No. 189, Grove St, Los Angeles',
+                    zip: 'CA 90036',
+                },
+                {
+                    date: '2016-05-08',
+                    name: 'Tom',
+                    state: 'California',
+                    city: 'Los Angeles',
+                    address: 'No. 189, Grove St, Los Angeles',
+                    zip: 'CA 90036',
+                },
+                {
+                    date: '2016-05-06',
+                    name: 'Tom',
+                    state: 'California',
+                    city: 'Los Angeles',
+                    address: 'No. 189, Grove St, Los Angeles',
+                    zip: 'CA 90036',
+                },
+                {
+                    date: '2016-05-07',
+                    name: 'Tom',
+                    state: 'California',
+                    city: 'Los Angeles',
+                    address: 'No. 189, Grove St, Los Angeles',
+                    zip: 'CA 90036',
                 },
             ],
         };

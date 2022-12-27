@@ -104,7 +104,7 @@ import IvueIcon from '../ivue-icon';
 import IvueButton from '../ivue-button';
 
 // ts
-import { PopoverContextKey, Props, Data } from './types/popover';
+import { PopoverContextKey, Props, Data, _ComponentInternalInstance } from './types/popover';
 
 const prefixCls = 'ivue-popover';
 
@@ -199,7 +199,7 @@ export default defineComponent({
          */
         wordWrap: {
             type: Boolean,
-            default: false,
+            default: true,
         },
         /**
          * 是否开启对话框模式
@@ -273,7 +273,7 @@ export default defineComponent({
          */
         cancelText: {
             type: String,
-            default: 'Cancel',
+            default: '取消',
         },
         /**
          * 确定按钮文字
@@ -282,10 +282,13 @@ export default defineComponent({
          */
         confirmText: {
             type: String,
-            default: 'Confirm',
+            default: '确认',
         },
     },
     setup(props: Props, { emit, slots }) {
+        // vm
+        const { proxy } = getCurrentInstance() as _ComponentInternalInstance;
+
         // dom
         const popper = ref<HTMLDivElement>(null);
         const reference = ref<HTMLDivElement>(null);
@@ -622,6 +625,10 @@ export default defineComponent({
                         useEventListener(children, 'blur', handleBlur, false);
                     }
                 });
+            }
+
+            if (visible.value) {
+                proxy.updatePopper();
             }
         });
 

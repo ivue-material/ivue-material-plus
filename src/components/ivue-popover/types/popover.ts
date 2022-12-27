@@ -1,4 +1,8 @@
-import type { InjectionKey } from 'vue';
+import type {
+  InjectionKey,
+  ComponentInternalInstance,
+  ComponentPublicInstance,
+} from 'vue';
 
 export type PopoverContext = {
   data?: {
@@ -40,4 +44,12 @@ export interface Data {
   isInput: boolean;
   currentTargetFocus: boolean;
   closeDelay: number;
+}
+
+interface _ComponentPublicInstance extends ComponentPublicInstance {
+  updatePopper: () => void
+}
+
+export interface _ComponentInternalInstance extends ComponentInternalInstance {
+  proxy: _ComponentPublicInstance | null;
 }
