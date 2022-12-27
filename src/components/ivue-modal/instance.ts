@@ -77,13 +77,13 @@ Modal.newInstance = (properties) => {
          *
          * @type {String}
          */
-        confirmText: 'Confirm',
+        confirmText: '确认',
         /**
          * 关闭文案
          *
          * @type {String}
          */
-        cancelText: 'Cancel',
+        cancelText: '取消',
         /**
          * 显示取消按钮
          *
@@ -97,6 +97,12 @@ Modal.newInstance = (properties) => {
          * @type {Boolean}
          */
         loading: false,
+        /**
+         * loading类型
+         *
+         * @type {String}
+         */
+        loadingType: 'spin',
         /**
          * 页面是否可以滚动
          *
@@ -126,13 +132,7 @@ Modal.newInstance = (properties) => {
          *
          * @type {Boolean}
          */
-        spinLoading: false,
-        /**
-         * loading类型
-         *
-         * @type {String}
-         */
-        loadingType: 'spin'
+        spinLoading: false
       });
     },
     created() {

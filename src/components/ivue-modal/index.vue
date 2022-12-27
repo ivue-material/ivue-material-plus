@@ -1,7 +1,7 @@
 <template>
     <teleport to="body" :disabled="!transfer">
         <!-- 蒙版 -->
-        <transition :name="transitionNames[1]">
+        <transition :name="`${transitionNames[1]}`">
             <div
                 :class="`${prefixCls}-mask`"
                 :style="wrapperStyles"
@@ -12,7 +12,7 @@
         </transition>
         <!-- 弹窗外层 -->
         <div :class="wrapperClasses" :style="wrapperStyles" @click="handleWrapperClick">
-            <transition :name="transitionNames[0]" @after-leave="handleAfterLeave">
+            <transition :name="`${transitionNames[0]}`" @after-leave="handleAfterLeave">
                 <!-- 弹窗 -->
                 <div
                     :class="modalClasses"

@@ -4,9 +4,11 @@
         <h2>resetBody 重新渲染body v-if 重新渲染body内容</h2>
         <ivue-button type="primary" @click="modal = true">重新渲染body</ivue-button>
         <ivue-modal
+        center
             v-model="modal"
             :beforeClose="beforeClose"
             resetBody
+            width="50"
             close-icon="cancel_presentation"
             title="Common Modal dialog box title"
         >
@@ -200,6 +202,7 @@ export default {
                     this.$IvueModal.info({
                         title: title,
                         content: content,
+                        closable: true,
                     });
                     break;
                 case 'success':
@@ -229,6 +232,7 @@ export default {
                 width: 600,
                 closable: true,
                 lockScroll: false,
+
                 onConfirm: () => {
                     this.$message.info('Clicked ok');
                 },
