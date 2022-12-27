@@ -57,7 +57,7 @@ export default defineComponent({
             default: () => {},
         },
         /**
-         * 日期格式开始类型
+         * 月份格式开始类型
          *
          * @type {String}
          */

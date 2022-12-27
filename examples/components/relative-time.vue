@@ -2,22 +2,22 @@
     <div class="card">
         <h1>基础用法</h1>
         <div>
-            <ivue-relative-time :time="time1"></ivue-relative-time>
+            <ivue-relative-time :time="time2"></ivue-relative-time>
         </div>
         <div>
             <ivue-relative-time :time="time2"></ivue-relative-time>
         </div>
         <h1>自动更新间隔</h1>
-        <ivue-relative-time :time="time1"></ivue-relative-time>
+        <ivue-relative-time :time="time1" :interval="1" ></ivue-relative-time>
         <h1>不同类型</h1>
         <div>
             <ivue-relative-time :time="time2"></ivue-relative-time>
         </div>
         <div>
-            <ivue-relative-time :time="time2" type="date"></ivue-relative-time>
+            <ivue-relative-time :time="time2"  dateStartType="month"></ivue-relative-time>
         </div>
         <div>
-            <ivue-relative-time :time="time2" type="datetime"></ivue-relative-time>
+            <ivue-relative-time :time="time2" type="datetime"  dateStartType="month"></ivue-relative-time>
         </div>
         <h1>locale</h1>
         <div>
@@ -47,7 +47,7 @@ export default {
         return {
             time: new Date(),
             time1: new Date().getTime() - 60 * 3 * 1000,
-            time2: new Date().getTime() - 86400 * 3 * 1000,
+            time2: new Date().getTime() - 86400 * 5 * 10000,
             locale: {
                 just: 'just',
                 before: 'before',
