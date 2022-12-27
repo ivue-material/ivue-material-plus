@@ -59,7 +59,9 @@ $name: 'ivue-progress';
 
     // 文字
     &-text {
-      display: inline-block;
+      display: inline-flex;
+      align-items: center;
+      height: 100%;
       vertical-align: middle;
       color: var(--ivue-white-color);
       font-size: var(--#{$name}-font-size);
