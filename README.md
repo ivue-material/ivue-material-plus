@@ -1,106 +1,146 @@
 <p align="center">
-  <a href="https://lovevuerk.com/" target="_blank">
+  <a href="https://lovevuerk.com/plus/" target="_blank">
     <img width="100"src="https://lovevuerk.com/img/logo.png">
   </a>
 </p>
 
-## IVue 2.0 Official website
+## IVue Plus Official website
 
-**<a href="https://lovevuerk.com/" target="_blank">https://lovevuerk.com/</a>**
-
-## IVue Plus in preparation ~~~~~~
+**<a href="<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<https://lovevuerk.com/plus/>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>" target="_blank">https://lovevuerk.com/plus/</a>**
 
 IVue is a semantic component framework for Vue. It aims to provide clean, semantic and reusable components.
+Provides more than 50 commonly used low-level components.
+
 iVue Created according to Google's **<a href="https://material.io/" target="_blank">Material Design Spec</a>**
 
 ## Browser Support
 
-IVue supports all **modern browsers**, including IE11 and Safari 9+ (using polyfills).
-
-IVue utilizes features of ES2015/2017 that require the need to use polyfills for Internet Explorer 11 and Safari 9/10. If you are using vue-cli-3, this is done automatically for you. Otherwise, in your project directory, you can install babel-polyfill:
-
-```javascript
-// my-project/
-$ yarn add babel-polyfill
-// OR
-$ npm install babel-polyfill --save
-```
-
-It is important to include the plugin as early as possible within your main index.js file.
-
-```javascript
-// my-project/src/index.js
-import 'babel-polyfill'
-...
-new Vue()
-```
-
-It is recommended that you use ```babel-preset-env``` with the corresponding polyfill to ensure only the necessary polyfills are added to your application. For more information on ```babel-present-env```, visit the documentation
-
-```javascript
-$ yarn add @babel/preset-env -d
-// OR
-$ npm install @babel/preset-env --save-dev
-```
-
-Once installed, add the preset to your ```.babelrc``` or ```babel.config.js```
-
-```javascript
-// .babelrc
-{
-  "presets": ["@babel/preset-env"]
-}
-
-// babel.config.js
-module.exports = {
-  presets: ['@babel/preset-env']
-}
-```
-
-Unfortunately ```vue-cli-3``` doesn't automatically bring IE11 compatibility in which you may encounter various errors (such as Symbol is not defined). To assist in resolving these errors you may need to manually add ```transpileDependencies``` parameter in ```vue.config.js```
-
-```
-module.exports = {
-  transpileDependencies:[/node_modules[/\\\\]ivue-material[/\\\\]/]
-}
-```
+Run on browsers that support ES2018 and ResizeObserver. If you really need to support older browsers, add Babel and the corresponding Polyfill yourself
+Since Vue 3 no longer supports IE11, this library no longer supports IE browser
 
 ## Installation
 
 Using npm:
 
 ```javascript
- npm install ivue-material --save
+ npm install ivue-material-plus --save
 ```
 
 Using a script tag for global use:
 
 ```javascript
-<link rel="stylesheet" href="//unpkg.com/ivue-material/dist/styles/ivue.css">
-<script src="//unpkg.com/ivue-material/dist/ivue.min.js"></script>
+<link rel="stylesheet" href="//unpkg.com/ivue-material-plus/dist/styles/index.css">
+<script src="https://unpkg.com/vue@next"></script>
+<script src="//unpkg.com/ivue-material-plus"></script>
 ```
 
-You can see the latest version resources at <a href="https://unpkg.com/ivue-material/" target="_blank">unpkg.com/ivue-material</a>
+You can see the latest version resources at <a href="https://unpkg.com/ivue-material-plus/" target="_blank">unpkg.com/ivue-material-plus</a>
 
 ## Usage
 
 ```javascript
 import Vue from 'vue';
-import IvueMaterial from 'ivue-material';
+import IvueMaterialPlus from 'ivue-material-plus';
 
-Vue.use(IvueMaterial);
+Vue.use(IvueMaterialPlus);
 ```
 
 Using css via import:
 
 ```javascript
-import 'ivue-material/dist/styles/ivue.css';
+import 'ivue-material-plus/dist/styles/index.css'
 ```
+
+## Import On Demand
+
+### import automatically
+
+First you need to install the two plugins `unplugin-vue-components` and `unplugin-auto-import`
+
+### Vite
+
+```
+// vite.config.js
+import { defineConfig } from 'vite'
+import AutoImport from 'unplugin-auto-import/vite'
+import Components from 'unplugin-vue-components/vite'
+import { IvueMaterialPlusResolver } from 'ivue-material-plus/resolvers/ivue-material-plus'
+
+export default defineConfig({
+  // ...
+  plugins: [
+    // ...
+    AutoImport({
+      resolvers: [IvueMaterialPlusResolver()],
+    }),
+    Components({
+      resolvers: [IvueMaterialPlusResolver()],
+    }),
+  ],
+})
+```
+
+### Webpack
+
+```
+// webpack.config.js
+const AutoImport = require('unplugin-auto-import/webpack')
+const Components = require('unplugin-vue-components/webpack')
+import { IvueMaterialPlusResolver } from 'ivue-material-plus/resolvers/ivue-material-plus'
+
+module.exports = {
+  // ...
+  plugins: [
+    AutoImport({
+      resolvers: [IvueMaterialPlusResolver()],
+    }),
+    Components({
+      resolvers: [IvueMaterialPlusResolver()],
+    }),
+  ],
+}
+```
+
+For more packaging (Rollup, Vue CLI) and configuration tools, please refer to [unplugin-vue-components](https://github.com/antfu/unplugin-vue-components#installation) 和 [unplugin-auto-import](https://github.com/antfu/unplugin-auto-import#install)
+
+### Load components on demand
+
+With the help of the plug-in [babel-plugin-import](https://github.com/umijs/babel-plugin-import) can be achieved by
+Components need to be loaded to reduce file size. First install and configure in file `.babelrc` or in webpack `babel-loader`
+
+```
+npm install babel-plugin-import --save-dev
+
+// .babelrc or babel-loader
+{
+  "plugins": [
+    [
+      "import",
+      {
+        "libraryName": "ivue-material-plus",
+        "libraryDirectory": "dist/unplugin-vue-components/es"
+      },
+      "ivue-material-plus"
+    ]
+  ],
+}
+```
+
+Then introduce components on demand in this way, you can reduce the size
+
+```
+import { IvueAffix, IvueInput } from 'ivue-material-plus';
+app.component(IvueAffix.name, IvueAffix);
+app.component(IvueInput.name, IvueInput);
+```
+
+### Special Reminder
+
+on demand references still need to import styles, that is, execute `import 'ivue-material-plus/dist/styles/index.css'` in `main.js` or the root component;
 
 ## Community
 
 Contribute: Contact us WeChat or via mail to jianzhongmin@foxmail.com. PRs welcome!
-
 
 ## License
 
