@@ -4,7 +4,7 @@
         <div ref="content" :class="classes" :style="data.styles">
             <slot></slot>
         </div>
-        <!-- slot样式 -->
+        <!-- 占位元素 -->
         <div v-show="data.slot" :style="data.slotStyle"></div>
     </div>
 </template>
@@ -52,6 +52,11 @@ export default defineComponent({
     },
     // 组合式 API
     setup(props: Props, { emit }) {
+        // ref = wrapper
+        const wrapper = ref<HTMLDivElement>();
+        // ref = content
+        const content = ref<HTMLDivElement>();
+
         // data
         const data = reactive<Data>({
             // 组件状态是否开启固定
@@ -63,11 +68,6 @@ export default defineComponent({
             // slotStyle
             slotStyle: {},
         });
-
-        // ref = wrapper
-        const wrapper = ref<HTMLDivElement>();
-        // ref = content
-        const content = ref<HTMLDivElement>();
 
         // computed
 
@@ -96,11 +96,11 @@ export default defineComponent({
 
         // 初始化数据
         const initData = () => {
-            data.slot = false;
-            data.slotStyle = {};
-
             data.affix = false;
             data.styles = {};
+
+            data.slot = false;
+            data.slotStyle = {};
         };
 
         // 获取滚动数值
@@ -177,12 +177,13 @@ export default defineComponent({
                     width: `${wrapper.value.offsetWidth}px`,
                 };
 
-                // slot样式
+                // 占位元素样式
                 data.slotStyle = {
                     width: `${content.value.clientWidth}px`,
                     height: `${content.value.clientHeight}px`,
                 };
 
+                // 显示占位元素
                 data.slot = true;
 
                 // 在固定状态发生改变时触发
@@ -223,12 +224,13 @@ export default defineComponent({
                     width: `${wrapper.value.offsetWidth}px`,
                 };
 
-                // slot样式
+                // 占位元素样式
                 data.slotStyle = {
                     width: `${content.value.clientWidth}px`,
                     height: `${content.value.clientHeight}px`,
                 };
 
+                // 显示占位元素
                 data.slot = true;
 
                 // 在固定状态发生改变时触发
@@ -272,7 +274,6 @@ export default defineComponent({
 
             // computed
             classes,
-            offsetType,
         };
     },
 });
