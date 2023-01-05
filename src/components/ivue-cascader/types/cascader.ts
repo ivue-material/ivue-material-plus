@@ -1,8 +1,8 @@
 import type { InjectionKey } from 'vue';
 import type IvueInput from '../ivue-input/index.vue';
-import type MenuItem from './menu-item.vue';
+import type MenuItem from '../menu-item.vue';
 import type DropDown from '../ivue-select/drop-down.vue';
-import type IvueCascaderMenu from './menu.vue';
+import type IvueCascaderMenu from '../menu.vue';
 
 export type IvueInputInstance = InstanceType<typeof IvueInput>;
 export type MenuItemInstance = InstanceType<typeof MenuItem>;

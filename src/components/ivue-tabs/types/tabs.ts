@@ -32,10 +32,10 @@ export interface Data {
 }
 
 export type TabsContext = {
-  props: any;
-  data: any;
+  props: Props;
+  data: Data;
   unregister: any;
-  tabNavClick: any;
+  tabNavClick?: (tab: any) => void;
   unregisterItems: any;
 }
 

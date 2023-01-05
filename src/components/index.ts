@@ -50,6 +50,7 @@ import { IvueSteps, IvueStep } from './ivue-steps';
 import { IvueTabs, IvueTab, IvueTabItem } from './ivue-tabs';
 import { IvueTable, IvueTableColumn } from './ivue-table';
 import { IvueMenu, IvueMenuItem, IvueSubmenu, IvueMenuGroup } from './ivue-menu';
+import { IvueForm, IvueFormItem } from './ivue-form';
 
 import { Ripple } from './ivue-ripple';
 import { LineClamp } from './ivue-line-clamp';
@@ -116,6 +117,8 @@ export {
   IvueMenuItem,
   IvueSubmenu,
   IvueMenuGroup,
+  IvueForm,
+  IvueFormItem,
 
   Ripple,
   LineClamp

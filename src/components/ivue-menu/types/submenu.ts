@@ -16,7 +16,6 @@ export interface Props {
   disabled: boolean;
 }
 
-
 export interface Data {
   opened: boolean;
   dropWidth: number;

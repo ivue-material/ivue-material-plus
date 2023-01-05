@@ -1,6 +1,6 @@
 import type { Ref, InjectionKey } from 'vue';
 
-import type CarouselItem from './index.vue';
+import type CarouselItem from '../index.vue';
 import type { CarouselItemContext } from '../../ivue-carousel/types/carousel';
 
 export interface Props {

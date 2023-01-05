@@ -26,7 +26,7 @@ import {
 import IvueButton from '../../components/ivue-button/index.vue';
 
 // type
-import { BottomNavContextKey, Props, Data } from './types/bottom-nav-item';
+import { BottomNavContextKey, Props, Data, BottomNavItemInstance } from './types/bottom-nav-item';
 
 const prefixCls = 'ivue-bottom-nav-item';
 
@@ -86,7 +86,7 @@ export default defineComponent({
 
         // onMounted
         onMounted(() => {
-            addItem(proxy);
+            addItem(proxy as BottomNavItemInstance);
         });
 
         // onUnmounted

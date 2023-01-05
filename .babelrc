@@ -22,7 +22,8 @@
         "debug": false
       },
       "@vue/app"
-    ]
+    ],
+    "@vue/cli-plugin-babel/preset"
   ],
   "env": {
     "test": {
@@ -37,7 +38,8 @@
         "libraryDirectory": "src/components"
       },
       "ivue-material-plus"
-    ]
+    ],
+    "@vue/babel-plugin-jsx"
   ],
   "comments": false
 }

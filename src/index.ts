@@ -54,6 +54,8 @@ import { IvueMenu, IvueMenuItem, IvueSubmenu, IvueMenuGroup } from './components
 import { IvueImage } from './components/ivue-image';
 import { IvueImagePreview } from './components/ivue-image-preview';
 
+import { IvueForm, IvueFormItem } from './components/ivue-form';
+
 import { Ripple } from './components/ivue-ripple';
 import { LineClamp } from './components/ivue-line-clamp';
 
@@ -167,6 +169,8 @@ export {
     IvueMenuItem,
     IvueSubmenu,
     IvueMenuGroup,
+    IvueForm,
+    IvueFormItem,
 
     Ripple,
     LineClamp,

@@ -50,6 +50,7 @@ import Modal from '../components/modal';
 import Popover from '../components/popover';
 import InputNumber from '../components/input-number';
 import Menu from '../components/menu';
+import Form from '../components/form';
 
 const routes = [{
     path: '/Affix',
@@ -288,6 +289,11 @@ const routes = [{
     path: '/menu',
     name: 'Menu',
     component: Menu
+  },
+  {
+    path: '/form',
+    name: 'Form',
+    component: Form
   }
 ];
 

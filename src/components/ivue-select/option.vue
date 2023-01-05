@@ -31,7 +31,7 @@ import ripple from '../../utils/directives/ripple';
 
 // type
 import { Props, Data } from './types/option';
-import { SelectContextKey } from './types/select';
+import { SelectContextKey, OptionInstance } from './types/select';
 import { SelectGroupContextKey } from './types/option-group';
 
 const prefixCls = 'ivue-select-item';
@@ -397,7 +397,7 @@ export default defineComponent({
         onMounted(() => {
             if (!props.allowCreate) {
                 // 插入dom
-                select.options.push(proxy);
+                select.options.push(proxy as OptionInstance);
             }
         });
 

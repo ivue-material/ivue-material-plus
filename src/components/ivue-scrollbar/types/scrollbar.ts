@@ -1,5 +1,5 @@
-import type { InjectionKey, Ref } from 'vue';
-import type Bar from './bar.vue';
+import type { InjectionKey } from 'vue';
+import type Bar from '../bar.vue';
 
 export type BarInstance = InstanceType<typeof Bar>
 

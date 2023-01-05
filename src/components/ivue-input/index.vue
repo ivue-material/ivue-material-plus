@@ -30,7 +30,7 @@
                     :value="currentValue"
                     :autofocus="autofocus"
                     :number="number"
-                    :id="id"
+                    :id="inputId || id"
                     :maxlength="maxlength"
                     @keyup.enter="handleEnter"
                     @keyup="handleKeyup"
@@ -111,7 +111,7 @@
         </template>
         <template v-else>
             <textarea
-                :id="id"
+                :id="inputId || id"
                 :name="name"
                 :disabled="disabled"
                 :class="textareaClasses"
@@ -155,6 +155,8 @@ import {
 
 import { calcTextareaHeight } from '../../utils/calc-textarea-height';
 import { oneOf } from '../../utils/assist';
+import { useFormItem, useFormItemInputId } from '../../hooks/index';
+
 import IvueIcon from '../ivue-icon/index.vue';
 
 // type
@@ -465,7 +467,7 @@ export default defineComponent({
         },
     },
     // 组合式 API
-    setup(props: Props, { emit }) {
+    setup(props: Props, { slots, emit }) {
         // 当前输入值
         const currentValue = ref<string>(props.modelValue);
 
@@ -481,6 +483,120 @@ export default defineComponent({
         const input = ref<HTMLInputElement>();
 
         // computed
+
+        // 外层样式
+        const wrapClasses = computed(() => {
+            return [
+                `${prefixCls}-wrapper`,
+                {
+                    [`${prefixCls}-wrapper-${props.size}`]: !!props.size,
+                    [`${prefixCls}-wrapper-clearable`]: props.clearable,
+                    [`${prefixCls}-type-${props.type}`]: props.type,
+                    [`${prefixCls}-group`]:
+                        prepend.value ||
+                        append.value ||
+                        (props.search && props.enterButton),
+                    [`${prefixCls}-group-${props.size}`]:
+                        (prepend.value ||
+                            append.value ||
+                            (props.search && props.enterButton)) &&
+                        !!props.size,
+                    [`${prefixCls}-group-with-prepend`]: prepend.value,
+                    [`${prefixCls}-group-with-append`]:
+                        append.value || (props.search && props.enterButton),
+                },
+            ];
+        });
+
+        // 输入框外层样式
+        const contentClass = computed(() => {
+            return [
+                `${prefixCls}-content`,
+                {
+                    [`${prefixCls}-group`]:
+                        prepend.value ||
+                        append.value ||
+                        (props.search && props.enterButton),
+                    [`${prefixCls}-no-border`]: !props.border,
+                    [`${prefixCls}-content--prepend`]: prepend.value,
+                    [`${prefixCls}-content--append`]:
+                        append.value || (props.search && props.enterButton),
+                    [`${prefixCls}-content-disabled`]: props.disabled,
+                },
+            ];
+        });
+
+        // 输入框样式
+        const inputClass = computed(() => {
+            return [
+                prefixCls,
+                {
+                    [`${prefixCls}-${props.size}`]: !!props.size,
+                    [`${prefixCls}-with-prefix`]: showPrefix.value,
+                    [`${prefixCls}-with-suffix`]:
+                        showSuffix.value ||
+                        (props.search && props.enterButton === false),
+                    [`${prefixCls}-disabled`]: props.disabled,
+                    [`${prefixCls}-no-border`]: !props.border,
+                },
+            ];
+        });
+
+        // 文本框样式
+        const textareaClasses = computed(() => {
+            return [
+                prefixCls,
+                `${prefixCls}-textarea`,
+                {
+                    [`${prefixCls}-disabled`]: props.disabled,
+                    [`${prefixCls}-no-border`]: !props.border,
+                },
+            ];
+        });
+
+        // 前置内容背景
+        const prependColor = computed(() => {
+            let _color = {};
+
+            if (!isCssColor(props.prependBgColor)) {
+                _color = { [props.prependBgColor]: true };
+            }
+
+            return [_color];
+        });
+
+        // 前置内容背景
+        const prependStyle = computed(() => {
+            let _color = {};
+
+            if (isCssColor(props.prependBgColor)) {
+                _color = { 'background-color': `${props.prependBgColor}` };
+            }
+
+            return _color;
+        });
+
+        // 后置内容背景
+        const appendColor = computed(() => {
+            let _color = {};
+
+            if (!isCssColor(props.appendBgColor)) {
+                _color = { [props.appendBgColor]: true };
+            }
+
+            return [_color];
+        });
+
+        // 后置内容背景
+        const appendStyle = computed(() => {
+            let _color = {};
+
+            if (isCssColor(props.appendBgColor)) {
+                _color = { 'background-color': `${props.appendBgColor}` };
+            }
+
+            return _color;
+        });
 
         // 输入的内容
         const nativeInputValue = computed(() => {
@@ -512,7 +628,52 @@ export default defineComponent({
             return type;
         });
 
+        // 是否有前置内容
+        const prepend = computed(() => {
+            let state = false;
+
+            if (props.type !== 'textarea') {
+                state = slots.prepend !== undefined;
+            }
+
+            return state;
+        });
+
+        // 是否有后置内容
+        const append = computed(() => {
+            let state = false;
+
+            if (props.type !== 'textarea') {
+                state = slots.append !== undefined;
+            }
+
+            return state;
+        });
+
+        // 是否显示输入框头部图标
+        const showPrefix = computed(() => {
+            let state = false;
+
+            if (props.type !== 'textarea') {
+                state = props.prefix !== '' || slots.prefix !== undefined;
+            }
+
+            return state;
+        });
+
+        // 是否显示输入框尾部图标
+        const showSuffix = computed(() => {
+            let state = false;
+
+            if (props.type !== 'textarea') {
+                state = props.suffix !== '' || slots.suffix !== undefined;
+            }
+
+            return state;
+        });
+
         // methods
+
         // 按下回车键时触发
         const handleEnter = (event: Event) => {
             emit('on-enter', event);
@@ -728,18 +889,43 @@ export default defineComponent({
             }
         );
 
+        // onMounted
         onMounted(() => {
             // 自适应内容高度，仅在 textarea 类型下有效，可传入对象，
             resizeTextarea();
         });
 
+        // 设置表单对应的输入框id
+        const { formItem } = useFormItem();
+
+        const { inputId } = useFormItemInputId(props, {
+            formItemContext: formItem,
+        });
+
         return {
             prefixCls,
+
+            // data
+            inputId,
+
             // computed
+            wrapClasses,
+            contentClass,
+            inputClass,
             textareaStyles,
+            textareaClasses,
+            prependStyle,
+            prependColor,
+            appendColor,
+            appendStyle,
             upperLimit,
             textLength,
             currentType,
+            prepend,
+            append,
+            showPrefix,
+            showSuffix,
+
             // methods
             handleEnter,
             handleKeyup,
@@ -755,158 +941,13 @@ export default defineComponent({
             handleSearch,
             focus,
             blur,
+
             // data
             showPassword,
             currentValue,
             textarea,
             input,
         };
-    },
-    computed: {
-        // 是否有前置内容
-        prepend() {
-            let state = false;
-
-            if (this.type !== 'textarea') {
-                state = this.$slots.prepend !== undefined;
-            }
-
-            return state;
-        },
-        // 是否有后置内容
-        append() {
-            let state = false;
-
-            if (this.type !== 'textarea') {
-                state = this.$slots.append !== undefined;
-            }
-
-            return state;
-        },
-        // 是否显示输入框头部图标
-        showPrefix() {
-            let state = false;
-
-            if (this.type !== 'textarea') {
-                state = this.prefix !== '' || this.$slots.prefix !== undefined;
-            }
-
-            return state;
-        },
-        // 是否显示输入框尾部图标
-        showSuffix() {
-            let state = false;
-
-            if (this.type !== 'textarea') {
-                state = this.suffix !== '' || this.$slots.suffix !== undefined;
-            }
-
-            return state;
-        },
-        // 外层样式
-        wrapClasses() {
-            return [
-                `${prefixCls}-wrapper`,
-                {
-                    [`${prefixCls}-wrapper-${this.size}`]: !!this.size,
-                    [`${prefixCls}-wrapper-clearable`]: this.clearable,
-                    [`${prefixCls}-type-${this.type}`]: this.type,
-                    [`${prefixCls}-group`]:
-                        this.prepend ||
-                        this.append ||
-                        (this.search && this.enterButton),
-                    [`${prefixCls}-group-${this.size}`]:
-                        (this.prepend ||
-                            this.append ||
-                            (this.search && this.enterButton)) &&
-                        !!this.size,
-                    [`${prefixCls}-group-with-prepend`]: this.prepend,
-                    [`${prefixCls}-group-with-append`]:
-                        this.append || (this.search && this.enterButton),
-                },
-            ];
-        },
-        // 输入框外层样式
-        contentClass() {
-            return [
-                `${prefixCls}-content`,
-                {
-                    [`${prefixCls}-group`]:
-                        this.prepend ||
-                        this.append ||
-                        (this.search && this.enterButton),
-                    [`${prefixCls}-no-border`]: !this.border,
-                    [`${prefixCls}-content--prepend`]: this.prepend,
-                    [`${prefixCls}-content--append`]:
-                        this.append || (this.search && this.enterButton),
-                    [`${prefixCls}-content-disabled`]: this.disabled,
-                },
-            ];
-        },
-        // 输入框样式
-        inputClass() {
-            return [
-                prefixCls,
-                {
-                    [`${prefixCls}-${this.size}`]: !!this.size,
-                    [`${prefixCls}-with-prefix`]: this.showPrefix,
-                    [`${prefixCls}-with-suffix`]:
-                        this.showSuffix ||
-                        (this.search && this.enterButton === false),
-                    [`${prefixCls}-disabled`]: this.disabled,
-                    [`${prefixCls}-no-border`]: !this.border,
-                },
-            ];
-        },
-        // 文本框样式
-        textareaClasses() {
-            return [
-                prefixCls,
-                `${prefixCls}-textarea`,
-                {
-                    [`${prefixCls}-disabled`]: this.disabled,
-                    [`${prefixCls}-no-border`]: !this.border,
-                },
-            ];
-        },
-        // 前置内容背景
-        prependColor() {
-            let _color = {};
-
-            if (!isCssColor(this.prependBgColor)) {
-                _color = { [this.prependBgColor]: true };
-            }
-
-            return [_color];
-        },
-        prependStyle() {
-            let _color = {};
-
-            if (isCssColor(this.prependBgColor)) {
-                _color = { 'background-color': `${this.prependBgColor}` };
-            }
-
-            return _color;
-        },
-        // 后置内容背景
-        appendColor() {
-            let _color = {};
-
-            if (!isCssColor(this.appendBgColor)) {
-                _color = { [this.appendBgColor]: true };
-            }
-
-            return [_color];
-        },
-        appendStyle() {
-            let _color = {};
-
-            if (isCssColor(this.appendBgColor)) {
-                _color = { 'background-color': `${this.appendBgColor}` };
-            }
-
-            return _color;
-        },
     },
     components: {
         IvueIcon,

@@ -2,6 +2,8 @@ import {
   defineConfig
 } from 'vite';
 import vue from '@vitejs/plugin-vue';
+import VueJsx from '@vitejs/plugin-vue-jsx';
+
 import dts from 'vite-plugin-dts';
 
 import path from 'path';
@@ -12,6 +14,7 @@ const config = defineConfig({
     dts({
       outputDir: path.resolve(__dirname, './dist/types'),
     }),
+    VueJsx(),
   ],
   target: 'es2015',
   build: {

@@ -17,7 +17,6 @@ export type PopoverContext = {
 export const PopoverContextKey: InjectionKey<PopoverContext> =
   Symbol('ivue-popover');
 
-
 export interface Props {
   title?: string | number;
   content: string | number;

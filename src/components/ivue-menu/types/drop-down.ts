@@ -1,4 +1,3 @@
-
 export interface Props {
   transfer: boolean;
   transitionName: string;

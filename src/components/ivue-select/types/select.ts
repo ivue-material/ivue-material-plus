@@ -1,8 +1,8 @@
 import { InjectionKey } from 'vue';
 import type { Emitter, EventType } from 'mitt';
-import type DropDown from './drop-down.vue';
-import type SelectHead from './select-head.vue';
-import type Option from './option.vue';
+import type DropDown from '../drop-down.vue';
+import type SelectHead from '../select-head.vue';
+import type Option from '../option.vue';
 
 import type { OptionData } from './option';
 
