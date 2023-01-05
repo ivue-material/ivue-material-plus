@@ -21,7 +21,7 @@
             @keydown.tab="handleKeyDown"
         >
             <slot name="input">
-                <input type="hidden" :name="name" :value="currentSelectValue" />
+                <input type="hidden" :id="inputId" :name="name" :value="currentSelectValue" />
 
                 <!-- 头部 -->
                 <select-head
@@ -136,6 +136,7 @@ import {
 import { ClickOutside, TransferDom } from '../../utils/directives';
 
 import { oneOf } from '../../utils/assist';
+import { useFormItem, useFormItemInputId } from '../../hooks/index';
 
 // type
 import { PopoverContextKey } from '../ivue-popover/types/popover';
@@ -668,7 +669,6 @@ export default defineComponent({
             const selectedValues = data.values
                 .filter(Boolean)
                 .map(({ value }) => value);
-
 
             // 判断是否有自动输入
             if (props.autoComplete) {
@@ -1832,6 +1832,7 @@ export default defineComponent({
             }
         );
 
+        // 在Popover嵌套中
         if (popover.data) {
             watch(
                 () => popover.visible,
@@ -1842,6 +1843,14 @@ export default defineComponent({
                 }
             );
         }
+
+        // 设置表单对应的输入框id
+        const { formItem } = useFormItem();
+
+        // 输入框id
+        const { inputId } = useFormItemInputId(props, {
+            formItemContext: formItem,
+        });
 
         return {
             prefixCls,
@@ -1857,6 +1866,7 @@ export default defineComponent({
 
             // data
             data,
+            inputId,
 
             // computed
             classes,

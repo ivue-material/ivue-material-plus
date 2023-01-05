@@ -898,6 +898,7 @@ export default defineComponent({
         // 设置表单对应的输入框id
         const { formItem } = useFormItem();
 
+        // 输入框id
         const { inputId } = useFormItemInputId(props, {
             formItemContext: formItem,
         });

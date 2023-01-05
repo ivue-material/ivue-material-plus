@@ -5,8 +5,18 @@
             <ivue-form-item label="Activity name">
                 <ivue-input v-model="form.name" />
             </ivue-form-item>
-            <ivue-form-item>
-                <ivue-input />
+            <ivue-form-item label="Activity zone">
+                <ivue-select
+                    v-model="form.region"
+                    filterable
+                    style="width:200px"
+                >
+                    <ivue-option
+                        v-for="item in cityList"
+                        :value="item.value"
+                        :key="item.value"
+                    >{{ item.label }}</ivue-option>
+                </ivue-select>
             </ivue-form-item>
         </ivue-form>
     </div>
@@ -26,6 +36,33 @@ const form = reactive({
     resource: '',
     desc: '',
 });
+
+const cityList = [
+    {
+        value: 'New York12',
+        label: 'New York',
+    },
+    {
+        value: 'London',
+        label: 'London',
+    },
+    {
+        value: 'Sydney',
+        label: 'Sydney',
+    },
+    {
+        value: 'Ottawa',
+        label: 'Ottawa',
+    },
+    {
+        value: 'Paris',
+        label: 'Paris',
+    },
+    {
+        value: 'Canberra',
+        label: 'Canberra',
+    },
+];
 
 const onSubmit = () => {
     console.log('submit!');

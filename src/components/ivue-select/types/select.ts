@@ -43,6 +43,8 @@ export interface Props {
   transferClassName?: string;
   autoComplete?: boolean;
   filterQueryProp?: string;
+  id?: string;
+  label?: string | number | boolean | Record<string, any>;
 }
 
 

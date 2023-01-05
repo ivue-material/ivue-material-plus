@@ -20,8 +20,8 @@ export const useFormItem = () => {
 };
 
 export type IUseFormItemInputCommonProps = {
-  id?: string
-  label?: string | number | boolean | Record<string, any>
+  id?: string;
+  label?: string | number | boolean | Record<string, any>;
 }
 
 // 设置表单item输入框id
@@ -32,9 +32,9 @@ export const useFormItemInputId = (
     disableIdGeneration,
     disableIdManagement,
   }: {
-    formItemContext?: FormItemContext
-    disableIdGeneration?: ComputedRef<boolean> | Ref<boolean>
-    disableIdManagement?: ComputedRef<boolean> | Ref<boolean>
+    formItemContext?: FormItemContext;
+    disableIdGeneration?: ComputedRef<boolean> | Ref<boolean>;
+    disableIdManagement?: ComputedRef<boolean> | Ref<boolean>;
   }
 ) => {
   // 禁用 ID 生成
