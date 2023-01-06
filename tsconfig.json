@@ -39,7 +39,8 @@
     "allowSyntheticDefaultImports": true,
     "types": [
       "web-bluetooth",
-      "vue"
+      "vue",
+      "node"
     ],
     // 中存在的resolveJsonModule选项
     "resolveJsonModule": true

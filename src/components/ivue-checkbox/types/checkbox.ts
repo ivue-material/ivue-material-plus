@@ -9,6 +9,7 @@ export interface Props {
   label: string | number | boolean;
   border: boolean;
   indeterminate: boolean;
+  validateEvent: boolean;
 }
 
 

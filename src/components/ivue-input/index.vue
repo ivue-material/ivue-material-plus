@@ -156,6 +156,7 @@ import {
 import { calcTextareaHeight } from '../../utils/calc-textarea-height';
 import { oneOf } from '../../utils/assist';
 import { useFormItem, useFormItemInputId } from '../../hooks/index';
+import { debugWarn } from '../../utils/error';
 
 import IvueIcon from '../ivue-icon/index.vue';
 
@@ -464,6 +465,15 @@ export default defineComponent({
          */
         inputFunction: {
             type: Function,
+        },
+        /**
+         * 输入时是否触发表单的校验
+         *
+         * @type {Boolean}
+         */
+        validateEvent: {
+            type: Boolean,
+            default: true,
         },
     },
     // 组合式 API
@@ -782,6 +792,10 @@ export default defineComponent({
         // 输入框失去焦点时触发
         const handleBlur = (event: Event) => {
             emit('on-blur', event);
+
+            if (props.validateEvent) {
+                formItem?.validate?.('blur').catch((err) => debugWarn(err));
+            }
         };
 
         // 清除数据
@@ -866,6 +880,13 @@ export default defineComponent({
             () => props.modelValue,
             (value) => {
                 setCurrentValue(value);
+
+                // 输入时是否触发表单的校验
+                if (props.validateEvent) {
+                    formItem
+                        ?.validate?.('change')
+                        .catch((err) => debugWarn(err));
+                }
             }
         );
 

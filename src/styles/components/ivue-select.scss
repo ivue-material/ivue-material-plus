@@ -44,7 +44,7 @@ $name: 'ivue-select';
   box-sizing: border-box;
   vertical-align: middle;
   color: var(--ivue-text-color);
-  font-size: var(--ivue-font-small-size);
+  font-size: var(--ivue-font-base-size);
   line-height: normal;
 
   // 加载中
@@ -103,7 +103,7 @@ $name: 'ivue-select';
         display: block;
         height: calc(var(--#{$name}-input-height) - 2px);
         line-height: calc(var(--#{$name}-input-height) - 2px);
-        font-size: var(--ivue-font-small-size);
+        font-size: var(--ivue-font-base-size);
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
@@ -128,7 +128,7 @@ $name: 'ivue-select';
       height: calc(var(--#{$name}-input-height) - 2px);
       line-height: calc(var(--#{$name}-input-height) - 2px);
       color: var(--ivue-input-placeholder-color);
-      font-size: var(--ivue-font-small-size);
+      font-size: var(--ivue-font-base-size);
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
@@ -143,6 +143,15 @@ $name: 'ivue-select';
     }
   }
 
+  &-head-input {
+    padding: 0;
+    outline: 0;
+    border: none;
+    background: 0 0;
+    cursor: pointer;
+  }
+
+  // 选择框
   &-selection {
     display: block;
     position: relative;
@@ -168,7 +177,7 @@ $name: 'ivue-select';
     padding: 0 8px;
     height: 24px;
     line-height: 22px;
-    font-size: var(--ivue-font-small-size);
+    font-size: var(--ivue-font-base-size);
     vertical-align: middle;
     opacity: 1;
     overflow: hidden;
@@ -197,7 +206,7 @@ $name: 'ivue-select';
     display: inline-block;
     position: relative;
     padding: 0 24px 0 8px;
-    font-size: var(--ivue-font-small-size);
+    font-size: var(--ivue-font-base-size);
     outline: none;
     border: none;
     box-sizing: border-box;
@@ -393,7 +402,7 @@ $name: 'ivue-select';
     padding-right: 24px;
     height: calc(var(--#{$name}-input-height) - 2px);
     line-height: calc(var(--#{$name}-input-height) - 2px);
-    font-size: var(--ivue-font-small-size);
+    font-size: var(--ivue-font-base-size);
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -468,7 +477,7 @@ $name: 'ivue-select';
     padding: 7px 16px;
     clear: both;
     line-height: normal;
-    font-size: var(--ivue-font-small-size);
+    font-size: var(--ivue-font-base-size);
     list-style: none;
     cursor: pointer;
     word-break: break-all;
@@ -524,7 +533,7 @@ $name: 'ivue-select';
 
     &-title {
       padding-left: 8px;
-      font-size: var(--ivue-font-small-size);
+      font-size: var(--ivue-font-base-size);
       color: var(--ivue-legend-color);
       height: 30px;
       line-height: 30px;

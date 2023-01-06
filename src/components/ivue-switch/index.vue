@@ -13,6 +13,9 @@ import {
 import { oneOf } from '../../utils/assist';
 import { colorable } from '../../utils/mixins/colorable';
 import ripple from '../../utils/directives/ripple';
+import { debugWarn } from '../../utils/error';
+
+import { useFormItem, useFormItemInputId } from '../../hooks/index';
 
 // type
 import { Size, Props } from './types/switch';
@@ -143,6 +146,15 @@ export default defineComponent({
         textColor: {
             type: String,
             default: '#ffffff',
+        },
+        /**
+         * 输入时是否触发表单的校验
+         *
+         * @type {Boolean}
+         */
+        validateEvent: {
+            type: Boolean,
+            default: true,
         },
     },
     setup(props: Props, { emit }) {
@@ -308,12 +320,28 @@ export default defineComponent({
                 }
 
                 currentValue.value = value;
+
+                // 输入时是否触发表单的校验
+                if (props.validateEvent) {
+                    formItem
+                        ?.validate?.('change')
+                        .catch((err) => debugWarn(err));
+                }
             }
         );
+
+        // 设置表单对应的输入框id
+        const { formItem } = useFormItem();
+
+        // 输入框id
+        const { inputId } = useFormItemInputId(props, {
+            formItemContext: formItem,
+        });
 
         return {
             // data
             currentValue,
+            inputId,
 
             // computed
             wrapClasses,
@@ -393,6 +421,21 @@ export default defineComponent({
             );
         };
 
+        // 输入框
+        const genInput = () => {
+            return h('input', {
+                class: `${prefixCls}-input`,
+                id: this.inputId,
+                type: 'checkbox',
+                role: 'switch',
+                trueValue: this.trueValue,
+                falseValue: this.falseValue,
+                ariaChecked: this.currentValue,
+                ariaDisabled: this.disabled,
+                checked: this.currentValue,
+            });
+        };
+
         return h(
             'span',
             this.setTextColor(!this.emboss && this.setColor, {
@@ -400,7 +443,7 @@ export default defineComponent({
                 tabindex: '0',
                 onClick: this.toggle,
             }),
-            [this.emboss && genEmboss(), genInner()]
+            [genInput(), this.emboss && genEmboss(), genInner()]
         );
     },
 });

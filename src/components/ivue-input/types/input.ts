@@ -32,6 +32,7 @@ export interface Props {
   isValue: boolean;
   wrap: string;
   inputFunction: any;
+  validateEvent: boolean;
 }
 
 export type TextareaStyles = {

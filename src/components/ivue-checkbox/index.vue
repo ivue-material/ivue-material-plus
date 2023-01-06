@@ -21,6 +21,7 @@
             <input
                 v-else
                 type="checkbox"
+                :id="inputId"
                 :class="inputClasses"
                 :disabled="disabled"
                 :name="name"
@@ -39,11 +40,14 @@
 
 <script lang='ts'>
 import { computed, defineComponent, reactive, watch, inject } from 'vue';
+
 import { isCssColor, setTextColor } from '../../utils/helpers';
-import { CheckboxContextKey } from '../ivue-checkbox-group/types/checkbox-group';
+import { debugWarn } from '../../utils/error';
+import { useFormItem, useFormItemInputId } from '../../hooks/index';
 
 // type
 import type { Props, Data } from './types/checkbox';
+import { CheckboxContextKey } from '../ivue-checkbox-group/types/checkbox-group';
 
 const prefixCls = 'ivue-checkbox';
 
@@ -129,6 +133,15 @@ export default defineComponent({
         indeterminate: {
             type: Boolean,
             default: false,
+        },
+        /**
+         * 输入时是否触发表单的校验
+         *
+         * @type {Boolean}
+         */
+        validateEvent: {
+            type: Boolean,
+            default: true,
         },
     },
     setup(props: Props, { emit }) {
@@ -292,6 +305,14 @@ export default defineComponent({
             data.focusInner = false;
         };
 
+        // 设置表单对应的输入框id
+        const { formItem } = useFormItem();
+
+        // 输入框id
+        const { inputId } = useFormItemInputId(props, {
+            formItemContext: formItem,
+        });
+
         // watch
 
         // 监听 v-model
@@ -303,6 +324,12 @@ export default defineComponent({
                     !(value === props.trueValue || value === props.falseValue)
                 ) {
                     throw 'Value should be trueValue or falseValue.';
+                }
+
+                console.log('1221');
+                // 输入时是否触发表单的校验
+                if (props.validateEvent) {
+                    formItem?.validate('change').catch((err) => debugWarn(err));
                 }
             }
         );
@@ -325,6 +352,7 @@ export default defineComponent({
             prefixCls,
             // data
             data,
+            inputId,
 
             // computed
             wrapperClasses,

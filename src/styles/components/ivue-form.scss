@@ -2,6 +2,43 @@ $name: 'ivue-form';
 
 .#{$name} {
 
+  // 行内表单模式
+  &-inline {
+    .#{$name}-item {
+      display: inline-flex;
+      vertical-align: middle;
+      margin-right: 32px;
+    }
+  }
+
+  &-label {
+
+    // 左对齐
+    &-left {
+      .#{$name}-item--label {
+        justify-content: flex-start;
+      }
+    }
+
+    // 顶部
+    &-top {
+      .#{$name}-item {
+        display: block;
+      }
+
+      .#{$name}-item--label {
+        display: block;
+        height: auto;
+        text-align: left;
+        margin-bottom: 8px;
+        line-height: 22px;
+        padding-right: 0;
+      }
+    }
+
+  }
+
+
   // item
   &-item {
     display: flex;
@@ -9,6 +46,7 @@ $name: 'ivue-form';
 
     // 内容
     &--content {
+      position: relative;
       flex: 1;
       display: flex;
       flex-wrap: wrap;
@@ -29,6 +67,76 @@ $name: 'ivue-form';
       height: 34px;
       line-height: 34px;
       padding: 0 12px 0 0;
+    }
+
+    // 错误提示
+    &--error {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      padding-top: 2px;
+      font-size: var(--ivue-font-small-size);
+      line-height: 1;
+      color: var(--ivue-error-color);
+    }
+
+    // 成功提示
+    &--success {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      padding-top: 2px;
+      font-size: var(--ivue-font-small-size);
+      line-height: 1;
+      color: var(--ivue-success-color);
+    }
+
+    // 动画
+    &-zoom-in-top-enter-active,
+    &-zoom-in-top-leave-active {
+      opacity: 1;
+      transform: scaleY(1);
+      transition: 0.3s cubic-bezier(0.23, 1, 0.32, 1), opacity 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+      transform-origin: center top;
+
+      &[data-popper-placement^='top'] {
+        transform-origin: center bottom;
+      }
+    }
+
+    &-zoom-in-top-enter-from,
+    &-zoom-in-top-leave-active {
+      opacity: 0;
+      transform: scaleY(0);
+    }
+  }
+
+  // 错误提示
+  &-item.is-error {
+
+    .ivue-input-content,
+    .ivue-select-selection {
+      border-color: var(--ivue-error-color);
+    }
+  }
+
+  // 成功提示
+  &-item.is-success {
+
+    .ivue-input-content,
+    .ivue-select-selection {
+      border-color: var(--ivue-success-color);
+    }
+  }
+
+  // 必填图标靠左
+  &-item.is-required:not(.is-no-asterisk).asterisk-left {
+    .#{$name}-item--label {
+      &::before {
+        content: "*";
+        color: var(--ivue-error-color);
+        margin-right: 4px;
+      }
     }
   }
 }

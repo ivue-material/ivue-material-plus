@@ -5,6 +5,7 @@ import { get, set } from 'lodash-unified';
 import IvueCheckbox from '../ivue-checkbox/index.vue';
 import IvueIcon from '../ivue-icon/index.vue';
 import Loading from './loading.vue';
+import { getProp } from '../../utils/objects';
 
 // ts
 import type { VNode } from 'vue';
@@ -104,23 +105,6 @@ export function defaultRenderCell({
   // 普通渲染
   return value?.toString?.() || '';
 }
-
-// 获取props
-export const getProp = (
-  obj: any,
-  path: any,
-  defaultValue?: any
-): { value } => {
-  return {
-    get value() {
-      return get(obj, path, defaultValue);
-    },
-    set value(val: any) {
-      set(obj, path, val);
-    },
-  };
-};
-
 
 // 列
 export function treeCellPrefix(

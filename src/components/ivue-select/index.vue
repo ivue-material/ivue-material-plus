@@ -109,16 +109,6 @@
 </template>
 
 <script lang='ts'>
-import mitt from 'mitt';
-
-// 输入框
-import SelectHead from './select-head.vue';
-// 下拉框
-import DropDown from './drop-down.vue';
-import IvueOption from './option.vue';
-import IvueIcon from '../ivue-icon/index.vue';
-import IvueLoading from '../ivue-loading/directive';
-
 import {
     defineComponent,
     computed,
@@ -131,12 +121,21 @@ import {
     onMounted,
     inject,
 } from 'vue';
+import mitt from 'mitt';
+
+// 输入框
+import SelectHead from './select-head.vue';
+// 下拉框
+import DropDown from './drop-down.vue';
+import IvueOption from './option.vue';
+import IvueIcon from '../ivue-icon/index.vue';
+import IvueLoading from '../ivue-loading/directive';
 
 // 注册外部点击事件插件
 import { ClickOutside, TransferDom } from '../../utils/directives';
-
 import { oneOf } from '../../utils/assist';
 import { useFormItem, useFormItemInputId } from '../../hooks/index';
+import { debugWarn } from '../../utils/error';
 
 // type
 import { PopoverContextKey } from '../ivue-popover/types/popover';
@@ -481,6 +480,15 @@ export default defineComponent({
         filterQueryProp: {
             type: String,
             default: '',
+        },
+        /**
+         * 输入时是否触发表单的校验
+         *
+         * @type {Boolean}
+         */
+        validateEvent: {
+            type: Boolean,
+            default: true,
         },
     },
     setup(props: Props, { emit }) {
@@ -1595,6 +1603,13 @@ export default defineComponent({
                     setTimeout(() => {
                         data.disableMenu = false;
                     }, 1000);
+                }
+
+                // 输入时是否触发表单的校验
+                if (props.validateEvent) {
+                    formItem
+                        ?.validate?.('change')
+                        .catch((err) => debugWarn(err));
                 }
             }
         );

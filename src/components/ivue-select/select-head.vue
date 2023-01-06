@@ -41,15 +41,22 @@
             </span>
         </div>
         <!-- 普通渲染 -->
-        <span :class="defaultDisplayClasses" v-if="defaultDisplayValue">{{ defaultDisplayValue }}</span>
+        <input
+            :class="defaultDisplayClasses"
+            :value="defaultDisplayValue"
+            autocomplete="off"
+            type="text"
+            tabindex="0"
+            readonly
+            v-if="defaultDisplayValue"
+        />
+        <!-- <span :class="defaultDisplayClasses" v-if="defaultDisplayValue">{{ defaultDisplayValue }}</span> -->
         <!-- 输入框 -->
         <input
             type="text"
             v-if="filterable"
             v-model="data.filterQuery"
-            :class="[`${prefixCls}-input-filter`,
-                        {'ivue-select-input-filter-placeholder': showPlaceholder}
-                    ]"
+            :class="inputClasses"
             :style="inputStyles"
             :placeholder="showPlaceholder ? placeholder : ''"
             :disabled="disabled"
@@ -301,6 +308,7 @@ export default defineComponent({
         // 普通显示的class
         const defaultDisplayClasses = computed(() => {
             return [
+                `${prefixCls}-head-input`,
                 {
                     [`${prefixCls}-head-with-prefix`]:
                         slots.prefix || props.prefix,
@@ -310,6 +318,17 @@ export default defineComponent({
                         !props.filterable,
                     [`${prefixCls}-placeholder`]:
                         showPlaceholder.value && !props.filterable,
+                },
+            ];
+        });
+
+        // 过滤输入框
+        const inputClasses = computed(() => {
+            return [
+                `${prefixCls}-input-filter`,
+                {
+                    'ivue-select-input-filter-placeholder':
+                        showPlaceholder.value,
                 },
             ];
         });
@@ -367,6 +386,7 @@ export default defineComponent({
                 width?: string;
             } = {};
 
+            // 多选
             if (props.multiple) {
                 if (showPlaceholder.value) {
                     style.width = '100%';
@@ -532,6 +552,7 @@ export default defineComponent({
             resetSelect,
             showPlaceholder,
             inputStyles,
+            inputClasses,
 
             // methods
             handleClear,

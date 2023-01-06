@@ -44,7 +44,7 @@ export interface Props {
   autoComplete?: boolean;
   filterQueryProp?: string;
   id?: string;
-  label?: string | number | boolean | Record<string, any>;
+  validateEvent?: boolean;
 }
 
 

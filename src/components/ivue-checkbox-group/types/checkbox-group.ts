@@ -4,7 +4,7 @@ export type CheckboxContext = {
   default?: null | string;
   name?: string;
   handleChange?: (value: (string | number)[]) => void;
-  props?: Props
+  props?: Props;
 }
 
 export const CheckboxContextKey: InjectionKey<CheckboxContext> =
@@ -13,4 +13,6 @@ export const CheckboxContextKey: InjectionKey<CheckboxContext> =
 
 export interface Props {
   modelValue: any[];
+  validateEvent: boolean;
+  id?: string;
 }

@@ -12,6 +12,8 @@ export interface Props {
   beforeChange: any;
   color: string | any[];
   textColor: string;
+  id?: string;
+  validateEvent: boolean;
 }
 
 export type Size = 'large' | 'small' | 'default';

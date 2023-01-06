@@ -1,11 +1,14 @@
 <template>
-    <div :class="wrapperClasses">
+    <div :class="wrapperClasses" :id="inputId">
         <slot></slot>
     </div>
 </template>
 
 <script lang='ts'>
-import { computed, defineComponent, ref, provide } from 'vue';
+import { computed, defineComponent, ref, provide, watch } from 'vue';
+
+import { useFormItem, useFormItemInputId } from '../../hooks/index';
+import { debugWarn } from '../../utils/error';
 
 // type
 import { CheckboxContextKey, Props } from './types/checkbox-group';
@@ -25,9 +28,17 @@ export default defineComponent({
             type: Array,
             default: () => [],
         },
+        /**
+         * 输入时是否触发表单的校验
+         *
+         * @type {Boolean}
+         */
+        validateEvent: {
+            type: Boolean,
+            default: true,
+        },
     },
     setup(props: Props, { emit }) {
-
         // 当前值
         const currentValue = ref<any[]>(props.modelValue);
 
@@ -49,16 +60,38 @@ export default defineComponent({
         };
 
         // provide
-
         provide(CheckboxContextKey, {
             name: prefixCls,
             props,
             handleChange,
         });
 
+        // 设置表单对应的输入框id
+        const { formItem } = useFormItem();
+
+        // 输入框id
+        const { inputId } = useFormItemInputId(props, {
+            formItemContext: formItem,
+        });
+
+        // watch
+
+        // 监听modelValue
+        watch(
+            () => props.modelValue,
+            () => {
+
+                // 输入时是否触发表单的校验
+                if (props.validateEvent) {
+                    formItem?.validate('change').catch((err) => debugWarn(err));
+                }
+            }
+        );
+
         return {
             // data
             currentValue,
+            inputId,
 
             // computed
             wrapperClasses,
