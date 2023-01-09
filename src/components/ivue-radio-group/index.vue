@@ -1,19 +1,15 @@
 <template>
-    <div :class="wrapperClasses">
+    <div :class="wrapperClasses" :id="inputId">
         <slot></slot>
     </div>
 </template>
 
 <script lang='ts'>
-import {
-    computed,
-    defineComponent,
-    watch,
-    provide,
-    PropType,
-    ref,
-} from 'vue';
+import { computed, defineComponent, watch, provide, PropType, ref } from 'vue';
+
 import { oneOf } from '../../utils/assist';
+import { debugWarn } from '../../utils/error';
+import { useFormItem, useFormItemInputId } from '../../hooks/index';
 
 // type
 import { Props, Size, RadioContextKey } from './types/radio-group';
@@ -92,8 +88,25 @@ export default defineComponent({
                 return 'default';
             },
         },
+        /**
+         * 输入时是否触发表单的校验
+         *
+         * @type {Boolean}
+         */
+        validateEvent: {
+            type: Boolean,
+            default: true,
+        },
     },
     setup(props: Props, { emit }) {
+        // 设置表单对应的输入框id
+        const { formItem } = useFormItem();
+
+        // 输入框id
+        const { inputId } = useFormItemInputId(props, {
+            formItemContext: formItem,
+        });
+
         // 当前值
         const currentValue = ref<string | number>(props.modelValue);
 
@@ -138,6 +151,11 @@ export default defineComponent({
                 if (currentValue.value !== props.modelValue) {
                     currentValue.value = props.modelValue;
                 }
+
+                // 输入时是否触发表单的校验
+                if (props.validateEvent) {
+                    formItem?.validate('change').catch((err) => debugWarn(err));
+                }
             }
         );
 
@@ -154,6 +172,7 @@ export default defineComponent({
 
             // data
             currentValue,
+            inputId,
 
             // computed
             wrapperClasses,

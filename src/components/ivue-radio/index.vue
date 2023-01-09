@@ -8,7 +8,7 @@
                 type="radio"
                 :class="inputClasses"
                 :name="data.groupName"
-                :disabled="disabled"
+                :disabled="inputDisabled"
                 @change="handleChange"
                 @focus="handleFocus"
                 @blur="handleBlur"
@@ -29,6 +29,8 @@ import {
     onMounted,
 } from 'vue';
 import { isCssColor, setTextColor } from '../../utils/helpers';
+import { debugWarn } from '../../utils/error';
+import { useFormItem, useFormItemInputId, useDisabled } from '../../hooks';
 
 // type
 import type { Props, Data } from './types/radio';
@@ -110,12 +112,24 @@ export default defineComponent({
             type: Boolean,
             default: false,
         },
+        /**
+         * 输入时是否触发表单的校验
+         *
+         * @type {Boolean}
+         */
+        validateEvent: {
+            type: Boolean,
+            default: true,
+        },
     },
     setup(props: Props, { emit }) {
         // 组合
         const IvueRadioGroup = inject(RadioContextKey, {
             default: null,
         });
+
+        // 输入框禁用
+        const inputDisabled = useDisabled();
 
         // data
 
@@ -158,7 +172,7 @@ export default defineComponent({
                 {
                     [`${prefixCls}-group--item`]: IvueRadioGroup.name,
                     [`${prefixCls}-wrapper--checked`]: currentValue.value,
-                    [`${prefixCls}-wrapper--disabled`]: props.disabled,
+                    [`${prefixCls}-wrapper--disabled`]: inputDisabled.value,
                     [`${prefixCls}-border`]: props.border,
                 },
             ];
@@ -170,7 +184,7 @@ export default defineComponent({
                 `${prefixCls}`,
                 {
                     [`${prefixCls}-checked`]: currentValue.value,
-                    [`${prefixCls}-disabled`]: props.disabled,
+                    [`${prefixCls}-disabled`]: inputDisabled.value,
                 },
             ];
         });
@@ -227,7 +241,7 @@ export default defineComponent({
         // 改变
         const handleChange = (event) => {
             // 禁用
-            if (props.disabled) {
+            if (inputDisabled.value) {
                 return false;
             }
 
@@ -277,13 +291,29 @@ export default defineComponent({
                 ) {
                     throw 'Value should be trueValue or falseValue.';
                 }
+
+                // 输入时是否触发表单的校验
+                if (props.validateEvent) {
+                    formItem?.validate('change').catch((err) => debugWarn(err));
+                }
             }
         );
+
+        // 设置表单对应的输入框id
+        const { formItem } = useFormItem();
+
+        // 输入框id
+        const { inputId } = useFormItemInputId(props, {
+            formItemContext: formItem,
+        });
 
         return {
             prefixCls,
 
+            // data
             data,
+            inputId,
+            inputDisabled,
 
             // computed
             wrapperClasses,

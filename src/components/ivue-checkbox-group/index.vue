@@ -7,7 +7,7 @@
 <script lang='ts'>
 import { computed, defineComponent, ref, provide, watch } from 'vue';
 
-import { useFormItem, useFormItemInputId } from '../../hooks/index';
+import { useFormItem, useFormItemInputId } from '../../hooks';
 import { debugWarn } from '../../utils/error';
 
 // type
@@ -80,7 +80,6 @@ export default defineComponent({
         watch(
             () => props.modelValue,
             () => {
-
                 // 输入时是否触发表单的校验
                 if (props.validateEvent) {
                     formItem?.validate('change').catch((err) => debugWarn(err));

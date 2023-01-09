@@ -23,7 +23,7 @@
                     :placeholder="placeholder"
                     :spellcheck="spellcheck"
                     :type="currentType"
-                    :disabled="disabled"
+                    :disabled="inputDisabled"
                     :autocomplete="autocomplete"
                     :readonly="readonly"
                     :name="name"
@@ -113,7 +113,7 @@
             <textarea
                 :id="inputId || id"
                 :name="name"
-                :disabled="disabled"
+                :disabled="inputDisabled"
                 :class="textareaClasses"
                 :style="textareaStyles"
                 :value="currentValue"
@@ -157,7 +157,9 @@ import { calcTextareaHeight } from '../../utils/calc-textarea-height';
 import { oneOf } from '../../utils/assist';
 import { useFormItem, useFormItemInputId } from '../../hooks/index';
 import { debugWarn } from '../../utils/error';
+import { useDisabled } from '../../hooks';
 
+// component
 import IvueIcon from '../ivue-icon/index.vue';
 
 // type
@@ -189,10 +191,10 @@ export default defineComponent({
         /**
          * 绑定的值，可使用 v-model 双向绑定
          *
-         * @type {String}
+         * @type {String | Number}
          */
         modelValue: {
-            type: String,
+            type: [String, Number],
             default: '',
         },
         /**
@@ -479,7 +481,7 @@ export default defineComponent({
     // 组合式 API
     setup(props: Props, { slots, emit }) {
         // 当前输入值
-        const currentValue = ref<string>(props.modelValue);
+        const currentValue = ref<string | number>(props.modelValue);
 
         // 文本框样式
         const textareaStyles = ref<TextareaStyles>({});
@@ -491,6 +493,9 @@ export default defineComponent({
         const textarea = ref<HTMLTextAreaElement>();
         // ref = input
         const input = ref<HTMLInputElement>();
+
+        // 输入框禁用
+        const inputDisabled = useDisabled();
 
         // computed
 
@@ -531,7 +536,7 @@ export default defineComponent({
                     [`${prefixCls}-content--prepend`]: prepend.value,
                     [`${prefixCls}-content--append`]:
                         append.value || (props.search && props.enterButton),
-                    [`${prefixCls}-content-disabled`]: props.disabled,
+                    [`${prefixCls}-content-disabled`]: inputDisabled.value,
                 },
             ];
         });
@@ -546,7 +551,7 @@ export default defineComponent({
                     [`${prefixCls}-with-suffix`]:
                         showSuffix.value ||
                         (props.search && props.enterButton === false),
-                    [`${prefixCls}-disabled`]: props.disabled,
+                    [`${prefixCls}-disabled`]: inputDisabled.value,
                     [`${prefixCls}-no-border`]: !props.border,
                 },
             ];
@@ -558,7 +563,7 @@ export default defineComponent({
                 prefixCls,
                 `${prefixCls}-textarea`,
                 {
-                    [`${prefixCls}-disabled`]: props.disabled,
+                    [`${prefixCls}-disabled`]: inputDisabled.value,
                     [`${prefixCls}-no-border`]: !props.border,
                 },
             ];
@@ -719,7 +724,7 @@ export default defineComponent({
         };
 
         // 设置当前值
-        const setCurrentValue = (value: string) => {
+        const setCurrentValue = (value: string | number) => {
             if (value === currentValue.value) {
                 return;
             }
@@ -848,7 +853,7 @@ export default defineComponent({
         // 是否显示密码
         const handleShowPassword = () => {
             // 是否禁用
-            if (props.disabled) {
+            if (inputDisabled.value) {
                 return false;
             }
 
@@ -857,7 +862,7 @@ export default defineComponent({
             // 焦点
             focus(null);
 
-            const len = currentValue.value.length;
+            const len = `${currentValue.value}`.length;
 
             setTimeout(() => {
                 input.value.setSelectionRange(len, len);
@@ -866,7 +871,7 @@ export default defineComponent({
 
         // 点击搜索
         const handleSearch = () => {
-            if (props.disabled) {
+            if (inputDisabled.value) {
                 return false;
             }
 
@@ -929,6 +934,7 @@ export default defineComponent({
 
             // data
             inputId,
+            inputDisabled,
 
             // computed
             wrapClasses,

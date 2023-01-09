@@ -1,4 +1,4 @@
-import type { InjectionKey, SetupContext } from 'vue';
+import type { InjectionKey, SetupContext, UnwrapRef } from 'vue';
 import type {
   ValidateFieldsError,
   ValidateError
@@ -6,7 +6,12 @@ import type {
 import { isBoolean } from '@vueuse/core';
 import { isString, isArray } from '@vue/shared';
 
-import { FormItemProp, FormItemContext, FormItemRule } from './form-item';
+// type
+import type { FormItemProp, FormItemContext, FormItemRule } from './form-item';
+
+import type { useFormLabelWidth } from '../utils';
+export type FormLabelWidthContext = ReturnType<typeof useFormLabelWidth>
+
 
 export type Arrayable<T> = T | T[]
 
@@ -21,9 +26,12 @@ export interface Props {
   scrollToError: boolean;
   showMessage: boolean;
   showSuccessStatus: boolean;
+  hideRequiredAsterisk: boolean;
+  validateOnRuleChange: boolean;
+  disabled: boolean;
 }
 
-export type FormContext = Props & {
+export type FormContext = Props & UnwrapRef<FormLabelWidthContext> & {
   default?: null;
   emit: SetupContext<FormEmits>['emit']
   // 验证具体的某个字段
@@ -36,7 +44,9 @@ export type FormContext = Props & {
   // 删除验证字段
   removeField: (field: FormItemContext) => void;
   // 重置该表单项
-  resetFields: (props?: Arrayable<FormItemProp>) => void
+  resetFields: (props?: Arrayable<FormItemProp>) => void;
+  // 清理某个字段的表单验证信息
+  clearValidate: (props?: Arrayable<FormItemProp>) => void;
 }
 
 export const FormContextKey: InjectionKey<FormContext> =
@@ -57,7 +67,7 @@ export type FormRules = Partial<Record<string, Arrayable<FormItemRule>>>
 
 // 事件
 export const formEmits = {
-  validate: (prop: FormItemProp, isValid: boolean, message: string) =>
+  ['on-validate']: (prop: FormItemProp, isValid: boolean, message: string) =>
     (isArray(prop) || isString(prop)) &&
     isBoolean(isValid) &&
     isString(message),

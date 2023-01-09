@@ -11,6 +11,9 @@ $name: 'ivue-switch';
   --#{$name}-disabled-emboss-thumb-color: #fafafa;
   --#{$name}-disabled-emboss-track-color: rgba(0, 0, 0, 0.12);
   --#{$name}-disabled-emboss-track-checked-color: rgba(0, 0, 0, 0.38);
+
+  // disabled
+  --#{$name}-disabled-bg: #F8F9FD;
 }
 
 $default-width: 44px;
@@ -66,7 +69,7 @@ $emboss-margin: 7px;
 
   }
 
-  &:active {
+  &:active:not(.ivue-switch-disabled) {
     &:after {
       width: calc($default-after-width + 8px);
     }
@@ -142,7 +145,7 @@ $emboss-margin: 7px;
       left: 24px;
     }
 
-    &:active:after {
+    &:active:not(.ivue-switch-disabled):after {
       left: calc(math.div($default-width, 2) - math.div($default-after-width, 2) + 2px);
     }
   }
@@ -150,8 +153,8 @@ $emboss-margin: 7px;
   // 禁用
   &-disabled {
     cursor: var(--ivue-cursor-disabled);
-    border-color: var(--ivue-background-color-select-hover) !important;
-    background-color: var(--ivue-background-color-select-hover) !important;
+    border-color: var(--ivue-border-color) !important;
+    background-color: var(--#{$name}-disabled-bg) !important;
 
     &:after {
       background: var(--ivue-disabled-color);
@@ -176,7 +179,7 @@ $emboss-margin: 7px;
       border-radius: 12px;
     }
 
-    &:active {
+    &:active:not(.ivue-switch-disabled) {
       &.#{$name}-checked:after {
         left: 11px;
       }
@@ -207,13 +210,13 @@ $emboss-margin: 7px;
   &-large {
     width: 56px;
 
-    &.#{$name}-checked:active {
+    &.#{$name}-checked:active:not(.ivue-switch-disabled) {
       &:after {
         left: 23px;
       }
     }
 
-    &:active:after {
+    &:active:not(.ivue-switch-disabled):after {
       width: 30px;
     }
 
@@ -236,12 +239,12 @@ $emboss-margin: 7px;
     }
 
     &.#{$name}-checked {
-      &:active:after {
+      &:active:not(.ivue-switch-disabled):after {
         left: calc(math.div($default-width, 2) + 1px)
       }
     }
 
-    &:active:after {
+    &:active:not(.ivue-switch-disabled):after {
       width: $default-after-width;
     }
 
@@ -251,7 +254,7 @@ $emboss-margin: 7px;
         left: 35px !important;
       }
 
-      &:active:after {
+      &:active:not(.ivue-switch-disabled):after {
         width: 18px;
       }
     }
@@ -259,13 +262,13 @@ $emboss-margin: 7px;
     // 小型
     &.#{$name}-small {
       &.#{$name}-checked {
-        &:active:after {
+        &:active:not(.ivue-switch-disabled):after {
           width: 12px !important;
           left: 13px !important;
         }
       }
 
-      &:active:after {
+      &:active:not(.ivue-switch-disabled):after {
         width: 12px !important;
       }
     }

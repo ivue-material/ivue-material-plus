@@ -1,8 +1,8 @@
 <template>
     <div>
         <h1>典型表单</h1>
-        <ivue-form label-width="120px">
-            <ivue-form-item label="Activity name">
+        <ivue-form label-width="auto" label-position="left">
+            <ivue-form-item label="Activity nameActivity nameActivity nameActivity name">
                 <ivue-input v-model="form.name" />
             </ivue-form-item>
             <ivue-form-item label="Activity zone">
@@ -14,12 +14,21 @@
                     >{{ item.label }}</ivue-option>
                 </ivue-select>
             </ivue-form-item>
+            <ivue-form-item label="Activity zone">
+                <ivue-select v-model="form.region" style="width:200px">
+                    <ivue-option
+                        v-for="item in cityList"
+                        :value="item.value"
+                        :key="item.value"
+                    >{{ item.label }}</ivue-option>
+                </ivue-select>
+            </ivue-form-item>
             <ivue-form-item label="Instant delivery">
-                <ivue-switch v-model="form.delivery"></ivue-switch>
+                <ivue-switch v-model="form.delivery" size="large"></ivue-switch>
             </ivue-form-item>
             <ivue-form-item label="Activity type">
                 <ivue-checkbox-group v-model="form.type">
-                    <ivue-checkbox label="Online activities"></ivue-checkbox>
+                    <ivue-checkbox label="1"></ivue-checkbox>
                     <ivue-checkbox label="Promotion activities"></ivue-checkbox>
                     <ivue-checkbox label="Offline activities"></ivue-checkbox>
                     <ivue-checkbox label="Simple brand exposure"></ivue-checkbox>
@@ -108,12 +117,20 @@
         </ivue-form>
 
         <h1>表单校验</h1>
-        <ivue-form label-width="120px" :model="form" :rules="rules" ref="ruleFormRef">
-            <ivue-form-item label="Activity name" required>
+        <ivue-button @click="active = !active">activeactive</ivue-button>
+        <ivue-form
+            label-width="120px"
+            :model="form"
+            :rules="active ? rules : rules1"
+            require-asterisk-position="right"
+            ref="ruleFormRef"
+            @on-validate="handleValidate"
+        >
+            <ivue-form-item label="Activity name" >
                 <ivue-input v-model="form.name" />
             </ivue-form-item>
 
-            <ivue-form-item label="Activity name" prop="name">
+            <ivue-form-item label="Activity name" prop="name" :required="false" error="121212">
                 <ivue-input v-model="form.name" />
             </ivue-form-item>
 
@@ -144,9 +161,72 @@
                 <ivue-checkbox label="Online activities" v-model="form.checkbox"></ivue-checkbox>
             </ivue-form-item>
 
+            <ivue-form-item label="Activity type" prop="radiogroup">
+                <ivue-radio-group v-model="form.radiogroup">
+                    <ivue-radio label="apple"></ivue-radio>
+                    <ivue-radio label="android"></ivue-radio>
+                </ivue-radio-group>
+            </ivue-form-item>
+
+            <ivue-form-item label="Activity type" prop="radio">
+                <ivue-radio v-model="form.radio">Radio1</ivue-radio>
+            </ivue-form-item>
+
+            <ivue-form-item
+                label="age"
+                prop="age"
+                :rules="[
+                        { required: true, message: 'age is required' },
+                        { type: 'number', message: 'age must be a number' },
+                    ]"
+            >
+                {{form.age}}
+                <ivue-input v-model.number="form.age" type="text" autocomplete="off" />
+            </ivue-form-item>
+
             <ivue-form-item>
                 <ivue-button type="primary" @click="submitForm(ruleFormRef)">Create</ivue-button>
                 <ivue-button @click="resetForm(ruleFormRef)">Cancel</ivue-button>
+            </ivue-form-item>
+        </ivue-form>
+        <h1>添加/删除表单项</h1>
+        <ivue-form :model="dynamicValidateForm" ref="formRef">
+            <ivue-form-item
+                prop="email"
+                label="Email"
+                :rules="[
+                    {
+                    required: true,
+                    message: 'Please input email address',
+                    trigger: 'blur',
+                    },
+                    {
+                    type: 'email',
+                    message: 'Please input correct email address',
+                    trigger: ['blur', 'change'],
+                    },
+                ]"
+            >
+                <ivue-input v-model="dynamicValidateForm.email" />
+            </ivue-form-item>
+            <ivue-form-item
+                v-for="(domain, index) in dynamicValidateForm.domains"
+                :key="domain.key"
+                :label="'Domain' + index"
+                :prop="'domains.' + index + '.value'"
+                :rules="{
+                    required: true,
+                    message: 'domain can not be null',
+                    trigger: 'blur',
+                }"
+            >
+                <ivue-input v-model="domain.value" />
+                <ivue-button @click="removeDomain(domain)">Delete</ivue-button>
+            </ivue-form-item>
+            <ivue-form-item>
+                <ivue-button @click="submitForm1(formRef)">Submit</ivue-button>
+                <ivue-button @click="addDomain">New domain</ivue-button>
+                <ivue-button @click="resetForm1(formRef)">Reset</ivue-button>
             </ivue-form-item>
         </ivue-form>
     </div>
@@ -156,7 +236,7 @@
 import { reactive, ref } from 'vue';
 
 const form = reactive({
-    name: '',
+    name: '2',
     region: '',
     date1: '',
     date2: '',
@@ -165,6 +245,8 @@ const form = reactive({
     resource: '',
     desc: '',
     checkbox: false,
+    radiogroup: '',
+    radio: false,
 });
 
 const formInline = reactive({
@@ -209,7 +291,7 @@ const rules = {
     name: [
         {
             required: true,
-            message: 'Please input Activity name',
+            message: 'message',
             trigger: 'change',
         },
         {
@@ -229,8 +311,13 @@ const rules = {
     delivery: [
         {
             required: true,
-            message: 'delivery',
             type: 'boolean',
+            validator: (rule, value, callback) => {
+                if (!value) {
+                    return callback(new Error('Error'));
+                }
+                callback();
+            },
         },
     ],
     type: [
@@ -244,12 +331,119 @@ const rules = {
     checkbox: [
         {
             type: 'boolean',
+            validator: (rule, value, callback) => {
+                if (!value) {
+                    return callback(new Error('Error'));
+                }
+                callback();
+            },
+            required: true,
+            message: 'Please select at least one activity type',
+            trigger: 'change',
+        },
+    ],
+    radiogroup: [
+        {
+            required: true,
+            message: 'radio',
+            trigger: 'change',
+        },
+    ],
+    radio: [
+        {
+            type: 'boolean',
+            validator: (rule, value, callback) => {
+                if (!value) {
+                    return callback(new Error('Error'));
+                }
+                callback();
+            },
             required: true,
             message: 'Please select at least one activity type',
             trigger: 'change',
         },
     ],
 };
+
+const rules1 = {
+    name: [
+        {
+            required: true,
+            message: 'rules1message',
+            trigger: 'change',
+        },
+        {
+            min: 3,
+            max: 5,
+            message: 'Length should be 3 to 5',
+            trigger: 'change',
+        },
+    ],
+    region: [
+        {
+            required: true,
+            message: 'Please select Activity zone',
+            trigger: 'change',
+        },
+    ],
+    delivery: [
+        {
+            required: true,
+            type: 'boolean',
+            validator: (rule, value, callback) => {
+                if (!value) {
+                    return callback(new Error('Error'));
+                }
+                callback();
+            },
+        },
+    ],
+    type: [
+        {
+            type: 'array',
+            required: true,
+            message: 'Please select at least one activity type',
+            trigger: 'change',
+        },
+    ],
+    checkbox: [
+        {
+            type: 'boolean',
+            validator: (rule, value, callback) => {
+                if (!value) {
+                    return callback(new Error('Error'));
+                }
+                callback();
+            },
+            required: true,
+            message: 'Please select at least one activity type',
+            trigger: 'change',
+        },
+    ],
+    radiogroup: [
+        {
+            required: true,
+            message: 'radio',
+            trigger: 'change',
+        },
+    ],
+    radio: [
+        {
+            type: 'boolean',
+            validator: (rule, value, callback) => {
+                if (!value) {
+                    return callback(new Error('Error'));
+                }
+                callback();
+            },
+            required: true,
+            message: 'Please select at least one activity type',
+            trigger: 'change',
+        },
+    ],
+};
+
+const active = ref(false);
 
 const onSubmit = () => {
     console.log('submit!');
@@ -270,6 +464,52 @@ const submitForm = (formEl) => {
 const resetForm = (formEl) => {
     if (!formEl) return;
     formEl.resetFields();
+};
+
+const formRef = ref();
+const dynamicValidateForm = reactive({
+    domains: [
+        {
+            key: 1,
+            value: '',
+        },
+    ],
+    email: '',
+});
+
+const removeDomain = (item) => {
+    const index = dynamicValidateForm.domains.indexOf(item);
+    if (index !== -1) {
+        dynamicValidateForm.domains.splice(index, 1);
+    }
+};
+
+const addDomain = () => {
+    dynamicValidateForm.domains.push({
+        key: Date.now(),
+        value: '',
+    });
+};
+
+const submitForm1 = (formEl) => {
+    if (!formEl) return;
+    formEl.validate((valid) => {
+        if (valid) {
+            console.log('submit!');
+        } else {
+            console.log('error!');
+            return false;
+        }
+    });
+};
+
+const resetForm1 = (formEl) => {
+    if (!formEl) return;
+    formEl.resetFields();
+};
+
+const handleValidate = (data, isValid, message) => {
+    console.log('handleValidate', data, isValid, message);
 };
 </script>
 

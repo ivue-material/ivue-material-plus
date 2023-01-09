@@ -1,5 +1,5 @@
 export interface Props {
-  modelValue: string;
+  modelValue: string | number;
   type: string;
   placeholder: string;
   spellcheck: boolean;

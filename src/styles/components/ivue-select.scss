@@ -23,7 +23,7 @@ $name: 'ivue-select';
   // visible
   --#{$name}-visible-selection-color: rgba(91, 142, 255, 0.8);
   --#{$name}-visible-selection-shadow-color: rgba(91, 142, 255, 0.2);
-  --#{$name}-disabled-selection-hover-color: rgba(204, 204, 204, 0.2);
+  --#{$name}-disabled-selection-hover-color: var(--ivue-border-color);
 
   // tag
   --#{$name}-tag-border-color: #e8eaec;
@@ -148,7 +148,7 @@ $name: 'ivue-select';
     outline: 0;
     border: none;
     background: 0 0;
-    cursor: pointer;
+    cursor: inherit;
   }
 
   // 选择框

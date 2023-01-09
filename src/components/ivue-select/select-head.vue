@@ -44,13 +44,14 @@
         <input
             :class="defaultDisplayClasses"
             :value="defaultDisplayValue"
-            autocomplete="off"
             type="text"
             tabindex="0"
             readonly
+            spellcheck="false"
+            autocomplete="off"
+            :disabled="disabled"
             v-if="defaultDisplayValue"
         />
-        <!-- <span :class="defaultDisplayClasses" v-if="defaultDisplayValue">{{ defaultDisplayValue }}</span> -->
         <!-- 输入框 -->
         <input
             type="text"

@@ -36,6 +36,11 @@ $name: 'ivue-form';
       }
     }
 
+    // wrap
+    &-wrap{
+      display: flex;
+    }
+
   }
 
 
@@ -136,6 +141,17 @@ $name: 'ivue-form';
         content: "*";
         color: var(--ivue-error-color);
         margin-right: 4px;
+      }
+    }
+  }
+
+  // 必填图标靠右
+  &-item.is-required:not(.is-no-asterisk).asterisk-right {
+    .#{$name}-item--label {
+      &::after {
+        content: "*";
+        color: var(--ivue-error-color);
+        margin-left: 4px;
       }
     }
   }

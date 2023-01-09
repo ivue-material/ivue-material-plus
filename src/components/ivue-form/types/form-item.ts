@@ -16,11 +16,13 @@ export interface Props {
   showMessage: boolean;
   validateSuccessMessage: string;
   showSuccessStatus: boolean;
+  error: string
 }
 
 export type FormItemContext = Props & {
   $el: HTMLDivElement | undefined;
   inputIds: string[];
+  hasLabel: boolean;
   removeInputId: (id: string) => void;
   addInputId: (id: string) => void;
   validate: (

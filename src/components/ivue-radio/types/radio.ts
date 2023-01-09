@@ -7,6 +7,8 @@ export interface Props {
   color: string;
   name?: string;
   border: boolean;
+  validateEvent: boolean;
+  id?: string;
 }
 
 export interface Data {

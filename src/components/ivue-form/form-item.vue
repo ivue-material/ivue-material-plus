@@ -1,7 +1,10 @@
 <template>
     <div :class="wrapperClasses" ref="formItem">
         <!-- 标签 -->
-        <form-label-wrap>
+        <form-label-wrap
+            :is-auto-width="labelStyle.width === 'auto'"
+            :update-all="formContext?.labelWidth === 'auto'"
+        >
             <component
                 :class="`${prefixCls}--label`"
                 :is="labelFor ? 'label' : 'div'"
@@ -16,7 +19,6 @@
         <!-- 内容 -->
         <div :class="`${prefixCls}--content`" :style="contentStyle">
             <slot></slot>
-
             <!-- 错误提示 -->
             <transition :name="`${prefixCls}-zoom-in-top`">
                 <slot name="error" :error="validateMessage" v-if="shouldShowError">
@@ -45,6 +47,7 @@ import {
     onMounted,
     onBeforeUnmount,
     nextTick,
+    watch,
 } from 'vue';
 import { isString } from '@vue/shared';
 import AsyncValidator from 'async-validator';
@@ -154,6 +157,14 @@ export default defineComponent({
             type: String,
             default: 'Validate Success',
         },
+        /**
+         * 表单域验证错误时的提示信息
+         *
+         * @type {String}
+         */
+        error: {
+            type: String,
+        },
     },
     setup(props: Props, { slots }) {
         // form inject
@@ -200,6 +211,8 @@ export default defineComponent({
                         props.showSuccessStatus,
                     // 必填
                     ['is-required']: isRequired.value || props.required,
+                    // 是否隐藏必填字段标签旁边的红色星号
+                    ['is-no-asterisk']: formContext.hideRequiredAsterisk,
                 },
                 // 星号的位置
                 formContext.requireAsteriskPosition === 'right'
@@ -409,6 +422,11 @@ export default defineComponent({
             return normalizedRules.value.some((rule) => rule.required);
         });
 
+        // 有标签
+        const hasLabel = computed(() => {
+            return !!(props.label || slots.label);
+        });
+
         // methods
 
         // 添加输入框id
@@ -482,7 +500,7 @@ export default defineComponent({
             setValidationState('success');
 
             // 任一表单项被校验后触发
-            formContext?.emit('validate', props.prop!, true, '');
+            formContext?.emit('on-validate', props.prop!, true, '');
         };
 
         // 设置验证状态为失败
@@ -504,7 +522,7 @@ export default defineComponent({
 
             // 任一表单项被校验后触发
             formContext?.emit(
-                'validate',
+                'on-validate',
                 props.prop!,
                 false,
                 validateMessage.value
@@ -535,19 +553,8 @@ export default defineComponent({
                     }
                 )
                 .then(() => {
-                    let type = '';
-
-                    rules.forEach((item) => {
-                        if (item.type) {
-                            type = item.type;
-                        }
-                    });
-
-                    // boolean 验证
-                    if (type !== 'boolean') {
-                        // 设置验证状态为成功
-                        setValidationSucceeded();
-                    }
+                    // 设置验证状态为成功
+                    setValidationSucceeded();
 
                     return true as const;
                 })
@@ -629,6 +636,7 @@ export default defineComponent({
             validate,
             resetField,
             clearValidate,
+            hasLabel,
         });
 
         // provide
@@ -649,13 +657,33 @@ export default defineComponent({
             formContext?.removeField(context);
         });
 
+        // watch
+
+        // 监听表单域验证错误时的提示信息
+        watch(
+            () => props.error,
+            (value) => {
+                // 验证提示
+                validateMessage.value = value || '';
+
+                // 设置验证状态
+                setValidationState(value ? 'error' : '');
+            },
+            {
+                immediate: true,
+            }
+        );
+
         return {
             prefixCls,
-            labelId,
+
+            // inject
+            formContext,
 
             // data
             validateMessage,
             validateState,
+            labelId,
 
             // computed
             wrapperClasses,
@@ -668,10 +696,14 @@ export default defineComponent({
             showLabel,
             shouldShowError,
             shouldShowSuccess,
+            hasLabel,
 
             // methods
             addInputId,
             removeInputId,
+            resetField,
+            clearValidate,
+            validate,
         };
     },
     components: {

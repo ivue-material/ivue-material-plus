@@ -22,7 +22,6 @@
         >
             <slot name="input">
                 <input type="hidden" :id="inputId" :name="name" :value="currentSelectValue" />
-
                 <!-- 头部 -->
                 <select-head
                     :prefix="prefix"
@@ -37,7 +36,7 @@
                     :values="data.values"
                     :isSearchMethod="isSearchMethod"
                     :resetSelectIcon="resetSelectIcon"
-                    :disabled="disabled"
+                    :disabled="inputDisabled"
                     :filterQueryProp="data.filterQuery"
                     :allowCreate="allowCreate"
                     :showCreateItem="showCreateItem"
@@ -136,6 +135,7 @@ import { ClickOutside, TransferDom } from '../../utils/directives';
 import { oneOf } from '../../utils/assist';
 import { useFormItem, useFormItemInputId } from '../../hooks/index';
 import { debugWarn } from '../../utils/error';
+import { useDisabled } from '../../hooks';
 
 // type
 import { PopoverContextKey } from '../ivue-popover/types/popover';
@@ -504,6 +504,9 @@ export default defineComponent({
         const dropdown = ref<DropDownInstance>();
         const selectHead = ref<SelectHeadInstance>();
 
+        // 输入框禁用
+        const inputDisabled = useDisabled();
+
         // ivue-popover
         const popover = inject(PopoverContextKey, {
             default: null,
@@ -603,7 +606,7 @@ export default defineComponent({
                     // 是否支持多选
                     [`${prefixCls}-multiple`]: props.multiple,
                     // 是否禁用
-                    [`${prefixCls}-disabled`]: props.disabled,
+                    [`${prefixCls}-disabled`]: inputDisabled.value,
                     // 是否显示菜单
                     [`${prefixCls}-visible`]: data.visibleMenu,
                 },
@@ -629,7 +632,7 @@ export default defineComponent({
         // tab 键顺序
         const selectTabindex = computed(() => {
             // 是否禁用选择组件 | 是否支持搜索
-            return props.disabled || props.filterable ? -1 : 0;
+            return inputDisabled.value || props.filterable ? -1 : 0;
         });
 
         // 当前选择的值
@@ -793,7 +796,7 @@ export default defineComponent({
                 data.hasMouseHover &&
                 props.clearable &&
                 !props.multiple &&
-                !props.disabled
+                !inputDisabled.value
             );
         });
 
@@ -887,7 +890,7 @@ export default defineComponent({
 
         // 头部输入框获取焦点
         const handleHeaderFocus = ({ type }) => {
-            if (props.disabled) {
+            if (inputDisabled.value) {
                 return;
             }
 
@@ -917,7 +920,7 @@ export default defineComponent({
             }
 
             // 选择组件是否禁用
-            if (props.disabled) {
+            if (inputDisabled.value) {
                 return false;
             }
 
@@ -1882,6 +1885,7 @@ export default defineComponent({
             // data
             data,
             inputId,
+            inputDisabled,
 
             // computed
             classes,

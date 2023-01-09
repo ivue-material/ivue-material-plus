@@ -36,9 +36,8 @@ $name: 'ivue-radio';
   --#{$name}-small-padding: 0 12px;
   --#{$name}-small-radius: 3px;
 
-
   // color
-  --#{$name}-disabled-bg: #e6e6e6;
+  --#{$name}-disabled-bg: #F8F9FD;
 }
 
 .#{$name} {
@@ -78,6 +77,7 @@ $name: 'ivue-radio';
     // 禁用
     &--disabled {
       cursor: var(--ivue-cursor-disabled);
+      color: var(--ivue-disabled-color);
     }
 
     &--disabled.#{$name}-border {
@@ -294,7 +294,7 @@ $name: 'ivue-radio';
 
   &-disabled &-inner {
     border-color: var(--ivue-border-color);
-    background-color: var(--ivue-background-color-select-hover);
+    background-color: var(--#{$name}-disabled-bg);
 
     &::after {
       background-color: var(--ivue-disabled-color);

@@ -19,4 +19,6 @@ export interface Props {
   type?: string;
   buttonStyle: string;
   size: string;
+  validateEvent: boolean;
+  id?: string;
 }

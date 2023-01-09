@@ -15,7 +15,7 @@ import { colorable } from '../../utils/mixins/colorable';
 import ripple from '../../utils/directives/ripple';
 import { debugWarn } from '../../utils/error';
 
-import { useFormItem, useFormItemInputId } from '../../hooks/index';
+import { useFormItem, useFormItemInputId, useDisabled } from '../../hooks';
 
 // type
 import { Size, Props } from './types/switch';
@@ -128,7 +128,9 @@ export default defineComponent({
          *
          * @type {Function}
          */
-        beforeChange: Function,
+        beforeChange: {
+            type: Function,
+        },
         /**
          * 颜色
          *
@@ -164,6 +166,9 @@ export default defineComponent({
         // 当前选择状态
         const currentValue = ref<string | boolean | number>(props.modelValue);
 
+        // 输入框禁用
+        const inputDisabled = useDisabled();
+
         // computed
 
         // 外部样式
@@ -172,7 +177,7 @@ export default defineComponent({
             if (props.emboss) {
                 return {
                     [`${prefixCls}-emboss--wrapper`]: true,
-                    [`${prefixCls}-emboss--disabled`]: props.disabled,
+                    [`${prefixCls}-emboss--disabled`]: inputDisabled.value,
                 };
             }
 
@@ -181,7 +186,7 @@ export default defineComponent({
                 [`${prefixCls}-false`]: props.falseColor,
                 [`${prefixCls}-checked`]:
                     currentValue.value === props.trueValue,
-                [`${prefixCls}-disabled`]: props.disabled,
+                [`${prefixCls}-disabled`]: inputDisabled.value,
                 [`${prefixCls}-loading`]: props.loading,
                 [`${prefixCls}-${props.size}`]: props.size,
             };
@@ -191,7 +196,7 @@ export default defineComponent({
         const embossClass = computed(() => {
             return {
                 [`${prefixCls}-emboss`]: true,
-                [`${prefixCls}-emboss--disabled`]: props.disabled,
+                [`${prefixCls}-emboss--disabled`]: inputDisabled.value,
                 [`${prefixCls}-emboss--${props.size}`]: props.size,
             };
         });
@@ -259,7 +264,7 @@ export default defineComponent({
 
         // 更新 ripple
         const computedRipple = computed(() => {
-            if (props.rippleDisabled || props.disabled) {
+            if (props.rippleDisabled || inputDisabled.value) {
                 return false;
             }
 
@@ -276,7 +281,7 @@ export default defineComponent({
                 event.preventDefault();
             }
 
-            if (props.disabled || props.loading) {
+            if (inputDisabled.value || props.loading) {
                 return false;
             }
 
@@ -342,6 +347,7 @@ export default defineComponent({
             // data
             currentValue,
             inputId,
+            inputDisabled,
 
             // computed
             wrapClasses,
@@ -431,7 +437,7 @@ export default defineComponent({
                 trueValue: this.trueValue,
                 falseValue: this.falseValue,
                 ariaChecked: this.currentValue,
-                ariaDisabled: this.disabled,
+                ariaDisabled: this.inputDisabled,
                 checked: this.currentValue,
             });
         };

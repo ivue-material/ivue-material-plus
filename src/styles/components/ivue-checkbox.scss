@@ -29,6 +29,9 @@ $name: 'ivue-checkbox';
   --#{$name}-border-line-height: 30px;
   --#{$name}-border-radius: 4px;
   --#{$name}-border-padding: 0 15px;
+
+  // disabled
+  --#{$name}-disabled-bg: #F8F9FD;
 }
 
 .#{$name} {
@@ -74,7 +77,7 @@ $name: 'ivue-checkbox';
   // 禁用选择
   &-disabled.#{$name}-checked &-inner {
     border-color: var(--ivue-border-color);
-    background-color: var(--ivue-background-color-select-hover);
+    background-color: var(--#{$name}-disabled-bg);
 
     &::after {
       border-color: var(--ivue-disabled-color);
@@ -84,7 +87,7 @@ $name: 'ivue-checkbox';
   // 禁用未选择
   &-disabled &-inner {
     border-color: var(--ivue-border-color);
-    background-color: var(--ivue-background-color-select-hover);
+    background-color: var(--#{$name}-disabled-bg);
   }
 
   // 方框

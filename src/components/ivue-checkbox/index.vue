@@ -9,7 +9,7 @@
                 v-if="isGroup"
                 type="checkbox"
                 :class="inputClasses"
-                :disabled="disabled"
+                :disabled="inputDisabled"
                 :value="label"
                 v-model="data.groupModel"
                 :name="name"
@@ -23,7 +23,7 @@
                 type="checkbox"
                 :id="inputId"
                 :class="inputClasses"
-                :disabled="disabled"
+                :disabled="inputDisabled"
                 :name="name"
                 :checked="currentValue"
                 @change="handleChange"
@@ -43,7 +43,7 @@ import { computed, defineComponent, reactive, watch, inject } from 'vue';
 
 import { isCssColor, setTextColor } from '../../utils/helpers';
 import { debugWarn } from '../../utils/error';
-import { useFormItem, useFormItemInputId } from '../../hooks/index';
+import { useFormItem, useFormItemInputId, useDisabled } from '../../hooks';
 
 // type
 import type { Props, Data } from './types/checkbox';
@@ -150,6 +150,9 @@ export default defineComponent({
             default: null,
         });
 
+        // 输入框禁用
+        const inputDisabled = useDisabled();
+
         // data
         const data = reactive<Data>({
             /**
@@ -180,7 +183,7 @@ export default defineComponent({
                 `${prefixCls}-wrapper`,
                 {
                     [`${prefixCls}-wrapper--checked`]: currentValue.value,
-                    [`${prefixCls}-wrapper--disabled`]: props.disabled,
+                    [`${prefixCls}-wrapper--disabled`]: inputDisabled.value,
                     [`${prefixCls}-group--item`]: isGroup.value,
                     [`${prefixCls}-border`]: props.border,
                 },
@@ -193,7 +196,7 @@ export default defineComponent({
                 `${prefixCls}`,
                 {
                     [`${prefixCls}-checked`]: currentValue.value,
-                    [`${prefixCls}-disabled`]: props.disabled,
+                    [`${prefixCls}-disabled`]: inputDisabled.value,
                     [`${prefixCls}-indeterminate`]: props.indeterminate,
                 },
             ];
@@ -240,7 +243,7 @@ export default defineComponent({
             return [
                 `${prefixCls}-label-text`,
                 {
-                    [`${prefixCls}-label-text--disabled`]: props.disabled,
+                    [`${prefixCls}-label-text--disabled`]: inputDisabled.value,
                 },
             ];
         });
@@ -273,7 +276,7 @@ export default defineComponent({
         // 改变
         const handleChange = (event: Event) => {
             // 禁用
-            if (props.disabled) {
+            if (inputDisabled.value) {
                 return false;
             }
 
@@ -326,7 +329,6 @@ export default defineComponent({
                     throw 'Value should be trueValue or falseValue.';
                 }
 
-                console.log('1221');
                 // 输入时是否触发表单的校验
                 if (props.validateEvent) {
                     formItem?.validate('change').catch((err) => debugWarn(err));
@@ -353,6 +355,7 @@ export default defineComponent({
             // data
             data,
             inputId,
+            inputDisabled,
 
             // computed
             wrapperClasses,

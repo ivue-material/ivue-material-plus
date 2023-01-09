@@ -5,11 +5,19 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, provide, toRefs, reactive, ref } from 'vue';
+import {
+    computed,
+    defineComponent,
+    provide,
+    toRefs,
+    reactive,
+    ref,
+    watch,
+} from 'vue';
 import { oneOf } from '../../utils/assist';
 import { isFunction } from '../../utils/helpers';
 import { debugWarn } from '../../utils/error';
-import { filterFields } from './utils';
+import { filterFields, useFormLabelWidth } from './utils';
 
 // type
 import {
@@ -19,7 +27,11 @@ import {
     FormValidateCallback,
     FormValidationResult,
 } from './types/form';
-import { FormItemProp, Arrayable, FormItemContext } from './types/form-item';
+import type {
+    FormItemProp,
+    Arrayable,
+    FormItemContext,
+} from './types/form-item';
 import type { ValidateFieldsError } from 'async-validator';
 
 const prefixCls = 'ivue-form';
@@ -111,6 +123,41 @@ export default defineComponent({
             type: Boolean,
             default: true,
         },
+        /**
+         * 是否隐藏必填字段标签旁边的红色星号
+         *
+         * @type {Boolean}
+         */
+        hideRequiredAsterisk: {
+            type: Boolean,
+            default: false,
+        },
+        /**
+         * 是否在 rules 属性改变后立即触发一次验证
+         *
+         * @type {Boolean}
+         */
+        validateOnRuleChange: {
+            type: Boolean,
+            default: true,
+        },
+        /**
+         * 是否禁用该表单内的所有组件
+         *
+         * @type {Boolean}
+         */
+        disabled: {
+            type: Boolean,
+            default: false,
+        },
+        /**
+         * 当校验失败时，滚动到第一个错误表单项
+         *
+         * @type {Boolean}
+         */
+        scrollToError: {
+            type: Boolean,
+        },
     },
     setup(props: Props, { emit }) {
         // 验证的字段
@@ -122,8 +169,10 @@ export default defineComponent({
         const wrapperClasses = computed(() => [
             prefixCls,
             {
+                // 表单域标签的位置
                 [`${prefixCls}-label-${props.labelPosition}`]:
                     props.labelPosition,
+                // 行内表单模式
                 [`${prefixCls}-inline`]: props.inline,
             },
         ]);
@@ -131,9 +180,11 @@ export default defineComponent({
         // 是否可以验证
         const isValidatable = computed(() => {
             const hasModel = !!props.model;
+
             if (!hasModel) {
                 debugWarn(prefixCls, 'model is required for validate to work.');
             }
+
             return hasModel;
         });
 
@@ -153,19 +204,26 @@ export default defineComponent({
             const shouldThrow = !isFunction(callback);
 
             try {
+                // 验证字段
                 const result = await useValidateField(modelProps);
-                // When result is false meaning that the fields are not validatable
+
+                // 当结果为 false 时意味着字段不可验证
                 if (result === true) {
                     callback?.(result);
                 }
-                return result;
-            } catch (e) {
-                const invalidFields = e as ValidateFieldsError;
 
+                return result;
+            } catch (error) {
+                const invalidFields = error as ValidateFieldsError;
+
+                // 当校验失败时，滚动到第一个错误表单项
                 if (props.scrollToError) {
                     scrollToField(Object.keys(invalidFields)[0]);
                 }
+
+                // 返回失败
                 callback?.(false, invalidFields);
+
                 return shouldThrow && Promise.reject(invalidFields);
             }
         };
@@ -187,6 +245,7 @@ export default defineComponent({
                 return true;
             }
 
+            // 验证错误的字段
             let validationErrors: ValidateFieldsError = {};
 
             // 循环触发item的验证
@@ -194,14 +253,21 @@ export default defineComponent({
                 try {
                     // item验证字段
                     await field.validate('');
-                } catch (fields) {
+                } catch (error) {
                     // 验证错误的字段
                     validationErrors = {
                         ...validationErrors,
-                        ...(fields as ValidateFieldsError),
+                        ...(error as ValidateFieldsError),
                     };
                 }
             }
+
+            // 有验证错误的字段
+            if (Object.keys(validationErrors).length === 0) {
+                return true;
+            }
+
+            return Promise.reject(validationErrors);
         };
 
         // 获取验证字段
@@ -236,6 +302,7 @@ export default defineComponent({
 
         // 滚动到指定的字段
         const scrollToField = (prop: FormItemProp) => {
+            // 当校验失败时，滚动到第一个错误表单项
             const field = filterFields(fields.value, prop)[0];
 
             if (field) {
@@ -260,14 +327,47 @@ export default defineComponent({
             );
         };
 
+        // 清理某个字段的表单验证信息
+        const clearValidate: FormContext['clearValidate'] = (props = []) => {
+            // 获取需要清理的item
+            filterFields(fields.value, props).forEach((field) =>
+                field.clearValidate()
+            );
+        };
+
+        // watch
+
+        // 监听 rules 属性改变后立即触发一次验证
+        watch(
+            () => props.rules,
+            () => {
+                if (props.validateOnRuleChange) {
+                    validate().catch((err) => debugWarn(err));
+                }
+            }
+        );
+
         // provide
         provide(
             FormContextKey,
             reactive({
+                // props
                 ...toRefs(props),
-                addField,
-                removeField,
+                // emit
                 emit,
+                // 添加验证字段
+                addField,
+                // 删除验证字段
+                removeField,
+                // 清理某个字段的表单验证信息
+                clearValidate,
+                // 重置该表单项
+                resetFields,
+                // 验证具体的某个字段
+                validateField,
+
+                // 表单宽度
+                ...useFormLabelWidth()
             })
         );
 
@@ -277,7 +377,10 @@ export default defineComponent({
 
             // methods
             validate,
+            validateField,
             resetFields,
+            scrollToField,
+            clearValidate,
         };
     },
 });
