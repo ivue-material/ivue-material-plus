@@ -27,7 +27,7 @@
             </transition>
             <!-- 成功 -->
             <transition :name="`${prefixCls}-zoom-in-top`">
-                <slot name="success" v-if="shouldShowSuccess">
+                <slot name="success" v-if="shouldShowSuccess && validateSuccessMessage">
                     <div :class="validateClasses">{{ validateSuccessMessage }}</div>
                 </slot>
             </transition>
@@ -146,7 +146,7 @@ export default defineComponent({
          */
         showSuccessStatus: {
             type: Boolean,
-            default: true,
+            default: false,
         },
         /**
          * 验证成功提示信息
@@ -155,7 +155,7 @@ export default defineComponent({
          */
         validateSuccessMessage: {
             type: String,
-            default: 'Validate Success',
+            default: '',
         },
         /**
          * 表单域验证错误时的提示信息
@@ -206,9 +206,7 @@ export default defineComponent({
                     // 错误提示
                     ['is-error']: validateState.value === 'error',
                     // 成功提示
-                    ['is-success']:
-                        validateState.value === 'success' &&
-                        props.showSuccessStatus,
+                    ['is-success']: shouldShowSuccess.value,
                     // 必填
                     ['is-required']: isRequired.value || props.required,
                     // 是否隐藏必填字段标签旁边的红色星号
@@ -411,9 +409,7 @@ export default defineComponent({
                 // 没有错误信息
                 !shouldShowError.value &&
                 // item验证成功提示状态
-                props.showSuccessStatus &&
-                // form验证成功提示状态
-                (formContext?.showSuccessStatus ?? true)
+                (props.showSuccessStatus || formContext?.showSuccessStatus)
             );
         });
 
@@ -679,6 +675,9 @@ export default defineComponent({
 
             // inject
             formContext,
+
+            // dom
+            formItem,
 
             // data
             validateMessage,

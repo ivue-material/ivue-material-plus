@@ -7,7 +7,7 @@ $name: 'ivue-form';
     .#{$name}-item {
       display: inline-flex;
       vertical-align: middle;
-      margin-right: 32px;
+      margin-right: 10px;
     }
   }
 
@@ -37,7 +37,7 @@ $name: 'ivue-form';
     }
 
     // wrap
-    &-wrap{
+    &-wrap {
       display: flex;
     }
 
@@ -119,18 +119,36 @@ $name: 'ivue-form';
   // 错误提示
   &-item.is-error {
 
+    .ivue-input,
+    .ivue-input-number,
     .ivue-input-content,
     .ivue-select-selection {
       border-color: var(--ivue-error-color);
+    }
+
+    .ivue-input:focus,
+    .ivue-input-number-focused,
+    .ivue-input-content--focused,
+    .ivue-select-selection-focused {
+      box-shadow: 0 0 0 2px rgba(255, 97, 127, .2);
     }
   }
 
   // 成功提示
   &-item.is-success {
 
+    .ivue-input-number,
+    .ivue-input,
     .ivue-input-content,
     .ivue-select-selection {
       border-color: var(--ivue-success-color);
+    }
+
+    .ivue-input:focus,
+    .ivue-input-number-focused,
+    .ivue-input-content--focused,
+    .ivue-select-selection-focused {
+      box-shadow: 0 0 0 2px rgba(39, 226, 178, .2);
     }
   }
 

@@ -121,7 +121,7 @@ export default defineComponent({
          */
         showSuccessStatus: {
             type: Boolean,
-            default: true,
+            default: false,
         },
         /**
          * 是否隐藏必填字段标签旁边的红色星号
@@ -202,6 +202,7 @@ export default defineComponent({
         ) => {
             // 是否是函数
             const shouldThrow = !isFunction(callback);
+
 
             try {
                 // 验证字段

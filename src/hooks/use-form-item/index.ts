@@ -35,7 +35,8 @@ export const useFormItemInputId = (
     formItemContext?: FormItemContext;
     disableIdGeneration?: ComputedRef<boolean> | Ref<boolean>;
     disableIdManagement?: ComputedRef<boolean> | Ref<boolean>;
-  }
+  },
+  slots?
 ) => {
   // 禁用 ID 生成
   if (!disableIdGeneration) {
@@ -72,6 +73,13 @@ export const useFormItemInputId = (
   // onMounted
   // 如果没有作为 prop 提供，则为 IvueFormItem 标签生成 id
   onMounted(() => {
+
+    // 有自定义input插槽
+    if (slots && slots.input && slots.input()) {
+      return;
+    }
+
+
     idUnwatch = watch(
       [toRef(props, 'id')],
       ([id]: [string]) => {

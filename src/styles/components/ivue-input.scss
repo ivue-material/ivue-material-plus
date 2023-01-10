@@ -214,7 +214,7 @@ $name: 'ivue-input';
   padding: var(--#{$name}-padding);
   font-size: var(--ivue-font-base-size);
   border-radius: var(--ivue-border-radius);
-  border: none;
+  border: 1px solid var(--ivue-border-color);
   color: var(--ivue-title-color);
   cursor: text;
   width: 100%;
@@ -231,15 +231,12 @@ $name: 'ivue-input';
     width: 100%;
     padding: 0 !important;
     border-radius: var(--ivue-border-radius);
-    border: 1px solid var(--ivue-border-color);
     transition: border $ivue-transition-default,
       background $ivue-transition-default,
       box-shadow $ivue-transition-default;
     overflow: hidden;
 
     &:hover {
-      border-color: var(--ivue-primary-color);
-
       .#{$name}-icon-clear {
         opacity: 1;
       }
@@ -255,12 +252,15 @@ $name: 'ivue-input';
       border-top-right-radius: 0 !important;
     }
 
-    &-disabled {
+    &--disabled {
       &:hover {
         border-color: var(--ivue-border-color);
       }
     }
 
+    &--focused{
+      box-shadow: 0 0 0 2px var(--#{$name}-shadow-color);
+    }
   }
 
   // 密码

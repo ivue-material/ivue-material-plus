@@ -14,6 +14,8 @@ export interface Props {
   min: number;
   controlsOutside: boolean;
   step: number;
+  id: string;
+  validateEvent: boolean;
 }
 
 export interface Data {

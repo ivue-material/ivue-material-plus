@@ -1,53 +1,52 @@
 <template>
-    <div>
-        <ivue-select
-            :modelValue="data.currentValue"
-            :placeholder="placeholder"
-            :disabled="disabled"
-            :placement="placement"
-            :transferClassName="transferClassName"
-            :searchMethod="searchMethod"
-            :transfer="transfer"
-            :capture="capture"
-            :notFindText="''"
-            :loading="loading"
-            :loadingText="loadingText"
-            filterable
-            auto-complete
-            ref="select"
-            @on-select="handleSelect"
-            @on-clickoutside="handleClickOutside"
-        >
-            <!-- input -->
-            <template #input>
-                <slot name="input">
-                    <ivue-input
-                        v-model="data.currentValue"
-                        :name="name"
-                        :id="id"
-                        :placeholder="placeholder"
-                        :disabled="disabled"
-                        :clearable="clearable"
-                        @on-focus="handleFocus"
-                        @on-blur="handleBlur"
-                        @on-clear="handleClear"
-                        ref="input"
-                    >
-                        <template #prefix v-if="$slots.prefix">
-                            <slot name="prefix"></slot>
-                        </template>
-                        <template #suffix v-if="$slots.suffix">
-                            <slot name="suffix"></slot>
-                        </template>
-                    </ivue-input>
-                </slot>
-            </template>
-            <!-- option -->
-            <slot>
-                <ivue-option v-for="item in filteredData" :value="item" :key="item">{{ item }}</ivue-option>
+    <ivue-select
+        :modelValue="data.currentValue"
+        :placeholder="placeholder"
+        :disabled="disabled"
+        :placement="placement"
+        :transferClassName="transferClassName"
+        :searchMethod="searchMethod"
+        :transfer="transfer"
+        :capture="capture"
+        :notFindText="''"
+        :loading="loading"
+        :loadingText="loadingText"
+        :id="null"
+        filterable
+        auto-complete
+        ref="select"
+        @on-select="handleSelect"
+        @on-clickoutside="handleClickOutside"
+    >
+        <!-- input -->
+        <template #input>
+            <slot name="input">
+                <ivue-input
+                    v-model="data.currentValue"
+                    :name="name"
+                    :id="inputId"
+                    :placeholder="placeholder"
+                    :disabled="disabled"
+                    :clearable="clearable"
+                    @on-focus="handleFocus"
+                    @on-blur="handleBlur"
+                    @on-clear="handleClear"
+                    ref="input"
+                >
+                    <template #prefix v-if="$slots.prefix">
+                        <slot name="prefix"></slot>
+                    </template>
+                    <template #suffix v-if="$slots.suffix">
+                        <slot name="suffix"></slot>
+                    </template>
+                </ivue-input>
             </slot>
-        </ivue-select>
-    </div>
+        </template>
+        <!-- option -->
+        <slot>
+            <ivue-option v-for="item in filteredData" :value="item" :key="item">{{ item }}</ivue-option>
+        </slot>
+    </ivue-select>
 </template>
 
 <script lang='ts'>
@@ -65,6 +64,8 @@ import IvueInput from '../ivue-input/index.vue';
 import IvueOption from '../ivue-select/option.vue';
 
 import { oneOf } from '../../utils/assist';
+import { debugWarn } from '../../utils/error';
+import { useFormItem, useFormItemInputId } from '../../hooks/index';
 
 // type
 import type { Select, Input, Props, Data, Option } from './types/auto-complete';
@@ -238,8 +239,25 @@ export default defineComponent({
             type: String,
             default: '',
         },
+        /**
+         * 输入时是否触发表单的校验
+         *
+         * @type {Boolean}
+         */
+        validateEvent: {
+            type: Boolean,
+            default: true,
+        },
     },
     setup(props: Props, { emit }) {
+        // 设置表单对应的输入框id
+        const { formItem } = useFormItem();
+
+        // 输入框id
+        const { inputId } = useFormItemInputId(props, {
+            formItemContext: formItem,
+        });
+
         // dom
 
         // select
@@ -315,11 +333,21 @@ export default defineComponent({
         // 获取焦点
         const handleFocus = (event: Event) => {
             emit('on-focus', event);
+
+            // 输入时是否触发表单的校验
+            if (props.validateEvent) {
+                formItem?.validate?.('focus').catch((err) => debugWarn(err));
+            }
         };
 
         // 失去焦点
         const handleBlur = (event: Event) => {
             emit('on-blur', event);
+
+            // 输入时是否触发表单的校验
+            if (props.validateEvent) {
+                formItem?.validate?.('focus').catch((err) => debugWarn(err));
+            }
         };
 
         // 清空时触发
@@ -339,6 +367,13 @@ export default defineComponent({
                 }
 
                 data.currentValue = value;
+
+                // 输入时是否触发表单的校验
+                if (props.validateEvent) {
+                    formItem
+                        ?.validate?.('change')
+                        .catch((err) => debugWarn(err));
+                }
             }
         );
 
@@ -368,6 +403,7 @@ export default defineComponent({
 
             // data
             data,
+            inputId,
 
             filteredData,
 

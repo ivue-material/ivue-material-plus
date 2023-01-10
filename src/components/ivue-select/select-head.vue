@@ -50,6 +50,9 @@
             spellcheck="false"
             autocomplete="off"
             :disabled="disabled"
+            :id="id"
+            @focus="handleInputFocus"
+            @blur="handleInputBlur"
             v-if="defaultDisplayValue"
         />
         <!-- 输入框 -->
@@ -61,6 +64,7 @@
             :style="inputStyles"
             :placeholder="showPlaceholder ? placeholder : ''"
             :disabled="disabled"
+            :id="id"
             spellcheck="false"
             autocomplete="off"
             @focus="handleInputFocus"
@@ -258,6 +262,14 @@ export default defineComponent({
             type: Boolean,
             default: false,
         },
+        /**
+         * id
+         *
+         * @type {String}
+         */
+        id: {
+            type: String
+        }
     },
     setup(props: Props, { slots, emit }) {
         const wrapper = ref<HTMLElement>();

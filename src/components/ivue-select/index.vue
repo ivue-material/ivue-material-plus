@@ -21,9 +21,10 @@
             @keydown.tab="handleKeyDown"
         >
             <slot name="input">
-                <input type="hidden" :id="inputId" :name="name" :value="currentSelectValue" />
+                <input type="hidden" :name="name" :value="currentSelectValue" />
                 <!-- 头部 -->
                 <select-head
+                    :id="inputId"
                     :prefix="prefix"
                     :filterable="filterable"
                     :multiple="multiple"
@@ -490,8 +491,16 @@ export default defineComponent({
             type: Boolean,
             default: true,
         },
+        /**
+         * id
+         *
+         * @type {String}
+         */
+         id: {
+            type: String,
+        },
     },
-    setup(props: Props, { emit }) {
+    setup(props: Props, { emit, slots }) {
         // vm
         const { proxy } = getCurrentInstance();
 
@@ -511,6 +520,18 @@ export default defineComponent({
         const popover = inject(PopoverContextKey, {
             default: null,
         });
+
+        // 设置表单对应的输入框id
+        const { formItem } = useFormItem();
+
+        // 输入框id
+        const { inputId } = useFormItemInputId(
+            props,
+            {
+                formItemContext: formItem,
+            },
+            slots
+        );
 
         // data
         const data = reactive<Data>({
@@ -1861,14 +1882,6 @@ export default defineComponent({
                 }
             );
         }
-
-        // 设置表单对应的输入框id
-        const { formItem } = useFormItem();
-
-        // 输入框id
-        const { inputId } = useFormItemInputId(props, {
-            formItemContext: formItem,
-        });
 
         return {
             prefixCls,

@@ -25,6 +25,7 @@ export interface Props {
   remoteMethod?: any;
   loading: boolean;
   loadingText: string;
+  validateEvent: boolean;
 }
 
 export interface Data {

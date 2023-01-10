@@ -18,6 +18,7 @@ export interface Props {
   selectionDom: any;
   allowCreate: boolean;
   showCreateItem: boolean;
+  id: string;
 }
 
 export interface Data {

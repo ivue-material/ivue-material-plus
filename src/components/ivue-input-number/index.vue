@@ -54,6 +54,7 @@
                 :name="name"
                 :placeholder="placeholder"
                 :value="formatterValue"
+                :id="inputId"
                 @focus="focus"
                 @blur="blur"
                 @change="handleChange"
@@ -65,7 +66,6 @@
 </template>
 
 <script lang='ts'>
-/* eslint-disable */
 import {
     reactive,
     computed,
@@ -77,6 +77,9 @@ import {
 
 import IvueIcon from '../ivue-icon';
 import IvueButton from '../ivue-button';
+
+import { useFormItem, useFormItemInputId } from '../../hooks/index';
+import { debugWarn } from '../../utils/error';
 
 // type
 import type { Props, Data } from './types/input-number';
@@ -218,8 +221,33 @@ export default defineComponent({
             type: Number,
             default: 1,
         },
+        /**
+         * id
+         *
+         * @type {String}
+         */
+        id: {
+            type: String,
+        },
+        /**
+         * 输入时是否触发表单的校验
+         *
+         * @type {Boolean}
+         */
+        validateEvent: {
+            type: Boolean,
+            default: true,
+        },
     },
     setup(props: Props, { emit }) {
+        // 设置表单对应的输入框id
+        const { formItem } = useFormItem();
+
+        // 输入框id
+        const { inputId } = useFormItemInputId(props, {
+            formItemContext: formItem,
+        });
+
         // data
         const data = reactive<Data>({
             /**
@@ -432,7 +460,7 @@ export default defineComponent({
 
         // 修改value
         const changeValue = (value: number) => {
-            let _value = Number(value);
+            const _value = Number(value);
 
             // 判断是否有值
             if (!isNaN(_value)) {
@@ -521,7 +549,6 @@ export default defineComponent({
         const addNum = (num1: number, num2: number): number => {
             let sq1: number;
             let sq2: number;
-            let m: number;
 
             try {
                 // 有多少位小数
@@ -538,13 +565,13 @@ export default defineComponent({
             }
 
             // 需要除多是位小数
-            m = Math.pow(10, Math.max(sq1, sq2));
+            const m = Math.pow(10, Math.max(sq1, sq2));
 
             // 步骤 -> 转换为整数
-            let step = Math.round(num2 * m);
+            const step = Math.round(num2 * m);
 
             // 当前值 -> 转换为整数
-            let currentValue = Math.round(num1 * m);
+            const currentValue = Math.round(num1 * m);
 
             // 当前值 + 步骤 / 需要除多是位小数
             return (currentValue + step) / m;
@@ -578,6 +605,13 @@ export default defineComponent({
             () => props.modelValue,
             (value) => {
                 data.currentValue = value;
+
+                // 输入时是否触发表单的校验
+                if (props.validateEvent) {
+                    formItem
+                        ?.validate?.('change')
+                        .catch((err) => debugWarn(err));
+                }
             }
         );
 
@@ -610,6 +644,7 @@ export default defineComponent({
 
             // data
             data,
+            inputId,
 
             // computed
             wrapperClasses,

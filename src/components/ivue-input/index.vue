@@ -30,7 +30,7 @@
                     :value="currentValue"
                     :autofocus="autofocus"
                     :number="number"
-                    :id="inputId || id"
+                    :id="inputId"
                     :maxlength="maxlength"
                     @keyup.enter="handleEnter"
                     @keyup="handleKeyup"
@@ -111,7 +111,7 @@
         </template>
         <template v-else>
             <textarea
-                :id="inputId || id"
+                :id="inputId"
                 :name="name"
                 :disabled="inputDisabled"
                 :class="textareaClasses"
@@ -489,6 +489,9 @@ export default defineComponent({
         // 显示密码
         const showPassword = ref<boolean>(false);
 
+        // 是否有焦点
+        const focused = ref<boolean>(false);
+
         // ref = textarea
         const textarea = ref<HTMLTextAreaElement>();
         // ref = input
@@ -536,7 +539,9 @@ export default defineComponent({
                     [`${prefixCls}-content--prepend`]: prepend.value,
                     [`${prefixCls}-content--append`]:
                         append.value || (props.search && props.enterButton),
-                    [`${prefixCls}-content-disabled`]: inputDisabled.value,
+                    [`${prefixCls}-content--disabled`]: inputDisabled.value,
+                    // 获取焦点
+                    [`${prefixCls}-content--focused`]: focused.value,
                 },
             ];
         });
@@ -791,11 +796,15 @@ export default defineComponent({
 
         // 输入框聚焦时触发
         const handleFocus = (event: Event) => {
+            focused.value = true;
+
             emit('on-focus', event);
         };
 
         // 输入框失去焦点时触发
         const handleBlur = (event: Event) => {
+            focused.value = false;
+
             emit('on-blur', event);
 
             if (props.validateEvent) {
