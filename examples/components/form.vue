@@ -1,5 +1,5 @@
 <template>
-    <ivue-form :model="formItem" :rules="rulesList" :label-width="120" ref="formRef">
+    <ivue-form :model="formItem" :rules="rulesList" :label-width="120" ref="formRef" disabled>
         <ivue-form-item label="Input" prop="input" ref="formItemRef">
             <ivue-input v-model="formItem.input"></ivue-input>
         </ivue-form-item>

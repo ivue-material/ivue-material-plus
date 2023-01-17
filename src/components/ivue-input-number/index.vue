@@ -6,7 +6,7 @@
             <ivue-button
                 :class="internalUpClasses"
                 depressed
-                :disabled="data.upDisabled"
+                :disabled="inputDisabled || data.upDisabled"
                 @click="handleUp()"
             >
                 <ivue-icon>expand_less</ivue-icon>
@@ -15,7 +15,7 @@
             <ivue-button
                 :class="internalDownClasses"
                 depressed
-                :disabled="data.downDisabled"
+                :disabled="inputDisabled || data.downDisabled"
                 @click="handleDown()"
             >
                 <ivue-icon>expand_more</ivue-icon>
@@ -25,7 +25,7 @@
         <ivue-button
             :class="outsideDownClasses"
             depressed
-            :disabled="data.downDisabled"
+            :disabled="inputDisabled || data.downDisabled"
             @click="handleDown()"
             v-if="controlsOutside"
         >
@@ -36,7 +36,7 @@
             :class="outsideUpClasses"
             depressed
             @click="handleUp()"
-            :disabled="data.upDisabled"
+            :disabled="inputDisabled || data.upDisabled"
             v-if="controlsOutside"
         >
             <ivue-icon>add</ivue-icon>
@@ -48,7 +48,7 @@
                 :class="`${prefixCls}-input`"
                 autocomplete="off"
                 spellcheck="false"
-                :disabled="disabled"
+                :disabled="inputDisabled"
                 :autofocus="autofocus"
                 :readonly="readonly || !editable"
                 :name="name"
@@ -78,7 +78,11 @@ import {
 import IvueIcon from '../ivue-icon';
 import IvueButton from '../ivue-button';
 
-import { useFormItem, useFormItemInputId } from '../../hooks/index';
+import {
+    useFormItem,
+    useFormItemInputId,
+    useDisabled,
+} from '../../hooks/index';
 import { debugWarn } from '../../utils/error';
 
 // type
@@ -248,6 +252,9 @@ export default defineComponent({
             formItemContext: formItem,
         });
 
+        // 输入框禁用
+        const inputDisabled = useDisabled();
+
         // data
         const data = reactive<Data>({
             /**
@@ -286,7 +293,7 @@ export default defineComponent({
                     // 获取焦点
                     [`${prefixCls}-focused`]: data.focused,
                     // 禁用
-                    [`${prefixCls}-disabled`]: props.disabled,
+                    [`${prefixCls}-disabled`]: inputDisabled.value,
                     // 按钮位置是否置于两侧
                     [`${prefixCls}-controls-outside`]: props.controlsOutside,
                 },
@@ -490,7 +497,7 @@ export default defineComponent({
         // 改变步骤
         const changeStep = (type: string, event?) => {
             // 禁用
-            if (props.disabled || props.readonly) {
+            if (inputDisabled.value || props.readonly) {
                 return false;
             }
 
@@ -645,6 +652,7 @@ export default defineComponent({
             // data
             data,
             inputId,
+            inputDisabled,
 
             // computed
             wrapperClasses,

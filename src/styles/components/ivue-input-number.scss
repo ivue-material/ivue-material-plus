@@ -22,6 +22,7 @@ $name: 'ivue-input-number';
   // color
   --#{$name}-shadow: 0 0 0 2px rgba(91, 142, 255, 0.2);
   --#{$name}-outside-color: #f8f8f9;
+  --#{$name}-disabled-bg: #F8F9FD;
 }
 
 .#{$name} {
@@ -152,9 +153,15 @@ $name: 'ivue-input-number';
 
     .#{$name}-input {
       opacity: .8;
-      background-color: var(--ivue-background-color-select-hover);
+      background-color: var(--#{$name}-disabled-bg);
       cursor: var(--ivue-cursor-disabled);
       color: var(--ivue-disabled-color);
+    }
+
+    .#{$name}-outside {
+      .ivue-button-content{
+        color: var(--ivue-disabled-color);
+      }
     }
   }
 
