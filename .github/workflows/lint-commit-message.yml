@@ -1,4 +1,4 @@
-name: Lint 提交消息
+name: Lint Commit Message
 
 on:
   pull_request:

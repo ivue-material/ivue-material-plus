@@ -1,7 +1,6 @@
 node_modules
 .DS_Store
 dist
-pnpm-lock.yaml
 package-lock.json
 
 # Log files
