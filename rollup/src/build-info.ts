@@ -1,13 +1,10 @@
-import path from 'path'
+import path from 'path';
 
-import {
-  outputPath,
-  PKG_NAME
-} from '../build-utils'
+import { outputPath, PKG_NAME } from '../build-utils';
 
 // 模块列表
-export const modules = ['esm', 'cjs']
-export type Module = typeof modules[number]
+export const modules = ['esm', 'cjs'];
+export type Module = (typeof modules)[number];
 
 // 打包配置
 export const buildConfig = {
@@ -35,11 +32,9 @@ export const buildConfig = {
       path: `${PKG_NAME}/lib`,
     },
   },
-}
+};
 
 // 构建配置条目
-export const buildConfigEntries = Object.entries(
-  buildConfig
-)
+export const buildConfigEntries = Object.entries(buildConfig);
 
-export const target = 'es2018'
+export const target = 'es2018';

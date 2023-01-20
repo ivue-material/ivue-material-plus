@@ -31,7 +31,6 @@ $name: 'ivue-card';
     border-color: var(--#{$name}-shadow-border-color);
   }
 
-
   // 是否显示边框，建议在灰色背景下使用
   &-border {
     border: 1px solid var(--ivue-border-multiple-color);
@@ -40,7 +39,8 @@ $name: 'ivue-card';
   // 标题
   &-title {
     border-bottom: 1px solid var(--ivue-border-multiple-color);
-    padding: var(--#{$name}-top-bottom-padding) var(--#{$name}-left-right-padding);
+    padding: var(--#{$name}-top-bottom-padding)
+      var(--#{$name}-left-right-padding);
     line-height: 1;
   }
 

@@ -3,8 +3,7 @@
   animation-fill-mode: both;
 }
 
-
-@mixin make-motion($className, $keyframeName, $time: .3s) {
+@mixin make-motion($className, $keyframeName, $time: 0.3s) {
   .#{$className}-enter-active,
   .#{$className}-appear {
     @include motion-common($time);
@@ -30,9 +29,9 @@
   }
 }
 
-@import "./fade.scss";
-@import "./zoom.scss";
-@import "./move.scss";
-@import "./slide.scss";
-@import "./loop.scss";
-@import './variables.scss'
+@import './fade.scss';
+@import './zoom.scss';
+@import './move.scss';
+@import './slide.scss';
+@import './loop.scss';
+@import './variables.scss';

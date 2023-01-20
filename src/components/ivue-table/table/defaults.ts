@@ -1,11 +1,10 @@
-
 import type {
   ComponentInternalInstance,
   VNode,
   Ref,
   PropType,
   CSSProperties,
-  InjectionKey
+  InjectionKey,
 } from 'vue';
 import { oneOf } from '../../../utils/assist';
 
@@ -15,34 +14,35 @@ import type TableLayout from '../table-layout';
 
 // 列表行hover状态
 type HoverState = NonNullable<{
-  cell: HTMLElement
-  column: TableColumnCtx
-  row: TableColumnCtx
+  cell: HTMLElement;
+  column: TableColumnCtx;
+  row: TableColumnCtx;
 }>;
 
 // 渲染可展开的按钮的内容
-type RenderExpanded = ({
-  row,
-  $index,
-  store,
-  expanded,
-}: Column) => VNode;
+type RenderExpanded = ({ row, $index, store, expanded }: Column) => VNode;
 
 // 列表行
-type Column = { row: TableColumnCtx; $index: number; store: Store; expanded: boolean };
+type Column = {
+  row: TableColumnCtx;
+  $index: number;
+  store: Store;
+  expanded: boolean;
+};
 
 // 列表行样式
-type ColumnCls = string | ((data: { row: TableColumnCtx; rowIndex: number }) => string);
+type ColumnCls =
+  | string
+  | ((data: { row: TableColumnCtx; rowIndex: number }) => string);
 
 type ColumnStyle =
   | CSSProperties
   | ((data: { row: TableColumnCtx; rowIndex: number }) => CSSProperties);
 
-
 // 自定义的合计计算方法
 type SummaryMethod = (data: {
-  columns: TableColumnCtx[]
-  data: any[]
+  columns: TableColumnCtx[];
+  data: any[];
 }) => string[];
 
 // 设置表格单元、行和列的布局方式
@@ -51,20 +51,20 @@ type Layout = 'fixed' | 'auto';
 type CellStyle =
   | CSSProperties
   | ((data: {
-    row: TableColumnCtx
-    rowIndex: number
-    column: TableColumnCtx
-    columnIndex: number
-  }) => CSSProperties);
+      row: TableColumnCtx;
+      rowIndex: number;
+      column: TableColumnCtx;
+      columnIndex: number;
+    }) => CSSProperties);
 
 type CellCls =
   | string
   | ((data: {
-    row: TableColumnCtx
-    rowIndex: number
-    column: TableColumnCtx
-    columnIndex: number
-  }) => string);
+      row: TableColumnCtx;
+      rowIndex: number;
+      column: TableColumnCtx;
+      columnIndex: number;
+    }) => string);
 
 // refs
 interface TableRefs {
@@ -87,25 +87,24 @@ interface TreeNode {
   display?: boolean;
 }
 
-
 // 渲染行数据
 interface RenderRowData {
-  treeNode?: TreeNode
-  store: Store
-  _self: Table
-  expanded: boolean
-  column: TableColumnCtx
-  row: TableColumnCtx
-  $index: number
-  cellIndex: number
+  treeNode?: TreeNode;
+  store: Store;
+  _self: Table;
+  expanded: boolean;
+  column: TableColumnCtx;
+  row: TableColumnCtx;
+  $index: number;
+  cellIndex: number;
 }
 
 // 表格状态
 interface TableState {
   isGroup: Ref<boolean>;
   resizeState: Ref<{
-    width: null | number
-    height: null | number
+    width: null | number;
+    height: null | number;
   }>;
   updateLayout: () => void;
   debouncedUpdateLayout: () => void;
@@ -117,7 +116,6 @@ interface Filter {
   values: string[];
   silent: boolean;
 }
-
 
 interface Sort {
   prop: string;
@@ -162,8 +160,8 @@ interface TableProps {
   // 渲染嵌套数据的配置选项
   // { hasChildren: 'hasChildren', children: 'children' }
   treeProps?: {
-    hasChildren?: string
-    children?: string
+    hasChildren?: string;
+    children?: string;
   };
   // 行数据的 Key
   rowKey?: string | ((row: TableColumnCtx) => string);
@@ -196,23 +194,27 @@ interface TableProps {
   // 以通过该属性设置 Table 目前的展开行
   expandRowKeys?: any[];
   // 加载子节点数据的函数
-  load?: (row: TableColumnCtx, treeNode: TreeNode, resolve: (data: any[]) => void) => void;
+  load?: (
+    row: TableColumnCtx,
+    treeNode: TreeNode,
+    resolve: (data: any[]) => void
+  ) => void;
   // 合计行第一列的文本
   sumText?: string;
   // 自定义的合计计算方法
   summaryMethod?: SummaryMethod;
   // 合并行或列的计算方法
   spanMethod?: (data: {
-    row: TableColumnCtx
-    rowIndex: number
-    column: TableColumnCtx
-    columnIndex: number
+    row: TableColumnCtx;
+    rowIndex: number;
+    column: TableColumnCtx;
+    columnIndex: number;
   }) =>
     | number[]
     | {
-      rowspan: number
-      colspan: number
-    }
+        rowspan: number;
+        colspan: number;
+      }
     | undefined;
   // 表头单元格的 style 的回调方法，也可以使用一个固定的 Object 为所有表头单元格设置一样的 Style
   headerCellStyle?: CellStyle;
@@ -229,17 +231,20 @@ interface TableProps {
   // tooltip 主题
   tooltipTheme?: 'dark' | 'light';
   // tooltip点击是否阻止当前事件在捕获和冒泡阶段的进一步传播
-  tooltipStop?: boolean
+  tooltipStop?: boolean;
 }
 
 // 行样式
-type rowClass = string | ((data: { row: TableColumnCtx; rowIndex: number }) => string)
+type rowClass =
+  | string
+  | ((data: { row: TableColumnCtx; rowIndex: number }) => string);
 
 // 行的 style 的回调方法，也可以使用一个固定的 Object 为所有行设置一样的 Style。
-type rowStyle = | CSSProperties | ((data: { row: TableColumnCtx; rowIndex: number }) => CSSProperties)
+type rowStyle =
+  | CSSProperties
+  | ((data: { row: TableColumnCtx; rowIndex: number }) => CSSProperties);
 
-export const TableContextKey: InjectionKey<Table> =
-  Symbol('ivue-table');
+export const TableContextKey: InjectionKey<Table> = Symbol('ivue-table');
 
 export default {
   /**
@@ -402,7 +407,7 @@ export default {
    */
   placeholder: {
     type: String,
-    default: 'No Data'
+    default: 'No Data',
   },
   /**
    * 滚动条总是显示
@@ -461,7 +466,7 @@ export default {
    * @type {Function}
    */
   load: {
-    type: Function as PropType<TableProps['load']>
+    type: Function as PropType<TableProps['load']>,
   },
   /**
    * 合计行第一列的文本
@@ -470,7 +475,7 @@ export default {
    */
   sumText: {
     type: String,
-    default: '合计'
+    default: '合计',
   },
   /**
    * 自定义的合计计算方法
@@ -486,7 +491,7 @@ export default {
    * @type {Function}
    */
   spanMethod: {
-    type: Function as PropType<TableProps['spanMethod']>
+    type: Function as PropType<TableProps['spanMethod']>,
   },
   /**
    * 表头单元格的 style 的回调方法，
@@ -513,7 +518,7 @@ export default {
    * @type {Object, Function}
    */
   headerRowStyle: {
-    type: [Object, Function] as PropType<TableProps['headerRowStyle']>
+    type: [Object, Function] as PropType<TableProps['headerRowStyle']>,
   },
   /**
    * 表头行的 className 的回调方法
@@ -549,17 +554,17 @@ export default {
     validator(value: string) {
       return oneOf(value, ['dark', 'light']);
     },
-    default: 'dark'
+    default: 'dark',
   },
   /**
-  * tooltip点击是否阻止当前事件在捕获和冒泡阶段的进一步传播
-  *
-  * @type {String}
-  */
+   * tooltip点击是否阻止当前事件在捕获和冒泡阶段的进一步传播
+   *
+   * @type {String}
+   */
   tooltipStop: {
     type: Boolean,
-    default: false
-  }
+    default: false,
+  },
 };
 
 export type {
@@ -574,5 +579,5 @@ export type {
   Filter,
   SummaryMethod,
   TableRefs,
-  RenderExpanded
+  RenderExpanded,
 };

@@ -1,14 +1,14 @@
-@import "./variables";
-@import "./mixins";
+@import './variables';
+@import './mixins';
 
 // 一个数组 [0 - 24]
 $ivue-elevation-count: length($ivue-elevation-umbra);
 
 // 循环数组 $ivue-elevation-count
 @for $i from 0 to $ivue-elevation-count {
-      // 定义class名字 0 开始到 24
-      .ivue-elevation-#{$i} {
-            // 样式内容 -> 通过 ivue-elevation 方法生成
-            @include ivue-elevation($i);
-      }
+  // 定义class名字 0 开始到 24
+  .ivue-elevation-#{$i} {
+    // 样式内容 -> 通过 ivue-elevation 方法生成
+    @include ivue-elevation($i);
+  }
 }

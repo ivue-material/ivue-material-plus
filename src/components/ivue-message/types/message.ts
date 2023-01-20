@@ -1,4 +1,3 @@
-
 export interface Props {
   content: string;
   type: string;
@@ -20,15 +19,21 @@ export interface Data {
   iconTypes: Record<string, string>;
 }
 
-export type Type = 'normal' | 'info' | 'warning' | 'success' | 'error' | 'loading';
+export type Type =
+  | 'normal'
+  | 'info'
+  | 'warning'
+  | 'success'
+  | 'error'
+  | 'loading';
 
 export type Options = {
-  content?: string,
-  top?: number,
-  onClose?: () => any,
-  type?: Type,
-  duration?: number,
-  id?: string,
-  zIndex?: number,
-  loadingIcon?: string
-}
+  content?: string;
+  top?: number;
+  onClose?: () => any;
+  type?: Type;
+  duration?: number;
+  id?: string;
+  zIndex?: number;
+  loadingIcon?: string;
+};

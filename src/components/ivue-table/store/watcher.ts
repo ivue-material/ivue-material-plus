@@ -14,7 +14,7 @@ import {
   toggleRowStatus,
   orderBy,
   getColumnById,
-  getColumnByKey
+  getColumnByKey,
 } from '../utils';
 
 // ts
@@ -23,7 +23,6 @@ import type { TableColumnCtx } from '../table-column/defaults';
 import type { Table } from '../table/defaults';
 import type { StoreFilter } from './index';
 import type { SortOrder } from '../table-header/types/index';
-
 
 // 扁平化数组
 const flattenColumns = (columns: TableColumnCtx[]) => {
@@ -109,7 +108,8 @@ function useWatcher() {
 
   // 仅对 type=selection 的列有效，
   // 类型为 Function，Function 的返回值用来决定这一行的 CheckBox 是否可以勾选
-  const selectable: Ref<(row: TableColumnCtx, index: number) => boolean> | any = ref(null);
+  const selectable: Ref<(row: TableColumnCtx, index: number) => boolean> | any =
+    ref(null);
 
   // 保存数据更新前选中的值
   const reserveSelection = ref<boolean>(false);
@@ -148,7 +148,6 @@ function useWatcher() {
     // 是否选择所有行
     isAllSelected.value = value;
 
-
     let selectionChanged = false;
     let childrenCount = 0;
 
@@ -157,7 +156,6 @@ function useWatcher() {
 
     // 遍历数据
     data.value.forEach((row, index) => {
-
       // 行下标
       const rowIndex = index + childrenCount;
 
@@ -197,7 +195,7 @@ function useWatcher() {
     updateExpandRows,
     setExpandRowKeys,
     isRowExpanded,
-    states: expandStates
+    states: expandStates,
   } = useExpand({
     data,
     rowKey,
@@ -214,7 +212,6 @@ function useWatcher() {
     data,
     rowKey,
   });
-
 
   // 检查 rowKey 是否存在
   const isRowKey = () => {
@@ -244,9 +241,10 @@ function useWatcher() {
     const notFixedColumns = _columns.value.filter((column) => !column.fixed);
 
     // 固定列
-    fixedColumns.value = _columns.value.filter(
-      (column) => column.fixed === true || column.fixed === 'left'
-    ) || [];
+    fixedColumns.value =
+      _columns.value.filter(
+        (column) => column.fixed === true || column.fixed === 'left'
+      ) || [];
 
     // 右边固定列
     rightFixedColumns.value = _columns.value.filter(
@@ -259,7 +257,6 @@ function useWatcher() {
       .concat(fixedColumns.value)
       .concat(notFixedColumns)
       .concat(rightFixedColumns.value);
-
 
     // 扁平化不是固定列
     const leafColumns = flattenColumns(notFixedColumns);
@@ -442,7 +439,6 @@ function useWatcher() {
 
   // 清除多选选择行
   const clearSelection = () => {
-
     isAllSelected.value = false;
 
     const oldSelection = selection.value;
@@ -457,7 +453,6 @@ function useWatcher() {
 
   // 清洁选择
   const cleanRedundantSelection = () => {
-
     // 需要删除的数据
     let deleted;
 
@@ -474,7 +469,6 @@ function useWatcher() {
       for (const key in selectedMap) {
         // 是否存在数据
         if (hasOwn(selectedMap, key) && !dataMap[key]) {
-
           // 获取需要删除的数据(当前数据列表中不存在的数据)
           deleted.push(selectedMap[key].row);
         }
@@ -488,7 +482,6 @@ function useWatcher() {
 
     // 有需要删除的数组
     if (deleted.length) {
-
       // 过滤数据获取最新的选择数据
       const newSelection = selection.value.filter(
         (item) => !deleted.includes(item)
@@ -561,7 +554,6 @@ function useWatcher() {
 
   // 更新排序属性
   const updateSort = (column, prop, order) => {
-
     // 重置排序排序顺序
     if (sortingColumn.value && sortingColumn.value !== column) {
       sortingColumn.value.order = null;
@@ -615,7 +607,6 @@ function useWatcher() {
     vm.store.commit('changeSortCondition', {
       silent: true,
     });
-
   };
 
   // 传入由columnKey 组成的数组以清除指定列的过滤条件
@@ -656,7 +647,6 @@ function useWatcher() {
 
       // 清空过滤的值
       keys.forEach((key) => {
-
         const column = _columns.find((col) => col.id === key);
 
         // 清空过滤的值
@@ -672,7 +662,6 @@ function useWatcher() {
         silent: true,
         multi: true,
       });
-
     }
     // 没有过滤条件清空全部过滤列表
     else {
@@ -695,10 +684,11 @@ function useWatcher() {
     }
   };
 
-
   // 展开行与 TreeTable 都要使用
-  const toggleRowExpansionAdapter = (row: TableColumnCtx, expanded: boolean) => {
-
+  const toggleRowExpansionAdapter = (
+    row: TableColumnCtx,
+    expanded: boolean
+  ) => {
     // 是否是展开列
     const hasExpandColumn = columns.value.some(({ type }) => type === 'expand');
 
@@ -720,10 +710,9 @@ function useWatcher() {
     updateTreeExpandKeys(val);
   };
 
-
   return {
     _toggleAllSelection,
-    toggleAllSelection: () => { },
+    toggleAllSelection: () => {},
     isRowKey,
     updateSelectionByRowKey,
     updateColumns,
@@ -774,8 +763,8 @@ function useWatcher() {
       sortOrder,
       ...expandStates,
       ...treeStates,
-      ...currentData
-    }
+      ...currentData,
+    },
   };
 }
 

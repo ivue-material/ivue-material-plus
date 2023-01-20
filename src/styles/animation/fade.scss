@@ -1,13 +1,14 @@
 @mixin fade-motion($className, $keyframeName) {
-  @include make-motion($className, $keyframeName, .15s);
+  @include make-motion($className, $keyframeName, 0.15s);
 
-  .#{$className}-enter-active, .#{$className}-appear {
-      opacity: 0;
-      animation-timing-function: linear;
+  .#{$className}-enter-active,
+  .#{$className}-appear {
+    opacity: 0;
+    animation-timing-function: linear;
   }
 
   .#{$className}-leave-active {
-      animation-timing-function: linear;
+    animation-timing-function: linear;
   }
 }
 

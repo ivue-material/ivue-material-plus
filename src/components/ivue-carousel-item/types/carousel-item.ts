@@ -22,22 +22,22 @@ export interface Data {
 export type WrapperStyles = {
   transform: string;
   zIndex?: number;
-}
+};
 
-export type CarouselItemInstance = InstanceType<typeof CarouselItem>
+export type CarouselItemInstance = InstanceType<typeof CarouselItem>;
 
 export type CarouselContext = {
-  wrapper: Ref<HTMLElement | undefined>
-  items: Ref<CarouselItemContext[]>
-  isCardType: Ref<any>
-  isVertical: Ref<any>
-  loop: boolean
-  cardScale: number
-  addItem: (item: CarouselItemContext) => void
-  removeItem: (uid: number | undefined) => void
-  setContentHeight: (height: number) => void
-  setActiveItem: (index: number) => void
-}
+  wrapper: Ref<HTMLElement | undefined>;
+  items: Ref<CarouselItemContext[]>;
+  isCardType: Ref<any>;
+  isVertical: Ref<any>;
+  loop: boolean;
+  cardScale: number;
+  addItem: (item: CarouselItemContext) => void;
+  removeItem: (uid: number | undefined) => void;
+  setContentHeight: (height: number) => void;
+  setActiveItem: (index: number) => void;
+};
 
 export const CarouselContextKey: InjectionKey<CarouselContext> =
   Symbol('ivue-carousel');

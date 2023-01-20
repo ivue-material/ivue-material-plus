@@ -1,7 +1,6 @@
 import { Ref } from 'vue';
 import { addClass, removeClass } from '../../utils/assist';
 
-
 // 限制文本最多显示几行，以...结束，仅适用于 webkit 内核浏览器
 
 export default {
@@ -35,7 +34,6 @@ export default {
 
         el.style['-webkit-line-clamp'] = binding.value;
       }
-
     }
   },
   unmounted(el: HTMLElement) {
@@ -43,5 +41,5 @@ export default {
     removeClass(el, 'ivue-line-clamp-nowrap');
 
     el.style['-webkit-line-clamp'] = null;
-  }
+  },
 };

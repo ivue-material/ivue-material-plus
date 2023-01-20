@@ -52,10 +52,9 @@ $name: 'ivue-input';
 
   // color
   --#{$name}-shadow-color: rgba(91, 142, 255, 0.2);
-  --#{$name}-disabled-bg: #F8F9FD;
-  --#{$name}-word-count-color: #9AB0C6;
+  --#{$name}-disabled-bg: #f8f9fd;
+  --#{$name}-word-count-color: #9ab0c6;
 }
-
 
 .#{$name}-wrapper {
   position: relative;
@@ -72,7 +71,6 @@ $name: 'ivue-input';
       }
     }
   }
-
 
   .#{$name}-group-prepend,
   .#{$name}-group-append {
@@ -174,7 +172,6 @@ $name: 'ivue-input';
 
   // 小图标
   &-small {
-
     .#{$name}-content {
       border-radius: var(--#{$name}-small-group-radius);
     }
@@ -188,13 +185,10 @@ $name: 'ivue-input';
       height: var(--#{$name}-small-icon-size);
       line-height: var(--#{$name}-small-icon-size);
     }
-
-
   }
 
   // 大图标
   &-large {
-
     .#{$name}-icon,
     .#{$name}-icon i,
     .#{$name}-prefix i,
@@ -221,8 +215,7 @@ $name: 'ivue-input';
   line-height: 1;
   height: var(--#{$name}-height);
   transition: border $ivue-transition-default,
-    background $ivue-transition-default,
-    box-shadow $ivue-transition-default;
+    background $ivue-transition-default, box-shadow $ivue-transition-default;
 
   // input外壳
   &-content {
@@ -232,8 +225,7 @@ $name: 'ivue-input';
     padding: 0 !important;
     border-radius: var(--ivue-border-radius);
     transition: border $ivue-transition-default,
-      background $ivue-transition-default,
-      box-shadow $ivue-transition-default;
+      background $ivue-transition-default, box-shadow $ivue-transition-default;
     overflow: hidden;
 
     &:hover {
@@ -258,7 +250,7 @@ $name: 'ivue-input';
       }
     }
 
-    &--focused{
+    &--focused {
       box-shadow: 0 0 0 2px var(--#{$name}-shadow-color);
     }
   }
@@ -278,7 +270,6 @@ $name: 'ivue-input';
     font-size: var(--ivue-font-base-size);
     padding: var(--#{$name}-small-padding);
     height: var(--#{$name}-small-height);
-
   }
 
   // large
@@ -311,7 +302,6 @@ $name: 'ivue-input';
 
   @include placeholder;
 }
-
 
 // textarea
 .#{$name}-textarea {
@@ -414,7 +404,6 @@ $name: 'ivue-input';
 
 .#{$name}-group-append,
 .#{$name}-group-prepend {
-
   // 有选择框
   .ivue-select {
     margin: -5px -7px;
@@ -450,8 +439,8 @@ $name: 'ivue-input';
   }
 }
 
-.ivue-input-group-large {}
-
+.ivue-input-group-large {
+}
 
 // 字数统计
 .#{$name}-word-count {
@@ -468,7 +457,6 @@ $name: 'ivue-input';
   color: var(--#{$name}-word-count-color);
   font-size: var(--#{$name}-word-count-font-size);
 }
-
 
 // 搜索输入框
 .#{$name}-search {

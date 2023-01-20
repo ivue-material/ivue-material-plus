@@ -4,7 +4,7 @@ $name: 'ivue-spin';
   --#{$name}-dot-size: 20px;
 
   // color
-  --#{$name}-fix-bg: rgba(255, 255, 255, .9);
+  --#{$name}-fix-bg: rgba(255, 255, 255, 0.9);
 }
 
 .#{$name} {
@@ -26,13 +26,13 @@ $name: 'ivue-spin';
     @keyframes ivue-spin-dot {
       0% {
         -webkit-transform: scale(0);
-        transform: scale(0)
+        transform: scale(0);
       }
 
       100% {
         -webkit-transform: scale(1);
         transform: scale(1);
-        opacity: 0
+        opacity: 0;
       }
     }
   }
@@ -74,10 +74,9 @@ $name: 'ivue-spin';
   }
 }
 
-
 .#{$name}-fade-enter-active,
 .#{$name}-fade-leave-active {
-  transition: opacity .3s ease-in-out;
+  transition: opacity 0.3s ease-in-out;
 }
 
 .#{$name}-fade-enter-from,

@@ -4,7 +4,4 @@ function setCurrentUid(event) {
   currentUid = event;
 }
 
-export {
-  currentUid,
-  setCurrentUid
-};
+export { currentUid, setCurrentUid };

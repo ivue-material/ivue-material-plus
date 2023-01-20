@@ -49,7 +49,12 @@ import { IvueSelect, IvueOption, IvueOptionGroup } from './ivue-select';
 import { IvueSteps, IvueStep } from './ivue-steps';
 import { IvueTabs, IvueTab, IvueTabItem } from './ivue-tabs';
 import { IvueTable, IvueTableColumn } from './ivue-table';
-import { IvueMenu, IvueMenuItem, IvueSubmenu, IvueMenuGroup } from './ivue-menu';
+import {
+  IvueMenu,
+  IvueMenuItem,
+  IvueSubmenu,
+  IvueMenuGroup,
+} from './ivue-menu';
 import { IvueForm, IvueFormItem } from './ivue-form';
 
 import { Ripple } from './ivue-ripple';
@@ -119,7 +124,6 @@ export {
   IvueMenuGroup,
   IvueForm,
   IvueFormItem,
-
   Ripple,
-  LineClamp
+  LineClamp,
 };

@@ -1,6 +1,4 @@
-import {
-  ref
-} from 'vue';
+import { ref } from 'vue';
 import { getScrollBarSize } from '../../utils/helpers';
 import { isClient } from '../../utils/helpers';
 
@@ -24,10 +22,12 @@ export const scrollbarMixins = ({ lockScroll = true }) => {
     // workaround for missing window.innerWidth in IE8
     if (!fullWindowWidth) {
       // 元素的大小及其相对于视口的位置
-      const documentElementRect = document.documentElement.getBoundingClientRect();
+      const documentElementRect =
+        document.documentElement.getBoundingClientRect();
 
       // 视口宽度
-      fullWindowWidth = documentElementRect.right - Math.abs(documentElementRect.left);
+      fullWindowWidth =
+        documentElementRect.right - Math.abs(documentElementRect.left);
     }
 
     // body是否有滚动条
@@ -35,7 +35,6 @@ export const scrollbarMixins = ({ lockScroll = true }) => {
 
     // 有滚动条
     if (bodyIsOverflowing.value) {
-
       // 获取滚动条宽度
       scrollBarWidth.value = getScrollBarSize();
     }
@@ -50,7 +49,9 @@ export const scrollbarMixins = ({ lockScroll = true }) => {
     const masks = document.getElementsByClassName('ivue-modal-mask') || [];
 
     // 是否存在蒙版
-    return Array.from(masks).every((m) => m.style.display === 'none' || m.classList.contains('fade-leave-to'));
+    return Array.from(masks).every(
+      (m) => m.style.display === 'none' || m.classList.contains('fade-leave-to')
+    );
   };
 
   // 重新设置滚动条
@@ -73,7 +74,6 @@ export const scrollbarMixins = ({ lockScroll = true }) => {
       document.body.style.paddingRight = `${scrollBarWidth.value}px`;
     }
   };
-
 
   // 添加滚动条
   const addScrollEffect = () => {
@@ -116,6 +116,6 @@ export const scrollbarMixins = ({ lockScroll = true }) => {
     resetScrollBar,
     setScrollBar,
     addScrollEffect,
-    removeScrollEffect
+    removeScrollEffect,
   };
 };

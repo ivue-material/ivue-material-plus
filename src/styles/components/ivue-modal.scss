@@ -8,7 +8,6 @@ $name: 'ivue-modal';
   --#{$name}-header-padding: 14px 30px 14px 16px;
   --#{$name}-header-content-font-size: 16px;
 
-
   // body
   --#{$name}-body-padding: 16px;
   --#{$name}-body-font-size: 14px;
@@ -37,7 +36,7 @@ $name: 'ivue-modal';
 
   // color
   --#{$name}-content-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  --#{$name}-mask-color: rgba(55, 55, 55, .6);
+  --#{$name}-mask-color: rgba(55, 55, 55, 0.6);
 }
 
 .#{$name} {
@@ -113,13 +112,10 @@ $name: 'ivue-modal';
       }
     }
 
-
     // 拖动中
     &--dragging {
       user-select: none;
     }
-
-
   }
 
   // 头部
@@ -211,7 +207,6 @@ $name: 'ivue-modal';
 
   // 实例渲染
   &-instance {
-
     // 头部
     &--head {
       padding: var(--#{$name}-instance-head-padding);
@@ -284,7 +279,7 @@ $name: 'ivue-modal';
 
     &-fullscreen {
       width: 100% !important;
-      margin: 0
+      margin: 0;
     }
 
     &-drag-mask {

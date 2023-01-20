@@ -22,7 +22,7 @@ $name: 'ivue-progress';
   --#{$name}-vertical-height: 100px;
 
   // color
-  --#{$name}-inner-color: #F8F9FD;
+  --#{$name}-inner-color: #f8f9fd;
 }
 
 .#{$name} {
@@ -75,7 +75,7 @@ $name: 'ivue-progress';
     position: relative;
     border-radius: var(--#{$name}-inner-radius);
     background-color: currentColor;
-    transition: all .6s $ivue-transition-default-timing;
+    transition: all 0.6s $ivue-transition-default-timing;
     animation-duration: 3s;
   }
 
@@ -85,7 +85,7 @@ $name: 'ivue-progress';
     left: 0;
     border-radius: var(--#{$name}-inner-radius);
     background-color: var(--ivue-success-color);
-    transition: all .6s $ivue-transition-default-timing;
+    transition: all 0.6s $ivue-transition-default-timing;
     animation-duration: 3s;
   }
 
@@ -106,7 +106,7 @@ $name: 'ivue-progress';
   &-text-inner {
     vertical-align: middle;
 
-    &>i {
+    & > i {
       vertical-align: initial;
       width: auto;
       height: auto;
@@ -189,11 +189,10 @@ $name: 'ivue-progress';
       width: auto;
 
       &:after {
-        content: "";
+        content: '';
         height: 100%;
         display: inline-block;
         vertical-align: bottom;
-
       }
     }
 
@@ -205,13 +204,12 @@ $name: 'ivue-progress';
   // 是否为动画进度条
   &-indeterminate {
     animation: indeterminate 3s infinite;
-
   }
 }
 
 .progress-fade-enter-active,
 .progress-fade-leave-active {
-  transition: opacity .3s;
+  transition: opacity 0.3s;
 }
 
 .progress-fade-enter-from,
@@ -221,7 +219,7 @@ $name: 'ivue-progress';
 
 @keyframes ivue-progress-active {
   0% {
-    opacity: .3;
+    opacity: 0.3;
     width: 0;
   }
 
@@ -233,7 +231,7 @@ $name: 'ivue-progress';
 
 @keyframes ivue-progress-active-vertical {
   0% {
-    opacity: .3;
+    opacity: 0.3;
     height: 0;
   }
 

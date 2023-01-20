@@ -37,7 +37,6 @@ export type TabsContext = {
   unregister: any;
   tabNavClick?: (tab: any) => void;
   unregisterItems: any;
-}
+};
 
-export const TabsContextKey: InjectionKey<TabsContext> =
-  Symbol('ivue-tabs');
+export const TabsContextKey: InjectionKey<TabsContext> = Symbol('ivue-tabs');

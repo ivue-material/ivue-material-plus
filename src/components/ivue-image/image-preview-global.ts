@@ -1,13 +1,7 @@
-import {
-  createApp,
-  h,
-  getCurrentInstance
-} from 'vue';
+import { createApp, h, getCurrentInstance } from 'vue';
 import ImagePreview from './image-preview.vue';
 
-import {
-  isClient
-} from '../../utils/helpers';
+import { isClient } from '../../utils/helpers';
 
 ImagePreview.newInstance = (properties) => {
   if (!isClient) {
@@ -35,34 +29,41 @@ ImagePreview.newInstance = (properties) => {
          */
         previewList: [],
         /**
-        * 打开预览的第一项
-        *
-        * @type {Number}
-        */
+         * 打开预览的第一项
+         *
+         * @type {Number}
+         */
         initialIndex: 0,
         /**
-        * 图片预览操作栏选项，按数组顺序排序
-        *
-        * @type {Array}
-        */
-        toolbar: ['zoomIn', 'zoomOut', 'original', 'rotateLeft', 'rotateRight', 'download'],
+         * 图片预览操作栏选项，按数组顺序排序
+         *
+         * @type {Array}
+         */
+        toolbar: [
+          'zoomIn',
+          'zoomOut',
+          'original',
+          'rotateLeft',
+          'rotateRight',
+          'download',
+        ],
         /**
-        * 是否循环切换
-        *
-        * @type {Boolean}
-        */
+         * 是否循环切换
+         *
+         * @type {Boolean}
+         */
         infinite: true,
         /**
-        * 是否允许点击遮罩层关闭
-        *
-        * @type {Boolean}
-        */
+         * 是否允许点击遮罩层关闭
+         *
+         * @type {Boolean}
+         */
         maskClosable: true,
         /**
-        * 是否将弹层放置于 body 内
-        *
-        * @type {Boolean}
-        */
+         * 是否将弹层放置于 body 内
+         *
+         * @type {Boolean}
+         */
         transfer: true,
       });
     },
@@ -87,23 +88,25 @@ ImagePreview.newInstance = (properties) => {
         document.body.removeChild(container);
       },
       // 删除实例
-      removeInstance() { }
+      removeInstance() {},
     },
     render() {
-      return h(ImagePreview, Object.assign({}, _props, {
-        ref: 'imagePreview',
-        modelValue: this.visible,
-        previewList: this.previewList,
-        initialIndex: this.initialIndex,
-        toolbar: this.toolbar,
-        infinite: this.infinite,
-        maskClosable: this.maskClosable,
-        transfer: this.transfer,
-        'onOn-close': this.handleClose
-      }));
+      return h(
+        ImagePreview,
+        Object.assign({}, _props, {
+          ref: 'imagePreview',
+          modelValue: this.visible,
+          previewList: this.previewList,
+          initialIndex: this.initialIndex,
+          toolbar: this.toolbar,
+          infinite: this.infinite,
+          maskClosable: this.maskClosable,
+          transfer: this.transfer,
+          'onOn-close': this.handleClose,
+        })
+      );
     },
   });
-
 
   // 挂载实例到dom
   const container = document.createElement('div');
@@ -116,14 +119,14 @@ ImagePreview.newInstance = (properties) => {
   return {
     show(options) {
       // 导入props
-      Object.keys(options).forEach(key => {
+      Object.keys(options).forEach((key) => {
         imagePreview.$parent[key] = options[key];
       });
 
       // 显示预览
       imagePreview.$parent.visible = true;
     },
-    component: imagePreview
+    component: imagePreview,
   };
 };
 

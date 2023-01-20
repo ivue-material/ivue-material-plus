@@ -1,33 +1,20 @@
-import {
-  rollup
-} from 'rollup'
-import vue from '@vitejs/plugin-vue'
-import vueJsx from '@vitejs/plugin-vue-jsx'
-import defineOptions from 'unplugin-vue-define-options/rollup'
-import {
-  nodeResolve
-} from '@rollup/plugin-node-resolve'
-import commonjs from '@rollup/plugin-commonjs'
-import esbuild from 'rollup-plugin-esbuild'
-import glob from 'fast-glob'
+import { rollup } from 'rollup';
+import vue from '@vitejs/plugin-vue';
+import vueJsx from '@vitejs/plugin-vue-jsx';
+import defineOptions from 'unplugin-vue-define-options/rollup';
+import { nodeResolve } from '@rollup/plugin-node-resolve';
+import commonjs from '@rollup/plugin-commonjs';
+import esbuild from 'rollup-plugin-esbuild';
+import glob from 'fast-glob';
 import json from '@rollup/plugin-json';
-import css from 'rollup-plugin-css-porter';
+// import css from 'rollup-plugin-css-porter';
 import postcss from 'rollup-plugin-postcss';
-import VueMacros from 'unplugin-vue-macros/rollup'
+import VueMacros from 'unplugin-vue-macros/rollup';
 
-import {
-  epRoot,
-  excludeFiles,
-  pkgRoot,
-} from '../../build-utils'
-import {
-  writeBundles
-} from '../utils'
+import { epRoot, excludeFiles, pkgRoot } from '../../build-utils';
+import { writeBundles } from '../utils';
 
-import {
-  buildConfigEntries,
-  target
-} from '../build-info'
+import { buildConfigEntries, target } from '../build-info';
 
 // 包插件
 import pkg from '../../../package.json';
@@ -43,7 +30,7 @@ export const buildComponents = async () => {
       absolute: true,
       onlyFiles: true,
     })
-  )
+  );
 
   const bundle = await rollup({
     // 打包路径
@@ -92,12 +79,15 @@ export const buildComponents = async () => {
     ],
     // 告诉rollup不要将此打包，而作为外部依赖
     external(id) {
-      return /^vue/.test(id) || dependencies.some(k => new RegExp('^' + k).test(id));
+      return (
+        /^vue/.test(id) ||
+        dependencies.some((k) => new RegExp('^' + k).test(id))
+      );
     },
     // 是否应用tree-shaking
     // 除了使用 ES6 模块之外，Rollup 还静态分析代码中的 import，并将排除任何未实际使用的代码
     treeshake: false,
-  })
+  });
 
   await writeBundles(
     bundle,
@@ -118,7 +108,7 @@ export const buildComponents = async () => {
         sourcemap: true,
         // 用于从入口点创建的块的模式 mjs / js
         entryFileNames: `[name].${config.ext}`,
-      }
+      };
     })
-  )
-}
+  );
+};

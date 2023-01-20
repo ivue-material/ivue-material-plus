@@ -1,6 +1,10 @@
 import { inject } from 'vue';
 
-import { getFixedColumnsClass, getFixedColumnOffset, ensurePosition } from '../utils';
+import {
+  getFixedColumnsClass,
+  getFixedColumnOffset,
+  ensurePosition,
+} from '../utils';
 
 // ts
 import type { TableHeaderProps } from './types';
@@ -34,12 +38,7 @@ function useStyle(props: TableHeaderProps) {
     // fixedStyle
     const fixedStyle = column.isSubColumn
       ? null
-      : getFixedColumnOffset(
-        columnIndex,
-        column.fixed,
-        props.store,
-        row
-      );
+      : getFixedColumnOffset(columnIndex, column.fixed, props.store, row);
 
     // 左边
     ensurePosition(fixedStyle, 'left');
@@ -60,12 +59,12 @@ function useStyle(props: TableHeaderProps) {
     const fixedClasses = column.isSubColumn
       ? []
       : getFixedColumnsClass(
-        prefixCls,
-        columnIndex,
-        column.fixed,
-        props.store,
-        row
-      );
+          prefixCls,
+          columnIndex,
+          column.fixed,
+          props.store,
+          row
+        );
 
     // class
     const classes = [
@@ -153,7 +152,7 @@ function useStyle(props: TableHeaderProps) {
     getHeaderCellClass,
     getHeaderCellStyle,
     getHeaderRowStyle,
-    getHeaderRowClass
+    getHeaderRowClass,
   };
 }
 

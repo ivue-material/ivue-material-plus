@@ -2,12 +2,10 @@ import {
   createApp,
   h,
   getCurrentInstance,
-  ComponentInternalInstance
+  ComponentInternalInstance,
 } from 'vue';
 import Modal from './index.vue';
-import {
-  isClient
-} from '../../utils/helpers';
+import { isClient } from '../../utils/helpers';
 
 import IvueIcon from '../ivue-icon';
 import IvueButton from '../ivue-button';
@@ -132,7 +130,7 @@ Modal.newInstance = (properties) => {
          *
          * @type {Boolean}
          */
-        spinLoading: false
+        spinLoading: false,
       });
     },
     created() {
@@ -209,35 +207,42 @@ Modal.newInstance = (properties) => {
         this.onRemove();
       },
       // 点击确认
-      onConfirm() { },
+      onConfirm() {},
       // 点击取消的回调
-      onCancel() { },
+      onCancel() {},
       // 删除实例
-      onRemove() { }
+      onRemove() {},
     },
     render() {
-
       // 渲染头部
       let headRender;
 
       // 标题
       if (this.title) {
-        headRender = h('div', {
-          class: `${prefixCls}--head`
-        }, [
-          h(IvueIcon, {
-            class: [
-              `${prefixCls}--head__icon`,
-              `${prefixCls}--head__${this.iconType}`,
-            ]
-          }, {
-            default: () => this.iconName
-          }),
-          h('div', {
-            class: `${prefixCls}--head__title`,
-            innerHTML: this.title
-          })
-        ]);
+        headRender = h(
+          'div',
+          {
+            class: `${prefixCls}--head`,
+          },
+          [
+            h(
+              IvueIcon,
+              {
+                class: [
+                  `${prefixCls}--head__icon`,
+                  `${prefixCls}--head__${this.iconType}`,
+                ],
+              },
+              {
+                default: () => this.iconName,
+              }
+            ),
+            h('div', {
+              class: `${prefixCls}--head__title`,
+              innerHTML: this.title,
+            }),
+          ]
+        );
       }
 
       // 渲染body
@@ -245,21 +250,27 @@ Modal.newInstance = (properties) => {
 
       // 有渲染函数
       if (this.render) {
-        bodyRender = h('div', {
-          class: `${prefixCls}--body ${prefixCls}--body__render`
-        }, [
-          this.render(h)
-        ]);
+        bodyRender = h(
+          'div',
+          {
+            class: `${prefixCls}--body ${prefixCls}--body__render`,
+          },
+          [this.render(h)]
+        );
       }
       // 普通渲染
       else {
-        bodyRender = h('div', {
-          class: `${prefixCls}--body`
-        }, [
-          h('div', {
-            innerHTML: this.content
-          })
-        ]);
+        bodyRender = h(
+          'div',
+          {
+            class: `${prefixCls}--body`,
+          },
+          [
+            h('div', {
+              innerHTML: this.content,
+            }),
+          ]
+        );
       }
 
       // 渲染底部
@@ -267,63 +278,83 @@ Modal.newInstance = (properties) => {
 
       // 取消按钮
       if (this.showCancel) {
-        footerRender.push(h(IvueButton, {
-          class: 'ivue-modal-footer--button',
-          outline: true,
-          color: '#dcdfe6',
-          onClick: this.handleCancel
-        }, () => this.cancelText));
+        footerRender.push(
+          h(
+            IvueButton,
+            {
+              class: 'ivue-modal-footer--button',
+              outline: true,
+              color: '#dcdfe6',
+              onClick: this.handleCancel,
+            },
+            () => this.cancelText
+          )
+        );
       }
 
       // 确认按钮
-      footerRender.push(h(IvueButton, {
-        class: 'ivue-modal-footer--button',
-        status: 'primary',
-        depressed: true,
-        loading: this.buttonLoading,
-        onClick: this.handleConfirm
-      },
-        () => this.confirmText)
+      footerRender.push(
+        h(
+          IvueButton,
+          {
+            class: 'ivue-modal-footer--button',
+            status: 'primary',
+            depressed: true,
+            loading: this.buttonLoading,
+            onClick: this.handleConfirm,
+          },
+          () => this.confirmText
+        )
       );
 
-      return h(Modal, {
-        ..._props,
-        // 对话框宽度
-        width: this.width,
-        // 页面是否可以滚动
-        scrollable: this.scrollable,
-        // 是否显示关闭按钮
-        closable: this.closable,
-        // modelValue
-        modelValue: this.visible,
-        // 更新modelValue
-        'onUpdate:modelValue': (status: boolean) => {
-          this.visible = status;
+      return h(
+        Modal,
+        {
+          ..._props,
+          // 对话框宽度
+          width: this.width,
+          // 页面是否可以滚动
+          scrollable: this.scrollable,
+          // 是否显示关闭按钮
+          closable: this.closable,
+          // modelValue
+          modelValue: this.visible,
+          // 更新modelValue
+          'onUpdate:modelValue': (status: boolean) => {
+            this.visible = status;
+          },
+          // 点击取消的回调
+          'onOn-cancel': this.handleCancel,
+          // ref
+          ref: 'modal',
         },
-        // 点击取消的回调
-        'onOn-cancel': this.handleCancel,
-        // ref
-        ref: 'modal',
-      },
-        () => h('div', {
-          class: prefixCls
-        }, [
-          headRender,
-          bodyRender,
-          h('div', {
-            class: `${prefixCls}--footer`
-          }, footerRender),
-          (this.loadingType === 'spin') &&
-          h(IvueSpin, {
-            class: 'ivue-modal-spin',
-            fix: true,
-            show: this.spinLoading
-          })
-        ])
+        () =>
+          h(
+            'div',
+            {
+              class: prefixCls,
+            },
+            [
+              headRender,
+              bodyRender,
+              h(
+                'div',
+                {
+                  class: `${prefixCls}--footer`,
+                },
+                footerRender
+              ),
+              this.loadingType === 'spin' &&
+                h(IvueSpin, {
+                  class: 'ivue-modal-spin',
+                  fix: true,
+                  show: this.spinLoading,
+                }),
+            ]
+          )
       );
-    }
+    },
   });
-
 
   Instance.mount(container);
 
@@ -422,10 +453,8 @@ Modal.newInstance = (properties) => {
       modal.$parent.setLoading();
       modal.$parent.remove();
     },
-    component: modal
+    component: modal,
   };
 };
-
-
 
 export default Modal;

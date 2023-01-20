@@ -6,10 +6,7 @@ import {
   ComponentInternalInstance,
 } from 'vue';
 import Spin from './index.vue';
-import {
-  transferIndex,
-  transferIncrease
-} from '../../utils/transfer-queue';
+import { transferIndex, transferIncrease } from '../../utils/transfer-queue';
 
 // 获取Index
 const handleGetIndex = () => {
@@ -39,13 +36,17 @@ Spin.newInstance = (props = {}) => {
 
       // 有渲染函数
       if (this.render) {
-        vnode = h(Spin, {
-          fix: true,
-          fullscreen: true,
-          ref: 'spin'
-        }, {
-          default: () => this.render(h)
-        });
+        vnode = h(
+          Spin,
+          {
+            fix: true,
+            fullscreen: true,
+            ref: 'spin',
+          },
+          {
+            default: () => this.render(h),
+          }
+        );
       }
       // 没有渲染函数
       else {
@@ -53,16 +54,20 @@ Spin.newInstance = (props = {}) => {
           size: 'large',
           fix: true,
           fullscreen: true,
-          ref: 'spin'
+          ref: 'spin',
         });
       }
 
-      return h('div', {
-        'class': 'ivue-spin-fullscreen ivue-spin-fullscreen--wrapper',
-        'style': {
-          'z-index': 2010 + tIndex
-        }
-      }, [vnode]);
+      return h(
+        'div',
+        {
+          class: 'ivue-spin-fullscreen ivue-spin-fullscreen--wrapper',
+          style: {
+            'z-index': 2010 + tIndex,
+          },
+        },
+        [vnode]
+      );
     },
   });
 
@@ -81,7 +86,7 @@ Spin.newInstance = (props = {}) => {
       tIndex = handleGetIndex();
     },
     // 删除
-    remove(callback = () => { }) {
+    remove(callback = () => {}) {
       spin.visible = false;
 
       setTimeout(() => {
@@ -91,7 +96,7 @@ Spin.newInstance = (props = {}) => {
         callback();
       }, 300);
     },
-    component: spin
+    component: spin,
   };
 };
 

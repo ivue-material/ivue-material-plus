@@ -12,15 +12,15 @@ export interface Props {
 
 export type ColorStyle = {
   color?: string;
-}
+};
 
 export type BgStyle = {
   background?: string;
   backgroundColor?: string;
-}
+};
 
 export type Styles = {
   color?: string;
   background?: string;
   backgroundColor?: string;
-}
+};

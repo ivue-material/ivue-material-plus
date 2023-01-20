@@ -21,7 +21,11 @@ export interface Data {
   iconTypes: Record<string, string>;
 }
 
-export type Position = 'top-right' | 'top-left' | 'bottom-right' | 'bottom-left';
+export type Position =
+  | 'top-right'
+  | 'top-left'
+  | 'bottom-right'
+  | 'bottom-left';
 export type Type = 'normal' | 'info' | 'warning' | 'success' | 'error';
 
 export type Options = {
@@ -36,5 +40,5 @@ export type Options = {
   zIndex?: number;
   type?: Type;
   closable?: boolean;
-  name?: string
-}
+  name?: string;
+};

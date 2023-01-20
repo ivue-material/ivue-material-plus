@@ -1,10 +1,7 @@
-import {
-  ComponentInternalInstance,
-  ComponentPublicInstance,
-} from 'vue';
+import { ComponentInternalInstance, ComponentPublicInstance } from 'vue';
 
 interface _ComponentPublicInstance extends ComponentPublicInstance {
-  handleCheckClick: (event: Event, newWindow: boolean) => void
+  handleCheckClick: (event: Event, newWindow: boolean) => void;
 }
 
 export interface _ComponentInternalInstance extends ComponentInternalInstance {
@@ -14,7 +11,7 @@ export interface _ComponentInternalInstance extends ComponentInternalInstance {
 export interface Props {
   name: string | number;
   disabled: boolean;
-  target: string,
+  target: string;
   to: string | any;
   replace: boolean;
 }

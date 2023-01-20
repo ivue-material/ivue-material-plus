@@ -1,5 +1,5 @@
 // 正方形
-@mixin square ($size) {
+@mixin square($size) {
   @include size($size, $size);
 }
 
@@ -11,7 +11,6 @@
 
 // placeholder
 @mixin placeholder($color: #c5c8ce) {
-
   /*Firefox*/
   &::-moz-placeholder {
     color: $color;

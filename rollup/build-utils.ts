@@ -1,6 +1,4 @@
-import {
-  resolve
-} from 'path';
+import { resolve } from 'path';
 
 export const projRoot = resolve('../');
 
@@ -20,7 +18,10 @@ export const buildRoot = resolve(projRoot, 'rollup');
 export const pkgRoot = resolve(projRoot, 'src');
 
 // 打包插件
-export const resolversPath = resolve(projRoot, 'src/resolvers/ivue-material-plus.ts');
+export const resolversPath = resolve(
+  projRoot,
+  'src/resolvers/ivue-material-plus.ts'
+);
 
 // 输入模块的目录路径
 export const epRoot = resolve(pkgRoot);

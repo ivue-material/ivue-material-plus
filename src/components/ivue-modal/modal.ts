@@ -3,7 +3,7 @@ import Modal from './instance';
 // types
 import type ModalInstance from './index.vue';
 
-export type ModalInstance = InstanceType<typeof ModalInstance>
+export type ModalInstance = InstanceType<typeof ModalInstance>;
 
 type Options = {
   render?: () => void;
@@ -11,29 +11,31 @@ type Options = {
   lockScroll?: any;
   icon?: string;
   showCancel?: boolean;
-}
+};
 
 type Props = {
   icon?: string;
   showCancel?: boolean;
-}
+};
 
 // instance
 let modalInstance: ModalInstance;
 
 function getModalInstance(render = undefined, lockScroll = true): any {
-  modalInstance = modalInstance || Modal.newInstance({
-    // 是否显示关闭按钮
-    closable: false,
-    // 是否允许点击遮罩层关闭
-    maskClosable: false,
-    // 不显示底部
-    footerHide: true,
-    // 渲染函数
-    render: render,
-    // 是否禁止对页面滚动条的修改
-    lockScroll
-  });
+  modalInstance =
+    modalInstance ||
+    Modal.newInstance({
+      // 是否显示关闭按钮
+      closable: false,
+      // 是否允许点击遮罩层关闭
+      maskClosable: false,
+      // 不显示底部
+      footerHide: true,
+      // 渲染函数
+      render: render,
+      // 是否禁止对页面滚动条的修改
+      lockScroll,
+    });
 
   return modalInstance;
 }
@@ -41,9 +43,9 @@ function getModalInstance(render = undefined, lockScroll = true): any {
 // 渲染实例
 function renderInstance(options: Options) {
   // 自定义内容，使用后不再限制类型， content 也无效
-  const render = ('render' in options) ? options.render : undefined;
+  const render = 'render' in options ? options.render : undefined;
   // 是否禁止对页面滚动条的修改
-  const lockScroll = ('lockScroll' in options) ? options.lockScroll : true;
+  const lockScroll = 'lockScroll' in options ? options.lockScroll : true;
 
   // 创建实例
   const instance = getModalInstance(render, lockScroll);

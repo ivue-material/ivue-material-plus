@@ -1,4 +1,3 @@
-
 import type { InjectionKey } from 'vue';
 
 export interface Props {
@@ -8,9 +7,9 @@ export interface Props {
 }
 
 export type BreadcrumbContext = {
-  props: Props,
-  divider: string
-}
+  props: Props;
+  divider: string;
+};
 
 export const BreadcrumbContextKey: InjectionKey<BreadcrumbContext> =
   Symbol('ivue-breadcrumb');

@@ -10,7 +10,6 @@ $name: 'ivue-select';
   --#{$name}-loading-height: 100px;
   --#{$name}-loading-load-size: 17px;
 
-
   // input
   --#{$name}-input-height: 36px;
 
@@ -18,7 +17,7 @@ $name: 'ivue-select';
   --#{$name}-close-color: #666666;
 
   // loading
-  --#{$name}-loading-color: #9AB0C6;
+  --#{$name}-loading-color: #9ab0c6;
 
   // visible
   --#{$name}-visible-selection-color: rgba(91, 142, 255, 0.8);
@@ -27,14 +26,14 @@ $name: 'ivue-select';
 
   // tag
   --#{$name}-tag-border-color: #e8eaec;
-  --#{$name}-tag-border-bg: #F8F9FD;
-  --#{$name}-tag-icon-color: #BFCDD9;
+  --#{$name}-tag-border-bg: #f8f9fd;
+  --#{$name}-tag-icon-color: #bfcdd9;
 
   // dropdown
-  --#{$name}-dropdown-shadow-color: rgba(0, 0, 0, .2);
+  --#{$name}-dropdown-shadow-color: rgba(0, 0, 0, 0.2);
 
   // not-find
-  --#{$name}-not-find-color: #9AB0C6;
+  --#{$name}-not-find-color: #9ab0c6;
 }
 
 .#{$name} {
@@ -79,7 +78,7 @@ $name: 'ivue-select';
       background-color: var(--ivue-input-disabled-bg);
 
       &:hover {
-        border-color: var(--#{$name}-disabled-selection-hover-color)
+        border-color: var(--#{$name}-disabled-selection-hover-color);
       }
     }
 
@@ -115,7 +114,6 @@ $name: 'ivue-select';
       width: 100%;
     }
   }
-
 
   // 多选样式
   &-multiple &-selection {
@@ -191,7 +189,7 @@ $name: 'ivue-select';
       position: relative;
       top: -1px;
       margin-left: 2px;
-      opacity: .6;
+      opacity: 0.6;
       font-size: var(--ivue-font-base-size);
       width: auto;
       min-width: auto;
@@ -244,7 +242,7 @@ $name: 'ivue-select';
   &-head-with-prefix {
     padding-left: 4px !important;
     display: inline-block !important;
-    vertical-align: middle
+    vertical-align: middle;
   }
 
   // 多选和设置了最大显示数时的方框
@@ -287,13 +285,11 @@ $name: 'ivue-select';
       background: var(--ivue-primary-color);
       border-color: var(--ivue-primary-color);
 
-
       // 文字
       .#{$name}-tag-text,
       .ivue-icon {
         color: var(--ivue-white-color);
       }
-
     }
   }
 
@@ -306,7 +302,6 @@ $name: 'ivue-select';
 
   // 开启了多选
   &-multiple {
-
     .#{$name}-prefix {
       padding: 0 4px 0 0;
     }
@@ -317,7 +312,7 @@ $name: 'ivue-select';
     }
 
     .#{$name}-head-with-prefix {
-      padding-left: 0 !important
+      padding-left: 0 !important;
     }
 
     .#{$name}-tag {
@@ -328,7 +323,6 @@ $name: 'ivue-select';
       position: relative;
 
       i {
-
         display: block;
         position: absolute;
         right: 4px;
@@ -348,7 +342,7 @@ $name: 'ivue-select';
       &-selected:after {
         @include ivue-icon;
 
-        content: "done";
+        content: 'done';
         position: absolute;
         top: 0;
         bottom: 0;
@@ -363,7 +357,7 @@ $name: 'ivue-select';
 
   // 头部开启了过滤 && 自定义了 prefix && 开启了多选
   &-multiple &-head-flex &-prefix {
-    margin-right: 4px
+    margin-right: 4px;
   }
 
   &-multiple &-input-filter {
@@ -436,7 +430,7 @@ $name: 'ivue-select';
     transform-origin: center top 0px;
     opacity: 1;
 
-    &[data-popper-placement="top"] {
+    &[data-popper-placement='top'] {
       transform-origin: center bottom 0px;
     }
 
@@ -504,7 +498,7 @@ $name: 'ivue-select';
       i {
         font-size: 14px;
         margin: 0;
-        transition: all .1s $ivue-transition-default-timing;
+        transition: all 0.1s $ivue-transition-default-timing;
       }
     }
 
@@ -517,7 +511,6 @@ $name: 'ivue-select';
         color: var(--ivue-input-disabled-color);
       }
     }
-
 
     &-selected {
       opacity: 1;
@@ -544,7 +537,7 @@ $name: 'ivue-select';
 // 下拉菜单动画
 .transition-drop-appear,
 .transition-drop-enter-active {
-  animation-duration: .3s;
+  animation-duration: 0.3s;
   animation-fill-mode: both;
   animation-name: transitionDropIn;
   animation-play-state: running;
@@ -553,13 +546,12 @@ $name: 'ivue-select';
 }
 
 .transition-drop-leave-active {
-  animation-duration: .3s;
+  animation-duration: 0.3s;
   animation-fill-mode: both;
   animation-timing-function: ease-in-out;
   animation-name: transitionDropOut;
-  animation-play-state: running
+  animation-play-state: running;
 }
-
 
 @keyframes transitionDropIn {
   0% {
@@ -585,11 +577,10 @@ $name: 'ivue-select';
   }
 }
 
-
 // 多选选项动画
 .multiple-transition-enter-active,
 .multiple-transition-leave-active {
-  transition: opacity .3s ease-in-out;
+  transition: opacity 0.3s ease-in-out;
 }
 
 .multiple-transition-enter-from,
@@ -600,7 +591,7 @@ $name: 'ivue-select';
 // 提示输入框动画
 .ivue-select-fade-enter-active,
 .ivue-select-fade-leave-active {
-  transition: opacity .3s ease-in-out;
+  transition: opacity 0.3s ease-in-out;
 }
 
 .ivue-select-fade-enter-from,
@@ -610,7 +601,7 @@ $name: 'ivue-select';
 
 // 下拉菜单选项动画
 .ivue-select-item-fade-enter-active {
-  transition: opacity .3s ease-in-out;
+  transition: opacity 0.3s ease-in-out;
 }
 
 .ivue-select-item-fade-enter-from,

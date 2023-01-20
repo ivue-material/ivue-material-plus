@@ -1,4 +1,3 @@
-
 import {
   defineComponent,
   h,
@@ -34,7 +33,8 @@ export default defineComponent({
 
     const { wrappedRowRender } = useRender(props);
 
-    const { handleColumnsChange, handleScrollableWidthChange } = useTableLayoutObserver(IvueTable);
+    const { handleColumnsChange, handleScrollableWidthChange } =
+      useTableLayoutObserver(IvueTable);
 
     // methods
 
@@ -48,39 +48,35 @@ export default defineComponent({
     };
 
     // watch
-    watch(
-      props.store.states.hoverRow,
-      (newVal: number, oldVal: number) => {
-        // 没有固定列
-        if (!props.store.states.isFixedColumns.value) {
-          return;
+    watch(props.store.states.hoverRow, (newVal: number, oldVal: number) => {
+      // 没有固定列
+      if (!props.store.states.isFixedColumns.value) {
+        return;
+      }
+
+      // 延迟执行
+      let raf = window.requestAnimationFrame;
+      if (!raf) {
+        raf = (fn) => window.setTimeout(fn, 16);
+      }
+
+      raf(() => {
+        const rows = vm?.vnode.el?.querySelectorAll('.ivue-table-row');
+
+        const oldRow = rows[oldVal];
+        const newRow = rows[newVal];
+
+        // 删除之前的hover
+        if (oldRow) {
+          removeClass(oldRow, 'hover-row');
         }
 
-        // 延迟执行
-        let raf = window.requestAnimationFrame;
-        if (!raf) {
-          raf = (fn) => window.setTimeout(fn, 16);
+        // 添加hover
+        if (newRow) {
+          addClass(newRow, 'hover-row');
         }
-
-        raf(() => {
-          const rows = vm?.vnode.el?.querySelectorAll('.ivue-table-row');
-
-          const oldRow = rows[oldVal];
-          const newRow = rows[newVal];
-
-          // 删除之前的hover
-          if (oldRow) {
-            removeClass(oldRow, 'hover-row');
-          }
-
-          // 添加hover
-          if (newRow) {
-            addClass(newRow, 'hover-row');
-          }
-        });
-
       });
-
+    });
 
     // onUnmounted
     onUnmounted(() => {
@@ -94,17 +90,14 @@ export default defineComponent({
       removePopper?.();
     });
 
-
     return {
       // methods
       renderRow,
       handleColumnsChange,
-      handleScrollableWidthChange
+      handleScrollableWidthChange,
     };
   },
   render() {
-    return h('tbody', {}, [
-      this.renderRow()
-    ]);
-  }
+    return h('tbody', {}, [this.renderRow()]);
+  },
 });

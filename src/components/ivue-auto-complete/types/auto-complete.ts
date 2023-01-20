@@ -1,13 +1,13 @@
 import type Select from '../ivue-select/index.vue';
 import type Input from '../ivue-input/index.vue';
 
-export type Select = InstanceType<typeof Select>
-export type Input = InstanceType<typeof Input>
+export type Select = InstanceType<typeof Select>;
+export type Input = InstanceType<typeof Input>;
 
 export type Option = {
   value: string | number;
   label: string | number;
-}
+};
 
 export interface Props {
   modelValue: string;

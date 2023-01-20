@@ -1,5 +1,5 @@
 const Render = (props) => {
-    return props.render();
+  return props.render();
 };
 
 export default Render;

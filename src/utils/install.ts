@@ -1,13 +1,12 @@
-
 import { NOOP } from '@vue/shared';
 
 import type { AppContext, Plugin, App } from 'vue';
 
-export type SFCWithInstall<T> = T & Plugin
+export type SFCWithInstall<T> = T & Plugin;
 
 export type SFCInstallWithContext<T> = SFCWithInstall<T> & {
-  _context: AppContext | null
-}
+  _context: AppContext | null;
+};
 
 // 安装组件 Record -> 构造一个对象类型 其属性键为Keys，其属性值为Type
 export const withInstall = <T, E extends Record<string, any>>(
@@ -16,7 +15,6 @@ export const withInstall = <T, E extends Record<string, any>>(
   // 关联的组件
   extra?: E
 ) => {
-
   // 安装组件 组件.install
   (main as SFCWithInstall<T>).install = (app): void => {
     for (const comp of [main, ...Object.values(extra ?? {})]) {
@@ -40,7 +38,6 @@ export const withNoopInstall = <T>(component: T) => {
 
   return component as SFCWithInstall<T>;
 };
-
 
 // 注册指令
 export const withInstallDirective = <T>(directive: T, name: string) => {

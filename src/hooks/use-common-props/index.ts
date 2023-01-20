@@ -1,4 +1,4 @@
-import { computed, inject, ref, unref } from 'vue';
+import { computed, inject, unref } from 'vue';
 import { useProp } from '../use-prop';
 
 // type

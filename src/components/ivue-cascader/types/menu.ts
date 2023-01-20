@@ -5,7 +5,7 @@ export interface Props {
   options: Options[];
   disabled: boolean;
   changeOnSelect: boolean;
-  trigger?: string
+  trigger?: string;
 }
 
 export interface Data {
@@ -15,6 +15,6 @@ export interface Data {
 }
 
 export interface _ComponentInternalInstance extends ComponentInternalInstance {
-  ctx: any,
-  proxy: any
+  ctx: any;
+  proxy: any;
 }

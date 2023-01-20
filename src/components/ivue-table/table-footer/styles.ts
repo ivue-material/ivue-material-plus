@@ -10,7 +10,7 @@ import {
 
 // ts
 import type { TableColumnCtx } from '../table-column/defaults';
-import {  TableContextKey } from '../table/defaults';
+import { TableContextKey } from '../table/defaults';
 
 const prefixCls = 'ivue-table';
 
@@ -58,7 +58,6 @@ function useStyle(props: TableFooter) {
       props.store
     );
 
-
     ensurePosition(fixedStyle, 'left');
     ensurePosition(fixedStyle, 'right');
 
@@ -68,7 +67,7 @@ function useStyle(props: TableFooter) {
   return {
     columns,
     getCellClass,
-    getCellStyle
+    getCellStyle,
   };
 }
 

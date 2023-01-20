@@ -1,10 +1,7 @@
-
-
 import type { Store } from '../store';
 import type { TableColumnCtx } from '../table-column/defaults';
 
 function useUtils(store: Store) {
-
   // 设置当前选择的行
   const setCurrentRow = (row: TableColumnCtx) => {
     store.commit('setCurrentRow', row);
@@ -62,7 +59,7 @@ function useUtils(store: Store) {
     // 传入由columnKey 组成的数组以清除指定列的过滤条件
     clearFilter,
     // 切换行展开
-    toggleRowExpansion
+    toggleRowExpansion,
   };
 }
 

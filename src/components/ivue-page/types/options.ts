@@ -1,4 +1,3 @@
-
 export interface Props {
   showSizer?: boolean;
   pageSize?: number;
@@ -12,7 +11,6 @@ export interface Props {
   currentPage?: number;
   allPages?: number;
 }
-
 
 export interface Data {
   timeout: ReturnType<typeof setTimeout> | null;

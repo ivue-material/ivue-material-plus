@@ -2,11 +2,11 @@ import type { ComponentResolver, ComponentInfo } from './types';
 
 export interface resolverOptions {
   // use commonjs lib & source css or scss for ssr
-  ssr?: boolean
+  ssr?: boolean;
   // 是否引入style
-  importStyle?: boolean
+  importStyle?: boolean;
   // 组件名称
-  name?: string
+  name?: string;
 }
 
 // 转换为驼峰
@@ -40,7 +40,7 @@ const noStylesComponents = [
   'ivue-relative-time',
   'ivue-submenu',
   'ivue-menu-group',
-  'ivue-menu-item'
+  'ivue-menu-item',
 ];
 
 // 使用依赖组件
@@ -48,23 +48,23 @@ const useDependentComponents = [
   // ivue-table
   {
     name: 'ivue-table',
-    dependent: ['IvueTableColumn']
+    dependent: ['IvueTableColumn'],
   },
   // ivue-tabs
   {
     name: 'ivue-tabs',
-    dependent: ['IvueTabItem', 'IvueTab']
+    dependent: ['IvueTabItem', 'IvueTab'],
   },
   // ivue-select
   {
     name: 'ivue-select',
-    dependent: ['IvueOption', 'IvueOptionGroup']
+    dependent: ['IvueOption', 'IvueOptionGroup'],
   },
   // ivue-steps
   {
     name: 'ivue-steps',
-    dependent: ['IvueStep']
-  }
+    dependent: ['IvueStep'],
+  },
 ];
 
 // 样式
@@ -72,39 +72,39 @@ const sideEffects = [
   // ivue-page
   {
     name: 'ivue-page',
-    sideEffects: ['ivue-select']
+    sideEffects: ['ivue-select'],
   },
   // ivue-modal
   {
     name: 'ivue-modal',
-    sideEffects: ['ivue-button', 'ivue-spin']
+    sideEffects: ['ivue-button', 'ivue-spin'],
   },
   // ivue-cascader
   {
     name: 'ivue-cascader',
-    sideEffects: ['ivue-input', 'ivue-select', 'ivue-loading']
+    sideEffects: ['ivue-input', 'ivue-select', 'ivue-loading'],
   },
   // ivue-auto-complete
   {
     name: 'ivue-auto-complete',
-    sideEffects: ['ivue-loading', 'ivue-input', 'ivue-select']
+    sideEffects: ['ivue-loading', 'ivue-input', 'ivue-select'],
   },
   // ivue-button
   {
     name: 'ivue-button',
-    sideEffects: ['ivue-ripple']
+    sideEffects: ['ivue-ripple'],
   },
   // ivue-switch
   {
     name: 'ivue-switch',
-    sideEffects: ['ivue-ripple']
+    sideEffects: ['ivue-ripple'],
   },
   // ivue-table
   {
     name: 'ivue-table',
-    sideEffects: ['ivue-tooltip', 'ivue-checkbox', 'ivue-scrollbar']
+    sideEffects: ['ivue-tooltip', 'ivue-checkbox', 'ivue-scrollbar'],
   },
-]
+];
 
 // 设置样式文件
 function getSideEffects(componentsName: string, options) {
@@ -115,9 +115,7 @@ function getSideEffects(componentsName: string, options) {
 
   // 单文件引入
   if (options.singleFile) {
-    return [
-      `${pakPath}/styles/${componentsName}.css`
-    ];
+    return [`${pakPath}/styles/${componentsName}.css`];
   }
 
   let list = [
@@ -125,27 +123,29 @@ function getSideEffects(componentsName: string, options) {
     `${pakPath}/styles/ivue-icon.css`,
     `${basePath}`,
     `${animationPath}`,
-    `${pakPath}/styles/${componentsName}.css`
+    `${pakPath}/styles/${componentsName}.css`,
   ];
 
   sideEffects.forEach((item) => {
     if (item.name === componentsName) {
       item.sideEffects.forEach((sideEffectsItem) => {
-        list.push(`${pakPath}/styles/${sideEffectsItem}.css`)
-      })
+        list.push(`${pakPath}/styles/${sideEffectsItem}.css`);
+      });
     }
-  })
+  });
 
   return list;
 }
 
-
 // 请求组件
-const resolveComponent = (componentsName: string, options: resolverOptions): ComponentInfo | undefined => {
+const resolveComponent = (
+  componentsName: string,
+  options: resolverOptions
+): ComponentInfo | undefined => {
   // 使用依赖组件
   let useDependentComponentsData: {
-    name: string,
-    from: string
+    name: string;
+    from: string;
   } | null = null;
 
   useDependentComponents.forEach((item) => {
@@ -171,7 +171,7 @@ const resolveComponent = (componentsName: string, options: resolverOptions): Com
   return {
     name: options.name,
     from: `${pakPath}/${options.ssr ? 'lib' : 'es'}`,
-    sideEffects: getSideEffects(componentsName, options)
+    sideEffects: getSideEffects(componentsName, options),
   };
 };
 
@@ -183,28 +183,28 @@ const resolveDirective = (name: string, options: resolverOptions) => {
       name: 'IvueLoading',
       importName: 'ivue-loading',
       styleName: 'ivue-loading',
-      importStyle: true
+      importStyle: true,
     },
     // 水波纹
     Ripple: {
       name: 'Ripple',
       importName: 'ivue-ripple',
       styleName: 'ivue-ripple',
-      importStyle: true
+      importStyle: true,
     },
     // 点击外层触发
     ClickOutside: {
       name: 'ClickOutside',
       importName: 'ivue-click-outside',
       styleName: 'ivue-click-outside',
-      importStyle: false
+      importStyle: false,
     },
     // 手指事件
     Touch: {
       name: 'Touch',
       importName: 'ivue-touch',
       styleName: 'ivue-touch',
-      importStyle: false
+      importStyle: false,
     },
     // 文本缩略
     LineClamp: {
@@ -213,7 +213,7 @@ const resolveDirective = (name: string, options: resolverOptions) => {
       styleName: 'ivue-line-clamp',
       importStyle: true,
       // 单文件引入
-      singleFile: true
+      singleFile: true,
     },
   };
 
@@ -228,51 +228,53 @@ const resolveDirective = (name: string, options: resolverOptions) => {
     from: `${pakPath}/${options.ssr ? 'lib' : 'es'}`,
     sideEffects: getSideEffects(directive.styleName, {
       importStyle: directive.importStyle,
-      singleFile: directive.singleFile
-    })
+      singleFile: directive.singleFile,
+    }),
   };
 };
 
-export function IvueMaterialPlusResolver(options?: resolverOptions): ComponentResolver[] {
-
+export function IvueMaterialPlusResolver(
+  options?: resolverOptions
+): ComponentResolver[] {
   let optionsResolved = {
     ssr: false,
     ...options,
-  }
+  };
 
-  return [{
-    type: 'component',
-    resolve: (name: string) => {
-      // 是否是 ivue组件
-      if (!name.match(/^Ivue[A-Z]/)) {
-        return;
-      }
+  return [
+    {
+      type: 'component',
+      resolve: (name: string) => {
+        // 是否是 ivue组件
+        if (!name.match(/^Ivue[A-Z]/)) {
+          return;
+        }
 
-      // 转换为驼峰
-      const _kebabCase = kebabCase(name);
+        // 转换为驼峰
+        const _kebabCase = kebabCase(name);
 
-      // 没有样式组件
-      if ([...noStylesComponents].includes(_kebabCase)) {
+        // 没有样式组件
+        if ([...noStylesComponents].includes(_kebabCase)) {
+          return resolveComponent(_kebabCase, {
+            name,
+            importStyle: false,
+            ...optionsResolved,
+          });
+        }
+
+        // 有样式组件
         return resolveComponent(_kebabCase, {
           name,
-          importStyle: false,
-          ...optionsResolved
+          importStyle: true,
+          ...optionsResolved,
         });
-      }
-
-      // 有样式组件
-      return resolveComponent(_kebabCase, {
-        name,
-        importStyle: true,
-        ...optionsResolved
-      });
+      },
     },
-  },
-  {
-    type: 'directive',
-    resolve: (name: string) => {
-      return resolveDirective(name, optionsResolved);
+    {
+      type: 'directive',
+      resolve: (name: string) => {
+        return resolveDirective(name, optionsResolved);
+      },
     },
-  },
   ];
 }

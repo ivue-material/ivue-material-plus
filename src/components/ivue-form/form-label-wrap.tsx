@@ -8,28 +8,22 @@ import {
   onBeforeUnmount,
   onUpdated,
   watch,
-  computed
+  computed,
 } from 'vue';
 import { useResizeObserver } from '@vueuse/core';
 
 // type
-import type {
-  CSSProperties,
-} from 'vue';
+import type { CSSProperties } from 'vue';
 
 // type
-import {
-  FormContextKey,
-} from './types/form';
-import {
-  FormItemContextKey,
-} from './types/form-item';
+import { FormContextKey } from './types/form';
+import { FormItemContextKey } from './types/form-item';
 
 // type
 type Props = {
   isAutoWidth: boolean;
   updateAll: boolean;
-}
+};
 
 // prefixCls
 const prefixCls = 'ivue-form-label-wrap';
@@ -43,7 +37,7 @@ export default defineComponent({
      * @type {Boolean}
      */
     isAutoWidth: {
-      type: Boolean
+      type: Boolean,
     },
     /**
      * form 设置宽度为 auto 更新所有 item
@@ -51,8 +45,8 @@ export default defineComponent({
      * @type {Boolean}
      */
     updateAll: {
-      type: Boolean
-    }
+      type: Boolean,
+    },
   },
   setup(props: Props, { slots }) {
     const formContext = inject(FormContextKey, undefined);
@@ -80,7 +74,6 @@ export default defineComponent({
         return 0;
       }
     };
-
 
     // 更新标签宽度
     const updateLabelWidth = (action: 'update' | 'remove' = 'update') => {
@@ -131,16 +124,14 @@ export default defineComponent({
     // watch
 
     // 监听标签宽度
-    watch(computedWidth,
-      (value, oldValue) => {
-        // form 设置宽度为 auto 更新所有 item
-        if (props.updateAll) {
-          formContext?.registerLabelWidth(value, oldValue);
-        }
-      });
+    watch(computedWidth, (value, oldValue) => {
+      // form 设置宽度为 auto 更新所有 item
+      if (props.updateAll) {
+        formContext?.registerLabelWidth(value, oldValue);
+      }
+    });
 
     return () => {
-
       // 没有内容
       if (!slots) {
         return null;
@@ -158,7 +149,6 @@ export default defineComponent({
 
         const style: CSSProperties = {};
 
-
         // 有label 没有 宽度 auto
         if (hasLabel && autoLabelWidth && autoLabelWidth !== 'auto') {
           const marginWidth = Math.max(
@@ -169,7 +159,6 @@ export default defineComponent({
           // 标签位置
           const marginPosition =
             formContext.labelPosition === 'left' ? 'marginRight' : 'marginLeft';
-
 
           // 有宽度
           if (marginWidth) {
@@ -188,5 +177,5 @@ export default defineComponent({
         return <Fragment ref={el}>{slots.default?.()}</Fragment>;
       }
     };
-  }
+  },
 });

@@ -37,7 +37,7 @@ $name: 'ivue-radio';
   --#{$name}-small-radius: 3px;
 
   // color
-  --#{$name}-disabled-bg: #F8F9FD;
+  --#{$name}-disabled-bg: #f8f9fd;
 }
 
 .#{$name} {
@@ -179,7 +179,7 @@ $name: 'ivue-radio';
         border-left: 0;
         background: var(--ivue-white-color);
 
-        >span {
+        > span {
           margin-right: 0;
         }
 
@@ -190,13 +190,15 @@ $name: 'ivue-radio';
 
         // 第一个角度
         &:first-child {
-          border-radius: var(--#{$name}-group-radius) 0 0 var(--#{$name}-group-radius);
+          border-radius: var(--#{$name}-group-radius) 0 0
+            var(--#{$name}-group-radius);
           border: 1px solid var(--ivue-border-color);
         }
 
         // 最后一个角度
         &:last-child {
-          border-radius: 0 var(--#{$name}-group-radius) var(--#{$name}-group-radius) 0;
+          border-radius: 0 var(--#{$name}-group-radius)
+            var(--#{$name}-group-radius) 0;
         }
       }
 
@@ -212,7 +214,6 @@ $name: 'ivue-radio';
         width: 0;
         height: 0;
       }
-
 
       // 显示为实色填底
       &--solid .#{$name}-wrapper--checked:not(.ivue-radio-wrapper-disabled) {
@@ -256,12 +257,10 @@ $name: 'ivue-radio';
         border-color: var(--ivue-border-color);
         box-shadow: none !important;
       }
-
     }
 
     // large
     &--large {
-
       // 外层
       .#{$name}-wrapper {
         height: var(--#{$name}-large-wrapper-height);
@@ -272,7 +271,6 @@ $name: 'ivue-radio';
 
     // small
     &--small {
-
       // 外层
       .#{$name}-wrapper {
         height: var(--#{$name}-small-wrapper-height);
@@ -281,7 +279,8 @@ $name: 'ivue-radio';
         font-size: var(--#{$name}-wrapper-font-size);
 
         &:first-child {
-          border-radius: var(--#{$name}-small-radius) 0 0 var(--#{$name}-small-radius);
+          border-radius: var(--#{$name}-small-radius) 0 0
+            var(--#{$name}-small-radius);
         }
       }
     }

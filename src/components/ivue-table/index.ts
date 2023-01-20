@@ -4,7 +4,7 @@ import Table from './table.vue';
 import TableColumn from './table-column/index';
 
 export const IvueTable = withInstall(Table, {
-    TableColumn,
+  TableColumn,
 });
 export default IvueTable;
 

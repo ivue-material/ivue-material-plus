@@ -3,7 +3,6 @@ import { ref, getCurrentInstance } from 'vue';
 import { toggleRowStatus, getKeysMap, getRowIdentity } from '../utils';
 
 // ts
-import type { Ref } from 'vue';
 import type { WatcherPropsData } from './index';
 import type { Table } from '../table/defaults';
 import type { TableColumnCtx } from '../table-column/defaults';
@@ -77,7 +76,6 @@ function useExpand(watcherData: WatcherPropsData) {
 
     // 展开的行
     expandRows.value = rowKeys.reduce((prev, cur: string) => {
-
       // 当前内容
       const info = keysMap[cur];
 
@@ -95,7 +93,6 @@ function useExpand(watcherData: WatcherPropsData) {
     const rowKey = watcherData.rowKey.value;
     // 行key
     if (rowKey) {
-
       // 获取数组的key
       const expandMap = getKeysMap(expandRows.value, rowKey);
 
@@ -106,7 +103,6 @@ function useExpand(watcherData: WatcherPropsData) {
     // 是否存在当前行
     return expandRows.value.includes(row);
   };
-
 
   return {
     updateExpandRows,

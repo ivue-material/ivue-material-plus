@@ -1,32 +1,32 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <meta charset="utf-8">
+  <head>
+    <meta charset="utf-8" />
     <title>View UI Plus example</title>
-    <link rel="stylesheet" type="text/css" href="../dist/styles/ivue.css">
+    <link rel="stylesheet" type="text/css" href="../dist/styles/ivue.css" />
     <script type="text/javascript" src="https://unpkg.com/vue@next"></script>
     <!-- <script type="text/javascript" src="../dist/ivue-material-plus.min.js"></script> -->
-</head>
-<body>
-<div id="app">
-    <ivue-button @click="show">Click me!</ivue-button>
-</div>
-<script>
-    const app = Vue.createApp({
-        data () {
-            return {
-                visible: false
-            }
+  </head>
+  <body>
+    <div id="app">
+      <ivue-button @click="show">Click me!</ivue-button>
+    </div>
+    <script>
+      const app = Vue.createApp({
+        data() {
+          return {
+            visible: false,
+          };
         },
         methods: {
-            show () {
-                this.visible = true;
-            }
-        }
-    });
+          show() {
+            this.visible = true;
+          },
+        },
+      });
 
-    app.use(IvueMaterialPlus.default);
-    app.mount("#app");
-  </script>
-</body>
+      app.use(IvueMaterialPlus.default);
+      app.mount('#app');
+    </script>
+  </body>
 </html>

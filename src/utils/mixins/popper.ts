@@ -1,11 +1,13 @@
-import {
-  nextTick,
-  defineComponent,
-} from 'vue';
+import { nextTick, defineComponent } from 'vue';
 import { createPopper } from '@popperjs/core';
 
 export default defineComponent({
-  emits: ['on-popper-show', 'on-popper-hide', 'on-created', 'update:modelValue'],
+  emits: [
+    'on-popper-show',
+    'on-popper-hide',
+    'on-created',
+    'update:modelValue',
+  ],
   props: {
     reference: {
       type: Object,
@@ -20,7 +22,7 @@ export default defineComponent({
      */
     placement: {
       type: String,
-      default: 'bottom'
+      default: 'bottom',
     },
     /**
      * 箭头当前间距 左右 上下
@@ -28,7 +30,7 @@ export default defineComponent({
      * @type {Array}
      */
     offset: {
-      default: [0, 0]
+      default: [0, 0],
     },
     /**
      * 显示隐藏
@@ -37,7 +39,7 @@ export default defineComponent({
      */
     modelValue: {
       type: Boolean,
-      default: false
+      default: false,
     },
     /**
      * 动画
@@ -71,7 +73,7 @@ export default defineComponent({
             },
           ],
         };
-      }
+      },
     },
   },
   // 在数据更改导致的虚拟 DOM 重新渲染和更新完毕之后被调用。
@@ -132,7 +134,6 @@ export default defineComponent({
         this.$emit('on-created', this);
       };
 
-
       this.popperJS = createPopper(reference, popper, options);
     },
     // 更新
@@ -148,7 +149,7 @@ export default defineComponent({
 
       this.popperJS.destroy();
       this.popperJS = null;
-    }
+    },
   },
   watch: {
     // 显示隐藏
@@ -158,7 +159,7 @@ export default defineComponent({
         this.visible = val;
 
         this.$emit('update:modelValue', val);
-      }
+      },
     },
     // 显示隐藏
     visible(value: boolean) {
@@ -181,6 +182,6 @@ export default defineComponent({
 
       // update
       this.$emit('update:modelValue', value);
-    }
+    },
   },
 });

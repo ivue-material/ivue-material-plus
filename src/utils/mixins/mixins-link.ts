@@ -1,6 +1,4 @@
-import {
-  computed,
-} from 'vue';
+import { computed } from 'vue';
 import { isClient } from '../helpers';
 
 export const mixinsLink = (proxy, { to, replace, target }) => {
@@ -38,7 +36,6 @@ export const mixinsLink = (proxy, { to, replace, target }) => {
     return to;
   });
 
-
   // methods
 
   // 打开新窗口
@@ -69,7 +66,6 @@ export const mixinsLink = (proxy, { to, replace, target }) => {
     window.open(_to);
   };
 
-
   // 跳转新链接
   const handleLink = (newWindow = false) => {
     if (!isClient) {
@@ -87,14 +83,14 @@ export const mixinsLink = (proxy, { to, replace, target }) => {
       // 路由对象
       if (router) {
         // href
-        if ((typeof to === 'string') && to.includes('//')) {
+        if (typeof to === 'string' && to.includes('//')) {
           window.location.href = to;
         }
         // replace
         else {
-          replace ?
-            proxy.$router.replace(to, () => { }) :
-            proxy.$router.push(to, () => { });
+          replace
+            ? proxy.$router.replace(to, () => {})
+            : proxy.$router.push(to, () => {});
         }
       }
       // 普通链接
@@ -103,7 +99,6 @@ export const mixinsLink = (proxy, { to, replace, target }) => {
       }
     }
   };
-
 
   // 检查点击事件
   const handleCheckClick = (event: Event, newWindow = false) => {
@@ -131,6 +126,6 @@ export const mixinsLink = (proxy, { to, replace, target }) => {
     // methods
     handleOpenTo,
     handleLink,
-    handleCheckClick
+    handleCheckClick,
   };
 };

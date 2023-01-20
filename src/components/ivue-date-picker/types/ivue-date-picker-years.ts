@@ -1,4 +1,3 @@
-
 export interface Props {
   value: any;
   tableDate: string;

@@ -3,93 +3,91 @@
 Object.defineProperty(exports, '__esModule', { value: true });
 
 function kebabCase(key) {
-  const result = key.replace(/([A-Z])/g, " $1").trim();
-  return result.split(" ").join("-").toLowerCase();
+  const result = key.replace(/([A-Z])/g, ' $1').trim();
+  return result.split(' ').join('-').toLowerCase();
 }
-const pakPath = "ivue-material-plus/dist/unplugin-vue-components";
-const basePath = "ivue-material-plus/dist/styles/base.css";
-const animationPath = "ivue-material-plus/dist/styles/animation.css";
+const pakPath = 'ivue-material-plus/dist/unplugin-vue-components';
+const basePath = 'ivue-material-plus/dist/styles/base.css';
+const animationPath = 'ivue-material-plus/dist/styles/animation.css';
 const noStylesComponents = [
-  "ivue-content",
-  "ivue-carousel-item",
-  "ivue-bottom-nav-item",
-  "ivue-breadcrumb-item",
-  "ivue-checkbox-group",
-  "ivue-collapse-panel",
-  "ivue-count-down",
-  "ivue-count-up",
-  "ivue-radio-group",
-  "ivue-option",
-  "ivue-option-group",
-  "ivue-image-preview",
-  "ivue-relative-time",
-  "ivue-submenu",
-  "ivue-menu-group",
-  "ivue-menu-item"
+  'ivue-content',
+  'ivue-carousel-item',
+  'ivue-bottom-nav-item',
+  'ivue-breadcrumb-item',
+  'ivue-checkbox-group',
+  'ivue-collapse-panel',
+  'ivue-count-down',
+  'ivue-count-up',
+  'ivue-radio-group',
+  'ivue-option',
+  'ivue-option-group',
+  'ivue-image-preview',
+  'ivue-relative-time',
+  'ivue-submenu',
+  'ivue-menu-group',
+  'ivue-menu-item',
 ];
 const useDependentComponents = [
   {
-    name: "ivue-table",
-    dependent: ["IvueTableColumn"]
+    name: 'ivue-table',
+    dependent: ['IvueTableColumn'],
   },
   {
-    name: "ivue-tabs",
-    dependent: ["IvueTabItem", "IvueTab"]
+    name: 'ivue-tabs',
+    dependent: ['IvueTabItem', 'IvueTab'],
   },
   {
-    name: "ivue-select",
-    dependent: ["IvueOption", "IvueOptionGroup"]
+    name: 'ivue-select',
+    dependent: ['IvueOption', 'IvueOptionGroup'],
   },
   {
-    name: "ivue-steps",
-    dependent: ["IvueStep"]
-  }
+    name: 'ivue-steps',
+    dependent: ['IvueStep'],
+  },
 ];
 const sideEffects = [
   {
-    name: "ivue-page",
-    sideEffects: ["ivue-select"]
+    name: 'ivue-page',
+    sideEffects: ['ivue-select'],
   },
   {
-    name: "ivue-modal",
-    sideEffects: ["ivue-button", "ivue-spin"]
+    name: 'ivue-modal',
+    sideEffects: ['ivue-button', 'ivue-spin'],
   },
   {
-    name: "ivue-cascader",
-    sideEffects: ["ivue-input", "ivue-select", "ivue-loading"]
+    name: 'ivue-cascader',
+    sideEffects: ['ivue-input', 'ivue-select', 'ivue-loading'],
   },
   {
-    name: "ivue-auto-complete",
-    sideEffects: ["ivue-loading", "ivue-input", "ivue-select"]
+    name: 'ivue-auto-complete',
+    sideEffects: ['ivue-loading', 'ivue-input', 'ivue-select'],
   },
   {
-    name: "ivue-button",
-    sideEffects: ["ivue-ripple"]
+    name: 'ivue-button',
+    sideEffects: ['ivue-ripple'],
   },
   {
-    name: "ivue-switch",
-    sideEffects: ["ivue-ripple"]
+    name: 'ivue-switch',
+    sideEffects: ['ivue-ripple'],
   },
   {
-    name: "ivue-table",
-    sideEffects: ["ivue-tooltip", "ivue-checkbox", "ivue-scrollbar"]
-  }
+    name: 'ivue-table',
+    sideEffects: ['ivue-tooltip', 'ivue-checkbox', 'ivue-scrollbar'],
+  },
 ];
 function getSideEffects(componentsName, options) {
   if (!options.importStyle) {
     return;
   }
   if (options.singleFile) {
-    return [
-      `${pakPath}/styles/${componentsName}.css`
-    ];
+    return [`${pakPath}/styles/${componentsName}.css`];
   }
   let list = [
     `${pakPath}/styles/reset.css`,
     `${pakPath}/styles/ivue-icon.css`,
     `${basePath}`,
     `${animationPath}`,
-    `${pakPath}/styles/${componentsName}.css`
+    `${pakPath}/styles/${componentsName}.css`,
   ];
   sideEffects.forEach((item) => {
     if (item.name === componentsName) {
@@ -108,7 +106,7 @@ const resolveComponent = (componentsName, options) => {
       if (_kebabCase === componentsName) {
         useDependentComponentsData = {
           name: dependent,
-          from: `${pakPath}/${options.ssr ? "lib" : "es"}`
+          from: `${pakPath}/${options.ssr ? 'lib' : 'es'}`,
         };
       }
     });
@@ -118,43 +116,43 @@ const resolveComponent = (componentsName, options) => {
   }
   return {
     name: options.name,
-    from: `${pakPath}/${options.ssr ? "lib" : "es"}`,
-    sideEffects: getSideEffects(componentsName, options)
+    from: `${pakPath}/${options.ssr ? 'lib' : 'es'}`,
+    sideEffects: getSideEffects(componentsName, options),
   };
 };
 const resolveDirective = (name, options) => {
   const directives = {
     Loading: {
-      name: "IvueLoading",
-      importName: "ivue-loading",
-      styleName: "ivue-loading",
-      importStyle: true
+      name: 'IvueLoading',
+      importName: 'ivue-loading',
+      styleName: 'ivue-loading',
+      importStyle: true,
     },
     Ripple: {
-      name: "Ripple",
-      importName: "ivue-ripple",
-      styleName: "ivue-ripple",
-      importStyle: true
+      name: 'Ripple',
+      importName: 'ivue-ripple',
+      styleName: 'ivue-ripple',
+      importStyle: true,
     },
     ClickOutside: {
-      name: "ClickOutside",
-      importName: "ivue-click-outside",
-      styleName: "ivue-click-outside",
-      importStyle: false
+      name: 'ClickOutside',
+      importName: 'ivue-click-outside',
+      styleName: 'ivue-click-outside',
+      importStyle: false,
     },
     Touch: {
-      name: "Touch",
-      importName: "ivue-touch",
-      styleName: "ivue-touch",
-      importStyle: false
+      name: 'Touch',
+      importName: 'ivue-touch',
+      styleName: 'ivue-touch',
+      importStyle: false,
     },
     LineClamp: {
-      name: "LineClamp",
-      importName: "ivue-line-clamp",
-      styleName: "ivue-line-clamp",
+      name: 'LineClamp',
+      importName: 'ivue-line-clamp',
+      styleName: 'ivue-line-clamp',
       importStyle: true,
-      singleFile: true
-    }
+      singleFile: true,
+    },
   };
   const directive = directives[name];
   if (!directive) {
@@ -162,21 +160,21 @@ const resolveDirective = (name, options) => {
   }
   return {
     name: directive.name,
-    from: `${pakPath}/${options.ssr ? "lib" : "es"}`,
+    from: `${pakPath}/${options.ssr ? 'lib' : 'es'}`,
     sideEffects: getSideEffects(directive.styleName, {
       importStyle: directive.importStyle,
-      singleFile: directive.singleFile
-    })
+      singleFile: directive.singleFile,
+    }),
   };
 };
 function IvueMaterialPlusResolver(options) {
   let optionsResolved = {
     ssr: false,
-    ...options
+    ...options,
   };
   return [
     {
-      type: "component",
+      type: 'component',
       resolve: (name) => {
         if (!name.match(/^Ivue[A-Z]/)) {
           return;
@@ -186,22 +184,22 @@ function IvueMaterialPlusResolver(options) {
           return resolveComponent(_kebabCase, {
             name,
             importStyle: false,
-            ...optionsResolved
+            ...optionsResolved,
           });
         }
         return resolveComponent(_kebabCase, {
           name,
           importStyle: true,
-          ...optionsResolved
+          ...optionsResolved,
         });
-      }
+      },
     },
     {
-      type: "directive",
+      type: 'directive',
       resolve: (name) => {
         return resolveDirective(name, optionsResolved);
-      }
-    }
+      },
+    },
   ];
 }
 

@@ -1,26 +1,14 @@
-import {
-  rollup
-} from 'rollup';
-import {
-  nodeResolve
-} from '@rollup/plugin-node-resolve';
+import { rollup } from 'rollup';
+import { nodeResolve } from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
 import esbuild from 'rollup-plugin-esbuild';
 
-import {
-  resolversPath,
-  outputResolversPath
-} from '../../build-utils';
-import {
-  writeBundles
-} from '../utils';
+import { resolversPath, outputResolversPath } from '../../build-utils';
+import { writeBundles } from '../utils';
 
-import {
-  target
-} from '../build-info';
+import { target } from '../build-info';
 
 export const buildResolvers = async () => {
-
   const bundle = await rollup({
     // 打包路径
     input: resolversPath,
@@ -45,8 +33,8 @@ export const buildResolvers = async () => {
     treeshake: false,
   });
 
-  await writeBundles(
-    bundle, [{
+  await writeBundles(bundle, [
+    {
       // esm
       format: 'cjs',
       // dist/ivue-material-plus/resolvers
@@ -58,6 +46,6 @@ export const buildResolvers = async () => {
       sourcemap: true,
       // 用于从入口点创建的块的模式 mjs / js
       entryFileNames: '[name].js',
-    }]
-  );
+    },
+  ]);
 };

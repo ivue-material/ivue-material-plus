@@ -5,17 +5,16 @@
   .#{$className}-appear {
     opacity: 0;
     animation-timing-function: linear;
-    animation-duration: .2s;
+    animation-duration: 0.2s;
   }
 
   .#{$className}-leave-active {
     animation-timing-function: linear;
-    animation-duration: .2s;
+    animation-duration: 0.2s;
   }
 }
 
 @include zoom-motion('zoom', 'IvueZoom');
-
 
 @keyframes IvueZoomIn {
   0% {

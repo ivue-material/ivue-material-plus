@@ -31,7 +31,7 @@ $name: 'ivue-checkbox';
   --#{$name}-border-padding: 0 15px;
 
   // disabled
-  --#{$name}-disabled-bg: #F8F9FD;
+  --#{$name}-disabled-bg: #f8f9fd;
 }
 
 .#{$name} {
@@ -48,7 +48,7 @@ $name: 'ivue-checkbox';
     display: inline-block;
     margin-right: var(--#{$name}-right);
 
-    +span {
+    + span {
       padding-left: var(--#{$name}-text-padding-left);
     }
 
@@ -72,7 +72,6 @@ $name: 'ivue-checkbox';
   &-disabled {
     cursor: var(--ivue-cursor-disabled);
   }
-
 
   // 禁用选择
   &-disabled.#{$name}-checked &-inner {
@@ -101,8 +100,10 @@ $name: 'ivue-checkbox';
     border: 1px solid var(--ivue-border-color);
     border-radius: var(--#{$name}-inner-radius);
     background-color: var(--ivue-white-color);
-    transition: border-color var(--ivue-default-transition-time) var(--ivue-ease-in-out),
-      background-color var(--ivue-default-transition-time) var(--ivue-ease-in-out),
+    transition: border-color var(--ivue-default-transition-time)
+        var(--ivue-ease-in-out),
+      background-color var(--ivue-default-transition-time)
+        var(--ivue-ease-in-out),
       box-shadow var(--ivue-default-transition-time) var(--ivue-ease-in-out);
 
     // 中间样式
@@ -157,7 +158,7 @@ $name: 'ivue-checkbox';
 
     // 禁用
     &--disabled {
-      color: var(--ivue-disabled-color)
+      color: var(--ivue-disabled-color);
     }
   }
 
@@ -171,7 +172,6 @@ $name: 'ivue-checkbox';
       transform: rotate(45deg) scale(1);
     }
   }
-
 
   // 组合
   &-group {
@@ -189,7 +189,8 @@ $name: 'ivue-checkbox';
     height: var(--#{$name}-border-height);
     line-height: var(--#{$name}-border-line-height);
     padding: var(--#{$name}-border-padding);
-    transition: border var(--ivue-default-transition-time) var(--ivue-ease-in-out);
+    transition: border var(--ivue-default-transition-time)
+      var(--ivue-ease-in-out);
   }
 
   // indeterminate
@@ -207,5 +208,4 @@ $name: 'ivue-checkbox';
       background-color: var(--ivue-white-color);
     }
   }
-
 }

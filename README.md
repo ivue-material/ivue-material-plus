@@ -1,12 +1,12 @@
 <p align="center">
   <a href="https://lovevuerk.com/plus/" target="_blank">
-    <img width="100"src="https://lovevuerk.com/img/logo.png">
+    <img width="100"src="https://lovevuerk.com/img/logo.png"/>
   </a>
 </p>
 
 ## IVue Plus Official website
 
-**<a href="<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<https://lovevuerk.com/plus/>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>" target="_blank">https://lovevuerk.com/plus/</a>**
+**<a href="https://lovevuerk.com/plus/" target="_blank">https://lovevuerk.com/plus/</a>**
 
 IVue is a semantic component framework for Vue. It aims to provide clean, semantic and reusable components.
 Provides more than 50 commonly used low-level components.
@@ -48,7 +48,7 @@ Vue.use(IvueMaterialPlus);
 Using css via import:
 
 ```javascript
-import 'ivue-material-plus/dist/styles/index.css'
+import 'ivue-material-plus/dist/styles/index.css';
 ```
 
 ## Import On Demand

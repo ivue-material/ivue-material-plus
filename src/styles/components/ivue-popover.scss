@@ -1,4 +1,4 @@
-$name:'ivue-popover';
+$name: 'ivue-popover';
 
 :root {
   // popper
@@ -81,7 +81,6 @@ $name:'ivue-popover';
   --#{$name}-bottom-end-arrow-top: 3px;
   --#{$name}-bottom-end-arrow-border-width: 0 5px 5px;
 
-
   // inner
   --#{$name}-inner-max-width: 250px;
   --#{$name}-inner-min-height: 34px;
@@ -143,11 +142,9 @@ $name:'ivue-popover';
   --#{$name}-light-right-end-after-bottom: -7px;
   --#{$name}-light-right-end-after-border-width: 7px 7px 7px 0;
 
-
   // bottom-start
   --#{$name}-light-bottom-start-after-left: -7px;
   --#{$name}-light-bottom-start-after-border-width: 0 7px 7px;
-
 
   // bottom
   --#{$name}-light-bottom-after-left: 50%;
@@ -157,7 +154,6 @@ $name:'ivue-popover';
   // bottom-end
   --#{$name}-light-bottom-end-after-right: -7px;
   --#{$name}-light-bottom-end-after-border-width: 0 7px 7px;
-
 
   // color
   --#{$name}-popper-bg: rgba(56, 61, 71, 0.9);
@@ -183,7 +179,7 @@ $name:'ivue-popover';
     z-index: 1060;
 
     // top
-    &[data-popper-placement=top] {
+    &[data-popper-placement='top'] {
       padding: var(--#{$name}-top-padding);
 
       .#{$name}-arrow {
@@ -196,7 +192,7 @@ $name:'ivue-popover';
     }
 
     // top-start
-    &[data-popper-placement=top-start] {
+    &[data-popper-placement='top-start'] {
       padding: var(--#{$name}-top-start-padding);
 
       .#{$name}-arrow {
@@ -208,7 +204,7 @@ $name:'ivue-popover';
     }
 
     // top-end
-    &[data-popper-placement=top-end] {
+    &[data-popper-placement='top-end'] {
       padding: var(--#{$name}-top-end-padding);
 
       .#{$name}-arrow {
@@ -220,7 +216,7 @@ $name:'ivue-popover';
     }
 
     // left-start
-    &[data-popper-placement=left-start] {
+    &[data-popper-placement='left-start'] {
       padding: var(--#{$name}-left-start-padding);
 
       .#{$name}-arrow {
@@ -232,7 +228,7 @@ $name:'ivue-popover';
     }
 
     // left
-    &[data-popper-placement=left] {
+    &[data-popper-placement='left'] {
       padding: var(--#{$name}-left-padding);
 
       .#{$name}-arrow {
@@ -245,7 +241,7 @@ $name:'ivue-popover';
     }
 
     // left-end
-    &[data-popper-placement=left-end] {
+    &[data-popper-placement='left-end'] {
       padding: var(--#{$name}-left-end-padding);
 
       .#{$name}-arrow {
@@ -257,7 +253,7 @@ $name:'ivue-popover';
     }
 
     // right-start
-    &[data-popper-placement=right-start] {
+    &[data-popper-placement='right-start'] {
       padding: var(--#{$name}-right-start-padding);
 
       .#{$name}-arrow {
@@ -269,7 +265,7 @@ $name:'ivue-popover';
     }
 
     // right
-    &[data-popper-placement=right] {
+    &[data-popper-placement='right'] {
       padding: var(--#{$name}-right-padding);
 
       .#{$name}-arrow {
@@ -282,7 +278,7 @@ $name:'ivue-popover';
     }
 
     // right-end
-    &[data-popper-placement=right-end] {
+    &[data-popper-placement='right-end'] {
       padding: var(--#{$name}-right-end-padding);
 
       .#{$name}-arrow {
@@ -294,7 +290,7 @@ $name:'ivue-popover';
     }
 
     // bottom-start
-    &[data-popper-placement=bottom-start] {
+    &[data-popper-placement='bottom-start'] {
       padding: var(--#{$name}-bottom-start-padding);
 
       .#{$name}-arrow {
@@ -306,7 +302,7 @@ $name:'ivue-popover';
     }
 
     // bottom
-    &[data-popper-placement=bottom] {
+    &[data-popper-placement='bottom'] {
       padding: var(--#{$name}-bottom-padding);
 
       .#{$name}-arrow {
@@ -319,7 +315,7 @@ $name:'ivue-popover';
     }
 
     // bottom-end
-    &[data-popper-placement=bottom-end] {
+    &[data-popper-placement='bottom-end'] {
       padding: var(--#{$name}-bottom-end-padding);
 
       .#{$name}-arrow {
@@ -435,7 +431,7 @@ $name:'ivue-popover';
 
     .#{$name}-arrow {
       &:after {
-        content: " ";
+        content: ' ';
         position: absolute;
         width: 0;
         height: 0;
@@ -446,7 +442,7 @@ $name:'ivue-popover';
     }
 
     // top
-    &[data-popper-placement=top] {
+    &[data-popper-placement='top'] {
       .#{$name}-arrow {
         border-top-color: var(--ivue-white-color);
 
@@ -461,7 +457,7 @@ $name:'ivue-popover';
     }
 
     // top-start
-    &[data-popper-placement=top-start] {
+    &[data-popper-placement='top-start'] {
       .#{$name}-arrow {
         border-top-color: var(--ivue-white-color);
 
@@ -475,7 +471,7 @@ $name:'ivue-popover';
     }
 
     // top-end
-    &[data-popper-placement=top-end] {
+    &[data-popper-placement='top-end'] {
       .#{$name}-arrow {
         border-top-color: var(--ivue-white-color);
 
@@ -489,7 +485,7 @@ $name:'ivue-popover';
     }
 
     // left-start
-    &[data-popper-placement=left-start] {
+    &[data-popper-placement='left-start'] {
       .#{$name}-arrow {
         border-left-color: var(--ivue-white-color);
 
@@ -503,7 +499,7 @@ $name:'ivue-popover';
     }
 
     // left
-    &[data-popper-placement=left] {
+    &[data-popper-placement='left'] {
       .#{$name}-arrow {
         border-left-color: var(--ivue-white-color);
 
@@ -518,7 +514,7 @@ $name:'ivue-popover';
     }
 
     // left-end
-    &[data-popper-placement=left-end] {
+    &[data-popper-placement='left-end'] {
       .#{$name}-arrow {
         border-left-color: var(--ivue-white-color);
 
@@ -532,7 +528,7 @@ $name:'ivue-popover';
     }
 
     // right-start
-    &[data-popper-placement=right-start] {
+    &[data-popper-placement='right-start'] {
       .#{$name}-arrow {
         border-right-color: var(--ivue-white-color);
 
@@ -546,7 +542,7 @@ $name:'ivue-popover';
     }
 
     // right
-    &[data-popper-placement=right] {
+    &[data-popper-placement='right'] {
       .#{$name}-arrow {
         border-right-color: var(--ivue-white-color);
 
@@ -561,7 +557,7 @@ $name:'ivue-popover';
     }
 
     // right-end
-    &[data-popper-placement=right-end] {
+    &[data-popper-placement='right-end'] {
       .#{$name}-arrow {
         border-right-color: var(--ivue-white-color);
 
@@ -574,9 +570,8 @@ $name:'ivue-popover';
       }
     }
 
-
     // bottom-start
-    &[data-popper-placement=bottom-start] {
+    &[data-popper-placement='bottom-start'] {
       .#{$name}-arrow {
         border-bottom-color: var(--ivue-white-color);
 
@@ -590,7 +585,7 @@ $name:'ivue-popover';
     }
 
     // bottom
-    &[data-popper-placement=bottom] {
+    &[data-popper-placement='bottom'] {
       .#{$name}-arrow {
         border-bottom-color: var(--ivue-white-color);
 
@@ -605,7 +600,7 @@ $name:'ivue-popover';
     }
 
     // bottom-end
-    &[data-popper-placement=bottom-end] {
+    &[data-popper-placement='bottom-end'] {
       .#{$name}-arrow {
         border-bottom-color: var(--ivue-white-color);
 

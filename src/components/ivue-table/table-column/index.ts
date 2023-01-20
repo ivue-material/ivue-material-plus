@@ -9,9 +9,7 @@ import {
   Fragment,
   onBeforeUnmount,
 } from 'vue';
-import {
-  isString,
-} from '@vue/shared';
+import { isString } from '@vue/shared';
 
 import defaultProps from './defaults';
 
@@ -57,7 +55,9 @@ export default defineComponent({
     // 初始化
     const initData = () => {
       // 是否是嵌套的子列 获取 hiddenColumns 节点
-      const children = isSubColumn.value ? parent.vnode.el.children : parent.refs.hiddenColumns?.children;
+      const children = isSubColumn.value
+        ? parent.vnode.el.children
+        : parent.refs.hiddenColumns?.children;
 
       // 获取当前行index
       const getColumnIndex = () => {
@@ -78,7 +78,6 @@ export default defineComponent({
           isSubColumn.value ? parent.columnConfig.value : null
         );
       }
-
     };
 
     // 在挂载开始之前被调用
@@ -155,7 +154,12 @@ export default defineComponent({
       ];
 
       // 获取props值
-      let column = getPropsData(basicProps, sortProps, selectProps, filterProps);
+      let column = getPropsData(
+        basicProps,
+        sortProps,
+        selectProps,
+        filterProps
+      );
 
       // 合并props值
       column = mergeOptions(defaults, column);
@@ -230,14 +234,15 @@ export default defineComponent({
     // 获取父级
     const parent = columnParent.value;
     // 设置列id
-    columnId.value = `${parent.tableId || parent.columnId}-column-${columnIdSeed++}`;
+    columnId.value = `${
+      parent.tableId || parent.columnId
+    }-column-${columnIdSeed++}`;
 
     // 设置列id
     vm.columnId = columnId.value;
 
     // 列参数
     vm.columnConfig = columnConfig;
-
   },
   render() {
     try {
@@ -253,9 +258,7 @@ export default defineComponent({
       if (Array.isArray(slotsList)) {
         for (const childNode of slotsList) {
           // ivue-table-column 或者 函数组件 ((FUNCTIONAL_COMPONENT = 1 << 1) = 2) & 2 === 1
-          if (
-            childNode.type?.name === prefixCls || childNode.shapeFlag & 2
-          ) {
+          if (childNode.type?.name === prefixCls || childNode.shapeFlag & 2) {
             slot.push(childNode);
           }
           // 是否是片段 Fragment 多个根节点
@@ -283,9 +286,8 @@ export default defineComponent({
       const vnode = h('div', slot);
 
       return vnode;
-    }
-    catch {
+    } catch {
       return h('div', []);
     }
-  }
+  },
 });

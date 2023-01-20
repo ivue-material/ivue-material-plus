@@ -12,12 +12,12 @@ export type IvueCascaderMenuInstance = InstanceType<typeof IvueCascaderMenu>;
 export type TmpItem = {
   label?: string;
   value?: string;
-}
+};
 
 export type Result = {
   label?: string;
   value?: string;
-}
+};
 
 export type Options = {
   label?: string;
@@ -28,7 +28,7 @@ export type Options = {
   __label?: string;
   __value?: string;
   item?: Options;
-}
+};
 
 export type CascaderContext = {
   handleResultChange?: (params: ResultChange) => void;
@@ -36,13 +36,12 @@ export type CascaderContext = {
   dropdown: HTMLElement | any;
   props: Props;
   data: {
-    isLoadedChildren: boolean
+    isLoadedChildren: boolean;
   };
-}
+};
 
 export const CascaderContextKey: InjectionKey<CascaderContext> =
   Symbol('ivue-cascader');
-
 
 export interface Props {
   options: Options[];

@@ -5,11 +5,11 @@ export type CheckboxContext = {
   name?: string;
   handleChange?: (value: (string | number)[]) => void;
   props?: Props;
-}
+};
 
-export const CheckboxContextKey: InjectionKey<CheckboxContext> =
-  Symbol('ivue-checkbox-group');
-
+export const CheckboxContextKey: InjectionKey<CheckboxContext> = Symbol(
+  'ivue-checkbox-group'
+);
 
 export interface Props {
   modelValue: any[];

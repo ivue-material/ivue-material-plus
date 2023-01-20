@@ -1,4 +1,3 @@
-
 export interface Props {
   modelValue: string | number | boolean;
   disabled: boolean;
@@ -11,7 +10,6 @@ export interface Props {
   indeterminate: boolean;
   validateEvent: boolean;
 }
-
 
 export interface Data {
   focusInner: boolean;

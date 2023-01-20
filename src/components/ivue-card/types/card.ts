@@ -1,4 +1,3 @@
-
 export interface Props {
   to: string | any;
   title: string;

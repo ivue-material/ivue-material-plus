@@ -1,4 +1,3 @@
-
 export interface Props {
   value?: string | number;
   locale: string;

@@ -12,8 +12,8 @@ $name: 'ivue-bottom-nav';
   --#{$name}-scale-content: scale(1.2);
 
   // color
-  --#{$name}-shadow: rgba(0, 0, 0, .12);
-  --#{$name}-no-active: rgba(0, 0, 0, .54);
+  --#{$name}-shadow: rgba(0, 0, 0, 0.12);
+  --#{$name}-no-active: rgba(0, 0, 0, 0.54);
 }
 
 .#{$name} {
@@ -62,10 +62,9 @@ $name: 'ivue-bottom-nav';
   }
 
   &--is-color {
-
     // 没有激活时的状态
     .ivue-button:not(.ivue-button--active) {
-      opacity: .5;
+      opacity: 0.5;
       color: currentColor;
     }
   }
@@ -106,7 +105,7 @@ $name: 'ivue-bottom-nav';
       span {
         line-height: 1;
         transform: scale(1);
-        transition: all .15s $ivue-transition-stand-timing;
+        transition: all 0.15s $ivue-transition-stand-timing;
       }
     }
 
@@ -114,7 +113,7 @@ $name: 'ivue-bottom-nav';
       margin-top: 0;
       color: inherit;
       margin-bottom: 4px;
-      transition: all .15s $ivue-transition-stand-timing;
+      transition: all 0.15s $ivue-transition-stand-timing;
     }
 
     // 激活
@@ -129,7 +128,7 @@ $name: 'ivue-bottom-nav';
 
   &--shift {
     .ivue-button {
-      transition: .3s $ivue-transition-default-timing;
+      transition: 0.3s $ivue-transition-default-timing;
       transition-property: min-width, max-width;
       will-change: min-width, max-width;
 

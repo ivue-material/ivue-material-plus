@@ -5,7 +5,7 @@ export interface Props {
   disabled?: boolean;
 }
 
-export type SelectGroupContext = Props
+export type SelectGroupContext = Props;
 
 export const SelectGroupContextKey: InjectionKey<SelectGroupContext> =
   Symbol('ivue-select-group');

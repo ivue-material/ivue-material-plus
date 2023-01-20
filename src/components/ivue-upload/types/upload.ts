@@ -1,4 +1,3 @@
-
 import {
   UploaderFileListItem,
   UploaderResultType,
@@ -51,7 +50,7 @@ export interface Props {
 }
 
 export interface Data {
-  fileList: UploaderFileListItem[]
+  fileList: UploaderFileListItem[];
   dragOver: boolean;
   imagePreview: boolean;
   imagePreviewList: string[];

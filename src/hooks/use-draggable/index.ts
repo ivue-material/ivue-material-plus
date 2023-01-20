@@ -1,7 +1,6 @@
-
 /* eslint-disable */
 
-import { watchEffect, onBeforeUnmount, } from 'vue';
+import { watchEffect, onBeforeUnmount } from 'vue';
 import { on, off } from '../../utils/dom';
 
 // ts
@@ -13,17 +12,15 @@ export const useDraggable = (
   dragData: Record<string, any>,
   draggable: ComputedRef<boolean>,
   options: {
-    sticky: boolean
-    stickyDistance: number
+    sticky: boolean;
+    stickyDistance: number;
   }
 ) => {
-
   // 拖动开始
   const handleMoveStart = (event: MouseEvent) => {
     if (!draggable.value) {
       return false;
     }
-
 
     const rect = targetRef.value.getBoundingClientRect();
 
@@ -33,13 +30,11 @@ export const useDraggable = (
     dragData.x = rect.x || rect.left;
     dragData.y = rect.y || rect.top;
 
-
     // 当前点击在屏幕中的位置
     const distance = {
       x: event.clientX,
       y: event.clientY,
     };
-
 
     dragData.dragX = distance.x;
     dragData.dragY = distance.y;
@@ -67,7 +62,7 @@ export const useDraggable = (
     const diffDistance = {
       x: distance.x - dragData.dragX,
       y: distance.y - dragData.dragY,
-    }
+    };
 
     // 拖拽时，是否吸附屏幕边缘
     if (options.sticky) {
@@ -78,40 +73,45 @@ export const useDraggable = (
 
       // 左边吸附
       // 上一个拖动值 + 差值 <= 自动吸附屏幕边缘的临界距离 && diffDistance
-      if (dragData.x + diffDistance.x <= options.stickyDistance && diffDistance.x < 0) {
+      if (
+        dragData.x + diffDistance.x <= options.stickyDistance &&
+        diffDistance.x < 0
+      ) {
         dragData.x = 0;
       }
       // 右边吸附
       // 上一个拖动值 + dom的宽度 - 视口宽度
       else if (
-        dragData.x + dragData.rect.width - clientWidth > -options.stickyDistance
-        && diffDistance.x > 0
+        dragData.x + dragData.rect.width - clientWidth >
+          -options.stickyDistance &&
+        diffDistance.x > 0
       ) {
         // 拖动的位置 = 视口宽度 - dom的宽度
-        dragData.x = clientWidth - dragData.rect.width
-      }
-      else {
+        dragData.x = clientWidth - dragData.rect.width;
+      } else {
         dragData.x += diffDistance.x;
       }
 
       // 顶部边吸附
       // 上一个拖动值 + 差值 <= 自动吸附屏幕边缘的临界距离 && diffDistance
-      if (dragData.y + diffDistance.y <= options.stickyDistance && diffDistance.y < 0) {
+      if (
+        dragData.y + diffDistance.y <= options.stickyDistance &&
+        diffDistance.y < 0
+      ) {
         dragData.y = 0;
       }
       // 底部边吸附
       // 上一个拖动值 + dom的高度 - 视口宽度
       else if (
-        dragData.y + dragData.rect.height - clientHeight > -options.stickyDistance
-        && diffDistance.y > 0
+        dragData.y + dragData.rect.height - clientHeight >
+          -options.stickyDistance &&
+        diffDistance.y > 0
       ) {
         // 拖动的位置 = 视口高度 - dom的高度
-        dragData.y = clientHeight - dragData.rect.height
-      }
-      else {
+        dragData.y = clientHeight - dragData.rect.height;
+      } else {
         dragData.y += diffDistance.y;
       }
-
     }
     // 普通移动
     else {
@@ -119,11 +119,10 @@ export const useDraggable = (
       dragData.y += diffDistance.y;
     }
 
-
     // 拖动位置
     dragData.dragX = distance.x;
     dragData.dragY = distance.y;
-  }
+  };
 
   // 拖动结束
   const handleMoveEnd = () => {
@@ -132,7 +131,7 @@ export const useDraggable = (
 
     off(window, 'mousemove', handleMoveMove);
     off(window, 'mouseup', handleMoveEnd);
-  }
+  };
 
   // 注册拖动
   const onDraggable = () => {

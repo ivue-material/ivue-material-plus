@@ -1,11 +1,7 @@
-import {
-  spawn
-} from 'child_process';
+import { spawn } from 'child_process';
 import chalk from 'chalk';
 import consola from 'consola';
-import {
-  projRoot
-} from '../../build-utils';
+import { projRoot } from '../../build-utils';
 
 // 运行 chalk
 export const run = async (command, cwd = projRoot) => {

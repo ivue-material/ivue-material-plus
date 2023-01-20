@@ -48,7 +48,7 @@
   0% {
     opacity: 0;
     transform-origin: 0% 0%;
-    transform: scaleY(.8);
+    transform: scaleY(0.8);
   }
 
   100% {
@@ -68,17 +68,16 @@
   100% {
     opacity: 0;
     transform-origin: 0% 0%;
-    transform: scaleY(.8);
+    transform: scaleY(0.8);
   }
 }
-
 
 // 向下
 @keyframes IvueSlideDownIn {
   0% {
     opacity: 0;
     transform-origin: 100% 100%;
-    transform: scaleY(.8);
+    transform: scaleY(0.8);
   }
 
   100% {
@@ -98,7 +97,7 @@
   100% {
     opacity: 0;
     transform-origin: 100% 100%;
-    transform: scaleY(.8);
+    transform: scaleY(0.8);
   }
 }
 
@@ -107,7 +106,7 @@
   0% {
     opacity: 0;
     transform-origin: 0% 0%;
-    transform: scaleX(.8);
+    transform: scaleX(0.8);
   }
 
   100% {
@@ -127,7 +126,7 @@
   100% {
     opacity: 0;
     transform-origin: 0% 0%;
-    transform: scaleX(.8);
+    transform: scaleX(0.8);
   }
 }
 
@@ -136,7 +135,7 @@
   0% {
     opacity: 0;
     transform-origin: 100% 0%;
-    transform: scaleX(.8);
+    transform: scaleX(0.8);
   }
 
   100% {
@@ -156,6 +155,6 @@
   100% {
     opacity: 0;
     transform-origin: 100% 0%;
-    transform: scaleX(.8);
+    transform: scaleX(0.8);
   }
 }

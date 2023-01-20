@@ -6,13 +6,13 @@ import type {
 
 export type PopoverContext = {
   data?: {
-    disableCloseUnderTransfer: boolean
-    closeDelay: number,
-  }
-  default?: boolean
-  visible?: boolean
-  handleCancel?: () => void
-}
+    disableCloseUnderTransfer: boolean;
+    closeDelay: number;
+  };
+  default?: boolean;
+  visible?: boolean;
+  handleCancel?: () => void;
+};
 
 export const PopoverContextKey: InjectionKey<PopoverContext> =
   Symbol('ivue-popover');
@@ -33,7 +33,7 @@ export interface Props {
   capture: boolean;
   cancelText: string;
   confirmText: string;
-  modelValue: boolean
+  modelValue: boolean;
 }
 
 export interface Data {
@@ -46,7 +46,7 @@ export interface Data {
 }
 
 interface _ComponentPublicInstance extends ComponentPublicInstance {
-  updatePopper: () => void
+  updatePopper: () => void;
 }
 
 export interface _ComponentInternalInstance extends ComponentInternalInstance {

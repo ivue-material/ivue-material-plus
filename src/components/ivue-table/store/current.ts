@@ -27,7 +27,6 @@ function useCurrent(watcherData: WatcherPropsData) {
     if (!data.includes(oldCurrentRow) && oldCurrentRow) {
       // 行数据的key
       if (rowKey) {
-
         // 获取rowKey对应的数据
         const currentRowKey = getRowIdentity(oldCurrentRow, rowKey);
 
@@ -86,7 +85,7 @@ function useCurrent(watcherData: WatcherPropsData) {
     const oldCurrentRow = currentRow.value;
 
     // 是否有上一个数据
-    if (_currentRow && (_currentRow !== oldCurrentRow)) {
+    if (_currentRow && _currentRow !== oldCurrentRow) {
       // 当前行数据
       currentRow.value = _currentRow;
 

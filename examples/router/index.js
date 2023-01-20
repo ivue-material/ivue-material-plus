@@ -1,7 +1,4 @@
-import {
-  createWebHistory,
-  createRouter
-} from 'vue-router';
+import { createWebHistory, createRouter } from 'vue-router';
 import Affix from '../components/affix';
 import Input from '../components/input';
 import Icon from '../components/icon';
@@ -52,254 +49,257 @@ import InputNumber from '../components/input-number';
 import Menu from '../components/menu';
 import Form from '../components/form';
 
-const routes = [{
+const routes = [
+  {
     path: '/Affix',
     name: 'Affix',
-    component: Affix
+    component: Affix,
   },
   {
     path: '/loading-bar',
     name: 'LoadingBar',
-    component: LoadingBar
+    component: LoadingBar,
   },
   {
     path: '/Input',
     name: 'Input',
-    component: Input
+    component: Input,
   },
   {
     path: '/Icon',
     name: 'Icon',
-    component: Icon
+    component: Icon,
   },
   {
     path: '/Button',
     name: 'Button',
-    component: Button
+    component: Button,
   },
   {
     path: '/Elevation',
     name: 'Elevation',
-    component: Elevation
+    component: Elevation,
   },
   {
     path: '/Layout',
     name: 'Layout',
-    component: Layout
+    component: Layout,
   },
   {
     path: '/Carousel',
     name: 'Carousel',
-    component: Carousel
+    component: Carousel,
   },
   {
     path: '/Switch',
     name: 'Switch',
-    component: Switch
+    component: Switch,
   },
   {
     path: '/bottom-nav',
     name: 'BottomNav',
-    component: BottomNav
+    component: BottomNav,
   },
   {
     path: '/breadcrumb',
     name: 'Breadcrumb',
-    component: Breadcrumb
+    component: Breadcrumb,
   },
   {
     path: '/select',
     name: 'Select',
-    component: Select
+    component: Select,
   },
   {
     path: '/steps',
     name: 'Steps',
-    component: Steps
+    component: Steps,
   },
   {
     path: '/upLoad',
     name: 'UpLoad',
-    component: UpLoad
+    component: UpLoad,
   },
   {
     path: '/progress',
     name: 'Progress',
-    component: Progress
+    component: Progress,
   },
   {
     path: '/circle',
     name: 'Circle',
-    component: Circle
+    component: Circle,
   },
   {
     path: '/loading',
     name: 'Loading',
-    component: Loading
+    component: Loading,
   },
   {
     path: '/notice',
     name: 'Notice',
-    component: Notice
+    component: Notice,
   },
   {
     path: '/message',
     name: 'Message',
-    component: Message
+    component: Message,
   },
   {
     path: '/tabs',
     name: 'Tabs',
-    component: Tabs
+    component: Tabs,
   },
   {
     path: '/badge',
     name: 'Badge',
-    component: Badge
+    component: Badge,
   },
   {
     path: '/date-picker',
     name: 'DatePicker',
-    component: DatePicker
+    component: DatePicker,
   },
   {
     path: '/collapse',
     name: 'Collapse',
-    component: Collapse
+    component: Collapse,
   },
   {
     path: '/cascader',
     name: 'Cascader',
-    component: Cascader
+    component: Cascader,
   },
   {
     path: '/tooltip',
     name: 'Tooltip',
-    component: Tooltip
+    component: Tooltip,
   },
   {
     path: '/chip',
     name: 'Chip',
-    component: Chip
+    component: Chip,
   },
   {
     path: '/radio',
     name: 'Radio',
-    component: Radio
+    component: Radio,
   },
   {
     path: '/checkbox',
     name: 'Checkbox',
-    component: Checkbox
+    component: Checkbox,
   },
   {
     path: '/avatar',
     name: 'Avatar',
-    component: Avatar
+    component: Avatar,
   },
   {
     path: '/page',
     name: 'Page',
-    component: Page
+    component: Page,
   },
   {
     path: '/spin',
     name: 'Spin',
-    component: Spin
+    component: Spin,
   },
   {
     path: '/table',
     name: 'Table',
-    component: Table
+    component: Table,
   },
   {
     path: '/auto-complete',
     name: 'AutoComplete',
-    component: AutoComplete
-  }, {
+    component: AutoComplete,
+  },
+  {
     path: '/animation',
     name: 'Animation',
-    component: Animation
+    component: Animation,
   },
   {
     path: '/count-down',
     name: 'CountDown',
-    component: CountDown
-  }, {
+    component: CountDown,
+  },
+  {
     path: '/count-up',
     name: 'CountUp',
-    component: CountUp
+    component: CountUp,
   },
   {
     path: '/card',
     name: 'Card',
-    component: Card
+    component: Card,
   },
   {
     path: '/scrollbar',
     name: 'Scrollbar',
-    component: Scrollbar
+    component: Scrollbar,
   },
   {
     path: '/image',
     name: 'Image',
-    component: Image
+    component: Image,
   },
   {
     path: '/notice-bar',
     name: 'NoticeBar',
-    component: NoticeBar
+    component: NoticeBar,
   },
   {
     path: '/carousel-loop',
     name: 'CarouselLoop',
-    component: CarouselLoop
+    component: CarouselLoop,
   },
   {
     path: '/ellipsis',
     name: 'Ellipsis',
-    component: Ellipsis
+    component: Ellipsis,
   },
   {
     path: '/relative-time',
     name: 'RelativeTime',
-    component: RelativeTime
+    component: RelativeTime,
   },
   {
     path: '/back-top',
     name: 'BackTop',
-    component: BackTop
+    component: BackTop,
   },
   {
     path: '/modal',
     name: 'Modal',
-    component: Modal
+    component: Modal,
   },
   {
     path: '/popover',
     name: 'Popover',
-    component: Popover
+    component: Popover,
   },
   {
     path: '/input-number',
     name: 'InputNumber',
-    component: InputNumber
+    component: InputNumber,
   },
   {
     path: '/menu',
     name: 'Menu',
-    component: Menu
+    component: Menu,
   },
   {
     path: '/form',
     name: 'Form',
-    component: Form
-  }
+    component: Form,
+  },
 ];
 
 const router = createRouter({
   history: createWebHistory(),
-  routes
+  routes,
 });
 
 export default router;

@@ -4,7 +4,7 @@ export interface File {
   url?: string;
   status?: string;
   message?: string;
-  deletable? :string;
+  deletable?: string;
   imageFit?: string;
   beforeDelete?: any;
 }

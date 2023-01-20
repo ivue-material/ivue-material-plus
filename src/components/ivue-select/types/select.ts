@@ -47,7 +47,6 @@ export interface Props {
   validateEvent?: boolean;
 }
 
-
 export interface Data {
   visibleMenu: boolean;
   isFocused: boolean;
@@ -75,7 +74,7 @@ export type SelectContext = {
   handleOptionClick?: (option: OptionData, status?: string) => void;
   selectEmitter?: Emitter<Record<EventType, unknown>>;
   onOptionDestroy?: (index: number) => void;
-}
+};
 
 export const SelectContextKey: InjectionKey<SelectContext> =
   Symbol('ivue-select');

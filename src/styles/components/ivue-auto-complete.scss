@@ -5,12 +5,12 @@
 $name: 'ivue-auto-complete';
 
 .#{$name} {
-  &--notdata{
+  &--notdata {
     padding: 0;
     margin: 0;
   }
 
-  .ivue-loading-spinner .circular{
+  .ivue-loading-spinner .circular {
     width: 100%;
     height: 100%;
   }

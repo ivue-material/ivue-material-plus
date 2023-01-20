@@ -1,11 +1,4 @@
-
-import {
-  computed,
-  ref,
-  watch,
-  unref,
-  watchEffect,
-} from 'vue';
+import { computed, ref, watch, unref, watchEffect } from 'vue';
 import { useResizeObserver, useEventListener } from '@vueuse/core';
 
 // ts
@@ -47,9 +40,9 @@ function useStyle(
 
   // 表格缩放
   const resizeState = ref<{
-    width: null | number
-    height: null | number
-    headerHeight: null | number
+    width: null | number;
+    height: null | number;
+    headerHeight: null | number;
   }>({
     width: null,
     height: null,
@@ -61,7 +54,6 @@ function useStyle(
 
   // 是否拥有多级表头
   const isGroup = ref<boolean>(false);
-
 
   // computed
 
@@ -82,14 +74,18 @@ function useStyle(
     // 有固定高度
     if (props.height) {
       obj = {
-        height: !Number.isNaN(Number(props.height)) ? `${props.height}px` : props.height,
+        height: !Number.isNaN(Number(props.height))
+          ? `${props.height}px`
+          : props.height,
       };
     }
 
     // 有最大高度
     if (props.maxHeight) {
       obj = {
-        maxHeight: !Number.isNaN(Number(props.maxHeight)) ? `${props.maxHeight}px` : props.maxHeight,
+        maxHeight: !Number.isNaN(Number(props.maxHeight))
+          ? `${props.maxHeight}px`
+          : props.maxHeight,
       };
     }
 
@@ -101,8 +97,11 @@ function useStyle(
     const { scrollY, gutterWidth } = layout;
 
     return {
-      width: layout.bodyWidth.value ?
-        `${(layout.bodyWidth.value as number) - (scrollY.value ? gutterWidth : 0)}px`
+      width: layout.bodyWidth.value
+        ? `${
+            (layout.bodyWidth.value as number) -
+            (scrollY.value ? gutterWidth : 0)
+          }px`
         : '',
     };
   });
@@ -110,10 +109,10 @@ function useStyle(
   // 高度是否有变化
   const shouldUpdateHeight = computed(() => {
     return (
-      props.height
-      || props.maxHeight
-      || store.states.fixedColumns.value.length > 0
-      || store.states.rightFixedColumns.value.length > 0
+      props.height ||
+      props.maxHeight ||
+      store.states.fixedColumns.value.length > 0 ||
+      store.states.rightFixedColumns.value.length > 0
     );
   });
 
@@ -143,11 +142,11 @@ function useStyle(
     const { bodyWidth } = layout;
 
     const obj: any = {
-      tableLayout: tableLayout.value
+      tableLayout: tableLayout.value,
     };
 
     if (bodyWidth.value) {
-      obj.width = `${(bodyWidth.value as number)}px`;
+      obj.width = `${bodyWidth.value as number}px`;
     }
 
     return obj;
@@ -164,7 +163,6 @@ function useStyle(
 
     // 有最大高度
     if (props.maxHeight) {
-
       // number
       if (!Number.isNaN(Number(props.maxHeight))) {
         const headerHeight = table.refs.header?.scrollHeight || 0;
@@ -204,9 +202,14 @@ function useStyle(
 
     // 有滚动条
     if (scrollbar.scrollbarWrapper) {
-      useEventListener(scrollbar.scrollbarWrapper, 'scroll', handleScrollbarScroll, {
-        passive: true,
-      });
+      useEventListener(
+        scrollbar.scrollbarWrapper,
+        'scroll',
+        handleScrollbarScroll,
+        {
+          passive: true,
+        }
+      );
     }
 
     // 列的宽度自撑开
@@ -297,7 +300,11 @@ function useStyle(
     // 监听表格头部是否显示
     const tableHeader: HTMLElement = table.refs.header || {};
 
-    if (tableHeader && (props.showHeader && tableHeader.offsetHeight !== oldHeaderHeight)) {
+    if (
+      tableHeader &&
+      props.showHeader &&
+      tableHeader.offsetHeight !== oldHeaderHeight
+    ) {
       shouldUpdateLayout = true;
     }
 
@@ -311,7 +318,10 @@ function useStyle(
     footerScrollHeight.value = table.refs.footer?.scrollHeight || 0;
 
     // 中间内容的高度 = 表格可滚动高度 - 表格头部滚动高度 - 表格底部滚动高度
-    bodyScrollHeight.value = tableScrollHeight.value - headerScrollHeight.value - footerScrollHeight.value;
+    bodyScrollHeight.value =
+      tableScrollHeight.value -
+      headerScrollHeight.value -
+      footerScrollHeight.value;
 
     if (shouldUpdateLayout) {
       resizeState.value = {
@@ -323,7 +333,6 @@ function useStyle(
       // 更新布局
       updateLayout();
     }
-
   };
 
   // 滚动条滚动
@@ -364,7 +373,6 @@ function useStyle(
       footer.scrollLeft = scrollLeft;
     }
 
-
     // 最大滚动位置
     const maxScrollLeftPosition = scrollWidth - offsetWidth - 1;
 
@@ -380,7 +388,6 @@ function useStyle(
     else {
       setTableClass('is-scrolling-middle');
     }
-
   };
 
   // 是否有当前样式
@@ -405,7 +412,6 @@ function useStyle(
     classList.push(layout.scrollX.value ? className : 'is-scrolling-none');
 
     tableWrapper.className = classList.join(' ');
-
   };
 
   // 监听数据变化

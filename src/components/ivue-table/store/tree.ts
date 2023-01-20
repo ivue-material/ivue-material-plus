@@ -1,5 +1,3 @@
-
-
 import { ref, getCurrentInstance, computed, unref, watch } from 'vue';
 import { getRowIdentity, walkTreeNode } from '../utils';
 
@@ -66,7 +64,7 @@ function useTree(watcherData: WatcherPropsData) {
       // 有懒加载节点
       if (lazyTreeNodeMap.value[key].length) {
         const item = {
-          children: [] as string[]
+          children: [] as string[],
         };
 
         lazyTreeNodeMap.value[key].forEach((row) => {
@@ -78,7 +76,7 @@ function useTree(watcherData: WatcherPropsData) {
           // 是否嵌套的懒加载节点
           if (row[lazyColumnIdentifier.value] && !res[currentRowKey]) {
             res[currentRowKey] = {
-              children: []
+              children: [],
             };
           }
         });
@@ -154,7 +152,6 @@ function useTree(watcherData: WatcherPropsData) {
     else {
       toggleTreeExpansion(row, undefined);
     }
-
   };
 
   // 懒加载数据
@@ -168,7 +165,6 @@ function useTree(watcherData: WatcherPropsData) {
 
       // 当前行数据 ｜ 节点数据
       load(row, treeNode, (data) => {
-
         // 不是数组
         if (!Array.isArray(data)) {
           throw new TypeError('[Table] data must be an array');
@@ -231,7 +227,9 @@ function useTree(watcherData: WatcherPropsData) {
         // 没有改变展开
         else {
           // 展开全部 || 可以通过该属性设置 Table 目前的展开行
-          const included = ifExpandAll || (expandRowKeys.value && expandRowKeys.value.includes(key));
+          const included =
+            ifExpandAll ||
+            (expandRowKeys.value && expandRowKeys.value.includes(key));
 
           return !!(oldValue?.expanded || included);
         }
@@ -336,7 +334,6 @@ function useTree(watcherData: WatcherPropsData) {
 
     // 有展开
     if (id && data && 'expanded' in data) {
-
       const oldExpanded = data.expanded;
 
       // 重新赋值
@@ -399,8 +396,8 @@ function useTree(watcherData: WatcherPropsData) {
       treeData,
       lazyColumnIdentifier,
       childrenColumnName,
-      lazyTreeNodeMap
-    }
+      lazyTreeNodeMap,
+    },
   };
 }
 

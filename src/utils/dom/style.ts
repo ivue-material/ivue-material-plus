@@ -14,5 +14,4 @@ export function addUnit(value?: string | number, defaultUnit = 'px') {
   else if (isNumber(value)) {
     return `${value}${defaultUnit}`;
   }
-
 }

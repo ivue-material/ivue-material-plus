@@ -11,9 +11,11 @@ function getImagePreviewInstance() {
 }
 
 // 显示
-ImagePreview.show = (props: {
-  removeInstance?: () => any
-} = {}) => {
+ImagePreview.show = (
+  props: {
+    removeInstance?: () => any;
+  } = {}
+) => {
   const instance = getImagePreviewInstance();
 
   props.removeInstance = () => {
@@ -24,7 +26,10 @@ ImagePreview.show = (props: {
   instance.show(props);
 };
 
-export const IvueImagePreview = withInstallFunction(ImagePreview, '$IvueImagePreview');
+export const IvueImagePreview = withInstallFunction(
+  ImagePreview,
+  '$IvueImagePreview'
+);
 export default IvueImagePreview;
 
 export * from '../ivue-image/image-preview-global';

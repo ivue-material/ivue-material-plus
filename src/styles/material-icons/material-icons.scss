@@ -3,16 +3,18 @@ $material-icons-font-path: './fonts/material-icons' !default;
 $material-icons-version: '0.0.1';
 
 @font-face {
-  font-family: "Material Icons";
+  font-family: 'Material Icons';
   font-style: normal;
   // font-weight: 400;
   font-display: block;
-  src: url("#{$material-icons-font-path}.woff2?v=#{$material-icons-version}") format('woff2'),
-  url("#{$material-icons-font-path}.woff?v=#{$material-icons-version}") format('woff');
+  src: url('#{$material-icons-font-path}.woff2?v=#{$material-icons-version}')
+      format('woff2'),
+    url('#{$material-icons-font-path}.woff?v=#{$material-icons-version}')
+      format('woff');
 }
 
 .material-icons {
-  font-family: "Material Icons";
+  font-family: 'Material Icons';
   font-weight: normal;
   font-style: normal;
   font-size: 24px;
@@ -26,5 +28,5 @@ $material-icons-version: '0.0.1';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
-  font-feature-settings: "liga";
+  font-feature-settings: 'liga';
 }

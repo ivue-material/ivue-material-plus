@@ -8,14 +8,18 @@ export type CarouselItemStates = {
   inStage: boolean;
   animating: boolean;
   hover: boolean;
-}
+};
 
 export type CarouselItemContext = {
   props: CarouselItemProps;
   states: CarouselItemStates;
   uid: number | undefined;
-  translateItem: (index: number, activeIndex: number, oldIndex?: number) => void;
-}
+  translateItem: (
+    index: number,
+    activeIndex: number,
+    oldIndex?: number
+  ) => void;
+};
 
 export interface Props {
   type: string;

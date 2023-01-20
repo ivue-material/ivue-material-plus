@@ -1,4 +1,3 @@
-
 import type { CountUpOptions } from 'countup.js';
 
 export interface Props {

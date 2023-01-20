@@ -1,7 +1,5 @@
-
 import { h } from 'vue';
 import { hasOwn } from '@vue/shared';
-import { get, set } from 'lodash-unified';
 import IvueCheckbox from '../ivue-checkbox/index.vue';
 import IvueIcon from '../ivue-icon/index.vue';
 import Loading from './loading.vue';
@@ -89,9 +87,9 @@ export function defaultRenderCell({
   column,
   $index,
 }: {
-  row: any
-  column: TableColumnCtx
-  $index: number
+  row: any;
+  column: TableColumnCtx;
+  $index: number;
 }) {
   // 字段名称 对应列内容的字段名
   const property = column.property;
@@ -108,21 +106,16 @@ export function defaultRenderCell({
 
 // 列
 export function treeCellPrefix(
-  {
-    row,
-    treeNode,
-    store,
-  }: RenderRowData,
+  { row, treeNode, store }: RenderRowData,
   createPlaceholder = false
 ) {
-
   // 不是树节点
   if (!treeNode) {
     // 创建占位符
     if (createPlaceholder) {
       return [
         h('span', {
-          class: 'ivue-table-indent--placeholder'
+          class: 'ivue-table-indent--placeholder',
         }),
       ];
     }
@@ -151,7 +144,7 @@ export function treeCellPrefix(
       h('span', {
         class: 'ivue-table-indent',
         style: {
-          'padding-left': `${treeNode.indent}px`
+          'padding-left': `${treeNode.indent}px`,
         },
       })
     );
@@ -162,8 +155,8 @@ export function treeCellPrefix(
     const expandClasses = [
       'ivue-table--expand-icon',
       {
-        ['ivue-table--expand-icon__expandend']: treeNode.expanded
-      }
+        ['ivue-table--expand-icon__expandend']: treeNode.expanded,
+      },
     ];
 
     let icon = 'chevron_right';
@@ -185,11 +178,11 @@ export function treeCellPrefix(
         {
           default: () => {
             return [
-              icon ?
-                h(IvueIcon, null, {
-                  default: () => icon
-                }) :
-                h(Loading)
+              icon
+                ? h(IvueIcon, null, {
+                    default: () => icon,
+                  })
+                : h(Loading),
             ];
           },
         }
@@ -200,15 +193,13 @@ export function treeCellPrefix(
   else {
     ele.push(
       h('span', {
-        class: 'ivue-table-indent--placeholder'
+        class: 'ivue-table-indent--placeholder',
       })
     );
   }
 
   return ele;
-
 }
-
 
 // 需要替换的渲染函数
 export const cellForced = {
@@ -218,17 +209,20 @@ export const cellForced = {
     renderHeader({ store }: { store: Store }) {
       return h(IvueCheckbox, {
         // 没有数据禁用
-        disabled: store.states.data.value && store.states.data.value.length === 0,
+        disabled:
+          store.states.data.value && store.states.data.value.length === 0,
         // 是否选择了全部
         modelValue: store.states.isAllSelected.value,
         // 更新modelValue
         'onUpdate:modelValue': store.toggleAllSelection,
         // 中间状态
-        indeterminate: store.states.selection.value.length > 0 && !store.states.isAllSelected.value,
+        indeterminate:
+          store.states.selection.value.length > 0 &&
+          !store.states.isAllSelected.value,
         // onClick
         onClick: (event: Event) => {
           event.stopPropagation();
-        }
+        },
       });
     },
     // 渲染单元格
@@ -236,12 +230,12 @@ export const cellForced = {
       row,
       column,
       store,
-      $index
+      $index,
     }: {
-      row: any
-      column: TableColumnCtx
-      store: Store
-      $index: string
+      row: any;
+      column: TableColumnCtx;
+      store: Store;
+      $index: string;
     }) {
       return h(IvueCheckbox, {
         disabled: column.selectable
@@ -267,10 +261,7 @@ export const cellForced = {
       return column.label || '#';
     },
     // 渲染单元格
-    renderCell({ column, $index, }: {
-      column: TableColumnCtx
-      $index: number
-    }) {
+    renderCell({ column, $index }: { column: TableColumnCtx; $index: number }) {
       let i = $index + 1;
 
       const index = column.index;
@@ -315,8 +306,8 @@ export const cellForced = {
           class: [
             'ivue-table--expand-icon',
             {
-              ['ivue-table--expand-icon__expandend']: expanded
-            }
+              ['ivue-table--expand-icon__expandend']: expanded,
+            },
           ],
           onClick: handleToggleRowExpansion,
         },
@@ -324,7 +315,7 @@ export const cellForced = {
           default: () => {
             return [
               h(IvueIcon, null, {
-                default: () => 'chevron_right'
+                default: () => 'chevron_right',
               }),
             ];
           },
@@ -333,7 +324,7 @@ export const cellForced = {
     },
     sortable: false,
     resizable: false,
-  }
+  },
 };
 
 // 获取默认的class

@@ -3,7 +3,7 @@ import { isPromise } from './validate';
 export type Interceptor = (...args: any[]) => Promise<boolean> | boolean;
 
 // eslint-disable-next-line @typescript-eslint/no-empty-function
-export function noop() { }
+export function noop() {}
 
 export function callInterceptor(options: {
   // 拦截器
@@ -14,31 +14,31 @@ export function callInterceptor(options: {
   done: () => void;
   canceled?: () => void;
 }) {
-    const { interceptor, args, done, canceled } = options;
+  const { interceptor, args, done, canceled } = options;
 
-    // 是否有拦截器
-    if (interceptor) {
+  // 是否有拦截器
+  if (interceptor) {
     // eslint-disable-next-line prefer-spread
-        const returnVal = interceptor.apply(null, args || []);
+    const returnVal = interceptor.apply(null, args || []);
 
-        if (isPromise(returnVal)) {
-            returnVal
-                .then((value) => {
-                    if (value) {
-                        done();
-                    } else if (canceled) {
-                        canceled();
-                    }
-                })
-                .catch(noop);
-        } else if (returnVal) {
+    if (isPromise(returnVal)) {
+      returnVal
+        .then((value) => {
+          if (value) {
             done();
-        } else if (canceled) {
+          } else if (canceled) {
             canceled();
-        }
+          }
+        })
+        .catch(noop);
+    } else if (returnVal) {
+      done();
+    } else if (canceled) {
+      canceled();
     }
-    // 没有直接返回事件
-    else {
-        done();
-    }
+  }
+  // 没有直接返回事件
+  else {
+    done();
+  }
 }

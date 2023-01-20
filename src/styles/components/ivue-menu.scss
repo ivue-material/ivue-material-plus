@@ -29,7 +29,7 @@ $name: 'ivue-menu';
   --#{$name}-dark: #515a6e;
   --#{$name}-vertical-item-color: rgba(255, 255, 255, 0.5);
   --#{$name}-vertical-active-bg: rgb(153 202 248 / 35%);
-  --#{$name}-group-title-color: rgba(255, 255, 255, .36);
+  --#{$name}-group-title-color: rgba(255, 255, 255, 0.36);
   --#{$name}-submenu-bg: #363e4f;
 }
 
@@ -62,7 +62,6 @@ $name: 'ivue-menu';
   &-dark.#{$name}-horizontal,
   &-primary.#{$name}-horizontal,
   &-dark.#{$name}-vertical {
-
     // 菜单
     .#{$name}-item {
       color: var(--#{$name}-vertical-item-color);
@@ -107,12 +106,10 @@ $name: 'ivue-menu';
   }
 
   &-primary.#{$name}-horizontal {
-
     .#{$name}-item,
     .#{$name}-submenu {
       color: var(--ivue-white-color);
     }
-
   }
 
   // 水平
@@ -124,7 +121,7 @@ $name: 'ivue-menu';
     .#{$name}-submenu {
       position: relative;
       float: left;
-      padding:var(--#{$name}-horizontal-submenu-padding);
+      padding: var(--#{$name}-horizontal-submenu-padding);
       height: inherit;
       line-height: inherit;
       color: var(--ivue-title-color);
@@ -162,7 +159,8 @@ $name: 'ivue-menu';
         white-space: nowrap;
         list-style: none;
         cursor: pointer;
-        transition: background var(--ivue-default-transition-time) var(--ivue-ease-in-out);
+        transition: background var(--ivue-default-transition-time)
+          var(--ivue-ease-in-out);
         width: 100%;
 
         &--active {
@@ -189,7 +187,8 @@ $name: 'ivue-menu';
       // icon
       &--icon {
         transition: inherit;
-        transition: transform var(--ivue-default-transition-time) var(--ivue-ease-in-out),
+        transition: transform var(--ivue-default-transition-time)
+          var(--ivue-ease-in-out);
       }
 
       // 激活
@@ -288,7 +287,8 @@ $name: 'ivue-menu';
         bottom: 0;
         right: 24px;
         transition: initial;
-        transition: transform var(--ivue-default-transition-time) var(--ivue-ease-in-out);
+        transition: transform var(--ivue-default-transition-time)
+          var(--ivue-ease-in-out);
       }
 
       &--opened__icon {
@@ -331,7 +331,6 @@ $name: 'ivue-menu';
 
     // 子菜单
     .#{$name}-submenu {
-
       // title
       &--title {
         background: var(--#{$name}-dark);
@@ -356,7 +355,6 @@ $name: 'ivue-menu';
       }
     }
   }
-
 
   // item
   &-item {
@@ -388,7 +386,6 @@ $name: 'ivue-menu';
       }
     }
   }
-
 
   // 下拉框
   &-dropdown {

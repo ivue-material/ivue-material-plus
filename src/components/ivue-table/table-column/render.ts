@@ -11,7 +11,7 @@ import {
   defaultRenderCell,
   treeCellPrefix,
   cellForced,
-  getDefaultClassName
+  getDefaultClassName,
 } from '../config';
 import { parseWidth, parseMinWidth } from '../utils';
 
@@ -76,7 +76,6 @@ function useRender(
 
   // 获取props值
   const getPropsData = (...propsKey: unknown[]) => {
-
     return propsKey.reduce((prev: TableColumnCtx, cur) => {
       // 数组
       if (Array.isArray(cur)) {
@@ -113,7 +112,11 @@ function useRender(
     // renderHeader 属性不推荐使用。
 
     // 不是多选框
-    if (!props.renderHeader && (column.type !== 'selection') && (column.type !== 'index')) {
+    if (
+      !props.renderHeader &&
+      column.type !== 'selection' &&
+      column.type !== 'index'
+    ) {
       column.renderHeader = (scope) => {
         vm.columnConfig.value['label'];
 
@@ -133,11 +136,13 @@ function useRender(
     if (column.type === 'expand') {
       // 渲染行
       column.renderCell = (data) => {
-        return h('div', {
-          class: 'cell'
-        }, [
-          originRenderCell(data)
-        ]);
+        return h(
+          'div',
+          {
+            class: 'cell',
+          },
+          [originRenderCell(data)]
+        );
       };
 
       // 展开的内容
@@ -159,7 +164,9 @@ function useRender(
           const vnode = slots.default(data);
 
           // 判断是否是注释
-          children = vnode.some((v) => v.type !== Comment) ? vnode : originRenderCell(data);
+          children = vnode.some((v) => v.type !== Comment)
+            ? vnode
+            : originRenderCell(data);
         }
         // 不是插槽
         else {
@@ -167,7 +174,8 @@ function useRender(
         }
 
         // 列数据
-        const shouldCreatePlaceholder = hasTreeColumnValue && data.cellIndex === 0;
+        const shouldCreatePlaceholder =
+          hasTreeColumnValue && data.cellIndex === 0;
 
         // 列的占位符-用于展示树形数据时，树节点的缩进
         const prefix = treeCellPrefix(data, shouldCreatePlaceholder);
@@ -182,7 +190,9 @@ function useRender(
         if (column.showOverflowTooltip) {
           props.class = `${props.class} ${prefixCls}-tooltip`;
           props.style = {
-            width: `${(data.column.columnWidth || Number(data.column.width)) - 1}px`,
+            width: `${
+              (data.column.columnWidth || Number(data.column.width)) - 1
+            }px`,
           };
         }
 
@@ -192,7 +202,6 @@ function useRender(
         return h('div', props, [prefix, children]);
       };
     }
-
 
     return column;
   };
@@ -223,7 +232,6 @@ function useRender(
 
   // 设置列 props
   const setColumnProps = (column: TableColumnCtx) => {
-
     // 对应列的类型
     const type = column.type;
 
@@ -245,12 +253,13 @@ function useRender(
 
     // 有对应的class
     if (className) {
-      column.className = column.className ? `${column.className} ${className}` : className;
+      column.className = column.className
+        ? `${column.className} ${className}`
+        : className;
     }
 
     return column;
   };
-
 
   // 获取列节点index
   const getColumnDomIndex = (children: HTMLElement[], el) => {
@@ -268,7 +277,9 @@ function useRender(
 
   // 同步监听 表头对齐方式
   watchEffect(() => {
-    headerAlign.value = props.headerAlign ? `is-${props.headerAlign}` : align.value;
+    headerAlign.value = props.headerAlign
+      ? `is-${props.headerAlign}`
+      : align.value;
 
     return headerAlign.value;
   });
@@ -288,9 +299,8 @@ function useRender(
     getColumnDomIndex,
     columnRender,
     setColumnWidth,
-    setColumnProps
+    setColumnProps,
   };
-
 }
 
 export default useRender;

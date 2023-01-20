@@ -1,84 +1,98 @@
 <template>
-    <ivue-tooltip
-        v-model="tooltipVisible"
-        :class="prefixCls"
-        :transferClassName="prefixCls"
-        :placement="placement"
-        theme="light"
-        noArrow
-        transfer
-        manual
-        ref="tooltip"
+  <ivue-tooltip
+    v-model="tooltipVisible"
+    :class="prefixCls"
+    :transferClassName="prefixCls"
+    :placement="placement"
+    theme="light"
+    noArrow
+    transfer
+    manual
+    ref="tooltip"
+  >
+    <!-- 内容 -->
+    <template #content>
+      <!-- 多选 -->
+      <div v-if="filterMultiple">
+        <!-- content -->
+        <div :class="`${prefixCls}-content`">
+          <!-- scrollbar -->
+          <ivue-scrollbar>
+            <!-- checkbox-group -->
+            <ivue-checkbox-group
+              :class="`${prefixCls}-checkbox-group`"
+              v-model="filteredValue"
+            >
+              <!-- checkbox -->
+              <ivue-checkbox
+                v-for="filter in filtersList"
+                :key="filter.value"
+                :label="filter.value"
+              ></ivue-checkbox>
+            </ivue-checkbox-group>
+          </ivue-scrollbar>
+        </div>
+        <!-- 按钮 -->
+        <div :class="`${prefixCls}-bottom`">
+          <!-- 确认 -->
+          <button
+            :class="{
+              ['is-disabled']: filteredValue.length === 0,
+            }"
+            @click="handleConfirm"
+          >
+            Confirm
+          </button>
+          <!-- 重置 -->
+          <button @click="handleReset">Reset</button>
+        </div>
+      </div>
+      <!-- 单选 -->
+      <ul :class="`${prefixCls}-list`" v-else>
+        <!-- 全部 -->
+        <li
+          :class="[
+            `${prefixCls}-list--item`,
+            (filterValue === undefined || filterValue === null) &&
+              `${prefixCls}-list--active`,
+          ]"
+          @click="handleSelect(null)"
+        >
+          全部
+        </li>
+        <!-- 其他 -->
+        <li
+          :class="[
+            `${prefixCls}-list--item`,
+            isActive(filter) && `${prefixCls}-list--active`,
+          ]"
+          v-for="filter in filtersList"
+          :key="filter.value"
+          :label="filter.value"
+          @click="handleSelect(filter.value)"
+        >
+          {{ filter.text }}
+        </li>
+      </ul>
+    </template>
+    <!-- 图标 -->
+    <ivue-icon
+      :class="iconClass"
+      @click="handleShowTooltip"
+      v-click-outside:[capture]="handleHiddenTooltip"
+      >keyboard_arrow_down</ivue-icon
     >
-        <!-- 内容 -->
-        <template #content>
-            <!-- 多选 -->
-            <div v-if="filterMultiple">
-                <!-- content -->
-                <div :class="`${prefixCls}-content`">
-                    <!-- scrollbar -->
-                    <ivue-scrollbar>
-                        <!-- checkbox-group -->
-                        <ivue-checkbox-group
-                            :class="`${prefixCls}-checkbox-group`"
-                            v-model="filteredValue"
-                        >
-                            <!-- checkbox -->
-                            <ivue-checkbox
-                                v-for="filter in filtersList"
-                                :key="filter.value"
-                                :label="filter.value"
-                            ></ivue-checkbox>
-                        </ivue-checkbox-group>
-                    </ivue-scrollbar>
-                </div>
-                <!-- 按钮 -->
-                <div :class="`${prefixCls}-bottom`">
-                    <!-- 确认 -->
-                    <button
-                        :class="{
-                          ['is-disabled']: filteredValue.length === 0
-                        }"
-                        @click="handleConfirm"
-                    >Confirm</button>
-                    <!-- 重置 -->
-                    <button @click="handleReset">Reset</button>
-                </div>
-            </div>
-            <!-- 单选 -->
-            <ul :class="`${prefixCls}-list`" v-else>
-                <!-- 全部 -->
-                <li
-                    :class="[`${prefixCls}-list--item`, (filterValue === undefined || filterValue === null) && `${prefixCls}-list--active`]"
-                    @click="handleSelect(null)"
-                >全部</li>
-                <!-- 其他 -->
-                <li
-                    :class="[`${prefixCls}-list--item`, isActive(filter) && `${prefixCls}-list--active`]"
-                    v-for="filter in filtersList"
-                    :key="filter.value"
-                    :label="filter.value"
-                    @click="handleSelect(filter.value)"
-                >{{ filter.text }}</li>
-            </ul>
-        </template>
-        <!-- 图标 -->
-        <ivue-icon
-            :class="iconClass"
-            @click="handleShowTooltip"
-            v-click-outside:[capture]="handleHiddenTooltip"
-        >keyboard_arrow_down</ivue-icon>
-    </ivue-tooltip>
+  </ivue-tooltip>
 </template>
 
-<script lang='ts'>
+<script lang="ts">
 import {
-    defineComponent,
-    ref,
-    watch,
-    PropType,
-    computed,
-    getCurrentInstance,
+  defineComponent,
+  ref,
+  watch,
+  PropType,
+  computed,
+  getCurrentInstance,
 } from 'vue';
 import IvueTooltip from '../../ivue-tooltip/index.vue';
 import IvueIcon from '../../ivue-icon/index.vue';
@@ -96,241 +110,241 @@ import type { Props, Parent } from './types/filter-panel';
 const prefixCls = 'ivue-table-filter-panel';
 
 export default defineComponent({
-    name: prefixCls,
-    // 注册局部指令
-    directives: { ClickOutside },
-    props: {
-        /**
-         * 弹窗的展开方向
-         *
-         * @type {String}
-         */
-        placement: {
-            type: String,
-            default: 'bottom-start',
-        },
-        /**
-         * 当前列数据
-         *
-         * @type {Object}
-         */
-        column: {
-            type: Object as PropType<TableColumnCtx>,
-        },
-        /**
-         * 更新列数据
-         *
-         * @type {Function}
-         */
-        upDataColumn: {
-            type: Function,
-        },
-        /**
-         * store
-         *
-         * @type {Object}
-         */
-        store: {
-            type: Object as PropType<Store>,
-        },
-        /**
-         * tooltip点击是否阻止当前事件在捕获和冒泡阶段的进一步传播
-         *
-         * @type {Boolean}
-         */
-        tooltipStop: {
-            type: Boolean,
-        },
+  name: prefixCls,
+  // 注册局部指令
+  directives: { ClickOutside },
+  props: {
+    /**
+     * 弹窗的展开方向
+     *
+     * @type {String}
+     */
+    placement: {
+      type: String,
+      default: 'bottom-start',
     },
-    setup(props: Props) {
-        // vm
-        const vm = getCurrentInstance();
+    /**
+     * 当前列数据
+     *
+     * @type {Object}
+     */
+    column: {
+      type: Object as PropType<TableColumnCtx>,
+    },
+    /**
+     * 更新列数据
+     *
+     * @type {Function}
+     */
+    upDataColumn: {
+      type: Function,
+    },
+    /**
+     * store
+     *
+     * @type {Object}
+     */
+    store: {
+      type: Object as PropType<Store>,
+    },
+    /**
+     * tooltip点击是否阻止当前事件在捕获和冒泡阶段的进一步传播
+     *
+     * @type {Boolean}
+     */
+    tooltipStop: {
+      type: Boolean,
+    },
+  },
+  setup(props: Props) {
+    // vm
+    const vm = getCurrentInstance();
 
-        // dom
-        const tooltip = ref(null);
+    // dom
+    const tooltip = ref(null);
 
-        const parent: Parent = vm?.parent;
+    const parent: Parent = vm?.parent;
 
-        // 当前列
-        if (!parent.filterPanels.value[props.column.id]) {
-            parent.filterPanels.value[props.column.id] = vm;
+    // 当前列
+    if (!parent.filterPanels.value[props.column.id]) {
+      parent.filterPanels.value[props.column.id] = vm;
+    }
+
+    // tooltip显示
+    const tooltipVisible = ref(false);
+
+    // computed
+    const iconClass = computed(() => {
+      return {
+        [`${prefixCls}-visible`]: props.column.filterOpened,
+        [`${prefixCls}-icon`]: true,
+      };
+    });
+
+    // 数据过滤的选项是否多选
+    const filterMultiple = computed(() => {
+      if (props.column) {
+        return props.column.filterMultiple;
+      }
+      return true;
+    });
+
+    // 选择的过滤选项
+    const filteredValue = computed({
+      get() {
+        if (props.column) {
+          return props.column.filteredValue || [];
         }
+        return [];
+      },
+      set(value: string[]) {
+        // 更新列数据
+        if (props.column) {
+          props.upDataColumn('filteredValue', value);
+        }
+      },
+    });
 
-        // tooltip显示
-        const tooltipVisible = ref(false);
+    // 数据过滤的选项
+    const filtersList = computed(() => {
+      return props.column && props.column.filters;
+    });
 
-        // computed
-        const iconClass = computed(() => {
-            return {
-                [`${prefixCls}-visible`]: props.column.filterOpened,
-                [`${prefixCls}-icon`]: true,
-            };
-        });
+    // tooltip 状态 capture
+    const capture = computed(() => {
+      return tooltip.value?.capture;
+    });
 
-        // 数据过滤的选项是否多选
-        const filterMultiple = computed(() => {
-            if (props.column) {
-                return props.column.filterMultiple;
-            }
-            return true;
-        });
+    // 第一个选择过滤的值
+    const filterValue = computed({
+      get: () => {
+        return (props.column.filteredValue || [])[0];
+      },
+      set: (value: string) => {
+        // 有过滤值
+        if (filteredValue.value) {
+          // 替换第一个的值->重复点击同一个
+          if (typeof value !== 'undefined' && value !== null) {
+            filteredValue.value.splice(0, 1, value);
+          }
+          // 选择第一个
+          else {
+            filteredValue.value.splice(0, 1);
+          }
+        }
+      },
+    });
 
-        // 选择的过滤选项
-        const filteredValue = computed({
-            get() {
-                if (props.column) {
-                    return props.column.filteredValue || [];
-                }
-                return [];
-            },
-            set(value: string[]) {
-                // 更新列数据
-                if (props.column) {
-                    props.upDataColumn('filteredValue', value);
-                }
-            },
-        });
+    // methods
 
-        // 数据过滤的选项
-        const filtersList = computed(() => {
-            return props.column && props.column.filters;
-        });
+    // 显示tooltip
+    const handleShowTooltip = (event: Event) => {
+      // tooltip点击是否阻止当前事件在捕获和冒泡阶段的进一步传播
+      if (props.tooltipStop) {
+        event.stopPropagation();
+      }
 
-        // tooltip 状态 capture
-        const capture = computed(() => {
-            return tooltip.value?.capture;
-        });
+      tooltipVisible.value = !tooltipVisible.value;
+    };
 
-        // 第一个选择过滤的值
-        const filterValue = computed({
-            get: () => {
-                return (props.column.filteredValue || [])[0];
-            },
-            set: (value: string) => {
-                // 有过滤值
-                if (filteredValue.value) {
-                    // 替换第一个的值->重复点击同一个
-                    if (typeof value !== 'undefined' && value !== null) {
-                        filteredValue.value.splice(0, 1, value);
-                    }
-                    // 选择第一个
-                    else {
-                        filteredValue.value.splice(0, 1);
-                    }
-                }
-            },
-        });
+    // 重置
+    const handleReset = () => {
+      // 清除过滤列表
+      filteredValue.value = [];
 
-        // methods
+      // 确认过滤
+      handleFilter(filteredValue.value);
 
-        // 显示tooltip
-        const handleShowTooltip = (event: Event) => {
-            // tooltip点击是否阻止当前事件在捕获和冒泡阶段的进一步传播
-            if (props.tooltipStop) {
-                event.stopPropagation();
-            }
+      // 隐藏tooltip
+      handleHiddenTooltip();
+    };
 
-            tooltipVisible.value = !tooltipVisible.value;
-        };
+    // 确认选择
+    const handleConfirm = () => {
+      // 确认过滤
+      handleFilter(filteredValue.value);
 
-        // 重置
-        const handleReset = () => {
-            // 清除过滤列表
-            filteredValue.value = [];
+      // 隐藏tooltip
+      handleHiddenTooltip();
+    };
 
-            // 确认过滤
-            handleFilter(filteredValue.value);
+    // 过滤方法
+    const handleFilter = (filteredValue: string[]) => {
+      props.store.commit('filterChange', {
+        column: props.column,
+        values: filteredValue,
+      });
 
-            // 隐藏tooltip
-            handleHiddenTooltip();
-        };
+      props.store.updateAllSelected();
+    };
 
-        // 确认选择
-        const handleConfirm = () => {
-            // 确认过滤
-            handleFilter(filteredValue.value);
+    // 隐藏tooltip
+    const handleHiddenTooltip = () => {
+      tooltipVisible.value = false;
+    };
 
-            // 隐藏tooltip
-            handleHiddenTooltip();
-        };
+    // 选择
+    const handleSelect = (value?: string) => {
+      filterValue.value = value;
 
-        // 过滤方法
-        const handleFilter = (filteredValue: string[]) => {
-            props.store.commit('filterChange', {
-                column: props.column,
-                values: filteredValue,
-            });
+      // 有数据
+      if (typeof value !== 'undefined' && value !== null) {
+        handleFilter(filteredValue.value);
+      }
+      // 没有数据
+      else {
+        handleFilter([]);
+      }
 
-            props.store.updateAllSelected();
-        };
+      // 隐藏tooltip
+      handleHiddenTooltip();
+    };
 
-        // 隐藏tooltip
-        const handleHiddenTooltip = () => {
-            tooltipVisible.value = false;
-        };
+    // 是否激活
+    const isActive = (filter: { value: string }) => {
+      return filter.value === filterValue.value;
+    };
 
-        // 选择
-        const handleSelect = (value?: string) => {
-            filterValue.value = value;
+    // watch
 
-            // 有数据
-            if (typeof value !== 'undefined' && value !== null) {
-                handleFilter(filteredValue.value);
-            }
-            // 没有数据
-            else {
-                handleFilter([]);
-            }
+    // 监听tooltip显示
+    watch(tooltipVisible, (value) => {
+      if (props.column) {
+        props.upDataColumn('filterOpened', value);
+      }
+    });
 
-            // 隐藏tooltip
-            handleHiddenTooltip();
-        };
+    return {
+      prefixCls,
+      // dom
+      tooltip,
+      // data
+      tooltipVisible,
 
-        // 是否激活
-        const isActive = (filter: { value: string }) => {
-            return filter.value === filterValue.value;
-        };
+      // computed
+      iconClass,
+      filterMultiple,
+      filteredValue,
+      filtersList,
+      capture,
+      filterValue,
 
-        // watch
-
-        // 监听tooltip显示
-        watch(tooltipVisible, (value) => {
-            if (props.column) {
-                props.upDataColumn('filterOpened', value);
-            }
-        });
-
-        return {
-            prefixCls,
-            // dom
-            tooltip,
-            // data
-            tooltipVisible,
-
-            // computed
-            iconClass,
-            filterMultiple,
-            filteredValue,
-            filtersList,
-            capture,
-            filterValue,
-
-            // methods
-            isActive,
-            handleShowTooltip,
-            handleHiddenTooltip,
-            handleReset,
-            handleFilter,
-            handleConfirm,
-            handleSelect,
-        };
-    },
-    components: {
-        IvueTooltip,
-        IvueIcon,
-        IvueScrollbar,
-        IvueCheckboxGroup,
-        IvueCheckbox,
-    },
+      // methods
+      isActive,
+      handleShowTooltip,
+      handleHiddenTooltip,
+      handleReset,
+      handleFilter,
+      handleConfirm,
+      handleSelect,
+    };
+  },
+  components: {
+    IvueTooltip,
+    IvueIcon,
+    IvueScrollbar,
+    IvueCheckboxGroup,
+    IvueCheckbox,
+  },
 });
 </script>

@@ -1,11 +1,10 @@
-
 import {
   getCurrentInstance,
   onMounted,
   computed,
   onUpdated,
   onBeforeMount,
-  onUnmounted
+  onUnmounted,
 } from 'vue';
 
 // ts
@@ -14,7 +13,6 @@ import type { TableHeader } from './table-header/types';
 import type TableLayout from './table-layout';
 
 function useLayoutObserver(root: Table) {
-
   // vm
   const vm = getCurrentInstance() as TableHeader;
 
@@ -70,7 +68,10 @@ function useLayoutObserver(root: Table) {
 
     for (let i = 0, j = cols.length; i < j; i++) {
       const col = cols[i];
-      col.setAttribute('width', layout.scrollY.value ? layout.gutterWidth : '0');
+      col.setAttribute(
+        'width',
+        layout.scrollY.value ? layout.gutterWidth : '0'
+      );
     }
 
     // gutter
@@ -81,7 +82,6 @@ function useLayoutObserver(root: Table) {
       th.style.display = layout.scrollY.value ? '' : 'none';
     }
   };
-
 
   // 在实例初始化之后、进行数据侦听和事件/侦听器的配置之前同步调用。
   onBeforeMount(() => {
@@ -115,9 +115,8 @@ function useLayoutObserver(root: Table) {
 
   return {
     handleColumnsChange,
-    handleScrollableWidthChange
+    handleScrollableWidthChange,
   };
-
 }
 
 export default useLayoutObserver;

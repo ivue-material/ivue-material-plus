@@ -1,7 +1,6 @@
 $name: 'ivue-form';
 
 .#{$name} {
-
   // 行内表单模式
   &-inline {
     .#{$name}-item {
@@ -12,7 +11,6 @@ $name: 'ivue-form';
   }
 
   &-label {
-
     // 左对齐
     &-left {
       .#{$name}-item--label {
@@ -40,9 +38,7 @@ $name: 'ivue-form';
     &-wrap {
       display: flex;
     }
-
   }
-
 
   // item
   &-item {
@@ -101,7 +97,8 @@ $name: 'ivue-form';
     &-zoom-in-top-leave-active {
       opacity: 1;
       transform: scaleY(1);
-      transition: 0.3s cubic-bezier(0.23, 1, 0.32, 1), opacity 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+      transition: 0.3s cubic-bezier(0.23, 1, 0.32, 1),
+        opacity 0.3s cubic-bezier(0.23, 1, 0.32, 1);
       transform-origin: center top;
 
       &[data-popper-placement^='top'] {
@@ -118,7 +115,6 @@ $name: 'ivue-form';
 
   // 错误提示
   &-item.is-error {
-
     .ivue-input,
     .ivue-input-number,
     .ivue-input-content,
@@ -130,13 +126,12 @@ $name: 'ivue-form';
     .ivue-input-number-focused,
     .ivue-input-content--focused,
     .ivue-select-selection-focused {
-      box-shadow: 0 0 0 2px rgba(255, 97, 127, .2);
+      box-shadow: 0 0 0 2px rgba(255, 97, 127, 0.2);
     }
   }
 
   // 成功提示
   &-item.is-success {
-
     .ivue-input-number,
     .ivue-input,
     .ivue-input-content,
@@ -148,7 +143,7 @@ $name: 'ivue-form';
     .ivue-input-number-focused,
     .ivue-input-content--focused,
     .ivue-select-selection-focused {
-      box-shadow: 0 0 0 2px rgba(39, 226, 178, .2);
+      box-shadow: 0 0 0 2px rgba(39, 226, 178, 0.2);
     }
   }
 
@@ -156,7 +151,7 @@ $name: 'ivue-form';
   &-item.is-required:not(.is-no-asterisk).asterisk-left {
     .#{$name}-item--label {
       &::before {
-        content: "*";
+        content: '*';
         color: var(--ivue-error-color);
         margin-right: 4px;
       }
@@ -167,7 +162,7 @@ $name: 'ivue-form';
   &-item.is-required:not(.is-no-asterisk).asterisk-right {
     .#{$name}-item--label {
       &::after {
-        content: "*";
+        content: '*';
         color: var(--ivue-error-color);
         margin-left: 4px;
       }

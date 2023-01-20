@@ -10,7 +10,7 @@ $name: 'ivue-breadcrumb';
 
   // color
   --#{$name}-divider-color: rgba(0, 0, 0, 0.38);
-  --#{$name}-last-color: rgba(0, 0, 0, .38);
+  --#{$name}-last-color: rgba(0, 0, 0, 0.38);
 }
 
 .#{$name} {
@@ -33,12 +33,12 @@ $name: 'ivue-breadcrumb';
   // 链接
   .is-link {
     font-weight: 700;
-    transition: color .2s cubic-bezier(.645, .045, .355, 1);
+    transition: color 0.2s cubic-bezier(0.645, 0.045, 0.355, 1);
     color: var(--ivue-title-color);
     cursor: pointer;
   }
 
-  >span {
+  > span {
     display: inline-flex;
   }
 
@@ -76,7 +76,6 @@ $name: 'ivue-breadcrumb';
       }
     }
 
-
     &:last-child {
       .#{$name}-item__inner {
         color: var(--ivue-breadcrumb-last-color);
@@ -85,7 +84,6 @@ $name: 'ivue-breadcrumb';
       .#{$name}--divider {
         display: none;
       }
-
     }
   }
 }

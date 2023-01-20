@@ -1,8 +1,4 @@
-import {
-  inject,
-  ref,
-  getCurrentInstance,
-} from 'vue';
+import { inject, ref, getCurrentInstance } from 'vue';
 
 import { hasClass, removeClass, addClass } from '../../../utils/assist';
 import { on, off } from '../../../utils/dom';
@@ -54,7 +50,8 @@ function useEvent(props: TableHeaderProps, emit) {
     event.stopPropagation();
 
     // 顺序
-    const order = column.order === givenOrder ? null : givenOrder || toggleOrder(column);
+    const order =
+      column.order === givenOrder ? null : givenOrder || toggleOrder(column);
 
     let target = event.target as HTMLElement;
     while (target && target.tagName !== 'TH') {
@@ -63,7 +60,6 @@ function useEvent(props: TableHeaderProps, emit) {
 
     // 点击th
     if (target && target.tagName === 'TH') {
-
       // 是否有 noclick 防止开启排序时点击
       if (hasClass(target, 'noclick')) {
         removeClass(target, 'noclick');
@@ -93,7 +89,6 @@ function useEvent(props: TableHeaderProps, emit) {
       sortingColumn !== column ||
       (sortingColumn === column && sortingColumn.order === null)
     ) {
-
       // 初始化排序
       if (sortingColumn) {
         sortingColumn.order = null;
@@ -138,10 +133,8 @@ function useEvent(props: TableHeaderProps, emit) {
     IvueTable.emit('on-header-click', column, event);
   };
 
-
   // 鼠标按下
   const handleMouseDown = (event: MouseEvent, column: TableColumnCtx) => {
-
     // 有子节点
     if (column.children && column.children.length > 0) {
       return;
@@ -151,7 +144,6 @@ function useEvent(props: TableHeaderProps, emit) {
     if (draggingColumn.value && props.border) {
       // 拖动中
       dragging.value = true;
-
 
       emit('on-drag-visible', true);
 
@@ -228,7 +220,10 @@ function useEvent(props: TableHeaderProps, emit) {
           const { startColumnLeft, startLeft } = dragState.value;
 
           // 拖拽时的虚线位置
-          const draggingDottedDomLeft = Number.parseInt(draggingDottedDom.style.left, 10);
+          const draggingDottedDomLeft = Number.parseInt(
+            draggingDottedDom.style.left,
+            10
+          );
 
           // 列的宽度 = 拖拽虚线后的位置 - 开始列左边到窗口的距离
           const columnWidth = draggingDottedDomLeft - startColumnLeft;
@@ -289,7 +284,6 @@ function useEvent(props: TableHeaderProps, emit) {
       // 鼠标放开
       on(document, 'mouseup', handleDocumentMouseUp);
     }
-
   };
 
   // 鼠标移动
@@ -361,7 +355,7 @@ function useEvent(props: TableHeaderProps, emit) {
     handleHeaderClick,
     handleMouseDown,
     handleMouseMove,
-    handleMouseOut
+    handleMouseOut,
   };
 }
 

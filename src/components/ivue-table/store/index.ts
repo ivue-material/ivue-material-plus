@@ -8,14 +8,13 @@ import type { TableColumnCtx } from '../table-column/defaults';
 
 // 监听props的数据
 interface WatcherPropsData {
-  data: Ref<any[]>
-  rowKey: Ref<string>
+  data: Ref<any[]>;
+  rowKey: Ref<string>;
 }
 
 // 排序列
 function sortColumn(array: TableColumnCtx[]) {
   array.forEach((item) => {
-
     // 当前index
     item.currentIndex = item.getColumnIndex?.();
 
@@ -30,10 +29,7 @@ function sortColumn(array: TableColumnCtx[]) {
 }
 
 // 设置列数
-function replaceColumn(
-  array: TableColumnCtx[],
-  column: TableColumnCtx
-) {
+function replaceColumn(array: TableColumnCtx[], column: TableColumnCtx) {
   return array.map((item) => {
     // id是否相同返回当前列
     if (item.id === column.id) {
@@ -48,7 +44,6 @@ function replaceColumn(
   });
 }
 
-
 function useStore() {
   // 获取当前实例
   const vm = getCurrentInstance() as Table;
@@ -58,11 +53,10 @@ function useStore() {
 
   // ts
   // 状态 ts
-  type states = typeof watcher.states
+  type states = typeof watcher.states;
 
   // 同步
   const mutations = {
-
     setData(states, data) {
       // 数据是否有改变
       const dataInstanceChanged = unref(states._data) !== data;
@@ -81,9 +75,7 @@ function useStore() {
       vm.store.updateExpandRows();
 
       // 更新树数据
-      vm.store.updateTreeData(
-        vm.store.states.defaultExpandAll.value
-      );
+      vm.store.updateTreeData(vm.store.states.defaultExpandAll.value);
 
       // 保存数据更新前选中的值
       if (unref(states.reserveSelection)) {
@@ -91,8 +83,7 @@ function useStore() {
         vm.store.assertRowKey();
         // 更新多选框key
         vm.store.updateSelectionByRowKey();
-      }
-      else {
+      } else {
         // 数据变化，更新部分数据。
         if (dataInstanceChanged) {
           vm.store.clearSelection();
@@ -183,7 +174,9 @@ function useStore() {
 
       // 有父节点
       if (parent && parent.children) {
-        const findIndex = parent.children.findIndex((item) => item.id === column.id);
+        const findIndex = parent.children.findIndex(
+          (item) => item.id === column.id
+        );
 
         // 移除当前行
         parent.children.splice(findIndex, 1);
@@ -213,7 +206,6 @@ function useStore() {
         // 更新 DOM
         vm.store.scheduleLayout();
       }
-
     },
     // 单选选择当前行
     setCurrentRow(_states, row) {
@@ -259,7 +251,6 @@ function useStore() {
 
       // 排序的key 对应列内容的字段名
       if (prop) {
-
         // 找到需要排序的列
         const column = unref(states.columns).find(
           (column) => column.property === prop
@@ -291,7 +282,7 @@ function useStore() {
 
       // 更新y轴滚动高度
       vm.store.updateTableScrollY();
-    }
+    },
   };
 
   // 调用数据
@@ -319,7 +310,7 @@ function useStore() {
     ...watcher,
     mutations,
     commit,
-    updateTableScrollY
+    updateTableScrollY,
   };
 }
 
@@ -329,7 +320,7 @@ class HelperStore {
   Return = useStore();
 }
 
-type Store = HelperStore['Return']
-type StoreFilter = Record<string, string[]>
+type Store = HelperStore['Return'];
+type StoreFilter = Record<string, string[]>;
 
 export type { Store, WatcherPropsData, StoreFilter };

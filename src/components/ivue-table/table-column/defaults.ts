@@ -1,90 +1,88 @@
-
 import type { VNode, ComponentInternalInstance, Ref, PropType } from 'vue';
 import type { Table, TableRefs } from '../table/defaults';
 
 import { oneOf } from '../../../utils/assist';
 
 // 插槽内容 slots
-type SlotsContent = { column: TableColumnCtx; $index: number }
+type SlotsContent = { column: TableColumnCtx; $index: number };
 
-type FilterMethods = (value, row: any, column: TableColumnCtx) => void
+type FilterMethods = (value, row: any, column: TableColumnCtx) => void;
 
 // 数据过滤的选项
 // 数组格式，数组中的元素需要有 text 和 value 属性。 数组中的每个元素都需要有 text 和 value 属性。
 // array[{ text, value }]
 type Filters = {
-  text: string
-  value: string
-}[]
+  text: string;
+  value: string;
+}[];
 
 // 列参数
 interface TableColumnCtx {
-  id: string
-  prop: string
-  label: string
-  width: string | number
-  minWidth: string | number
-  children?: TableColumnCtx[]
-  isSubColumn: boolean,
-  type: string
-  sortable: boolean | string
-  property: string
-  align: string
-  headerAlign: string
-  showOverflowTooltip: boolean
-  filters: Filters
-  filterMethod: FilterMethods
-  filterPlacement: string
-  filterOpened?: boolean
-  index: number | ((index: number) => number)
-  rawColumnKey: string
-  renderHeader: (data: SlotsContent) => VNode
-  renderCell: (data: any) => void
+  id: string;
+  prop: string;
+  label: string;
+  width: string | number;
+  minWidth: string | number;
+  children?: TableColumnCtx[];
+  isSubColumn: boolean;
+  type: string;
+  sortable: boolean | string;
+  property: string;
+  align: string;
+  headerAlign: string;
+  showOverflowTooltip: boolean;
+  filters: Filters;
+  filterMethod: FilterMethods;
+  filterPlacement: string;
+  filterOpened?: boolean;
+  index: number | ((index: number) => number);
+  rawColumnKey: string;
+  renderHeader: (data: SlotsContent) => VNode;
+  renderCell: (data: any) => void;
   formatter: (
     row: Record<string, any>,
     column: TableColumnCtx,
     cellValue,
     index: number
-  ) => VNode | string,
-  columnWidth: number
-  className: string
-  fixed: boolean | string
-  getColumnIndex: () => number
-  currentIndex: number
-  level: number
-  rowSpan: number
-  colSpan: number
-  order: string | null
-  labelClassName: string
-  columns: TableColumnCtx[]
-  resizable: boolean
-  selectable: (row: any, index: number | string) => boolean
-  reserveSelection: boolean
-  sortOrders: ('ascending' | 'descending' | null)[]
-  sortBy: string | ((row: any, index: number) => string) | string[]
-  sortMethod: (a: any, b: any) => number
-  columnKey: string,
-  filterable: boolean | FilterMethods | Filters
-  filterMultiple: boolean
-  filteredValue: string[]
+  ) => VNode | string;
+  columnWidth: number;
+  className: string;
+  fixed: boolean | string;
+  getColumnIndex: () => number;
+  currentIndex: number;
+  level: number;
+  rowSpan: number;
+  colSpan: number;
+  order: string | null;
+  labelClassName: string;
+  columns: TableColumnCtx[];
+  resizable: boolean;
+  selectable: (row: any, index: number | string) => boolean;
+  reserveSelection: boolean;
+  sortOrders: ('ascending' | 'descending' | null)[];
+  sortBy: string | ((row: any, index: number) => string) | string[];
+  sortMethod: (a: any, b: any) => number;
+  columnKey: string;
+  filterable: boolean | FilterMethods | Filters;
+  filterMultiple: boolean;
+  filteredValue: string[];
 }
 
 // 列节点内容
 interface TableColumn extends ComponentInternalInstance {
   vnode: {
-    vParent: TableColumn | Table
-  } & VNode
-  vParent: TableColumn | Table
-  columnId: string
-  columnConfig: Ref<Partial<TableColumnCtx>>
+    vParent: TableColumn | Table;
+  } & VNode;
+  vParent: TableColumn | Table;
+  columnId: string;
+  columnConfig: Ref<Partial<TableColumnCtx>>;
 }
-
 
 interface ColumnParent {
   columnConfig?: Ref<Partial<TableColumnCtx>>;
   tableId?: string;
   vnode?: {
-    vParent?: TableColumn | Table
+    vParent?: TableColumn | Table;
   } & VNode;
   parent?: Table;
   refs?: TableRefs;
@@ -117,10 +115,10 @@ export default {
     type: String,
   },
   /**
-  * column 的 key
-  *
-  * @type {String}
-  */
+   * column 的 key
+   *
+   * @type {String}
+   */
   label: {
     type: String,
   },
@@ -221,13 +219,13 @@ export default {
     type: Function as PropType<TableColumnCtx['filterMethod']>,
   },
   /**
-  * 过滤弹出框的定位
-  *
-  * @type {String}
-  */
+   * 过滤弹出框的定位
+   *
+   * @type {String}
+   */
   filterPlacement: {
     type: String,
-    default: 'bottom-start'
+    default: 'bottom-start',
   },
   /**
    * 如果设置了 type=index，可以通过传递 index 属性来自定义索引
@@ -363,5 +361,5 @@ export default {
    */
   filteredValue: {
     type: Array as PropType<TableColumnCtx['filteredValue']>,
-  }
+  },
 };

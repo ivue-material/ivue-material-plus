@@ -1,6 +1,4 @@
-import {
-  defineConfig
-} from 'vite';
+import { defineConfig } from 'vite';
 import vue from '@vitejs/plugin-vue';
 import VueJsx from '@vitejs/plugin-vue-jsx';
 
@@ -22,7 +20,7 @@ const config = defineConfig({
     // 库模式
     lib: {
       entry: path.resolve(__dirname, './src/index.ts'),
-      name: 'IvueMaterialPlus'
+      name: 'IvueMaterialPlus',
     },
     // 自定义底层的 Rollup 打包配置
     rollupOptions: {
@@ -55,8 +53,8 @@ const config = defineConfig({
           // 允许创建自定义共享公共块
           manualChunks: undefined,
           globals: {
-            vue: 'Vue'
-          }
+            vue: 'Vue',
+          },
         },
         // es
         {
@@ -78,15 +76,15 @@ const config = defineConfig({
           // 允许创建自定义共享公共块
           manualChunks: undefined,
           globals: {
-            vue: 'Vue'
-          }
-        }
-      ]
+            vue: 'Vue',
+          },
+        },
+      ],
     },
   },
   resolve: {
-    extensions: ['.mjs', '.js', '.ts', '.jsx', '.tsx', '.json', '.vue']
-  }
+    extensions: ['.mjs', '.js', '.ts', '.jsx', '.tsx', '.json', '.vue'],
+  },
 });
 
 export default config;

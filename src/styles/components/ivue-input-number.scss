@@ -22,7 +22,7 @@ $name: 'ivue-input-number';
   // color
   --#{$name}-shadow: 0 0 0 2px rgba(91, 142, 255, 0.2);
   --#{$name}-outside-color: #f8f8f9;
-  --#{$name}-disabled-bg: #F8F9FD;
+  --#{$name}-disabled-bg: #f8f9fd;
 }
 
 .#{$name} {
@@ -82,7 +82,6 @@ $name: 'ivue-input-number';
     }
   }
 
-
   // 上下按钮
   &-internal {
     flex: 1;
@@ -103,7 +102,8 @@ $name: 'ivue-input-number';
       min-width: auto;
       height: auto;
       font-size: var(--#{$name}-font-size);
-      transition: color var(--ivue-default-transition-time) var(--ivue-ease-in-out);
+      transition: color var(--ivue-default-transition-time)
+        var(--ivue-ease-in-out);
     }
 
     // 外层
@@ -118,10 +118,11 @@ $name: 'ivue-input-number';
       border-left: 1px solid var(--ivue-border-color);
       background: var(--ivue-white-color);
       opacity: 0;
-      transition: opacity var(--ivue-default-transition-time) var(--ivue-ease-in-out);
+      transition: opacity var(--ivue-default-transition-time)
+        var(--ivue-ease-in-out);
 
       &::after {
-        content: "";
+        content: '';
         position: absolute;
         top: 0;
         bottom: 0;
@@ -152,14 +153,14 @@ $name: 'ivue-input-number';
     }
 
     .#{$name}-input {
-      opacity: .8;
+      opacity: 0.8;
       background-color: var(--#{$name}-disabled-bg);
       cursor: var(--ivue-cursor-disabled);
       color: var(--ivue-disabled-color);
     }
 
     .#{$name}-outside {
-      .ivue-button-content{
+      .ivue-button-content {
         color: var(--ivue-disabled-color);
       }
     }
@@ -195,7 +196,8 @@ $name: 'ivue-input-number';
       min-width: auto;
       height: auto;
       font-size: var(--#{$name}-font-size);
-      transition: color var(--ivue-default-transition-time) var(--ivue-ease-in-out);
+      transition: color var(--ivue-default-transition-time)
+        var(--ivue-ease-in-out);
     }
 
     &--up {

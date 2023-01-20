@@ -5,8 +5,8 @@ import Tab from './tab.vue';
 import TabItem from './item.vue';
 
 export const IvueTabs = withInstall(Tabs, {
-    Tab,
-    TabItem,
+  Tab,
+  TabItem,
 });
 export default IvueTabs;
 

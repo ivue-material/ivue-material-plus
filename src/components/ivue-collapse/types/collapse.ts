@@ -13,15 +13,15 @@ export interface Data {
     expandable: any[];
     pushExpandable: (expandableListItem: PanelInstance) => void;
     removeExpandable: (expandableListItem: PanelInstance) => void;
-    toggle: (obj: { name: string; isActive: boolean }) => void
-  }
+    toggle: (obj: { name: string; isActive: boolean }) => void;
+  };
 }
 
 export type CollapseContext = {
   pushExpandable: (expandableListItem: PanelInstance) => void;
   removeExpandable: (expandableListItem: PanelInstance) => void;
-  toggle: (obj: { name: string; isActive: boolean }) => void
-}
+  toggle: (obj: { name: string; isActive: boolean }) => void;
+};
 
 export const CascaderContextKey: InjectionKey<CollapseContext> =
   Symbol('ivue-collapse');

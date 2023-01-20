@@ -5,7 +5,7 @@ import { TableColumnCtx } from './table-column/defaults';
 type Props = {
   columns: TableColumnCtx[];
   tableLayout?: string;
-}
+};
 
 export default defineComponent({
   props: {
@@ -16,7 +16,7 @@ export default defineComponent({
      */
     columns: {
       type: Array,
-      default: () => []
+      default: () => [],
     },
     /**
      * 设置表格单元、行和列的布局方式
@@ -25,7 +25,7 @@ export default defineComponent({
      */
     tableLayout: {
       type: String,
-    }
+    },
   },
   methods: {
     // 渲染col
@@ -72,5 +72,5 @@ export default defineComponent({
       {},
       columns.map((column) => this.renderCol(column))
     );
-  }
+  },
 });

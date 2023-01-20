@@ -8,7 +8,6 @@ import type { TableColumnCtx } from '../table-column/defaults';
 
 const prefixCls = 'ivue-table-footer';
 
-
 export default defineComponent({
   name: prefixCls,
   props: {
@@ -18,7 +17,7 @@ export default defineComponent({
      * @type {Boolean}
      */
     border: {
-      type: Boolean
+      type: Boolean,
     },
     /**
      * store
@@ -59,18 +58,14 @@ export default defineComponent({
     },
   },
   setup(props: Props) {
-    const {
-      columns,
-      getCellClass,
-      getCellStyle,
-    } = useStyle(props);
+    const { columns, getCellClass, getCellStyle } = useStyle(props);
 
     // methods
 
     // 渲染 colgroup
     const renderColgroup = () => {
       return h(IvueColgroup, {
-        columns: columns.value
+        columns: columns.value,
       });
     };
 
@@ -91,7 +86,6 @@ export default defineComponent({
       // 没有自定义的合计计算方法
       else {
         columns.value.forEach((column: TableColumnCtx, index: number) => {
-
           // 合计行第一列的文本
           if (index === 0) {
             sums[index] = props.sumText;
@@ -142,7 +136,8 @@ export default defineComponent({
       }
 
       return columns.value.map((column, cellIndex) => {
-        return h('td',
+        return h(
+          'td',
           {
             key: cellIndex,
             colspan: column.colSpan,
@@ -163,30 +158,21 @@ export default defineComponent({
       });
     };
 
-
     return {
       renderColgroup,
-      renderTd
+      renderTd,
     };
-
   },
   render() {
-
-    return h('table',
+    return h(
+      'table',
       {
         class: prefixCls,
         cellspacing: '0',
         cellpadding: '0',
         border: '0',
       },
-      [
-        this.renderColgroup(),
-        h('tbody', [
-          h('tr', {}, [
-            this.renderTd()
-          ])
-        ])
-      ]
+      [this.renderColgroup(), h('tbody', [h('tr', {}, [this.renderTd()])])]
     );
-  }
+  },
 });

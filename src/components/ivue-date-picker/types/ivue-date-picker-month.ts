@@ -1,4 +1,3 @@
-
 export interface Props {
   format: any;
   value?: string | any[];

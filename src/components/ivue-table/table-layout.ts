@@ -1,4 +1,3 @@
-
 import { isRef, ref, nextTick } from 'vue';
 import { hasOwn } from '@vue/shared';
 
@@ -22,7 +21,6 @@ class TableLayout {
   gutterWidth: number;
 
   constructor(options: Record<string, any>) {
-
     // 表格 scrollX
     this.scrollX = ref<boolean>(false);
 
@@ -56,7 +54,6 @@ class TableLayout {
       }
     }
   }
-
 
   // 扁平化列
   getFlattenColumns(): TableColumnCtx[] {
@@ -112,7 +109,9 @@ class TableLayout {
     // 扁平化列
     const flattenColumns = this.getFlattenColumns();
     // 需要自动撑开的列
-    const flexColumns = flattenColumns.filter((item) => typeof item.width !== 'number');
+    const flexColumns = flattenColumns.filter(
+      (item) => typeof item.width !== 'number'
+    );
 
     // 最小宽度
     let bodyMinWidth = 0;
@@ -123,7 +122,6 @@ class TableLayout {
       if (typeof item.width === 'number' && item.columnWidth)
         item.columnWidth = 0;
     });
-
 
     // 列的宽度是否自撑开
     if (flexColumns.length > 0 && fit) {
@@ -140,15 +138,18 @@ class TableLayout {
         // 可以自动撑开的宽度
         const totalFlexWidth = bodyWidth - bodyMinWidth;
 
-
         // 只有一个自动撑开的列沾满屏幕剩余宽度
         if (flexColumns.length === 1) {
-          flexColumns[0].columnWidth = Number(flexColumns[0].minWidth || 80) + totalFlexWidth;
+          flexColumns[0].columnWidth =
+            Number(flexColumns[0].minWidth || 80) + totalFlexWidth;
         }
         // 多个自动撑开列
         else {
           // 获取自动撑开列的最小宽度 数量 * 80
-          const allColumnWidth = flexColumns.reduce((prev, item) => prev + Number(item.minWidth || 80), 0);
+          const allColumnWidth = flexColumns.reduce(
+            (prev, item) => prev + Number(item.minWidth || 80),
+            0
+          );
 
           // 可以自动撑开的宽度 / 所有列加起来的宽度 = 弹性像素
           const flexWidthPerPixel = totalFlexWidth / allColumnWidth;
@@ -164,7 +165,9 @@ class TableLayout {
             }
 
             // 列的宽度 * 弹性像素
-            const flexWidth = Math.floor(Number(item.minWidth || 80) * flexWidthPerPixel);
+            const flexWidth = Math.floor(
+              Number(item.minWidth || 80) * flexWidthPerPixel
+            );
 
             // 剩余可撑开宽度
             noneFirstWidth += flexWidth;
@@ -174,7 +177,10 @@ class TableLayout {
           });
 
           // 自动撑开的第一个宽度等于剩余的宽度
-          flexColumns[0].columnWidth = Number(flexColumns[0].minWidth || 80) + totalFlexWidth - noneFirstWidth;
+          flexColumns[0].columnWidth =
+            Number(flexColumns[0].minWidth || 80) +
+            totalFlexWidth -
+            noneFirstWidth;
         }
       }
       // 是滚动表格
@@ -186,7 +192,6 @@ class TableLayout {
         flexColumns.forEach((item) => {
           item.columnWidth = Number(item.minWidth);
         });
-
       }
 
       // 设置表格快读
@@ -197,7 +202,6 @@ class TableLayout {
     // 不是自动撑开
     else {
       flattenColumns.forEach((item) => {
-
         // 没有宽度
         if (!item.width && !item.minWidth) {
           item.columnWidth = 80;
@@ -312,7 +316,9 @@ class TableLayout {
       const prevScrollY = this.scrollY.value;
 
       // 是否可以滚动
-      scrollY = scrollbar.scrollbarWrapper.scrollHeight > scrollbar.scrollbarWrapper.clientHeight;
+      scrollY =
+        scrollbar.scrollbarWrapper.scrollHeight >
+        scrollbar.scrollbarWrapper.clientHeight;
 
       // 是否可以滚动
       this.scrollY.value = scrollY;

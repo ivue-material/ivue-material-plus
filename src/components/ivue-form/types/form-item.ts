@@ -1,10 +1,8 @@
 import type { InjectionKey } from 'vue';
 import type { FormValidateCallback, FormValidationResult } from './form';
-import type {
-  RuleItem,
-} from 'async-validator';
+import type { RuleItem } from 'async-validator';
 
-export type Arrayable<T> = T | T[]
+export type Arrayable<T> = T | T[];
 
 export interface Props {
   label: string;
@@ -16,7 +14,7 @@ export interface Props {
   showMessage: boolean;
   validateSuccessMessage: string;
   showSuccessStatus: boolean;
-  error: string
+  error: string;
 }
 
 export type FormItemContext = Props & {
@@ -31,17 +29,16 @@ export type FormItemContext = Props & {
   ) => FormValidationResult;
   resetField(): void;
   clearValidate(): void;
-}
+};
 
 export const FormItemContextKey: InjectionKey<FormItemContext> =
   Symbol('ivue-form-item');
 
-
-export type FormItemProp = Arrayable<string>
+export type FormItemProp = Arrayable<string>;
 
 // item 验证
 export interface FormItemRule extends RuleItem {
-  trigger?: Arrayable<string>
+  trigger?: Arrayable<string>;
 }
 
 // item验证状态
@@ -52,4 +49,4 @@ export const formItemValidateStates = [
   'success',
 ] as const;
 
-export type FormItemValidateState = typeof formItemValidateStates[number]
+export type FormItemValidateState = (typeof formItemValidateStates)[number];

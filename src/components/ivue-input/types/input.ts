@@ -40,6 +40,6 @@ export type TextareaStyles = {
   minHeight?: string;
   maxHeight?: string;
   overflowY?: any;
-}
+};
 
 export type Size = 'small' | 'large' | 'default';

@@ -23,7 +23,7 @@ $name: 'ivue-loading-bar';
 
 .#{$name}-fade-enter-active,
 .#{$name}-fade-leave-active {
-  transition: opacity .5s;
+  transition: opacity 0.5s;
 }
 
 .#{$name}-fade-enter-from,

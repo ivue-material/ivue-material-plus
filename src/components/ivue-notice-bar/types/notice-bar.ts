@@ -1,4 +1,3 @@
-
 export interface Props {
   text?: string;
   speed: number;

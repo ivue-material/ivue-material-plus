@@ -1,8 +1,4 @@
-
-import {
-  ComponentInternalInstance,
-  ComponentPublicInstance,
-} from 'vue';
+import { ComponentInternalInstance, ComponentPublicInstance } from 'vue';
 
 interface _ComponentPublicInstance extends ComponentPublicInstance {
   removeScrollEffect: () => void;
@@ -53,15 +49,14 @@ export interface Props {
   lockScroll: boolean;
 }
 
-
 // 拖动初始数据
 type DragData = {
-  x?: number,
-  y?: number,
-  dragX?: number,
-  dragY?: number,
-  dragging?: boolean,
-  rect?: boolean,
+  x?: number;
+  y?: number;
+  dragX?: number;
+  dragY?: number;
+  dragging?: boolean;
+  rect?: boolean;
 };
 
 export interface Data {

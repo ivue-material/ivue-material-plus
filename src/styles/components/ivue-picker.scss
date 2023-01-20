@@ -1,19 +1,17 @@
 @import '../animation/variables.scss';
 
-$name:'ivue-picker';
+$name: 'ivue-picker';
 
 :root {
   --#{$name}-radius: 2px;
-  --#{$name}-shadow: 0 2px 1px -1px rgba(0, 0, 0, .2),
-    0 1px 1px 0 rgba(0, 0, 0, .14),
-    0 1px 3px 0 rgba(0, 0, 0, .12);
+  --#{$name}-shadow: 0 2px 1px -1px rgba(0, 0, 0, 0.2),
+    0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 1px 3px 0 rgba(0, 0, 0, 0.12);
 
   // title
   --#{$name}-title-padding: 16px;
 
   // landscape
   --#{$name}-landscape-title-width: 170px;
-
 }
 
 .#{$name} {
@@ -27,7 +25,7 @@ $name:'ivue-picker';
     border-radius: var(--#{$name}-radius);
     min-width: 0;
     transition: $ivue-transition-default;
-    box-shadow: var(--#{$name}-shadow)
+    box-shadow: var(--#{$name}-shadow);
   }
 
   &-title {
@@ -47,7 +45,7 @@ $name:'ivue-picker';
     flex-direction: column;
     align-items: center;
 
-    >div {
+    > div {
       width: 100%;
     }
   }

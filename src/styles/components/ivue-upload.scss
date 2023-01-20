@@ -15,20 +15,20 @@ $name: 'ivue-upload';
   --#{$name}-remove-size: 16px;
 
   // color
-  --#{$name}-content-color: #9AB0C6;
+  --#{$name}-content-color: #9ab0c6;
 
   // mask
-  --#{$name}-mask-color: rgba(50, 50, 51, .5);
+  --#{$name}-mask-color: rgba(50, 50, 51, 0.5);
 
   // preview-cover
-  --#{$name}-preview-cover-color: rgba(0, 0, 0, .3);
+  --#{$name}-preview-cover-color: rgba(0, 0, 0, 0.3);
 }
 
 .#{$name} {
   display: flex;
   flex-wrap: wrap;
 
-  input[type="file"] {
+  input[type='file'] {
     display: none;
   }
 
@@ -224,7 +224,6 @@ $name: 'ivue-upload';
       border-radius: 8px;
       overflow: hidden;
     }
-
   }
 
   // 禁用
@@ -247,7 +246,7 @@ $name: 'ivue-upload';
     background-color: var(--ivue-white-color);
     overflow: hidden;
     cursor: pointer;
-    transition: border-color .2s ease;
+    transition: border-color 0.2s ease;
 
     &:hover {
       border: 2px dashed var(--ivue-primary-color);

@@ -7,7 +7,6 @@ import type { TableColumn, TableColumnCtx } from './defaults';
 import type { Table } from '../table/defaults';
 import { parseWidth, parseMinWidth } from '../utils';
 
-
 // 获取所有别名
 function getAllAliases(props, aliases) {
   return props.reduce((prev, cur) => {
@@ -17,16 +16,12 @@ function getAllAliases(props, aliases) {
 }
 
 // useWatcher
-function useWatcher(
-  parentDom: ComputedRef<Table>,
-  _props: TableColumnCtx
-) {
+function useWatcher(parentDom: ComputedRef<Table>, _props: TableColumnCtx) {
   // vm
   const vm = getCurrentInstance() as TableColumn;
 
   // 注册复杂观察者
   const registerComplexWatchers = () => {
-
     // 固定
     const props = ['fixed'];
 
@@ -79,7 +74,6 @@ function useWatcher(
 
   // 注册watch
   const registerNormalWatchers = () => {
-
     // props
     const props = [
       'label',
@@ -122,7 +116,7 @@ function useWatcher(
 
   return {
     registerNormalWatchers,
-    registerComplexWatchers
+    registerComplexWatchers,
   };
 }
 

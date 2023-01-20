@@ -1,6 +1,6 @@
-@use "sass:math";
+@use 'sass:math';
 
-@import "./variables.scss";
+@import './variables.scss';
 /**
 * Breakpoint
 */
@@ -65,7 +65,7 @@
   }
 
   .ivue-layout-nowrap {
-    flex-wrap: nowrap
+    flex-wrap: nowrap;
   }
 }
 
@@ -77,7 +77,7 @@
     margin-right: -$spacing;
     margin-left: -$spacing;
 
-    >.ivue-layout-item {
+    > .ivue-layout-item {
       padding-right: $spacing;
       padding-left: $spacing;
     }
@@ -86,7 +86,6 @@
 
 // 校对
 @mixin ivue-layout-alignment() {
-
   /*上左*/
   &.ivue-alignment-top-left {
     justify-content: flex-start;
@@ -243,9 +242,9 @@
 * Layout Item
 */
 
-@mixin ivue-layout-item ($size: "") {
-  @if $size !="" {
-    $size: "-#{$size}";
+@mixin ivue-layout-item($size: '') {
+  @if $size != '' {
+    $size: '-#{$size}';
   }
 
   &.ivue#{$size}-size {
@@ -256,9 +255,9 @@
     $counter: $i * 5;
 
     &.ivue#{$size}-size-#{$counter} {
-      min-width: #{$counter + "%"};
-      max-width: #{$counter + "%"};
-      flex: 0 1 #{$counter + "%"};
+      min-width: #{$counter + '%'};
+      max-width: #{$counter + '%'};
+      flex: 0 1 #{$counter + '%'};
     }
   }
 
@@ -286,9 +285,9 @@
 * Hide Element
 */
 
-@mixin ivue-hide($size: "") {
-  @if $size !="" {
-    $size: "-#{$size}";
+@mixin ivue-hide($size: '') {
+  @if $size != '' {
+    $size: '-#{$size}';
   }
 
   .ivue#{$size}-hide {

@@ -46,9 +46,8 @@ $name: 'ivue-page';
   --#{$name}-options-elevator-width: 50px;
 
   // color
-  --#{$name}-disabled-color: #F8F9FD;
+  --#{$name}-disabled-color: #f8f9fd;
 }
-
 
 .#{$name} {
   display: flex;
@@ -161,7 +160,6 @@ $name: 'ivue-page';
       }
     }
 
-
     &:hover {
       border-color: transparent;
 
@@ -178,7 +176,6 @@ $name: 'ivue-page';
 
   // 小型分页样式
   &-small {
-
     // 上一页 下一页
     .#{$name}-prev,
     .#{$name}-next {
@@ -229,7 +226,6 @@ $name: 'ivue-page';
 
   // 简洁版
   &-simple {
-
     // 上一页 下一页
     .#{$name}-prev,
     .#{$name}-next {
@@ -269,7 +265,6 @@ $name: 'ivue-page';
       border-radius: var(--ivue-border-radius);
       margin: var(--#{$name}-simple-input-margin);
       text-align: center;
-
 
       &:focus {
         outline: 0;

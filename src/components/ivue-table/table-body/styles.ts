@@ -1,7 +1,10 @@
-
 import { inject } from 'vue';
 
-import { getFixedColumnsClass, getFixedColumnOffset, ensurePosition } from '../utils';
+import {
+  getFixedColumnsClass,
+  getFixedColumnOffset,
+  ensurePosition,
+} from '../utils';
 
 // type
 import type { TableBodyProps } from './defaults';
@@ -11,7 +14,6 @@ import { TableContextKey } from '../table/defaults';
 const prefixCls = 'ivue-table';
 
 function useStyles(props: Partial<TableBodyProps>) {
-
   // inject
   const IvueTable = inject(TableContextKey);
 
@@ -36,10 +38,12 @@ function useStyles(props: Partial<TableBodyProps>) {
       `${prefixCls}-row`,
       {
         // 斑马纹
-        [`${prefixCls}-row--stripe`]: props.stripe && (rowIndex % 2 === 1),
+        [`${prefixCls}-row--stripe`]: props.stripe && rowIndex % 2 === 1,
         // 高亮当前行
-        ['highlight-current-row']: IvueTable?.props.highlightCurrentRow && (row === props.store?.states.currentRow.value)
-      }
+        ['highlight-current-row']:
+          IvueTable?.props.highlightCurrentRow &&
+          row === props.store?.states.currentRow.value,
+      },
     ];
 
     // 行的 className 的回调方法，也可以使用字符串为所有行设置一个固定的 className。
@@ -105,7 +109,6 @@ function useStyles(props: Partial<TableBodyProps>) {
     return { rowspan, colspan };
   };
 
-
   // 单元格样式
   const getCellClass = (
     rowIndex: number,
@@ -118,9 +121,13 @@ function useStyles(props: Partial<TableBodyProps>) {
       ? []
       : getFixedColumnsClass(prefixCls, columnIndex, props?.fixed, props.store);
 
-
     // classes
-    const classes = [column.id, column.align, column.className, ...fixedClasses];
+    const classes = [
+      column.id,
+      column.align,
+      column.className,
+      ...fixedClasses,
+    ];
 
     const cellClassName = IvueTable?.props.cellClassName;
 
@@ -152,7 +159,6 @@ function useStyles(props: Partial<TableBodyProps>) {
     row: TableColumnCtx,
     column: TableColumnCtx
   ) => {
-
     // 单元格的 style 的回调方法
     const cellStyle = IvueTable?.props.cellStyle;
 
@@ -180,7 +186,6 @@ function useStyles(props: Partial<TableBodyProps>) {
 
     return Object.assign({}, cellStyles, fixedStyle);
   };
-
 
   return {
     getRowClass,

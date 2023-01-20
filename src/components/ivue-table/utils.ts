@@ -27,12 +27,8 @@ export const getKeysMap = function (
   return arrayMap;
 };
 
-
 // 获取rowKey对应的数据
-export const getRowIdentity = (
-  row,
-  rowKey
-): string => {
+export const getRowIdentity = (row, rowKey): string => {
   if (!row) {
     throw new Error('Row is required when get row identity');
   }
@@ -76,7 +72,6 @@ export function parseWidth(width: number | string): number | string {
     if (Number.isNaN(width)) {
       width = '';
     }
-
   }
 
   return width;
@@ -84,7 +79,6 @@ export function parseWidth(width: number | string): number | string {
 
 // 最小宽度判断
 export function parseMinWidth(minWidth: number | string): number | string {
-
   // 空字符串
   if (minWidth === '') {
     return minWidth;
@@ -128,13 +122,12 @@ export const getFixedColumnsClass = (
     else if (
       !isLeft &&
       start ===
-      store.states.columns.value.length -
-      store.states.rightFixedLeafColumnsLength.value
+        store.states.columns.value.length -
+          store.states.rightFixedLeafColumnsLength.value
     ) {
       classes.push('is-first-column');
     }
   }
-
 
   return classes;
 };
@@ -156,7 +149,6 @@ export const isFixedColumn = (
       return {};
     }
 
-
     for (let i = 0; i < index; i++) {
       start += realColumns[i].colSpan;
     }
@@ -167,7 +159,6 @@ export const isFixedColumn = (
   else {
     start = index;
   }
-
 
   let fixedLayout;
   const columns = store.states.columns;
@@ -200,11 +191,13 @@ export const isFixedColumn = (
       }
   }
 
-  return fixedLayout ? {
-    direction: fixedLayout,
-    start,
-    after,
-  } : {};
+  return fixedLayout
+    ? {
+        direction: fixedLayout,
+        start,
+        after,
+      }
+    : {};
 };
 
 // 固定列偏移位置
@@ -214,7 +207,6 @@ export const getFixedColumnOffset = (
   store: Store,
   realColumns?: TableColumnCtx[]
 ) => {
-
   const { direction, start = 0 } = isFixedColumn(
     index,
     fixed,
@@ -250,7 +242,6 @@ export const getFixedColumnOffset = (
       .reduce(getOffset, 0);
   }
 
-
   return styles;
 };
 
@@ -264,7 +255,6 @@ function getOffset(offset: number, column: TableColumnCtx) {
   );
 }
 
-
 // 设置定位位置
 export const ensurePosition = (style: Record<any, string>, key: string) => {
   if (!style) {
@@ -275,7 +265,6 @@ export const ensurePosition = (style: Record<any, string>, key: string) => {
     style[key] = `${style[key]}px`;
   }
 };
-
 
 // 修改当前行的状态
 export function toggleRowStatus(
@@ -323,7 +312,6 @@ export function toggleRowStatus(
   }
 
   return changed;
-
 }
 
 // 获取当前单元格元素
@@ -334,12 +322,11 @@ export const getCell = (event: Event) => {
 // 单元格
 export const getColumnByCell = (
   table: {
-    columns: TableColumnCtx[]
+    columns: TableColumnCtx[];
   },
   cell: HTMLElement,
   namespace: string
 ): null | TableColumnCtx => {
-
   // 获取列id
   const matches = (cell.className || '').match(
     new RegExp(`${namespace}-[^\\s]+`, 'gm')
@@ -357,7 +344,7 @@ export const getColumnByCell = (
 export const getColumnById = (
   // 列数组
   table: {
-    columns: TableColumnCtx[]
+    columns: TableColumnCtx[];
   },
   // 列id
   columnId: string
@@ -378,7 +365,7 @@ export const getColumnById = (
 // 通过key寻找对应的列数据
 export const getColumnByKey = function (
   table: {
-    columns: TableColumnCtx[]
+    columns: TableColumnCtx[];
   },
   columnKey: string
 ): TableColumnCtx {
@@ -397,12 +384,11 @@ export const getColumnByKey = function (
 
   // 没有设置columnKey
   if (!column) {
-    throw ('column does not have columnKey set');
+    throw 'column does not have columnKey set';
   }
 
   return column;
 };
-
 
 export let removePopper;
 
@@ -412,7 +398,7 @@ export const createTablePopper = (
   trigger: HTMLElement,
   popperContent: string,
   tooltipTheme,
-  popperOptions: any,
+  popperOptions: any
 ) => {
   // 下一个zindex数值
   const { nextZIndex } = useZIndex();
@@ -460,7 +446,6 @@ export const createTablePopper = (
 
     return wrapper;
   };
-
 
   // 渲染内容
   const content = renderContent();
@@ -516,7 +501,6 @@ export const createTablePopper = (
   return popperInstance;
 };
 
-
 // 排序数据
 export const orderBy = (
   array: any[],
@@ -525,7 +509,6 @@ export const orderBy = (
   sortMethod,
   sortBy: string | (string | ((a: any, b: any, array?: any[]) => number))[]
 ) => {
-
   // 没有排序的key 对应列内容的字段名
   // 没有自定义排序方法
   // 没有指定数据按照哪个属性进行排序
@@ -550,7 +533,6 @@ export const orderBy = (
   // 没有自定义排序方法
   if (!sortMethod) {
     getKey = (value, index) => {
-
       // 指定数据按照哪个属性进行排序
       if (sortBy) {
         if (!Array.isArray(sortBy)) {
@@ -590,7 +572,6 @@ export const orderBy = (
     }
 
     for (let i = 0, length = a.key.length; i < length; i++) {
-
       // 第一个小于第二个
       if (a.key[i] < b.key[i]) {
         return -1;
@@ -606,29 +587,31 @@ export const orderBy = (
     return 0;
   };
 
+  return (
+    array
+      .map((value, index) => {
+        return {
+          value,
+          index,
+          // 当前行的数据 date
+          key: getKey ? getKey(value, index) : null,
+        };
+      })
+      // 排序
+      .sort((a, b) => {
+        let order = sort(a, b);
 
-  return array.map((value, index) => {
-    return {
-      value,
-      index,
-      // 当前行的数据 date
-      key: getKey ? getKey(value, index) : null,
-    };
-  })
-    // 排序
-    .sort((a, b) => {
-      let order = sort(a, b);
+        // 是否需要排序
+        if (!order) {
+          // make stable https://en.wikipedia.org/wiki/Sorting_algorithm#Stability
+          order = a.index - b.index;
+        }
 
-      // 是否需要排序
-      if (!order) {
-        // make stable https://en.wikipedia.org/wiki/Sorting_algorithm#Stability
-        order = a.index - b.index;
-      }
-
-      return order * +reverse;
-    })
-    // 返回当前行值
-    .map((item) => item.value);
+        return order * +reverse;
+      })
+      // 返回当前行值
+      .map((item) => item.value)
+  );
 };
 
 // 行树节点
@@ -638,7 +621,6 @@ export function walkTreeNode(
   childrenKey = 'children',
   lazyKey = 'hasChildren'
 ) {
-
   // 是否有值
   const isNull = (array) => !(Array.isArray(array) && array.length);
 

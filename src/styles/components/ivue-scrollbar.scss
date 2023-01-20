@@ -1,7 +1,6 @@
 $name: 'ivue-scrollbar';
 
 :root {
-
   // bar
   --#{$name}-bar-position: 2px;
   --#{$name}-bar-radius: 4px;
@@ -30,7 +29,7 @@ $name: 'ivue-scrollbar';
 
     // 隐藏滚动条
     &::-webkit-scrollbar {
-      display: none
+      display: none;
     }
   }
 
@@ -75,14 +74,14 @@ $name: 'ivue-scrollbar';
     opacity: 0.3;
 
     &:hover {
-      opacity: .5;
+      opacity: 0.5;
     }
   }
 
   // fade
   &-fade-enter-active,
   &-fade-leave-active {
-    transition: opacity .3s var(--ivue-ease-in-out);
+    transition: opacity 0.3s var(--ivue-ease-in-out);
   }
 
   &-fade-enter-from,

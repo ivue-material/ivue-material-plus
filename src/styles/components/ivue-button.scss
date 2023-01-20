@@ -1,7 +1,7 @@
 // @import "ivue-loading.scss";
 
 @import '../animation/variables.scss';
-@import "../../components/ivue-elevation/mixins";
+@import '../../components/ivue-elevation/mixins';
 
 $name: 'ivue-button';
 
@@ -18,63 +18,65 @@ $name: 'ivue-button';
   --#{$name}-set-radius: 18px;
 
   // disabled
-  --#{$name}-disabled-color: rgba(0, 0, 0, .26);
+  --#{$name}-disabled-color: rgba(0, 0, 0, 0.26);
 
   // loading
   --#{$name}-loading-size: 16px;
   --#{$name}-loading-right: 5px;
 
   // color
-  --#{$name}-raised-disabled: #F8F9FD;
+  --#{$name}-raised-disabled: #f8f9fd;
   --#{$name}-readonly-color: rgba(0, 0, 0, 0.12);
-  --#{$name}-mask-color: rgba(255, 255, 255, .5);
+  --#{$name}-mask-color: rgba(255, 255, 255, 0.5);
 
   // primary
-  --#{$name}-primary-shadow-2: rgba(79, 135, 255, .2);
-  --#{$name}-primary-shadow-14: rgba(78, 134, 255, .14);
-  --#{$name}-primary-shadow-12: rgba(78, 134, 255, .14);
+  --#{$name}-primary-shadow-2: rgba(79, 135, 255, 0.2);
+  --#{$name}-primary-shadow-14: rgba(78, 134, 255, 0.14);
+  --#{$name}-primary-shadow-12: rgba(78, 134, 255, 0.14);
 
   // light-primary
-  --#{$name}-light-primary-lg: linear-gradient(135deg, #71CDFF 0%, #5AB2FF 100%);
-  --#{$name}-light-primary-color: #71CDFF;
+  --#{$name}-light-primary-lg: linear-gradient(
+    135deg,
+    #71cdff 0%,
+    #5ab2ff 100%
+  );
+  --#{$name}-light-primary-color: #71cdff;
 
-  --#{$name}-light-primary-shadow-2: rgba(90, 178, 255, .2);
-  --#{$name}-light-primary-shadow-14: rgba(90, 178, 255, .14);
-  --#{$name}-light-primary-shadow-12: rgba(90, 178, 255, .12);
+  --#{$name}-light-primary-shadow-2: rgba(90, 178, 255, 0.2);
+  --#{$name}-light-primary-shadow-14: rgba(90, 178, 255, 0.14);
+  --#{$name}-light-primary-shadow-12: rgba(90, 178, 255, 0.12);
 
   // dark-primary
-  --#{$name}-dark-primary-lg: linear-gradient(135deg, #3A9FF6 0%, #5B8EFF 100%);
-  --#{$name}-dark-primary-color: #3A9FF6;
+  --#{$name}-dark-primary-lg: linear-gradient(135deg, #3a9ff6 0%, #5b8eff 100%);
+  --#{$name}-dark-primary-color: #3a9ff6;
 
-  --#{$name}-dark-primary-shadow-2: rgba(58, 159, 246, .2);
-  --#{$name}-dark-primary-shadow-14: rgba(58, 159, 246, .14);
-  --#{$name}-dark-primary-shadow-12: rgba(58, 159, 246, .12);
-
+  --#{$name}-dark-primary-shadow-2: rgba(58, 159, 246, 0.2);
+  --#{$name}-dark-primary-shadow-14: rgba(58, 159, 246, 0.14);
+  --#{$name}-dark-primary-shadow-12: rgba(58, 159, 246, 0.12);
 
   // success
-  --#{$name}-success-lg: linear-gradient(135deg, #27E2B2 0%, #0DDECE 100%);
-  --#{$name}-success-color: #27E2B2;
+  --#{$name}-success-lg: linear-gradient(135deg, #27e2b2 0%, #0ddece 100%);
+  --#{$name}-success-color: #27e2b2;
 
-  --#{$name}-success-shadow-2: rgba(35, 222, 174, .2);
-  --#{$name}-success-shadow-14: rgba(35, 222, 174, .14);
-  --#{$name}-success-shadow-12: rgba(35, 222, 174, .12);
+  --#{$name}-success-shadow-2: rgba(35, 222, 174, 0.2);
+  --#{$name}-success-shadow-14: rgba(35, 222, 174, 0.14);
+  --#{$name}-success-shadow-12: rgba(35, 222, 174, 0.12);
 
   // warning
-  --#{$name}-warning-lg: linear-gradient(135deg, #FFBD3C 0%, #FFA82D 100%);
-  --#{$name}-warning-color: #FFBD3C;
+  --#{$name}-warning-lg: linear-gradient(135deg, #ffbd3c 0%, #ffa82d 100%);
+  --#{$name}-warning-color: #ffbd3c;
 
-  --#{$name}-warning-shadow-2: rgba(255, 182, 41, .2);
-  --#{$name}-warning-shadow-14: rgba(255, 182, 41, .14);
-  --#{$name}-warning-shadow-12: rgba(255, 182, 41, .12);
+  --#{$name}-warning-shadow-2: rgba(255, 182, 41, 0.2);
+  --#{$name}-warning-shadow-14: rgba(255, 182, 41, 0.14);
+  --#{$name}-warning-shadow-12: rgba(255, 182, 41, 0.12);
 
   // error
-  --#{$name}-error-lg: linear-gradient(135deg, #FF617F 0%, #FF4772 100%);
-  --#{$name}-error-color: #FF617F;
+  --#{$name}-error-lg: linear-gradient(135deg, #ff617f 0%, #ff4772 100%);
+  --#{$name}-error-color: #ff617f;
 
-  --#{$name}-error-shadow-2: rgba(255, 86, 118, .2);
-  --#{$name}-error-shadow-14: rgba(255, 86, 118, .14);
-  --#{$name}-error-shadow-12: rgba(255, 86, 118, .12);
-
+  --#{$name}-error-shadow-2: rgba(255, 86, 118, 0.2);
+  --#{$name}-error-shadow-14: rgba(255, 86, 118, 0.14);
+  --#{$name}-error-shadow-12: rgba(255, 86, 118, 0.12);
 }
 
 .#{$name}-clean {
@@ -147,7 +149,6 @@ $name: 'ivue-button';
       margin-right: var(--#{$name}-loading-right);
     }
 
-
     .ivue-loading-mask {
       background: none;
     }
@@ -180,13 +181,13 @@ $name: 'ivue-button';
       &:active {
         &:before {
           background-color: currentColor;
-          opacity: .12;
+          opacity: 0.12;
         }
       }
 
       &:active {
         &:before {
-          opacity: .2;
+          opacity: 0.2;
         }
       }
     }
@@ -197,7 +198,7 @@ $name: 'ivue-button';
       &:hover {
         &:before {
           background-color: transparent;
-          opacity: .12;
+          opacity: 0.12;
         }
       }
     }
@@ -209,7 +210,7 @@ $name: 'ivue-button';
   }
 
   &:before {
-    content: " ";
+    content: ' ';
     position: absolute;
     top: 0;
     right: 0;
@@ -222,7 +223,9 @@ $name: 'ivue-button';
     will-change: background-color, opacity;
   }
 
-  &.#{$name}--raised:not(.#{$name}--depressed):not(.#{$name}--flat):not([disabled]) {
+  &.#{$name}--raised:not(.#{$name}--depressed):not(.#{$name}--flat):not(
+      [disabled]
+    ) {
     will-change: box-shadow;
 
     @include ivue-elevation(2);
@@ -237,7 +240,7 @@ $name: 'ivue-button';
     color: var(--ivue-text-color);
   }
 
-  +.ivue-button {
+  + .ivue-button {
     margin-left: 0;
   }
 
@@ -281,7 +284,7 @@ $name: 'ivue-button';
   // 蒙版
   &--mask {
     &::before {
-      content: "";
+      content: '';
       position: absolute;
       top: 0;
       right: 0;
@@ -303,14 +306,18 @@ $name: 'ivue-button';
       color: var(--ivue-primary-color);
     }
 
-    &.#{$name}--raised:not(.#{$name}--depressed):not(.#{$name}--flat):not([disabled]) {
+    &.#{$name}--raised:not(.#{$name}--depressed):not(.#{$name}--flat):not(
+        [disabled]
+      ) {
       box-shadow: 0 10px 10px -5px var(--#{$name}-primary-shadow-2);
 
       &:not(.#{$name}--mask):active {
-        @include ivue-elevation(8,
+        @include ivue-elevation(
+          8,
           var(--#{$name}-primary-shadow-2),
           var(--#{$name}-primary-shadow-14),
-          var(--#{$name}-primary-shadow-12));
+          var(--#{$name}-primary-shadow-12)
+        );
       }
     }
   }
@@ -324,14 +331,18 @@ $name: 'ivue-button';
       color: var(--#{$name}-light-primary-color);
     }
 
-    &.#{$name}--raised:not(.#{$name}--depressed):not(.#{$name}--flat):not([disabled]) {
+    &.#{$name}--raised:not(.#{$name}--depressed):not(.#{$name}--flat):not(
+        [disabled]
+      ) {
       box-shadow: 0 10px 10px -5px var(--#{$name}-light-primary-shadow-2);
 
       &:not(.#{$name}--mask):active {
-        @include ivue-elevation(8,
+        @include ivue-elevation(
+          8,
           var(--#{$name}-light-primary-shadow-2),
           var(--#{$name}-light-primary-shadow-14),
-          var(--#{$name}-light-primary-shadow-12));
+          var(--#{$name}-light-primary-shadow-12)
+        );
       }
     }
   }
@@ -345,14 +356,18 @@ $name: 'ivue-button';
       color: var(--#{$name}-dark-primary-color);
     }
 
-    &.#{$name}--raised:not(.#{$name}--depressed):not(.#{$name}--flat):not([disabled]) {
+    &.#{$name}--raised:not(.#{$name}--depressed):not(.#{$name}--flat):not(
+        [disabled]
+      ) {
       box-shadow: 0 10px 10px -5px var(--#{$name}-dark-primary-shadow-2);
 
       &:not(.#{$name}--mask):active {
-        @include ivue-elevation(8,
+        @include ivue-elevation(
+          8,
           var(--#{$name}-dark-primary-shadow-2),
           var(--#{$name}-dark-primary-shadow-14),
-          var(--#{$name}-dark-primary-shadow-12));
+          var(--#{$name}-dark-primary-shadow-12)
+        );
       }
     }
   }
@@ -366,14 +381,18 @@ $name: 'ivue-button';
       color: var(--#{$name}-success-color);
     }
 
-    &.#{$name}--raised:not(.#{$name}--depressed):not(.#{$name}--flat):not([disabled]) {
+    &.#{$name}--raised:not(.#{$name}--depressed):not(.#{$name}--flat):not(
+        [disabled]
+      ) {
       box-shadow: 0 10px 10px -5px var(--#{$name}-success-shadow-2);
 
       &:not(.#{$name}--mask):active {
-        @include ivue-elevation(8,
+        @include ivue-elevation(
+          8,
           var(--#{$name}-success-shadow-2),
           var(--#{$name}-success-shadow-14),
-          var(--#{$name}-success-shadow-12));
+          var(--#{$name}-success-shadow-12)
+        );
       }
     }
   }
@@ -387,14 +406,18 @@ $name: 'ivue-button';
       color: var(--#{$name}-warning-color);
     }
 
-    &.#{$name}--raised:not(.#{$name}--depressed):not(.#{$name}--flat):not([disabled]) {
+    &.#{$name}--raised:not(.#{$name}--depressed):not(.#{$name}--flat):not(
+        [disabled]
+      ) {
       box-shadow: 0 10px 10px -5px var(--#{$name}-warning-shadow-2);
 
       &:not(.#{$name}--mask):active {
-        @include ivue-elevation(8,
+        @include ivue-elevation(
+          8,
           var(--#{$name}-warning-shadow-2),
           var(--#{$name}-warning-shadow-14),
-          var(--#{$name}-warning-shadow-12));
+          var(--#{$name}-warning-shadow-12)
+        );
       }
     }
   }
@@ -408,14 +431,18 @@ $name: 'ivue-button';
       color: var(--#{$name}-error-color);
     }
 
-    &.#{$name}--raised:not(.#{$name}--depressed):not(.#{$name}--flat):not([disabled]) {
+    &.#{$name}--raised:not(.#{$name}--depressed):not(.#{$name}--flat):not(
+        [disabled]
+      ) {
       box-shadow: 0 10px 10px -5px var(--#{$name}-error-shadow-2);
 
       &:not(.#{$name}--mask):active {
-        @include ivue-elevation(8,
+        @include ivue-elevation(
+          8,
           var(--#{$name}-error-shadow-2),
           var(--#{$name}-error-shadow-14),
-          var(--#{$name}-error-shadow-12));
+          var(--#{$name}-error-shadow-12)
+        );
       }
     }
   }

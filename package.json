@@ -11,11 +11,16 @@
     "resolvers"
   ],
   "scripts": {
+    "cz": "czg",
     "serve": "vue-cli-service serve",
     "build": "npm run build:prod && npm run build:style && npm run build:rollup",
     "build:style": "gulp --gulpfile build/build-style.js",
     "build:prod": "vite build",
-    "build:rollup": "gulp --require @esbuild-kit/cjs-loader -f ./rollup/gulpfile.ts"
+    "build:rollup": "gulp --require @esbuild-kit/cjs-loader -f ./rollup/gulpfile.ts",
+    "lint": "eslint . --ext .vue,.js,.ts,.jsx,.tsx,.md,.json --max-warnings 0 --cache",
+    "lint:fix": "pnpm run lint --fix",
+    "format": "prettier --write --cache .",
+    "prepare": "husky install"
   },
   "repository": {
     "type": "git",
@@ -33,9 +38,13 @@
     "@vue/shared": "^3.2.37",
     "@vueuse/core": "^8.9.4",
     "async-validator": "^4.2.5",
+    "child_process": "^1.0.2",
     "countup.js": "^2.3.2",
+    "czg": "^1.4.1",
+    "eslint-config-prettier": "^8.6.0",
     "eslint-plugin-html": "^6.2.0",
-    "fast-glob": "^3.2.11",
+    "eslint-plugin-json": "^3.1.0",
+    "fast-glob": "^3.2.12",
     "fs": "^0.0.1-security",
     "g": "^2.0.1",
     "gulp-sass-import": "^1.0.0",
@@ -48,6 +57,7 @@
     "normalize-wheel-es": "^1.2.0",
     "path": "^0.12.7",
     "popper.js": "^1.16.1",
+    "prettier": "^2.8.3",
     "raf": "^3.4.1",
     "rollup-plugin-css-only": "^3.1.0",
     "rollup-plugin-postcss": "^4.0.2",
@@ -119,10 +129,10 @@
     "gulp-rename": "^2.0.0",
     "gulp-sass": "^5.1.0",
     "html-loader": "^4.2.0",
-    "husky": "^8.0.1",
+    "husky": "^8.0.3",
     "import-from": "^4.0.0",
     "lerna": "^6.0.1",
-    "lint-staged": "^13.0.3",
+    "lint-staged": "^13.1.0",
     "mini-css-extract-plugin": "^2.6.1",
     "ora": "^6.1.2",
     "postcss-loader": "^7.0.1",
@@ -166,5 +176,8 @@
   ],
   "eslintConfig": {
     "parser": "babel-eslint"
+  },
+  "lint-staged": {
+    "*.{vue,js,ts,jsx,tsx,md,json}": "eslint --fix"
   }
 }

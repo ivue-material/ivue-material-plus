@@ -2,20 +2,19 @@
 
 // 语言
 export type Locale = {
-  before?: string
-  after?: string
-  just?: string
-  seconds?: string
-  minutes?: string
-  hours?: string
-  days?: string
-}
+  before?: string;
+  after?: string;
+  just?: string;
+  seconds?: string;
+  minutes?: string;
+  hours?: string;
+  days?: string;
+};
 
 // 判断传入时间戳是否早于当前时间戳
 const isEarly = (timeStamp: number, currentTime: number) => {
   return timeStamp <= currentTime;
 };
-
 
 // 果传入的数值小于10，即位数只有1位，则在前面补充0
 export const getHandledValue = (num: number) => {
@@ -37,9 +36,9 @@ export const getDate = (timeStamp: number, startType?: string) => {
   let resultStr = '';
 
   // 年
-  if ((startType === 'year') || (startType === 'datetime')) {
+  if (startType === 'year' || startType === 'datetime') {
     // yyyy-mm-dd h:m:s
-    resultStr = `${year}-${month}-${day} ${hours}:${minutes}:${second}`
+    resultStr = `${year}-${month}-${day} ${hours}:${minutes}:${second}`;
   }
   // 日期
   else if (startType === 'date') {
@@ -48,14 +47,19 @@ export const getDate = (timeStamp: number, startType?: string) => {
   // 其他日期
   else {
     // mm-dd h:m:s
-    resultStr = `${month}-${day} ${hours}:${minutes}`
+    resultStr = `${month}-${day} ${hours}:${minutes}`;
   }
 
-  return resultStr
-}
+  return resultStr;
+};
 
 // 获取相对时间
-export const getRelativeTime = (timeStamp: number, locale: Locale = {}, dateStartType?: string, dateFunction?: Function) => {
+export const getRelativeTime = (
+  timeStamp: number,
+  locale: Locale = {},
+  dateStartType?: string,
+  dateFunction?: Function
+) => {
   // 当前时间
   const currentTime = new Date().getTime();
 
@@ -74,7 +78,7 @@ export const getRelativeTime = (timeStamp: number, locale: Locale = {}, dateStar
   }
 
   // 最后的字符串
-  const endStr = _isEarly ? (locale.before || '前') : (locale.after || '后');
+  const endStr = _isEarly ? locale.before || '前' : locale.after || '后';
 
   // 刚刚
   if (diff < 1000) {
@@ -82,19 +86,25 @@ export const getRelativeTime = (timeStamp: number, locale: Locale = {}, dateStar
   }
   // 秒 -> 少于等于59秒
   else if (diff < 60000) {
-    resultStr = `${parseInt(`${diff / 1000}`)}${(locale.seconds || '秒')}${endStr}`;
+    resultStr = `${parseInt(`${diff / 1000}`)}${
+      locale.seconds || '秒'
+    }${endStr}`;
   }
   // 分钟 -> 多于59秒，少于等于59分钟59秒
   else if (diff >= 60000 && diff < 3600000) {
-    resultStr = `${Math.floor(diff / 60000)}${(locale.minutes || '分钟')}${endStr}`;
+    resultStr = `${Math.floor(diff / 60000)}${
+      locale.minutes || '分钟'
+    }${endStr}`;
   }
   // 小时 -> 多于59分钟59秒，少于等于23小时59分钟59秒
   else if (diff >= 3600000 && diff < 86400000) {
-    resultStr = `${Math.floor(diff / 3600000)}${(locale.hours || '小时')}${endStr}`;
+    resultStr = `${Math.floor(diff / 3600000)}${
+      locale.hours || '小时'
+    }${endStr}`;
   }
   // 天 -> 多于23小时59分钟59秒，少于等于29天59分钟59秒
   else if (diff >= 86400000 && diff < 2623860000) {
-    resultStr = `${Math.floor(diff / 86400000)}${(locale.days || '天')}`
+    resultStr = `${Math.floor(diff / 86400000)}${locale.days || '天'}`;
   }
   // 月 -> 多于29天59分钟59秒，少于364天23小时59分钟59秒，且传入的时间戳早于当前
   else if (diff >= 2623860000 && diff <= 31567860000 && _isEarly) {
@@ -108,7 +118,7 @@ export const getRelativeTime = (timeStamp: number, locale: Locale = {}, dateStar
   // 自定义日期方法
   if (dateFunction) {
     // 时间搓, 获取两个时间戳差值, 判断传入时间戳是否早于当前时间戳
-    resultStr = dateFunction(timeStamp, diff, _isEarly)
+    resultStr = dateFunction(timeStamp, diff, _isEarly);
   }
 
   return resultStr;

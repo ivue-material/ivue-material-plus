@@ -29,28 +29,15 @@
     "sourceMap": true,
     "importHelpers": true,
     // 编译过程中需要引入的库文件的列表
-    "lib": [
-      "esnext",
-      "dom",
-      "dom.iterable",
-      "scripthost"
-    ],
+    "lib": ["esnext", "dom", "dom.iterable", "scripthost"],
     // 允许从没有设置默认导出的模块中默认导入
     "allowSyntheticDefaultImports": true,
-    "types": [
-      "web-bluetooth",
-      "vue",
-      "node"
-    ],
+    "types": ["web-bluetooth", "vue", "node"],
     // 中存在的resolveJsonModule选项
     "resolveJsonModule": true
   },
   // 排除文件
-  "exclude": [
-    "node_modules",
-    "dist",
-    "rollup"
-  ],
+  "exclude": ["node_modules", "dist", "rollup"],
   "include": [
     "./**/*.ts",
     "src/**/*.vue",
@@ -59,6 +46,6 @@
     "src/**/*.vue",
     "src/index.ts",
     "src/utils/render.ts",
-    "typings/*.ts",
+    "typings/*.ts"
   ]
 }

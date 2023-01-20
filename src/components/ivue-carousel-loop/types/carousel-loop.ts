@@ -13,7 +13,6 @@ export interface Props {
   dataList: any[];
 }
 
-
 export interface Data {
   timer: ReturnType<typeof setInterval> | null;
   loop: boolean;

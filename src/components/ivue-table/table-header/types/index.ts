@@ -4,21 +4,21 @@ import { Sort } from '../../table/defaults';
 import type FilterPanel from '../../table/filter-panel.vue';
 import type { Store } from '../../store';
 
-export type FilterPanelInstance = InstanceType<typeof FilterPanel>
+export type FilterPanelInstance = InstanceType<typeof FilterPanel>;
 
 export type DragState = {
   startMouseLeft?: number;
   startLeft?: number;
   startColumnLeft?: number;
-  tableLeft?: number
-}
+  tableLeft?: number;
+};
 
 export type SortOrder = 'descending' | 'ascending' | null;
 
 export interface TableHeader extends ComponentInternalInstance {
   state: {
-    handleColumnsChange
-    handleScrollableWidthChange
+    handleColumnsChange;
+    handleScrollableWidthChange;
   };
   filterPanels: Ref<Record<number, FilterPanelInstance>>;
   $parent: ComponentPublicInstance | null;

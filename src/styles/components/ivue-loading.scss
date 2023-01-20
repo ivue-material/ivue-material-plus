@@ -12,7 +12,6 @@ $name: 'ivue-loading';
 }
 
 .#{$name} {
-
   // 蒙版
   &-mask {
     position: absolute;
@@ -23,13 +22,13 @@ $name: 'ivue-loading';
     z-index: 2000;
     background: var(--#{$name}-mask-color);
     margin: 0;
-    transition: opacity .3s var(--ivue-ease-in-out);
+    transition: opacity 0.3s var(--ivue-ease-in-out);
   }
 
   // 父节点
   &-parent {
     &--relative {
-      position: relative !important
+      position: relative !important;
     }
 
     &--hidden {
@@ -50,7 +49,7 @@ $name: 'ivue-loading';
     width: 100%;
     color: var(--ivue-primary-color);
 
-    &--content{
+    &--content {
       display: flex;
       justify-content: center;
       flex-direction: column;
@@ -87,7 +86,6 @@ $name: 'ivue-loading';
     font-size: var(--#{$name}-font-size);
   }
 }
-
 
 .ivue-loading-fade-enter-from,
 .ivue-loading-fade-leave-to {

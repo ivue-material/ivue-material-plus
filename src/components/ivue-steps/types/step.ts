@@ -1,10 +1,9 @@
-
 export type Props = {
   title: string;
   content: string;
   status: string;
   icon: string;
-}
+};
 
 export type Data = {
   stepNumber: string;
@@ -13,4 +12,4 @@ export type Data = {
   index: number;
   textDirection: string;
   direction: string;
-}
+};

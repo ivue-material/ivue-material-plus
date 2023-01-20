@@ -1,7 +1,3 @@
-const {
-  relative
-} = require('path');
-
 const isProduction = process.env.NODE_ENV === 'production';
 
 module.exports = {
@@ -11,13 +7,12 @@ module.exports = {
       entry: 'examples/main.js',
       template: 'examples/index.html',
       filename: 'index.html',
-      chunks: ['chunk-vendors', 'chunk-common', 'index']
-    }
+      chunks: ['chunk-vendors', 'chunk-common', 'index'],
+    },
   },
   chainWebpack: (config) => {
     // dev环境
     if (!isProduction) {
-
       const oneOfsMap = config.module.rule('scss').oneOfs.store;
 
       oneOfsMap.forEach((item) => {
@@ -26,10 +21,11 @@ module.exports = {
           .loader('sass-loader')
           .options({
             // dev覆盖字体路径
-            additionalData: '$material-icons-font-path: "~@/styles/material-icons/fonts/material-icons" !default;'
+            additionalData:
+              '$material-icons-font-path: "~@/styles/material-icons/fonts/material-icons" !default;',
           })
           .end();
       });
     }
-  }
+  },
 };

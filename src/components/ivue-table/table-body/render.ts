@@ -12,18 +12,12 @@ import type { TableColumnCtx } from '../table-column/defaults';
 import { TableContextKey } from '../table/defaults';
 
 function useRender(props: Partial<TableBodyProps>) {
-
   // inject
   const IvueTable = inject(TableContextKey);
 
   // 样式
-  const {
-    getRowClass,
-    getRowStyle,
-    getTableSpan,
-    getCellClass,
-    getCellStyle,
-  } = useStyles(props);
+  const { getRowClass, getRowStyle, getTableSpan, getCellClass, getCellStyle } =
+    useStyles(props);
 
   // 事件
   const {
@@ -31,7 +25,7 @@ function useRender(props: Partial<TableBodyProps>) {
     handleCellMouseEnter,
     handleCellMouseLeave,
     handleMouseEnter,
-    handleMouseLeave
+    handleMouseLeave,
   } = useEvents(props);
 
   // computed
@@ -42,7 +36,6 @@ function useRender(props: Partial<TableBodyProps>) {
       ({ type }) => type === 'default'
     );
   });
-
 
   // methods
 
@@ -87,29 +80,35 @@ function useRender(props: Partial<TableBodyProps>) {
     const displayStyle = display
       ? null
       : {
-        display: 'none',
-      };
+          display: 'none',
+        };
 
-    return h('tr', {
-      class: rowClasses,
-      style: [displayStyle, getRowStyle(row, $index)],
-      key: getRowKey(row, $index),
-      onClick: ($event) => {
-        handleClickTr($event, row);
+    return h(
+      'tr',
+      {
+        class: rowClasses,
+        style: [displayStyle, getRowStyle(row, $index)],
+        key: getRowKey(row, $index),
+        onClick: ($event) => {
+          handleClickTr($event, row);
+        },
+        // 鼠标进入
+        onMouseenter: () => {
+          handleMouseEnter($index);
+        },
+        // 鼠标离开
+        onMouseleave: () => {
+          handleMouseLeave();
+        },
       },
-      // 鼠标进入
-      onMouseenter: () => {
-        handleMouseEnter($index);
-      },
-      // 鼠标离开
-      onMouseleave: () => {
-        handleMouseLeave();
-      },
-    },
       columns.value.map((column, cellIndex) => {
-
         // 获取单元格样式
-        const { rowspan, colspan } = getTableSpan(row, column, $index, cellIndex);
+        const { rowspan, colspan } = getTableSpan(
+          row,
+          column,
+          $index,
+          cellIndex
+        );
 
         // 是否存在单元格样式
         if (!rowspan || !colspan) {
@@ -139,7 +138,6 @@ function useRender(props: Partial<TableBodyProps>) {
 
         // 设置子节点数据
         if (cellIndex === firstDefaultColumnIndex.value && treeRowData) {
-
           data.treeNode = {
             indent: treeRowData.level * indent.value,
             level: treeRowData.level,
@@ -183,7 +181,7 @@ function useRender(props: Partial<TableBodyProps>) {
           },
           [
             // 渲染单元格
-            column.renderCell(data)
+            column.renderCell(data),
           ]
         );
       })
@@ -215,7 +213,8 @@ function useRender(props: Partial<TableBodyProps>) {
         $index,
         undefined,
         // 展开状态
-        expanded);
+        expanded
+      );
 
       // 展开的内容
       const renderExpanded = IvueTable.renderExpanded;
@@ -242,10 +241,7 @@ function useRender(props: Partial<TableBodyProps>) {
                   'td',
                   {
                     colspan: columns.length,
-                    class: [
-                      'ivue-table-cell',
-                      'ivue-table--expand-cell'
-                    ]
+                    class: ['ivue-table-cell', 'ivue-table--expand-cell'],
                   },
                   [
                     renderExpanded({
@@ -253,13 +249,13 @@ function useRender(props: Partial<TableBodyProps>) {
                       $index,
                       store,
                       // 展开状态
-                      expanded
-                    })
+                      expanded,
+                    }),
                   ]
                 ),
               ]
-            )
-          ]
+            ),
+          ],
         ];
       }
       // 未展开
@@ -294,11 +290,12 @@ function useRender(props: Partial<TableBodyProps>) {
 
         // 懒加载数据
         if (typeof childrenData.lazy === 'boolean') {
-
           // 加载完成
           if (typeof childrenData.loaded === 'boolean' && childrenData.loaded) {
             // 没有子节点
-            treeRowData.noLazyChildren = !(childrenData.children && childrenData.children.length);
+            treeRowData.noLazyChildren = !(
+              childrenData.children && childrenData.children.length
+            );
           }
 
           // 加载
@@ -346,15 +343,21 @@ function useRender(props: Partial<TableBodyProps>) {
 
               // 懒加载的某些节点，level 未知
               childrenData.level = childrenData.level || innerTreeRowData.level;
-              childrenData.display = !!(childrenData.expanded && innerTreeRowData.display);
+              childrenData.display = !!(
+                childrenData.expanded && innerTreeRowData.display
+              );
 
               // 懒加载
               if (typeof childrenData.lazy === 'boolean') {
-
                 // 加载完成
-                if (typeof childrenData.loaded === 'boolean' && childrenData.loaded) {
+                if (
+                  typeof childrenData.loaded === 'boolean' &&
+                  childrenData.loaded
+                ) {
                   // 没有子节点
-                  innerTreeRowData.noLazyChildren = !(childrenData.children && childrenData.children.length);
+                  innerTreeRowData.noLazyChildren = !(
+                    childrenData.children && childrenData.children.length
+                  );
                 }
 
                 // 加载中
@@ -369,11 +372,12 @@ function useRender(props: Partial<TableBodyProps>) {
 
             if (childrenData) {
               // 懒加载节点 | 子节点 = 获取行数据
-              const nodes = lazyTreeNodeMap.value[childKey] || node[childrenColumnName.value];
+              const nodes =
+                lazyTreeNodeMap.value[childKey] ||
+                node[childrenColumnName.value];
 
               traverse(nodes, childrenData);
             }
-
           });
         };
 
@@ -381,7 +385,8 @@ function useRender(props: Partial<TableBodyProps>) {
         childrenData.display = true;
 
         // 懒加载节点 | 子节点 = 获取行数据
-        const nodes = lazyTreeNodeMap.value[rowKeyData] || row[childrenColumnName.value];
+        const nodes =
+          lazyTreeNodeMap.value[rowKeyData] || row[childrenColumnName.value];
 
         // 递归方法
         traverse(nodes, childrenData);
@@ -393,11 +398,10 @@ function useRender(props: Partial<TableBodyProps>) {
     else {
       return rowRender(row, $index);
     }
-
   };
 
   return {
-    wrappedRowRender
+    wrappedRowRender,
   };
 }
 

@@ -1,11 +1,6 @@
-
 import type { PropType } from 'vue';
 import type { Store } from '../store';
-import type {
-  ColumnCls,
-  rowStyle,
-  Table,
-} from '../table/defaults';
+import type { ColumnCls, rowStyle, Table } from '../table/defaults';
 
 interface TableBodyProps {
   store: Store;
@@ -54,13 +49,13 @@ export default {
     type: [Object, Function] as PropType<TableBodyProps['rowStyle']>,
   },
   /**
-  * tooltip主题
-  *
-  * @type {String}
-  */
+   * tooltip主题
+   *
+   * @type {String}
+   */
   tooltipTheme: {
     type: String as PropType<TableBodyProps['tooltipTheme']>,
-  }
+  },
 };
 
 export { TableBodyProps };

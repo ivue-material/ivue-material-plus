@@ -2,14 +2,13 @@ import type { InjectionKey } from 'vue';
 import { SubmenuList } from './menu';
 
 export type SubmenuContext = {
-  default?: null,
-  activeName?: (currentActiveName: number | string | boolean) => void
-  handleMenuItemSelect?: (name: string | number) => void
-}
+  default?: null;
+  activeName?: (currentActiveName: number | string | boolean) => void;
+  handleMenuItemSelect?: (name: string | number) => void;
+};
 
 export const SubmenuContextKey: InjectionKey<SubmenuContext> =
   Symbol('ivue-menu-submenu');
-
 
 export interface Props {
   name: string | number;

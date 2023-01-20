@@ -1,6 +1,5 @@
 $name: 'ivue-carousel';
 
-
 :root {
   // size
   --#{$name}-content-height: 200px;
@@ -21,7 +20,7 @@ $name: 'ivue-carousel';
   --#{$name}-vertical-dot-button-height: 15px;
 
   // color
-  --#{$name}-arrow-bg: rgba(31, 45, 61, .11);
+  --#{$name}-arrow-bg: rgba(31, 45, 61, 0.11);
   --#{$name}-dots-outside-color: #8391a5;
 }
 
@@ -55,7 +54,7 @@ $name: 'ivue-carousel';
 
     // 动画
     &--animating {
-      transition: transform .4s ease-in-out;
+      transition: transform 0.4s ease-in-out;
     }
 
     // 是否可以点击下一个
@@ -67,7 +66,7 @@ $name: 'ivue-carousel';
     // 卡片类型
     &--card {
       width: 50%;
-      transition: transform .4s ease-in-out;
+      transition: transform 0.4s ease-in-out;
 
       &__vertical {
         width: 100%;
@@ -88,17 +87,17 @@ $name: 'ivue-carousel';
       top: 0;
       left: 0;
       background: var(--ivue-white-color);
-      transition: .2s;
-      opacity: .24;
+      transition: 0.2s;
+      opacity: 0.24;
 
       &:hover {
-        opacity: .12;
+        opacity: 0.12;
       }
     }
 
     // hover
     &--hover &--mask {
-      opacity: .12;
+      opacity: 0.12;
     }
   }
 
@@ -180,7 +179,7 @@ $name: 'ivue-carousel';
       cursor: pointer;
       pointer-events: auto;
 
-      &:hover>.#{$name}-dots--button {
+      &:hover > .#{$name}-dots--button {
         opacity: 0.7;
       }
     }
@@ -229,7 +228,7 @@ $name: 'ivue-carousel';
       border: 0;
       width: var(--#{$name}-dot-width);
       height: var(--#{$name}-dot-height);
-      opacity: .5;
+      opacity: 0.5;
       border-radius: var(--#{$name}-dot-height);
       outline: none;
       font-size: 0;
@@ -237,7 +236,7 @@ $name: 'ivue-carousel';
       cursor: pointer;
       color: transparent;
       background: var(--ivue-white-color);
-      transition: all .4s var(--ivue-ease-in-out);
+      transition: all 0.4s var(--ivue-ease-in-out);
     }
 
     // 圆形

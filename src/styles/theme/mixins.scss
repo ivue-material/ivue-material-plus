@@ -1,11 +1,8 @@
 // 颜色样式循环渲染
-@each $key,
-$value in $colors {
-
+@each $key, $value in $colors {
   // $colorName 子级名称  $rgb 颜色
-  @each $colorName,
-  $rgb in map-get($colors, $key) {
-    @if ($colorName=="base") {
+  @each $colorName, $rgb in map-get($colors, $key) {
+    @if ($colorName== 'base') {
       .#{$key} {
         border-color: $rgb !important;
         background: $rgb !important;
@@ -20,9 +17,7 @@ $value in $colors {
         color: $rgb !important;
         caret-color: $rgb !important;
       }
-    }
-
-    @else {
+    } @else {
       .#{$key}-#{$colorName} {
         background-color: $rgb !important;
         border-color: $rgb !important;

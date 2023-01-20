@@ -5,8 +5,8 @@ import Option from './option.vue';
 import OptionGroup from './option-group.vue';
 
 export const IvueSelect = withInstall(Select, {
-    Option,
-    OptionGroup,
+  Option,
+  OptionGroup,
 });
 
 export default IvueSelect;

@@ -23,7 +23,7 @@ $name: 'ivue-image';
   --#{$name}-toolbar-item-height: 40px;
 
   // color
-  --#{$name}-mark-color: rgba(55, 55, 55, .6);
+  --#{$name}-mark-color: rgba(55, 55, 55, 0.6);
   --#{$name}-preview-color: rgba(55, 55, 55, 0.4);
 }
 
@@ -84,12 +84,11 @@ $name: 'ivue-image';
     align-items: center;
     justify-content: center;
     font-size: var(--#{$name}-font-size);
-    transition: opacity .3s;
+    transition: opacity 0.3s;
     opacity: 0;
     user-select: none;
     background-color: var(--#{$name}-mark-color);
   }
-
 
   // 图片预览
   &-preview {
@@ -128,7 +127,7 @@ $name: 'ivue-image';
       z-index: 1;
       top: 50%;
       left: 50%;
-      transform: translate(-50%, -50%)
+      transform: translate(-50%, -50%);
     }
 
     // 加载错误
@@ -144,7 +143,7 @@ $name: 'ivue-image';
 
     // transition
     &-transition {
-      transition: transform .3s ease;
+      transition: transform 0.3s ease;
     }
 
     // 限制图片大小
@@ -160,7 +159,7 @@ $name: 'ivue-image';
 
     // 抓取
     &-grabbing {
-      cursor: grabbing
+      cursor: grabbing;
     }
 
     // 关闭

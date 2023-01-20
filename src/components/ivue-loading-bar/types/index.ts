@@ -1,4 +1,3 @@
-
 export interface Props {
   color: string;
   failedColor: string;

@@ -5,7 +5,6 @@ $name: 'ivue-date-picker-header';
 :root {
   --#{$name}-padding: 4px 16px;
 
-
   // button
   --#{$name}-button-size: 36px;
 
@@ -13,7 +12,7 @@ $name: 'ivue-date-picker-header';
   --#{$name}-icon-font-size: 24px;
 
   // color
-  --#{$name}-button-color: rgba(0, 0, 0, .87);
+  --#{$name}-button-color: rgba(0, 0, 0, 0.87);
 }
 
 .#{$name} {

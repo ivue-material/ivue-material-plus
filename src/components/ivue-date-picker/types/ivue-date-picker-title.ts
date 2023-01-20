@@ -1,4 +1,3 @@
-
 export interface Props {
   selectingYear: boolean;
   year: number | string;

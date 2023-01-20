@@ -9,7 +9,7 @@ type options = {
   height?: number;
   visible?: boolean;
   duration?: number;
-}
+};
 
 // 实例列表
 let instances;
@@ -24,9 +24,7 @@ let height = 2;
 let duration = 800;
 let timer: ReturnType<typeof setInterval> | null;
 
-
 const newInstance = (options: options) => {
-
   // 实例对象
   const vm = instances || createVNode(LoadingBar, options);
 
@@ -52,7 +50,6 @@ const newInstance = (options: options) => {
       const data = vm.component.proxy.data;
 
       if (options.percent !== undefined) {
-
         data.percent = options.percent;
       }
 
@@ -65,20 +62,22 @@ const newInstance = (options: options) => {
     component: vm,
     // 销毁
     destroy() {
-      document.body.removeChild(document.getElementsByClassName('ivue-loading-bar')[0]);
-    }
+      document.body.removeChild(
+        document.getElementsByClassName('ivue-loading-bar')[0]
+      );
+    },
   };
-
 };
-
 
 // 获取组件实例
 const getIvueLoadingBarInstance = () => {
-  instances = instances || newInstance({
-    color: color,
-    failedColor: failedColor,
-    height: height
-  });
+  instances =
+    instances ||
+    newInstance({
+      color: color,
+      failedColor: failedColor,
+      height: height,
+    });
 
   return instances;
 };
@@ -102,17 +101,16 @@ const clearTimer = () => {
 const hide = () => {
   setTimeout(() => {
     update({
-      visible: false
+      visible: false,
     });
 
     setTimeout(() => {
       update({
-        percent: 0
+        percent: 0,
       });
     }, 500);
   }, duration);
 };
-
 
 export default {
   // 开始
@@ -127,7 +125,7 @@ export default {
     update({
       percent: percent,
       status: 'success',
-      visible: true
+      visible: true,
     });
 
     // 设置进度
@@ -142,10 +140,9 @@ export default {
       update({
         percent: percent,
         status: 'success',
-        visible: true
+        visible: true,
       });
     }, 200);
-
   },
   // 更新
   update(percent: number) {
@@ -154,7 +151,7 @@ export default {
     update({
       percent: percent,
       status: 'success',
-      visible: true
+      visible: true,
     });
   },
   // 完成
@@ -164,7 +161,7 @@ export default {
     update({
       percent: 100,
       status: 'success',
-      visible: true
+      visible: true,
     });
 
     // 隐藏组件
@@ -177,7 +174,7 @@ export default {
     update({
       percent: 100,
       status: 'error',
-      visible: true
+      visible: true,
     });
 
     // 隐藏组件
@@ -209,5 +206,5 @@ export default {
     instances = null;
 
     _instance.destroy();
-  }
+  },
 };

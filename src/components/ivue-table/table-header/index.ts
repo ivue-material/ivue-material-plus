@@ -5,7 +5,7 @@ import {
   getCurrentInstance,
   onMounted,
   nextTick,
-  ref
+  ref,
 } from 'vue';
 import IvueIcon from '../../ivue-icon/index.vue';
 
@@ -21,10 +21,13 @@ import FilterPanel from '../table/filter-panel.vue';
 import { TableContextKey } from '../table/defaults';
 import type { TableColumnCtx } from '../table-column/defaults';
 import type { PropType } from 'vue';
-import type { TableHeader, FilterPanelInstance, TableHeaderProps } from './types';
+import type {
+  TableHeader,
+  FilterPanelInstance,
+  TableHeaderProps,
+} from './types';
 
 const prefixCls = 'ivue-table';
-
 
 export default defineComponent({
   props: {
@@ -93,7 +96,7 @@ export default defineComponent({
     const {
       // 获取当前列的行数
       columnRows,
-      isGroup
+      isGroup,
     } = useUtils(props);
 
     const {
@@ -101,7 +104,7 @@ export default defineComponent({
       getHeaderCellClass,
       getHeaderCellStyle,
       getHeaderRowStyle,
-      getHeaderRowClass
+      getHeaderRowClass,
     } = useStyle(props);
 
     // 事件
@@ -110,15 +113,16 @@ export default defineComponent({
       handleHeaderClick,
       handleMouseDown,
       handleMouseMove,
-      handleMouseOut
+      handleMouseOut,
     } = useEvent(props, emit);
 
     // 布局改变监听
-    const { handleColumnsChange, handleScrollableWidthChange } = useTableLayoutObserver(IvueTable);
+    const { handleColumnsChange, handleScrollableWidthChange } =
+      useTableLayoutObserver(IvueTable);
 
     vm.state = {
       handleColumnsChange,
-      handleScrollableWidthChange
+      handleScrollableWidthChange,
     };
 
     vm.filterPanels = filterPanels;
@@ -127,7 +131,6 @@ export default defineComponent({
 
     // 渲染排序
     const renderSortable = (column) => {
-
       // 是否有排序
       if (!column.sortable) {
         return null;
@@ -136,29 +139,33 @@ export default defineComponent({
       return h(
         'span',
         {
-          class: `${prefixCls}-header--sortable`
+          class: `${prefixCls}-header--sortable`,
         },
         [
           // 上按钮
-          h(IvueIcon, {
-            class: `${prefixCls}-header--ascending`,
-            onClick: ($event: Event) => {
-              handleSortClick($event, column, 'ascending');
-            }
-          },
+          h(
+            IvueIcon,
             {
-              default: () => 'arrow_drop_up'
+              class: `${prefixCls}-header--ascending`,
+              onClick: ($event: Event) => {
+                handleSortClick($event, column, 'ascending');
+              },
+            },
+            {
+              default: () => 'arrow_drop_up',
             }
           ),
           // 下按钮
-          h(IvueIcon, {
-            class: `${prefixCls}-header--descending`,
-            onClick: ($event: Event) => {
-              handleSortClick($event, column, 'descending');
-            }
-          },
+          h(
+            IvueIcon,
             {
-              default: () => 'arrow_drop_down'
+              class: `${prefixCls}-header--descending`,
+              onClick: ($event: Event) => {
+                handleSortClick($event, column, 'descending');
+              },
+            },
+            {
+              default: () => 'arrow_drop_down',
             }
           ),
         ]
@@ -172,17 +179,14 @@ export default defineComponent({
         return column.label;
       }
 
-      return h(
-        'span',
-        {},
-        [
-          column.renderHeader({
-            column,
-            $index: cellIndex,
-            store: props.store,
-            _self: vm.$parent,
-          })
-        ]);
+      return h('span', {}, [
+        column.renderHeader({
+          column,
+          $index: cellIndex,
+          store: props.store,
+          _self: vm.$parent,
+        }),
+      ]);
     };
 
     // 渲染过滤
@@ -191,99 +195,96 @@ export default defineComponent({
         return null;
       }
 
-      return h(
-        FilterPanel,
-        {
-          // 当前列
-          column,
-          // store
-          store: props.store,
-          // 过滤弹出框的定位
-          placement: column.filterPlacement,
-          // tooltip点击是否阻止当前事件在捕获和冒泡阶段的进一步传播
-          tooltipStop: props.tooltipStop,
-          // 更新列数据
-          upDataColumn: (key: string, value: boolean) => {
-            column[key] = value;
-          },
-        });
+      return h(FilterPanel, {
+        // 当前列
+        column,
+        // store
+        store: props.store,
+        // 过滤弹出框的定位
+        placement: column.filterPlacement,
+        // tooltip点击是否阻止当前事件在捕获和冒泡阶段的进一步传播
+        tooltipStop: props.tooltipStop,
+        // 更新列数据
+        upDataColumn: (key: string, value: boolean) => {
+          column[key] = value;
+        },
+      });
     };
 
     // 渲染 th
-    const renderTh = (list: TableColumnCtx[], rowSpan: number, rowIndex: number) => {
+    const renderTh = (
+      list: TableColumnCtx[],
+      rowSpan: number,
+      rowIndex: number
+    ) => {
       return list.map((column: TableColumnCtx, cellIndex: number) => {
         // 规定单元格可横跨的行数
         if (column.rowSpan > rowSpan) {
           rowSpan = column.rowSpan;
         }
 
-        return h('th', {
-          // class
-          class: getHeaderCellClass(
-            rowIndex,
-            cellIndex,
-            list,
-            column
-          ),
-          // style
-          style: getHeaderCellStyle(
-            rowIndex,
-            cellIndex,
-            list,
-            column
-          ),
-          // 规定单元格可横跨的列数。
-          colspan: column.colSpan,
-          // 规定单元格可横跨的行数
-          rowspan: column.rowSpan,
-          // key
-          key: `${column.id}-thead`,
-          onClick: ($event: Event) => {
-            // 头部点击
-            handleHeaderClick($event, column);
-          },
-          // 鼠标按下
-          onMousedown: ($event: MouseEvent) => {
-            handleMouseDown($event, column);
-          },
-          // 鼠标移动
-          onMousemove: ($event: MouseEvent) => {
-            handleMouseMove($event, column);
-          },
-          // 鼠标退出
-          onMouseout: () => {
-            handleMouseOut();
-          },
-        }, [
-          // cell
-          h('div',
-            {
-              class: [
-                'cell',
-                // 是否有选择过滤
-                column.filteredValue && column.filteredValue.length > 0
-                  ? 'highlight'
-                  : '',
-              ]
+        return h(
+          'th',
+          {
+            // class
+            class: getHeaderCellClass(rowIndex, cellIndex, list, column),
+            // style
+            style: getHeaderCellStyle(rowIndex, cellIndex, list, column),
+            // 规定单元格可横跨的列数。
+            colspan: column.colSpan,
+            // 规定单元格可横跨的行数
+            rowspan: column.rowSpan,
+            // key
+            key: `${column.id}-thead`,
+            onClick: ($event: Event) => {
+              // 头部点击
+              handleHeaderClick($event, column);
             },
-            h('div',
+            // 鼠标按下
+            onMousedown: ($event: MouseEvent) => {
+              handleMouseDown($event, column);
+            },
+            // 鼠标移动
+            onMousemove: ($event: MouseEvent) => {
+              handleMouseMove($event, column);
+            },
+            // 鼠标退出
+            onMouseout: () => {
+              handleMouseOut();
+            },
+          },
+          [
+            // cell
+            h(
+              'div',
               {
-                class: 'cell-content'
+                class: [
+                  'cell',
+                  // 是否有选择过滤
+                  column.filteredValue && column.filteredValue.length > 0
+                    ? 'highlight'
+                    : '',
+                ],
               },
-              [
-                // 渲染头部
-                renderHeader(column, cellIndex),
-                // 排序
-                renderSortable(column),
-                // 渲染过滤
-                renderFilter(column)
-              ]
-            )
-          )
-        ]);
+              h(
+                'div',
+                {
+                  class: 'cell-content',
+                },
+                [
+                  // 渲染头部
+                  renderHeader(column, cellIndex),
+                  // 排序
+                  renderSortable(column),
+                  // 渲染过滤
+                  renderFilter(column),
+                ]
+              )
+            ),
+          ]
+        );
       });
     };
-
 
     // onMounted
     onMounted(() => {
@@ -306,9 +307,8 @@ export default defineComponent({
       renderTh,
       handleColumnsChange,
       getHeaderRowStyle,
-      getHeaderRowClass
+      getHeaderRowClass,
     };
-
   },
   render() {
     const {
@@ -316,7 +316,7 @@ export default defineComponent({
       renderTh,
       isGroup,
       getHeaderRowStyle,
-      getHeaderRowClass
+      getHeaderRowClass,
     } = this;
 
     const rowSpan = 1;
@@ -325,19 +325,20 @@ export default defineComponent({
       'thead',
       {
         class: {
-          ['is-group']: isGroup
-        }
+          ['is-group']: isGroup,
+        },
       },
       columnRows.map((item: TableColumnCtx, rowIndex: number) => {
-        return h('tr',
+        return h(
+          'tr',
           {
             class: getHeaderRowClass(rowIndex),
             style: getHeaderRowStyle(rowIndex),
-            key: rowIndex
+            key: rowIndex,
           },
           renderTh(item, rowSpan, rowIndex)
         );
       })
     );
-  }
+  },
 });

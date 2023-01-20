@@ -8,5 +8,5 @@ export interface Props {
 }
 
 export type Options = {
-  render?: () => VNode | null
-}
+  render?: () => VNode | null;
+};

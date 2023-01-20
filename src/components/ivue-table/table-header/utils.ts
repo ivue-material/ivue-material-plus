@@ -1,5 +1,3 @@
-
-
 import { computed, inject } from 'vue';
 
 // type
@@ -8,9 +6,7 @@ import type { TableColumnCtx } from '../table-column/defaults';
 import { TableContextKey } from '../table/defaults';
 
 // 获取所有列
-const getAllColumns = (
-  columns: TableColumnCtx[]
-): TableColumnCtx[] => {
+const getAllColumns = (columns: TableColumnCtx[]): TableColumnCtx[] => {
   const result: TableColumnCtx[] = [];
 
   columns.forEach((column) => {
@@ -31,13 +27,14 @@ const getAllColumns = (
 };
 
 // 转换行
-const convertToRows = (
-  originColumns: TableColumnCtx[]
-): TableColumnCtx[] => {
+const convertToRows = (originColumns: TableColumnCtx[]): TableColumnCtx[] => {
   let maxLevel = 1;
 
   // 遍历
-  const traverse = (column: TableColumnCtx, parent: TableColumnCtx | undefined) => {
+  const traverse = (
+    column: TableColumnCtx,
+    parent: TableColumnCtx | undefined
+  ) => {
     // 父
     if (parent) {
       column.level = parent.level + 1;
@@ -105,7 +102,6 @@ const convertToRows = (
   return rows;
 };
 
-
 function useUtils(props: TableHeaderProps) {
   // inject
   const IvueTable = inject(TableContextKey);
@@ -125,7 +121,6 @@ function useUtils(props: TableHeaderProps) {
 
     return result;
   });
-
 
   return {
     isGroup,

@@ -1,6 +1,4 @@
-import {
-  inject,
-} from 'vue';
+import { inject } from 'vue';
 import { debounce } from 'lodash-unified';
 
 import { getCell, getColumnByCell, createTablePopper } from '../utils';
@@ -19,12 +17,10 @@ function useEvents(props: Partial<TableBodyProps>) {
 
   // 触发事件
   const handleEvent = (event: Event, row: TableColumnCtx, name: string) => {
-
     // 获取单元格
     const cell: HTMLElement = getCell(event);
 
     let column: TableColumnCtx;
-
 
     if (cell) {
       column = getColumnByCell(
@@ -56,15 +52,11 @@ function useEvents(props: Partial<TableBodyProps>) {
   };
 
   // 鼠标进入
-  const handleCellMouseEnter = (
-    event: MouseEvent,
-    row: TableColumnCtx
-  ) => {
+  const handleCellMouseEnter = (event: MouseEvent, row: TableColumnCtx) => {
     const cell = getCell(event);
 
     // 是否有单元格
     if (cell) {
-
       const column = getColumnByCell(
         {
           // 列的vm对象
@@ -97,8 +89,10 @@ function useEvents(props: Partial<TableBodyProps>) {
 
     // 没有tooltip && 没有内容
     if (
-      !(hasClass(cellChild, `${prefixCls}-tooltip`) &&
-        cellChild.childNodes.length)
+      !(
+        hasClass(cellChild, `${prefixCls}-tooltip`) &&
+        cellChild.childNodes.length
+      )
     ) {
       return;
     }
@@ -124,10 +118,9 @@ function useEvents(props: Partial<TableBodyProps>) {
     // 文字内容 > 单元格dom宽度
     // 元素滚动的内容宽度 > 单元格dom宽度
     if (
-      (rangeWidth + padding) > cellChild.offsetWidth ||
+      rangeWidth + padding > cellChild.offsetWidth ||
       cellChild.scrollWidth > cellChild.offsetWidth
     ) {
-
       createTablePopper(
         IvueTable?.refs.tableWrapper,
         cell,
@@ -136,7 +129,7 @@ function useEvents(props: Partial<TableBodyProps>) {
         {
           placement: 'top',
           strategy: 'fixed',
-        },
+        }
       );
     }
   };
@@ -171,13 +164,12 @@ function useEvents(props: Partial<TableBodyProps>) {
     props.store?.commit('setHoverRow', null);
   }, 30);
 
-
   return {
     handleClickTr,
     handleCellMouseEnter,
     handleCellMouseLeave,
     handleMouseEnter,
-    handleMouseLeave
+    handleMouseLeave,
   };
 }
 

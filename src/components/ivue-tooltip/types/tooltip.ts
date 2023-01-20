@@ -1,11 +1,7 @@
-
-import {
-  ComponentInternalInstance,
-  ComponentPublicInstance,
-} from 'vue';
+import { ComponentInternalInstance, ComponentPublicInstance } from 'vue';
 
 interface _ComponentPublicInstance extends ComponentPublicInstance {
-  updatePopper: () => void
+  updatePopper: () => void;
 }
 
 export interface _ComponentInternalInstance extends ComponentInternalInstance {

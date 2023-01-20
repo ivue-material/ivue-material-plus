@@ -1,4 +1,3 @@
-
 export interface Props {
   modelValue: number;
   showTotal: boolean;
@@ -18,7 +17,6 @@ export interface Props {
   small: boolean;
   simple: boolean;
 }
-
 
 export interface Data {
   currentPage: number;

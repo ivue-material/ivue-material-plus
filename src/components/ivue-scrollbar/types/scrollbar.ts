@@ -1,7 +1,7 @@
 import type { InjectionKey } from 'vue';
 import type Bar from '../bar.vue';
 
-export type BarInstance = InstanceType<typeof Bar>
+export type BarInstance = InstanceType<typeof Bar>;
 
 export interface Props {
   wrapperClass: string;
@@ -24,11 +24,10 @@ export interface Data {
   ratioY: number;
 }
 
-
 export type ScrollbarContext = {
   scrollbar: HTMLDivElement;
   scrollbarWrapper: HTMLDivElement;
-}
+};
 
 export const ScrollbarContextKey: InjectionKey<ScrollbarContext> =
   Symbol('ivue-scrollbar');

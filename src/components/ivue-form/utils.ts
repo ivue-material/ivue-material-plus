@@ -4,7 +4,11 @@ import { ensureArray } from '../../utils/arrays';
 import { debugWarn } from '../../utils/error';
 
 // types
-import type { FormItemProp, Arrayable, FormItemContext } from './types/form-item';
+import type {
+  FormItemProp,
+  Arrayable,
+  FormItemContext,
+} from './types/form-item';
 
 // 过滤字段
 export const filterFields = (
@@ -21,7 +25,6 @@ export const filterFields = (
 
 // 表单宽度
 export function useFormLabelWidth() {
-
   // 标签宽度数组
   const potentialLabelWidthArr = ref<number[]>([]);
 
@@ -49,7 +52,6 @@ export function useFormLabelWidth() {
     return index;
   };
 
-
   // 注册标签宽度
   const registerLabelWidth = (value: number, oldValue: number) => {
     // 改变了标签宽度
@@ -57,7 +59,6 @@ export function useFormLabelWidth() {
       // 获取当前标签宽度
       const index = getLabelWidthIndex(oldValue);
       potentialLabelWidthArr.value.splice(index, 1, value);
-
     }
     // 有当前标签宽度
     else if (value) {
@@ -77,6 +78,6 @@ export function useFormLabelWidth() {
   return {
     autoLabelWidth,
     registerLabelWidth,
-    deregisterLabelWidth
+    deregisterLabelWidth,
   };
 }

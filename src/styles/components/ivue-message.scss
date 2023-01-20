@@ -11,10 +11,9 @@ $name: 'ivue-message';
 
   // 内容
   --#{$name}-notice-content-padding: 8px 16px;
-  --#{$name}-notice-content-shadow: 0 1px 6px rgba(0, 0, 0, .2);
+  --#{$name}-notice-content-shadow: 0 1px 6px rgba(0, 0, 0, 0.2);
   --#{$name}-notice-content-text-margin-left: 5px;
   --#{$name}-notice-closable-margin-right: 32px;
-
 
   // icon
   --#{$name}-icon-margin-right: 4px;
@@ -36,7 +35,7 @@ $name: 'ivue-message';
   z-index: 1010;
   transform: var(--#{$name}-transform);
   pointer-events: none;
-  transition: opacity .3s, transform .4s, top .4s;
+  transition: opacity 0.3s, transform 0.4s, top 0.4s;
 
   &-notice {
     text-align: center;
@@ -58,7 +57,8 @@ $name: 'ivue-message';
 
       i {
         font-size: var(--#{$name}-close-font-size);
-        transition: color var(--ivue-default-transition-time) var(--ivue-ease-in-out);
+        transition: color var(--ivue-default-transition-time)
+          var(--ivue-ease-in-out);
         width: auto;
         min-width: auto;
         height: auto;
@@ -186,7 +186,7 @@ $name: 'ivue-message';
   .ivue-progress-circular-overlay {
     stroke: currentColor;
     z-index: 2;
-    transition: all .6s ease-in-out;
+    transition: all 0.6s ease-in-out;
   }
 
   .ivue-progress-circular-indeterminate {
@@ -210,7 +210,6 @@ $name: 'ivue-message';
       transform: rotate(360deg);
     }
   }
-
 }
 
 .#{$name}-message-fade-enter-from,

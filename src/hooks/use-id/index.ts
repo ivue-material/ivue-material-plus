@@ -3,11 +3,10 @@ import { Ref, InjectionKey, inject, computed, unref } from 'vue';
 // type
 import type { MaybeRef } from '@vueuse/core';
 
-
 export type IvueIdInjectionContext = {
-  prefix: number
-  current: number
-}
+  prefix: number;
+  current: number;
+};
 
 export const ID_INJECTION_KEY: InjectionKey<IvueIdInjectionContext> =
   Symbol('ivue-id-injection');

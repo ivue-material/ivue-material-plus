@@ -7,17 +7,12 @@ import Outside from './outside';
 import LineClamp from './line-clamp';
 
 export default {
-    Ripple,
-    Touch,
-    ClickOutside,
-    TransferDom,
-    Mousewheel,
-    LineClamp
+  Ripple,
+  Touch,
+  ClickOutside,
+  TransferDom,
+  Mousewheel,
+  LineClamp,
 };
 
-export {
-    Mousewheel,
-    ClickOutside,
-    Outside,
-    TransferDom,
-};
+export { Mousewheel, ClickOutside, Outside, TransferDom };

@@ -2,7 +2,7 @@ import type { ComponentInternalInstance, ComponentPublicInstance } from 'vue';
 
 export interface _ComponentPublicInstance extends ComponentPublicInstance {
   name: string;
-  data: Data
+  data: Data;
 }
 
 export interface PanelInstance extends ComponentInternalInstance {

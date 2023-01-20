@@ -1,10 +1,10 @@
 @import '../animation/variables.scss';
 
-$name:'ivue-table';
+$name: 'ivue-table';
 
 :root {
   // color
-  --#{$name}-placeholder-color: #9AB0C6;
+  --#{$name}-placeholder-color: #9ab0c6;
   --#{$name}-row-hover-cell-bg: #eeeeee;
   --#{$name}-stripe-body-cell-bg: #fafafa;
   --#{$name}-group-cell-bg: #f5f7fa;
@@ -77,7 +77,7 @@ $name:'ivue-table';
     }
 
     &::before {
-      content: "";
+      content: '';
       position: absolute;
       background-color: var(--ivue-border-color);
       left: 0;
@@ -146,13 +146,12 @@ $name:'ivue-table';
   th.#{$name}-cell {
     user-select: none;
 
-    &>.cell {
+    & > .cell {
       display: flex;
       box-sizing: border-box;
       position: relative;
       width: 100%;
       vertical-align: middle;
-
     }
   }
 
@@ -221,14 +220,13 @@ $name:'ivue-table';
         overflow: hidden;
       }
     }
-
   }
 
   // 边框
   &-border {
     .#{$name}-content {
       &::after {
-        content: "";
+        content: '';
         position: absolute;
         background-color: var(--ivue-border-color);
       }
@@ -246,7 +244,7 @@ $name:'ivue-table';
     }
 
     &::before {
-      content: "";
+      content: '';
       position: absolute;
       top: -1px;
       left: 0;
@@ -257,7 +255,7 @@ $name:'ivue-table';
     }
 
     &::after {
-      content: "";
+      content: '';
       position: absolute;
       top: -1px;
       right: 0;
@@ -270,7 +268,6 @@ $name:'ivue-table';
 
   // 列
   &-column {
-
     // 拖拽时的虚线
     &-resize-proxy {
       position: absolute;
@@ -281,7 +278,6 @@ $name:'ivue-table';
       border-left: 1px solid var(--ivue-border-color);
       z-index: 10;
     }
-
   }
 
   // body
@@ -294,8 +290,8 @@ $name:'ivue-table';
   &-body {
     border-collapse: separate;
 
-    .highlight-current-row>.ivue-table-cell {
-      background-color: rgba(91, 142, 255, .3);
+    .highlight-current-row > .ivue-table-cell {
+      background-color: rgba(91, 142, 255, 0.3);
     }
   }
 
@@ -336,14 +332,14 @@ $name:'ivue-table';
 
   // 行hover
   &-nofixed-row-hover {
-    .#{$name}-body tr:hover>td.#{$name}-cell {
+    .#{$name}-body tr:hover > td.#{$name}-cell {
       background-color: var(--#{$name}-row-hover-cell-bg);
     }
   }
 
   &-nofixed-row-transition {
     .#{$name}-body td.#{$name}-cell {
-      transition: background-color .25s ease;
+      transition: background-color 0.25s ease;
     }
   }
 
@@ -353,7 +349,6 @@ $name:'ivue-table';
     position: sticky !important;
     z-index: 2;
     background-color: var(--ivue-white-color);
-
   }
 
   // 固定列右边
@@ -385,8 +380,8 @@ $name:'ivue-table';
     display: flex;
   }
 
-  .ivue-tooltip-arrow{
-    &::after{
+  .ivue-tooltip-arrow {
+    &::after {
       display: none;
     }
   }
@@ -478,7 +473,7 @@ $name:'ivue-table';
 
         &:hover {
           color: var(--ivue-primary-color);
-          background: rgba(91, 142, 255, .1);
+          background: rgba(91, 142, 255, 0.1);
         }
       }
 
@@ -486,7 +481,6 @@ $name:'ivue-table';
       &--active {
         color: var(--ivue-white-color) !important;
         background: var(--ivue-primary-color) !important;
-        ;
       }
     }
 
@@ -502,7 +496,6 @@ $name:'ivue-table';
 
   // 展开
   &--expand {
-
     // icon
     &-icon {
       position: relative;
@@ -564,7 +557,6 @@ $name:'ivue-table';
     }
   }
 
-
   // 底部
   &-footer {
     table-layout: fixed;
@@ -607,7 +599,6 @@ $name:'ivue-table';
   }
 }
 
-
 // 固定列右边
 .#{$name}.is-scrolling-left,
 .#{$name}.is-scrolling-middle {
@@ -617,7 +608,7 @@ $name:'ivue-table';
 
   .#{$name}-fixed-column--right.is-first-column {
     &::before {
-      content: "";
+      content: '';
       position: absolute;
       top: 0;
       width: 10px;
@@ -641,7 +632,7 @@ $name:'ivue-table';
 
   .#{$name}-fixed-column--left.is-last-column {
     &::before {
-      content: "";
+      content: '';
       position: absolute;
       top: 0;
       width: 10px;

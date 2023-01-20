@@ -7,7 +7,7 @@ import MenuGroup from './menu-group.vue';
 export const IvueMenu = withInstall(Menu, {
   MenuItem,
   Submenu,
-  MenuGroup
+  MenuGroup,
 });
 
 export default IvueMenu;

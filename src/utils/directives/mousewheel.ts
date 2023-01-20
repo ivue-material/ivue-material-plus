@@ -6,7 +6,6 @@ import type { DirectiveBinding, ObjectDirective } from 'vue';
 
 const mousewheel = (element, callback) => {
   if (element && element.addEventListener) {
-
     const fn = function (this: any, event) {
       const normalized = normalizeWheel(event);
       callback && Reflect.apply(callback, this, [event, normalized]);

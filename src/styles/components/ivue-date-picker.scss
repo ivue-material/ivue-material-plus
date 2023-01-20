@@ -1,9 +1,9 @@
-@import "ivue-picker";
-@import "ivue-date-picker-title";
-@import "ivue-date-picker-header";
-@import "ivue-date-picker-date";
-@import "ivue-date-picker-month";
-@import "ivue-date-picker-years";
+@import 'ivue-picker';
+@import 'ivue-date-picker-title';
+@import 'ivue-date-picker-header';
+@import 'ivue-date-picker-date';
+@import 'ivue-date-picker-month';
+@import 'ivue-date-picker-years';
 
 .tab-transition {
   &-enter-from {
@@ -39,7 +39,7 @@
 
 .fade-transition-enter-active,
 .fade--transition-leave-active {
-  transition: opacity .3s cubic-bezier(.25, .8, .50, 1);
+  transition: opacity 0.3s cubic-bezier(0.25, 0.8, 0.5, 1);
 }
 
 .fade-transition-enter-from,

@@ -21,7 +21,6 @@ $steps: 'ivue-step';
   // color
   --#{$name}-title-color: #666666;
   --#{$name}-border-color: #cccccc;
-
 }
 
 .#{$name} {
@@ -54,11 +53,11 @@ $steps: 'ivue-step';
       position: absolute;
       left: var(--#{$name}-vertical-divider-left);
       top: 0;
-      padding:var(--#{$name}-vertical-divider-padding);
+      padding: var(--#{$name}-vertical-divider-padding);
       height: 100%;
       width: var(--#{$name}-vertical-divider-width);
 
-      >i {
+      > i {
         height: 100%;
         width: var(--#{$name}-vertical-divider-width);
 
@@ -70,7 +69,7 @@ $steps: 'ivue-step';
     }
 
     .#{$steps}-status-finish {
-      .#{$steps}-divider>i:after {
+      .#{$steps}-divider > i:after {
         height: 100%;
       }
     }
@@ -103,7 +102,6 @@ $steps: 'ivue-step';
 
 // 子项
 .#{$steps} {
-
   // 选项
   &-item {
     position: relative;
@@ -114,7 +112,6 @@ $steps: 'ivue-step';
         display: none;
       }
     }
-
   }
 
   // 最后一项
@@ -123,7 +120,6 @@ $steps: 'ivue-step';
     flex-shrink: 0;
     flex-grow: 0;
   }
-
 
   // 图标
   &-custom {
@@ -156,7 +152,7 @@ $steps: 'ivue-step';
     padding: 0 10px;
     width: 100%;
 
-    >i {
+    > i {
       position: relative;
       display: inline-block;
       width: 100%;
@@ -164,7 +160,6 @@ $steps: 'ivue-step';
       vertical-align: top;
       border-radius: 1px;
       background-color: var(--ivue-border-multiple-color);
-
 
       &:after {
         content: '';
@@ -188,7 +183,7 @@ $steps: 'ivue-step';
     font-weight: bold;
     color: var(--#{$name}-title-color);
     background-color: var(--ivue-white-color);
-    transition: color .4s $ivue-transition-default-timing;
+    transition: color 0.4s $ivue-transition-default-timing;
   }
 
   // 头部，内容
@@ -198,7 +193,6 @@ $steps: 'ivue-step';
     display: inline-block;
     vertical-align: top;
   }
-
 
   // 内容
   &-content {
@@ -228,19 +222,15 @@ $steps: 'ivue-step';
     }
   }
 
-
-
   // 插槽
   &-content-slot {
     font-size: var(--ivue-font-small-size);
     color: var(--ivue-legend-color);
-    transition: color .4s $ivue-transition-default-timing;
+    transition: color 0.4s $ivue-transition-default-timing;
   }
-
 
   // 完成状态
   &-status-finish {
-
     // 进度标志
     .#{$steps}-header-content {
       border-color: var(--ivue-primary-color);
@@ -252,7 +242,7 @@ $steps: 'ivue-step';
     }
 
     // 下划线
-    .#{$steps}-divider>i:after {
+    .#{$steps}-divider > i:after {
       opacity: 1;
       width: 100%;
       background: var(--ivue-primary-color);
@@ -264,13 +254,12 @@ $steps: 'ivue-step';
     }
   }
 
-
   // 等待状态
   &-status-wait {
     .#{$steps}-header-content {
       background-color: var(--ivue-white-color);
 
-      >.#{$steps}-icon,
+      > .#{$steps}-icon,
       span {
         color: var(--#{$name}-border-color);
       }
@@ -288,7 +277,7 @@ $steps: 'ivue-step';
       border-color: var(--ivue-primary-color);
       background-color: var(--ivue-primary-color);
 
-      >.#{$steps}-icon,
+      > .#{$steps}-icon,
       span {
         color: var(--ivue-white-color);
       }
@@ -306,7 +295,7 @@ $steps: 'ivue-step';
       border-color: var(--ivue-error-color);
       background-color: var(--ivue-error-color);
 
-      >.#{$steps}-icon {
+      > .#{$steps}-icon {
         color: var(--ivue-white-color);
       }
     }
@@ -315,19 +304,18 @@ $steps: 'ivue-step';
     .#{$steps}-content-slot {
       color: var(--ivue-error-color);
     }
-
   }
 
   .#{$steps}-next-error {
-
-    .#{$steps}-divider>i,
-    .#{$steps}-divider>i:after {
+    .#{$steps}-divider > i,
+    .#{$steps}-divider > i:after {
       background-color: var(--ivue-error-color);
     }
   }
 
   // 文字方向底部
-  &-text-bottom, &-text-bottom-center {
+  &-text-bottom,
+  &-text-bottom-center {
     flex-direction: column;
 
     // 头部
@@ -353,14 +341,13 @@ $steps: 'ivue-step';
       padding: 0;
     }
 
-    .#{$steps}-divider>i:after {
+    .#{$steps}-divider > i:after {
       left: 0;
     }
   }
 
   // 文字底部居中
   &-bottom-center {
-
     // 头部
     .#{$steps}-header {
       background: none;

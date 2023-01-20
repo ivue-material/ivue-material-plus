@@ -9,7 +9,7 @@ $name: 'ivue-notice';
 
   // notice
   --#{$name}-notice-padding: 16px;
-  --#{$name}-notice-shadow: 0 1px 6px rgba(0, 0, 0, .2);
+  --#{$name}-notice-shadow: 0 1px 6px rgba(0, 0, 0, 0.2);
   --#{$name}-notice-radius: 8px;
   --#{$name}-notice-position: 16px;
   --#{$name}-close-position-right: 10px;
@@ -76,13 +76,8 @@ $name: 'ivue-notice';
     box-shadow: var(--#{$name}-notice-shadow);
     overflow: hidden;
     background-color: var(--ivue-white-color);
-    transition: opacity .3s,
-      transform .3s,
-      left .3s,
-      right .3s,
-      top .4s,
-      bottom .3s;
-
+    transition: opacity 0.3s, transform 0.3s, left 0.3s, right 0.3s, top 0.4s,
+      bottom 0.3s;
 
     &.right {
       right: var(--#{$name}-notice-position);
@@ -105,7 +100,8 @@ $name: 'ivue-notice';
         position: relative;
         top: var(--#{$name}-close-icon-position);
         font-size: var(--#{$name}-close-icon-font-size);
-        transition: color var(--ivue-default-transition-time) var(--ivue-ease-in-out);
+        transition: color var(--ivue-default-transition-time)
+          var(--ivue-ease-in-out);
         width: auto;
         min-width: auto;
         height: auto;

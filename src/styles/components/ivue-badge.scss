@@ -28,10 +28,11 @@ $name: 'ivue-badge';
   --#{$name}-lime: #a0d911;
   --#{$name}-cyan: #13c2c2;
   --#{$name}-purple: #722ed1;
-  --#{$name}-dot-color: rgba(255, 97, 127, .5);
+  --#{$name}-dot-color: rgba(255, 97, 127, 0.5);
 }
 
-$colors: ('blue',
+$colors: (
+  'blue',
   'green',
   'red',
   'yellow',
@@ -40,7 +41,7 @@ $colors: ('blue',
   'gold',
   'lime',
   'cyan',
-  'purple',
+  'purple'
 );
 
 .#{$name} {
@@ -108,7 +109,7 @@ $colors: ('blue',
     &--dot {
       position: relative;
       width: var(--#{$name}-status-dot-size);
-      height:var(--#{$name}-status-dot-size);
+      height: var(--#{$name}-status-dot-size);
       border-radius: 50%;
     }
 
@@ -138,7 +139,7 @@ $colors: ('blue',
       background-color: var(--ivue-primary-color);
 
       &:after {
-        content: "";
+        content: '';
         position: absolute;
         top: 0;
         left: 0;
@@ -155,13 +156,11 @@ $colors: ('blue',
       background-color: var(--ivue-warning-color);
     }
 
-    @each $_color,
-    $color in $colors {
+    @each $_color, $color in $colors {
       .ivue-badge-status--#{$_color} {
-        background-color: var(--#{$name}-#{$_color})
+        background-color: var(--#{$name}-#{$_color});
       }
     }
-
   }
 }
 
