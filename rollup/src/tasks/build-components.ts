@@ -7,7 +7,6 @@ import commonjs from '@rollup/plugin-commonjs';
 import esbuild from 'rollup-plugin-esbuild';
 import glob from 'fast-glob';
 import json from '@rollup/plugin-json';
-// import css from 'rollup-plugin-css-porter';
 import postcss from 'rollup-plugin-postcss';
 import VueMacros from 'unplugin-vue-macros/rollup';
 
@@ -40,8 +39,6 @@ export const buildComponents = async () => {
       defineOptions(),
       // 解析 Json
       json(),
-      // 解析 css
-      // css(),
       // 是一个使用 JS 插件转换样式的工具
       postcss(),
       VueMacros({
