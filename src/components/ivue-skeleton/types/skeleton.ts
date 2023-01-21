@@ -8,4 +8,5 @@ export interface Props {
         rows: number;
         width: any[];
       };
+  animated: boolean;
 }

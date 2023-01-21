@@ -75,6 +75,15 @@ export default defineComponent({
       type: [Number, Object],
       default: 4,
     },
+    /**
+     * 是否使用动画
+     *
+     * @type {Boolean}
+     */
+    animated: {
+      type: Boolean,
+      default: false,
+    },
   },
   setup(props) {
     // 节流渲染
@@ -87,7 +96,12 @@ export default defineComponent({
 
     // 外层样式
     const wrapperClasses = computed(() => {
-      return [prefixCls];
+      return [
+        prefixCls,
+        {
+          'is-animated': props.animated,
+        },
+      ];
     });
 
     // methods

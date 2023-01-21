@@ -1,10 +1,14 @@
 <template>
-  <div :class="wrapperClasses"></div>
+  <div :class="wrapperClasses">
+    <ivue-icon v-if="type === 'image'">image</ivue-icon>
+    <slot></slot>
+  </div>
 </template>
 
 <script lang="ts">
 import { defineComponent, computed } from 'vue';
 import { oneOf } from '../../utils/assist';
+import IvueIcon from '../ivue-icon';
 
 // type
 import type { Props } from './types/skeleton-item';
@@ -19,6 +23,7 @@ export default defineComponent({
       validator(value: string) {
         return oneOf(value, [
           'circle',
+          'square',
           'rect',
           'h1',
           'h3',
@@ -43,6 +48,9 @@ export default defineComponent({
     return {
       wrapperClasses,
     };
+  },
+  components: {
+    IvueIcon,
   },
 });
 </script>
