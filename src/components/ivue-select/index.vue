@@ -134,9 +134,8 @@ import IvueLoading from '../ivue-loading/directive';
 // 注册外部点击事件插件
 import { ClickOutside, TransferDom } from '../../utils/directives';
 import { oneOf } from '../../utils/assist';
-import { useFormItem, useFormItemInputId } from '../../hooks/index';
+import { useFormItem, useFormItemInputId, useDisabled } from '../../hooks';
 import { debugWarn } from '../../utils/error';
-import { useDisabled } from '../../hooks';
 
 // type
 import { PopoverContextKey } from '../ivue-popover/types/popover';

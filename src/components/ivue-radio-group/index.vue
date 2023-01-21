@@ -9,7 +9,7 @@ import { computed, defineComponent, watch, provide, PropType, ref } from 'vue';
 
 import { oneOf } from '../../utils/assist';
 import { debugWarn } from '../../utils/error';
-import { useFormItem, useFormItemInputId } from '../../hooks/index';
+import { useFormItem, useFormItemInputId } from '../../hooks';
 
 // type
 import { Props, Size, RadioContextKey } from './types/radio-group';

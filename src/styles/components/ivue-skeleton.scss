@@ -1,0 +1,39 @@
+$name: 'ivue-skeleton';
+
+:root {
+  --#{$name}-color: #f2f2f2;
+}
+
+.#{$name} {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+
+  &--paragraph {
+    margin-bottom: 16px;
+  }
+
+  .is-last{
+    margin-bottom: 0;
+  }
+
+  &-item {
+    background: var(--#{$name}-color);
+    display: inline-block;
+    height: 16px;
+    border-radius: var(--ivue-border-radius);
+    width: 100%;
+
+    &--p {
+      width: 100%;
+    }
+
+    &--p.is-first {
+      width: 38%;
+    }
+
+    &--p.is-last {
+      width: 62%;
+    }
+  }
+}

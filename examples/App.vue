@@ -168,20 +168,15 @@
         <li>
           <router-link to="/form">Form</router-link>
         </li>
+        <li>
+          <router-link to="/skeleton">Skeleton</router-link>
+        </li>
       </ul>
     </nav>
 
     <router-view />
   </div>
 </template>
-
-<script>
-export default {
-  data() {
-    return {};
-  },
-};
-</script>
 
 <style lang="scss">
 nav {

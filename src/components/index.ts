@@ -56,6 +56,8 @@ import {
   IvueMenuGroup,
 } from './ivue-menu';
 import { IvueForm, IvueFormItem } from './ivue-form';
+import { IvueSkeleton } from './ivue-skeleton';
+import { IvueSkeletonItem } from './ivue-skeleton-item';
 
 import { Ripple } from './ivue-ripple';
 import { LineClamp } from './ivue-line-clamp';
@@ -124,6 +126,9 @@ export {
   IvueMenuGroup,
   IvueForm,
   IvueFormItem,
+  IvueSkeleton,
+  IvueSkeletonItem,
+
   Ripple,
   LineClamp,
 };

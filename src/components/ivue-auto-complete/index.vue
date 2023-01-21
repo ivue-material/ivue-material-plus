@@ -67,7 +67,7 @@ import IvueOption from '../ivue-select/option.vue';
 
 import { oneOf } from '../../utils/assist';
 import { debugWarn } from '../../utils/error';
-import { useFormItem, useFormItemInputId } from '../../hooks/index';
+import { useFormItem, useFormItemInputId } from '../../hooks';
 
 // type
 import type { Select, Input, Props, Data, Option } from './types/auto-complete';

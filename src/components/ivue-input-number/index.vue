@@ -82,7 +82,7 @@ import {
   useFormItem,
   useFormItemInputId,
   useDisabled,
-} from '../../hooks/index';
+} from '../../hooks';
 import { debugWarn } from '../../utils/error';
 
 // type

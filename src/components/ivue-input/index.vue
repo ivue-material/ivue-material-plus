@@ -154,9 +154,8 @@ import {
 
 import { calcTextareaHeight } from '../../utils/calc-textarea-height';
 import { oneOf } from '../../utils/assist';
-import { useFormItem, useFormItemInputId } from '../../hooks/index';
+import { useFormItem, useFormItemInputId, useDisabled } from '../../hooks';
 import { debugWarn } from '../../utils/error';
-import { useDisabled } from '../../hooks';
 
 // component
 import IvueIcon from '../ivue-icon/index.vue';

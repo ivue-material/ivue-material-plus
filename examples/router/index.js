@@ -48,6 +48,7 @@ import Popover from '../components/popover';
 import InputNumber from '../components/input-number';
 import Menu from '../components/menu';
 import Form from '../components/form';
+import Skeleton from '../components/skeleton';
 
 const routes = [
   {
@@ -294,6 +295,11 @@ const routes = [
     path: '/form',
     name: 'Form',
     component: Form,
+  },
+  {
+    path: '/skeleton',
+    name: 'Skeleton',
+    component: Skeleton,
   },
 ];
 
