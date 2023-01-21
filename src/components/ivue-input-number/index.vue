@@ -78,11 +78,7 @@ import {
 import IvueIcon from '../ivue-icon';
 import IvueButton from '../ivue-button';
 
-import {
-  useFormItem,
-  useFormItemInputId,
-  useDisabled,
-} from '../../hooks';
+import { useFormItem, useFormItemInputId, useDisabled } from '../../hooks';
 import { debugWarn } from '../../utils/error';
 
 // type

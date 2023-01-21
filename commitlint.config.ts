@@ -28,7 +28,7 @@ const scopes = [
   'rollup',
   'resolvers',
   'examples',
-  'build'
+  'build',
 ];
 
 export default {

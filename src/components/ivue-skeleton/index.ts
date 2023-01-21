@@ -4,7 +4,7 @@ import Skeleton from './index.vue';
 import SkeletonItem from '../ivue-skeleton-item/index';
 
 export const IvueSkeleton = withInstall(Skeleton, {
-  SkeletonItem
+  SkeletonItem,
 });
 
 export default IvueSkeleton;
