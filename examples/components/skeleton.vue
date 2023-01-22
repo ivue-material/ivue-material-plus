@@ -3,7 +3,7 @@
   <ivue-skeleton></ivue-skeleton>
   <h1>段落设置 对象</h1>
   <ivue-skeleton
-    :paragraph="{ rows: 5, width: [100, 200, '300px', '50%', '62%'] }"
+    :paragraph="{ rows: 5, width: [100] }"
   ></ivue-skeleton>
   <h1>段落设置 数字</h1>
   <ivue-skeleton :paragraph="10"></ivue-skeleton>

@@ -135,7 +135,11 @@ export default defineComponent({
         props.paragraph.width &&
         isArray(props.paragraph.width)
       ) {
-        const width = props.paragraph.width[index];
+        let width = props.paragraph.width[index];
+
+        if (props.paragraph.width.length < props.paragraph.rows) {
+          width = props.paragraph.width[0];
+        }
 
         // number
         if (isNumber(width)) {
