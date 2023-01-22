@@ -1,6 +1,6 @@
 {
   "name": "ivue-material-plus",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "A high quality UI components Library with Vue.js",
   "main": "dist/ivue-material-plus.min.js",
   "module": "dist/unplugin-vue-components/es/index.mjs",
@@ -41,6 +41,7 @@
     "lodash-es": "^4.17.21",
     "lodash-unified": "^1.0.2",
     "lodash.throttle": "^4.1.1",
+    "@types/lodash": "^4.14.186",
     "material-icons": "^1.11.11",
     "mitt": "^3.0.0",
     "normalize-wheel-es": "^1.2.0",
@@ -63,7 +64,6 @@
     "@types/fs-extra": "^9.0.13",
     "@types/gulp": "^4.0.9",
     "@types/jest": "^29.2.0",
-    "@types/lodash": "^4.14.186",
     "@types/node": "^18.11.18",
     "@types/web-bluetooth": "^0.0.16",
     "@typescript-eslint/eslint-plugin": "^5.41.0",

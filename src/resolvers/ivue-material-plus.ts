@@ -41,6 +41,8 @@ const noStylesComponents = [
   'ivue-submenu',
   'ivue-menu-group',
   'ivue-menu-item',
+  'ivue-form-item',
+  'ivue-skeleton-item',
 ];
 
 // 使用依赖组件
@@ -55,6 +57,11 @@ const useDependentComponents = [
     name: 'ivue-tabs',
     dependent: ['IvueTabItem', 'IvueTab'],
   },
+  // ivue-form
+  {
+    name: 'ivue-form',
+    dependent: ['IvueFormItem'],
+  },
   // ivue-select
   {
     name: 'ivue-select',
@@ -64,6 +71,11 @@ const useDependentComponents = [
   {
     name: 'ivue-steps',
     dependent: ['IvueStep'],
+  },
+  // ivue-skeleton
+  {
+    name: 'ivue-skeleton',
+    dependent: ['IvueSkeletonItem'],
   },
 ];
 

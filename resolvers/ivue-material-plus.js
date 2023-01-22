@@ -25,7 +25,9 @@ const noStylesComponents = [
   "ivue-relative-time",
   "ivue-submenu",
   "ivue-menu-group",
-  "ivue-menu-item"
+  "ivue-menu-item",
+  "ivue-form-item",
+  "ivue-skeleton-item"
 ];
 const useDependentComponents = [
   {
@@ -37,12 +39,20 @@ const useDependentComponents = [
     dependent: ["IvueTabItem", "IvueTab"]
   },
   {
+    name: "ivue-form",
+    dependent: ["IvueFormItem"]
+  },
+  {
     name: "ivue-select",
     dependent: ["IvueOption", "IvueOptionGroup"]
   },
   {
     name: "ivue-steps",
     dependent: ["IvueStep"]
+  },
+  {
+    name: "ivue-skeleton",
+    dependent: ["IvueSkeletonItem"]
   }
 ];
 const sideEffects = [
