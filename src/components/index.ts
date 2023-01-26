@@ -58,6 +58,7 @@ import {
 import { IvueForm, IvueFormItem } from './ivue-form';
 import { IvueSkeleton } from './ivue-skeleton';
 import { IvueSkeletonItem } from './ivue-skeleton-item';
+import { IvueTree } from './ivue-tree';
 
 import { Ripple } from './ivue-ripple';
 import { LineClamp } from './ivue-line-clamp';
@@ -128,6 +129,7 @@ export {
   IvueFormItem,
   IvueSkeleton,
   IvueSkeletonItem,
+  IvueTree,
   Ripple,
   LineClamp,
 };

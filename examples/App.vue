@@ -171,6 +171,9 @@
         <li>
           <router-link to="/skeleton">Skeleton</router-link>
         </li>
+        <li>
+          <router-link to="/tree">Tree</router-link>
+        </li>
       </ul>
     </nav>
 

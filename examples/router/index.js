@@ -49,6 +49,7 @@ import InputNumber from '../components/input-number';
 import Menu from '../components/menu';
 import Form from '../components/form';
 import Skeleton from '../components/skeleton';
+import Tree from '../components/tree';
 
 const routes = [
   {
@@ -300,6 +301,11 @@ const routes = [
     path: '/skeleton',
     name: 'Skeleton',
     component: Skeleton,
+  },
+  {
+    path: '/tree',
+    name: 'Tree',
+    component: Tree,
   },
 ];
 

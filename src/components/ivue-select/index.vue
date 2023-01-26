@@ -1890,6 +1890,7 @@ export default defineComponent({
       setQuery,
       clearSingleSelect,
       focus,
+      resetData,
     };
   },
   components: {

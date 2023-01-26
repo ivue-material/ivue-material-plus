@@ -236,10 +236,12 @@ $name: 'ivue-select';
     display: inline-flex;
     align-items: center;
     flex-wrap: wrap;
+    width: 100%;
   }
 
   // 有图标设置样式
   &-head-with-prefix {
+    flex: 1;
     padding-left: 4px !important;
     display: inline-block !important;
     vertical-align: middle;

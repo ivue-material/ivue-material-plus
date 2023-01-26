@@ -66,6 +66,7 @@ import { IvueImagePreview } from './components/ivue-image-preview';
 import { IvueForm, IvueFormItem } from './components/ivue-form';
 import { IvueSkeleton } from './components/ivue-skeleton';
 import { IvueSkeletonItem } from './components/ivue-skeleton-item';
+import { IvueTree } from './components/ivue-tree';
 
 import { Ripple } from './components/ivue-ripple';
 import { LineClamp } from './components/ivue-line-clamp';
@@ -187,6 +188,7 @@ export {
   IvueFormItem,
   IvueSkeleton,
   IvueSkeletonItem,
+  IvueTree,
   Ripple,
   LineClamp,
   install,

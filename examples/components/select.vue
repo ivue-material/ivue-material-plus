@@ -2,7 +2,7 @@
   <div>
     <p>基本用法</p>
     <button @click="handleClear">clear</button>
-    <div class="content">
+    <div class="content" style="margin-top: 200px">
       <ivue-select
         filterable
         v-model="model1"

@@ -2,9 +2,7 @@
   <h1>基础用法</h1>
   <ivue-skeleton></ivue-skeleton>
   <h1>段落设置 对象</h1>
-  <ivue-skeleton
-    :paragraph="{ rows: 5, width: [100] }"
-  ></ivue-skeleton>
+  <ivue-skeleton :paragraph="{ rows: 5, width: [100] }"></ivue-skeleton>
   <h1>段落设置 数字</h1>
   <ivue-skeleton :paragraph="10"></ivue-skeleton>
   <h1>圆形</h1>
