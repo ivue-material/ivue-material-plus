@@ -53,8 +53,21 @@ $name: 'ivue-tree';
       transform: rotate(90deg);
     }
 
+    // 叶子
     &--expand-icon.is-leaf {
       opacity: 0;
+    }
+
+    &--checkbox {
+      margin-right: 0;
+
+      .ivue-checkbox {
+        display: flex;
+      }
+
+      .ivue-checkbox-label-text {
+        display: none;
+      }
     }
 
     // 标题文案
@@ -65,6 +78,38 @@ $name: 'ivue-tree';
     // 子节点
     &--children {
       display: block;
+    }
+
+    // loading
+    &--loading {
+      display: inline-flex;
+      width: 15px;
+      height: 15px;
+      animation: loading-rotate 2s linear infinite;
+
+      &__wrapper {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 24px;
+        height: 24px;
+      }
+
+      .path {
+        animation: loading-dash 1.5s ease-in-out infinite;
+        stroke-dasharray: 90, 150;
+        stroke-dashoffset: 0;
+        stroke-width: 3;
+        stroke: var(--ivue-arrow-color);
+        stroke-linecap: round;
+      }
+    }
+
+    // 滚动
+    @keyframes loading-rotate {
+      100% {
+        transform: rotate(360deg);
+      }
     }
   }
 }

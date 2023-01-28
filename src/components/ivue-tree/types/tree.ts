@@ -1,4 +1,13 @@
-import type { InjectionKey, Component, PropType, SetupContext, Ref } from 'vue';
+import type {
+  InjectionKey,
+  Component,
+  PropType,
+  SetupContext,
+  Ref,
+  h,
+  VNode,
+  ComponentInternalInstance,
+} from 'vue';
 import type TreeStore from '../store/tree-store';
 import type Node from '../store/node';
 
@@ -20,6 +29,13 @@ export declare interface TreeStoreOptions {
   data: TreeData;
   lazy: boolean;
   props: TreeOptionProps;
+  checkBoxStrictly: boolean;
+  load: LoadFunction;
+  key: TreeKey;
+  defaultExpandedKeys: TreeKey[];
+  defaultCheckedKeys: TreeKey[];
+  autoExpandParent: boolean;
+  defaultExpandAll: boolean;
 }
 
 // tree 节点外部传入属性
@@ -51,6 +67,22 @@ export declare interface FakeNode {
   data: TreeNodeData;
 }
 
+export declare type hType = typeof h;
+
+// 树节点的内容区的渲染方法
+export declare type RenderContentFunction = (
+  h: hType,
+  context: RenderContentContext
+) => VNode | VNode[];
+
+// 树节点的内容区的渲染方法 context 数据
+export declare interface RenderContentContext {
+  _self: ComponentInternalInstance;
+  node: Node;
+  data: TreeNodeData;
+  store: TreeStore;
+}
+
 // Context
 export interface TreeContext {
   props: Props;
@@ -68,6 +100,12 @@ export const IconPropType = definePropType<string | Component>([
   Function,
 ]);
 
+// 加载子树数据的方法
+export declare type LoadFunction = (
+  rootNode: Node,
+  loadedCallback: (data: TreeData) => void
+) => void;
+
 // props
 export interface Props {
   data: any[];
@@ -77,7 +115,15 @@ export interface Props {
   nodeKey: string;
   indent: number;
   icon: string | Component;
-  renderContent: any;
+  renderContent: RenderContentFunction;
   expandOnClickNode: boolean;
   accordion: boolean;
+  showCheckbox: boolean;
+  checkBoxStrictly: boolean;
+  load: LoadFunction;
+  defaultExpandedKeys: TreeKey[];
+  defaultCheckedKeys: TreeKey[];
+  autoExpandParent: boolean;
+  defaultExpandAll: boolean;
+  renderAfterExpand: boolean;
 }

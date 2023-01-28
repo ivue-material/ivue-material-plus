@@ -6,6 +6,10 @@ import { markNodeData } from '../utils';
 import type { TreeNodeData, TreeNodeOptions } from '../types/tree';
 import type TreeStore from './tree-store';
 import type { TreeKey, FakeNode } from '../types/tree';
+import type {
+  TreeNodeChildState,
+  TreeNodeLoadedDefaultProps,
+} from '../types/node';
 
 // 节点id
 let nodeIdSeed = 0;
@@ -51,6 +55,78 @@ const getPropsFromData = (node: Node, prop: string): any => {
   }
 };
 
+// 获取子节点状态
+const getChildState = (node: Node[]): TreeNodeChildState => {
+  let all = true;
+  let none = true;
+  let allWithoutDisable = true;
+
+  for (let i = 0; i < node.length; i++) {
+    const nodeData = node[i];
+
+    // 没有选中 || 是不确定状态
+    if (nodeData.checked !== true || nodeData.indeterminate) {
+      all = false;
+
+      // 没有禁用
+      if (!nodeData.disabled) {
+        allWithoutDisable = false;
+      }
+    }
+
+    // 选中 || 是不确定状态
+    if (nodeData.checked !== false || nodeData.indeterminate) {
+      none = false;
+    }
+  }
+
+  return {
+    all,
+    none,
+    allWithoutDisable,
+    half: !all && !none,
+  };
+};
+
+// 重新初始化多选
+const reInitChecked = (node: Node): void => {
+  // 没有子节点 || 加载中
+  if (node.childNodes.length === 0 || node.loading) {
+    return;
+  }
+
+  // 获取子节点状态
+  const { all, none, half } = getChildState(node.childNodes);
+
+  // 选中所有多选
+  if (all) {
+    node.checked = true;
+    node.indeterminate = false;
+  }
+  // 多选不确定的状态
+  else if (half) {
+    node.checked = false;
+    node.indeterminate = true;
+  }
+  // 没有选择
+  else if (none) {
+    node.checked = false;
+    node.indeterminate = false;
+  }
+
+  const parent = node.parent;
+
+  // 层级只有一个
+  if (!parent || parent.level === 0) {
+    return;
+  }
+
+  // 继续递归
+  if (!node.store.checkBoxStrictly) {
+    reInitChecked(parent);
+  }
+};
+
 // tree 节点对象
 class Node {
   // tree 节点数据对象
@@ -77,8 +153,14 @@ class Node {
   isLeaf: boolean;
   // 是否是叶子节点
   isLeafByUser: boolean;
-  // 是否加载中
+  // 是否加载完成
   loaded: boolean;
+  // 加载中
+  loading: boolean;
+  // 是否选中
+  checked: boolean;
+  // 多选不确定状态
+  indeterminate: boolean;
 
   constructor(options: TreeNodeOptions) {
     // tree 节点数据对象
@@ -95,6 +177,10 @@ class Node {
     this.isCurrent = false;
     // 节点是否可以获取焦点
     this.canFocus = false;
+    // 是否选中
+    this.checked = false;
+    // 多选不确定状态
+    this.indeterminate = false;
 
     // 将外部值赋值给属性
     for (const name in options) {
@@ -109,8 +195,10 @@ class Node {
     this.childNodes = [];
     // 当前节点层级
     this.level = 0;
-    // 是否加载中
+    // 是否加载完成
     this.loaded = false;
+    // 加载中
+    this.loading = false;
 
     // 有父节点
     if (this.parent) {
@@ -135,6 +223,11 @@ class Node {
   // 标题
   get label(): string {
     return getPropsFromData(this, 'label');
+  }
+
+  // 是否禁用
+  get disabled(): boolean {
+    return getPropsFromData(this, 'disabled');
   }
 
   // 初始化数据
@@ -164,8 +257,19 @@ class Node {
     // 不是懒加载子节点 && 有数据
     if (store.lazy !== true && this.data) {
       this.setData(this.data);
+
+      // 展开全部子节点
+      if (store.defaultExpandAll) {
+        this.expanded = true;
+        this.canFocus = true;
+      }
+    }
+    // 是懒加载子节点 && 展开全部子节点
+    else if (this.level > 0 && store.lazy && store.defaultExpandAll) {
+      this.expand();
     }
 
+    // data 不是数组
     if (!Array.isArray(this.data)) {
       markNodeData(this, this.data);
     }
@@ -175,8 +279,15 @@ class Node {
       return;
     }
 
+    // 默认展开的节点的 keys 数组
+    const defaultExpandedKeys = store.defaultExpandedKeys;
     // 每个树节点用来作为唯一标识的属性，整棵树应该是唯一的
     const key = store.key;
+
+    // 展开对应的节点
+    if (key && defaultExpandedKeys && defaultExpandedKeys.includes(this.key)) {
+      this.expand(null, store.autoExpandParent);
+    }
 
     // 设置当前节点
     if (
@@ -187,6 +298,11 @@ class Node {
     ) {
       store.currentNode = this;
       store.currentNode.isCurrent = true;
+    }
+
+    // 有懒加载 初始化默认勾选节点
+    if (store.lazy) {
+      store.initDefaultCheckedNode(this);
     }
 
     // 更新叶子节点状态
@@ -226,7 +342,7 @@ class Node {
   }
 
   // 插入 children 数据
-  insertChild(child?: FakeNode | Node, index?: number): void {
+  insertChild(child?: FakeNode | Node, index?: number, batch?: boolean): void {
     // 没有数据
     if (!child) {
       throw new Error('InsertChild error: child is required.');
@@ -234,17 +350,20 @@ class Node {
 
     // 不是 tree 节点对象
     if (!(child instanceof Node)) {
-      const children = this.getChildren(true);
+      // 是否是批量插入 children
+      if (!batch) {
+        const children = this.getChildren(true);
 
-      // 判断一个数组是否包含一个指定的值
-      if (!children.includes(child.data)) {
-        // 没有index
-        if (typeof index === 'undefined' || index < 0) {
-          children.push(child.data);
-        }
-        // 在数组中添加新数据
-        else {
-          children.splice(index, 0, child.data);
+        // 判断一个数组是否包含一个指定的值
+        if (!children.includes(child.data)) {
+          // 没有index
+          if (typeof index === 'undefined' || index < 0) {
+            children.push(child.data);
+          }
+          // 在数组中添加新数据
+          else {
+            children.splice(index, 0, child.data);
+          }
         }
       }
 
@@ -339,6 +458,7 @@ class Node {
         }
       }
 
+      // 展开节点
       this.expanded = true;
 
       // 有回调函数
@@ -352,11 +472,43 @@ class Node {
       });
     };
 
+    if (this.shouldLoadData()) {
+      this.loadData((data) => {
+        if (Array.isArray(data)) {
+          // 多选选中
+          if (this.checked) {
+            this.setChecked(true, true);
+          }
+          // 在显示复选框的情况下，是否严格的遵循父子不互相关联的做法
+          else if (!this.store.checkBoxStrictly) {
+            reInitChecked(this);
+          }
+
+          // 展开节点
+          done();
+        }
+      });
+    }
+
     done();
   }
 
   // 更新叶子节点状态
   updateLeafState(): void {
+    if (
+      // 是懒加载节点
+      this.store.lazy === true &&
+      // 没有加载完成
+      this.loaded !== true &&
+      // 是否是叶子节点
+      typeof this.isLeafByUser !== 'undefined'
+    ) {
+      // 叶子节点
+      this.isLeaf = this.isLeafByUser;
+
+      return;
+    }
+
     const childNodes = this.childNodes;
 
     if (
@@ -371,6 +523,113 @@ class Node {
 
     // 不是叶子节点
     this.isLeaf = false;
+  }
+
+  // 设置多选
+  setChecked(
+    value?: boolean | string,
+    deep?: boolean,
+    recursion?: boolean,
+    passValue?: boolean
+  ) {
+    this.indeterminate = value === 'half';
+    // 设置选中
+    this.checked = value === true;
+
+    // 在显示复选框的情况下，是否严格的遵循父子不互相关联的做法
+    if (this.store.checkBoxStrictly) {
+      return;
+    }
+
+    // 没有加载数据
+    if (!this.shouldLoadData()) {
+      // 获取子节点状态
+      const { all, allWithoutDisable } = getChildState(this.childNodes);
+
+      // 不是叶子节点 && 没有选中全部 && 全部禁用
+      if (!this.isLeaf && !all && allWithoutDisable) {
+        this.checked = false;
+        value = false;
+      }
+
+      // 深度遍历处理所有子节点
+      const handDeepChildNodes = (): void => {
+        //  深度遍历
+        if (deep) {
+          const childNodes = this.childNodes;
+          for (let i = 0; i < childNodes.length; i++) {
+            const child = childNodes[i];
+
+            // 是否有外部传入值
+            passValue = passValue || value !== false;
+
+            // 设置选中
+            const isCheck = child.disabled ? child.checked : passValue;
+
+            // 设置子节点选中状态
+            child.setChecked(isCheck, deep, true, passValue);
+          }
+
+          const { half, all } = getChildState(childNodes);
+
+          // 没有选中全部
+          if (!all) {
+            this.checked = all;
+            this.indeterminate = half;
+          }
+        }
+      };
+
+      handDeepChildNodes();
+    }
+
+    const parent = this.parent;
+    if (!parent || parent.level === 0) return;
+
+    // 递归
+    if (!recursion) {
+      reInitChecked(parent);
+    }
+  }
+
+  // 显示加载数据
+  shouldLoadData(): boolean {
+    return this.store.lazy === true && this.store.load && !this.loaded;
+  }
+
+  // 创建子节点
+  createChildren(
+    array: TreeNodeData[],
+    defaultProps: TreeNodeLoadedDefaultProps = {}
+  ): void {
+    // 插入 children 数据
+    array.forEach((item) => {
+      this.insertChild(
+        Object.assign({ data: item }, defaultProps),
+        undefined,
+        true
+      );
+    });
+  }
+
+  // 加载数据
+  loadData(
+    callback: (node: Node) => void,
+    defaultProps: TreeNodeLoadedDefaultProps = {}
+  ) {
+    if (
+      // 是懒加载节点
+      this.store.lazy === true &&
+      // 有加载方法
+      this.store.load &&
+      // 没有加载完成
+      !this.loaded &&
+      // 没有加载中
+      (!this.loading || Object.keys(defaultProps).length)
+    ) {
+      // 加载中
+      this.loading = true;
+    }
   }
 }
 

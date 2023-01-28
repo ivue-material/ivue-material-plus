@@ -8,7 +8,7 @@
     <!-- 标题 -->
     <div :class="`${prefixCls}--content`" :style="contentStyles">
       <!-- icon -->
-      <ivue-icon :class="iconClasses" v-if="tree.props.icon">
+      <ivue-icon :class="iconClasses" v-if="tree.props.icon && !node.loading">
         <component
           :is="tree.props.icon"
           v-if="!isString(tree.props.icon)"
@@ -17,6 +17,19 @@
           {{ tree.props.icon }}
         </template>
       </ivue-icon>
+      <!-- loading -->
+      <loading v-if="node.loading"></loading>
+      <!-- checkbox -->
+      <ivue-checkbox
+        :class="`${prefixCls}--checkbox`"
+        :model-value="node.checked"
+        :indeterminate="node.indeterminate"
+        :disabled="!!node.disabled"
+        @click.stop
+        @change="handleCheckChange"
+        v-if="showCheckbox"
+      ></ivue-checkbox>
+
       <!-- text -->
       <node-content :node="node" :render-content="renderContent" />
     </div>
@@ -24,13 +37,15 @@
     <collapse-transition>
       <div
         :class="`${prefixCls}--children`"
-        v-if="childNodeRendered"
+        v-if="!renderAfterExpand || childNodeRendered"
         v-show="expanded"
       >
         <ivue-tree-node
           v-for="child in node.childNodes"
           :node="child"
           :accordion="accordion"
+          :show-checkbox="showCheckbox"
+          :render-after-expand="renderAfterExpand"
           :key="getTreeNodeKey(child)"
           @on-node-expand="handleChildNodeExpand"
         ></ivue-tree-node>
@@ -58,7 +73,9 @@ import { useNodeExpandEventBroadcast } from './hooks/useNodeExpandEventBroadcast
 
 // components
 import IvueIcon from '../ivue-icon/index.vue';
+import IvueCheckbox from '../ivue-checkbox/index.vue';
 import NodeContent from './node-content.vue';
+import Loading from './loading.vue';
 
 // type
 import Node from './store/node';
@@ -98,6 +115,24 @@ export default defineComponent({
       type: Boolean,
       default: false,
     },
+    /**
+     * 设置节点是否被选中
+     *
+     * @type {Boolean}
+     */
+    showCheckbox: {
+      type: Boolean,
+      default: false,
+    },
+    /**
+     * 是否在第一次展开某个树节点后才渲染其子节点
+     *
+     * @type {Boolean}
+     */
+    renderAfterExpand: {
+      type: Boolean,
+      default: true,
+    },
   },
   setup(props: Props, { emit }) {
     // vm
@@ -112,6 +147,11 @@ export default defineComponent({
     const expanded = ref(false);
     // 子节点是否可以渲染
     const childNodeRendered = ref(false);
+    // 上一个选中状态
+    const oldChecked = ref<boolean>(null);
+    // 上一个不确定选中状态
+    const oldIndeterminate = ref<boolean>(null);
+
     // 派发事件到所有子节点是否关闭展开
     const { broadcastExpanded } = useNodeExpandEventBroadcast(props);
 
@@ -147,13 +187,24 @@ export default defineComponent({
 
     // methods
 
+    // 初始化数据
+    const initData = () => {
+      // 有展开
+      if (props.node.expanded) {
+        expanded.value = true;
+
+        // 子节点是否可以渲染
+        childNodeRendered.value = true;
+      }
+    };
+
     // 获取节点key
     const getTreeNodeKey = (node: Node) => {
       return getNodeKey(tree.props.nodeKey, node.data);
     };
 
     // 点击子节点
-    const handleNodeClick = () => {
+    const handleNodeClick = (event: MouseEvent) => {
       // 设置当前点击的子节点
       handleCurrentChange(tree.store, tree.ctx.emit, () =>
         tree.store.value.setCurrentNode(props.node)
@@ -166,6 +217,19 @@ export default defineComponent({
       if (tree.props.expandOnClickNode) {
         handleExpandIconClick();
       }
+
+      // 当节点被点击的时候触发
+      tree.ctx.emit(
+        'on-node-click',
+        // 对应于节点点击的节点对象
+        props.node.data,
+        // 节点对应的 Node
+        props.node,
+        // 节点组件本身
+        instance,
+        // event
+        event
+      );
     };
 
     // 点击展开图标
@@ -180,8 +244,11 @@ export default defineComponent({
         // 节点被关闭时触发的事件
         tree.ctx.emit(
           'on-node-collapse',
+          // 传递给 data 属性的数组中该节点所对应的对象
           props.node.data,
+          // 节点对应的 Node
           props.node,
+          // 节点组件本身
           instance
         );
 
@@ -194,7 +261,15 @@ export default defineComponent({
         props.node.expand();
 
         // 节点被展开时触发的事件
-        emit('on-node-expand', props.node.data, props.node, instance);
+        emit(
+          'on-node-expand',
+          // 传递给 data 属性的数组中该节点所对应的对象
+          props.node.data,
+          // 节点对应的 Node
+          props.node,
+          // 节点组件本身
+          instance
+        );
       }
     };
 
@@ -206,8 +281,60 @@ export default defineComponent({
     ) => {
       // 派发展开事件
       broadcastExpanded(node);
+
       // 节点被展开时触发的事件
-      tree.ctx.emit('on-node-expand', nodeData, node, instance);
+      tree.ctx.emit(
+        'on-node-expand',
+        // 传递给 data 属性的数组中该节点所对应的对象
+        nodeData,
+        // 节点对应的 Node
+        node,
+        // 节点组件本身
+        instance
+      );
+    };
+
+    // 点击多选
+    const handleCheckChange = (event) => {
+      props.node.setChecked(event.target.checked, !tree.props.checkBoxStrictly);
+
+      nextTick(() => {
+        const store = tree.store.value;
+
+        // 点击节点复选框之后触发
+        tree.ctx.emit('on-check', props.node.data, {
+          // 获取选中的节点
+          checkedNodes: store.getCheckedNodes(),
+          // 获取选中节点的key
+          checkedKeys: store.getCheckedKeys(),
+          // 获取不确定选中节点
+          halfCheckedNodes: store.getHalfCheckedNodes(),
+          // 获取不确定选中节点key
+          halfCheckedKeys: store.getHalfCheckedKeys(),
+        });
+      });
+    };
+
+    // 多选改变
+    const handleSelectChange = (checked: boolean, indeterminate: boolean) => {
+      if (
+        oldChecked.value !== checked ||
+        oldIndeterminate.value !== indeterminate
+      ) {
+        // 当复选框被点击的时候触发
+        tree.ctx.emit(
+          'on-check-change',
+          // 传递给 data 属性的数组中该节点所对应的对象
+          props.node.data,
+          // 节点本身是否被选中
+          checked,
+          // 节点的子树中是否有被选中的节点
+          indeterminate
+        );
+      }
+
+      oldChecked.value = checked;
+      oldIndeterminate.value = indeterminate;
     };
 
     // watch
@@ -220,14 +347,34 @@ export default defineComponent({
           expanded.value = value;
         });
 
+        // 子节点是否可以渲染
         if (value) {
           childNodeRendered.value = true;
         }
       }
     );
 
+    // 监听多选
+    watch(
+      () => props.node.checked,
+      (value) => {
+        handleSelectChange(value, props.node.indeterminate);
+      }
+    );
+
+    // 监听多选不确定状态
+    watch(
+      () => props.node.indeterminate,
+      (value) => {
+        handleSelectChange(props.node.checked, value);
+      }
+    );
+
     // provide
     provide(TreeNodeContextKey, instance);
+
+    // 初始化数据
+    initData();
 
     return {
       prefixCls,
@@ -249,12 +396,15 @@ export default defineComponent({
       isString,
       handleNodeClick,
       handleChildNodeExpand,
+      handleCheckChange,
     };
   },
   components: {
     IvueIcon,
+    IvueCheckbox,
     NodeContent,
     CollapseTransition,
+    Loading,
   },
 });
 </script>

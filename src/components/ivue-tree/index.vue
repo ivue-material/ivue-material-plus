@@ -5,6 +5,8 @@
       v-for="child in root.childNodes"
       :node="child"
       :accordion="accordion"
+      :show-checkbox="showCheckbox"
+      :render-after-expand="renderAfterExpand"
       :key="getTreeNodeKey(child)"
       @on-node-expand="handleNodeExpand"
     ></tree-node>
@@ -22,6 +24,7 @@ import {
   ref,
   provide,
   ComponentInternalInstance,
+  PropType,
 } from 'vue';
 import TreeStore from './store/tree-store';
 import { getNodeKey } from './utils';
@@ -38,7 +41,14 @@ const prefixCls = 'ivue-tree';
 
 export default defineComponent({
   name: prefixCls,
-  emits: ['on-current-change', 'on-node-collapse', 'on-node-expand'],
+  emits: [
+    'on-current-change',
+    'on-node-collapse',
+    'on-node-expand',
+    'on-node-click',
+    'on-check',
+    'on-check-change',
+  ],
   props: {
     /**
      * tree数据
@@ -112,7 +122,7 @@ export default defineComponent({
      * @type {Function}
      */
     renderContent: {
-      type: Function,
+      type: Function as PropType<Props['renderContent']>,
     },
     /**
      * 是否在点击节点的时候展开或者收缩节点
@@ -132,6 +142,74 @@ export default defineComponent({
       type: Boolean,
       default: false,
     },
+    /**
+     * 设置节点是否被选中
+     *
+     * @type {Boolean}
+     */
+    showCheckbox: {
+      type: Boolean,
+      default: false,
+    },
+    /**
+     * 在显示复选框的情况下，是否严格的遵循父子不互相关联的做法
+     *
+     * @type {Boolean}
+     */
+    checkBoxStrictly: {
+      type: Boolean,
+      default: false,
+    },
+    /**
+     * 加载子树数据的方法，仅当 lazy 属性为true 时生效
+     *
+     * @type {Function}
+     */
+    load: {
+      type: Function as PropType<Props['load']>,
+    },
+    /**
+     * 默认勾选的节点的 key 的数组
+     *
+     * @type {Array}
+     */
+    defaultCheckedKeys: {
+      type: Array as PropType<Props['defaultCheckedKeys']>,
+    },
+    /**
+     * 默认展开的节点的 key 的数组
+     *
+     * @type {Array}
+     */
+    defaultExpandedKeys: {
+      type: Array as PropType<Props['defaultExpandedKeys']>,
+    },
+    /**
+     * 展开子节点的时候是否自动展开父节点
+     *
+     * @type {Boolean}
+     */
+    autoExpandParent: {
+      type: Boolean,
+      default: true,
+    },
+    /**
+     * 是否默认展开所有节点
+     *
+     * @type {Boolean}
+     */
+    defaultExpandAll: {
+      type: Boolean,
+    },
+    /**
+     * 是否在第一次展开某个树节点后才渲染其子节点
+     *
+     * @type {Boolean}
+     */
+    renderAfterExpand: {
+      type: Boolean,
+      default: true,
+    },
   },
   setup(props: Props, ctx) {
     // 派发事件到所有子节点是否关闭展开
@@ -142,9 +220,16 @@ export default defineComponent({
     // tree 存储
     const store = ref<TreeStore>(
       new TreeStore({
+        key: props.nodeKey,
         data: props.data,
         lazy: props.lazy,
         props: props.props,
+        checkBoxStrictly: props.checkBoxStrictly,
+        load: props.load,
+        defaultCheckedKeys: props.defaultCheckedKeys,
+        defaultExpandedKeys: props.defaultExpandedKeys,
+        autoExpandParent: props.autoExpandParent,
+        defaultExpandAll: props.defaultExpandAll,
       })
     );
 
@@ -190,7 +275,15 @@ export default defineComponent({
       // 派发展开事件
       broadcastExpanded(node);
       // 节点被展开时触发的事件
-      ctx.emit('on-node-expand', nodeData, node, instance);
+      ctx.emit(
+        'on-node-expand',
+        // 传递给 data 属性的数组中该节点所对应的对象
+        nodeData,
+        // 节点对应的 Node
+        node,
+        // 节点组件本身
+        instance
+      );
     };
 
     // provide
