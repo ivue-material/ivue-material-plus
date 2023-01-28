@@ -5,6 +5,13 @@
     :props="defaultProps"
     @node-click="handleNodeClick"
   ></ivue-tree>
+  <h2>手风琴模式</h2>
+  <ivue-tree
+    :data="data"
+    :props="defaultProps"
+    accordion
+    @node-click="handleNodeClick"
+  ></ivue-tree>
 </template>
 
 <script lang="ts" setup>
