@@ -295,7 +295,7 @@ function useStore() {
     }
     // 提示错误
     else {
-      throw new Error(`Action not found: ${String(name)}`);
+      throw new Error(`[Ivue Table] Action not found: ${String(name)}`);
     }
   };
 

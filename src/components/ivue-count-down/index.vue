@@ -104,7 +104,7 @@ export default defineComponent({
           targetTime = new Date(props.target).getTime();
         }
       } catch (e) {
-        throw new Error(`invalid target prop ${e}`);
+        throw new Error(`[Ivue Count Down] invalid target prop ${e}`);
       }
 
       // 按日期倒计时

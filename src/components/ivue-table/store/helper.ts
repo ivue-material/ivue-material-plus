@@ -28,7 +28,7 @@ const initialState = {
 // 创建 store
 export function createStore(table: Table, props: TableProps) {
   if (!table) {
-    throw new Error('Table is required.');
+    throw new Error('[Ivue Table] Table is required.');
   }
 
   const store = useStore();

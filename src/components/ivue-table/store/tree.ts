@@ -287,7 +287,7 @@ function useTree(watcherData: WatcherPropsData) {
           if (rootLazyRowKeys.includes(key)) {
             // 懒加载的 root 节点，更新一下原有的数据，原来的 children 一定是空数组
             if (newTreeData[key].children.length !== 0) {
-              throw new Error('[Table]children must be an empty array.');
+              throw new Error('[Ivue Table] children must be an empty array.');
             }
 
             // 更新当前懒加载节点数据

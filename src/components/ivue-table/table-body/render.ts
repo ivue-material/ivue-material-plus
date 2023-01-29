@@ -330,7 +330,9 @@ function useRender(props: Partial<TableBodyProps>) {
             // 获取rowKey对应的数据
             const childKey = getRowIdentity(node, rowKey.value);
             if (childKey === undefined || childKey === null) {
-              throw new Error('For nested data item, row-key is required.');
+              throw new Error(
+                '[Ivue Table] For nested data item, row-key is required.'
+              );
             }
 
             childrenData = { ...treeData.value[childKey] };

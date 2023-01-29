@@ -30,7 +30,7 @@ export const getKeysMap = function (
 // 获取rowKey对应的数据
 export const getRowIdentity = (row, rowKey): string => {
   if (!row) {
-    throw new Error('Row is required when get row identity');
+    throw new Error('[Ivue Table] Row is required when get row identity');
   }
 
   // 字符串

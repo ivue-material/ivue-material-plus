@@ -36,6 +36,7 @@ export declare interface TreeStoreOptions {
   defaultCheckedKeys: TreeKey[];
   autoExpandParent: boolean;
   defaultExpandAll: boolean;
+  filterNodeMethod: FilterNodeMethodFunction;
 }
 
 // tree 节点外部传入属性
@@ -53,13 +54,13 @@ export declare interface TreeStoreNodesMap {
 // tree 配置选项
 export declare interface TreeOptionProps {
   children?: string;
-  // label?: string | ((data: TreeNodeData, node: Node) => string);
-  // disabled?: string | ((data: TreeNodeData, node: Node) => string);
+  label?: string | ((data: TreeNodeData, node: Node) => string);
+  disabled?: string | ((data: TreeNodeData, node: Node) => string);
   isLeaf?: string | ((data: TreeNodeData, node: Node) => boolean);
-  // class?: (
-  //   data: TreeNodeData,
-  //   node: Node
-  // ) => string | { [key: string]: boolean } | string;
+  class?: (
+    data: TreeNodeData,
+    node: Node
+  ) => string | { [key: string]: boolean } | string;
 }
 
 // 虚拟节点
@@ -106,6 +107,15 @@ export declare type LoadFunction = (
   loadedCallback: (data: TreeData) => void
 ) => void;
 
+// 过滤value
+export declare type FilterValue = any;
+// 对树节点进行筛选时执行的方法，
+export declare type FilterNodeMethodFunction = (
+  value: FilterValue,
+  data: TreeNodeData,
+  child: Node
+) => boolean;
+
 // props
 export interface Props {
   data: any[];
@@ -126,4 +136,9 @@ export interface Props {
   autoExpandParent: boolean;
   defaultExpandAll: boolean;
   renderAfterExpand: boolean;
+  highlightCurrent: boolean;
+  currentNodeKey: string | number;
+  filterNodeMethod: FilterNodeMethodFunction;
+  checkOnClickNode: boolean;
+  draggable: boolean;
 }

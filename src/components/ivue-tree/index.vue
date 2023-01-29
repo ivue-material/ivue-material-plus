@@ -1,5 +1,5 @@
 <template>
-  <div :class="wrapperClasses">
+  <div :class="wrapperClasses" ref="treeRef">
     <!-- 节点 -->
     <tree-node
       v-for="child in root.childNodes"
@@ -7,6 +7,8 @@
       :accordion="accordion"
       :show-checkbox="showCheckbox"
       :render-after-expand="renderAfterExpand"
+      :render-content="renderContent"
+      :props="props"
       :key="getTreeNodeKey(child)"
       @on-node-expand="handleNodeExpand"
     ></tree-node>
@@ -25,16 +27,19 @@ import {
   provide,
   ComponentInternalInstance,
   PropType,
+  watch,
 } from 'vue';
 import TreeStore from './store/tree-store';
 import { getNodeKey } from './utils';
 import { useNodeExpandEventBroadcast } from './hooks/useNodeExpandEventBroadcast';
+import { useKeydown } from './hooks/useKeydown';
+import { useDragNodeHandler } from './hooks/useDragNode';
 
 import TreeNode from './node.vue';
 
 // type
 import type Node from './store/node';
-import type { Props, TreeNodeData } from './types/tree';
+import type { Props, TreeNodeData, TreeKey, TreeData } from './types/tree';
 import { TreeContextKey, IconPropType } from './types/tree';
 
 const prefixCls = 'ivue-tree';
@@ -48,6 +53,7 @@ export default defineComponent({
     'on-node-click',
     'on-check',
     'on-check-change',
+    'on-node-drag-start',
   ],
   props: {
     /**
@@ -74,7 +80,7 @@ export default defineComponent({
      * @type {Object}
      */
     props: {
-      type: Object,
+      type: Object as PropType<Props['props']>,
       default: () => ({
         children: 'children',
         label: 'label',
@@ -210,6 +216,47 @@ export default defineComponent({
       type: Boolean,
       default: true,
     },
+    /**
+     * 是否高亮当前选中节点
+     *
+     * @type {Boolean}
+     */
+    highlightCurrent: {
+      type: Boolean,
+    },
+    /**
+     * 当前选中的节点
+     *
+     * @type {String | Number}
+     */
+    currentNodeKey: {
+      type: [String, Number],
+    },
+    /**
+     * 对树节点进行筛选时执行的方法， 返回 false 则表示这个节点会被隐藏
+     *
+     * @type {Function}
+     */
+    filterNodeMethod: {
+      type: Function as PropType<Props['filterNodeMethod']>,
+    },
+    /**
+     * 是否在点击节点的时候选中节点
+     *
+     * @type {Boolean}
+     */
+    checkOnClickNode: {
+      type: Boolean,
+    },
+    /**
+     * 是否开启拖拽节点功能
+     *
+     * @type {Boolean}
+     */
+    draggable: {
+      type: Boolean,
+      default: false,
+    },
   },
   setup(props: Props, ctx) {
     // 派发事件到所有子节点是否关闭展开
@@ -230,6 +277,7 @@ export default defineComponent({
         defaultExpandedKeys: props.defaultExpandedKeys,
         autoExpandParent: props.autoExpandParent,
         defaultExpandAll: props.defaultExpandAll,
+        filterNodeMethod: props.filterNodeMethod,
       })
     );
 
@@ -240,12 +288,34 @@ export default defineComponent({
     const root = ref<Node>(store.value.root);
     // 当前节点
     const currentNode = ref<Node>(null);
+    // 跟节点
+    const treeRef = ref<HTMLElement>(null);
+
+    // 拖动时显示的线条
+    const dropIndicator = ref<HTMLElement>(null);
+
+    // 键盘事件
+    useKeydown(treeRef, store);
+
+    // 拖动事件
+    useDragNodeHandler({
+      props,
+      ctx,
+      treeRef,
+      dropIndicator,
+      store,
+    });
 
     // computed
 
     // 外层样式
     const wrapperClasses = computed(() => {
-      return [prefixCls];
+      return [
+        prefixCls,
+        {
+          [`${prefixCls}-highlight-current`]: props.highlightCurrent,
+        },
+      ];
     });
 
     // 是否没有数据
@@ -286,6 +356,102 @@ export default defineComponent({
       );
     };
 
+    // 返回当前选中节点的数组
+    const getCheckedNodes = (
+      // 返回当前选中节点的子节点
+      leafOnly?: boolean,
+      // 返回值包含不确定选中节点数据
+      includeHalfChecked?: boolean
+    ): TreeNodeData[] => {
+      return store.value.getCheckedNodes(leafOnly, includeHalfChecked);
+    };
+
+    // 返回当前选中节点 key 的数组
+    const getCheckedKeys = (leafOnly?: boolean): TreeKey[] => {
+      return store.value.getCheckedKeys(leafOnly);
+    };
+
+    // 设置目前勾选的节点，使用此方法必须提前设置 node-key 属性
+    const setCheckedNodes = (nodes: Node[], leafOnly?: boolean) => {
+      if (!props.nodeKey) {
+        throw new Error('[Ivue Tree] nodeKey is required in setCheckedNodes');
+      }
+
+      store.value.setCheckedNodes(nodes, leafOnly);
+    };
+
+    // 设置目前选中的节点，使用此方法必须设置 node-key 属性
+    const setCheckedKeys = (keys, leafOnly?: boolean) => {
+      if (!props.nodeKey) {
+        throw new Error('[Ivue Tree] nodeKey is required in setCheckedKeys');
+      }
+
+      store.value.setCheckedKeys(keys, leafOnly);
+    };
+
+    // 为节点设置新数据，只有当设置 node-key 属性的时候才可用
+    const updateKeyChildren = (key: TreeKey, data: TreeData) => {
+      if (!props.nodeKey) {
+        throw new Error('[Ivue Tree] nodeKey is required in updateKeyChild');
+      }
+
+      store.value.updateChildren(key, data);
+    };
+
+    // 过滤所有树节点，过滤后的节点将被隐藏
+    const filter = (value) => {
+      if (!props.filterNodeMethod) {
+        throw new Error('[Ivue Tree] filterNodeMethod is required when filter');
+      }
+
+      store.value.filter(value);
+    };
+
+    // watch
+
+    // 监听数据变化
+    watch(
+      () => props.data,
+      (value) => {
+        store.value.setData(value);
+      },
+      {
+        deep: true,
+      }
+    );
+
+    // 监听在显示复选框的情况下，是否严格的遵循父子不互相关联的做法
+    watch(
+      () => props.checkBoxStrictly,
+      (newVal) => {
+        store.value.checkBoxStrictly = newVal;
+      }
+    );
+
+    // 监听当前选中的节点
+    watch(
+      () => props.currentNodeKey,
+      (newVal) => {
+        store.value.setCurrentNodeKey(newVal);
+      }
+    );
+
+    // 监听默认勾选的节点的 key 的数组
+    watch(
+      () => props.defaultCheckedKeys,
+      (newVal) => {
+        store.value.setDefaultCheckedKey(newVal);
+      }
+    );
+
+    // 监听默认展开的节点的 key 的数组
+    watch(
+      () => props.defaultExpandedKeys,
+      (newVal) => {
+        store.value.setDefaultExpandedKeys(newVal);
+      }
+    );
+
     // provide
     provide(TreeContextKey, {
       props,
@@ -297,6 +463,10 @@ export default defineComponent({
     return {
       prefixCls,
 
+      // dom
+      treeRef,
+      dropIndicator,
+
       // data
       root,
 
@@ -305,8 +475,14 @@ export default defineComponent({
       isEmpty,
 
       // methods
-      getTreeNodeKey,
       handleNodeExpand,
+      getTreeNodeKey,
+      getCheckedNodes,
+      getCheckedKeys,
+      setCheckedNodes,
+      setCheckedKeys,
+      updateKeyChildren,
+      filter,
     };
   },
   components: {

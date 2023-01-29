@@ -23,7 +23,7 @@ function useLayoutObserver(root: Table) {
     const layout = root.layout as TableLayout;
 
     if (!layout) {
-      throw new Error('Can not find table layout.');
+      throw new Error('[Ivue Table] Can not find table layout.');
     }
 
     return layout;

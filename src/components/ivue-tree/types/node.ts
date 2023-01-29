@@ -1,5 +1,6 @@
 import type { InjectionKey, ComponentInternalInstance } from 'vue';
 import type Node from '../store/node';
+import type { TreeOptionProps } from './tree';
 
 // provide
 export const TreeNodeContextKey: InjectionKey<ComponentInternalInstance> =
@@ -25,4 +26,5 @@ export interface Props {
   accordion: boolean;
   showCheckbox: boolean;
   renderAfterExpand: boolean;
+  props: TreeOptionProps;
 }

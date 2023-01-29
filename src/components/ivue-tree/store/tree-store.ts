@@ -1,5 +1,6 @@
-import { hasOwn } from '@vue/shared';
+import { hasOwn, isObject } from '@vue/shared';
 import Node from './node';
+import { getNodeKey } from '../utils';
 
 // type
 import type {
@@ -10,6 +11,8 @@ import type {
   TreeOptionProps,
   LoadFunction,
   TreeNodeData,
+  FilterValue,
+  FilterNodeMethodFunction,
 } from '../types/tree';
 
 // tree 存储数据对象
@@ -42,6 +45,8 @@ export default class TreeStore {
   autoExpandParent: boolean;
   // 是否默认展开所有节点
   defaultExpandAll: boolean;
+  // 对树节点进行筛选时执行的方法， 返回 false 则表示这个节点会被隐藏
+  filterNodeMethod: FilterNodeMethodFunction;
 
   constructor(options: TreeStoreOptions) {
     // 当前节点的key
@@ -220,5 +225,333 @@ export default class TreeStore {
     if (defaultCheckedKeys.includes(node.key)) {
       node.setChecked(true, !this.checkBoxStrictly);
     }
+  }
+
+  // 设置目前勾选的节点，使用此方法必须提前设置 node-key 属性
+  setCheckedNodes(array: Node[], leafOnly = false): void {
+    const key = this.key;
+    const checkedKeys = {};
+
+    // 创建多选框key
+    array.forEach((item) => {
+      checkedKeys[(item || {})[key]] = true;
+    });
+
+    // 设置多选框key
+    this._setCheckedKeys(key, leafOnly, checkedKeys);
+  }
+
+  // 设置目前选中的节点
+  setCheckedKeys(keys: TreeKey[], leafOnly = false): void {
+    const key = this.key;
+    const checkedKeys = {};
+
+    // 默认勾选的节点的
+    this.defaultCheckedKeys = keys;
+
+    keys.forEach((key) => {
+      checkedKeys[key] = true;
+    });
+
+    // 设置多选框key
+    this._setCheckedKeys(key, leafOnly, checkedKeys);
+  }
+
+  // 设置多选框key
+  _setCheckedKeys(
+    key: TreeKey,
+    leafOnly = false,
+    checkedKeys: { [key: string]: boolean }
+  ): void {
+    const allNodes = this.getAllNodes().sort((a, b) => b.level - a.level);
+    // 父级数据的key
+    const parentKeys = {};
+    // 外部传入的key
+    const keys = Object.keys(checkedKeys);
+
+    // 先取消所有多选框选中
+    allNodes.forEach((node) => {
+      node.setChecked(false, false);
+    });
+
+    for (let i = 0; i < allNodes.length; i++) {
+      // 节点
+      const node = allNodes[i];
+      // 节点key
+      const nodeKey = node.data[key].toString();
+      // 匹配外部传入是否选中
+      const checked = keys.includes(nodeKey);
+
+      // 取消选中
+      if (!checked) {
+        // 激活了 && 不是父级数据的子节点
+        if (node.checked && !parentKeys[nodeKey]) {
+          node.setChecked(false, false);
+        }
+
+        continue;
+      }
+
+      let parent = node.parent;
+
+      // 父级层级 > 0
+      while (parent && parent.level > 0) {
+        // 父级数据的key
+        parentKeys[parent.data[key]] = true;
+
+        parent = parent.parent;
+      }
+
+      // 叶子节点 || 是否严格的遵循父子不互相关联的做法
+      if (node.isLeaf || this.checkBoxStrictly) {
+        // 选中
+        node.setChecked(true, false);
+
+        continue;
+      }
+
+      // 选中
+      node.setChecked(true, true);
+
+      // 叶子节点
+      if (leafOnly) {
+        // 取消选中
+        node.setChecked(false, false);
+
+        // 遍历子节点
+        const traverse = (node: Node): void => {
+          const childNodes = node.childNodes;
+
+          childNodes.forEach((child) => {
+            // 不是叶子节点 取消选中
+            if (!child.isLeaf) {
+              child.setChecked(false, false);
+            }
+
+            traverse(child);
+          });
+        };
+
+        traverse(node);
+      }
+    }
+  }
+
+  // 获取所有节点
+  getAllNodes(): Node[] {
+    const allNodes: Node[] = [];
+    const nodesMap = this.nodesMap;
+
+    for (const nodeKey in nodesMap) {
+      // 检测是否属性是否拥有
+      if (hasOwn(nodesMap, nodeKey)) {
+        allNodes.push(nodesMap[nodeKey]);
+      }
+    }
+
+    return allNodes;
+  }
+
+  // 设置数据
+  setData(value: TreeData): void {
+    // 数据不一样
+    const instanceChanged = value !== this.root.data;
+
+    if (instanceChanged) {
+      this.root.setData(value);
+
+      // 初始化默认勾选节点
+      this.initDefaultCheckedNodes();
+    } else {
+      // 更新子节点
+      this.root.updateChildren();
+    }
+  }
+
+  // 更新子节点
+  updateChildren(key: TreeKey, data: TreeData): void {
+    // 获取对应的节点
+    const node = this.nodesMap[key];
+
+    if (!node) {
+      return;
+    }
+
+    const childNodes = node.childNodes;
+
+    // 删除节点 -> 从后向前找
+    for (let i = childNodes.length - 1; i >= 0; i--) {
+      const child = childNodes[i];
+
+      this.remove(child.data);
+    }
+
+    // 添加节点
+    for (let i = 0, j = data.length; i < j; i++) {
+      const child = data[i];
+
+      this.append(child, node.data);
+    }
+  }
+
+  // 删除节点
+  remove(data: TreeNodeData | Node): void {
+    // 获取节点
+    const node = this.getNode(data);
+
+    // 有节点 && 有父节点
+    if (node && node.parent) {
+      // 清除当前节点
+      if (node === this.currentNode) {
+        this.currentNode = null;
+      }
+
+      node.parent.removeChild(node);
+    }
+  }
+
+  // 添加节点
+  append(data: TreeNodeData, parentData: TreeNodeData | TreeKey | Node): void {
+    // 是否有父节点
+    const parentNode = parentData ? this.getNode(parentData) : this.root;
+
+    if (parentNode) {
+      parentNode.insertChild({ data });
+    }
+  }
+
+  // 获取节点
+  getNode(data: TreeKey | TreeNodeData): Node {
+    if (data instanceof Node) {
+      return data;
+    }
+
+    // 获取节点的key
+    const key = isObject(data) ? getNodeKey(this.key, data) : data;
+
+    // 存储的树节点
+    return this.nodesMap[key] || null;
+  }
+
+  // 注销节点
+  deregisterNode(node: Node): void {
+    const key = this.key;
+    if (!key || !node || !node.data) {
+      return;
+    }
+
+    // 递归调用
+    node.childNodes.forEach((child) => {
+      this.deregisterNode(child);
+    });
+
+    // 删除存储的树节点
+    delete this.nodesMap[node.key];
+  }
+
+  // 设置默认勾选的节点的 key 数组
+  setDefaultCheckedKey(value: TreeKey[]): void {
+    if (value !== this.defaultCheckedKeys) {
+      this.defaultCheckedKeys = value;
+
+      // 初始化默认勾选节点
+      this.initDefaultCheckedNodes();
+    }
+  }
+
+  // 设置默认展开的节点的 key 的数组
+  setDefaultExpandedKeys(keys: TreeKey[]) {
+    keys = keys || [];
+
+    this.defaultExpandedKeys = keys;
+
+    keys.forEach((key) => {
+      // 获取节点
+      const node = this.getNode(key);
+
+      // 设置展开
+      if (node) {
+        node.expand(null, this.autoExpandParent);
+      }
+    });
+  }
+
+  // 设置当前激活的key
+  setCurrentNodeKey(key?: TreeKey, shouldAutoExpandParent = true): void {
+    // 没有key
+    if (key === null || key === undefined) {
+      // 重置当前选中的节点
+      this.currentNode && (this.currentNode.isCurrent = false);
+      this.currentNode = null;
+
+      return;
+    }
+
+    // 获取节点
+    const node = this.getNode(key);
+
+    // 有节点
+    if (node) {
+      // 点击当前节点
+      this.setCurrentNode(node);
+
+      // 有自动展开 && 节点层级 > 1
+      if (shouldAutoExpandParent && this.currentNode.level > 1) {
+        // 展开
+        this.currentNode.parent.expand(null, true);
+      }
+    }
+  }
+
+  // 过滤所有树节点，过滤后的节点将被隐藏
+  filter(value: FilterValue): void {
+    const filterNodeMethod = this.filterNodeMethod;
+    const lazy = this.lazy;
+
+    const traverse = (node: TreeStore | Node) => {
+      // 子节点
+      const childNodes = (node as TreeStore).root
+        ? (node as TreeStore).root.childNodes
+        : (node as Node).childNodes;
+
+      // 循环子节点
+      childNodes.forEach((child) => {
+        child.visible = filterNodeMethod.call(child, value, child.data, child);
+
+        // 继续循环获取子节点
+        traverse(child);
+      });
+
+      // 没有隐藏 && 有子节点
+      if (!(node as Node).visible && childNodes.length) {
+        let allHidden = true;
+        // 是否符合隐藏全部条件
+        allHidden = !childNodes.some((child) => child.visible);
+
+        // 跟节点
+        if ((node as TreeStore).root) {
+          // 隐藏根节点
+          (node as TreeStore).root.visible = allHidden === false;
+        }
+        // 隐藏子节点
+        else {
+          (node as Node).visible = allHidden === false;
+        }
+      }
+
+      // 没有输入
+      if (!value) {
+        return;
+      }
+
+      // 隐藏了子节点 && 不是叶子节点 && 不是懒加载节点
+      if ((node as Node).visible && !(node as Node).isLeaf && !lazy) {
+        // 展开节点
+        (node as Node).expand();
+      }
+    };
+
+    // 遍历子节点
+    traverse(this);
   }
 }

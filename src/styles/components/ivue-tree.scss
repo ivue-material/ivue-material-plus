@@ -4,6 +4,7 @@ $name: 'ivue-tree';
   --#{$name}-color: var(--ivxue-text-color);
   --#{$name}-node-radius: var(--ivue-border-radius);
   --#{$name}-node-hover: var(--ivue-background-color-select-hover);
+  --#{$name}-highlight-current: rgba(91, 142, 255, 0.3);
 }
 
 .#{$name} {
@@ -23,10 +24,19 @@ $name: 'ivue-tree';
     color: var(--ivue-disabled-color);
   }
 
+  // 高亮当前选中节点
+  &-highlight-current .#{$name}-node.is-current > .#{$name}-node--content {
+    background-color: var(--#{$name}-highlight-current);
+  }
+
   // 节点
   &-node {
     white-space: nowrap;
     outline: none;
+
+    &:focus > &--content {
+      background-color: var(--#{$name}-node-hover);
+    }
 
     // 内容
     &--content {
@@ -35,10 +45,10 @@ $name: 'ivue-tree';
       height: 26px;
       cursor: pointer;
       transition: var(--ivue-all-transition);
+      border-radius: var(--#{$name}-node-radius);
 
       &:hover {
         background-color: var(--#{$name}-node-hover);
-        border-radius: var(--#{$name}-node-radius);
       }
     }
 

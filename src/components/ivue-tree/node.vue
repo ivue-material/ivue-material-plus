@@ -1,14 +1,26 @@
 <template>
   <div
-    :class="wrapperClasses"
     tabindex="-1"
+    role="treeItem"
+    :class="wrapperClasses"
     :data-key="getTreeNodeKey(node)"
+    :draggable="tree.props.draggable"
     @click.stop="handleNodeClick"
+    v-show="node.visible"
+    @dragstart.stop="handleDragStart"
+    @dragover.stop.prevent="handleDragOver"
+    @dragend.stop="handleDragEnd"
+    @drop.stop.prevent
+    ref="nodeRef"
   >
     <!-- 标题 -->
     <div :class="`${prefixCls}--content`" :style="contentStyles">
       <!-- icon -->
-      <ivue-icon :class="iconClasses" v-if="tree.props.icon && !node.loading">
+      <ivue-icon
+        :class="iconClasses"
+        @click.stop="handleExpandIconClick"
+        v-if="tree.props.icon && !node.loading"
+      >
         <component
           :is="tree.props.icon"
           v-if="!isString(tree.props.icon)"
@@ -47,6 +59,8 @@
           :show-checkbox="showCheckbox"
           :render-after-expand="renderAfterExpand"
           :key="getTreeNodeKey(child)"
+          :render-content="renderContent"
+          :props="props"
           @on-node-expand="handleChildNodeExpand"
         ></ivue-tree-node>
       </div>
@@ -65,11 +79,13 @@ import {
   watch,
   nextTick,
   ComponentInternalInstance,
+  PropType,
 } from 'vue';
 import { getNodeKey, handleCurrentChange } from './utils';
-import { isString } from '@vue/shared';
+import { isString, isFunction } from '@vue/shared';
 import CollapseTransition from '../../utils/collapse-transition';
 import { useNodeExpandEventBroadcast } from './hooks/useNodeExpandEventBroadcast';
+import { dragEventsKey } from './hooks/useDragNode';
 
 // components
 import IvueIcon from '../ivue-icon/index.vue';
@@ -78,9 +94,11 @@ import NodeContent from './node-content.vue';
 import Loading from './loading.vue';
 
 // type
+import type { Props } from './types/node';
+import type { TreeOptionProps } from './types/tree';
+
 import Node from './store/node';
 import { TreeContextKey, TreeNodeData } from './types/tree';
-import type { Props } from './types/node';
 import { TreeNodeContextKey } from './types/node';
 
 const prefixCls = 'ivue-tree-node';
@@ -133,6 +151,15 @@ export default defineComponent({
       type: Boolean,
       default: true,
     },
+    /**
+     * 配置项
+     *
+     * @type {Object}
+     */
+    props: {
+      type: Object as PropType<TreeOptionProps>,
+      default: () => ({}),
+    },
   },
   setup(props: Props, { emit }) {
     // vm
@@ -140,13 +167,18 @@ export default defineComponent({
 
     // 根树节点数据
     const tree = inject(TreeContextKey);
+    // 拖动事件
+    const dragEvents = inject(dragEventsKey);
+
+    // dom
+    const nodeRef = ref<HTMLElement>(null);
 
     // data
 
     // 展开子节点
-    const expanded = ref(false);
+    const expanded = ref<boolean>(false);
     // 子节点是否可以渲染
-    const childNodeRendered = ref(false);
+    const childNodeRendered = ref<boolean>(false);
     // 上一个选中状态
     const oldChecked = ref<boolean>(null);
     // 上一个不确定选中状态
@@ -163,7 +195,11 @@ export default defineComponent({
         prefixCls,
         {
           ['is-expanded']: expanded.value,
+          ['is-current']: props.node.isCurrent,
+          ['is-focusable']: !props.node.disabled,
+          ['is-checked']: !props.node.disabled && props.node.checked,
         },
+        getNodeClass(props.node),
       ];
     });
 
@@ -203,6 +239,38 @@ export default defineComponent({
       return getNodeKey(tree.props.nodeKey, node.data);
     };
 
+    // 获取节点class
+    const getNodeClass = (node: Node) => {
+      const nodeClassFunc = props.props.class;
+
+      if (!nodeClassFunc) {
+        return {};
+      }
+
+      let className;
+
+      // 方法
+      if (isFunction(nodeClassFunc)) {
+        const { data } = node;
+        className = nodeClassFunc(data, node);
+      }
+      // 其他类型
+      else {
+        className = nodeClassFunc;
+      }
+
+      // 字符串
+      if (isString(className)) {
+        return {
+          [className]: true,
+        };
+      }
+      // 对象
+      else {
+        return className;
+      }
+    };
+
     // 点击子节点
     const handleNodeClick = (event: MouseEvent) => {
       // 设置当前点击的子节点
@@ -216,6 +284,13 @@ export default defineComponent({
       // 是否在点击节点的时候展开或者收缩节点
       if (tree.props.expandOnClickNode) {
         handleExpandIconClick();
+      }
+
+      // 是否在点击节点的时候选中节点
+      if (tree.props.checkOnClickNode && !props.node.disabled) {
+        handleCheckChange({
+          target: { checked: !props.node.checked },
+        });
       }
 
       // 当节点被点击的时候触发
@@ -337,6 +412,33 @@ export default defineComponent({
       oldIndeterminate.value = indeterminate;
     };
 
+    // 开始拖动
+    const handleDragStart = (event: DragEvent) => {
+      if (!tree.props.draggable) {
+        return;
+      }
+
+      dragEvents.treeNodeDragStart({ event, treeNode: props });
+    };
+
+    // 拖动到目标
+    const handleDragOver = (event: DragEvent) => {
+      if (!tree.props.draggable) {
+        return;
+      }
+
+      dragEvents.treeNodeDragOver({
+        event,
+        treeNode: {
+          $el: nodeRef.value,
+          node: props.node,
+        },
+      });
+    };
+
+    // 拖动结束
+    const handleDragEnd = () => {};
+
     // watch
 
     // 监听展开子节点
@@ -382,6 +484,9 @@ export default defineComponent({
       // inject
       tree,
 
+      // dom
+      nodeRef,
+
       // data
       expanded,
       childNodeRendered,
@@ -392,11 +497,15 @@ export default defineComponent({
       iconClasses,
 
       // methods
-      getTreeNodeKey,
       isString,
+      getTreeNodeKey,
       handleNodeClick,
       handleChildNodeExpand,
       handleCheckChange,
+      handleExpandIconClick,
+      handleDragStart,
+      handleDragOver,
+      handleDragEnd,
     };
   },
   components: {

@@ -173,6 +173,7 @@ export function getSizeStyle(
   }
 }
 
+// 事件代码
 export const EVENT_CODE = {
   tab: 'Tab',
   enter: 'Enter',

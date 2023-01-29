@@ -10,6 +10,7 @@ import type {
   TreeNodeChildState,
   TreeNodeLoadedDefaultProps,
 } from '../types/node';
+import { NODE_KEY } from '../utils';
 
 // 节点id
 let nodeIdSeed = 0;
@@ -236,7 +237,7 @@ class Node {
 
     // 没有 tree 存储数据对象
     if (!store) {
-      throw new Error('[Node]store is required!');
+      throw new Error('[Ivue Tree] [Node]store is required!');
     }
 
     // 注册节点
@@ -345,7 +346,7 @@ class Node {
   insertChild(child?: FakeNode | Node, index?: number, batch?: boolean): void {
     // 没有数据
     if (!child) {
-      throw new Error('InsertChild error: child is required.');
+      throw new Error('[Ivue Tree] InsertChild error: child is required.');
     }
 
     // 不是 tree 节点对象
@@ -490,6 +491,7 @@ class Node {
       });
     }
 
+    // 展开节点
     done();
   }
 
@@ -554,7 +556,7 @@ class Node {
 
       // 深度遍历处理所有子节点
       const handDeepChildNodes = (): void => {
-        //  深度遍历
+        // 深度遍历
         if (deep) {
           const childNodes = this.childNodes;
           for (let i = 0; i < childNodes.length; i++) {
@@ -629,7 +631,93 @@ class Node {
     ) {
       // 加载中
       this.loading = true;
+
+      // 数据加载完成的回调
+      const resolve = (children: TreeNodeData[]) => {
+        this.childNodes = [];
+
+        // 创建子节点
+        this.createChildren(children, defaultProps);
+
+        // 加载完成
+        this.loaded = true;
+        this.loading = false;
+
+        // 更新叶子节点状态
+        this.updateLeafState();
+
+        // callback
+        if (callback) {
+          callback.call(this, children);
+        }
+      };
+
+      this.store.load(this, resolve);
     }
+    // 普通回调
+    else {
+      if (callback) {
+        callback.call(this);
+      }
+    }
+  }
+
+  // 删除子节点
+  removeChild(child: Node): void {
+    // 获取 children 属性 子树为节点对象的某个属性值
+    const children = this.getChildren() || [];
+
+    // 是否有匹配的数据
+    const dataIndex = children.indexOf(child.data);
+
+    // 删除子节点
+    if (dataIndex > -1) {
+      children.splice(dataIndex, 1);
+    }
+
+    const index = this.childNodes.indexOf(child);
+
+    if (index > -1) {
+      // 注销节点
+      this.store && this.store.deregisterNode(child);
+
+      // 清除子节点父级
+      child.parent = null;
+
+      // 删除对应的节点
+      this.childNodes.splice(index, 1);
+    }
+
+    // 更新叶子节点状态
+    this.updateLeafState();
+  }
+
+  // 更新子节点
+  updateChildren(): void {
+    // 新传入的数据
+    const newData = (this.getChildren() || []) as TreeNodeData[];
+    // 旧的数据
+    const oldData = this.childNodes.map((node) => node.data);
+
+    const newDataMap = {};
+    const newNodes = [];
+
+    newData.forEach((item, index) => {
+      // 获取数据的key
+      const key = item[NODE_KEY];
+
+      // 节点是否存在
+      const isNodeExists =
+        !!key && oldData.findIndex((data) => data[NODE_KEY] === key) >= 0;
+      // 更新新数据
+      if (isNodeExists) {
+        newDataMap[key] = { index, data: item };
+      }
+      // 插入新数据
+      else {
+        newNodes.push({ index, data: item });
+      }
+    });
   }
 }
 
