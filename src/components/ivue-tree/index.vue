@@ -644,6 +644,7 @@ export default defineComponent({
             setCheckedKeys,
             setChecked,
             setCurrentKey,
+            setCurrentNode,
 
             remove,
             append,
