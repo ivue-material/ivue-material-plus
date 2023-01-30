@@ -14,6 +14,7 @@ import {
   watch,
 } from 'vue';
 import { oneOf } from '../../utils/assist';
+import { throwError } from '../../utils/error';
 
 import { Props, Data } from './types/count-down';
 
@@ -104,7 +105,7 @@ export default defineComponent({
           targetTime = new Date(props.target).getTime();
         }
       } catch (e) {
-        throw new Error(`[Ivue Count Down] invalid target prop ${e}`);
+        throwError(prefixCls, `invalid target prop ${e}`);
       }
 
       // 按日期倒计时

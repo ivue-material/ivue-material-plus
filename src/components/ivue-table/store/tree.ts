@@ -1,6 +1,8 @@
 import { ref, getCurrentInstance, computed, unref, watch } from 'vue';
 import { getRowIdentity, walkTreeNode } from '../utils';
 
+import { throwError } from '../../../utils/error';
+
 // ts
 import type { WatcherPropsData } from './index';
 import type { Table, TableProps, TreeNode } from '../table/defaults';
@@ -287,7 +289,7 @@ function useTree(watcherData: WatcherPropsData) {
           if (rootLazyRowKeys.includes(key)) {
             // 懒加载的 root 节点，更新一下原有的数据，原来的 children 一定是空数组
             if (newTreeData[key].children.length !== 0) {
-              throw new Error('[Ivue Table] children must be an empty array.');
+              throwError('ivue-table', 'children must be an empty array');
             }
 
             // 更新当前懒加载节点数据

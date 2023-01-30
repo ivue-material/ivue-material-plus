@@ -1,5 +1,7 @@
 import { getCurrentInstance, unref, nextTick } from 'vue';
+
 import useWatcher from './watcher';
+import { throwError } from '../../../utils/error';
 
 // ts
 import type { Ref } from 'vue';
@@ -295,7 +297,7 @@ function useStore() {
     }
     // 提示错误
     else {
-      throw new Error(`[Ivue Table] Action not found: ${String(name)}`);
+      throwError('ivue-table', `Action not found: ${String(name)}`);
     }
   };
 

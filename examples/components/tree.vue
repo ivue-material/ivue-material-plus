@@ -3,6 +3,7 @@
   <ivue-tree
     :data="data"
     :props="defaultProps"
+    icon="face"
     @node-click="handleNodeClick"
   ></ivue-tree>
   <h2>手风琴模式</h2>
@@ -85,6 +86,16 @@
     <ivue-button @click="setCheckedKeys">setCheckedKeys</ivue-button>
     <ivue-button @click="resetChecked">resetChecked</ivue-button>
     <ivue-button @click="updateKeyChildren">updateKeyChildren</ivue-button>
+    <ivue-button @click="setChecked">setChecked</ivue-button>
+    <ivue-button @click="getHalfCheckedNodes">getHalfCheckedNodes</ivue-button>
+    <ivue-button @click="getHalfCheckedKeys">getHalfCheckedKeys</ivue-button>
+    <ivue-button @click="getCurrentNode">getCurrentNode</ivue-button>
+    <ivue-button @click="getCurrentKey">getCurrentKey</ivue-button>
+    <ivue-button @click="getNode">getNode</ivue-button>
+    <ivue-button @click="removeHandle">remove</ivue-button>
+    <ivue-button @click="appendHandle">append</ivue-button>
+    <ivue-button @click="insertBefore">insertBefore</ivue-button>
+    <ivue-button @click="insertAfter">insertAfter</ivue-button>
   </div>
   <h2>自定义节点内容</h2>
   <p>Using render-content</p>
@@ -145,13 +156,33 @@
   ></ivue-tree>
   <h2>可拖拽节点</h2>
   <ivue-tree
-    :data="data"
+    :data="data2"
+    :allow-drop="allowDrop"
+    :allow-drag="allowDrag"
     draggable
     default-expand-all
     node-key="id"
     @on-node-drag-start="handleDragStart"
+    @on-node-drag-enter="handleDragEnter"
+    @on-node-drag-leave="handleDragLeave"
+    @on-node-drag-over="handleDragOver"
+    @on-node-drag-end="handleDragEnd"
+    @on-node-drop="handleDrop"
   >
   </ivue-tree>
+  <p>defaultProps</p>
+  <ivue-tree
+    :data="data3"
+    :props="{
+      children: 'arr',
+      label: 'value',
+      disabled: 'disabled',
+      isLeaf: 'isLeaf',
+      class: 'red',
+    }"
+    icon="face"
+    @node-click="handleNodeClick"
+  ></ivue-tree>
 </template>
 
 <script lang="ts" setup>
@@ -354,6 +385,46 @@ const updateKeyChildren = () => {
   treeRef.value!.updateKeyChildren(1, data1);
 };
 
+const setChecked = () => {
+  treeRef.value!.setChecked(1, true);
+};
+
+const getHalfCheckedNodes = () => {
+  console.log(treeRef.value!.getHalfCheckedNodes());
+};
+
+const getHalfCheckedKeys = () => {
+  console.log(treeRef.value!.getHalfCheckedKeys());
+};
+
+const getCurrentNode = () => {
+  console.log(treeRef.value!.getCurrentNode());
+};
+
+const getCurrentKey = () => {
+  console.log(treeRef.value!.getCurrentKey());
+};
+
+const getNode = () => {
+  console.log(treeRef.value!.getNode('1'));
+};
+
+const removeHandle = () => {
+  treeRef.value!.remove(data[0]);
+};
+
+const appendHandle = () => {
+  treeRef.value!.append(data[1], 1);
+};
+
+const insertBefore = () => {
+  treeRef.value!.insertBefore(data[1], 1);
+};
+
+const insertAfter = () => {
+  treeRef.value!.insertAfter(data[1], 1);
+};
+
 const dataSource = ref([
   {
     id: 1,
@@ -476,6 +547,120 @@ watch(filterText, (val) => {
 const handleDragStart = (node, ev) => {
   console.log('drag start', node);
 };
+
+const handleDragLeave = (draggingNode, dropNode, ev) => {
+  console.log('tree drag leave:', dropNode.label);
+};
+
+const handleDragEnter = (draggingNode, dropNode, ev) => {
+  console.log('tree drag enter:', dropNode.label);
+};
+
+const data2 = [
+  {
+    label: 'Level one 1',
+    children: [
+      {
+        label: 'Level two 1-1',
+        children: [
+          {
+            label: 'Level three 1-1-1',
+          },
+        ],
+      },
+    ],
+  },
+  {
+    label: 'Level one 2',
+    children: [
+      {
+        label: 'Level two 2-1',
+        children: [
+          {
+            label: 'Level three 2-1-1',
+          },
+        ],
+      },
+      {
+        label: 'Level two 2-2',
+        children: [
+          {
+            label: 'Level three 2-2-1',
+          },
+        ],
+      },
+    ],
+  },
+  {
+    label: 'Level one 3',
+    children: [
+      {
+        label: 'Level two 3-1',
+        children: [
+          {
+            label: 'Level three 3-1-1',
+          },
+        ],
+      },
+      {
+        label: 'Level two 3-2',
+        children: [
+          {
+            label: 'Level three 3-2-1',
+          },
+        ],
+      },
+    ],
+  },
+];
+
+const allowDrop = (draggingNode, dropNode, type) => {
+  if (dropNode.data.label === 'Level two 3-1') {
+    return type !== 'inner';
+  } else {
+    return true;
+  }
+};
+
+const allowDrag = (draggingNode) => {
+  return !draggingNode.data.label.includes('Level three 3-1-1');
+};
+
+const handleDragOver = (draggingNode, dropNode, ev) => {
+  console.log('tree drag over:', dropNode.label);
+};
+
+const handleDragEnd = (draggingNode, dropNode, dropType, ev) => {
+  console.log('tree drag end:', dropNode && dropNode.label, dropType);
+};
+
+const handleDrop = (draggingNode, dropNode, dropType, ev) => {
+  console.log('tree drop:', dropNode.label, dropType);
+};
+
+const data3 = [
+  {
+    id: 1,
+    value: 'Level one 1',
+    arr: [
+      {
+        id: 4,
+        value: 'Level two 1-1',
+        isLeaf: true,
+        arr: [
+          {
+            id: 9,
+            value: 'Level three 1-1-1',
+          },
+          {
+            id: 10,
+            value: 'Level three 1-1-2',
+          },
+        ],
+      },
+    ],
+  },
+];
 </script>
 
 <style>

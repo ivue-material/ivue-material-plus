@@ -1,3 +1,5 @@
+import { throwError } from '../utils/error';
+
 /* eslint-disable */
 const SPECIAL_CHARS_REGEXP = /([\:\-\_]+(.))/g;
 const MOZ_HACK_REGEXP = /^moz([A-Z])/;
@@ -75,7 +77,7 @@ export function hasClass(el: HTMLElement, cls: string): boolean {
   }
 
   if (cls.indexOf(' ') !== -1) {
-    throw new Error('className should not contain space.');
+    throwError('hasClass', 'className should not contain space');
   }
 
   if (el.classList) {

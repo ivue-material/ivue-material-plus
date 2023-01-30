@@ -27,7 +27,7 @@ export default class TreeStore {
   data: TreeData;
   // 每个树节点用来作为唯一标识的属性，整棵树应该是唯一的
   key: TreeKey;
-  // 存储的树节点
+  // 存储tree子节点
   nodesMap: TreeStoreNodesMap;
   // 是否懒加载子节点，需与 load 方法结合使用
   lazy: boolean;
@@ -63,7 +63,7 @@ export default class TreeStore {
       }
     }
 
-    // 存储的树子节点
+    // 存储tree子节点
     this.nodesMap = {};
   }
 
@@ -112,6 +112,7 @@ export default class TreeStore {
       const nodeKey = node.key;
 
       if (nodeKey !== undefined) {
+        // 存储tree子节点
         this.nodesMap[node.key] = node;
       }
     }
@@ -171,25 +172,29 @@ export default class TreeStore {
     return this.getCheckedNodes(leafOnly).map((data) => (data || {})[this.key]);
   }
 
-  // 获取不确定选中节点
+  // 获取半选中节点
   getHalfCheckedNodes(): TreeNodeData[] {
     const halfCheckedNodes: TreeNodeData[] = [];
 
     // 递归遍历子节点
     const traverse = (node: TreeStore | Node) => {
+      // 获取根节点数据的子项 || 子节点数据的子项
       const childNodes = (node as TreeStore).root
         ? (node as TreeStore).root.childNodes
         : (node as Node).childNodes;
 
       childNodes.forEach((child) => {
+        // 有半选中状态
         if (child.indeterminate) {
           halfCheckedNodes.push(child.data);
         }
 
+        // 递归遍历子节点
         traverse(child);
       });
     };
 
+    // 递归遍历子节点
     traverse(this);
 
     return halfCheckedNodes;
@@ -553,5 +558,46 @@ export default class TreeStore {
 
     // 遍历子节点
     traverse(this);
+  }
+
+  // 插入到节点前面
+  insertBefore(data: TreeNodeData, refData: TreeKey | TreeNodeData): void {
+    // 获取节点
+    const refNode = this.getNode(refData);
+
+    // 插入到节点
+    refNode.parent.insertBefore({ data }, refNode);
+  }
+
+  // 插入到节点后面
+  insertAfter(data: TreeNodeData, refData: TreeKey | TreeNodeData): void {
+    // 获取节点
+    const refNode = this.getNode(refData);
+
+    // 插入到节点
+    refNode.parent.insertAfter({ data }, refNode);
+  }
+
+  // 设置节点是否被选中, 使用此方法必须设置 node-key 属性
+  setChecked(
+    // 要选中的节点的 key 或者数据
+    data: TreeKey | TreeNodeData,
+    // 一个布尔类型参数表明是否选中
+    checked: boolean,
+    // 一个布尔类型参数表明是否递归选中子节点
+    deep: boolean
+  ): void {
+    // 获取节点
+    const node = this.getNode(data);
+
+    // 设置选中
+    if (node) {
+      node.setChecked(!!checked, deep);
+    }
+  }
+
+  // 返回当前被选中节点的数据
+  getCurrentNode(): Node {
+    return this.currentNode;
   }
 }

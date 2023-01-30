@@ -3,6 +3,7 @@ import { h, inject, computed } from 'vue';
 import useStyles from './styles';
 import useEvents from './events';
 import { getRowIdentity } from '../utils';
+import { throwError } from '../../../utils/error';
 
 // ts
 import type { TableProps, RenderRowData, TreeNode } from '../table/defaults';
@@ -330,8 +331,9 @@ function useRender(props: Partial<TableBodyProps>) {
             // 获取rowKey对应的数据
             const childKey = getRowIdentity(node, rowKey.value);
             if (childKey === undefined || childKey === null) {
-              throw new Error(
-                '[Ivue Table] For nested data item, row-key is required.'
+              throwError(
+                'ivue-table',
+                'For nested data item, row-key is required'
               );
             }
 

@@ -1,5 +1,6 @@
 import { ref, getCurrentInstance, unref } from 'vue';
 import { hasOwn } from '@vue/shared';
+import { throwError } from '../../../utils/error';
 
 // 展开行
 import useExpand from './expand';
@@ -216,7 +217,7 @@ function useWatcher() {
   // 检查 rowKey 是否存在
   const isRowKey = () => {
     if (!rowKey.value) {
-      throw new Error('[Ivue Table] prop row-key is required');
+      throwError('ivue-table', 'prop row-key is required');
     }
   };
 
@@ -574,7 +575,7 @@ function useWatcher() {
   // 检查 rowKey 是否存在
   const assertRowKey = () => {
     if (!rowKey.value) {
-      throw new Error('[Ivue Table] prop row-key is required');
+      throwError('ivue-table', 'prop row-key is required');
     }
   };
 

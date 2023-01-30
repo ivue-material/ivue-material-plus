@@ -2,6 +2,7 @@ import { watch } from 'vue';
 import { debounce } from 'lodash-unified';
 
 import useStore from './index';
+import { throwError } from '../../../utils/error';
 
 // ts
 import type { Table, TableProps } from '../table/defaults';
@@ -28,7 +29,7 @@ const initialState = {
 // 创建 store
 export function createStore(table: Table, props: TableProps) {
   if (!table) {
-    throw new Error('[Ivue Table] Table is required.');
+    throwError('ivue-table', 'Table is required');
   }
 
   const store = useStore();

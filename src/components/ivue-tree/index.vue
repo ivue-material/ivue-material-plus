@@ -16,6 +16,12 @@
     <div :class="`${prefixCls}-no-data`" v-if="isEmpty">
       {{ emptyText }}
     </div>
+    <!-- 拖动下划线 -->
+    <div
+      v-show="dragState.showDropIndicator"
+      ref="dropIndicator"
+      :class="`${prefixCls}-drop-indicator`"
+    ></div>
   </div>
 </template>
 
@@ -30,10 +36,11 @@ import {
   watch,
 } from 'vue';
 import TreeStore from './store/tree-store';
-import { getNodeKey } from './utils';
+import { getNodeKey, handleCurrentChange } from './utils';
 import { useNodeExpandEventBroadcast } from './hooks/useNodeExpandEventBroadcast';
 import { useKeydown } from './hooks/useKeydown';
 import { useDragNodeHandler } from './hooks/useDragNode';
+import { throwError } from '../../utils/error';
 
 import TreeNode from './node.vue';
 
@@ -54,6 +61,11 @@ export default defineComponent({
     'on-check',
     'on-check-change',
     'on-node-drag-start',
+    'on-node-drag-leave',
+    'on-node-drag-enter',
+    'on-node-drag-over',
+    'on-node-drag-end',
+    'on-node-drop',
   ],
   props: {
     /**
@@ -257,6 +269,22 @@ export default defineComponent({
       type: Boolean,
       default: false,
     },
+    /**
+     * 判断节点能否被拖拽 如果返回 false ，节点不能被拖动
+     *
+     * @type {Function}
+     */
+    allowDrag: {
+      type: Function as PropType<Props['allowDrag']>,
+    },
+    /**
+     * 拖拽时判定目标节点能否成为拖动目标位置
+     *
+     * @type {Function}
+     */
+    allowDrop: {
+      type: Function as PropType<Props['allowDrop']>,
+    },
   },
   setup(props: Props, ctx) {
     // 派发事件到所有子节点是否关闭展开
@@ -298,7 +326,7 @@ export default defineComponent({
     useKeydown(treeRef, store);
 
     // 拖动事件
-    useDragNodeHandler({
+    const { dragState } = useDragNodeHandler({
       props,
       ctx,
       treeRef,
@@ -374,7 +402,7 @@ export default defineComponent({
     // 设置目前勾选的节点，使用此方法必须提前设置 node-key 属性
     const setCheckedNodes = (nodes: Node[], leafOnly?: boolean) => {
       if (!props.nodeKey) {
-        throw new Error('[Ivue Tree] nodeKey is required in setCheckedNodes');
+        throwError(prefixCls, 'nodeKey is required in setCheckedNodes');
       }
 
       store.value.setCheckedNodes(nodes, leafOnly);
@@ -383,7 +411,7 @@ export default defineComponent({
     // 设置目前选中的节点，使用此方法必须设置 node-key 属性
     const setCheckedKeys = (keys, leafOnly?: boolean) => {
       if (!props.nodeKey) {
-        throw new Error('[Ivue Tree] nodeKey is required in setCheckedKeys');
+        throwError(prefixCls, 'nodeKey is required in setCheckedKeys');
       }
 
       store.value.setCheckedKeys(keys, leafOnly);
@@ -392,7 +420,7 @@ export default defineComponent({
     // 为节点设置新数据，只有当设置 node-key 属性的时候才可用
     const updateKeyChildren = (key: TreeKey, data: TreeData) => {
       if (!props.nodeKey) {
-        throw new Error('[Ivue Tree] nodeKey is required in updateKeyChild');
+        throwError(prefixCls, 'nodeKey is required in updateKeyChild');
       }
 
       store.value.updateChildren(key, data);
@@ -401,10 +429,110 @@ export default defineComponent({
     // 过滤所有树节点，过滤后的节点将被隐藏
     const filter = (value) => {
       if (!props.filterNodeMethod) {
-        throw new Error('[Ivue Tree] filterNodeMethod is required when filter');
+        throwError(prefixCls, 'filterNodeMethod is required when filter');
       }
 
       store.value.filter(value);
+    };
+
+    // 插入到节点前面
+    const insertBefore = (
+      // 要增加的节点的 data
+      data: TreeNodeData,
+      // 参考节点的 data, key 或 node
+      refNode: TreeKey | TreeNodeData
+    ) => {
+      store.value.insertBefore(data, refNode);
+    };
+
+    // 插入到节点后面
+    const insertAfter = (
+      // 要增加的节点的 data
+      data: TreeNodeData,
+      // 参考节点的 data, key 或 node
+      refNode: TreeKey | TreeNodeData
+    ) => {
+      store.value.insertAfter(data, refNode);
+    };
+
+    // 设置节点是否被选中, 使用此方法必须设置 node-key 属性
+    const setChecked = (
+      data: TreeKey | TreeNodeData,
+      checked: boolean,
+      deep: boolean
+    ) => {
+      store.value.setChecked(data, checked, deep);
+    };
+
+    // 如果节点可用被选中 (show-checkbox 为 true), 它将返回当前半选中的节点组成的数组
+    const getHalfCheckedNodes = (): TreeNodeData[] => {
+      return store.value.getHalfCheckedNodes();
+    };
+
+    // 若节点可被选中(show-checkbox 为 true)，则返回目前半选中的节点的 key 所组成的数组
+    const getHalfCheckedKeys = (): TreeKey[] => {
+      return store.value.getHalfCheckedKeys();
+    };
+
+    // 返回当前被选中节点的数据 (如果没有则返回 null)
+    const getCurrentNode = (): TreeNodeData => {
+      const currentNode = store.value.getCurrentNode();
+
+      return currentNode ? currentNode.data : null;
+    };
+
+    // 返回当前被选中节点的数据的key (如果没有则返回 null)
+    const getCurrentKey = (): any => {
+      if (!props.nodeKey) {
+        throwError(prefixCls, 'nodeKey is required in getCurrentKey');
+      }
+
+      const currentNode = getCurrentNode();
+
+      return currentNode ? currentNode[props.nodeKey] : null;
+    };
+
+    // 通过 key 设置某个节点的当前选中状态，使用此方法必须设置 node-key  属性
+    const setCurrentKey = (
+      // 待被选节点的 key， 如果为 null, 取消当前选中的节点
+      key?: TreeKey,
+      // 是否自动展开父节点
+      shouldAutoExpandParent = true
+    ) => {
+      if (!props.nodeKey) {
+        throwError(prefixCls, 'nodeKey is required in setCurrentKey');
+      }
+
+      // 发送点击事件
+      handleCurrentChange(store, ctx.emit, () =>
+        store.value.setCurrentNodeKey(key, shouldAutoExpandParent)
+      );
+    };
+
+    // 根据 data 或者 key 拿到 Tree 组件中的 node
+    const getNode = (
+      // 节点的 data 或 key
+      data: TreeKey | TreeNodeData
+    ): Node => {
+      return store.value.getNode(data);
+    };
+
+    // 删除 Tree 中的一个节点
+    const remove = (
+      // 要删除的节点的 data 或者 node 对象
+      data: TreeNodeData | Node
+    ) => {
+      store.value.remove(data);
+    };
+
+    // 为 Tree 中的一个节点追加一个子节点
+    const append = (
+      // 要追加的子节点的 data
+      data: TreeNodeData,
+      // 父节点的 data, key 或 node
+      parentNode: TreeNodeData | TreeKey | Node
+    ) => {
+      store.value.append(data, parentNode);
     };
 
     // watch
@@ -452,6 +580,14 @@ export default defineComponent({
       }
     );
 
+    // 监听在显示复选框的情况下，是否严格的遵循父子不互相关联的做法
+    watch(
+      () => props.checkBoxStrictly,
+      (newVal) => {
+        store.value.checkBoxStrictly = newVal;
+      }
+    );
+
     // provide
     provide(TreeContextKey, {
       props,
@@ -469,6 +605,7 @@ export default defineComponent({
 
       // data
       root,
+      dragState,
 
       // computed
       wrapperClasses,
@@ -479,9 +616,22 @@ export default defineComponent({
       getTreeNodeKey,
       getCheckedNodes,
       getCheckedKeys,
+      getHalfCheckedNodes,
+      getHalfCheckedKeys,
+      getCurrentNode,
+      getCurrentKey,
+      getNode,
+
       setCheckedNodes,
       setCheckedKeys,
+      setChecked,
+      setCurrentKey,
+
+      remove,
+      append,
       updateKeyChildren,
+      insertBefore,
+      insertAfter,
       filter,
     };
   },

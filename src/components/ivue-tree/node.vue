@@ -9,7 +9,7 @@
     v-show="node.visible"
     @dragstart.stop="handleDragStart"
     @dragover.stop.prevent="handleDragOver"
-    @dragend.stop="handleDragEnd"
+    @dragend.stop.prevent="handleDragEnd"
     @drop.stop.prevent
     ref="nodeRef"
   >
@@ -86,6 +86,7 @@ import { isString, isFunction } from '@vue/shared';
 import CollapseTransition from '../../utils/collapse-transition';
 import { useNodeExpandEventBroadcast } from './hooks/useNodeExpandEventBroadcast';
 import { dragEventsKey } from './hooks/useDragNode';
+import { debugWarn } from '../../utils/error';
 
 // components
 import IvueIcon from '../ivue-icon/index.vue';
@@ -437,7 +438,13 @@ export default defineComponent({
     };
 
     // 拖动结束
-    const handleDragEnd = () => {};
+    const handleDragEnd = (event: DragEvent) => {
+      if (!tree.props.draggable) {
+        return;
+      }
+
+      dragEvents.treeNodeDragEnd(event);
+    };
 
     // watch
 
@@ -472,11 +479,30 @@ export default defineComponent({
       }
     );
 
+    // 监听子节点数据变化
+    const childrenKey = tree.props['children'] || 'children';
+    watch(
+      () => {
+        const children = props.node.data[childrenKey];
+
+        return children && [...children];
+      },
+      () => {
+        // 更新子节点
+        props.node.updateChildren();
+      }
+    );
+
     // provide
     provide(TreeNodeContextKey, instance);
 
     // 初始化数据
     initData();
+
+    // 没有树节点
+    if (!tree) {
+      debugWarn('Ivue Tree', 'Can not find node\'s tree.');
+    }
 
     return {
       prefixCls,

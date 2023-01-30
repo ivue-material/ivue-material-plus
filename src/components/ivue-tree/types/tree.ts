@@ -46,7 +46,7 @@ export declare interface TreeNodeOptions {
   parent?: Node;
 }
 
-// tree 存储的树节点
+// 存储tree子节点
 export declare interface TreeStoreNodesMap {
   [key: string]: Node;
 }
@@ -116,6 +116,20 @@ export declare type FilterNodeMethodFunction = (
   child: Node
 ) => boolean;
 
+// 判断节点能否被拖拽
+export declare type AllowDragFunction = (node: Node) => boolean;
+
+// 拖拽时判定目标节点能否成为拖动目标位置
+export declare type AllowDropType = 'inner' | 'prev' | 'next';
+export declare type AllowDropFunction = (
+  draggingNode: Node,
+  dropNode: Node,
+  type: AllowDropType
+) => boolean;
+
+// 节点拖动类型
+export declare type NodeDropType = 'before' | 'after' | 'inner' | 'none';
+
 // props
 export interface Props {
   data: any[];
@@ -141,4 +155,6 @@ export interface Props {
   filterNodeMethod: FilterNodeMethodFunction;
   checkOnClickNode: boolean;
   draggable: boolean;
+  allowDrag: AllowDragFunction;
+  allowDrop: AllowDropFunction;
 }

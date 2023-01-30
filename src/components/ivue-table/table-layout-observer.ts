@@ -6,6 +6,7 @@ import {
   onBeforeMount,
   onUnmounted,
 } from 'vue';
+import { throwError } from '../../utils/error';
 
 // ts
 import type { Table } from './table/defaults';
@@ -23,7 +24,7 @@ function useLayoutObserver(root: Table) {
     const layout = root.layout as TableLayout;
 
     if (!layout) {
-      throw new Error('[Ivue Table] Can not find table layout.');
+      throwError('ivue-table', 'Can not find table layout');
     }
 
     return layout;

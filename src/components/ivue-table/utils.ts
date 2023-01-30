@@ -2,6 +2,7 @@ import { createPopper } from '@popperjs/core';
 import { get } from 'lodash-unified';
 
 import { useZIndex } from '../../utils/helpers';
+import { throwError } from '../../utils/error';
 
 // type
 import type { TableColumnCtx } from './table-column/defaults';
@@ -30,7 +31,7 @@ export const getKeysMap = function (
 // 获取rowKey对应的数据
 export const getRowIdentity = (row, rowKey): string => {
   if (!row) {
-    throw new Error('[Ivue Table] Row is required when get row identity');
+    throwError('ivue-table', 'row is required when get row identity');
   }
 
   // 字符串

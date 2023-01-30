@@ -1,6 +1,7 @@
 import { reactive } from 'vue';
 import { hasOwn } from '@vue/shared';
 import { markNodeData } from '../utils';
+import { throwError } from '../../../utils/error';
 
 // type
 import type { TreeNodeData, TreeNodeOptions } from '../types/tree';
@@ -231,13 +232,45 @@ class Node {
     return getPropsFromData(this, 'disabled');
   }
 
+  // 下一个兄弟节点
+  get nextSibling(): Node | null {
+    const parent = this.parent;
+
+    // 有父节点
+    if (parent) {
+      // 子节点是否有当前节点
+      const index = parent.childNodes.indexOf(this);
+
+      if (index) {
+        return parent.childNodes[index + 1];
+      }
+    }
+
+    return null;
+  }
+
+  // 上一个兄弟节点
+  get prevSibling(): Node | null {
+    const parent = this.parent;
+
+    if (parent) {
+      const index = parent.childNodes.indexOf(this);
+
+      if (index > -1) {
+        return index > 0 ? parent.childNodes[index - 1] : null;
+      }
+    }
+
+    return null;
+  }
+
   // 初始化数据
   initialize() {
     const store = this.store;
 
     // 没有 tree 存储数据对象
     if (!store) {
-      throw new Error('[Ivue Tree] [Node]store is required!');
+      throwError('ivue-tree', '[Node]store is required!');
     }
 
     // 注册节点
@@ -346,7 +379,7 @@ class Node {
   insertChild(child?: FakeNode | Node, index?: number, batch?: boolean): void {
     // 没有数据
     if (!child) {
-      throw new Error('[Ivue Tree] InsertChild error: child is required.');
+      throwError('ivue-tree', 'insertChild error: child is required');
     }
 
     // 不是 tree 节点对象
@@ -376,8 +409,9 @@ class Node {
         store: this.store,
       });
 
-      // child 设置为 reactive
+      // child 设置为 reactive 深度监听数据
       child = reactive(new Node(child as TreeNodeOptions));
+
       if (child instanceof Node) {
         child.initialize();
       }
@@ -438,6 +472,7 @@ class Node {
   collapse(): void {
     this.expanded = false;
 
+    // 设置焦点为不可获取
     this.childNodes.forEach((item) => {
       item.canFocus = false;
     });
@@ -582,6 +617,7 @@ class Node {
         }
       };
 
+      // 深度遍历处理所有子节点
       handDeepChildNodes();
     }
 
@@ -718,6 +754,84 @@ class Node {
         newNodes.push({ index, data: item });
       }
     });
+
+    // 不是懒加载子节点
+    if (!this.store.lazy) {
+      // 删除旧数据的节点
+      oldData.forEach((item) => {
+        if (!newDataMap[item[NODE_KEY]]) {
+          this.removeChildByData(item);
+        }
+      });
+    }
+
+    // 使用新的节点数据插入 children 数据
+    newNodes.forEach(({ index, data }) => {
+      this.insertChild({ data }, index);
+    });
+
+    // 更新叶子节点状态
+    this.updateLeafState();
+  }
+
+  // 是否包含传入的节点
+  contains(target: Node, deep = true): boolean {
+    return (this.childNodes || []).some(
+      (child) => child === target || (deep && child.contains(target))
+    );
+  }
+
+  // 删除节点
+  remove(): void {
+    const parent = this.parent;
+
+    if (parent) {
+      parent.removeChild(this);
+    }
+  }
+
+  // 插入到节点前面
+  insertBefore(child: FakeNode | Node, ref: Node): void {
+    let index: number;
+
+    if (ref) {
+      index = this.childNodes.indexOf(ref);
+    }
+
+    // 插入 children 数据
+    this.insertChild(child, index);
+  }
+
+  // 插入到节点后面
+  insertAfter(child: FakeNode | Node, ref: Node): void {
+    let index: number;
+
+    if (ref) {
+      index = this.childNodes.indexOf(ref);
+
+      if (index !== -1) {
+        index += 1;
+      }
+    }
+
+    // 插入 children 数据
+    this.insertChild(child, index);
+  }
+
+  // 删除节点的数据
+  removeChildByData(data: TreeNodeData): void {
+    let targetNode: Node = null;
+
+    this.childNodes.forEach((item) => {
+      if (item.data === data) {
+        targetNode = item;
+      }
+    });
+
+    // 删除子节点
+    if (targetNode) {
+      this.removeChild(targetNode);
+    }
   }
 }
 
