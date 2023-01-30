@@ -96,6 +96,7 @@
     <ivue-button @click="appendHandle">append</ivue-button>
     <ivue-button @click="insertBefore">insertBefore</ivue-button>
     <ivue-button @click="insertAfter">insertAfter</ivue-button>
+    <ivue-button @click="setCurrentKey">setCurrentKey</ivue-button>
   </div>
   <h2>自定义节点内容</h2>
   <p>Using render-content</p>
@@ -354,7 +355,7 @@ const disableData = [
 
 const treeRef = ref();
 const getCheckedNodes = () => {
-  console.log(treeRef.value!.getCheckedNodes(false, false));
+  console.log(treeRef.value!.getCheckedNodes(true, true));
 };
 const getCheckedKeys = () => {
   console.log(treeRef.value!.getCheckedKeys(false));
@@ -371,7 +372,6 @@ const setCheckedNodes = () => {
         label: 'Level three 1-1-1',
       },
     ],
-    false
   );
 };
 const setCheckedKeys = () => {
@@ -423,6 +423,10 @@ const insertBefore = () => {
 
 const insertAfter = () => {
   treeRef.value!.insertAfter(data[1], 1);
+};
+
+const setCurrentKey = () => {
+    treeRef.value.setCurrentKey(3);
 };
 
 const dataSource = ref([

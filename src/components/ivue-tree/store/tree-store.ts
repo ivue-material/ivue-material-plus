@@ -482,7 +482,12 @@ export default class TreeStore {
   }
 
   // 设置当前激活的key
-  setCurrentNodeKey(key?: TreeKey, shouldAutoExpandParent = true): void {
+  setCurrentNodeKey(
+    // 待被选节点的 key， 如果为 null, 取消当前选中的节点
+    key?: TreeKey,
+    // 是否自动展开父节点
+    shouldAutoExpandParent = true
+  ): void {
     // 没有key
     if (key === null || key === undefined) {
       // 重置当前选中的节点
@@ -505,6 +510,28 @@ export default class TreeStore {
         // 展开
         this.currentNode.parent.expand(null, true);
       }
+    }
+  }
+
+  // 设置节点为选中状态
+  setUserCurrentNode(
+    // 待被选中的节点
+    node: Node,
+    // 是否自动展开父节点
+    shouldAutoExpandParent = true
+  ): void {
+    // 传入节点的key
+    const key = node[this.key];
+
+    // 获取到当前节点
+    const currNode = this.nodesMap[key];
+
+    // 点击当前节点
+    this.setCurrentNode(currNode);
+
+    // 有自动展开 && 节点层级 > 1
+    if (shouldAutoExpandParent && this.currentNode.level > 1) {
+      this.currentNode.parent.expand(null, true);
     }
   }
 
