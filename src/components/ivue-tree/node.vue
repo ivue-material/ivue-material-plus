@@ -297,7 +297,7 @@ export default defineComponent({
       // 当节点被点击的时候触发
       tree.ctx.emit(
         'on-node-click',
-        // 对应于节点点击的节点对象
+        // 点击节点的数据对象
         props.node.data,
         // 节点对应的 Node
         props.node,
@@ -383,9 +383,9 @@ export default defineComponent({
           checkedNodes: store.getCheckedNodes(),
           // 获取选中节点的key
           checkedKeys: store.getCheckedKeys(),
-          // 获取不确定选中节点
+          // 获取半选中节点
           halfCheckedNodes: store.getHalfCheckedNodes(),
-          // 获取不确定选中节点key
+          // 获取半选中节点key
           halfCheckedKeys: store.getHalfCheckedKeys(),
         });
       });
@@ -404,7 +404,7 @@ export default defineComponent({
           props.node.data,
           // 节点本身是否被选中
           checked,
-          // 节点的子树中是否有被选中的节点
+          // 节点的子树中是否有半选中状态
           indeterminate
         );
       }
@@ -471,7 +471,7 @@ export default defineComponent({
       }
     );
 
-    // 监听多选不确定状态
+    // 监听多选半选中状态
     watch(
       () => props.node.indeterminate,
       (value) => {
