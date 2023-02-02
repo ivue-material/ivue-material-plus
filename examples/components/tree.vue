@@ -4,21 +4,21 @@
     :data="data"
     :props="defaultProps"
     icon="face"
-    @node-click="handleNodeClick"
+    @on-node-click="handleNodeClick"
   ></ivue-tree>
   <h2>手风琴模式</h2>
   <ivue-tree
     :data="data"
     :props="defaultProps"
     accordion
-    @node-click="handleNodeClick"
+    @on-node-click="handleNodeClick"
   ></ivue-tree>
   <h2>可选择</h2>
   <ivue-tree
     :data="data"
     :props="defaultProps"
     show-checkbox
-    @on-check-change="handleCheck"
+    @on-check="handleCheck"
   ></ivue-tree>
   <p>checkBoxStrictly</p>
   <ivue-tree
@@ -26,7 +26,7 @@
     :props="defaultProps"
     show-checkbox
     checkBoxStrictly
-    @on-check-change="handleCheck"
+    @on-check-change="handleCheckChange"
   ></ivue-tree>
   <p>node-key</p>
   <ivue-tree
@@ -36,7 +36,7 @@
     :default-expanded-keys="[2, 3]"
     :default-checked-keys="[5]"
     show-checkbox
-    @on-check-change="handleCheck"
+    @on-check-change="handleCheckChange"
   ></ivue-tree>
   <p>defaultExpandAll</p>
   <ivue-tree
@@ -45,7 +45,7 @@
     :props="defaultProps"
     show-checkbox
     defaultExpandAll
-    @on-check-change="handleCheck"
+    @on-check-change="handleCheckChange"
   ></ivue-tree>
   <p>renderAfterExpand</p>
   <ivue-tree
@@ -120,8 +120,8 @@
       <span class="custom-tree-node">
         <span>{{ node.label }}</span>
         <span>
-          <a @click="append(data)"> Append </a>
-          <a style="margin-left: 8px" @click="remove(node, data)"> Delete </a>
+          <a @click="append(data)">Append</a>
+          <a style="margin-left: 8px" @click="remove(node, data)">Delete</a>
         </span>
       </span>
     </template>
@@ -152,7 +152,7 @@
     :data="data"
     :props="defaultProps"
     show-checkbox
-    @on-check-change="handleCheck"
+    @on-check-change="handleCheckChange"
     checkOnClickNode
   ></ivue-tree>
   <h2>可拖拽节点</h2>
@@ -169,8 +169,7 @@
     @on-node-drag-over="handleDragOver"
     @on-node-drag-end="handleDragEnd"
     @on-node-drop="handleDrop"
-  >
-  </ivue-tree>
+  ></ivue-tree>
   <p>defaultProps</p>
   <ivue-tree
     :data="data3"
@@ -189,8 +188,8 @@
 <script lang="ts" setup>
 import { ref, watch } from 'vue';
 
-const handleNodeClick = (data) => {
-  console.log(data);
+const handleNodeClick = (data, node) => {
+  console.log(node);
 };
 
 const data = [
@@ -208,6 +207,10 @@ const data = [
           },
           {
             id: 10,
+            label: 'Level three 1-1-2',
+          },
+          {
+            id: 11,
             label: 'Level three 1-1-2',
           },
         ],
@@ -256,8 +259,9 @@ const defaultProps = {
   label: 'label',
 };
 
-const handleCheck = (value) => {
-  console.log(value);
+const handleCheck = (checkedNodes, data) => {
+  console.log(checkedNodes);
+  console.log(data);
 };
 
 const loadProps = {
@@ -364,18 +368,14 @@ const setCheckedNodes = () => {
   treeRef.value!.setCheckedNodes(
     [
       {
-        id: 5,
-        label: 'Level two 2-1',
-      },
-      {
-        id: 9,
-        label: 'Level three 1-1-1',
+        id: 3,
       },
     ],
+    true
   );
 };
 const setCheckedKeys = () => {
-  treeRef.value!.setCheckedKeys([3], false);
+  treeRef.value!.setCheckedKeys([3], true);
 };
 const resetChecked = () => {
   treeRef.value!.setCheckedKeys([], false);
@@ -426,7 +426,7 @@ const insertAfter = () => {
 };
 
 const setCurrentKey = () => {
-    treeRef.value.setCurrentKey(3);
+  treeRef.value.setCurrentKey(3);
 };
 
 const dataSource = ref([

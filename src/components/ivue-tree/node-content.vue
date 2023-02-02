@@ -46,6 +46,7 @@ export default defineComponent({
         return props.renderContent(h, { _self: treeNode, node, data, store });
       }
 
+      // 默认插槽
       if (tree.ctx.slots.default) {
         return tree.ctx.slots.default({ node, data });
       }
