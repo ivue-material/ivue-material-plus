@@ -85,13 +85,13 @@ export default defineComponent({
     const content = ref<HTMLDivElement>();
 
     // 可以执行更新位置
-    const status = ref<AffixStatus>(AffixStatus.None);
+    const status = ref<AffixStatus | undefined>(AffixStatus.None);
     // 是否固定
     const fixed = ref<boolean>(false);
     // 初始化固定样式
-    const affixStyle = ref<CSSProperties>(undefined);
+    const affixStyle = ref<CSSProperties | undefined>(undefined);
     // 初始化占位样式
-    const placeholderStyle = ref<CSSProperties>(undefined);
+    const placeholderStyle = ref<CSSProperties | undefined>(undefined);
 
     // 是否添加class设置 fixed
     const classes = computed(() => {
