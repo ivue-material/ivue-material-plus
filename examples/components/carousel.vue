@@ -14,7 +14,6 @@
     </ivue-carousel>
     <ivue-button @click="handlePrev">上一个</ivue-button>
     <ivue-button @click="handleNext">下一个</ivue-button>
-
     <h1>指示器的触发方式</h1>
     <p>hover</p>
     <ivue-carousel trigger="hover" height="300px">
