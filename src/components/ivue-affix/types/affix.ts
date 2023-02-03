@@ -2,9 +2,9 @@ import type { CSSProperties } from 'vue';
 
 export interface Props {
   offsetTop: number;
-  offsetBottom: number;
+  offsetBottom?: number;
   useCapture: boolean;
-  target: HTMLElement;
+  target?: HTMLElement;
 }
 
 // 固定状态
