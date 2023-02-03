@@ -1,10 +1,9 @@
-import type { CSSProperties } from 'vue';
-
+import { CSSProperties } from 'vue';
 export interface Props {
   offsetTop: number;
-  offsetBottom: number;
+  offsetBottom?: number;
   useCapture: boolean;
-  target: HTMLElement;
+  target?: HTMLElement;
 }
 
 // 固定状态
@@ -18,9 +17,9 @@ export enum AffixStatus {
 // 状态
 export interface AffixState {
   // 固定节点style
-  affixStyle?: CSSProperties;
+  affixStyle?: AffixStyle;
   // 占位节点style
-  placeholderStyle?: CSSProperties;
+  placeholderStyle?: PlaceholderStyle;
   // 判断是否可以执行
   status: AffixStatus;
   // 是否固定
@@ -31,3 +30,17 @@ export interface AffixState {
 
 // 绑定事件的节点
 export declare type BindElement = HTMLElement | Window | null | undefined;
+
+// 初始化固定样式
+export type AffixStyle = {
+  width?: string;
+  height?: string;
+  top?: string;
+  bottom?: string;
+};
+
+// 初始化占位样式
+export type PlaceholderStyle = {
+  width?: string;
+  height?: string;
+};

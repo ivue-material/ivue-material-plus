@@ -32,8 +32,12 @@ import {
 } from './utils';
 
 // type
-import type { CSSProperties } from 'vue';
-import type { Props, AffixState } from './types/affix';
+import type {
+  Props,
+  AffixState,
+  AffixStyle,
+  PlaceholderStyle,
+} from './types/affix';
 
 const prefixCls = 'ivue-affix';
 
@@ -85,13 +89,13 @@ export default defineComponent({
     const content = ref<HTMLDivElement>();
 
     // 可以执行更新位置
-    const status = ref<AffixStatus>(AffixStatus.None);
+    const status = ref<AffixStatus | undefined>(AffixStatus.None);
     // 是否固定
     const fixed = ref<boolean>(false);
     // 初始化固定样式
-    const affixStyle = ref<CSSProperties>(undefined);
+    const affixStyle = ref<AffixStyle | undefined>(undefined);
     // 初始化占位样式
-    const placeholderStyle = ref<CSSProperties>(undefined);
+    const placeholderStyle = ref<PlaceholderStyle | undefined>(undefined);
 
     // 是否添加class设置 fixed
     const classes = computed(() => {
@@ -164,8 +168,9 @@ export default defineComponent({
 
           // 有固定到顶部 || 有固定到底部
           if (
-            (fixedTop !== undefined && _affixStyle.top === fixedTop) ||
-            (fixedBottom !== undefined && _affixStyle.bottom === fixedBottom)
+            (fixedTop !== undefined && _affixStyle.top === `${fixedTop}px`) ||
+            (fixedBottom !== undefined &&
+              _affixStyle.bottom === `${fixedBottom}px`)
           ) {
             return;
           }
@@ -233,7 +238,6 @@ export default defineComponent({
       if (fixedTop !== undefined || fixedBottom !== undefined) {
         // 节点固定
         newState.affixStyle = {
-          position: 'fixed',
           width: `${wrapperRect.width}px`,
           height: `${wrapperRect.height}px`,
         };
