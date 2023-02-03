@@ -32,7 +32,6 @@ import {
 } from './utils';
 
 // type
-import type { CSSProperties } from 'vue';
 import type { Props, AffixState } from './types/affix';
 
 const prefixCls = 'ivue-affix';
@@ -89,9 +88,9 @@ export default defineComponent({
     // 是否固定
     const fixed = ref<boolean>(false);
     // 初始化固定样式
-    const affixStyle = ref<CSSProperties | undefined>(undefined);
+    const affixStyle = ref<CSSStyleDeclaration | undefined>(undefined);
     // 初始化占位样式
-    const placeholderStyle = ref<CSSProperties | undefined>(undefined);
+    const placeholderStyle = ref<CSSStyleDeclaration | undefined>(undefined);
 
     // 是否添加class设置 fixed
     const classes = computed(() => {
