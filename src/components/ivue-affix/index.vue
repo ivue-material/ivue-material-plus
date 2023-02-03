@@ -32,7 +32,12 @@ import {
 } from './utils';
 
 // type
-import type { Props, AffixState, AffixStyle, PlaceholderStyle } from './types/affix';
+import type {
+  Props,
+  AffixState,
+  AffixStyle,
+  PlaceholderStyle,
+} from './types/affix';
 
 const prefixCls = 'ivue-affix';
 
@@ -164,7 +169,8 @@ export default defineComponent({
           // 有固定到顶部 || 有固定到底部
           if (
             (fixedTop !== undefined && _affixStyle.top === `${fixedTop}px`) ||
-            (fixedBottom !== undefined && _affixStyle.bottom === `${fixedBottom}px`)
+            (fixedBottom !== undefined &&
+              _affixStyle.bottom === `${fixedBottom}px`)
           ) {
             return;
           }

@@ -12,7 +12,7 @@
   </ivue-icon>
 </template>
 
-<script>
+<script lang="ts">
 import { IvueIcon } from '../../components/ivue-icon';
 
 export default {
