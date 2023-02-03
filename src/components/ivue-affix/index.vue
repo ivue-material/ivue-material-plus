@@ -32,7 +32,7 @@ import {
 } from './utils';
 
 // type
-import type { Props, AffixState } from './types/affix';
+import type { Props, AffixState, AffixStyle, PlaceholderStyle } from './types/affix';
 
 const prefixCls = 'ivue-affix';
 
@@ -88,9 +88,9 @@ export default defineComponent({
     // 是否固定
     const fixed = ref<boolean>(false);
     // 初始化固定样式
-    const affixStyle = ref<CSSStyleDeclaration | undefined>(undefined);
+    const affixStyle = ref<AffixStyle | undefined>(undefined);
     // 初始化占位样式
-    const placeholderStyle = ref<CSSStyleDeclaration | undefined>(undefined);
+    const placeholderStyle = ref<PlaceholderStyle | undefined>(undefined);
 
     // 是否添加class设置 fixed
     const classes = computed(() => {
@@ -163,8 +163,8 @@ export default defineComponent({
 
           // 有固定到顶部 || 有固定到底部
           if (
-            (fixedTop !== undefined && _affixStyle.top === fixedTop) ||
-            (fixedBottom !== undefined && _affixStyle.bottom === fixedBottom)
+            (fixedTop !== undefined && _affixStyle.top === `${fixedTop}px`) ||
+            (fixedBottom !== undefined && _affixStyle.bottom === `${fixedBottom}px`)
           ) {
             return;
           }
@@ -232,7 +232,6 @@ export default defineComponent({
       if (fixedTop !== undefined || fixedBottom !== undefined) {
         // 节点固定
         newState.affixStyle = {
-          position: 'fixed',
           width: `${wrapperRect.width}px`,
           height: `${wrapperRect.height}px`,
         };
