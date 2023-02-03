@@ -261,15 +261,13 @@ export default defineComponent({
       data.ready = true;
 
       // 获取元素的高度
-      if (isActive) {
-        // 竖向
-        if (isVertical.value) {
-          setContentHeight(carouselItem.value.offsetWidth);
-        }
-        // 横向
-        else {
-          setContentHeight(carouselItem.value.offsetHeight);
-        }
+      if (isActive && carouselItem.value) {
+        // 竖向 | 横向
+        const height = isVertical.value
+          ? carouselItem.value.offsetWidth
+          : carouselItem.value.offsetHeight;
+
+        setContentHeight(height);
       }
     };
 

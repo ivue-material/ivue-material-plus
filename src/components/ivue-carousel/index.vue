@@ -71,9 +71,9 @@
             },
           ]"
         >
-          <span :class="`${prefixCls}-dots--label`">{{
-            item.props.label
-          }}</span>
+          <span :class="`${prefixCls}-dots--label`">
+            {{ item.props.label }}
+          </span>
         </button>
       </li>
     </ul>
@@ -348,16 +348,17 @@ export default defineComponent({
 
     // 内容样式
     const contentStyles = computed(() => {
-      // 高度auto
-      if (props.height === 'auto') {
+      // 自定义高度
+      if (props.height !== 'auto') {
         return {
-          height: `${data.contentHeight}px`,
+          height: props.height,
         };
       }
 
-      // 自定义高度
+      // 高度auto
       return {
-        height: props.height,
+        height: `${data.contentHeight}px`,
+        overflow: 'hidden',
       };
     });
 
@@ -580,6 +581,10 @@ export default defineComponent({
 
     // 设置内容高度
     const setContentHeight = (height: number) => {
+      if (props.height !== 'auto') {
+        return;
+      }
+
       data.contentHeight = height;
     };
 

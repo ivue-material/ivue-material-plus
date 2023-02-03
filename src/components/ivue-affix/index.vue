@@ -1,20 +1,39 @@
 <template>
   <div ref="wrapper">
     <!-- slot -->
-    <div ref="content" :class="classes" :style="data.styles">
+    <div ref="content" :class="classes" :style="affixStyle">
       <slot></slot>
     </div>
     <!-- 占位元素 -->
-    <div v-show="data.slot" :style="data.slotStyle"></div>
+    <div v-show="affixStyle" :style="placeholderStyle"></div>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, ref, computed, reactive } from 'vue';
+import {
+  defineComponent,
+  onMounted,
+  ref,
+  computed,
+  unref,
+  onUnmounted,
+  nextTick,
+  watch,
+} from 'vue';
 import { useEventListener } from '@vueuse/core';
+import throttle from 'lodash.throttle';
+
+import { AffixStatus } from './types/affix';
+import {
+  getTargetRect,
+  getFixedTop,
+  getFixedBottom,
+  getDefaultTarget,
+} from './utils';
 
 // type
-import type { Props, Data } from './types/affix';
+import type { CSSProperties } from 'vue';
+import type { Props, AffixState } from './types/affix';
 
 const prefixCls = 'ivue-affix';
 
@@ -49,6 +68,14 @@ export default defineComponent({
       type: Boolean,
       default: false,
     },
+    /**
+     * 设置 Affix 需要监听其滚动事件的元素，值为一个返回对应 DOM 元素的函数
+     *
+     * @type {HTMLElement}
+     */
+    target: {
+      type: HTMLElement,
+    },
   },
   // 组合式 API
   setup(props: Props, { emit }) {
@@ -57,211 +84,244 @@ export default defineComponent({
     // ref = content
     const content = ref<HTMLDivElement>();
 
-    // data
-    const data = reactive<Data>({
-      // 组件状态是否开启固定
-      affix: false,
-      // slot 是否开启
-      slot: false,
-      // styles
-      styles: {},
-      // slotStyle
-      slotStyle: {},
-    });
-
-    // computed
-
-    // 滚动状态值
-    const offsetType = computed(() => {
-      let type = 'top';
-
-      // 是否有底部偏移量
-      if (props.offsetBottom >= 0) {
-        type = 'bottom';
-      }
-
-      return type;
-    });
+    // 可以执行更新位置
+    const status = ref<AffixStatus>(AffixStatus.None);
+    // 是否固定
+    const fixed = ref<boolean>(false);
+    // 初始化固定样式
+    const affixStyle = ref<CSSProperties>(undefined);
+    // 初始化占位样式
+    const placeholderStyle = ref<CSSProperties>(undefined);
 
     // 是否添加class设置 fixed
     const classes = computed(() => {
       return [
         {
-          [`${prefixCls}`]: data.affix,
+          [`${prefixCls}`]: !!unref(affixStyle),
         },
       ];
+    });
+
+    // 获取滚动顶部固定位置
+    const getOffsetTop = computed(() => {
+      const { offsetBottom, offsetTop } = props;
+
+      return offsetBottom === undefined && offsetTop === undefined
+        ? 0
+        : offsetTop;
     });
 
     // method
 
     // 初始化数据
     const initData = () => {
-      data.affix = false;
-      data.styles = {};
-
-      data.slot = false;
-      data.slotStyle = {};
+      // 可以执行更新位置
+      status.value = AffixStatus.Start;
+      // 初始化固定样式
+      affixStyle.value = undefined;
+      // 初始化占位样式
+      placeholderStyle.value = undefined;
     };
 
-    // 获取滚动数值
-    const getScroll = (target: Window, top: boolean) => {
-      const prop = top ? 'pageYOffset' : 'pageXOffset';
-      const method = top ? 'scrollTop' : 'scrollLeft';
+    // 获取目标节点默认 window
+    const getTarget = () => {
+      const { target } = props;
 
-      // 在 window 中查找参数 pageYOffset || pageXOffset
-      let ret = target[prop];
-
-      // 如果 没有 pageYOffset || pageXOffset
-      if (typeof ret !== 'number') {
-        // 返回 scrollTop || scrollLeft
-        ret = window.document.documentElement[method];
+      // 有设置自定义 target
+      if (target !== undefined) {
+        return target;
       }
 
-      return ret;
+      // 有外部配置滚动监听容器
+      return getDefaultTarget();
     };
 
-    // 获取元素坐标
-    const getOffset = (element: HTMLDivElement) => {
-      // 方法返回元素的大小及其相对于视口的位置
-      const rect = element.getBoundingClientRect();
+    // 节流更新位置
+    const lazyUpdatePosition = throttle(() => {
+      const targetNode = getTarget();
 
-      // 滚动条的垂直位置
-      const scrollTop = getScroll(window, true);
-      // 滚动条的水平位置
-      const scrollLeft = getScroll(window, false);
+      const _affixStyle = unref(affixStyle);
 
-      const docEl = window.document.body;
-      // 视口高度
-      const clientTop = docEl.clientTop || 0;
-      //视口宽度
-      const clientLeft = docEl.clientLeft || 0;
+      // 在测量之前检查位置变化以使 Safari 流畅
+      if (targetNode && _affixStyle) {
+        const offsetTop = unref(getOffsetTop);
+        const offsetBottom = props.offsetBottom;
 
-      return {
-        // 元素上边到视窗上边的距离 + 滚动条的垂直位置 - 顶部边框的宽度(顶部边框的宽度)
-        top: rect.top + scrollTop - clientTop,
-        // 元素左边到视窗左边的距离 + 滚动条的水平位置 - 元素的左边框的宽度(不包括左外边距和左内边距)
-        left: rect.left + scrollLeft - clientLeft,
+        // 是否有占位节点
+        if (targetNode && unref(wrapper)) {
+          // 获取目标节点的元素大小及其相对于视口的位置的信息
+          const targetRect = getTargetRect(targetNode);
+          // 获取占位节点的元素大小及其相对于视口的位置的信息
+          const placeholderReact = getTargetRect(unref(wrapper));
+          // 固定的顶部
+          const fixedTop = getFixedTop(placeholderReact, targetRect, offsetTop);
+          // 固定到底部
+          const fixedBottom = getFixedBottom(
+            placeholderReact,
+            targetRect,
+            offsetBottom
+          );
+
+          // 有固定到顶部 || 有固定到底部
+          if (
+            (fixedTop !== undefined && _affixStyle.top === fixedTop) ||
+            (fixedBottom !== undefined && _affixStyle.bottom === fixedBottom)
+          ) {
+            return;
+          }
+        }
+      }
+
+      // 初始化数据
+      initData();
+
+      // 计算滚动位置
+      calculateScrollPosition();
+    });
+
+    // 计算滚动位置
+    const calculateScrollPosition = () => {
+      // 获取目标节点
+      const targetNode = getTarget();
+
+      // status !== Start || 没有固定节点 || 没有外层 || 没有目标节点
+      if (
+        unref(status) !== AffixStatus.Start ||
+        !unref(content) ||
+        !unref(wrapper) ||
+        !targetNode
+      ) {
+        return;
+      }
+
+      // 获取滚动顶部固定位置
+      const offsetTop = getOffsetTop.value;
+      // 获取滚动到底部固定位置
+      const offsetBottom = props.offsetBottom;
+
+      // 没有目标元素
+      if (!targetNode) {
+        return;
+      }
+
+      // 设置为不能执行，等待节流方法执行
+      const newState: Partial<AffixState> = {
+        status: AffixStatus.None,
       };
+
+      //  获取目标节点的元素大小及其相对于视口的位置的信息
+      const targetRect = getTargetRect(targetNode);
+      // 获取占位节点的元素大小及其相对于视口的位置的信息
+      const wrapperRect = getTargetRect(unref(wrapper));
+
+      // 固定的顶部
+      const fixedTop = getFixedTop(wrapperRect, targetRect, offsetTop);
+      // 固定到底部
+      const fixedBottom = getFixedBottom(wrapperRect, targetRect, offsetBottom);
+
+      // 已经固定了不执行
+      if (
+        wrapperRect.top === 0 &&
+        wrapperRect.left === 0 &&
+        wrapperRect.width === 0 &&
+        wrapperRect.height === 0
+      ) {
+        return;
+      }
+
+      // 固定顶部 || 固定底部
+      if (fixedTop !== undefined || fixedBottom !== undefined) {
+        // 节点固定
+        newState.affixStyle = {
+          position: 'fixed',
+          width: `${wrapperRect.width}px`,
+          height: `${wrapperRect.height}px`,
+        };
+
+        // 设置占位节点尺寸
+        newState.placeholderStyle = {
+          width: `${wrapperRect.width}px`,
+          height: `${wrapperRect.height}px`,
+        };
+
+        // 有固定到顶部数值
+        if (fixedTop !== undefined) {
+          newState.affixStyle.top = `${fixedTop}px`;
+        }
+
+        // 有固定到底部数组
+        if (fixedBottom !== undefined) {
+          newState.affixStyle.bottom = `${fixedBottom}px`;
+        }
+      }
+
+      // 有设置元素固定节点
+      newState.fixed = !!newState.affixStyle;
+
+      // 发送监听事件
+      if (unref(fixed) !== newState.fixed) {
+        emit('on-change', newState.fixed);
+      }
+
+      // 可以执行更新位置
+      status.value = newState.status;
+      // 初始化固定样式
+      affixStyle.value = newState.affixStyle;
+      // 初始化占位样式
+      placeholderStyle.value = newState.placeholderStyle;
+      // 是否固定
+      fixed.value = newState.fixed;
     };
 
-    // 监听滚动
-    const handleScroll = () => {
-      // 获取垂直滚动高度
-      const scrollTop = getScroll(window, true);
+    // watch
 
-      // 获取元素坐标
-      const elOffset = getOffset(wrapper.value);
-
-      // window高度
-      const windowHeight = window.innerHeight;
-
-      // 元素高度
-      const elHeight = content.value.offsetHeight;
-
-      // 固定在头部 Top
-      if (
-        // 元素的顶部 减去 需要到达指定位置的数值 < window 的滚动高度 向上滚动
-        elOffset.top - props.offsetTop < scrollTop &&
-        // 固定头部
-        offsetType.value === 'top' &&
-        // 没有开启固定状态
-        !data.affix
-      ) {
-        // 开启固定状态
-        data.affix = true;
-
-        // 固定状态样式
-        data.styles = {
-          top: `${props.offsetTop}px`,
-          left: `${elOffset.left}px`,
-          width: `${wrapper.value.offsetWidth}px`,
-        };
-
-        // 占位元素样式
-        data.slotStyle = {
-          width: `${content.value.clientWidth}px`,
-          height: `${content.value.clientHeight}px`,
-        };
-
-        // 显示占位元素
-        data.slot = true;
-
-        // 在固定状态发生改变时触发
-        emit('on-change', true);
+    // 监听距离窗口顶部达到指定偏移量后触发
+    watch(
+      () => props.offsetTop,
+      () => {
+        lazyUpdatePosition();
       }
-      // 头部取消固定顶部
-      else if (
-        // 没有达到指定位置的数值
-        elOffset.top - props.offsetTop > scrollTop &&
-        // 固定头部
-        offsetType.value == 'top' &&
-        // 开启固定状态
-        data.affix
-      ) {
-        // 初始化数据
-        initData();
+    );
 
-        // 在固定状态发生改变时触发
-        emit('on-change', false);
+    // 监听距离窗口底部达到指定偏移量后触发
+    watch(
+      () => props.offsetBottom,
+      () => {
+        lazyUpdatePosition();
       }
-
-      // 固定在底部 Bottom
-      if (
-        // 元素的顶部 + 距离窗口底部达到指定偏移量后触发 + 元素高度 > 获取垂直滚动高度 + window高度
-        elOffset.top + props.offsetBottom + elHeight >
-          scrollTop + windowHeight &&
-        // 固定底部
-        offsetType.value == 'bottom' &&
-        // 没有开启固定状态
-        !data.affix
-      ) {
-        // 开启固定状态
-        data.affix = true;
-        // 固定状态样式
-        data.styles = {
-          bottom: `${props.offsetBottom}px`,
-          left: `${elOffset.left}px`,
-          width: `${wrapper.value.offsetWidth}px`,
-        };
-
-        // 占位元素样式
-        data.slotStyle = {
-          width: `${content.value.clientWidth}px`,
-          height: `${content.value.clientHeight}px`,
-        };
-
-        // 显示占位元素
-        data.slot = true;
-
-        // 在固定状态发生改变时触发
-        emit('on-change', true);
-      }
-      // 头部取消固定底部
-      else if (
-        // 元素的顶部 + 距离窗口底部达到指定偏移量后触发 + 元素高度 < 获取垂直滚动高度 + window高度
-        elOffset.top + props.offsetBottom + elHeight <
-          scrollTop + windowHeight &&
-        // 固定底部
-        offsetType.value == 'bottom' &&
-        // 开启固定状态
-        data.affix
-      ) {
-        // 初始化数据
-        initData();
-
-        // 在固定状态发生改变时触发
-        emit('on-change', false);
-      }
-    };
+    );
 
     // mounted
-    onMounted(() => {
-      // 初始化
-      handleScroll();
+    onMounted(async () => {
+      await nextTick();
 
-      // 监听滚动和缩放事件
-      useEventListener(window, 'resize', handleScroll, props.useCapture);
-      useEventListener(window, 'scroll', handleScroll, props.useCapture);
+      // 节流初始化
+      lazyUpdatePosition();
+
+      // 目标节点
+      const targetNode = getTarget();
+
+      // 缩放
+      useEventListener(
+        targetNode,
+        'resize',
+        lazyUpdatePosition,
+        props.useCapture
+      );
+
+      // 滚动
+      useEventListener(
+        targetNode,
+        'scroll',
+        lazyUpdatePosition,
+        props.useCapture
+      );
+    });
+
+    // onUnmounted
+    onUnmounted(() => {
+      // 节流更新位置
+      lazyUpdatePosition.cancel();
     });
 
     return {
@@ -270,10 +330,14 @@ export default defineComponent({
       content,
 
       // data
-      data,
+      affixStyle,
+      placeholderStyle,
 
       // computed
       classes,
+
+      // methods
+      lazyUpdatePosition,
     };
   },
 });

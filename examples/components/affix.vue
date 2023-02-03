@@ -1,35 +1,53 @@
 <template>
-  <div class="affix-wrapper">
-    <div class="affix">
-      <ivue-affix @on-change="handleChang">
-        <div class="demo-affix">固定在最顶部</div>
+  <!-- <div class="scroll" ref="dom">
+    <div class="background">
+      <ivue-affix :target="dom" :offsetBottom="10" ref="affixRef">
+        <div class="style">固定在最顶部</div>
       </ivue-affix>
-
-      <div class="bottom">
-        <ivue-affix :offset-bottom="20">
-          <div class="demo-affix">固定在最底部</div>
-        </ivue-affix>
-      </div>
     </div>
-  </div>
+  </div> -->
+  <div style="height: 100vh"></div>
+  <ivue-affix :offset-bottom="20">
+    <div class="demo-affix">固定在最底部</div>
+  </ivue-affix>
+  <div style="height: 100vh"></div>
 </template>
 
-<script>
-export default {
-  methods: {
-    handleChang() {
-      console.log('>>>>>>');
-    },
-  },
-};
+<script setup>
+import { onMounted, ref } from 'vue';
+
+const dom = ref();
+const affixRef = ref();
+
+// onMounted(() => {
+//   window.addEventListener(
+//     'scroll',
+//     () => {
+//       affixRef.value.lazyUpdatePosition();
+//     },
+//     true
+//   );
+// });
 </script>
 
 <style lang="scss" scope>
 .affix {
-  margin-top: 100px;
   width: 100px;
   height: 3000px;
   background: red;
+}
+
+.scroll {
+  position: relative;
+
+  height: 100px;
+  overflow: scroll;
+}
+
+.background {
+  padding-top: 260px;
+  height: 300px;
+  background: #27e2b2;
 }
 
 .demo-affix {
@@ -43,7 +61,14 @@ export default {
   color: #fff;
 }
 
-.bottom {
-  padding-top: 800px;
+.style {
+  width: 250px;
+  height: 30px;
+  text-align: center;
+  line-height: 30px;
+  font-size: 12px;
+  border-radius: 5px;
+  background: #5b8eff;
+  color: #fff;
 }
 </style>
