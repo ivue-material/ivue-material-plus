@@ -6,7 +6,6 @@
       </ivue-affix>
     </div>
   </div> -->
-  <div style="height: 100vh"></div>
   <ivue-affix :offset-bottom="20">
     <div class="demo-affix">固定在最底部</div>
   </ivue-affix>

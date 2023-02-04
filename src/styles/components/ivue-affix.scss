@@ -1,4 +1,6 @@
 .ivue-affix {
-  position: fixed;
-  z-index: 10;
+  &-fixed {
+    position: fixed;
+    z-index: 100;
+  }
 }

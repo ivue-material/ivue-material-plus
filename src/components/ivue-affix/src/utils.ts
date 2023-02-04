@@ -1,4 +1,4 @@
-import type { BindElement } from './types/affix';
+import type { BindElement } from './affix';
 
 /**
  * 获取目标节点的元素大小及其相对于视口的位置的信息 top和bottom

@@ -5,7 +5,13 @@ type Style = {
   class?: any;
 };
 
-export const colorable = ({ textColor = '#ffffff' }) => {
+type Props = {
+  textColor?: string;
+};
+
+export const colorable = (props?: Props) => {
+  const textColor = props.textColor || '#ffffff';
+
   // 设置背景颜色
   const setBackgroundColor = (
     color: string | any[],
