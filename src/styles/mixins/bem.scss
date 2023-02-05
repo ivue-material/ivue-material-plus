@@ -1,0 +1,36 @@
+@use 'config' as *;
+
+// BEM
+
+// 表示一个块元素，比如一个 Modal 弹窗组件、一个 Button 组件，都可以用一个块来表示
+@mixin b($block) {
+  // $B: '#{$block}' !global;
+  $B: $block !global;
+
+  .#{$B} {
+    @content;
+  }
+}
+
+// 表示一个子元素，存在于块元素之内
+@mixin m($modifier) {
+  $selector: &;
+  $currentSelector: '';
+
+  @each $unit in $modifier {
+    // '' + & + -- + $modifier +,
+    // &--$modifier,
+    $currentSelector: #{$currentSelector +
+      $selector +
+      $modifier-separator +
+      $unit +
+      ','};
+  }
+
+  // 暴露到根节点
+  @at-root {
+    #{$currentSelector} {
+      @content;
+    }
+  }
+}

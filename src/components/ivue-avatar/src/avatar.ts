@@ -1,7 +1,10 @@
+import { ExtractPropTypes } from 'vue';
+import { buildProps } from '@ivue-material-plus/utils';
 
-import { buildProps } from '../../../utils/vue/props/index';
-import { oneOf } from '../../../utils/assist';
+// type
+import type Avatar from './avatar.vue';
 
+// props
 export const avatarProps = buildProps({
   /**
    * 类型
@@ -9,9 +12,8 @@ export const avatarProps = buildProps({
    * @type {String}
    */
   shape: {
-    validator(value: string) {
-      return oneOf(value, ['circle', 'square']);
-    },
+    type: String,
+    values: ['circle', 'square'],
     default: 'circle',
   },
   /**
@@ -50,3 +52,19 @@ export const avatarProps = buildProps({
     default: '',
   },
 });
+
+// props 类型
+export type AvatarProps = ExtractPropTypes<typeof avatarProps>;
+
+// emits事件类型
+export const avatarEmits = {};
+export type AvatarEmits = typeof avatarEmits;
+
+// 组件实例
+export type AvatarInstance = InstanceType<typeof Avatar>;
+
+export interface Data {
+  isSlotShow: boolean;
+  slotScale: number;
+  slotWidth: number;
+}

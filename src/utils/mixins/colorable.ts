@@ -10,7 +10,7 @@ type Props = {
 };
 
 export const colorable = (props?: Props) => {
-  const textColor = props.textColor || '#ffffff';
+  const textColor = props && props.textColor ? props.textColor : '#ffffff';
 
   // 设置背景颜色
   const setBackgroundColor = (

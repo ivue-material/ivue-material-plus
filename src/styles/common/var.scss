@@ -1,0 +1,32 @@
+@use 'sass:map';
+
+// components变量
+@forward './components/avatar.scss';
+// 变量
+@use '../mixins/var.scss' as *;
+
+// radius
+$radius: () !default;
+$radius: map.merge(
+  (
+    '4px': 4px,
+  ),
+  $radius
+);
+
+// radius
+$image-object-fit: () !default;
+$image-object-fit: map.merge(
+  (
+    'cover': cover,
+  ),
+  $image-object-fit
+);
+
+:root {
+  // radius
+  @include set-component-css-var('ivue-radius', $radius);
+
+  // $image-object-fit
+  @include set-component-css-var('ivue-image-object-fit', $image-object-fit);
+}

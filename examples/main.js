@@ -14,6 +14,9 @@ import '../src/styles/components/reset.scss';
 import '../src/styles/base.scss';
 import '../src/styles/components/index.scss';
 
+// 主题
+import '../src/theme/default/index.scss';
+
 // import {
 //   IvueTable,
 //   IvueTableColumn

@@ -184,10 +184,10 @@ export default {
 
       this.loading1 = true;
 
-      setTimeout(() => {
-          this.loading1 = false;
-          this.data5 = results;
-      }, 3000);
+      // setTimeout(() => {
+      //     this.loading1 = false;
+      //     this.data5 = results;
+      // }, 3000);
     },
     handleSelect(value) {
       this.select = value;

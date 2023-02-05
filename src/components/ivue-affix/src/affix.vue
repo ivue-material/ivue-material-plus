@@ -1,5 +1,5 @@
 <template>
-  <div :class="prefixCls" ref="wrapper">
+  <div :class="bem.b()" ref="wrapper">
     <!-- slot -->
     <div ref="content" :class="classes" :style="affixStyle">
       <slot></slot>
@@ -11,6 +11,7 @@
 
 <script lang="ts">
 import { defineComponent, computed, unref } from 'vue';
+import { useNamespace } from '@ivue-material-plus/hooks';
 
 import { affixProps, affixEmits } from './affix';
 import { useAffix } from './use-affix';
@@ -37,17 +38,20 @@ export default defineComponent({
       lazyUpdatePosition,
     } = useAffix(props, emit);
 
+    // bem
+    const bem = useNamespace(prefixCls);
+
     // 是否添加class设置 fixed
     const classes = computed(() => {
       return [
         {
-          [`${prefixCls}-fixed`]: !!unref(affixStyle),
+          [bem.m('fixed')]: !!unref(affixStyle),
         },
       ];
     });
 
     return {
-      prefixCls,
+      bem,
 
       // ref
       wrapper,

@@ -1,0 +1,26 @@
+// 获取 css var
+// getCssVar(组件名称, 样式名称) => var(--ivue-组件名称-样式名称)
+@function getCssVar($args...) {
+  @return var(#{joinVarName($args)});
+}
+
+// 加入变量名称
+// joinVarName((组件名称, 样式名称)) => '--ivue-组件名称-样式名称'
+@function joinVarName($list) {
+  $name: '-';
+
+  @each $item in $list {
+    // 有参数
+    @if $item != '' {
+      $name: '#{$name}-#{$item}';
+    }
+  }
+
+  @return $name;
+}
+
+// 获取 css var 名称
+// getCssVarName(组件名称, 'text-color') => '--el-button-text-color'
+@function getCssVarName($args...) {
+  @return joinVarName($args);
+}

@@ -53,7 +53,6 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { IvueSelect, IvueInput, IvueOption } from '@ivue-material-plus/index';
-
 import { useFormItem, useFormItemInputId } from '@ivue-material-plus/hooks';
 
 import { autoCompleteProps } from './auto-complete';

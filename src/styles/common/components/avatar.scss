@@ -1,0 +1,11 @@
+@use 'sass:map';
+@use '../../mixins/function.scss' as *;
+
+// Alert
+$alert: () !default;
+$alert: map.merge(
+  (
+    'width': 32px,
+  ),
+  $alert
+);

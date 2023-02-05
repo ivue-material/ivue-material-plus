@@ -1,15 +1,8 @@
-// @import "ivue-loading.scss";
-// @import "ivue-input.scss";
-// @import "ivue-select.scss";
+@use '../mixins/mixins' as *;
 
-$name: 'ivue-auto-complete';
+$name: 'auto-complete';
 
-.#{$name} {
-  &--notdata {
-    padding: 0;
-    margin: 0;
-  }
-
+@include b($name) {
   .ivue-loading-spinner .circular {
     width: 100%;
     height: 100%;

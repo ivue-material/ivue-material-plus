@@ -70,9 +70,9 @@ describe('Affix.vue', () => {
       } as DOMRect);
 
     // 是否存在 fixed
-    expect(wrapper.find('.ivue-affix-fixed').exists()).toBe(false);
+    expect(wrapper.find('.ivue-affix--fixed').exists()).toBe(false);
     await makeScroll(document.documentElement, 'scrollTop', 300);
-    expect(wrapper.find('.ivue-affix-fixed').exists()).toBe(true);
+    expect(wrapper.find('.ivue-affix--fixed').exists()).toBe(true);
 
     // 将内部实现恢复到原始功能
     mockAffixRect.mockRestore();
