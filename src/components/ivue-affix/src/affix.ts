@@ -1,7 +1,7 @@
 import { ExtractPropTypes } from 'vue';
 import { isBoolean } from '@vueuse/core';
 
-import { buildProps } from '../../../utils/vue/props/index';
+import { buildProps } from '@ivue-material-plus/utils';
 
 // type
 import type Affix from './affix.vue';
@@ -29,7 +29,7 @@ export interface AffixState {
 }
 
 // 绑定事件的节点
-export declare type BindElement = HTMLElement | Window | null | undefined;
+export type BindElement = HTMLElement | Window | null | undefined;
 
 // 初始化固定样式
 export type AffixStyle = {
@@ -86,10 +86,11 @@ export const affixProps = buildProps({
 // props 类型
 export type AffixProps = ExtractPropTypes<typeof affixProps>;
 
+// emits事件类型
 export const affixEmits = {
   'on-change': (fixed: boolean) => isBoolean(fixed),
 };
-// emits事件类型
 export type AffixEmits = typeof affixEmits;
+
 // 组件实例
 export type AffixInstance = InstanceType<typeof Affix>;

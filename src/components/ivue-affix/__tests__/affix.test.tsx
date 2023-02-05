@@ -5,9 +5,9 @@ import { mount } from '@vue/test-utils';
 import type { VNode } from 'vue';
 
 // 模拟滚动
-import makeScroll from '../../../test-utils/make-scroll';
+import makeScroll from '@ivue-material-plus/test-utils/make-scroll';
 
-import defineGetter from '../../../test-utils/define-getter';
+import defineGetter from '@ivue-material-plus/test-utils/define-getter';
 
 import Affix from '../src/affix.vue';
 

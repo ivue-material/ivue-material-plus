@@ -1,4 +1,4 @@
-import { withInstall } from '../../utils/install';
+import { withInstall } from '@ivue-material-plus/utils';
 
 import Affix from './src/affix.vue';
 

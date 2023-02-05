@@ -6,7 +6,7 @@
       </ivue-affix>
     </div>
   </div> -->
-  <ivue-affix :offset-bottom="20">
+  <ivue-affix :offset-bottom="20" @on-change="handleChange">
     <div class="demo-affix">固定在最底部</div>
   </ivue-affix>
   <div style="height: 100vh"></div>
@@ -18,6 +18,9 @@ import { onMounted, ref } from 'vue';
 const dom = ref();
 const affixRef = ref();
 
+const handleChange = (active) => {
+  console.log(active);
+};
 // onMounted(() => {
 //   window.addEventListener(
 //     'scroll',
