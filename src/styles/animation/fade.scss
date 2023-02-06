@@ -1,3 +1,5 @@
+@use 'function.scss' as *;
+
 @mixin fade-motion($className, $keyframeName) {
   @include make-motion($className, $keyframeName, 0.15s);
 

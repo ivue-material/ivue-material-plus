@@ -1,21 +1,23 @@
-import { getCurrentInstance, ExtractPropTypes } from 'vue';
+import { getCurrentInstance } from 'vue';
 import { buildProps, definePropType } from '@ivue-material-plus/utils';
 import { Placement } from '@ivue-material-plus/utils/mixins/popper';
 import { isString } from '@vue/shared';
 import { isNumber } from '@vueuse/core';
 
 // type
+import type { ExtractPropTypes } from 'vue';
 import type Select from '../../ivue-select/index.vue';
 import type Input from '../../ivue-input/index.vue';
+import type AutoComplete from './auto-complete.vue';
 
 export type Select = InstanceType<typeof Select>;
 export type Input = InstanceType<typeof Input>;
 
+// 选项
 export type Option = {
   value: string | number;
   label: string | number;
 };
-import type AutoComplete from './auto-complete.vue';
 
 // 外部过滤方法
 export type FilterMethod = (

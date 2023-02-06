@@ -1,5 +1,3 @@
-@use 'sass:map';
-
 @use '../mixins/mixins' as *;
 @use '../common/var.scss' as *;
 
@@ -7,7 +5,7 @@ $name: 'ivue-avatar';
 
 @include b($name) {
   // 设置组件 css var 变量
-  @include set-component-css-var($name, $alert);
+  @include set-component-css-var($name, $avatar);
 
   display: inline-flex;
   text-align: center;

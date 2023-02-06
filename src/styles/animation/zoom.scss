@@ -1,3 +1,5 @@
+@use 'function.scss' as *;
+
 @mixin zoom-motion($className, $keyframeName) {
   @include make-motion($className, $keyframeName);
 

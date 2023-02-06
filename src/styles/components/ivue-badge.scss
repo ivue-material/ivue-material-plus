@@ -1,21 +1,11 @@
-@import '../animation/variables.scss';
+@use '../mixins/mixins' as *;
+@use '../common/var.scss' as *;
+@use '../common/transition.scss' as *;
 
 $name: 'ivue-badge';
 
 :root {
-  // 数值
-  --#{$name}-count-size: 20px;
-  --#{$name}-count-padding: 0 6px;
-  --#{$name}-count-font-size: 12px;
-
   // 小红点
-  --#{$name}-dot-size: 8px;
-  --#{$name}-dot-position-top: -4px;
-  --#{$name}-dot-position-right: -8px;
-
-  // 状态
-  --#{$name}-status-dot-size: 6px;
-  --#{$name}-status-font-size: 14px;
 
   // color
   --#{$name}-blue: #1890ff;
@@ -28,7 +18,6 @@ $name: 'ivue-badge';
   --#{$name}-lime: #a0d911;
   --#{$name}-cyan: #13c2c2;
   --#{$name}-purple: #722ed1;
-  --#{$name}-dot-color: rgba(255, 97, 127, 0.5);
 }
 
 $colors: (
@@ -44,32 +33,37 @@ $colors: (
   'purple'
 );
 
-.#{$name} {
+@include b($name) {
+  // 设置组件 css var 变量
+  @include set-component-css-var($name, $badge);
+
   position: relative;
   display: inline-block;
 
   // 数值
-  &-count {
+  @include m(count) {
     position: absolute;
     transform: translateX(50%);
     transform-origin: -10% center;
     top: -10px;
     right: 0;
-    padding: var(--#{$name}-count-padding);
-    min-width: var(--#{$name}-count-size);
-    height: var(--#{$name}-count-size);
-    border-radius: 10px;
-    font-size: var(--#{$name}-count-font-size);
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: row;
     flex-wrap: wrap;
-    color: var(--ivue-white-color);
-    transition: all $ivue-transition-default;
     z-index: 10;
 
-    &--custom {
+    padding: getCssVar($name, 'count-padding');
+    min-width: getCssVar($name, 'count-size');
+    height: getCssVar($name, 'count-size');
+    border-radius: getCssVar($name, 'count-radius');
+    font-size: getCssVar($name, 'count-font-size');
+    color: getCssVar('ivue-color-white');
+    transition: getCssVar('ivue-transition-all');
+
+    // slot
+    &.is-slot {
       background: transparent;
       padding: 0;
       color: inherit;
@@ -78,65 +72,65 @@ $colors: (
       height: auto;
     }
 
-    &--alone {
-      top: auto;
+    // 独立展示
+    &.is-alone {
       position: relative;
+      top: auto;
       transform: translateX(0);
     }
   }
 
   // 小红点
-  &-dot {
+  @include m(dot) {
     position: absolute;
     transform: translateX(-50%);
     transform-origin: 0 center;
-    top: var(--#{$name}-dot-position-top);
-    right: var(--#{$name}-dot-position-right);
-    width: var(--#{$name}-dot-size);
-    height: var(--#{$name}-dot-size);
     border-radius: 100%;
-    box-shadow: 0 0 2px 1px var(--#{$name}-dot-color);
     transform-origin: 0 center;
-    transition: $ivue-transition-default;
     z-index: 10;
+
+    top: getCssVar($name, 'dot-position-top');
+    right: getCssVar($name, 'dot-position-right');
+    width: getCssVar($name, 'dot-size');
+    height: getCssVar($name, 'dot-size');
+    transition: getCssVar('ivue-transition-all');
   }
+}
 
-  // 状态
-  &-status {
-    display: flex;
-    align-items: center;
+// 状态
+@include b(#{$name}-status) {
+  // 设置组件 css var 变量
+  @include set-component-css-var($name, $badge);
 
-    &--dot {
-      position: relative;
-      width: var(--#{$name}-status-dot-size);
-      height: var(--#{$name}-status-dot-size);
-      border-radius: 50%;
-    }
+  position: relative;
+  display: flex;
+  align-items: center;
 
-    &--text {
-      color: var(--ivue-title-color);
-      font-size: var(--#{$name}-status-font-size);
-      margin-left: var(--#{$name}-status-dot-size);
-    }
+  @include m(dot) {
+    position: relative;
+    border-radius: 50%;
+
+    width: getCssVar($name, 'status-dot-size');
+    height: getCssVar($name, 'status-dot-size');
 
     // success
-    &--success {
-      background-color: var(--ivue-success-color);
+    &.is-success {
+      background-color: getCssVar('ivue-color-success');
     }
 
     // error
-    &--error {
-      background-color: var(--ivue-error-color);
+    &.is-error {
+      background-color: getCssVar('ivue-color-error');
     }
 
     // default
-    &--default {
-      background-color: var(--ivue-default-color);
+    &.is-default {
+      background-color: getCssVar('ivue-color-default');
     }
 
     // processing
-    &--processing {
-      background-color: var(--ivue-primary-color);
+    &.is-processing {
+      background-color: getCssVar('ivue-color-primary');
 
       &:after {
         content: '';
@@ -146,21 +140,28 @@ $colors: (
         width: 100%;
         height: 100%;
         border-radius: 50%;
-        border: 1px solid var(--ivue-primary-color);
-        animation: aniStatusProcessing 1.2s infinite var(--ivue-ease-in-out);
+        border: 1px solid getCssVar('ivue-color-primary');
+        animation: aniStatusProcessing 1.2s infinite ease-in-out;
       }
     }
 
     // warning
-    &--warning {
-      background-color: var(--ivue-warning-color);
+    &.is-warning {
+      background-color: getCssVar('ivue-color-warning');
     }
 
-    @each $_color, $color in $colors {
-      .ivue-badge-status--#{$_color} {
-        background-color: var(--#{$name}-#{$_color});
+    @each $color in $colors {
+      &.is-#{$color} {
+        background-color: getCssVar('ivue-badge-status-dot-bg-#{$color}');
       }
     }
+  }
+
+  // text
+  @include m(text) {
+    color: getCssVar('ivue-title-color');
+    font-size: getCssVar('ivue-font-size-base');
+    margin-left: getCssVar($name, 'status-dot-size');
   }
 }
 
@@ -171,7 +172,7 @@ $colors: (
 
 .#{$name}-fade-enter-from,
 .#{$name}-fade-leave-to {
-  transform: scale(0) rotate(-45deg);
+  transform: scale(0);
 }
 
 @keyframes aniStatusProcessing {

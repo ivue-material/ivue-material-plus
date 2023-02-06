@@ -29,16 +29,26 @@
 import { defineComponent, computed, unref } from 'vue';
 import { useNamespace } from '@ivue-material-plus/hooks';
 import { colorable } from '@ivue-material-plus/utils/mixins/colorable';
+import { letter } from '@ivue-material-plus/utils';
 
-import IvueIcon from '../../ivue-icon/index.vue';
-import { avatarProps } from './avatar';
+// avatar
+import { avatarProps, avatarEmits } from './avatar';
+// use
 import { useAvatar } from './use-avatar';
+
+// components
+import IvueIcon from '../../ivue-icon/index.vue';
+
+// type
+import type { CSSProperties } from 'vue';
 
 const prefixCls = 'ivue-avatar';
 
 export default defineComponent({
   name: prefixCls,
-  emits: ['on-error'],
+  // emits
+  emits: avatarEmits,
+  // props
   props: avatarProps,
   setup(props, { emit, slots }) {
     // bem
@@ -77,46 +87,42 @@ export default defineComponent({
     });
 
     // 外层样式
-    const wrapperStyles = computed(() => {
+    const wrapperStyles = computed<CSSProperties>(() => {
       const _style = setBackgroundColor(props.color).style;
-
-      // 大小
-      let sizeStyle = {};
 
       // 是否有大小
       if (props.size) {
-        const regexp = new RegExp(/[a-zA-Z]/g);
-
         // 是否有单位
-        const isUnit = regexp.test(`${props.size}`);
+        const isUnit = letter.test(`${props.size}`);
 
+        // 大小
         const size = !isUnit ? `${props.size}px` : props.size;
 
-        // 样式
-        sizeStyle = {
-          height: size,
-          width: size,
-          lineHeight: size,
-        };
+        return [
+          {
+            height: size,
+            width: size,
+            lineHeight: size,
+          },
+          _style,
+        ];
       }
 
-      return [sizeStyle, _style];
+      return _style;
     });
 
     // slot样式
-    const slotStyles = computed(() => {
-      let style = {};
-
-      if (unref(isSlotShow)) {
-        style = {
-          position: 'absolute',
-          transform: `scale(${unref(slotScale)})`,
-          display: 'inline-block',
-          left: `calc(50% - ${Math.round(unref(slotWidth) / 2)}px)`,
-        };
+    const slotStyles = computed<CSSProperties>(() => {
+      if (!unref(isSlotShow)) {
+        return {};
       }
 
-      return style;
+      return {
+        position: 'absolute',
+        transform: `scale(${unref(slotScale)})`,
+        display: 'inline-block',
+        left: `calc(50% - ${Math.round(unref(slotWidth) / 2)}px)`,
+      };
     });
 
     return {

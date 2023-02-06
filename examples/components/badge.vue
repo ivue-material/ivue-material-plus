@@ -1,9 +1,10 @@
 <template>
   <div>
     <p>基础用法</p>
-    <ivue-badge :count="3">
+    <ivue-badge :count="count">
       <div class="demo-badge"></div>
     </ivue-badge>
+    <button @click="() => (count = 0)">1221</button>
     <ivue-badge :count="3">
       <div class="demo-badge"></div>
       <template #count>
@@ -65,7 +66,13 @@
 </template>
 
 <script>
-export default {};
+export default {
+  data() {
+    return {
+      count: 3,
+    };
+  },
+};
 </script>
 
 <style lang="scss" scoped>

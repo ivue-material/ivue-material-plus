@@ -1,9 +1,9 @@
-import { ExtractPropTypes } from 'vue';
 import { isBoolean } from '@vueuse/core';
 
 import { buildProps } from '@ivue-material-plus/utils';
 
 // type
+import type { ExtractPropTypes } from 'vue';
 import type Affix from './affix.vue';
 
 // 固定状态

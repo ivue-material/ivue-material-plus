@@ -1,3 +1,5 @@
+@use 'function.scss' as *;
+
 .ivue-animation-loop {
   animation: IvueLoop 1s linear infinite;
 }

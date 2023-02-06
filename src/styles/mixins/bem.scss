@@ -1,4 +1,5 @@
 @use 'config' as *;
+@use 'function' as *;
 
 // BEM
 
@@ -31,6 +32,42 @@
   @at-root {
     #{$currentSelector} {
       @content;
+    }
+  }
+}
+
+// 表示修饰符或者状态
+@mixin e($element) {
+  $E: $element !global;
+  $selector: &;
+  // 当前选择器
+  $currentSelector: '';
+
+  // 遍历元素
+  @each $unit in $element {
+    // currentSelector.$B$element-separator$unit
+    $currentSelector: #{$currentSelector +
+      '.' +
+      $B +
+      $element-separator +
+      $unit +
+      ','};
+  }
+
+  // 命中所有特殊嵌套规则 包含修饰符 | 包含 When 标志 | 包含伪类
+  @if hitAllSpecialNestRule($selector) {
+    @at-root {
+      #{$selector} {
+        #{$currentSelector} {
+          @content;
+        }
+      }
+    }
+  } @else {
+    @at-root {
+      #{$currentSelector} {
+        @content;
+      }
     }
   }
 }

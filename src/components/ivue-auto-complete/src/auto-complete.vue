@@ -55,22 +55,18 @@ import { defineComponent } from 'vue';
 import { IvueSelect, IvueInput, IvueOption } from '@ivue-material-plus/index';
 import { useFormItem, useFormItemInputId } from '@ivue-material-plus/hooks';
 
-import { autoCompleteProps } from './auto-complete';
+// auto-complete
+import { autoCompleteProps, autoCompleteEmits } from './auto-complete';
+// use
 import { useAutoComplete } from './use-auto-complete';
 
 const prefixCls = 'ivue-auto-complete';
 
 export default defineComponent({
   name: prefixCls,
-  emits: [
-    'update:modelValue',
-    'on-search',
-    'on-change',
-    'on-select',
-    'on-focus',
-    'on-blur',
-    'on-clear',
-  ],
+  // emits
+  emits: autoCompleteEmits,
+  // props
   props: autoCompleteProps,
   setup(props, { emit }) {
     // 设置表单对应的输入框

@@ -1,5 +1,6 @@
 import { ref, unref, onMounted, watch, nextTick, onUpdated } from 'vue';
 
+// type
 import type { AvatarProps, AvatarEmits } from './avatar';
 import type { ComponentInternalInstance, SetupContext } from 'vue';
 

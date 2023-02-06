@@ -37,12 +37,12 @@
   }
 }
 
-.fade-transition-enter-active,
-.fade--transition-leave-active {
-  transition: opacity 0.3s cubic-bezier(0.25, 0.8, 0.5, 1);
-}
+// .fade-transition-enter-active,
+// .fade--transition-leave-active {
+//   transition: opacity 0.3s cubic-bezier(0.25, 0.8, 0.5, 1);
+// }
 
-.fade-transition-enter-from,
-.fade-transition-leave-to {
-  opacity: 0;
-}
+// .fade-transition-enter-from,
+// .fade-transition-leave-to {
+//   opacity: 0;
+// }

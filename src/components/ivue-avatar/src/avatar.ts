@@ -1,7 +1,7 @@
-import { ExtractPropTypes } from 'vue';
 import { buildProps } from '@ivue-material-plus/utils';
 
 // type
+import type { ExtractPropTypes } from 'vue';
 import type Avatar from './avatar.vue';
 
 // props
@@ -52,19 +52,14 @@ export const avatarProps = buildProps({
     default: '',
   },
 });
-
 // props 类型
 export type AvatarProps = ExtractPropTypes<typeof avatarProps>;
 
 // emits事件类型
-export const avatarEmits = {};
+export const avatarEmits = {
+  'on-error': (event: Event) => event,
+};
 export type AvatarEmits = typeof avatarEmits;
 
 // 组件实例
 export type AvatarInstance = InstanceType<typeof Avatar>;
-
-export interface Data {
-  isSlotShow: boolean;
-  slotScale: number;
-  slotWidth: number;
-}

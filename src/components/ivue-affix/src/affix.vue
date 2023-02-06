@@ -13,7 +13,9 @@
 import { defineComponent, computed, unref } from 'vue';
 import { useNamespace } from '@ivue-material-plus/hooks';
 
+// affix
 import { affixProps, affixEmits } from './affix';
+// use
 import { useAffix } from './use-affix';
 
 const prefixCls = 'ivue-affix';
@@ -22,9 +24,13 @@ export default defineComponent({
   name: prefixCls,
   // 声明事件
   emits: affixEmits,
+  // props
   props: affixProps,
   // 组合式 API
   setup(props, { emit }) {
+    // bem
+    const bem = useNamespace(prefixCls);
+
     const {
       // ref
       wrapper,
@@ -37,9 +43,6 @@ export default defineComponent({
       // methods
       lazyUpdatePosition,
     } = useAffix(props, emit);
-
-    // bem
-    const bem = useNamespace(prefixCls);
 
     // 是否添加class设置 fixed
     const classes = computed(() => {
