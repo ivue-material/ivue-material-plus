@@ -1,0 +1,36 @@
+{
+  "compilerOptions": {
+    // 输出目录
+    "outDir": "dist",
+    // 指定ECMAScript目标版本, 默认"ES3", 最新"esnext"
+    "target": "es2018",
+    // 指定生成哪个模块系统代码
+    "module": "esnext",
+    // 基本目录
+    "baseUrl": ".",
+    // 生成相应的 .map文件
+    "sourceMap": false,
+    // 决定如何处理模块, 默认"Classic", "Node"对于Node.js/io.js
+    "moduleResolution": "node",
+    // 允许编译javascript文件
+    "allowJs": false,
+    // 严格模式
+    "strict": true,
+    // 报告未使用的局部变量的错误。
+    "noUnusedLocals": true,
+    // 中存在的resolveJsonModule选项
+    "resolveJsonModule": true,
+    // 允许从没有设置默认导出的模块中默认导入
+    "allowSyntheticDefaultImports": true,
+    // 设置默认模块导出
+    "esModuleInterop": true,
+    // 转换为JavaScript时，从TypeScript文件中剥离所有注释。 默认为false
+    "removeComments": false,
+    // 根目录
+    "rootDir": ".",
+    "types": []
+  },
+  "paths": {
+    "@ivue-material-plus/*": ["packages/*"]
+  }
+}

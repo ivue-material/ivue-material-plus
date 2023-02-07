@@ -1,0 +1,84 @@
+{
+  "name": "ivue-material-plus",
+  "version": "1.0.6",
+  "description": "A high quality UI components Library with Vue.js",
+  "keywords": [
+    "ivue-material-plus",
+    "ivue-material",
+    "ui framework",
+    "ui",
+    "vue"
+  ],
+  "license": "MIT",
+  "main": "lib/index.js",
+  "module": "es/index.mjs",
+  "types": "es/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./es/index.d.ts",
+      "import": "./es/index.mjs",
+      "require": "./lib/index.js"
+    },
+    "./es": "./es/index.mjs",
+    "./lib": "./lib/index.js",
+    "./es/*.mjs": "./es/*.mjs",
+    "./es/*": "./es/*.mjs",
+    "./lib/*.js": "./lib/*.js",
+    "./lib/*": "./lib/*.js",
+    "./*": "./*"
+  },
+  "unpkg": "dist/index.full.js",
+  "jsdelivr": "dist/index.full.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ivue-material/ivue-material-plus.git"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "style": "dist/index.css",
+  "sideEffects": [
+    "dist/*",
+    "theme-chalk/**/*.css",
+    "theme-chalk/src/**/*.scss",
+    "es/components/*/style/*",
+    "lib/components/*/style/*"
+  ],
+  "peerDependencies": {
+    "vue": "^3.2.0"
+  },
+  "dependencies": {
+    "-": "0.0.1",
+    "@antfu/utils": "^0.5.2",
+    "@popperjs/core": "^2.11.6",
+    "@types/lodash": "^4.14.186",
+    "@types/lodash-es": "^4.17.6",
+    "@types/lodash.throttle": "^4.1.7",
+    "@vue/shared": "^3.2.37",
+    "@vueuse/core": "^8.9.4",
+    "async-validator": "^4.2.5",
+    "countup.js": "^2.3.2",
+    "fs": "^0.0.1-security",
+    "hex-to-rgba": "^2.0.1",
+    "lodash": "^4.17.21",
+    "lodash-es": "^4.17.21",
+    "lodash-unified": "^1.0.3",
+    "lodash.throttle": "^4.1.1",
+    "material-icons": "^1.11.11",
+    "mitt": "^3.0.0",
+    "normalize-wheel-es": "^1.2.0",
+    "path": "^0.12.7",
+    "popper.js": "^1.16.1",
+    "raf": "^3.4.1"
+  },
+  "devDependencies": {
+    "@types/node": "*",
+    "vue": "^3.2.37",
+    "vue-router": "^4.0.16"
+  },
+  "browserslist": [
+    "> 1%",
+    "not ie 11",
+    "not op_mini all"
+  ]
+}

@@ -1,7 +1,10 @@
+import { resolve } from 'path';
 import { defineConfig } from 'vite';
+
 import vue from '@vitejs/plugin-vue';
 import VueJsx from '@vitejs/plugin-vue-jsx';
 import tsconfigPaths from 'vite-tsconfig-paths';
+import alias from '@rollup/plugin-alias';
 
 import dts from 'vite-plugin-dts';
 
@@ -13,10 +16,18 @@ const config = defineConfig({
     dts({
       outputDir: path.resolve(__dirname, './dist/types'),
     }),
-    VueJsx(),
     tsconfigPaths(),
+    alias({
+      entries: [
+        {
+          find: /^@ivue-material-plus/,
+          replacement: resolve(__dirname, 'src'),
+        },
+      ],
+    }),
+    VueJsx(),
   ],
-  target: 'es2015',
+  target: 'es2021',
   build: {
     outDir: path.resolve(__dirname, './dist'),
     // 库模式
@@ -86,6 +97,9 @@ const config = defineConfig({
   },
   resolve: {
     extensions: ['.mjs', '.js', '.ts', '.jsx', '.tsx', '.json', '.vue'],
+    alias: {
+      '@ivue-material-plus/*': resolve(__dirname, 'src/*'),
+    },
   },
 });
 

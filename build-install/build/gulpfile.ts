@@ -1,4 +1,5 @@
-import { mkdir } from 'fs/promises';
+// @ts-ignore
+import { copyFile, mkdir } from 'fs/promises';
 import { parallel, series } from 'gulp';
 import { run, withTaskName, runTask } from './src';
 import { ivueMaterialPlusOutput } from '../build-utils/src';

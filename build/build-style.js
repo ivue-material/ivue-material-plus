@@ -57,7 +57,7 @@ gulp.task('elevation', function () {
 // color
 gulp.task('color', function () {
   return gulp
-    .src('../src/styles/theme/index.scss')
+    .src('../src/styles/colors/index.scss')
     .pipe(sass())
     .pipe(
       autoprefixer({

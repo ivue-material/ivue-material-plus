@@ -1,0 +1,11 @@
+@use 'mixins/mixins' as *;
+@use 'common/var.scss' as *;
+
+$name: 'ivue-affix';
+
+@include b($name) {
+  @include m(fixed) {
+    position: fixed;
+    z-index: 100;
+  }
+}

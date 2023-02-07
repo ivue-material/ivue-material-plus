@@ -1,0 +1,22 @@
+{
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    // 复合选项强制执行某些约束
+    // 所有实现文件必须通过包含模式匹配或列在文件数组中。
+    // 如果违反此约束，tsc 将通知您未指定哪些文件。
+    "composite": false,
+    // 编译过程中需要引入的库文件的列表
+    "lib": ["ESNext"],
+    "types": ["node"],
+    // 是否在编译时进行库文件检查的是否在编译时进行库文件检查的
+    "skipLibCheck": true
+  },
+  "include": [
+    "build-install/**/*",
+    "build-install/**/*.json",
+    "packages/theme-chalk/*",
+    "packages/ivue-material-plus/version.ts",
+    "packages/ivue-material-plus/package.json"
+  ],
+  "exclude": ["**/__tests__/**", "**/tests/**", "**/dist"]
+}

@@ -1,0 +1,15 @@
+@use 'sass:map';
+
+@use '../../mixins/function.scss' as *;
+
+$bottom-nav: () !default;
+$bottom-nav: map.merge(
+  (
+    // item
+    'item-max-width': 168px,
+    'item-min-width': 80px,
+    'item-active-scale-icon': translate3d(0, -2px, 0),
+    'item-active-scale-span': scale(1.2)
+  ),
+  $bottom-nav
+);

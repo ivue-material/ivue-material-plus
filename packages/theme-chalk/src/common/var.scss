@@ -1,0 +1,62 @@
+@use 'sass:map';
+
+// components变量
+@forward './components/ivue-avatar.scss';
+@forward './components/ivue-back-top.scss';
+@forward './components/ivue-badge.scss';
+@forward './components/ivue-bottom-nav.scss';
+
+// 变量
+@use '../mixins/var.scss' as *;
+@use 'transition.scss' as *;
+
+// radius
+$radius: () !default;
+$radius: map.merge(
+  (
+    '4px': 4px,
+  ),
+  $radius
+);
+
+// radius
+$image-object-fit: () !default;
+$image-object-fit: map.merge(
+  (
+    'cover': cover,
+  ),
+  $image-object-fit
+);
+
+// size
+$font-size: () !default;
+$font-size: map.merge(
+  (
+    'small': 12px,
+    'base': 14px,
+  ),
+  $font-size
+);
+
+// transition
+$transition: () !default;
+$transition: map.merge(
+  (
+    'all': $transition-default,
+  ),
+  $transition
+);
+
+:root {
+  // radius
+  @include set-component-css-var('ivue-radius', $radius);
+
+  // image-object-fit
+  @include set-component-css-var('ivue-image-object-fit', $image-object-fit);
+
+  // font-size
+  @include set-component-css-var('ivue-font-size', $font-size);
+
+  // transition
+  @include set-component-css-var('ivue-transition', $transition);
+}

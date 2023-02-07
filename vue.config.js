@@ -22,7 +22,7 @@ module.exports = {
           .options({
             // dev覆盖字体路径
             additionalData:
-              '$material-icons-font-path: "~@/styles/material-icons/fonts/material-icons" !default;',
+              '$material-icons-font-path: "~packages/styles/material-icons/fonts/material-icons" !default;',
           })
           .end();
       });

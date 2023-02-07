@@ -1,0 +1,12 @@
+{
+  "extends": "./tsconfig.node.json",
+  "compilerOptions": {
+    // 复合选项强制执行某些约束
+    // 所有实现文件必须通过包含模式匹配或列在文件数组中。
+    // 如果违反此约束，tsc 将通知您未指定哪些文件。
+    "composite": true,
+    "types": ["node"]
+  },
+  "include": ["**/vite.config.*", "**/vitest.config.*", "**/vite.init.*"],
+  "exclude": []
+}

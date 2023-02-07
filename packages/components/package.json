@@ -1,0 +1,14 @@
+{
+  "name": "@ivue-material-plus/components",
+  "version": "0.0.1",
+  "description": "all components",
+  "main": "index.ts",
+  "module": "index.ts",
+  "unpkg": "index.js",
+  "jsdelivr": "index.js",
+  "peerDependencies": {
+    "vue": "^3.2.0"
+  },
+  "types": "index.d.ts",
+  "sideEffects": false
+}
