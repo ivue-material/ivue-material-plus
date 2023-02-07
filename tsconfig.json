@@ -5,6 +5,7 @@
     { "path": "./tsconfig.examples.json" },
     { "path": "./tsconfig.node.json" },
     { "path": "./tsconfig.vite-config.json" },
-    { "path": "./tsconfig.vitest.json" }
+    { "path": "./tsconfig.vitest.json" },
+    { "path": "./tsconfig.ts.json" }
   ]
 }

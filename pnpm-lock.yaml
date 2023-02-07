@@ -373,7 +373,10 @@ importers:
       vite-plugin-mkcert: 1.13.0_vite@2.9.15
 
   packages/components:
-    specifiers: {}
+    specifiers:
+      vue: ^3.2.45
+    dependencies:
+      vue: 3.2.47
 
   packages/hooks:
     specifiers: {}

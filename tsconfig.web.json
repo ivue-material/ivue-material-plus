@@ -9,7 +9,7 @@
     "jsx": "preserve",
     // 编译过程中需要引入的库文件的列表
     "lib": ["ES2018", "DOM", "DOM.Iterable"],
-    "types": ["unplugin-vue-macros/macros-global"],
+    "types": ["vue", "unplugin-vue-macros/macros-global"],
     // 是否在编译时进行库文件检查的是否在编译时进行库文件检查的
     "skipLibCheck": true
   },
