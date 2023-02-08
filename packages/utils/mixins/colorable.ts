@@ -14,7 +14,7 @@ export const colorable = (props?: Props) => {
 
   // 设置背景颜色
   const setBackgroundColor = (
-    color: string | any[],
+    color: string | string[],
     data: Style = {}
   ): Style => {
     // 是否是数组

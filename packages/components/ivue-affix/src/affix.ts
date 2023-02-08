@@ -1,5 +1,4 @@
 import { isBoolean } from '@vueuse/core';
-
 import { buildProps } from '@ivue-material-plus/utils';
 
 // type
@@ -82,7 +81,6 @@ export const affixProps = buildProps({
     type: HTMLElement,
   },
 });
-
 // props 类型
 export type AffixProps = ExtractPropTypes<typeof affixProps>;
 

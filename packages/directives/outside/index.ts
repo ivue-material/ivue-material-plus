@@ -1,6 +1,6 @@
 // @ts-nocheck
 
-import { isClient } from '../helpers';
+import { isClient } from '@ivue-material-plus/utils';
 
 export default {
   beforeMount(el, binding) {

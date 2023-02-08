@@ -3,7 +3,16 @@
     <nav>
       <ul>
         <li>
-          <router-link to="/affix">Affix</router-link>
+          <router-link to="/Affix">Affix</router-link>
+        </li>
+        <li>
+          <router-link to="/Icon">Icon</router-link>
+        </li>
+        <li>
+          <router-link to="/Input">Input</router-link>
+        </li>
+        <li>
+          <router-link to="/Button">Button</router-link>
         </li>
       </ul>
     </nav>

@@ -1,0 +1,55 @@
+.ivue-ripple {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top: 0;
+  box-sizing: border-box;
+  color: inherit;
+  border-radius: inherit;
+  -webkit-mask-image: radial-gradient(
+    circle,
+    var(--ivue-white-color) 100%,
+    var(--ivue-black-color) 100%
+  );
+  overflow: hidden;
+  z-index: 0;
+  pointer-events: none;
+  contain: strict;
+}
+
+.ivue-ripple-wave {
+  position: absolute;
+  top: 0;
+  left: 0;
+  border-radius: 50%;
+  background: currentColor;
+  opacity: 0;
+  pointer-events: none;
+  overflow: hidden;
+  will-change: transform, opacity;
+
+  &--enter {
+    transition: none;
+  }
+
+  &--in {
+    transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+      opacity 0.1s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  &--out {
+    transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  &.ivue-centered {
+    animation-duration: 1.2s;
+    top: 50%;
+    left: 50%;
+  }
+
+  ~ *:not(.ivue-ripple-wave) {
+    position: relative;
+    z-index: 2;
+  }
+}

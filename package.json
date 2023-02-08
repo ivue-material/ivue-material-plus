@@ -30,6 +30,7 @@
   },
   "dependencies": {
     "@ivue-material-plus/components": "workspace:*",
+    "@ivue-material-plus/directives": "workspace:*",
     "@ivue-material-plus/hooks": "workspace:*",
     "@ivue-material-plus/utils": "workspace:*",
     "@ivue-material-plus/test-utils": "workspace:*",

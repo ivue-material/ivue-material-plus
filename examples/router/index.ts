@@ -1,6 +1,7 @@
 import { createWebHistory, createRouter } from 'vue-router';
 import Affix from '../components/affix.vue';
-import Animation from '../components/animation.vue';
+import Icon from '../components/icon.vue';
+import Button from '../components/button.vue';
 
 const routes = [
   {
@@ -9,9 +10,14 @@ const routes = [
     component: Affix,
   },
   {
-    path: '/Animation',
-    name: 'Animation',
-    component: Animation,
+    path: '/Icon',
+    name: 'Icon',
+    component: Icon,
+  },
+  {
+    path: '/Button',
+    name: 'Button',
+    component: Button,
   },
 ];
 

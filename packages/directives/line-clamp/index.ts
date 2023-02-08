@@ -1,7 +1,7 @@
 // @ts-nocheck
 
 import { Ref } from 'vue';
-import { addClass, removeClass } from '../assist';
+import { addClass, removeClass } from '@ivue-material-plus/utils';
 
 // 限制文本最多显示几行，以...结束，仅适用于 webkit 内核浏览器
 

@@ -72,6 +72,38 @@ const resolveComponent = (
   };
 };
 
+// 导入指令
+function resolveDirective(
+  name: string,
+  options: resolverOptions
+): ComponentInfo | undefined {
+  if (!options.directives) {
+    return;
+  }
+
+  const directives: Record<string, { importName: string; styleName: string }> =
+    {
+      // 水波纹
+      Ripple: {
+        importName: 'RippleDirective',
+        styleName: 'ivue-ripple',
+      },
+    };
+
+  const directive = directives[name];
+  if (!directive) {
+    return;
+  }
+
+  const { ssr } = options;
+
+  return {
+    name: directive.importName,
+    from: `ivue-material-plus/${ssr ? 'lib' : 'es'}`,
+    sideEffects: getSideEffects(directive.styleName, options),
+  };
+}
+
 export function IvueMaterialPlusResolver(
   options?: resolverOptions
 ): ComponentResolver[] {
@@ -116,6 +148,12 @@ export function IvueMaterialPlusResolver(
         else {
           return resolveComponent(name, options);
         }
+      },
+    },
+    {
+      type: 'directive',
+      resolve: async (name: string) => {
+        return resolveDirective(name, await resolveOptions());
       },
     },
   ];
