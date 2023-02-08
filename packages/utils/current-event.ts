@@ -1,7 +1,7 @@
 let currentUid = null;
 
-function setCurrentUid(event) {
-  currentUid = event;
+function setCurrentUid(uid: number) {
+  currentUid = uid;
 }
 
 export { currentUid, setCurrentUid };

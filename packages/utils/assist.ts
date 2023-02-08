@@ -18,10 +18,10 @@ const trim = function (s: string) {
 };
 
 // 类型判断
-function typeOf(obj) {
+function typeOf(obj: string) {
   const toString = Object.prototype.toString;
 
-  const map = {
+  const map: any = {
     '[object Boolean]': 'boolean',
     '[object Number]': 'number',
     '[object String]': 'string',
@@ -51,7 +51,7 @@ export const oneOf = (
 };
 
 // 获取样式
-export const getStyle = (element: any, styleName: any): string => {
+export const getStyle = (element: any, styleName: any): string | null => {
   if (!element || !styleName) {
     return null;
   }
@@ -62,7 +62,10 @@ export const getStyle = (element: any, styleName: any): string => {
     styleName = 'cssFloat';
   }
   try {
-    const computed = document.defaultView.getComputedStyle(element, '');
+    const computed = (document.defaultView as Window).getComputedStyle(
+      element,
+      ''
+    );
 
     return element.style[styleName] || computed ? computed[styleName] : null;
   } catch (e) {
@@ -153,18 +156,18 @@ export function addClass(el: HTMLElement, cls: string): void {
  * @param endCallback 结束后的回调
  */
 export function scrollTop(
-  el,
+  el: HTMLElement | Window,
   from: number = 0,
   to: number,
   duration = 500,
-  endCallback?
+  endCallback?: () => void
 ) {
   // requestAnimationFrame 兼容
   if (!window.requestAnimationFrame) {
     window.requestAnimationFrame =
-      window.webkitRequestAnimationFrame ||
-      window.mozRequestAnimationFrame ||
-      window.msRequestAnimationFrame ||
+      (window as any).webkitRequestAnimationFrame ||
+      (window as any).mozRequestAnimationFrame ||
+      (window as any).msRequestAnimationFrame ||
       function (callback) {
         return window.setTimeout(callback, 1000 / 60);
       };
@@ -198,7 +201,7 @@ export function scrollTop(
     }
     // 元素节点使用 scrollTop
     else {
-      el.scrollTop = d;
+      (el as HTMLElement).scrollTop = d;
     }
 
     // requestAnimationFrame
@@ -210,18 +213,18 @@ export function scrollTop(
 }
 
 // 深拷贝
-export const deepCopy = (data) => {
+export const deepCopy = (data: any) => {
   const _typeOf = typeOf(data);
 
   let object;
 
   // 数组
   if (_typeOf === 'array') {
-    object = [];
+    object = [] as any[];
   }
   // 对象
   else if (_typeOf === 'object') {
-    object = {};
+    object = {} as any;
   }
   // 两个都不是返回原值
   else {

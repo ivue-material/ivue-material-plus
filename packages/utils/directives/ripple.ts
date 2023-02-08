@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 /**
  * 创建 transform
  *

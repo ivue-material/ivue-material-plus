@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { nextTick, defineComponent } from 'vue';
 import { createPopper } from '@popperjs/core';
 

@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 interface Target extends Element {
   _touchHandlers?: any;
 }

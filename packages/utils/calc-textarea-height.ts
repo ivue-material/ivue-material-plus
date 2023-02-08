@@ -29,7 +29,7 @@ const SIZING_STYLE = [
 ];
 
 const computedStyleCache: Record<string, any> = {};
-let hiddenTextarea;
+let hiddenTextarea: any;
 
 // 获取节点样式
 function calculateNodeStyling(node: any, useCache = false) {
@@ -112,7 +112,7 @@ export const calcTextareaHeight = (
   let minHeight = Number.MIN_SAFE_INTEGER;
   let maxHeight = Number.MAX_SAFE_INTEGER;
   let height = hiddenTextarea.scrollHeight;
-  let overflowY: string;
+  let overflowY = '';
 
   // border-box: add border, since height = content + padding + border
   if (boxSizing === 'border-box') {

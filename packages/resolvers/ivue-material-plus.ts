@@ -12,6 +12,11 @@ export interface resolverOptions {
   // 自动导入指令
   directives?: boolean;
   // 没有样式的组件名称列表，因此应该阻止解析它们的样式文件
+  noStylesComponents?: string[];
+}
+
+export interface options extends resolverOptions {
+  // 没有样式的组件名称列表，因此应该阻止解析它们的样式文件
   noStylesComponents: string[];
 }
 
@@ -27,20 +32,19 @@ const noStylesComponents: string[] = [];
 function getSideEffects(dirName: string, options: resolverOptions) {
   const { importStyle, ssr } = options;
 
-  const themeFolder = 'ivue-material-plus/theme-chalk';
-  const esComponentsFolder = 'ivue-material-plus/es/components';
+  const themeFolder = 'ivue-material-plus/styles';
 
   // scss
   if (importStyle === 'sass') {
     return ssr
       ? `${themeFolder}/src/${dirName}.scss`
-      : `${esComponentsFolder}/${dirName}/style/index`;
+      : `@${themeFolder}/src/${dirName}.scss`;
   }
   // 有样式
   else if (importStyle === true || importStyle === 'css') {
     return ssr
-      ? `${themeFolder}/el-${dirName}.css`
-      : `${esComponentsFolder}/${dirName}/style/css`;
+      ? `${themeFolder}/${dirName}.css`
+      : `@${themeFolder}/${dirName}/css`;
   }
 }
 
@@ -56,7 +60,6 @@ const resolveComponent = (
 
   // 不是自身属性
   if (!componentsName.match(/^Ivue[A-Z]/)) {
-    console.log('>>>');
     return;
   }
 
@@ -96,7 +99,7 @@ export function IvueMaterialPlusResolver(
     {
       type: 'component',
       resolve: async (name: string) => {
-        const options = await resolveOptions();
+        const options = (await resolveOptions()) as options;
 
         // 是否是 ivue组件
         if (!name.match(/^Ivue[A-Z]/)) {

@@ -1,5 +1,3 @@
-/* eslint-disable */
-
 import { watchEffect, onBeforeUnmount } from 'vue';
 import { on, off } from '../../utils/dom';
 
@@ -7,8 +5,8 @@ import { on, off } from '../../utils/dom';
 import type { Ref, ComputedRef } from 'vue';
 
 export const useDraggable = (
-  targetRef: Ref<HTMLElement | undefined>,
-  dragRef: Ref<HTMLElement | undefined>,
+  targetRef: Ref<HTMLElement>,
+  dragRef: Ref<HTMLElement>,
   dragData: Record<string, any>,
   draggable: ComputedRef<boolean>,
   options: {
@@ -49,7 +47,7 @@ export const useDraggable = (
   // 拖动中
   const handleMoveMove = (event: MouseEvent) => {
     if (!draggable.value) {
-      return false;
+      return;
     }
 
     // 当前鼠标在屏幕中的位置

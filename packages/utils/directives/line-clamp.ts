@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import { Ref } from 'vue';
 import { addClass, removeClass } from '../assist';
 

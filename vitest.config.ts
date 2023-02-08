@@ -18,7 +18,7 @@ export default defineConfig({
         vueJsx: VueJsx(),
       },
     }),
-  ],
+  ] as any,
   // 禁用深度优化
   optimizeDeps: {
     disabled: true,

@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import { isClient } from '../helpers';
 
 export default {

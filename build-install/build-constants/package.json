@@ -3,9 +3,6 @@
   "version": "0.0.1",
   "private": true,
   "description": "Build constants",
-  "keywords": [
-    "ivue-material-plus"
-  ],
   "license": "MIT",
   "main": "./dist/index.cjs",
   "module": "./dist/index.mjs",

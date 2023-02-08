@@ -16,10 +16,7 @@ export const buildRoot = resolve(projRoot, 'build-install', 'build');
 // dist
 export const buildOutput = resolve(projRoot, 'dist');
 // /dist/ivue-material-plus
-export const ivueMaterialPlusOutput = resolve(
-  buildOutput,
-  'ivue-material-plus'
-);
+export const uiOutput = resolve(buildOutput, 'ivue-material-plus');
 
 // 组件目录的 compPackage
 export const compPackage = resolve(compRoot, 'package.json');

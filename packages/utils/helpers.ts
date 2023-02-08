@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import { CSSProperties, computed, ref } from 'vue';
 import { isDef, isNumeric } from './validate';
 

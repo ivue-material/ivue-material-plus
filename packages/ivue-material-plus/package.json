@@ -39,8 +39,8 @@
   "style": "dist/index.css",
   "sideEffects": [
     "dist/*",
-    "theme-chalk/**/*.css",
-    "theme-chalk/src/**/*.scss",
+    "styles/**/*.css",
+    "styles/src/**/*.scss",
     "es/components/*/style/*",
     "lib/components/*/style/*"
   ],

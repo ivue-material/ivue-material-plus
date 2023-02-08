@@ -2,7 +2,7 @@ import { spawn } from 'child_process';
 import chalk from 'chalk';
 import consola from 'consola';
 
-import { projRoot } from '../../../build-utils/src';
+import { projRoot } from '@ivue-material-plus/build-utils';
 
 // 运行 chalk
 export const run = async (command: string, cwd = projRoot) => {

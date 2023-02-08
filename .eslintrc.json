@@ -1,0 +1,4 @@
+{
+  "root": true,
+  "extends": ["@ivue-material-plus/eslint-config"]
+}

@@ -23,11 +23,12 @@ const esbuildPlugin = () => ({
   enforce: 'post',
 });
 
-export default defineConfig(async ({ mode }) => {
+export default defineConfig(({ mode }): any => {
   const env = loadEnv(mode, process.cwd(), '');
 
   return {
     resolve: {
+      // 别名修改
       alias: [
         {
           find: /^ivue-material-plus(\/(es|lib))?$/,
@@ -45,20 +46,26 @@ export default defineConfig(async ({ mode }) => {
     },
     plugins: [
       VueMacros({
+        // 禁用功能 setupComponent
         setupComponent: false,
+        // 禁用功能 sfc
         setupSFC: false,
         plugins: {
           vue: vue(),
           vueJsx: vueJsx(),
         },
       }),
+      // 打包文件
       esbuildPlugin(),
+      // 按需引入
       Components({
         include: `${__dirname}/**`,
         resolvers: IvueMaterialPlusResolver({ importStyle: 'sass' }),
         dts: false,
       }),
+      // 开发服务提供证书支持
       mkcert(),
+      // 检查 Vite 插件的中间状态
       Inspect(),
     ],
     optimizeDeps: {

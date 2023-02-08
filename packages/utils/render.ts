@@ -1,4 +1,4 @@
-const Render = (props) => {
+const Render = (props: any) => {
   return props.render();
 };
 

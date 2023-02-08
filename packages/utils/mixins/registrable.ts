@@ -1,6 +1,9 @@
 import { createApp } from 'vue';
 
-function generateWarning(child, parent) {
+type Child = Record<string, any>;
+type Parent = Record<string, any>;
+
+function generateWarning(child: Child, parent: Parent) {
   // eslint-disable-next-line no-console
   return () =>
     console.error(`The ${child} component must be used inside a ${parent}`);
@@ -32,13 +35,12 @@ export function inject(
 }
 
 // 提供
-export function provide(namespace: string): any {
+export function provide(namespace: string) {
   return createApp({
     name: 'registrable-provide',
-
     methods: {
-      register: null,
-      unregister: null,
+      register: () => {},
+      unregister: () => {},
     },
     provide() {
       return {

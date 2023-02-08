@@ -2,7 +2,7 @@
 export const on = (
   element: HTMLElement | Document | Window,
   event: string,
-  handler: EventListenerOrEventListenerObject,
+  handler: any,
   useCapture = false
 ): void => {
   if (element && event && handler) {
@@ -14,7 +14,7 @@ export const on = (
 export const off = (
   element: HTMLElement | Document | Window,
   event: string,
-  handler: EventListenerOrEventListenerObject,
+  handler: any,
   useCapture = false
 ): void => {
   if (element && event && handler) {

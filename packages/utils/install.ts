@@ -42,7 +42,7 @@ export const withNoopInstall = <T>(component: T) => {
 // 注册指令
 export const withInstallDirective = <T>(directive: T, name: string) => {
   (directive as SFCWithInstall<T>).install = (app: App): any => {
-    app.directive(name, directive);
+    app.directive(name, directive as any);
   };
 
   return directive as SFCWithInstall<T>;

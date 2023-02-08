@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 // 跨多个浏览器的鼠标滚轮标准化
 import normalizeWheel from 'normalize-wheel-es';
 

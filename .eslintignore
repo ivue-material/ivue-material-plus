@@ -3,5 +3,4 @@ src/assets
 public
 dist
 examples
-resolvers
 *.md

@@ -1,8 +1,9 @@
-import { buildRoot } from '../../../build-utils/src';
+import { buildRoot } from '@ivue-material-plus/build-utils';
+
 import { run } from './process';
 
 // 运行任务名称
-export const withTaskName = (name: string, fn) => {
+export const withTaskName = (name: string, fn: any) => {
   return Object.assign(fn, {
     displayName: name,
   });

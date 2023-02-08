@@ -9,7 +9,7 @@ import makeScroll from '@ivue-material-plus/test-utils/make-scroll';
 
 import defineGetter from '@ivue-material-plus/test-utils/define-getter';
 
-import Affix from '../packages/affix.vue';
+import Affix from '../src/affix.vue';
 
 // 安装组件
 const _mount = (render: () => VNode) => {

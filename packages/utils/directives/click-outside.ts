@@ -1,3 +1,4 @@
+// @ts-nocheck
 const CLICK = 'click';
 // 捕获实例
 const captureInstances = Object.create(null);
