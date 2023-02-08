@@ -1,14 +1,6 @@
 @use 'sass:map';
 @use '../../mixins/var.scss' as *;
-
-// disabled
-$disabled: () !default;
-$disabled: map.merge(
-  (
-    'color': #c5c8ce,
-  ),
-  $disabled
-);
+@use '../../mixins/function.scss' as *;
 
 // color
 $colors: () !default;
@@ -30,6 +22,26 @@ $colors: map.deep-merge(
     'default': #dee2e7,
   ),
   $colors
+);
+
+// color
+$color-white: map.get($colors, 'white') !default;
+$color-primary: map.get($colors, 'primary', 'base') !default;
+$color-success: map.get($colors, 'success', 'base') !default;
+$color-error: map.get($colors, 'error', 'base') !default;
+$color-warning: map.get($colors, 'warning', 'base') !default;
+$color-default: map.get($colors, 'default') !default;
+
+// title
+$title-color: #383d47;
+
+// disabled
+$disabled: () !default;
+$disabled: map.merge(
+  (
+    'color': #c5c8ce,
+  ),
+  $disabled
 );
 
 // badge
@@ -60,16 +72,55 @@ $ivue-bottom-nav: map.merge(
   $ivue-bottom-nav
 );
 
-// color
-$color-white: map.get($colors, 'white') !default;
-$color-primary: map.get($colors, 'primary', 'base') !default;
-$color-success: map.get($colors, 'success', 'base') !default;
-$color-error: map.get($colors, 'error', 'base') !default;
-$color-warning: map.get($colors, 'warning', 'base') !default;
-$color-default: map.get($colors, 'default') !default;
+// ivue-button
+$ivue-button: () !default;
+$ivue-button: map.merge(
+  (
+    'radius-border': 18px,
 
-// title
-$title-color: #383d47;
+    'white': getCssVar('ivue-color-white'),
+    'mask-bg': rgba(255, 255, 255, 0.5),
+    'disabled-color': rgba(0, 0, 0, 0.26),
+    'raised-disabled-bg': #f8f9fd,
+    'readonly-color': rgba(0, 0, 0, 0.12),
+    // primary
+    'primary': getCssVar('ivue-color-primary'),
+    'primary-shadow-2': rgba(79, 135, 255, 0.2),
+    'primary-shadow-12': rgba(79, 135, 255, 0.12),
+    'primary-shadow-14': rgba(79, 135, 255, 0.14),
+    // light-primary
+    'light-primary': linear-gradient(135deg, #71cdff 0%, #5ab2ff 100%),
+    'light-primary-color': #71cdff,
+    'light-primary-shadow-2': rgba(90, 178, 255, 0.2),
+    'light-primary-shadow-12': rgba(90, 178, 255, 0.12),
+    'light-primary-shadow-14': rgba(90, 178, 255, 0.14),
+    // dark-primary
+    'dark-primary': linear-gradient(135deg, #3a9ff6 0%, #5b8eff 100%),
+    'dark-primary-color': #3a9ff6,
+    'dark-primary-shadow-2': rgba(58, 159, 246, 0.2),
+    'dark-primary-shadow-12': rgba(58, 159, 246, 0.12),
+    'dark-primary-shadow-14': rgba(58, 159, 246, 0.14),
+    // success
+    'success': linear-gradient(135deg, #27e2b2 0%, #0ddece 100%),
+    'success-color': #27e2b2,
+    'success-shadow-2': rgba(35, 222, 174, 0.2),
+    'success-shadow-12': rgba(35, 222, 174, 0.12),
+    'success-shadow-14': rgba(35, 222, 174, 0.14),
+    // warning
+    'warning': linear-gradient(135deg, #ffbd3c 0%, #ffa82d 100%),
+    'warning-color': #ffbd3c,
+    'warning-shadow-2': rgba(255, 182, 41, 0.2),
+    'warning-shadow-12': rgba(255, 182, 41, 0.12),
+    'warning-shadow-14': rgba(255, 182, 41, 0.14),
+    // error
+    'error': linear-gradient(135deg, #ff617f 0%, #ff4772 100%),
+    'error-color': #ff617f,
+    'error-shadow-2': rgba(255, 86, 118, 0.2),
+    'error-shadow-14': rgba(255, 86, 118, 0.14),
+    'error-shadow-12': rgba(255, 86, 118, 0.12),
+  ),
+  $ivue-button
+);
 
 :root {
   // title
@@ -94,4 +145,7 @@ $title-color: #383d47;
 
   // ivue-bottom-nav
   @include set-component-css-var('ivue-bottom-nav', $ivue-bottom-nav);
+
+  // ivue-button
+  @include set-component-css-var('ivue-button', $ivue-button);
 }

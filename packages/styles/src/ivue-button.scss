@@ -9,81 +9,7 @@
 
 $name: 'ivue-button';
 
-:root {
-  --#{$name}-min-width: 88px;
-  --#{$name}-padding: 0 15px;
-  --#{$name}-height: 36px;
-  --#{$name}-radius: 5px;
-  --#{$name}-font-size: 14px;
-  --#{$name}-dense-height: 32px;
-  --#{$name}-icon-size: 36px;
-
-  // 圆角
-  --#{$name}-set-radius: 18px;
-
-  // disabled
-  --#{$name}-disabled-color: rgba(0, 0, 0, 0.26);
-
-  // loading
-  --#{$name}-loading-size: 16px;
-  --#{$name}-loading-right: 5px;
-
-  // color
-  --#{$name}-raised-disabled: #f8f9fd;
-  --#{$name}-readonly-color: rgba(0, 0, 0, 0.12);
-  --#{$name}-mask-color: rgba(255, 255, 255, 0.5);
-
-  // primary
-  --#{$name}-primary-shadow-2: rgba(79, 135, 255, 0.2);
-  --#{$name}-primary-shadow-14: rgba(78, 134, 255, 0.14);
-  --#{$name}-primary-shadow-12: rgba(78, 134, 255, 0.14);
-
-  // light-primary
-  --#{$name}-light-primary-lg: linear-gradient(
-    135deg,
-    #71cdff 0%,
-    #5ab2ff 100%
-  );
-  --#{$name}-light-primary-color: #71cdff;
-
-  --#{$name}-light-primary-shadow-2: rgba(90, 178, 255, 0.2);
-  --#{$name}-light-primary-shadow-14: rgba(90, 178, 255, 0.14);
-  --#{$name}-light-primary-shadow-12: rgba(90, 178, 255, 0.12);
-
-  // dark-primary
-  --#{$name}-dark-primary-lg: linear-gradient(135deg, #3a9ff6 0%, #5b8eff 100%);
-  --#{$name}-dark-primary-color: #3a9ff6;
-
-  --#{$name}-dark-primary-shadow-2: rgba(58, 159, 246, 0.2);
-  --#{$name}-dark-primary-shadow-14: rgba(58, 159, 246, 0.14);
-  --#{$name}-dark-primary-shadow-12: rgba(58, 159, 246, 0.12);
-
-  // success
-  --#{$name}-success-lg: linear-gradient(135deg, #27e2b2 0%, #0ddece 100%);
-  --#{$name}-success-color: #27e2b2;
-
-  --#{$name}-success-shadow-2: rgba(35, 222, 174, 0.2);
-  --#{$name}-success-shadow-14: rgba(35, 222, 174, 0.14);
-  --#{$name}-success-shadow-12: rgba(35, 222, 174, 0.12);
-
-  // warning
-  --#{$name}-warning-lg: linear-gradient(135deg, #ffbd3c 0%, #ffa82d 100%);
-  --#{$name}-warning-color: #ffbd3c;
-
-  --#{$name}-warning-shadow-2: rgba(255, 182, 41, 0.2);
-  --#{$name}-warning-shadow-14: rgba(255, 182, 41, 0.14);
-  --#{$name}-warning-shadow-12: rgba(255, 182, 41, 0.12);
-
-  // error
-  --#{$name}-error-lg: linear-gradient(135deg, #ff617f 0%, #ff4772 100%);
-  --#{$name}-error-color: #ff617f;
-
-  --#{$name}-error-shadow-2: rgba(255, 86, 118, 0.2);
-  --#{$name}-error-shadow-14: rgba(255, 86, 118, 0.14);
-  --#{$name}-error-shadow-12: rgba(255, 86, 118, 0.12);
-}
-
-.#{$name}-clean {
+@include b(#{$name}-clean) {
   margin: 0;
   padding: 0;
   display: inline-block;
@@ -106,40 +32,51 @@ $name: 'ivue-button';
   }
 }
 
-.#{$name} {
-  @extend .ivue-button-clean;
-  min-width: var(--#{$name}-min-width);
-  height: var(--#{$name}-height);
+@include b($name) {
+  // 设置组件 css var 变量
+  @include set-component-css-var($name, $button);
+
+  @extend .#{$name}-clean;
+
   text-align: center;
   user-select: none;
-  border-radius: var(--#{$name}-radius);
-  font-size: var(--#{$name}-font-size);
   font-weight: 500;
   color: currentColor;
   cursor: pointer;
-  padding: var(--#{$name}-padding);
 
-  // 内容
-  &-content {
-    position: relative;
-    z-index: 2;
-    color: currentColor;
-    display: flex;
-    align-items: center;
-    line-height: 1;
+  min-width: getCssVar($name, 'min-width');
+  height: getCssVar($name, 'height');
+  border-radius: getCssVar($name, 'radius');
+  font-size: getCssVar('ivue-font-size-base');
+  padding: getCssVar($name, 'padding');
+
+  &:active {
+    outline: none;
   }
 
-  // 涟漪
-  &-ripple {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    height: 100%;
-    position: relative;
-    z-index: 10;
-    overflow: hidden;
-    box-sizing: border-box;
+  &::-moz-focus-inner {
+    padding: 0;
+    border: 0;
+  }
+
+  &:before {
+    content: ' ';
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 1;
+    opacity: 0;
+    border-radius: inherit;
+    transition: $transition-default;
+    will-change: background-color, opacity;
+  }
+
+  &[disabled] {
+    pointer-events: none;
+
+    color: getCssVar($name, 'disabled-color');
   }
 
   // loading
@@ -165,15 +102,6 @@ $name: 'ivue-button';
         height: 100%;
       }
     }
-  }
-
-  &:active {
-    outline: none;
-  }
-
-  &[disabled] {
-    color: var(--#{$name}-disabled-color);
-    pointer-events: none;
   }
 
   @media screen and (min-width: 800px) {
@@ -208,64 +136,38 @@ $name: 'ivue-button';
     }
   }
 
-  &::-moz-focus-inner {
-    padding: 0;
-    border: 0;
-  }
-
-  &:before {
-    content: ' ';
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    z-index: 1;
-    opacity: 0;
-    border-radius: inherit;
-    transition: $transition-default;
-    will-change: background-color, opacity;
-  }
-
-  &.#{$name}--raised:not(.#{$name}--depressed):not(.#{$name}--flat):not(
-      [disabled]
-    ) {
+  &.is-raised:not(.is-depressed):not(.is-flat):not([disabled]) {
     will-change: box-shadow;
 
+    // elevation
     @include ivue-elevation(2);
 
-    &:not(.#{$name}--mask):active {
+    &:not(.is-mask):active {
+      // elevation
       @include ivue-elevation(8);
     }
   }
 
-  &.ivue-button--raised[disabled] {
-    background-color: var(--#{$name}-raised-disabled);
-    color: var(--ivue-text-color);
+  &.is-raised[disabled] {
+    background-color: getCssVar($name, 'raised-disabled-bg');
+    color: getCssVar($name, 'disabled-color');
   }
 
-  + .ivue-button {
-    margin-left: 0;
-  }
-
-  .ivue-ripple {
-    padding: 0 8px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-
-  &--selected {
-    color: var(--ivue-white-color) !important;
+  // 选中
+  &.is-selected {
     background: currentColor;
+
+    color: getCssVar('ivue-color-white') !important;
   }
 
-  &--current {
+  // 当前选中
+  &.is-current {
     border: 1px solid;
     border-color: currentColor !important;
   }
 
-  &--outline {
+  // 轮廓
+  &.is-outline {
     border: 1px solid currentColor;
     background: transparent !important;
     box-shadow: none;
@@ -275,18 +177,19 @@ $name: 'ivue-button';
     }
   }
 
-  &--readonly {
+  // 只读
+  &.is-readonly {
     border-color: transparent !important;
-    background-color: var(--#{$name}-readonly-color) !important;
+    background-color: getCssVar($name, 'readonly-color') !important;
   }
 
   // 圆角
-  &--radius {
-    border-radius: var(--#{$name}-set-radius);
+  &.is-radius {
+    border-radius: getCssVar($name, 'radius-border');
   }
 
   // 蒙版
-  &--mask {
+  &.is-mask {
     &::before {
       content: '';
       position: absolute;
@@ -297,155 +200,149 @@ $name: 'ivue-button';
       z-index: 30;
       opacity: 1 !important;
       pointer-events: none;
-      background: var(--#{$name}-mask-color) !important;
+      background: getCssVar($name, 'mask-bg') !important;
     }
   }
 
   // primary
-  &--primary {
-    background: var(--ivue-primary-color);
-    color: var(--ivue-white-color);
+  &.is-primary {
+    background: getCssVar($name, 'primary');
+    color: getCssVar($name, 'white');
 
-    &__color {
-      color: var(--ivue-primary-color);
+    // color
+    &-color {
+      color: getCssVar($name, 'primary');
     }
 
-    &.#{$name}--raised:not(.#{$name}--depressed):not(.#{$name}--flat):not(
-        [disabled]
-      ) {
-      box-shadow: 0 10px 10px -5px var(--#{$name}-primary-shadow-2);
+    &.is-raised:not(.is-depressed):not(.is-flat):not([disabled]) {
+      box-shadow: 0 10px 10px -5px getCssVar($name, 'primary-shadow-2');
 
-      &:not(.#{$name}--mask):active {
+      &:not(.is-mask):active {
         @include ivue-elevation(
           8,
-          var(--#{$name}-primary-shadow-2),
-          var(--#{$name}-primary-shadow-14),
-          var(--#{$name}-primary-shadow-12)
+          getCssVar($name, 'primary-shadow-2'),
+          getCssVar($name, 'primary-shadow-14'),
+          getCssVar($name, 'primary-shadow-12')
         );
       }
     }
   }
 
   // light-primary
-  &--light-primary {
-    background: var(--#{$name}-light-primary-lg);
-    color: var(--ivue-white-color);
+  &.is-light-primary {
+    background: getCssVar($name, 'light-primary');
+    color: getCssVar($name, 'white');
 
-    &__color {
-      color: var(--#{$name}-light-primary-color);
+    // color
+    &-color {
+      color: getCssVar($name, 'light-primary-color');
     }
 
-    &.#{$name}--raised:not(.#{$name}--depressed):not(.#{$name}--flat):not(
-        [disabled]
-      ) {
-      box-shadow: 0 10px 10px -5px var(--#{$name}-light-primary-shadow-2);
+    &.is-raised:not(.is-depressed):not(.is-flat):not([disabled]) {
+      box-shadow: 0 10px 10px -5px getCssVar($name, 'light-primary-shadow-2');
 
-      &:not(.#{$name}--mask):active {
+      &:not(.is-mask):active {
         @include ivue-elevation(
           8,
-          var(--#{$name}-light-primary-shadow-2),
-          var(--#{$name}-light-primary-shadow-14),
-          var(--#{$name}-light-primary-shadow-12)
+          getCssVar($name, 'light-primary-shadow-2'),
+          getCssVar($name, 'light-primary-shadow-14'),
+          getCssVar($name, 'light-primary-shadow-12')
         );
       }
     }
   }
 
   // dark-primary
-  &--dark-primary {
-    background: var(--#{$name}-dark-primary-lg);
-    color: var(--ivue-white-color);
+  &.is-dark-primary {
+    background: getCssVar($name, 'dark-primary');
+    color: getCssVar($name, 'white');
 
-    &__color {
-      color: var(--#{$name}-dark-primary-color);
+    // color
+    &-color {
+      color: getCssVar($name, 'dark-primary-color');
     }
 
-    &.#{$name}--raised:not(.#{$name}--depressed):not(.#{$name}--flat):not(
-        [disabled]
-      ) {
-      box-shadow: 0 10px 10px -5px var(--#{$name}-dark-primary-shadow-2);
+    &.is-raised:not(.is-depressed):not(.is-flat):not([disabled]) {
+      box-shadow: 0 10px 10px -5px getCssVar($name, 'dark-primary-shadow-2');
 
-      &:not(.#{$name}--mask):active {
+      &:not(.is-mask):active {
         @include ivue-elevation(
           8,
-          var(--#{$name}-dark-primary-shadow-2),
-          var(--#{$name}-dark-primary-shadow-14),
-          var(--#{$name}-dark-primary-shadow-12)
+          getCssVar($name, 'dark-primary-shadow-2'),
+          getCssVar($name, 'dark-primary-shadow-14'),
+          getCssVar($name, 'dark-primary-shadow-12')
         );
       }
     }
   }
 
   // success
-  &--success {
-    background: var(--#{$name}-success-lg);
-    color: var(--ivue-white-color);
+  &.is-success {
+    background: getCssVar($name, 'success');
+    color: getCssVar($name, 'white');
 
-    &__color {
-      color: var(--#{$name}-success-color);
+    // color
+    &-color {
+      color: getCssVar($name, 'success-color');
     }
 
-    &.#{$name}--raised:not(.#{$name}--depressed):not(.#{$name}--flat):not(
-        [disabled]
-      ) {
-      box-shadow: 0 10px 10px -5px var(--#{$name}-success-shadow-2);
+    &.is-raised:not(.is-depressed):not(.is-flat):not([disabled]) {
+      box-shadow: 0 10px 10px -5px getCssVar($name, 'success-shadow-2');
 
-      &:not(.#{$name}--mask):active {
+      &:not(.is-mask):active {
         @include ivue-elevation(
           8,
-          var(--#{$name}-success-shadow-2),
-          var(--#{$name}-success-shadow-14),
-          var(--#{$name}-success-shadow-12)
+          getCssVar($name, 'success-shadow-2'),
+          getCssVar($name, 'success-shadow-14'),
+          getCssVar($name, 'success-shadow-12')
         );
       }
     }
   }
 
   // warning
-  &--warning {
-    background: var(--#{$name}-warning-lg);
-    color: var(--ivue-white-color);
+  &.is-warning {
+    background: getCssVar($name, 'warning');
+    color: getCssVar($name, 'white');
 
-    &__color {
-      color: var(--#{$name}-warning-color);
+    // color
+    &-color {
+      color: getCssVar($name, 'warning-color');
     }
 
-    &.#{$name}--raised:not(.#{$name}--depressed):not(.#{$name}--flat):not(
-        [disabled]
-      ) {
-      box-shadow: 0 10px 10px -5px var(--#{$name}-warning-shadow-2);
+    &.is-raised:not(.is-depressed):not(.is-flat):not([disabled]) {
+      box-shadow: 0 10px 10px -5px getCssVar($name, 'warning-shadow-2');
 
-      &:not(.#{$name}--mask):active {
+      &:not(.is-mask):active {
         @include ivue-elevation(
           8,
-          var(--#{$name}-warning-shadow-2),
-          var(--#{$name}-warning-shadow-14),
-          var(--#{$name}-warning-shadow-12)
+          getCssVar($name, 'warning-shadow-2'),
+          getCssVar($name, 'warning-shadow-14'),
+          getCssVar($name, 'warning-shadow-12')
         );
       }
     }
   }
 
   // error
-  &--error {
-    background: var(--#{$name}-error-lg);
-    color: var(--ivue-white-color);
+  &.is-error {
+    background: getCssVar($name, 'error');
+    color: getCssVar($name, 'white');
 
-    &__color {
-      color: var(--#{$name}-error-color);
+    // color
+    &-color {
+      color: getCssVar($name, 'error-color');
     }
 
-    &.#{$name}--raised:not(.#{$name}--depressed):not(.#{$name}--flat):not(
-        [disabled]
-      ) {
-      box-shadow: 0 10px 10px -5px var(--#{$name}-error-shadow-2);
+    &.is-raised:not(.is-depressed):not(.is-flat):not([disabled]) {
+      box-shadow: 0 10px 10px -5px getCssVar($name, 'error-shadow-2');
 
-      &:not(.#{$name}--mask):active {
+      &:not(.is-mask):active {
         @include ivue-elevation(
           8,
-          var(--#{$name}-error-shadow-2),
-          var(--#{$name}-error-shadow-14),
-          var(--#{$name}-error-shadow-12)
+          getCssVar($name, 'error-shadow-2'),
+          getCssVar($name, 'error-shadow-14'),
+          getCssVar($name, 'error-shadow-12')
         );
       }
     }
@@ -486,5 +383,28 @@ $name: 'ivue-button';
 
   .ivue-icon {
     font-size: var(--#{$name}-font-size);
+  }
+}
+
+// 涟漪
+@include b(#{$name}-ripple) {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  position: relative;
+  z-index: 10;
+  overflow: hidden;
+  box-sizing: border-box;
+
+  // 内容
+  @include m('content') {
+    position: relative;
+    z-index: 2;
+    color: currentColor;
+    display: flex;
+    align-items: center;
+    line-height: 1;
   }
 }

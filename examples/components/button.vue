@@ -60,7 +60,10 @@
 
     <div>
       <p>按钮状态</p>
+      <ivue-button status="primary" outline>outline</ivue-button>
+      <ivue-button status="primary" flat>flat</ivue-button>
       <ivue-button status="primary">primary</ivue-button>
+      <ivue-button status="light-primary" flat>Light Primary</ivue-button>
       <ivue-button status="light-primary" loading>Light Primary</ivue-button>
       <ivue-button status="dark-primary">Dark Primary</ivue-button>
       <ivue-button status="success" loading>Success</ivue-button>
@@ -88,5 +91,6 @@ export default {
 
 <style lang="scss">
 .ivue-button {
+  margin: 10px;
 }
 </style>

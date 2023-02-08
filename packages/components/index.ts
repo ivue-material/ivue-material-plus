@@ -6,3 +6,4 @@ export * from './ivue-button';
 
 // plugins
 export * from './ivue-ripple';
+export * from './ivue-loading';

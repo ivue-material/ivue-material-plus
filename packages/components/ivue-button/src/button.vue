@@ -52,15 +52,15 @@ export default defineComponent({
     // 按钮样式
     const btnClasses = computed(() => {
       return {
-        [`${prefixCls}--raised`]: !props.flat,
-        [`${prefixCls}--flat`]: props.flat,
-        [`${prefixCls}--depressed`]:
+        [bem.is('raised')]: !props.flat,
+        [bem.is('flat')]: props.flat,
+        [bem.is('depressed')]:
           (props.depressed && !props.flat) || props.outline,
-        [`${prefixCls}--icon`]: props.icon,
-        [`${prefixCls}--outline`]: props.outline,
-        [`${prefixCls}--radius`]: props.radius,
-        [`${prefixCls}--${props.status}`]: props.status && !props.flat,
-        [`${prefixCls}--${props.status}__color`]:
+        [bem.is('icon')]: props.icon,
+        [bem.is('outline')]: props.outline,
+        [bem.is('radius')]: props.radius,
+        [bem.is(`${props.status}`)]: props.status && !props.flat,
+        [bem.is(`${props.status}-color`)]:
           props.status && (props.flat || props.outline),
       };
     });
@@ -84,13 +84,15 @@ export default defineComponent({
           // 移动端
           isMobile: unref(mobile),
           // 按钮激活
-          'ivue-button--active': props.isActive,
+          [bem.is('active')]: props.isActive,
           // 蒙版
-          [`${prefixCls}--mask`]: props.loading,
+          [bem.is('mask')]: props.loading,
+          // 按钮样式
           ...unref(btnClasses),
         },
         href: props.href,
         type: (!props.href && (props.type || 'button')) || '',
+        // onTouchstart
         onTouchstart: (event: TouchEvent) => {
           // 是否显示涟漪效果
           if (unref(rippleWorks)) {
@@ -99,12 +101,14 @@ export default defineComponent({
 
           mobile.value = true;
         },
+        // onTouchmove
         onTouchmove: (event: TouchEvent) => {
           // 是否显示涟漪效果
           if (unref(rippleWorks)) {
             rippleActive.value = event;
           }
         },
+        // onClick
         onClick: (event: Event) => {
           // 是否显示涟漪效果
           if (unref(rippleWorks)) {
@@ -134,7 +138,7 @@ export default defineComponent({
 
       return withDirectives(
         h(_tag, setColor(props.color, buttonAttrs), [buttonContent]),
-        [[rippleDirective, computedRipple]]
+        [[rippleDirective, unref(computedRipple)]]
       );
     };
   },

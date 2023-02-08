@@ -7,6 +7,10 @@ declare module '@vue/runtime-core' {
     IvueSvgLoader: typeof import('ivue-material-plus')['IvueSvgLoader'];
     IvueButton: typeof import('ivue-material-plus')['IvueButton'];
   }
+
+  interface ComponentCustomProperties {
+    $loading: typeof import('ivue-material-plus')['IvueLoadingService'];
+  }
 }
 
 export {};
