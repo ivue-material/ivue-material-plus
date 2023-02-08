@@ -2,18 +2,13 @@
 
 set -e
 
-pnpm build
+# pnpm build
 
 cd dist/ivue-material-plus
 npm publish
 cd -
 
-cd internal/eslint-config
-npm publish
-cd -
-
-cd internal/metadata
-pnpm build
+cd build-install/eslint-config
 npm publish
 cd -
 
