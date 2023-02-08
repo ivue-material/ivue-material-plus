@@ -2,6 +2,10 @@
   "name": "@ivue-material-plus/hooks",
   "version": "0.0.1",
   "description": "hooks",
+  "keywords": [
+    "ivue-material-plus",
+    "hooks"
+  ],
   "license": "MIT",
   "main": "index.ts",
   "module": "index.ts",

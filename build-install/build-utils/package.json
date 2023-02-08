@@ -1,6 +1,9 @@
 {
   "name": "@ivue-material-plus/build-utils",
   "version": "0.0.1",
+  "keywords": [
+    "ivue-material-plus"
+  ],
   "private": true,
   "description": "Build utils",
   "license": "MIT",

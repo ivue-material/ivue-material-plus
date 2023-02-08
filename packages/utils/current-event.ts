@@ -1,6 +1,6 @@
 let currentUid = null;
 
-function setCurrentUid(uid: number) {
+function setCurrentUid(uid: any) {
   currentUid = uid;
 }
 

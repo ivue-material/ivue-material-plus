@@ -1,6 +1,9 @@
 {
   "name": "@ivue-material-plus/utils",
   "private": true,
+  "keywords": [
+    "utils"
+  ],
   "license": "MIT",
   "main": "index.ts",
   "peerDependencies": {

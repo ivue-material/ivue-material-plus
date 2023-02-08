@@ -1,6 +1,5 @@
 {
   "name": "ivue-material-plus",
-  "version": "1.0.6",
   "packageManager": "pnpm@7.3.0",
   "description": "A high quality UI components Library with Vue.js",
   "workspaces": [
@@ -11,10 +10,7 @@
     "cz": "czg",
     "dev": "pnpm -C examples dev",
     "build": "pnpm run -C build-install/build start",
-    "build:s": "npm run build:prod && npm run build:style && npm run build:rollup",
-    "build:style": "gulp --gulpfile build/build-style.js",
-    "build:prod": "vite build",
-    "build:rollup": "gulp --require @esbuild-kit/cjs-loader -f ./rollup/gulpfile.ts",
+    "build:styles": "pnpm run -C packages/styles build",
     "lint": "eslint . --ext .vue,.js,.ts,.jsx,.tsx,.md,.json --max-warnings 0 --cache",
     "lint:fix": "pnpm run lint --fix",
     "format": "prettier --write --cache .",
@@ -29,7 +25,8 @@
     "clean": "pnpm run clean:dist && pnpm run -r --parallel clean",
     "clean:dist": "rimraf dist",
     "stub": "pnpm run -r --parallel stub",
-    "postinstall": "pnpm stub"
+    "postinstall": "pnpm stub",
+    "release": "./publish/publish.sh"
   },
   "dependencies": {
     "@ivue-material-plus/components": "workspace:*",

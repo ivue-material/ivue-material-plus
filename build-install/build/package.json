@@ -1,8 +1,11 @@
 {
   "name": "@ivue-material-plus/build",
-  "version": "0.0.1",
   "private": true,
-  "description": "Build Toolchain",
+  "description": "build",
+  "version": "0.0.1",
+  "keywords": [
+    "ivue-material-plus"
+  ],
   "main": "./dist/index.cjs",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",

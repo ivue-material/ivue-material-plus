@@ -1,5 +1,5 @@
 @use 'sass:map';
-@use '@ivue-material-plus/styles/mixins/var.scss' as *;
+@use '../../mixins/var.scss' as *;
 
 // disabled
 $disabled: () !default;

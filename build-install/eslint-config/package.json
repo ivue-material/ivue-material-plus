@@ -1,7 +1,10 @@
 {
   "name": "@ivue-material-plus/eslint-config",
   "version": "0.0.1",
-  "description": "ESLint Config",
+  "description": "eslint config",
+  "keywords": [
+    "ivue-material-plus"
+  ],
   "license": "MIT",
   "files": [
     "index.js"
