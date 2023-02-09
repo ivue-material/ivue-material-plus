@@ -36,6 +36,8 @@ $color-black: map.get($colors, 'black') !default;
 
 // title
 $title-color: #383d47;
+// text
+$text-color: #4a505e;
 
 // disabled
 $disabled: () !default;
@@ -155,14 +157,28 @@ $ivue-back-top: () !default;
 $ivue-back-top: map.merge(
   (
     'bg': getCssVar('ivue-color', 'primary'),
-    'color': getCssVar('ivue-color', 'white')
+    'color': getCssVar('ivue-color', 'white'),
   ),
   $ivue-back-top
+);
+
+// ivue-carousel
+$ivue-carousel: () !default;
+$ivue-carousel: map.merge(
+  (
+    'mask-bg': getCssVar('ivue-color-white'),
+    'outside-button-bg': #8391a5,
+    'dot-button-bg': getCssVar('ivue-color-white'),
+    'label-color': getCssVar('ivue-text-color'),
+  ),
+  $ivue-carousel
 );
 
 :root {
   // title
   @include set-css-var-value('ivue-title-color', $title-color);
+  // text
+  @include set-css-var-value('ivue-text-color', $text-color);
 
   // color
   @include set-css-var-value('ivue-color-white', $color-white);
@@ -192,4 +208,6 @@ $ivue-back-top: map.merge(
   @include set-component-css-var('ivue-ripple', $ivue-ripple);
   // ivue-back-top
   @include set-component-css-var('ivue-back-top', $ivue-back-top);
+  // ivue-carousel
+  @include set-component-css-var('ivue-carousel', $ivue-carousel);
 }

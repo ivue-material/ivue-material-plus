@@ -1,0 +1,289 @@
+@use 'base.scss' as *;
+@use 'mixins/mixins' as *;
+@use 'common/var.scss' as *;
+
+$name: 'ivue-carousel';
+
+:root {
+  // size
+  --#{$name}-content-height: 200px;
+
+  // arrow
+  --#{$name}-arrow-size: 36px;
+  --#{$name}-arrow-icon-font-size: 24px;
+  --#{$name}-arrow-icon-left: 16px;
+  --#{$name}-arrow-icon-right: 16px;
+
+  // dots
+  --#{$name}-dot-padding: 7px;
+  --#{$name}-dot-width: 24px;
+  --#{$name}-dot-height: 3px;
+  --#{$name}-dot-radius-size: 6px;
+  --#{$name}-vertical-dot-padding: 4px 12px;
+  --#{$name}-vertical-dot-button-width: 2px;
+  --#{$name}-vertical-dot-button-height: 15px;
+
+  // color
+  --#{$name}-arrow-bg: rgba(31, 45, 61, 0.11);
+  --#{$name}-dots-outside-color: #8391a5;
+}
+
+@include b($name) {
+  // 设置组件 css var 变量
+  @include set-component-css-var($name, $carousel);
+
+  position: relative;
+  overflow: hidden;
+
+  // 没有初始化
+  &.is-no-init {
+    .is-card {
+      transition: none;
+    }
+  }
+
+  // 内容
+  @include e(content) {
+    position: relative;
+    height: getCssVar($name, 'content-height');
+    overflow: hidden;
+  }
+
+  // 箭头
+  .#{$name}-arrow {
+    position: absolute;
+    top: 50%;
+    text-align: center;
+    font-size: 12px;
+    font-family: inherit;
+    line-height: inherit;
+    border: none;
+    outline: none;
+    padding: 0;
+    margin: 0;
+    width: var(--#{$name}-arrow-size);
+    min-width: var(--#{$name}-arrow-size);
+    height: var(--#{$name}-arrow-size);
+    border-radius: 50%;
+    cursor: pointer;
+    transform: translateY(-50%);
+    transition: var(--ivue-all-transition);
+    color: var(--ivue-white-color);
+    background-color: var(--#{$name}-arrow-bg);
+    z-index: 15;
+
+    i {
+      font-size: var(--#{$name}-arrow-icon-font-size);
+    }
+
+    &.left {
+      left: var(--#{$name}-arrow-icon-left);
+    }
+
+    &.right {
+      right: var(--#{$name}-arrow-icon-right);
+    }
+  }
+}
+
+// 选项
+@include b(#{$name}-item) {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  display: inline-block;
+  overflow: hidden;
+  z-index: 0;
+
+  // 是否可以点击下一个
+  &.is-in-stage {
+    z-index: 1;
+    cursor: pointer;
+  }
+
+  // 动画
+  &.is-animating {
+    transition: transform 0.4s ease-in-out;
+  }
+
+  // 卡片类型
+  &.is-card {
+    width: 50%;
+    transition: transform 0.4s ease-in-out;
+
+    &-vertical {
+      width: 100%;
+      height: 50%;
+    }
+  }
+
+  // mask
+  @include e(mask) {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background: getCssVar($name, 'mask-bg');
+    transition: 0.2s;
+    opacity: 0.24;
+
+    &:hover {
+      opacity: 0.12;
+    }
+  }
+
+  // 激活
+  &.is-active {
+    z-index: 10;
+  }
+
+  // hover
+  &.is-hover {
+    @include e(mask) {
+      opacity: 0.12;
+    }
+  }
+}
+
+// 指示器
+@include b(#{$name}-dots) {
+  position: relative;
+  display: none;
+  list-style: none;
+  text-align: center;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  height: calc(4px + getCssVar($name, 'dot-padding') * 2);
+  z-index: 15;
+  pointer-events: none;
+
+  // 内部
+  &.is-inside {
+    display: block;
+    position: absolute;
+    bottom: calc(10px - getCssVar($name, 'dot-padding'));
+  }
+
+  // 外部
+  &.is-outside {
+    position: static;
+    display: block;
+    margin-top: calc(10px - getCssVar($name, 'dot-padding'));
+
+    @include e(button) {
+      background: getCssVar($name, 'outside-button-bg');
+    }
+  }
+
+  // 指示器符号
+  @include e(dot) {
+    position: relative;
+    display: inline-block;
+    vertical-align: top;
+    text-align: center;
+    margin: 0 4px;
+    padding: getCssVar($name, 'dot-padding') 0;
+    cursor: pointer;
+    pointer-events: auto;
+
+    &:hover > {
+      @include e(button) {
+        opacity: 0.7;
+      }
+    }
+
+    // 激活
+    &.is-active {
+      @include e(button) {
+        opacity: 1;
+      }
+    }
+  }
+
+  // 按钮
+  @include e(button) {
+    border: 0;
+    opacity: 0.5;
+    outline: none;
+    font-size: 0;
+    display: block;
+    cursor: pointer;
+    color: transparent;
+    transition: all 0.4s ease-in-out;
+
+    width: getCssVar(#{$name}, 'dot-width');
+    height: getCssVar(#{$name}, 'dot-height');
+    border-radius: getCssVar(#{$name}, 'dot-height');
+    background: getCssVar(#{$name}, 'dot-button-bg');
+
+    // 圆形
+    &.is-radius {
+      padding: 0;
+      border-radius: 50%;
+
+      width: getCssVar(#{$name}, 'dot-radius-size');
+      height: getCssVar(#{$name}, 'dot-radius-size');
+    }
+  }
+
+  // 有指示器的文本
+  &.is-labels {
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin-bottom: 6px;
+    transform: none;
+    text-align: center;
+
+    .#{$name}-dots--dot {
+      padding: 0;
+    }
+
+    .#{$name}-dots--button {
+      height: auto;
+      width: auto;
+      padding: 2px 18px;
+      font-size: 12px;
+    }
+  }
+
+  // 指示器的文本样式
+  @include e(label) {
+    color: getCssVar(#{$name}, 'label-color');
+  }
+
+  // 竖向
+  &.is-vertical {
+    width: auto;
+    height: auto;
+    top: 0;
+    bottom: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    @include e(dot) {
+      display: list-item;
+      padding: getCssVar(#{$name}, 'dot-padding-vertical');
+      margin: 0;
+    }
+
+    @include e(button) {
+      width: getCssVar(#{$name}, 'dot-width-vertical');
+      height: getCssVar(#{$name}, 'dot-height-vertical');
+    }
+  }
+
+  // 左边
+  &.is-left {
+    left: 0;
+  }
+
+  // 右边
+  &.is-right {
+    right: 0;
+  }
+}

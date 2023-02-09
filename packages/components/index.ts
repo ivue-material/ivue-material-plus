@@ -6,6 +6,8 @@ export * from './ivue-button';
 export * from './ivue-avatar';
 export * from './ivue-back-top';
 export * from './ivue-badge';
+export * from './ivue-carousel';
+export * from './ivue-carousel-item';
 
 // plugins
 export * from './ivue-ripple';

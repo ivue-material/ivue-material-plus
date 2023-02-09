@@ -122,7 +122,6 @@ export const buttonProps = buildProps({
    */
   status: {
     type: String,
-
     values: [
       'primary',
       'light-primary',
@@ -150,7 +149,7 @@ export const buttonProps = buildProps({
     type: definePropType<Color>([String, Array]),
     default: '',
   },
-});
+} as const);
 // props 类型
 export type ButtonProps = ExtractPropTypes<typeof buttonProps>;
 

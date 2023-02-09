@@ -9,6 +9,8 @@ declare module '@vue/runtime-core' {
     IvueAvatar: typeof import('ivue-material-plus')['IvueAvatar'];
     IvueBackTop: typeof import('ivue-material-plus')['IvueBackTop'];
     IvueBadge: typeof import('ivue-material-plus')['IvueBadge'];
+    IvueCarousel: typeof import('ivue-material-plus')['IvueCarousel'];
+    IvueCarouselItem: typeof import('ivue-material-plus')['IvueCarouselItem'];
   }
 
   interface ComponentCustomProperties {

@@ -8,6 +8,7 @@ import Layout from '../components/layout.vue';
 import avatar from '../components/avatar.vue';
 import backTop from '../components/back-top.vue';
 import badge from '../components/badge.vue';
+import carousel from '../components/carousel.vue';
 
 const routes = [
   {
@@ -54,6 +55,11 @@ const routes = [
     path: '/badge',
     name: 'badge',
     component: badge,
+  },
+  {
+    path: '/carousel',
+    name: 'carousel',
+    component: carousel,
   },
 ];
 
