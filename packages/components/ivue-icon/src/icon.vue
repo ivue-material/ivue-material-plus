@@ -1,6 +1,6 @@
 <template>
   <ivue-svg-loader
-    :class="[bem.b(), bem.m('image')]"
+    :class="[bem.b(), bem.b('image')]"
     :style="styles"
     :svgSrc="svgSrc"
     v-if="svgSrc"

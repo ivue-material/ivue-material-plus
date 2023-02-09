@@ -9,6 +9,13 @@ $button: map.merge(
     'height': 36px,
     'radius': getCssVar('ivue-radius-4px'),
     'padding': 0 15px,
+    'font-size': getCssVar('ivue-font-size-base'),
+
+    // loading
+    'loading-margin-right': 5px,
+    'loading-size': 16px,
+    // icon
+    'icon-size': 36px,
   ),
   $button
 );

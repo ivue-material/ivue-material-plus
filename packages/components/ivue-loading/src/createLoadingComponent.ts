@@ -11,11 +11,17 @@ import {
   withDirectives,
 } from 'vue';
 import { removeClass } from '@ivue-material-plus/utils';
+import { useNamespace } from '@ivue-material-plus/hooks';
 
 // ts
 import type { LoadingOptionsResolved } from './types';
 
+const prefixCls = 'ivue-loading';
+
 export function createLoadingComponent(options: LoadingOptionsResolved) {
+  // bem
+  const bem = useNamespace(prefixCls);
+
   // 离开后的时间
   let afterLeaveTimer: number;
 
@@ -52,7 +58,7 @@ export function createLoadingComponent(options: LoadingOptionsResolved) {
       // 删除当前loading
       if (!loadingNumber) {
         // 删除相对定位
-        removeClass(target, 'ivue-loading-parent--relative');
+        removeClass(target, bem.em('parent', 'relative'));
 
         target.removeAttribute('loading-number');
       }
@@ -117,7 +123,7 @@ export function createLoadingComponent(options: LoadingOptionsResolved) {
 
   // 节点元素
   const LoadingComponent = {
-    name: 'ivue-loading',
+    name: prefixCls,
     setup() {
       return () => {
         // 圆形
@@ -142,15 +148,13 @@ export function createLoadingComponent(options: LoadingOptionsResolved) {
         const noSpinner = h('i', { class: data.iconClass }, data.iconText);
 
         // 需要渲染的文字
-        const spinnerText = h('span', { class: 'ivue-loading-text' }, [
-          data.text,
-        ]);
+        const spinnerText = h('span', { class: bem.e('text') }, [data.text]);
 
         // 渲染
         return h(
           Transition,
           {
-            name: 'ivue-loading-fade',
+            name: 'fade',
             onAfterLeave: handleAfterLeave,
           },
           {
@@ -163,21 +167,21 @@ export function createLoadingComponent(options: LoadingOptionsResolved) {
                       backgroundColor: data.background || '',
                     },
                     class: [
-                      'ivue-loading-mask',
+                      bem.b('mask'),
                       data.customClass,
-                      data.fullscreen ? 'is-fullscreen' : '',
+                      data.fullscreen ? bem.is('fullscreen') : '',
                     ],
                   },
                   [
                     h(
                       'div',
                       {
-                        class: 'ivue-loading-spinner',
+                        class: bem.b('spinner'),
                       },
                       h(
                         'div',
                         {
-                          class: 'ivue-loading-spinner--content',
+                          class: bem.be('spinner', 'content'),
                         },
                         [
                           // 图标渲染函数

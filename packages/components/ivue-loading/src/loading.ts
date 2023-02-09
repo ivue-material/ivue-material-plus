@@ -12,12 +12,15 @@ import {
   addClass,
   removeClass,
 } from '@ivue-material-plus/utils';
+import { useNamespace } from '@ivue-material-plus/hooks';
 
 // ts
 import type { LoadingOptions, LoadingOptionsResolved } from './types';
 
 // 全屏展示实例
 let fullscreenInstance: LoadingInstance | undefined = undefined;
+
+const prefixCls = 'ivue-loading';
 
 // 添加样式
 const addStyle = async (
@@ -96,25 +99,28 @@ const addClassList = (
   parent: HTMLElement,
   instance: LoadingInstance
 ) => {
+  // bem
+  const bem = useNamespace(prefixCls);
+
   // 没有定位
   if (
     instance.originalPosition.value !== 'absolute' &&
     instance.originalPosition.value !== 'fixed'
   ) {
-    addClass(parent, 'ivue-loading-parent--relative');
+    addClass(parent, bem.em('parent', 'relative'));
   }
   // 删除相对定位
   else {
-    removeClass(parent, 'ivue-loading-parent--relative');
+    removeClass(parent, bem.em('parent', 'relative'));
   }
 
   // 全屏 锁定屏幕的滚动 lock
   if (options.fullscreen && options.lock) {
-    addClass(parent, 'ivue-loading-parent--hidden');
+    addClass(parent, bem.em('parent', 'hidden'));
   }
   // 删除隐藏
   else {
-    removeClass(parent, 'ivue-loading-parent--hidden');
+    removeClass(parent, bem.em('parent', 'hidden'));
   }
 };
 
@@ -191,8 +197,9 @@ const Loading = (options: LoadingOptions = {}): LoadingInstance => {
   addClassList(resolved, resolved.parent, instance);
 
   // 父级加载样式
-  resolved.parent.LoadingAddClassList = () =>
-    addClassList(resolved, resolved.parent, instance);
+  resolved.parent.LoadingAddClassList = () => {
+    return addClassList(resolved, resolved.parent, instance);
+  };
 
   /**
    * add loading-number to parent.

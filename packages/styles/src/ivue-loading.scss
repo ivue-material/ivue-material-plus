@@ -1,132 +1,106 @@
+@use 'base.scss' as *;
+@use 'mixins/mixins' as *;
+@use 'common/var.scss' as *;
+@use 'common/transition.scss' as *;
+@use 'animation/fade.scss' as *;
+
 $name: 'ivue-loading';
 
-:root {
-  --#{$name}-spinner-circular-size: 42px;
-  --#{$name}-font-size: 14px;
-
-  --#{$name}-fullscreen-circular-size: 50px;
-  --#{$name}-spinner-margin-top: -25px;
-
-  // color: ;
-  --#{$name}-mask-color: rgba(255, 255, 255, 0.9);
-}
-
-.#{$name} {
-  // 蒙版
-  &-mask {
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    z-index: 2000;
-    background: var(--#{$name}-mask-color);
-    margin: 0;
-    transition: opacity 0.3s var(--ivue-ease-in-out);
-  }
+@include b(#{$name}) {
+  // 设置组件 css var 变量
+  @include set-component-css-var($name, $loading);
 
   // 父节点
-  &-parent {
-    &--relative {
+  @include e(parent) {
+    @include m(relative) {
       position: relative !important;
     }
-
-    &--hidden {
+    @include m(hidden) {
       overflow: hidden !important;
     }
   }
 
-  // 滚动
-  &-spinner {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    flex-direction: column;
-    justify-content: center;
-    display: flex;
-    align-items: center;
-    margin: auto;
-    width: 100%;
-    color: var(--ivue-primary-color);
+  // 文字
+  @include e(text) {
+    color: currentColor;
+    margin: 5px 0;
+    font-size: getCssVar($name, 'font-size');
+  }
+}
 
-    &--content {
-      display: flex;
-      justify-content: center;
-      flex-direction: column;
-      align-items: center;
+// 蒙版
+@include b(#{$name}-mask) {
+  // 设置组件 css var 变量
+  @include set-component-css-var($name, $loading);
+
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 2000;
+  background: getCssVar($name, 'mask-bg');
+  margin: 0;
+
+  // 全屏
+  &.is-fullscreen {
+    position: fixed;
+
+    @include b(#{$name}-spinner) {
+      margin-bottom: calc(getCssVar($name, 'spinner-fullscreen-size') / 2);
     }
 
     .circular {
-      height: var(--#{$name}-spinner-circular-size);
-      width: var(--#{$name}-spinner-circular-size);
-      animation: loading-rotate 2s linear infinite;
-    }
-
-    .path {
-      animation: loading-dash 1.5s ease-in-out infinite;
-      stroke-dasharray: 90, 150;
-      stroke-dashoffset: 0;
-      stroke-width: 3;
-      stroke: currentColor;
-      stroke-linecap: round;
-    }
-
-    i {
-      width: auto;
-      min-width: auto;
-      height: auto;
-      margin: 0;
+      height: getCssVar($name, 'spinner-fullscreen-size');
+      width: getCssVar($name, 'spinner-fullscreen-size');
     }
   }
-
-  // 文字
-  &-text {
-    color: currentColor;
-    margin: 5px 0;
-    font-size: var(--#{$name}-font-size);
-  }
 }
 
-.ivue-loading-fade-enter-from,
-.ivue-loading-fade-leave-to {
-  opacity: 0;
-}
+// 内容
+@include b(#{$name}-spinner) {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  flex-direction: column;
+  justify-content: center;
+  display: flex;
+  align-items: center;
+  margin: auto;
+  width: 100%;
 
-// 滚动
-@keyframes loading-rotate {
-  100% {
-    transform: rotate(360deg);
-  }
-}
+  color: getCssVar($name, 'color');
 
-// 圆形滚动样式
-@keyframes loading-dash {
-  0% {
-    stroke-dasharray: 1, 200;
-    stroke-dashoffset: 0;
-  }
-
-  50% {
-    stroke-dasharray: 90, 150;
-    stroke-dashoffset: -40px;
+  @include e(content) {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
   }
 
-  100% {
-    stroke-dasharray: 90, 150;
-    stroke-dashoffset: -120px;
-  }
-}
-
-// 全屏
-.is-fullscreen {
-  position: fixed;
-
-  .#{$name}-spinner {
-    margin-top: var(--#{$name}-spinner-margin-top);
-  }
-
+  // circular
   .circular {
-    height: var(--#{$name}-fullscreen-circular-size);
-    width: var(--#{$name}-fullscreen-circular-size);
+    height: getCssVar($name, 'spinner-circular-size');
+    width: getCssVar($name, 'spinner-circular-size');
+    animation: getCssVar($name, 'circular-animation');
+  }
+
+  // path
+  .path {
+    stroke-dasharray: 90, 150;
+    stroke-dashoffset: 0;
+    stroke-width: 3;
+    stroke: currentColor;
+    stroke-linecap: round;
+
+    animation: getCssVar($name, 'path-animation');
+  }
+
+  // 图标
+  i {
+    width: auto;
+    min-width: auto;
+    height: auto;
+    margin: 0;
   }
 }

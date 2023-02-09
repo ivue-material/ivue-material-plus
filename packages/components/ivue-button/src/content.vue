@@ -1,10 +1,13 @@
 <template>
-  <div :class="bem.b()">
-    <div :class="bem.m('content')">
+  <div :class="bem.b('ripple')">
+    <div :class="bem.be('ripple', 'content')">
       <!-- loading -->
-      <!-- <div :class="`${prefixCls}-loading--wrapper`" v-if="loading">
-        <div :class="`${prefixCls}-loading`" v-ivue-loading="loading"></div>
-      </div> -->
+      <div :class="bem.b('loading')" v-if="loading">
+        <div
+          :class="bem.be('loading', 'content')"
+          v-ivue-loading="loading"
+        ></div>
+      </div>
       <!-- slot -->
       <slot></slot>
     </div>
@@ -13,14 +16,16 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-// import IvueLoading from '../ivue-loading/directive';
+import { IvueLoadingDirective } from '@ivue-material-plus/components/ivue-loading';
 import { useNamespace } from '@ivue-material-plus/hooks';
 
-const prefixCls = 'ivue-button-ripple';
+const prefixCls = 'ivue-button';
 
 export default defineComponent({
   name: prefixCls,
-  // directives: { IvueLoading },
+  directives: {
+    IvueLoading: IvueLoadingDirective,
+  },
   props: {
     /**
      * 显示loading
@@ -37,6 +42,7 @@ export default defineComponent({
     const bem = useNamespace(prefixCls);
 
     return {
+      prefixCls,
       bem,
     };
   },

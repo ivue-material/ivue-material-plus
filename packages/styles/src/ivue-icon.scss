@@ -55,12 +55,12 @@ $name: 'ivue-icon';
   &.ivue-size-5x {
     @include ivue-icon-size($icon-size * 5);
   }
+}
 
-  @include m(image) {
-    svg {
-      height: 100%;
-      flex: 1;
-      transition: fill $transition-default;
-    }
+@include b(#{$name}-image) {
+  svg {
+    height: 100%;
+    flex: 1;
+    transition: fill $transition-default;
   }
 }

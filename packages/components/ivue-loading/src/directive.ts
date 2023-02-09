@@ -1,16 +1,18 @@
 import { isRef, ref } from 'vue';
 import { hyphenate, isObject, isString } from '@vue/shared';
+
 import Loading from './loading';
 
 // ts
 import type { Directive, DirectiveBinding, UnwrapRef, Ref } from 'vue';
 import type { LoadingInstance } from './createLoadingComponent';
-import type { LoadingOptions } from './types';
+import type { LoadingOptions, LoadingBinding } from './types';
+
+const prefixCls = 'ivue-loading';
 
 // key
-const INSTANCE_KEY = Symbol('IvueLoading');
+const INSTANCE_KEY = Symbol(prefixCls);
 
-export type LoadingBinding = boolean | UnwrapRef<LoadingOptions>;
 export interface ElementLoading extends HTMLElement {
   [INSTANCE_KEY]: {
     options: LoadingOptions;
@@ -18,6 +20,7 @@ export interface ElementLoading extends HTMLElement {
   };
 }
 
+// 创建实例
 const createInstance = (
   el: ElementLoading,
   binding: DirectiveBinding<LoadingBinding>
@@ -32,8 +35,10 @@ const createInstance = (
     return isObject(binding.value) ? binding.value[key] : undefined;
   };
 
+  // 获取data
   const resolveExpression = (key: any) => {
     const data = (isString(key) && vm?.[key]) || key;
+
     if (data) {
       return ref(data);
     } else {
@@ -44,7 +49,7 @@ const createInstance = (
   // 获取prop
   const getProp = <K extends keyof LoadingOptions>(name: K) => {
     return resolveExpression(
-      getBindingProp(name) || el.getAttribute(`ivue-loading-${hyphenate(name)}`)
+      getBindingProp(name) || el.getAttribute(`${prefixCls}-${hyphenate(name)}`)
     );
   };
 
@@ -134,7 +139,7 @@ const vLoading: Directive<ElementLoading, LoadingBinding> = {
   // 销毁
   unmounted(el: ElementLoading) {
     // 关闭实例
-    el[INSTANCE_KEY].instance.close();
+    el[INSTANCE_KEY] && el[INSTANCE_KEY].instance.close();
   },
 };
 

@@ -1,3 +1,5 @@
+import { IvueLoading } from '@ivue-material-plus/components/ivue-loading';
+
 import type { Plugin } from 'vue';
 
-export default [] as Plugin[];
+export default [IvueLoading] as Plugin[];

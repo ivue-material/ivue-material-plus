@@ -88,6 +88,11 @@ function resolveDirective(
         importName: 'RippleDirective',
         styleName: 'ivue-ripple',
       },
+      // loading
+      Loading: {
+        importName: 'IvueLoadingDirective',
+        styleName: 'ivue-loading',
+      },
     };
 
   const directive = directives[name];

@@ -65,7 +65,7 @@ function buildStylesChalk() {
 }
 
 /**
- * 打包默认主题辩论
+ * 打包默认主题变量
  * @returns
  */
 function buildDefaultThemeCssVars() {
@@ -89,6 +89,30 @@ function buildDefaultThemeCssVars() {
   );
 }
 
+// 打包elevation
+function buildElevation() {
+  const sass = gulpSass(dartSass);
+
+  return (
+    src(path.resolve(__dirname, 'src/ivue-elevation/index.scss'))
+      .pipe(sass.sync())
+      // autoprefixer
+      .pipe(autoprefixer({ cascade: false }))
+      // 缩小 CSS
+      .pipe(
+        cleanCSS({}, (details) => {
+          consola.success(
+            `${chalk.cyan(details.name)}: ${chalk.yellow(
+              details.stats.originalSize / 1000
+            )} KB -> ${chalk.green(details.stats.minifiedSize / 1000)} KB`
+          );
+        })
+      )
+      // dist
+      .pipe(dest(`${distFolder}/elevation`))
+  );
+}
+
 /**
  * 复制 dist 到 dist/styles/theme-chalk
  * @returns
@@ -100,7 +124,12 @@ export function copyStylesBundle() {
 // build
 export const build: TaskFunction = parallel(
   copyThemeChalkSource,
-  series(buildStylesChalk, buildDefaultThemeCssVars, copyStylesBundle)
+  series(
+    buildStylesChalk,
+    buildDefaultThemeCssVars,
+    buildElevation,
+    copyStylesBundle
+  )
 );
 
 export default build;

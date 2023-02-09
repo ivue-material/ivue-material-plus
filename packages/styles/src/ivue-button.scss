@@ -6,6 +6,7 @@
 
 @use 'ivue-elevation/mixins.scss' as *;
 @use 'ivue-ripple.scss' as *;
+@use 'ivue-loading.scss' as *;
 
 $name: 'ivue-button';
 
@@ -77,31 +78,6 @@ $name: 'ivue-button';
     pointer-events: none;
 
     color: getCssVar($name, 'disabled-color');
-  }
-
-  // loading
-  &-loading {
-    position: relative;
-    width: var(--#{$name}-loading-size);
-    height: var(--#{$name}-loading-size);
-
-    &--wrapper {
-      position: relative;
-      margin-right: var(--#{$name}-loading-right);
-    }
-
-    .ivue-loading-mask {
-      background: none;
-    }
-
-    .ivue-loading-spinner {
-      color: var(--ivue-white-color);
-
-      .circular {
-        width: 100%;
-        height: 100%;
-      }
-    }
   }
 
   @media screen and (min-width: 800px) {
@@ -201,6 +177,41 @@ $name: 'ivue-button';
       opacity: 1 !important;
       pointer-events: none;
       background: getCssVar($name, 'mask-bg') !important;
+    }
+  }
+
+  // icon
+  &.is-icon {
+    width: getCssVar($name, 'icon-size');
+    min-width: getCssVar($name, 'icon-size');
+    height: getCssVar($name, 'icon-size');
+    margin: 0 6px;
+    border-radius: 50%;
+    padding: 0;
+
+    &::before {
+      border-radius: 50%;
+    }
+
+    // ripple
+    .ivue-ripple {
+      border-radius: 50%;
+    }
+
+    .ivue-ripple-enter-active {
+      transition-duration: 1.2s;
+    }
+
+    .ivue-ripple-wave {
+      top: 0 !important;
+      right: 0 !important;
+      bottom: 0 !important;
+      left: 0 !important;
+    }
+
+    // icon
+    .ivue-icon {
+      font-size: getCssVar($name, 'font-size');
     }
   }
 
@@ -349,43 +360,6 @@ $name: 'ivue-button';
   }
 }
 
-.ivue-button-spaced .ivue-ripple {
-  padding: 0 16px;
-}
-
-// icon
-.#{$name}--icon {
-  width: var(--#{$name}-icon-size);
-  min-width: var(--#{$name}-icon-size);
-  height: var(--#{$name}-icon-size);
-  margin: 0 6px;
-  border-radius: 50%;
-  padding: 0;
-
-  &::before {
-    border-radius: 50%;
-  }
-
-  .ivue-ripple {
-    border-radius: 50%;
-  }
-
-  .ivue-ripple-enter-active {
-    transition-duration: 1.2s;
-  }
-
-  .ivue-ripple-wave {
-    top: 0 !important;
-    right: 0 !important;
-    bottom: 0 !important;
-    left: 0 !important;
-  }
-
-  .ivue-icon {
-    font-size: var(--#{$name}-font-size);
-  }
-}
-
 // 涟漪
 @include b(#{$name}-ripple) {
   display: flex;
@@ -399,12 +373,39 @@ $name: 'ivue-button';
   box-sizing: border-box;
 
   // 内容
-  @include m('content') {
+  @include e('content') {
     position: relative;
     z-index: 2;
     color: currentColor;
     display: flex;
     align-items: center;
     line-height: 1;
+  }
+}
+
+// loading
+@include b(#{$name}-loading) {
+  position: relative;
+
+  margin-right: getCssVar($name, 'loading-margin-right');
+
+  @include e(content) {
+    position: relative;
+
+    width: getCssVar($name, 'loading-size');
+    height: getCssVar($name, 'loading-size');
+  }
+
+  .ivue-loading-mask {
+    background: none;
+  }
+
+  .ivue-loading-spinner {
+    color: getCssVar($name, 'loading-color');
+
+    .circular {
+      width: 100%;
+      height: 100%;
+    }
   }
 }

@@ -118,8 +118,20 @@ $ivue-button: map.merge(
     'error-shadow-2': rgba(255, 86, 118, 0.2),
     'error-shadow-14': rgba(255, 86, 118, 0.14),
     'error-shadow-12': rgba(255, 86, 118, 0.12),
+    // loading
+    'loading-color': getCssVar('ivue-color-white'),
   ),
   $ivue-button
+);
+
+// ivue-loading
+$ivue-loading: () !default;
+$ivue-loading: map.merge(
+  (
+    'mask-bg': rgba(255, 255, 255, 0.9),
+    'color': getCssVar('ivue-color-primary')
+  ),
+  $ivue-loading
 );
 
 :root {
@@ -148,4 +160,7 @@ $ivue-button: map.merge(
 
   // ivue-button
   @include set-component-css-var('ivue-button', $ivue-button);
+
+  // loading
+  @include set-component-css-var('ivue-loading', $ivue-loading);
 }
