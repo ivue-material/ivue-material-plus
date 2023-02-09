@@ -3,9 +3,9 @@ import { hyphenate, isObject, isString } from '@vue/shared';
 import Loading from './loading';
 
 // ts
-import type { Directive, DirectiveBinding, UnwrapRef } from 'vue';
+import type { Directive, DirectiveBinding, UnwrapRef, Ref } from 'vue';
 import type { LoadingInstance } from './createLoadingComponent';
-import type { LoadingOptions, StringKeys } from './types';
+import type { LoadingOptions } from './types';
 
 // key
 const INSTANCE_KEY = Symbol('IvueLoading');
@@ -88,10 +88,16 @@ const updateOptions = (
   // 原始选项
   originalOptions: LoadingOptions
 ) => {
+  type OriginalOptionsKefOf = keyof typeof originalOptions;
+
   for (const key of Object.keys(originalOptions)) {
+    const _originalOptions = originalOptions[
+      key as OriginalOptionsKefOf
+    ] as Ref;
+
     // 替换选项是否是 isRef
-    if (isRef(originalOptions[key])) {
-      (originalOptions[key] as any).value = newOptions[key];
+    if (isRef(_originalOptions)) {
+      _originalOptions.value = newOptions[key as OriginalOptionsKefOf];
     }
   }
 };
