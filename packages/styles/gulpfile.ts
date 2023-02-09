@@ -94,7 +94,7 @@ function buildElevation() {
   const sass = gulpSass(dartSass);
 
   return (
-    src(path.resolve(__dirname, 'src/ivue-elevation/index.scss'))
+    src(path.resolve(__dirname, 'src/elevation/index.scss'))
       .pipe(sass.sync())
       // autoprefixer
       .pipe(autoprefixer({ cascade: false }))
@@ -113,6 +113,30 @@ function buildElevation() {
   );
 }
 
+// 打包layout
+function buildLayout() {
+  const sass = gulpSass(dartSass);
+
+  return (
+    src(path.resolve(__dirname, 'src/layout/index.scss'))
+      .pipe(sass.sync())
+      // autoprefixer
+      .pipe(autoprefixer({ cascade: false }))
+      // 缩小 CSS
+      .pipe(
+        cleanCSS({}, (details) => {
+          consola.success(
+            `${chalk.cyan(details.name)}: ${chalk.yellow(
+              details.stats.originalSize / 1000
+            )} KB -> ${chalk.green(details.stats.minifiedSize / 1000)} KB`
+          );
+        })
+      )
+      // dist
+      .pipe(dest(`${distFolder}/layout`))
+  );
+}
+
 /**
  * 复制 dist 到 dist/styles/theme-chalk
  * @returns
@@ -128,6 +152,7 @@ export const build: TaskFunction = parallel(
     buildStylesChalk,
     buildDefaultThemeCssVars,
     buildElevation,
+    buildLayout,
     copyStylesBundle
   )
 );

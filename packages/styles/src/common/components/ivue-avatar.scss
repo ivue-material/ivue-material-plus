@@ -5,8 +5,8 @@
 $avatar: () !default;
 $avatar: map.merge(
   (
-    'width': 48px,
-    'radius': 8px,
+    'size': 48px,
+    'square-radius': getCssVar('ivue-radius', '4px')
   ),
   $avatar
 );

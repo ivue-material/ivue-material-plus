@@ -20,6 +20,7 @@ $colors: map.deep-merge(
       'base': #ffbd3c,
     ),
     'default': #dee2e7,
+    'black': #000000,
   ),
   $colors
 );
@@ -31,6 +32,7 @@ $color-success: map.get($colors, 'success', 'base') !default;
 $color-error: map.get($colors, 'error', 'base') !default;
 $color-warning: map.get($colors, 'warning', 'base') !default;
 $color-default: map.get($colors, 'default') !default;
+$color-black: map.get($colors, 'black') !default;
 
 // title
 $title-color: #383d47;
@@ -129,9 +131,33 @@ $ivue-loading: () !default;
 $ivue-loading: map.merge(
   (
     'mask-bg': rgba(255, 255, 255, 0.9),
-    'color': getCssVar('ivue-color-primary')
+    'color': getCssVar('ivue-color-primary'),
   ),
   $ivue-loading
+);
+
+// ivue-ripple
+$ivue-ripple: () !default;
+$ivue-ripple: map.merge(
+  (
+    'webkit-mask-image':
+      radial-gradient(
+        circle,
+        getCssVar('ivue-color-white') 100%,
+        getCssVar('ivue-color-black') 100%
+      ),
+  ),
+  $ivue-ripple
+);
+
+// ivue-back-top
+$ivue-back-top: () !default;
+$ivue-back-top: map.merge(
+  (
+    'bg': getCssVar('ivue-color', 'primary'),
+    'color': getCssVar('ivue-color', 'white')
+  ),
+  $ivue-back-top
 );
 
 :root {
@@ -145,6 +171,7 @@ $ivue-loading: map.merge(
   @include set-css-var-value('ivue-color-error', $color-error);
   @include set-css-var-value('ivue-color-warning', $color-warning);
   @include set-css-var-value('ivue-color-default', $color-default);
+  @include set-css-var-value('ivue-color-black', $color-black);
 
   // disabled
   @include set-component-css-var('ivue-disabled', $disabled);
@@ -157,10 +184,12 @@ $ivue-loading: map.merge(
 
   // ivue-bottom-nav
   @include set-component-css-var('ivue-bottom-nav', $ivue-bottom-nav);
-
   // ivue-button
   @include set-component-css-var('ivue-button', $ivue-button);
-
-  // loading
+  // ivue-loading
   @include set-component-css-var('ivue-loading', $ivue-loading);
+  // ivue-ripple
+  @include set-component-css-var('ivue-ripple', $ivue-ripple);
+  // ivue-back-top
+  @include set-component-css-var('ivue-back-top', $ivue-back-top);
 }

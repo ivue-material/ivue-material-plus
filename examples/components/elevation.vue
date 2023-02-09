@@ -21,7 +21,7 @@ export default {
 </script>
 
 <style lang="scss">
-@import '../../packages/styles/src/ivue-elevation/index.scss';
+@import '../../packages/styles/src/elevation';
 
 .elevation-demo {
   padding: 16px;

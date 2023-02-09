@@ -1,42 +1,70 @@
-// @ts-nocheck
+import { useNamespace } from '@ivue-material-plus/hooks';
+import { CSSProperties } from 'vue';
 
-/**
- * 创建 transform
- *
- * el: HTMLElement, value: string
- */
+// type
+type Value = {
+  center: boolean | undefined;
+  class: any;
+};
+
+// Ripple
+type Ripple = {
+  circle?: boolean;
+  enabled?: boolean;
+  centered?: boolean;
+  class?: any;
+  touched?: boolean;
+};
+
+// Binding
+type Binding = {
+  value: BindingValue;
+  oldValue?: BindingValue;
+};
+type BindingValue = {
+  class: any;
+  center: boolean;
+  circle: boolean;
+};
+
+// Element
+type El = {
+  _ripple?: Ripple;
+  style: CSSProperties;
+  dataset: {
+    previousPosition?: 'static' | 'relative' | 'absolute' | 'sticky' | 'fixed';
+  };
+} & Element;
+
+const prefixCls = 'ivue-ripple';
+
+// bem
+const bem = useNamespace(prefixCls);
+
+// 创建 transform
 function transform(el: HTMLElement, value: string) {
   el.style['transform'] = value;
   el.style['webkitTransform'] = value;
 }
 
-/**
- * 创建 opacity
- *
- * el: HTMLElement, value: number
- */
+// 创建 opacity
 function opacity(el: HTMLElement, value: number) {
   el.style['opacity'] = value.toString();
 }
 
-/**
- * 是否有 touch 事件
- */
-function isTouchEvent(e) {
+// 是否有 touch 事件
+function isTouchEvent(e: Event): boolean {
   return e.constructor.name === 'TouchEvent';
 }
 
-function isRippleEnabled(value) {
+// 禁用
+function isRippleEnabled(value?: BindingValue) {
   return typeof value === 'undefined' || !!value;
 }
 
-/**
- * 涟漪显示
- *
- * e: MouseEvent | TouchEvent
- */
-function rippleShow(e) {
-  const value = {
+// 涟漪显示
+function rippleShow(e: any) {
+  const value: Value = {
     center: false,
     class: {},
   };
@@ -62,13 +90,9 @@ function rippleShow(e) {
   ripple.show(e, element, value);
 }
 
-/**
- * 涟漪隐藏
- *
- * e: Event
- */
-function rippleHide(e) {
-  const element = e.currentTarget;
+// 涟漪隐藏
+function rippleHide(e: Event) {
+  const element = e.currentTarget as El;
   if (!element) {
     return;
   }
@@ -82,17 +106,15 @@ function rippleHide(e) {
   ripple.hide(element);
 }
 
-/**
- * 获取点击的位置
- *
- * e: MouseEvent | TouchEvent, el: HTMLElement, value: RippleOptions = {}
- */
-const calculate = (e, el, value) => {
+// 获取点击的位置
+const calculate = (e: Event, el: El, value: Value) => {
   // 元素的大小及其相对于视口的位置。
   const offset = el.getBoundingClientRect();
-  const target = isTouchEvent(e) ? e.touches[e.touches.length - 1] : e;
-  const localX = target.clientX - offset.left;
-  const localY = target.clientY - offset.top;
+  const target = isTouchEvent(e)
+    ? (e as TouchEvent).touches[(e as TouchEvent).touches.length - 1]
+    : e;
+  const localX = (target as MouseEvent).clientX - offset.left;
+  const localY = (target as MouseEvent).clientY - offset.top;
 
   let radius = 0;
   let scale = 0.3;
@@ -117,13 +139,9 @@ const calculate = (e, el, value) => {
   return { radius, scale, x, y, centerX, centerY };
 };
 
-/**
- * 涟漪元素
- */
+// 涟漪元素
 const ripple = {
-  /* eslint-disable max-statements */
-  // e: MouseEvent | TouchEvent, el: HTMLElement, value: RippleOptions = {}
-  show(e, el, value) {
+  show(e: Event, el: El, value: Value) {
     if (!el._ripple || !el._ripple.enabled) {
       return;
     }
@@ -135,7 +153,7 @@ const ripple = {
 
     // 添加节点
     container.appendChild(animation);
-    container.className = 'ivue-ripple';
+    container.className = bem.b();
 
     if (value.class && typeof value.class === 'string') {
       container.className += ` ${value.class}`;
@@ -146,7 +164,7 @@ const ripple = {
 
     const size = `${radius * 2}px`;
 
-    animation.className = 'ivue-ripple-wave';
+    animation.className = bem.e('wave');
     animation.style.width = size;
     animation.style.height = size;
 
@@ -161,8 +179,8 @@ const ripple = {
       el.dataset.previousPosition = 'static';
     }
 
-    animation.classList.add('ivue-ripple-wave-enter');
-    animation.classList.add('ivue-ripple-wave-visible');
+    animation.classList.add(bem.is('enter'));
+    animation.classList.add(bem.is('visible'));
 
     transform(
       animation,
@@ -174,26 +192,26 @@ const ripple = {
     animation.dataset.activated = String(performance.now());
 
     setTimeout(() => {
-      animation.classList.remove('ivue-ripple-wave--enter');
+      animation.classList.remove(bem.is('enter'));
       // 添加动画
-      animation.classList.add('ivue-ripple-wave--in');
+      animation.classList.add(bem.is('in'));
       transform(animation, `translate(${centerX}, ${centerY}) scale3d(1,1,1)`);
       opacity(animation, 0.25);
     }, 0);
   },
   // 隐藏
-  hide(el) {
+  hide(el: El) {
     if (!el || !el._ripple || !el._ripple.enabled) {
       return;
     }
 
-    const ripples = el.getElementsByClassName('ivue-ripple-wave');
+    const ripples = el.getElementsByClassName(bem.e('wave'));
 
     if (ripples.length === 0) {
       return;
     }
 
-    const animation = ripples[ripples.length - 1];
+    const animation = ripples[ripples.length - 1] as HTMLElement;
 
     if (animation.dataset.isHiding) {
       return;
@@ -207,13 +225,13 @@ const ripple = {
 
     setTimeout(() => {
       // 结束动画
-      animation.classList.remove('ivue-ripple-wave--in');
-      animation.classList.add('ivue-ripple-wave--on');
+      animation.classList.remove(bem.is('in'));
+      animation.classList.add(bem.is('on'));
       opacity(animation, 0);
 
       // 3ms 后删除节点
       setTimeout(() => {
-        const ripples = el.getElementsByClassName('ivue-ripple-wave');
+        const ripples = el.getElementsByClassName(bem.e('wave'));
 
         if (ripples.length === 1 && el.dataset.previousPosition) {
           el.style.position = el.dataset.previousPosition;
@@ -227,7 +245,7 @@ const ripple = {
 };
 
 // 更新涟漪效果
-function updateRipple(el, binding, wasEnabled) {
+function updateRipple(el: El, binding: Binding, wasEnabled: boolean) {
   // 是否开启效果
   // value 指令的绑定值，例如：v-my-directive="1 + 1" 中，绑定值为 2
   const enabled = isRippleEnabled(binding.value);
@@ -240,7 +258,7 @@ function updateRipple(el, binding, wasEnabled) {
   el._ripple = el._ripple || {};
   el._ripple.enabled = enabled;
 
-  const value = binding.value || {};
+  const value = (binding.value || {}) as BindingValue;
 
   // 设置各种属性
   if (value.center) {
@@ -274,12 +292,8 @@ function updateRipple(el, binding, wasEnabled) {
   }
 }
 
-/**
- * 删除事件
- *
- * el: HTMLElement
- */
-function removeListeners(el) {
+// 删除事件
+function removeListeners(el: El) {
   el.removeEventListener('mousedown', rippleShow);
   el.removeEventListener('touchstart', rippleHide);
   el.removeEventListener('touchend', rippleHide);
@@ -290,11 +304,7 @@ function removeListeners(el) {
 }
 
 // 只调用一次，指令第一次绑定到元素时调用。在这里可以进行一次性的初始化设置。
-function directive(
-  el: Element,
-  binding: Record<string, any>,
-  node: Record<string, any>
-): void {
+function directive(el: El, binding: Binding, node: Record<string, any>): void {
   updateRipple(el, binding, false);
 
   // warn if an inline element is used, waiting for el to be in the DOM first
@@ -307,7 +317,6 @@ function directive(
           ? [node.fnOptions, node.context]
           : [node.componentInstance];
 
-        // eslint-disable-next-line no-console
         console.warn(
           'v-ripple can only be used on block-level elements',
           ...context
@@ -316,23 +325,15 @@ function directive(
     });
 }
 
-/**
- * 指令与元素解绑时调用
- *
- * el: HTMLElement
- */
-function unmounted(el: Record<string, any>): void {
+// 指令与元素解绑时调用
+function unmounted(el: El): void {
   delete el._ripple;
 
   removeListeners(el);
 }
 
-/**
- * 所在组件的 VNode 更新时调用
- *
- * el: HTMLElement, binding: VNodeDirective
- */
-function updated(el: Record<string, any>, binding: Record<string, any>): void {
+// 所在组件的 VNode 更新时调用
+function updated(el: El, binding: Binding): void {
   if (binding.value === binding.oldValue) {
     return;
   }
