@@ -184,7 +184,7 @@
       </ivue-carousel>
     </div>
     <h1>卡片化</h1>
-    <ivue-carousel type="card" height="auto">
+    <ivue-carousel type="card" height="auto" >
       <ivue-carousel-item>
         <div class="demo-carousel">1</div>
       </ivue-carousel-item>

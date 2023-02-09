@@ -3,7 +3,7 @@ import { buildProps } from '@ivue-material-plus/utils';
 // type
 import type { ExtractPropTypes, InjectionKey, Ref } from 'vue';
 import type Carousel from './carousel.vue';
-// import type { CarouselItemContext } from '../../ivue-carousel-item/src/carousel-item';
+import type { CarouselItemContext } from '../../ivue-carousel-item/src/carousel-item';
 
 // props
 export const carouselProps = buildProps({
@@ -197,26 +197,3 @@ export type CarouselContext = {
 };
 export const CarouselContextKey: InjectionKey<CarouselContext> =
   Symbol('ivue-carousel');
-
-
-  // CarouselItemContext
-export type CarouselItemContext = {
-  props: any;
-  uid: number;
-  translateItem: (
-    index: number,
-    activeIndex: number,
-    oldIndex?: number
-  ) => void;
-} & CarouselItemStates;
-
-// CarouselItemStates
-export type CarouselItemStates = {
-  translate: number
-  scale: number;
-  active: boolean
-  ready: boolean
-  inStage: boolean
-  animating: boolean
-  hover: boolean
-};

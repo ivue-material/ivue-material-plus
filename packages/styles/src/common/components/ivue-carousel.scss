@@ -12,7 +12,13 @@ $carousel: map.merge(
     'dot-width-vertical': 2px,
     'dot-height-vertical': 15px,
     'dot-radius-size': 6px,
+    // content
     'content-height': 200px,
+    // arrow
+    'arrow-size': 36px,
+    'arrow-icon-font-size': 24px,
+    'arrow-icon-left': 16px,
+    'arrow-icon-right': 16px,
   ),
   $carousel
 );

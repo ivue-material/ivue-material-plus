@@ -102,7 +102,6 @@ export default defineComponent({
     });
 
     return {
-      prefixCls,
       bem,
 
       // dom

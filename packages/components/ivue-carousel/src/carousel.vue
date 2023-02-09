@@ -9,7 +9,7 @@
       <!-- 左按钮 -->
       <transition v-if="arrowDisplay" name="fade">
         <ivue-button
-          :class="[`${prefixCls}-arrow left`]"
+          :class="[bem.e('arrow'), 'left']"
           flat
           icon
           @mouseenter="handleArrowEnter('left')"
@@ -29,7 +29,7 @@
       <!-- 右按钮 -->
       <transition v-if="arrowDisplay" name="fade">
         <ivue-button
-          :class="[`${prefixCls}-arrow right`]"
+          :class="[bem.e('arrow'), 'right']"
           flat
           icon
           @mouseenter="handleArrowEnter('right')"
@@ -80,15 +80,14 @@
 
 <script lang="ts">
 import { computed, defineComponent, unref } from 'vue';
-
-import IvueButton from '@ivue-material-plus/components/ivue-button';
-import IvueIcon from '@ivue-material-plus/components/ivue-icon';
 import { useNamespace } from '@ivue-material-plus/hooks';
-
 // carousel
 import { carouselProps, carouselEmits } from './carousel';
 // use
 import { useCarousel } from './use-carousel';
+// components
+import IvueButton from '@ivue-material-plus/components/ivue-button';
+import IvueIcon from '@ivue-material-plus/components/ivue-icon';
 
 const prefixCls = 'ivue-carousel';
 
@@ -115,6 +114,7 @@ export default defineComponent({
       isCardType,
       hasLabel,
       isVertical,
+      arrowDisplay,
 
       // methods
       setActiveItem,
@@ -135,14 +135,14 @@ export default defineComponent({
     // 外层样式
     const wrapperClasses = computed(() => {
       return [
-        prefixCls,
+        bem.b(),
         {
           // 展示的方向
           [bem.b(props.direction)]: true,
           // 卡片类型
           [bem.b('card')]: isCardType.value,
           // 没有初始化完成
-          [bem.is('is-no-init')]: !unref(init),
+          [bem.is('no-init')]: !unref(init),
         },
       ];
     });
@@ -168,7 +168,7 @@ export default defineComponent({
       return [
         bem.b('dots'),
         // 指示器的位置
-        bem.is('outside'),
+        bem.is(props.dots),
         {
           // 指示器文字
           [bem.is('labels')]: unref(hasLabel),
@@ -180,13 +180,7 @@ export default defineComponent({
       ];
     });
 
-    // 按钮禁用
-    const arrowDisplay = computed(() => {
-      return props.arrow !== 'never' && !unref(isVertical);
-    });
-
     return {
-      prefixCls,
       bem,
       // dom
       wrapper,
@@ -200,7 +194,6 @@ export default defineComponent({
       wrapperClasses,
       dotsClasses,
       contentStyles,
-
       arrowDisplay,
 
       // methods

@@ -12,15 +12,13 @@ import { isString } from '@vue/shared';
 import { throttle } from 'lodash-unified';
 import { useResizeObserver } from '@vueuse/core';
 
+// carousel
 import { CarouselContextKey } from './carousel';
 
 // type
-import type {
-  CarouselProps,
-  CarouselEmits,
-  CarouselItemContext,
-} from './carousel';
 import type { SetupContext } from 'vue';
+import type { CarouselProps, CarouselEmits } from './carousel';
+import type { CarouselItemContext } from '../../ivue-carousel-item/src/carousel-item';
 
 export const useCarousel = (
   props: CarouselProps,
@@ -60,6 +58,11 @@ export const useCarousel = (
   // 是否是卡片类型
   const isCardType = computed(() => {
     return props.type === 'card';
+  });
+
+  // 按钮禁用
+  const arrowDisplay = computed(() => {
+    return props.arrow !== 'never' && !unref(isVertical);
   });
 
   // methods
@@ -431,6 +434,7 @@ export const useCarousel = (
     isCardType,
     hasLabel,
     isVertical,
+    arrowDisplay,
 
     // methods
     addItem,

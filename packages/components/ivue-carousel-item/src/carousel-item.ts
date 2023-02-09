@@ -46,13 +46,13 @@ export type CarouselItemContext = {
 
 // CarouselItemStates
 export type CarouselItemStates = {
-  translate: Ref<number>;
-  scale: Ref<number>;
-  active: Ref<boolean>;
-  ready: Ref<boolean>;
-  inStage: Ref<boolean>;
-  animating: Ref<boolean>;
-  hover: Ref<boolean>;
+  translate: number;
+  scale: number;
+  active: boolean;
+  ready: boolean;
+  inStage: boolean;
+  animating: boolean;
+  hover: boolean;
 };
 
 // WrapperStyles

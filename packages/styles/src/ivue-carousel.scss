@@ -50,7 +50,7 @@ $name: 'ivue-carousel';
   }
 
   // 箭头
-  .#{$name}-arrow {
+  @include e(arrow) {
     position: absolute;
     top: 50%;
     text-align: center;
@@ -61,27 +61,28 @@ $name: 'ivue-carousel';
     outline: none;
     padding: 0;
     margin: 0;
-    width: var(--#{$name}-arrow-size);
-    min-width: var(--#{$name}-arrow-size);
-    height: var(--#{$name}-arrow-size);
     border-radius: 50%;
     cursor: pointer;
     transform: translateY(-50%);
-    transition: var(--ivue-all-transition);
-    color: var(--ivue-white-color);
-    background-color: var(--#{$name}-arrow-bg);
+    transition: all 0.4s ease-in-out;
     z-index: 15;
 
+    width: getCssVar($name, 'arrow-size');
+    min-width: getCssVar($name, 'arrow-size');
+    height: getCssVar($name, 'arrow-size');
+    color: getCssVar($name, 'arrow-color');
+    background-color: getCssVar($name, 'arrow-bg');
+
     i {
-      font-size: var(--#{$name}-arrow-icon-font-size);
+      font-size: getCssVar($name, 'arrow-icon-font-size') !important;
     }
 
     &.left {
-      left: var(--#{$name}-arrow-icon-left);
+      left: getCssVar($name, 'arrow-icon-left');
     }
 
     &.right {
-      right: var(--#{$name}-arrow-icon-right);
+      right: getCssVar($name, 'arrow-icon-right');
     }
   }
 }
@@ -238,11 +239,11 @@ $name: 'ivue-carousel';
     transform: none;
     text-align: center;
 
-    .#{$name}-dots--dot {
+    @include e(dot) {
       padding: 0;
     }
 
-    .#{$name}-dots--button {
+    @include e(button) {
       height: auto;
       width: auto;
       padding: 2px 18px;

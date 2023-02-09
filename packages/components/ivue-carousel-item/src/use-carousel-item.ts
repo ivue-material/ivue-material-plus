@@ -8,7 +8,9 @@ import {
   onUnmounted,
 } from 'vue';
 
+// utils
 import { isUndefined } from '@ivue-material-plus/utils';
+// carousel
 import {
   CarouselContextKey,
   CarouselContext,
@@ -52,6 +54,8 @@ export const useCarouselItem = (props: CarouselItemProps) => {
   // dom
   const carouselItem = ref<HTMLElement>();
 
+  // data
+
   // 是否激活
   const active = ref<boolean>(false);
   // 执行动画
@@ -80,7 +84,7 @@ export const useCarouselItem = (props: CarouselItemProps) => {
     const _isCardType = unref(isCardType);
     const _isVertical = unref(isVertical);
 
-    const itemsLength = items.value.length ?? Number.NaN;
+    const itemsLength = unref(items).length ?? Number.NaN;
 
     // 是否激活
     const isActive = index === activeIndex;
@@ -196,7 +200,7 @@ export const useCarouselItem = (props: CarouselItemProps) => {
     activeIndex: number,
     isVertical: boolean
   ) => {
-    const wrapperEl = wrapper.value;
+    const wrapperEl = unref(wrapper);
 
     if (!wrapperEl) {
       return 0;
@@ -224,12 +228,12 @@ export const useCarouselItem = (props: CarouselItemProps) => {
     let parentOffset = 0;
 
     // 垂直
-    if (isVertical.value) {
-      parentOffset = wrapper.value?.offsetHeight || 0;
+    if (unref(isVertical)) {
+      parentOffset = unref(wrapper)?.offsetHeight || 0;
     }
     // 横向
     else {
-      parentOffset = wrapper.value?.offsetWidth || 0;
+      parentOffset = unref(wrapper)?.offsetWidth || 0;
     }
 
     // 可以点击下一个
@@ -248,7 +252,7 @@ export const useCarouselItem = (props: CarouselItemProps) => {
 
   // 点击选项
   const handleItemClick = () => {
-    if (wrapper.value && isCardType.value) {
+    if (unref(wrapper) && unref(isCardType)) {
       // 当前点击的index
       const index = unref(items).findIndex(({ uid: _uid }) => {
         return _uid === uid;
@@ -263,13 +267,13 @@ export const useCarouselItem = (props: CarouselItemProps) => {
   onMounted(() => {
     addItem({
       props,
-      translate: translate.value,
-      scale: scale.value,
-      active: active.value,
-      ready: ready.value,
-      inStage: inStage.value,
-      animating: animating.value,
-      hover: hover.value,
+      translate: unref(translate),
+      scale: unref(scale),
+      active: unref(active),
+      ready: unref(ready),
+      inStage: unref(inStage),
+      animating: unref(animating),
+      hover: unref(hover),
       uid,
       translateItem,
     });
