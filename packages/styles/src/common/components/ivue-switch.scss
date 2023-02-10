@@ -1,0 +1,26 @@
+@use 'sass:map';
+@use 'sass:math';
+
+@use '../../mixins/function.scss' as *;
+
+$switch: () !default;
+$switch: map.merge(
+  (
+    'width': '44px',
+    'height': math.div(44px, 2),
+    'after-size': 18px,
+    // checked
+    'checked-after-left': calc(math.div(44px, 2) + 1px),
+    'checked-before-left': calc(math.div(44px, 2) + 2px),
+    'checked-inner-left': 7px,
+    // emboss
+    'emboss-default-width': 38px,
+    'emboss-default-height': 22px,
+    'emboss-large-width': 60px,
+    'emboss-large-height': 28px,
+    'emboss-small-width': 28px,
+    'emboss-small-height': 16px,
+    'emboss-margin': 7px,
+  ),
+  $switch
+);

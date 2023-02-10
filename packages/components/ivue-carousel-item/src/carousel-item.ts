@@ -54,9 +54,3 @@ export type CarouselItemStates = {
   animating: boolean;
   hover: boolean;
 };
-
-// WrapperStyles
-export type WrapperStyles = {
-  transform: string;
-  zIndex?: number;
-};

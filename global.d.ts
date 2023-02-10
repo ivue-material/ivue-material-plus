@@ -11,6 +11,9 @@ declare module '@vue/runtime-core' {
     IvueBadge: typeof import('ivue-material-plus')['IvueBadge'];
     IvueCarousel: typeof import('ivue-material-plus')['IvueCarousel'];
     IvueCarouselItem: typeof import('ivue-material-plus')['IvueCarouselItem'];
+    IvueForm: typeof import('ivue-material-plus')['IvueForm'];
+    IvueFormItem: typeof import('ivue-material-plus')['IvueFormItem'];
+    IvueSwitch: typeof import('ivue-material-plus')['IvueSwitch'];
   }
 
   interface ComponentCustomProperties {

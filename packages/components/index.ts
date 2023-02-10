@@ -8,6 +8,8 @@ export * from './ivue-back-top';
 export * from './ivue-badge';
 export * from './ivue-carousel';
 export * from './ivue-carousel-item';
+export * from './ivue-switch';
+export * from './ivue-form';
 
 // plugins
 export * from './ivue-ripple';

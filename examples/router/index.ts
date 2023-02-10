@@ -9,6 +9,8 @@ import avatar from '../components/avatar.vue';
 import backTop from '../components/back-top.vue';
 import badge from '../components/badge.vue';
 import carousel from '../components/carousel.vue';
+import Switch from '../components/switch.vue';
+import Form from '../components/form.vue';
 
 const routes = [
   {
@@ -60,6 +62,16 @@ const routes = [
     path: '/carousel',
     name: 'carousel',
     component: carousel,
+  },
+  {
+    path: '/Switch',
+    name: 'Switch',
+    component: Switch,
+  },
+  {
+    path: '/Form',
+    name: 'Form',
+    component: Form,
   },
 ];
 

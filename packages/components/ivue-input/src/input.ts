@@ -295,7 +295,7 @@ export const inputProps = buildProps({
     type: Boolean,
     default: true,
   },
-});
+} as const);
 
 // props 类型
 export type InputProps = ExtractPropTypes<typeof inputProps>;

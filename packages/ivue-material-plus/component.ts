@@ -8,6 +8,11 @@ import { IvueBackTop } from '@ivue-material-plus/components/ivue-back-top';
 import { IvueBadge } from '@ivue-material-plus/components/ivue-badge';
 import { IvueCarousel } from '@ivue-material-plus/components/ivue-carousel';
 import { IvueCarouselItem } from '@ivue-material-plus/components/ivue-carousel-item';
+import { IvueSwitch } from '@ivue-material-plus/components/ivue-switch';
+import {
+  IvueForm,
+  IvueFormItem,
+} from '@ivue-material-plus/components/ivue-form';
 
 import type { Plugin } from 'vue';
 
@@ -21,5 +26,8 @@ export default [
   IvueBackTop,
   IvueBadge,
   IvueCarousel,
-  IvueCarouselItem
+  IvueCarouselItem,
+  IvueSwitch,
+  IvueForm,
+  IvueFormItem,
 ] as Plugin[];

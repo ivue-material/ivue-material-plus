@@ -24,9 +24,6 @@ import { carouselItemProps } from './carousel-item';
 // use
 import { useCarouselItem } from './use-carousel-item';
 
-// type
-import { WrapperStyles } from './carousel-item';
-
 const prefixCls = 'ivue-carousel-item';
 
 export default defineComponent({
@@ -83,22 +80,22 @@ export default defineComponent({
 
     // 外层样式
     const wrapperStyles = computed(() => {
-      const translateType = `translate${isVertical.value ? 'Y' : 'X'}`;
+      const translateType = `translate${unref(isVertical) ? 'Y' : 'X'}`;
       const _translate = `${translateType}(${unref(translate)}px)`;
       const _scale = `scale(${unref(scale)})`;
-
       const transform = [_translate, _scale].join(' ');
-
-      const style: WrapperStyles = {
-        transform,
-      };
 
       // 是卡片 有zIndex
       if (isCardType.value && unref(zIndex)) {
-        style.zIndex = unref(zIndex);
+        return {
+          transform,
+          zIndex: unref(zIndex)
+        };
       }
 
-      return style;
+      return {
+        transform
+      };
     });
 
     return {

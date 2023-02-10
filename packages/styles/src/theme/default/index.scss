@@ -33,6 +33,8 @@ $color-error: map.get($colors, 'error', 'base') !default;
 $color-warning: map.get($colors, 'warning', 'base') !default;
 $color-default: map.get($colors, 'default') !default;
 $color-black: map.get($colors, 'black') !default;
+$border-color: #dcdee2 !default;
+$disabled-bg: #ededed !default;
 
 // title
 $title-color: #383d47;
@@ -176,11 +178,30 @@ $ivue-carousel: map.merge(
   $ivue-carousel
 );
 
+// ivue-switch
+$ivue-switch: () !default;
+$ivue-switch: map.merge(
+  (
+    'bg': '#858585',
+    'after-bg': getCssVar('ivue-color-white'),
+    'inner-color': getCssVar('ivue-color-white'),
+    'disabled-border-color': getCssVar('ivue-border-color'),
+    'disabled-bg': getCssVar('ivue-disabled-bg'),
+    'emboss-inner-color': getCssVar('ivue-text-color'),
+    'thumb-color': getCssVar('ivue-color-white'),
+  ),
+  $ivue-switch
+);
+
 :root {
   // title
   @include set-css-var-value('ivue-title-color', $title-color);
   // text
   @include set-css-var-value('ivue-text-color', $text-color);
+  // border-color
+  @include set-css-var-value('ivue-border-color', $border-color);
+  // disabled-bg
+  @include set-css-var-value('ivue-disabled-bg', $disabled-bg);
 
   // color
   @include set-css-var-value('ivue-color-white', $color-white);
@@ -212,4 +233,6 @@ $ivue-carousel: map.merge(
   @include set-component-css-var('ivue-back-top', $ivue-back-top);
   // ivue-carousel
   @include set-component-css-var('ivue-carousel', $ivue-carousel);
+  // ivue-switch
+  @include set-component-css-var('ivue-switch', $ivue-switch);
 }
