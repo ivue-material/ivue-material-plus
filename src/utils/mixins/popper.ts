@@ -1,6 +1,9 @@
 import { nextTick, defineComponent } from 'vue';
 import { createPopper } from '@popperjs/core';
 
+// typs
+export type { Placement } from '@popperjs/core';
+
 export default defineComponent({
   emits: [
     'on-popper-show',

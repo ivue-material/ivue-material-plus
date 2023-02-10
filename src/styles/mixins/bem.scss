@@ -1,0 +1,73 @@
+@use 'config' as *;
+@use 'function' as *;
+
+// BEM
+
+// 表示一个块元素，比如一个 Modal 弹窗组件、一个 Button 组件，都可以用一个块来表示
+@mixin b($block) {
+  // $B: '#{$block}' !global;
+  $B: $block !global;
+
+  .#{$B} {
+    @content;
+  }
+}
+
+// 表示一个子元素，存在于块元素之内
+@mixin m($modifier) {
+  $selector: &;
+  $currentSelector: '';
+
+  @each $unit in $modifier {
+    // '' + & + -- + $modifier +,
+    // &--$modifier,
+    $currentSelector: #{$currentSelector +
+      $selector +
+      $modifier-separator +
+      $unit +
+      ','};
+  }
+
+  // 暴露到根节点
+  @at-root {
+    #{$currentSelector} {
+      @content;
+    }
+  }
+}
+
+// 表示修饰符或者状态
+@mixin e($element) {
+  $E: $element !global;
+  $selector: &;
+  // 当前选择器
+  $currentSelector: '';
+
+  // 遍历元素
+  @each $unit in $element {
+    // currentSelector.$B$element-separator$unit
+    $currentSelector: #{$currentSelector +
+      '.' +
+      $B +
+      $element-separator +
+      $unit +
+      ','};
+  }
+
+  // 命中所有特殊嵌套规则 包含修饰符 | 包含 When 标志 | 包含伪类
+  @if hitAllSpecialNestRule($selector) {
+    @at-root {
+      #{$selector} {
+        #{$currentSelector} {
+          @content;
+        }
+      }
+    }
+  } @else {
+    @at-root {
+      #{$currentSelector} {
+        @content;
+      }
+    }
+  }
+}

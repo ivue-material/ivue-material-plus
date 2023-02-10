@@ -26,6 +26,9 @@ module.exports = {
           })
           .end();
       });
+      config.resolve
+        .plugin('tsconfig-paths')
+        .use(require('tsconfig-paths-webpack-plugin'));
     }
   },
 };

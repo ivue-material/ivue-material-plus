@@ -1,40 +1,40 @@
+@use '../mixins/mixins' as *;
+@use '../common/var.scss' as *;
+
 $name: 'ivue-avatar';
 
-:root {
-  --#{$name}-size: 32px;
-  --#{$name}-square-radius: 4px;
-  --#{$name}-image-object-fit: cover;
-}
+@include b($name) {
+  // 设置组件 css var 变量
+  @include set-component-css-var($name, $avatar);
 
-.#{$name} {
   display: inline-flex;
   text-align: center;
-  background: var(--ivue-disabled-color);
-  color: var(--ivue-white-color);
+  color: getCssVar('ivue-color', 'white');
+  background: getCssVar('ivue-disabled', 'color');
   white-space: nowrap;
   position: relative;
   overflow: hidden;
   vertical-align: middle;
   align-items: center;
   justify-content: center;
-  width: var(--#{$name}-size);
-  height: var(--#{$name}-size);
-  line-height: var(--#{$name}-size);
+  width: getCssVar($name, 'width');
+  height: getCssVar($name, 'width');
+  line-height: getCssVar($name, 'width');
 
-  /* 图片 */
-  &-img {
+  // 图片
+  @include m(img) {
     width: 100%;
     height: 100%;
-    object-fit: var(--#{$name}-image-object-fit);
+    object-fit: getCssVar('ivue-image-object-fit', 'cover');
   }
 
-  /*  */
-  &-circle {
+  // 圆形
+  @include m(circle) {
     border-radius: 50%;
   }
 
-  /* 正方形 */
-  &-square {
-    border-radius: var(--#{$name}-square-radius);
+  // 正方形
+  @include m(square) {
+    border-radius: getCssVar('ivue-radius', '4px');
   }
 }

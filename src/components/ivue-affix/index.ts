@@ -1,8 +1,8 @@
-import { withInstall } from '../../utils/install';
+import { withInstall } from '@ivue-material-plus/utils';
 
-import Affix from './index.vue';
+import Affix from './src/affix.vue';
 
 export const IvueAffix = withInstall(Affix);
 export default IvueAffix;
 
-export * from './index.vue';
+export * from './src/affix';

@@ -1,8 +1,8 @@
-import { withInstall } from '../../utils/install';
+import { withInstall } from '@ivue-material-plus/utils';
 
-import AutoComplete from './index.vue';
+import AutoComplete from './src/auto-complete.vue';
 
 export const IvueAutoComplete = withInstall(AutoComplete);
 export default IvueAutoComplete;
 
-export * from './index.vue';
+export * from './src/auto-complete.vue';

@@ -1,0 +1,21 @@
+@use 'sass:map';
+@use '../../mixins/function.scss' as *;
+
+$badge: () !default;
+$badge: map.merge(
+  (
+    // count
+    'count-padding': 0 6px,
+    'count-size': 20px,
+    'count-radius': 10px,
+    'count-font-size': getCssVar('ivue-font-size-small'),
+    // dot
+    'dot-position-top': -4px,
+    'dot-position-right': -8px,
+    'dot-size': 8px,
+
+    // status dot
+    'status-dot-size': 6px
+  ),
+  $badge
+);

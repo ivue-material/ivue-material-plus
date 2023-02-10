@@ -1,4 +1,8 @@
-.ivue-affix {
-  position: fixed;
-  z-index: 10;
+@use '../mixins/mixins' as *;
+
+@include b(affix) {
+  @include m(fixed) {
+    position: fixed;
+    z-index: 100;
+  }
 }
