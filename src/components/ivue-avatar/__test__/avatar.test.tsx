@@ -1,7 +1,7 @@
 import { mount } from '@vue/test-utils';
 import { describe, test, expect } from 'vitest';
 import Avatar from '../index';
-import { IMAGE_FAIL, IMAGE_SUCCESS, mockImageEvent } from '../../../test-utils/mork';
+import { IMAGE_SUCCESS, mockImageEvent } from '../../../test-utils/mork';
 
 describe('Avatar', () => {
   mockImageEvent();
