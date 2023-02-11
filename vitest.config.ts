@@ -1,3 +1,4 @@
+import path from 'path';
 // 配置Vitest
 import { defineConfig } from 'vitest/config';
 // 实现尚未被 Vue 正式现实的提案或想法
