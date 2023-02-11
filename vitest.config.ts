@@ -1,3 +1,4 @@
+import path from 'path';
 // 配置Vitest
 import { defineConfig } from 'vitest/config';
 // 实现尚未被 Vue 正式现实的提案或想法
@@ -19,6 +20,15 @@ export default defineConfig({
       },
     }),
   ],
+  resolve: {
+    alias: [
+      {
+        find: /^@ivue-material-plus/,//这里必须使用正则表达式
+        //把正则匹配到的地方，@->src
+        replacement: path.resolve(__dirname, './src'),
+      },
+    ],
+  },
   // 禁用深度优化
   optimizeDeps: {
     disabled: true,

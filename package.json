@@ -13,6 +13,8 @@
   ],
   "scripts": {
     "cz": "czg",
+    "test": "vitest",
+    "test:coverage": "vitest --coverage",
     "serve": "vue-cli-service serve",
     "build": "npm run build:prod && npm run build:style && npm run build:rollup",
     "build:style": "gulp --gulpfile build/build-style.js",
@@ -23,8 +25,7 @@
     "format": "prettier --write --cache .",
     "prepare": "husky install",
     "typecheck": "vue-tsc -p tsconfig.json --composite false --noEmit",
-    "typecheck:web": "vue-tsc -p tsconfig.json --composite false --noEmit",
-    "test": "vitest"
+    "typecheck:web": "vue-tsc -p tsconfig.json --composite false --noEmit"
   },
   "repository": {
     "type": "git",
