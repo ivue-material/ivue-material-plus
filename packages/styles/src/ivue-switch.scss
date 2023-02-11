@@ -1,4 +1,5 @@
 @use 'sass:math';
+@use 'sass:list';
 
 @use 'base.scss' as *;
 @use 'mixins/mixins' as *;
@@ -7,30 +8,6 @@
 
 $name: 'ivue-switch';
 
-:root {
-  // color
-  --#{$name}-bg: #858585;
-
-  // emboss
-  --#{$name}-disabled-emboss-thumb-color: #fafafa;
-  --#{$name}-disabled-emboss-track-color: rgba(0, 0, 0, 0.12);
-  --#{$name}-disabled-emboss-track-checked-color: rgba(0, 0, 0, 0.38);
-
-  // disabled
-  --#{$name}-disabled-bg: #f8f9fd;
-}
-
-$default-width: 44px;
-$default-after-width: 18px;
-
-$emboss-default-width: 38px;
-$emboss-default-height: 22px;
-$emboss-large-width: 60px;
-$emboss-large-height: 28px;
-$emboss-small-width: 28px;
-$emboss-small-height: 16px;
-$emboss-margin: 7px;
-
 @mixin transition() {
   transition: left 0.2s ease-in-out, width 0.2s ease-in-out;
 }
@@ -38,6 +15,9 @@ $emboss-margin: 7px;
 @include b($name) {
   // 设置组件 css var 变量
   @include set-component-css-var($name, $switch);
+  @include set-component-css-var($name, $switch-after);
+  @include set-component-css-var($name, $switch-before);
+  @include set-component-css-var($name, $switch-loading);
 
   position: relative;
   display: inline-block;
@@ -80,27 +60,30 @@ $emboss-margin: 7px;
     @include transition;
   }
 
-  &:active:not(.ivue-switch-disabled) {
+  // active
+  &:active:not(.is-disabled) {
     &::after {
-      width: calc(getCssVar($name, 'after-size') + 8px);
+      width: getCssVar(#{$name}, 'after-active-width');
     }
   }
 
+  // before
   &::before {
     content: '';
     position: absolute;
     top: 2px;
     left: 2px;
     display: none;
-    width: calc(getCssVar($name, 'after-size') - 2px);
-    height: calc(getCssVar($name, 'after-size') - 2px);
     border-radius: 50%;
     background-color: transparent;
     z-index: 1;
     border: 1px solid currentColor;
     border-color: transparent transparent transparent currentColor;
-    animation: switch-loading 1s linear;
+    animation: ivue-switch-loading 1s linear;
     animation-iteration-count: infinite;
+
+    width: getCssVar(#{$name}, 'before-active-width');
+    height: getCssVar(#{$name}, 'before-active-width');
   }
 
   // input
@@ -132,12 +115,10 @@ $emboss-margin: 7px;
     }
 
     &:active:not(.ivue-switch-disabled)::after {
-      left: calc(
-        math.div(getCssVar($name, 'width'), 2) -
-          math.div(getCssVar($name, 'after-size'), 2) + 2px
-      );
+      left: getCssVar($name, 'after-checked-active-left');
     }
 
+    // 内部文字样式
     @include e(inner) {
       left: getCssVar($name, 'checked-inner-left');
     }
@@ -148,7 +129,8 @@ $emboss-margin: 7px;
     position: absolute;
     top: 0;
     bottom: 0;
-    left: 23px;
+    left: auto;
+    right: getCssVar($name, 'checked-inner-left');
     display: flex;
     align-items: center;
     color: getCssVar($name, 'inner-color');
@@ -187,12 +169,14 @@ $emboss-margin: 7px;
       display: block;
     }
 
+    // checked
     &.is-checked {
       &:active:not(.is-disabled)::after {
-        left: calc(math.div(getCssVar($name, 'width'), 2) + 1px);
+        left: getCssVar($name, 'loading-after-checked-active-left');
       }
     }
 
+    // active
     &:active:not(.is-disabled)::after {
       width: getCssVar($name, 'after-size');
     }
@@ -288,6 +272,7 @@ $emboss-margin: 7px;
 @include b(#{$name}-emboss) {
   // 设置组件 css var 变量
   @include set-component-css-var($name, $switch);
+  @include set-component-css-var($name, $switch-emboss);
 
   position: relative;
   display: inline-flex;
@@ -306,11 +291,16 @@ $emboss-margin: 7px;
 
   // 扁平化
   @include e(content) {
+    @include set-component-css-var($name, $switch-emboss-content);
+    @include set-component-css-var($name, $switch-emboss-loading);
+    @include set-component-css-var($name, $switch-emboss-ripple);
+
     position: relative;
     display: inline-flex;
+    flex: 0 0 auto;
+
     width: getCssVar($name, 'emboss-default-width');
     height: getCssVar($name, 'emboss-default-height');
-    flex: 0 0 auto;
 
     // 跟踪
     @include e(track) {
@@ -324,8 +314,8 @@ $emboss-margin: 7px;
       transition: all $transition-default;
       transition-property: color, background-color;
 
-      width: calc(getCssVar($name, 'emboss-default-width') - 2px);
-      height: calc(math.div(getCssVar($name, 'emboss-default-height'), 2));
+      width: getCssVar($name, 'track-width');
+      height: getCssVar($name, 'track-height');
       color: getCssVar($name, 'bg');
 
       // 激活
@@ -353,34 +343,31 @@ $emboss-margin: 7px;
       // 激活
       &.is-checked {
         color: currentColor;
-        transform: translate(
-          calc(
-            getCssVar($name, 'emboss-default-height') -
-              (math.div(getCssVar($name, 'emboss-default-height'), 4))
-          ),
-          0
-        );
+        transform: translate(getCssVar($name, 'thumb-checked-transform'), 0);
       }
     }
 
     // 禁用
     &.is-disabled {
-      cursor: var(--ivue-cursor-disabled);
+      cursor: not-allowed;
 
-      .#{$name}-emboss--thumb {
-        color: var(--#{$name}-disabled-emboss-thumb-color) !important;
+      // 跟踪
+      @include e(track) {
+        caret-color: getCssVar($name, 'track-disabled-color') !important;
+        color: getCssVar($name, 'track-disabled-color') !important;
+
+        &.is-checked {
+          caret-color: getCssVar(
+            $name,
+            'track-checked-disabled-color'
+          ) !important;
+          color: getCssVar($name, 'track-checked-disabled-color') !important;
+        }
       }
 
-      .#{$name}-emboss--track {
-        caret-color: var(--#{$name}-disabled-emboss-track-color) !important;
-        color: var(--#{$name}-disabled-emboss-track-color) !important;
-
-        &__checked {
-          caret-color: var(
-            --#{$name}-disabled-emboss-track-checked-color
-          ) !important;
-          color: var(--#{$name}-disabled-emboss-track-checked-color) !important;
-        }
+      // 指示器
+      @include e(thumb) {
+        color: getCssVar($name, 'thumb-disabled-color') !important;
       }
     }
 
@@ -395,53 +382,56 @@ $emboss-margin: 7px;
       border-radius: 50%;
       border: 1px solid currentColor;
       border-color: transparent transparent transparent currentColor;
-      animation: switch-loading 1s linear;
+      animation: ivue-switch-loading 1s linear;
       animation-iteration-count: infinite;
       background-color: transparent;
 
-      width: calc(getCssVar($name, 'emboss-default-height') - 4);
-      height: calc(getCssVar($name, 'emboss-default-height') - 4);
+      width: getCssVar($name, 'emboss-loading-size');
+      height: getCssVar($name, 'emboss-loading-size');
     }
 
     // 小
     &.is-small {
-      width: $emboss-small-width;
-      height: $emboss-small-height;
+      width: getCssVar($name, 'emboss-small-width');
+      height: getCssVar($name, 'emboss-small-height');
 
-      .#{$name}-emboss--loading {
-        width: $emboss-small-height - 4;
-        height: $emboss-small-height - 4;
+      .is-loading {
+        width: getCssVar($name, 'emboss-loading-small-size');
+        height: getCssVar($name, 'emboss-loading-small-size');
       }
 
-      .#{$name}-emboss--track {
+      // 跟踪
+      @include e(track) {
         top: calc(50% - 4px);
         left: 1px;
-        width: $emboss-small-width - 2;
-        height: math.div($emboss-small-height, 2);
+        width: getCssVar($name, 'track-small-width');
+        height: getCssVar($name, 'track-small-height');
       }
 
-      .#{$name}-emboss--thumb {
-        width: $emboss-small-height;
-        height: $emboss-small-height;
+      // 指示器
+      @include e(thumb) {
+        width: getCssVar($name, 'emboss-small-height');
+        height: getCssVar($name, 'emboss-small-height');
 
-        &__checked {
+        &.is-checked {
           transform: translate(
-            $emboss-small-height - (math.div($emboss-small-height, 4)),
+            getCssVar($name, 'thumb-small-checked-transform'),
             0
           );
         }
       }
 
-      .#{$name}-emboss--ripple {
+      // ripple
+      @include e(ripple) {
         top: calc(50% - 20px);
-        left: -((math.div($emboss-small-height, 2)) +
-              (math.div($emboss-small-height, 4)));
-        width: $emboss-small-width - 2;
-        height: $emboss-small-width - 2;
 
-        &__checked {
+        left: getCssVar($name, 'emboss-ripple-small-left');
+        width: getCssVar($name, 'emboss-ripple-small-size');
+        height: getCssVar($name, 'emboss-ripple-small-size');
+
+        &.is-checked {
           transform: translate(
-            $emboss-small-height - (math.div($emboss-small-height, 4)),
+            getCssVar($name, 'emboss-ripple-small-checked-transform'),
             0
           );
         }
@@ -453,49 +443,44 @@ $emboss-margin: 7px;
       width: getCssVar($name, 'emboss-large-width');
       height: getCssVar($name, 'emboss-large-height');
 
+      // loading
       .is-loading {
-        width: calc(getCssVar($name, 'emboss-large-height') - 4px);
-        height: calc(getCssVar($name, 'emboss-large-height') - 4px);
+        width: getCssVar($name, 'emboss-loading-large-size');
+        height: getCssVar($name, 'emboss-loading-large-size');
       }
 
+      // 跟踪
       @include e(track) {
         top: calc(50% - 7px);
         left: 3px;
-        width: calc(getCssVar($name, 'emboss-large-width') - 10px);
-        height: calc(math.div(getCssVar($name, 'emboss-large-height'), 2));
+        width: getCssVar($name, 'track-large-width');
+        height: getCssVar($name, 'track-large-height');
       }
 
+      // 指示器
       @include e(thumb) {
         width: getCssVar($name, 'emboss-large-height');
         height: getCssVar($name, 'emboss-large-height');
 
         &.is-checked {
           transform: translate(
-            calc(
-              getCssVar($name, 'emboss-large-height') - 9px +
-                math.div(getCssVar($name, 'emboss-large-height'), 4)
-            ),
+            getCssVar($name, 'thumb-large-checked-transform'),
             0
           );
         }
       }
 
+      // ripple
       @include e(ripple) {
         top: calc(50% - 32px);
-        left: -calc(
-          (
-              getCssVar($name, 'emboss-large-width') -
-                getCssVar($name, 'emboss-large-height') -
-                (math.div(getCssVar($name, 'emboss-large-height'), 4)) - 2
-            ) + 4
-        );
+        left: getCssVar($name, 'emboss-ripple-large-left');
 
-        width: calc(getCssVar($name, 'emboss-large-width') - 10px);
-        height: calc(getCssVar($name, 'emboss-large-width') - 10px);
+        width: getCssVar($name, 'emboss-ripple-large-size');
+        height: getCssVar($name, 'emboss-ripple-large-size');
 
         &.is-checked {
           transform: translate(
-            $emboss-large-height + (math.div($emboss-large-height, 4)) - 9,
+            getCssVar($name, 'emboss-ripple-large-checked-transform'),
             0
           );
         }
@@ -507,27 +492,25 @@ $emboss-margin: 7px;
   @include e(ripple) {
     position: absolute;
     top: calc(50% - 25px);
-    left: -14px;
-    width: calc(getCssVar($name, 'emboss-default-width') - 2);
-    height: calc(getCssVar($name, 'emboss-default-width') - 2);
-    margin: getCssVar($name, 'emboss-margin');
     border-radius: 50%;
     transition: all $transition-default;
+
+    left: getCssVar($name, 'emboss-ripple-left');
+    width: getCssVar($name, 'emboss-ripple-size');
+    height: getCssVar($name, 'emboss-ripple-size');
+    margin: getCssVar($name, 'emboss-margin');
 
     // 激活
     &.is-checked {
       transform: translate(
-        calc(
-          getCssVar($name, 'emboss-default-height') -
-            (math.div(getCssVar($name, 'emboss-default-height'), 4))
-        ),
+        getCssVar($name, 'emboss-ripple-checked-transform'),
         0
       );
     }
   }
 }
 
-@keyframes switch-loading {
+@keyframes ivue-switch-loading {
   0% {
     transform: rotate(0);
   }

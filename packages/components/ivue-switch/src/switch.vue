@@ -182,7 +182,12 @@ export default defineComponent({
         'span',
         {
           // 内部文字样式
-          class: bem.e('inner'),
+          class: [
+            bem.e('inner'),
+            {
+              [`${bem.be('emboss', 'inner')}`]: props.emboss,
+            },
+          ],
         },
         [
           name

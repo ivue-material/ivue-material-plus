@@ -56,6 +56,14 @@
       loadingColor="#000"
       v-model="switch1"
       emboss
+      disabled
+      :color="['#5AB2FF', '#5B8EFF']"
+      :false-color="['#FFA82D', '#FFBD3C']"
+    ></ivue-switch>
+    <ivue-switch
+      loadingColor="#000"
+      v-model="switch1"
+      emboss
       :color="['#5AB2FF', '#5B8EFF']"
       :false-color="['#FFA82D', '#FFBD3C']"
     ></ivue-switch>

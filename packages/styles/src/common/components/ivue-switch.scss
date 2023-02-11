@@ -1,5 +1,5 @@
-@use 'sass:map';
 @use 'sass:math';
+@use 'sass:map';
 
 @use '../../mixins/function.scss' as *;
 
@@ -8,19 +8,147 @@ $switch: map.merge(
   (
     'width': '44px',
     'height': math.div(44px, 2),
+    // after
     'after-size': 18px,
+    'after-checked-active-left': math.div(44px, 2) - math.div(18px, 2) + 2,
     // checked
-    'checked-after-left': calc(math.div(44px, 2) + 1px),
-    'checked-before-left': calc(math.div(44px, 2) + 2px),
+    'checked-after-left': math.div(44px, 2) + 1,
+    'checked-before-left': math.div(44px, 2) + 2,
     'checked-inner-left': 7px,
-    // emboss
-    'emboss-default-width': 38px,
-    'emboss-default-height': 22px,
-    'emboss-large-width': 60px,
-    'emboss-large-height': 28px,
-    'emboss-small-width': 28px,
-    'emboss-small-height': 16px,
-    'emboss-margin': 7px,
   ),
   $switch
+);
+
+// after
+$switch-after: () !default;
+$switch-after: map.merge(
+  (
+    // after
+    'after-active-width': map.get($switch, 'after-size') + 8
+  ),
+  $switch-after
+);
+
+// before
+$switch-before: () !default;
+$switch-before: map.merge(
+  (
+    // after
+    'before-active-width': map.get($switch, 'after-size') - 2
+  ),
+  $switch-before
+);
+
+// loading
+$switch-loading: () !default;
+$switch-loading: map.merge(
+  (
+    // checked
+    'loading-after-checked-active-left': map.get($switch, 'height') + 1
+  ),
+  $switch-loading
+);
+
+// emboss
+$switch-emboss: () !default;
+$switch-emboss: map.merge(
+  (
+    // default
+    'emboss-default-width': 38px,
+    'emboss-default-height': 22px,
+    // large
+    'emboss-large-width': 60px,
+    'emboss-large-height': 28px,
+    // small
+    'emboss-small-width': 28px,
+    'emboss-small-height': 16px,
+    // loading
+    'emboss-loading-width': 7px,
+    // margin
+    'emboss-margin': 7px
+  ),
+  $switch-emboss
+);
+
+// loading
+$switch-emboss-loading: () !default;
+$switch-emboss-loading: map.merge(
+  (
+    // loading
+    'emboss-loading-size': map.get($switch-emboss, 'emboss-default-height') - 4,
+    // small
+    'emboss-loading-small-size': map.get(
+        $switch-emboss,
+        'emboss-small-height'
+      ) - 4,
+    // large
+    'emboss-loading-large-size': map.get(
+        $switch-emboss,
+        'emboss-large-height'
+      ) - 4
+  ),
+  $switch-emboss-loading
+);
+
+// content
+$switch-emboss-content: () !default;
+$switch-emboss-content: map.merge(
+  (
+    'track-width': map.get($switch-emboss, 'emboss-default-width') - 2,
+    'track-height':
+      math.div(map.get($switch-emboss, 'emboss-default-height'), 2),
+    'thumb-checked-transform': map.get($switch-emboss, 'emboss-default-height') -
+      math.div(map.get($switch-emboss, 'emboss-default-height'), 4),
+    // small
+    'track-small-width': map.get($switch-emboss, 'emboss-small-width') - 2,
+    'track-small-height':
+      math.div(map.get($switch-emboss, 'emboss-small-height'), 2),
+    'thumb-small-checked-transform':
+      map.get($switch-emboss, 'emboss-small-height') -
+      math.div(map.get($switch-emboss, 'emboss-small-height'), 4),
+    // large
+    'track-large-width': map.get($switch-emboss, 'emboss-large-width') - 10,
+    // large
+    'track-large-height':
+      math.div(map.get($switch-emboss, 'emboss-large-height'), 2),
+    'thumb-large-checked-transform':
+      map.get($switch-emboss, 'emboss-large-height') +
+      math.div(map.get($switch-emboss, 'emboss-large-height'), 4) - 9,
+  ),
+  $switch-emboss-content
+);
+
+// ripple
+$switch-emboss-ripple: () !default;
+$switch-emboss-ripple: map.merge(
+  (
+    // default
+    'emboss-ripple-size': map.get($switch-emboss, 'emboss-default-width') - 2,
+    'emboss-ripple-left': -(map.get($switch-emboss, 'emboss-default-height') / 2) - 3,
+    'emboss-ripple-checked-transform':
+      map.get($switch-emboss, 'emboss-default-height') -
+      (math.div(map.get($switch-emboss, 'emboss-default-height'), 4)),
+    // small
+    'emboss-ripple-small-left': -(
+        math.div(map.get($switch-emboss, 'emboss-small-height'), 2) +
+          math.div(map.get($switch-emboss, 'emboss-small-height'), 4)
+      ),
+    'emboss-ripple-small-size': map.get($switch-emboss, 'emboss-small-width') -
+      2,
+    'emboss-ripple-small-checked-transform':
+      map.get($switch-emboss, 'emboss-small-height') -
+      math.div(map.get($switch-emboss, 'emboss-small-height'), 4),
+    // large
+    'emboss-ripple-large-left': -(
+        map.get($switch-emboss, 'emboss-large-width') -
+          map.get($switch-emboss, 'emboss-large-height') -
+          (math.div(map.get($switch-emboss, 'emboss-large-height'), 4)) - 2
+      ) + 4,
+    'emboss-ripple-large-size': map.get($switch-emboss, 'emboss-large-width') -
+      10,
+    'emboss-ripple-large-checked-transform':
+      map.get($switch-emboss, 'emboss-large-height') +
+      (math.div(map.get($switch-emboss, 'emboss-large-height'), 4)) - 9
+  ),
+  $switch-emboss-ripple
 );

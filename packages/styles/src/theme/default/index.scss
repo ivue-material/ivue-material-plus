@@ -189,6 +189,9 @@ $ivue-switch: map.merge(
     'disabled-bg': getCssVar('ivue-disabled-bg'),
     'emboss-inner-color': getCssVar('ivue-text-color'),
     'thumb-color': getCssVar('ivue-color-white'),
+    'thumb-disabled-color': #fafafa,
+    'track-disabled-color': rgba(0, 0, 0, 0.12),
+    'track-checked-disabled-color': rgba(0, 0, 0, 0.38),
   ),
   $ivue-switch
 );

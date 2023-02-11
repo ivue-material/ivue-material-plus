@@ -14,29 +14,6 @@
 }
 
 // 表示一个子元素，存在于块元素之内
-@mixin m($modifier) {
-  $selector: &;
-  $currentSelector: '';
-
-  @each $unit in $modifier {
-    // '' + & + -- + $modifier +,
-    // &--$modifier,
-    $currentSelector: #{$currentSelector +
-      $selector +
-      $modifier-separator +
-      $unit +
-      ','};
-  }
-
-  // 暴露到根节点
-  @at-root {
-    #{$currentSelector} {
-      @content;
-    }
-  }
-}
-
-// 表示修饰符或者状态
 @mixin e($element) {
   $E: $element !global;
   $selector: &;
@@ -68,6 +45,29 @@
       #{$currentSelector} {
         @content;
       }
+    }
+  }
+}
+
+// 表示修饰符或者状态
+@mixin m($modifier) {
+  $selector: &;
+  $currentSelector: '';
+
+  @each $unit in $modifier {
+    // '' + & + -- + $modifier +,
+    // &--$modifier,
+    $currentSelector: #{$currentSelector +
+      $selector +
+      $modifier-separator +
+      $unit +
+      ','};
+  }
+
+  // 暴露到根节点
+  @at-root {
+    #{$currentSelector} {
+      @content;
     }
   }
 }
