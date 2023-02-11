@@ -27,7 +27,7 @@ describe('Avatar', () => {
 
   test('shape', () => {
     const wrapper = mount(() => <Avatar size={'12px'} shape={'square'} />);
-    expect(wrapper.find('ivue-avatar-square').exists()).toBe(true);
+    expect(wrapper.classes()).toContain('ivue-avatar--square');
   });
 
   test('color is string', () => {
