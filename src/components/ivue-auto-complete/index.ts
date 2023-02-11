@@ -1,4 +1,4 @@
-import { withInstall } from '@ivue-material-plus/utils';
+import { withInstall } from '../../utils/install';
 
 import AutoComplete from './src/auto-complete.vue';
 
