@@ -1,6 +1,6 @@
 import { nextTick, reactive } from 'vue';
 import { mount } from '@vue/test-utils';
-import { expect, vi, beforeEach, describe, test } from 'vitest';
+import { expect, beforeEach, describe, test } from 'vitest';
 import AutoComplete from '../index';
 
 const _mount = () =>
