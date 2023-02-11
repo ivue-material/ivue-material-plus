@@ -36,6 +36,11 @@
     // 中存在的resolveJsonModule选项
     "resolveJsonModule": true,
     // 是否在编译时进行库文件检查的是否在编译时进行库文件检查的
+    "skipLibCheck": true,
+    "baseUrl": ".",
+    "paths": {
+      "@ivue-material-plus/*": ["src/*"]
+    }
     "skipLibCheck": true
   },
   // 排除文件

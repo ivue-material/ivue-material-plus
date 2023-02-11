@@ -50,7 +50,7 @@ import hexToRgba from 'hex-to-rgba';
 import { useNamespace } from '@ivue-material-plus/hooks';
 
 // badge
-import { badgeProps, initColorList } from './badge';
+import { badgeProps, initColorList } from './index';
 // use
 import { useBadge } from './use-badge';
 
