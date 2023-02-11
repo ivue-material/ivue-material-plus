@@ -41,7 +41,6 @@
     "paths": {
       "@ivue-material-plus/*": ["src/*"]
     }
-    "skipLibCheck": true
   },
   // 排除文件
   "exclude": ["node_modules", "dist", "rollup"],

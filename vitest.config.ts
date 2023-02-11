@@ -7,8 +7,6 @@ import VueMacros from 'unplugin-vue-macros/vite';
 import Vue from '@vitejs/plugin-vue';
 import VueJsx from '@vitejs/plugin-vue-jsx';
 
-const path = require('path');
-
 export default defineConfig({
   plugins: [
     VueMacros({
