@@ -2,7 +2,7 @@ import { computed } from 'vue';
 
 // type
 import type { ComponentInternalInstance } from 'vue';
-import type { BadgeProps } from './badge';
+import type { BadgeProps } from './index';
 
 export const useBadge = (
   props: BadgeProps,

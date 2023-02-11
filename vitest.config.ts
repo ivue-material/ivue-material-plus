@@ -6,6 +6,8 @@ import VueMacros from 'unplugin-vue-macros/vite';
 import Vue from '@vitejs/plugin-vue';
 import VueJsx from '@vitejs/plugin-vue-jsx';
 
+const path = require('path');
+
 export default defineConfig({
   plugins: [
     VueMacros({
@@ -19,6 +21,15 @@ export default defineConfig({
       },
     }),
   ],
+  resolve: {
+    alias: [
+      {
+        find: /^@ivue-material-plus/,//这里必须使用正则表达式
+        //把正则匹配到的地方，@->src
+        replacement: path.resolve(__dirname, './src'),
+      },
+    ],
+  },
   // 禁用深度优化
   optimizeDeps: {
     disabled: true,

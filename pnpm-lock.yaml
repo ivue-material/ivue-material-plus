@@ -85,6 +85,7 @@ specifiers:
   jsdom: ^21.1.0
   lerna: ^6.0.1
   lint-staged: ^13.1.0
+  lodash: ^4.17.21
   lodash-es: ^4.17.21
   lodash-unified: ^1.0.3
   lodash.throttle: ^4.1.1
@@ -113,6 +114,7 @@ specifiers:
   throttle-debounce: ^5.0.0
   transliteration: ^2.3.5
   ts-loader: ^9.4.1
+  tsconfig-paths-webpack-plugin: ^4.0.0
   tslib: ^2.3.1
   tslint: ^6.1.3
   typescript: ^4.8.4
@@ -146,8 +148,9 @@ dependencies:
   countup.js: 2.3.2
   fs: 0.0.1-security
   hex-to-rgba: 2.0.1
+  lodash: 4.17.21
   lodash-es: 4.17.21
-  lodash-unified: 1.0.3_6vt5du6ay2thm2pqhl32dksnvu
+  lodash-unified: 1.0.3_3ib2ivapxullxkx3xftsimdk7u
   lodash.throttle: 4.1.1
   material-icons: 1.13.1
   mitt: 3.0.0
@@ -185,9 +188,9 @@ devDependencies:
   '@vue/cli-plugin-router': 5.0.8_@vue+cli-service@5.0.8
   '@vue/cli-plugin-typescript': 5.0.8_7a3zc72lx7hhidptawbkclhh7i
   '@vue/cli-plugin-vuex': 5.0.8_@vue+cli-service@5.0.8
-  '@vue/cli-service': 5.0.8_zhvvwaqbpbbylgfmpedv5nl2ye
+  '@vue/cli-service': 5.0.8_vxt65lkwuiibmbkys65qxp3vai
   '@vue/compiler-sfc': 3.2.45
-  '@vue/component-compiler-utils': 3.3.0
+  '@vue/component-compiler-utils': 3.3.0_lodash@4.17.21
   '@vue/eslint-config-typescript': 11.0.2_5gm7ezxcdo2zu65gboxarjsumy
   '@vue/test-utils': 2.2.10_vue@3.2.45
   algoliasearch: 4.14.3
@@ -249,6 +252,7 @@ devDependencies:
   throttle-debounce: 5.0.0
   transliteration: 2.3.5
   ts-loader: 9.4.2_typescript@4.9.4
+  tsconfig-paths-webpack-plugin: 4.0.0
   tslib: 2.4.1
   tslint: 6.1.3_typescript@4.9.4
   typescript: 4.9.4
@@ -4290,7 +4294,7 @@ packages:
     dependencies:
       '@babel/core': 7.20.12
       '@vue/babel-preset-app': 5.0.8_ft7f6rxh4zxjtavba6d2cn3xmq
-      '@vue/cli-service': 5.0.8_zhvvwaqbpbbylgfmpedv5nl2ye
+      '@vue/cli-service': 5.0.8_vxt65lkwuiibmbkys65qxp3vai
       '@vue/cli-shared-utils': 5.0.8
       babel-loader: 8.3.0_la66t7xldg4uecmyawueag5wkm
       thread-loader: 3.0.4_webpack@5.75.0
@@ -4311,7 +4315,7 @@ packages:
     peerDependencies:
       '@vue/cli-service': ^3.0.0 || ^4.0.0 || ^5.0.0-0
     dependencies:
-      '@vue/cli-service': 5.0.8_zhvvwaqbpbbylgfmpedv5nl2ye
+      '@vue/cli-service': 5.0.8_vxt65lkwuiibmbkys65qxp3vai
       '@vue/cli-shared-utils': 5.0.8
     transitivePeerDependencies:
       - encoding
@@ -4333,7 +4337,7 @@ packages:
     dependencies:
       '@babel/core': 7.20.12
       '@types/webpack-env': 1.18.0
-      '@vue/cli-service': 5.0.8_zhvvwaqbpbbylgfmpedv5nl2ye
+      '@vue/cli-service': 5.0.8_vxt65lkwuiibmbkys65qxp3vai
       '@vue/cli-shared-utils': 5.0.8
       babel-loader: 8.3.0_la66t7xldg4uecmyawueag5wkm
       fork-ts-checker-webpack-plugin: 6.5.2_wkks3liptrk2apsytk57yvw4aq
@@ -4359,10 +4363,10 @@ packages:
     peerDependencies:
       '@vue/cli-service': ^3.0.0 || ^4.0.0 || ^5.0.0-0
     dependencies:
-      '@vue/cli-service': 5.0.8_zhvvwaqbpbbylgfmpedv5nl2ye
+      '@vue/cli-service': 5.0.8_vxt65lkwuiibmbkys65qxp3vai
     dev: true
 
-  /@vue/cli-service/5.0.8_zhvvwaqbpbbylgfmpedv5nl2ye:
+  /@vue/cli-service/5.0.8_vxt65lkwuiibmbkys65qxp3vai:
     resolution: {integrity: sha512-nV7tYQLe7YsTtzFrfOMIHc5N2hp5lHG2rpYr0aNja9rNljdgcPZLyQRb2YRivTHqTv7lI962UXFURcpStHgyFw==}
     engines: {node: ^12.0.0 || >= 14.0.0}
     hasBin: true
@@ -4401,8 +4405,8 @@ packages:
       '@vue/cli-plugin-router': 5.0.8_@vue+cli-service@5.0.8
       '@vue/cli-plugin-vuex': 5.0.8_@vue+cli-service@5.0.8
       '@vue/cli-shared-utils': 5.0.8
-      '@vue/component-compiler-utils': 3.3.0
-      '@vue/vue-loader-v15': /vue-loader/15.10.1_dlxn4isfivlput34p52cr6kxhy
+      '@vue/component-compiler-utils': 3.3.0_lodash@4.17.21
+      '@vue/vue-loader-v15': /vue-loader/15.10.1_xh7cnn2twfzca74kuhhynvndgi
       '@vue/web-component-wrapper': 1.3.0
       acorn: 8.8.1
       acorn-walk: 8.2.0
@@ -4573,10 +4577,10 @@ packages:
       '@vue/compiler-dom': 3.2.45
       '@vue/shared': 3.2.45
 
-  /@vue/component-compiler-utils/3.3.0:
+  /@vue/component-compiler-utils/3.3.0_lodash@4.17.21:
     resolution: {integrity: sha512-97sfH2mYNU+2PzGrmK2haqffDpVASuib9/w2/noxiFi31Z54hW+q3izKQXXQZSNhtiUpAI36uSuYepeBe4wpHQ==}
     dependencies:
-      consolidate: 0.15.1
+      consolidate: 0.15.1_lodash@4.17.21
       hash-sum: 1.0.2
       lru-cache: 4.1.5
       merge-source-map: 1.1.0
@@ -7042,7 +7046,7 @@ packages:
     resolution: {integrity: sha512-ty/fTekppD2fIwRvnZAVdeOiGd1c7YXEixbgJTNzqcxJWKQnjJ/V1bNEEE6hygpM3WjwHFUVK6HTjWSzV4a8sQ==}
     dev: true
 
-  /consolidate/0.15.1:
+  /consolidate/0.15.1_lodash@4.17.21:
     resolution: {integrity: sha512-DW46nrsMJgy9kqAbPt5rKaCr7uFtpo4mSUvLHIUbJEjm0vo+aY5QLwBUq3FK4tRnJr/X0Psc0C4jf/h+HtXSMw==}
     engines: {node: '>= 0.10.0'}
     peerDependencies:
@@ -7208,6 +7212,7 @@ packages:
         optional: true
     dependencies:
       bluebird: 3.7.2
+      lodash: 4.17.21
     dev: true
 
   /constant-case/2.0.0:
@@ -12101,7 +12106,7 @@ packages:
     resolution: {integrity: sha512-mKnC+QJ9pWVzv+C4/U3rRsHapFfHvQFoFB92e52xeyGMcX6/OlIl78je1u8vePzYZSkkogMPJ2yjxxsb89cxyw==}
     dev: false
 
-  /lodash-unified/1.0.3_6vt5du6ay2thm2pqhl32dksnvu:
+  /lodash-unified/1.0.3_3ib2ivapxullxkx3xftsimdk7u:
     resolution: {integrity: sha512-WK9qSozxXOD7ZJQlpSqOT+om2ZfcT4yO+03FuzAHD0wF6S0l0090LRPDx3vhTTLZ8cFKpBn+IOcVXK6qOcIlfQ==}
     peerDependencies:
       '@types/lodash-es': '*'
@@ -12109,6 +12114,7 @@ packages:
       lodash-es: '*'
     dependencies:
       '@types/lodash-es': 4.17.6
+      lodash: 4.17.21
       lodash-es: 4.17.21
     dev: false
 
@@ -12281,7 +12287,6 @@ packages:
 
   /lodash/4.17.21:
     resolution: {integrity: sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==}
-    dev: true
 
   /log-symbols/4.1.0:
     resolution: {integrity: sha512-8XPvpAA8uyhfteu8pIvQxpJZ7SYYdpUivZpGy6sFsBuKRY/7rQGavedeB8aK+Zkyq6upMFVL/9AW6vOYzfRyLg==}
@@ -16982,6 +16987,15 @@ packages:
       typescript: 4.9.4
     dev: false
 
+  /tsconfig-paths-webpack-plugin/4.0.0:
+    resolution: {integrity: sha512-fw/7265mIWukrSHd0i+wSwx64kYUSAKPfxRDksjKIYTxSAp9W9/xcZVBF4Kl0eqQd5eBpAQ/oQrc5RyM/0c1GQ==}
+    engines: {node: '>=10.13.0'}
+    dependencies:
+      chalk: 4.1.2
+      enhanced-resolve: 5.12.0
+      tsconfig-paths: 4.1.2
+    dev: true
+
   /tsconfig-paths/3.14.1:
     resolution: {integrity: sha512-fxDhWnFSLt3VuTwtvJt5fpwxBHg5AdKWMsgcPOOIilyjymcYVZoCQF8fvFRezCNfblEXmi+PcM1eYHeOAgXCOQ==}
     dependencies:
@@ -17864,7 +17878,7 @@ packages:
       object-assign: 4.1.1
     dev: true
 
-  /vue-loader/15.10.1_dlxn4isfivlput34p52cr6kxhy:
+  /vue-loader/15.10.1_xh7cnn2twfzca74kuhhynvndgi:
     resolution: {integrity: sha512-SaPHK1A01VrNthlix6h1hq4uJu7S/z0kdLUb6klubo738NeQoLbS6V9/d8Pv19tU0XdQKju3D1HSKuI8wJ5wMA==}
     peerDependencies:
       '@vue/compiler-sfc': ^3.0.8
@@ -17881,7 +17895,7 @@ packages:
         optional: true
     dependencies:
       '@vue/compiler-sfc': 3.2.45
-      '@vue/component-compiler-utils': 3.3.0
+      '@vue/component-compiler-utils': 3.3.0_lodash@4.17.21
       css-loader: 6.7.3_webpack@5.75.0
       hash-sum: 1.0.2
       loader-utils: 1.4.2

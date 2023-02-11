@@ -44,6 +44,7 @@
     "countup.js": "^2.3.2",
     "fs": "^0.0.1-security",
     "hex-to-rgba": "^2.0.1",
+    "lodash": "^4.17.21",
     "lodash-es": "^4.17.21",
     "lodash-unified": "^1.0.3",
     "lodash.throttle": "^4.1.1",
