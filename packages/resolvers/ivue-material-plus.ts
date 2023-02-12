@@ -27,7 +27,12 @@ function kebabCase(key: string) {
 }
 
 // 没有样式的组件
-const noStylesComponents: string[] = ['IvueCarouselItem', 'IvueFormItem'];
+const noStylesComponents: string[] = [
+  'IvueCarouselItem',
+  'IvueFormItem',
+  'IvueOptionGroup',
+  'IvueOption',
+];
 
 function getSideEffects(dirName: string, options: resolverOptions) {
   const { importStyle, ssr } = options;

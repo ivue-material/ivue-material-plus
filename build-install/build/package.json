@@ -15,7 +15,6 @@
     "stub": "unbuild --stub"
   },
   "peerDependencies": {
-    "vue": "^3.2.25"
   },
   "dependencies": {
     "@ivue-material-plus/build-constants": "^0.0.1",

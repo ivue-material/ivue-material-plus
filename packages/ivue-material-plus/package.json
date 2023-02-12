@@ -45,7 +45,6 @@
     "lib/components/*/style/*"
   ],
   "peerDependencies": {
-    "vue": "^3.2.0"
   },
   "dependencies": {
     "-": "0.0.1",

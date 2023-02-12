@@ -10,6 +10,7 @@ export * from './ivue-carousel';
 export * from './ivue-carousel-item';
 export * from './ivue-switch';
 export * from './ivue-form';
+export * from './ivue-select';
 
 // plugins
 export * from './ivue-ripple';

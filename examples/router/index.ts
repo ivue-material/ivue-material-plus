@@ -11,6 +11,7 @@ import badge from '../components/badge.vue';
 import carousel from '../components/carousel.vue';
 import Switch from '../components/switch.vue';
 import Form from '../components/form.vue';
+import Select from '../components/select.vue';
 
 const routes = [
   {
@@ -72,6 +73,11 @@ const routes = [
     path: '/Form',
     name: 'Form',
     component: Form,
+  },
+  {
+    path: '/select',
+    name: 'Select',
+    component: Select,
   },
 ];
 
