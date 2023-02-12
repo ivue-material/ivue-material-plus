@@ -5,9 +5,12 @@
 
 // 表示一个块元素，比如一个 Modal 弹窗组件、一个 Button 组件，都可以用一个块来表示
 @mixin b($block) {
+  // global 表示其是一个全局变量，这样就可以在整个文件的任意地方使用
   // $B: '#{$block}' !global;
   $B: $block !global;
 
+  // #{} 字符串插值
+  // 通过 @content 可以将 include{} 中传递过来的内容导入到指定位置
   .#{$B} {
     @content;
   }
@@ -15,12 +18,14 @@
 
 // 表示一个子元素，存在于块元素之内
 @mixin e($element) {
+  // 定义一个全局变量 $E
   $E: $element !global;
+  // 定义父选择器 $selector
   $selector: &;
-  // 当前选择器
+  // 定义当前的选择器 $currentSelector
   $currentSelector: '';
 
-  // 遍历元素
+  // 再通过循环得到当前的选择器
   @each $unit in $element {
     // currentSelector.$B$element-separator$unit
     $currentSelector: #{$currentSelector +
@@ -31,8 +36,10 @@
       ','};
   }
 
-  // 命中所有特殊嵌套规则 包含修饰符 | 包含 When 标志 | 包含伪类
+  // 判断父选择器是否含有 m(Modifier)、表示状态的 .is- 和 伪类
+  // 如果有则表示需要嵌套
   @if hitAllSpecialNestRule($selector) {
+    // @at-root 的作用就是将处于其内部的代码提升至文档的根部，即不对其内部代码使用嵌套
     @at-root {
       #{$selector} {
         #{$currentSelector} {
@@ -41,8 +48,10 @@
       }
     }
   } @else {
+    // @at-root 的作用就是将处于其内部的代码提升至文档的根部，即不对其内部代码使用嵌套
     @at-root {
       #{$currentSelector} {
+        // 通过 @content 可以将 include{} 中传递过来的内容导入到指定位置
         @content;
       }
     }
@@ -51,9 +60,13 @@
 
 // 表示修饰符或者状态
 @mixin m($modifier) {
+  // 定义了父选择器变量 $selector
   $selector: &;
+  // 当前选择器变量 $currentSelector
   $currentSelector: '';
 
+  // 当前选择器变量初始值为空，再通过循环传递进来的参数 $modifier
+  // 获得当前选择器变量 $currentSelector 的值
   @each $unit in $modifier {
     // '' + & + -- + $modifier +,
     // &--$modifier,
@@ -64,9 +77,21 @@
       ','};
   }
 
-  // 暴露到根节点
+  // @at-root 的作用就是将处于其内部的代码提升至文档的根部，即不对其内部代码使用嵌套
   @at-root {
     #{$currentSelector} {
+      // 通过 @content 可以将 include{} 中传递过来的内容导入到指定位置
+      @content;
+    }
+  }
+}
+
+// 定义动作状态
+@mixin when($state) {
+  @at-root {
+    // state-prefix 加传进来的状态变量
+    &.#{$state-prefix + $state} {
+      // 通过 @content 可以将 include{} 中传递过来的内容导入到指定位置
       @content;
     }
   }

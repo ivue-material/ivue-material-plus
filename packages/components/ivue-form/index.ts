@@ -13,3 +13,10 @@ export default IvueForm;
 
 export * from './src/form';
 export * from './src/form-item';
+
+declare module '@vue/runtime-core' {
+  export interface GlobalComponents {
+    IvueForm: typeof import('@ivue-material-plus/components')['IvueForm'];
+    IvueFormItem: typeof import('@ivue-material-plus/components')['IvueFormItem'];
+  }
+}

@@ -124,7 +124,9 @@ $switch-emboss-ripple: map.merge(
   (
     // default
     'emboss-ripple-size': map.get($switch-emboss, 'emboss-default-width') - 2,
-    'emboss-ripple-left': -(map.get($switch-emboss, 'emboss-default-height') / 2) - 3,
+    'emboss-ripple-left': -(
+        map.get($switch-emboss, 'emboss-default-height') * 0.5
+      ) - 3,
     'emboss-ripple-checked-transform':
       map.get($switch-emboss, 'emboss-default-height') -
       (math.div(map.get($switch-emboss, 'emboss-default-height'), 4)),

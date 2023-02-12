@@ -38,7 +38,7 @@
 
 <script>
 import { h, render } from 'vue';
-import {IvueLoading} from '@ivue-material-plus/components'
+import { IvueLoading } from '@ivue-material-plus/components';
 
 export default {
   data() {

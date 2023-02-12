@@ -14,11 +14,7 @@
       <ivue-icon v-if="icon">{{ icon }}</ivue-icon>
     </slot>
     <!-- text -->
-    <span
-      :style="slotStyles"
-      ref="text"
-      v-if="$slots.default"
-    >
+    <span :style="slotStyles" ref="text" v-if="$slots.default">
       <slot></slot>
     </span>
   </span>

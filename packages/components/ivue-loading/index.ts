@@ -20,3 +20,9 @@ export {
 };
 
 export * from './src/types';
+
+declare module '@vue/runtime-core' {
+  interface ComponentCustomProperties {
+    $loading: typeof import('@ivue-material-plus/components')['IvueLoadingService'];
+  }
+}

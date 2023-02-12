@@ -1,7 +1,7 @@
-import { buildProps,definePropType } from '@ivue-material-plus/utils';
+import { buildProps, definePropType } from '@ivue-material-plus/utils';
 
 // type
-import type { ExtractPropTypes,Ref } from 'vue';
+import type { ExtractPropTypes } from 'vue';
 import type CarouselItem from './carousel-item.vue';
 
 type Label = string | number;
@@ -23,7 +23,7 @@ export const carouselItemProps = buildProps({
    */
   label: {
     type: definePropType<Label>([String, Number]),
-    default: ''
+    default: '',
   },
 } as const);
 

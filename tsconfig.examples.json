@@ -6,12 +6,13 @@
   },
   "include": [
     "packages",
-    "typings/components.d.ts",
     "typings/env.d.ts",
 
     // examples
     "examples/main.ts",
     "examples/env.d.ts",
-    "examples/src/**/*"
+    "examples/src/**/*",
+    "examples/router/*",
+    "examples/*"
   ]
 }

@@ -89,12 +89,12 @@ export default defineComponent({
       if (isCardType.value && unref(zIndex)) {
         return {
           transform,
-          zIndex: unref(zIndex)
+          zIndex: unref(zIndex),
         };
       }
 
       return {
-        transform
+        transform,
       };
     });
 

@@ -1,12 +1,4 @@
-import {
-  ref,
-  unref,
-  computed,
-  watch,
-  onMounted,
-  nextTick,
-  onUnmounted,
-} from 'vue';
+import { ref, computed, watch } from 'vue';
 
 import { colorable } from '@ivue-material-plus/utils/mixins/colorable';
 import {
@@ -48,7 +40,6 @@ export const useSwitch = (
 
   // 设置背景颜色
   const setColor = computed<string | string[]>(() => {
-
     // 激活
     if (currentValue.value === props.trueValue) {
       return props.color;
