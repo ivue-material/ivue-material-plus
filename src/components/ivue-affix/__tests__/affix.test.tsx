@@ -19,7 +19,7 @@ const _mount = (render: () => VNode) => {
   });
 };
 
-const CONTENT = 'affix test';
+const CONTENT = 'affix __test__';
 
 let clientHeightRestore: () => void;
 
@@ -40,7 +40,7 @@ afterAll(() => {
 });
 
 describe('Affix.vue', () => {
-  test('render test', async () => {
+  test('render __test__', async () => {
     const wrapper = _mount(() => <Affix>{CONTENT}</Affix>);
     await nextTick();
 

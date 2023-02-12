@@ -8,7 +8,7 @@ import IVue from '../src/index.ts';
 
 // import IVue from '../dist/ivue-material-plus.min.esm'
 
-// import "./test.scss";
+// import "./__test__.scss";
 
 import '../src/styles/components/reset.scss';
 import '../src/styles/base.scss';
