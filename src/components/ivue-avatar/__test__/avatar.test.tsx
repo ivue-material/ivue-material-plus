@@ -6,7 +6,7 @@ import { IMAGE_SUCCESS, mockImageEvent } from '../../../test-utils/mork';
 describe('Avatar', () => {
   mockImageEvent();
 
-  test('render test', () => {
+  test('render __test__', () => {
     const wrapper = mount(() => <Avatar />);
     expect(wrapper.find('.ivue-avatar').exists()).toBe(true);
   });
