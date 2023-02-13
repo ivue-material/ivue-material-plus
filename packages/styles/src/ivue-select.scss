@@ -22,6 +22,7 @@ $name: 'ivue-select';
 
   // 禁用样式
   @include when(disabled) {
+    // 选择框样式
     @include b(#{$name}-selection) {
       opacity: 1;
       cursor: not-allowed;
@@ -35,7 +36,7 @@ $name: 'ivue-select';
       }
     }
 
-    // arrow
+    // 选中框箭头
     .#{$name}-head__arrow {
       color: getCssVar($name, 'disabled-color');
     }
@@ -43,6 +44,8 @@ $name: 'ivue-select';
 
   // 默认样式
   @include m(default) {
+
+    // 选择框样式
     @include b(#{$name}-selection) {
       position: relative;
       height: getCssVar($name, 'input-height');
@@ -62,6 +65,7 @@ $name: 'ivue-select';
       }
     }
 
+    // 过滤输入框
     .#{name}-input__filter {
       width: 100%;
     }
@@ -73,7 +77,7 @@ $name: 'ivue-select';
       padding: 0 4px 0 0;
     }
 
-    // tag
+    // 多选时的标签
     .#{$name}-tag {
       height: 28px;
       line-height: 26px;
@@ -98,6 +102,7 @@ $name: 'ivue-select';
       white-space: nowrap;
     }
 
+    // 选项
     .#{$name}-item {
       &-selected:after {
         @include ivue-icon;
@@ -150,6 +155,7 @@ $name: 'ivue-select';
       }
     }
 
+    // 过滤输入框没输入时的样式
     .is-filter-placeholder {
       height: calc(getCssVar($name, 'input-height') - 2px);
       line-height: calc(getCssVar($name, 'input-height') - 2px);
@@ -163,6 +169,7 @@ $name: 'ivue-select';
 
   // 菜单显示
   @include m(visible) {
+    // 选择框样式
     .#{$name}-selection {
       outline: 0;
 
@@ -170,6 +177,7 @@ $name: 'ivue-select';
       box-shadow: 0 0 0 2px getCssVar($name, 'dropdown-shadow');
     }
 
+    // 选中框箭头
     .#{$name}-head__arrow {
       transform: rotate(180deg);
       transform-origin: center center;
@@ -205,6 +213,7 @@ $name: 'ivue-select';
     }
   }
 
+  // 是创建的选项
   @include when(create) {
     justify-content: space-between;
 
@@ -231,7 +240,7 @@ $name: 'ivue-select';
     }
   }
 
-  // 选中
+  // 选中选项
   @include when(selected) {
     opacity: 1;
     color: getCssVar('ivue-color-white');
@@ -314,6 +323,7 @@ $name: 'ivue-select';
     transition: color $transition-default;
   }
 
+  // icon
   .ivue-icon {
     margin: 0;
     width: auto;
@@ -378,6 +388,7 @@ $name: 'ivue-select';
     height: getCssVar($name, 'loading-height');
     padding: getCssVar($name, 'loading-padding');
 
+    // load
     .is-load {
       margin-right: 10px;
       position: relative;
@@ -386,6 +397,7 @@ $name: 'ivue-select';
       height: getCssVar($name, 'loading-load-size');
     }
 
+    // circular
     .circular {
       width: 100%;
       height: 100%;
