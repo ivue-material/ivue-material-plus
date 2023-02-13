@@ -40,7 +40,6 @@ export default defineComponent({
     const {
       // data
       rippleActive,
-      mobile,
 
       // computed
       rippleWorks,
@@ -52,14 +51,23 @@ export default defineComponent({
     // 按钮样式
     const btnClasses = computed(() => {
       return {
+        // 不是扁平按钮
         [bem.is('raised')]: !props.flat,
+        // 是否扁平按钮
         [bem.is('flat')]: props.flat,
+        // 凹陷的按钮依然保持其背景色，但没有框阴影
         [bem.is('depressed')]:
           (props.depressed && !props.flat) || props.outline,
+          // 圆形图标
         [bem.is('icon')]: props.icon,
+        // 轮廓按钮从当前色彩应用继承他们的边框颜色。
         [bem.is('outline')]: props.outline,
+        // 圆角
         [bem.is('radius')]: props.radius,
+        // 按钮状态
         [bem.is(`${props.status}`)]: props.status && !props.flat,
+        // 有按钮状态
+        [bem.is('status')]: props.status && !props.flat,
         [bem.is(`${props.status}-color`)]:
           props.status && (props.flat || props.outline),
       };
@@ -81,8 +89,6 @@ export default defineComponent({
       const buttonAttrs: ButtonAttrs = {
         class: {
           [bem.b()]: true,
-          // 移动端
-          isMobile: unref(mobile),
           // 按钮激活
           [bem.is('active')]: props.isActive,
           // 蒙版
@@ -98,8 +104,6 @@ export default defineComponent({
           if (unref(rippleWorks)) {
             rippleActive.value = event;
           }
-
-          mobile.value = true;
         },
         // onTouchmove
         onTouchmove: (event: TouchEvent) => {

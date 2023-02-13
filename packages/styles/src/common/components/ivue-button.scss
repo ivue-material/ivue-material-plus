@@ -5,16 +5,18 @@
 $button: () !default;
 $button: map.merge(
   (
-    'min-width': 88px,
-    'height': 36px,
+    'min-width': 99px,
+    'height': 40px,
     'radius': getCssVar('ivue-radius-4px'),
-    'padding': 0 15px,
+    'padding': 0 16px,
     'font-size': getCssVar('ivue-font-size-base'),
     // loading
-    'loading-margin-right': 5px,
-    'loading-size': 16px,
+    'loading-margin-right': 8px,
+    'loading-size': 18px,
     // icon
     'icon-size': 36px,
+    // radius
+    'radius-border': 100px,
   ),
   $button
 );

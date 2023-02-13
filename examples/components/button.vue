@@ -2,7 +2,7 @@
   <div>
     <div>
       <ivue-button :color="['#5AB2FF', '#5B8EFF']" :ripple="false" isActive
-        >Button</ivue-button
+        >Enabled</ivue-button
       >
     </div>
     <div>

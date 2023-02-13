@@ -14,7 +14,7 @@
 export default {
   data() {
     return {
-      length: 25,
+      length: 5,
     };
   },
 };

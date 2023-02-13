@@ -27,12 +27,6 @@ $name: 'ivue-button';
   white-space: nowrap;
 }
 
-.isMobile {
-  &:before {
-    opacity: 0 !important;
-  }
-}
-
 @include b($name) {
   // 设置组件 css var 变量
   @include set-component-css-var($name, $button);
@@ -60,20 +54,6 @@ $name: 'ivue-button';
     border: 0;
   }
 
-  &:before {
-    content: ' ';
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    z-index: 1;
-    opacity: 0;
-    border-radius: inherit;
-    transition: $transition-default;
-    will-change: background-color, opacity;
-  }
-
   &[disabled] {
     pointer-events: none;
 
@@ -84,43 +64,21 @@ $name: 'ivue-button';
     &:not([disabled]) {
       cursor: pointer;
       -webkit-tap-highlight-color: transparent;
-
-      &:hover,
-      &:active {
-        &:before {
-          background-color: currentColor;
-          opacity: 0.12;
-        }
-      }
-
-      &:active {
-        &:before {
-          opacity: 0.2;
-        }
-      }
-    }
-  }
-
-  @media screen and (max-width: 800px) {
-    &:not([disabled]) {
-      &:hover {
-        &:before {
-          background-color: transparent;
-          opacity: 0.12;
-        }
-      }
     }
   }
 
   &.is-raised:not(.is-depressed):not(.is-flat):not([disabled]) {
     will-change: box-shadow;
+  }
 
+  &.is-raised:not(.is-depressed):not(.is-flat):not(.is-status):not([disabled]) {
     // elevation
-    @include ivue-elevation(2);
+    @include ivue-elevation(1);
 
-    &:not(.is-mask):active {
+    &:not(.is-mask):active,
+    &:not(.is-mask):hover {
       // elevation
-      @include ivue-elevation(8);
+      @include ivue-elevation(2);
     }
   }
 
@@ -189,10 +147,6 @@ $name: 'ivue-button';
     border-radius: 50%;
     padding: 0;
 
-    &::before {
-      border-radius: 50%;
-    }
-
     // ripple
     .ivue-ripple {
       border-radius: 50%;
@@ -226,14 +180,18 @@ $name: 'ivue-button';
     }
 
     &.is-raised:not(.is-depressed):not(.is-flat):not([disabled]) {
-      box-shadow: 0 10px 10px -5px getCssVar($name, 'primary-shadow-2');
+      @include ivue-elevation(
+        1,
+        getCssVar($name, 'primary-shadow-3'),
+        getCssVar($name, 'primary-shadow-15')
+      );
 
-      &:not(.is-mask):active {
+      &:not(.is-mask):active,
+      &:not(.is-mask):hover {
         @include ivue-elevation(
-          8,
-          getCssVar($name, 'primary-shadow-2'),
-          getCssVar($name, 'primary-shadow-14'),
-          getCssVar($name, 'primary-shadow-12')
+          2,
+          getCssVar($name, 'primary-shadow-3'),
+          getCssVar($name, 'primary-shadow-15')
         );
       }
     }
@@ -250,14 +208,18 @@ $name: 'ivue-button';
     }
 
     &.is-raised:not(.is-depressed):not(.is-flat):not([disabled]) {
-      box-shadow: 0 10px 10px -5px getCssVar($name, 'light-primary-shadow-2');
+      @include ivue-elevation(
+        1,
+        getCssVar($name, 'light-primary-shadow-3'),
+        getCssVar($name, 'light-primary-shadow-15')
+      );
 
-      &:not(.is-mask):active {
+      &:not(.is-mask):active,
+      &:not(.is-mask):hover {
         @include ivue-elevation(
-          8,
-          getCssVar($name, 'light-primary-shadow-2'),
-          getCssVar($name, 'light-primary-shadow-14'),
-          getCssVar($name, 'light-primary-shadow-12')
+          2,
+          getCssVar($name, 'light-primary-shadow-3'),
+          getCssVar($name, 'light-primary-shadow-15')
         );
       }
     }
@@ -274,14 +236,18 @@ $name: 'ivue-button';
     }
 
     &.is-raised:not(.is-depressed):not(.is-flat):not([disabled]) {
-      box-shadow: 0 10px 10px -5px getCssVar($name, 'dark-primary-shadow-2');
+      @include ivue-elevation(
+        1,
+        getCssVar($name, 'dark-primary-shadow-3'),
+        getCssVar($name, 'dark-primary-shadow-15')
+      );
 
-      &:not(.is-mask):active {
+      &:not(.is-mask):active,
+      &:not(.is-mask):hover {
         @include ivue-elevation(
-          8,
-          getCssVar($name, 'dark-primary-shadow-2'),
-          getCssVar($name, 'dark-primary-shadow-14'),
-          getCssVar($name, 'dark-primary-shadow-12')
+          2,
+          getCssVar($name, 'dark-primary-shadow-3'),
+          getCssVar($name, 'dark-primary-shadow-15')
         );
       }
     }
@@ -298,14 +264,18 @@ $name: 'ivue-button';
     }
 
     &.is-raised:not(.is-depressed):not(.is-flat):not([disabled]) {
-      box-shadow: 0 10px 10px -5px getCssVar($name, 'success-shadow-2');
+      @include ivue-elevation(
+        1,
+        getCssVar($name, 'success-shadow-3'),
+        getCssVar($name, 'success-shadow-15')
+      );
 
-      &:not(.is-mask):active {
+      &:not(.is-mask):active,
+      &:not(.is-mask):hover {
         @include ivue-elevation(
-          8,
-          getCssVar($name, 'success-shadow-2'),
-          getCssVar($name, 'success-shadow-14'),
-          getCssVar($name, 'success-shadow-12')
+          2,
+          getCssVar($name, 'success-shadow-3'),
+          getCssVar($name, 'success-shadow-15')
         );
       }
     }
@@ -322,14 +292,18 @@ $name: 'ivue-button';
     }
 
     &.is-raised:not(.is-depressed):not(.is-flat):not([disabled]) {
-      box-shadow: 0 10px 10px -5px getCssVar($name, 'warning-shadow-2');
+      @include ivue-elevation(
+        1,
+        getCssVar($name, 'warning-shadow-3'),
+        getCssVar($name, 'warning-shadow-15')
+      );
 
-      &:not(.is-mask):active {
+      &:not(.is-mask):active,
+      &:not(.is-mask):hover {
         @include ivue-elevation(
-          8,
-          getCssVar($name, 'warning-shadow-2'),
-          getCssVar($name, 'warning-shadow-14'),
-          getCssVar($name, 'warning-shadow-12')
+          2,
+          getCssVar($name, 'warning-shadow-3'),
+          getCssVar($name, 'warning-shadow-15')
         );
       }
     }
@@ -346,14 +320,18 @@ $name: 'ivue-button';
     }
 
     &.is-raised:not(.is-depressed):not(.is-flat):not([disabled]) {
-      box-shadow: 0 10px 10px -5px getCssVar($name, 'error-shadow-2');
+      @include ivue-elevation(
+        1,
+        getCssVar($name, 'error-shadow-3'),
+        getCssVar($name, 'error-shadow-15')
+      );
 
-      &:not(.is-mask):active {
+      &:not(.is-mask):active,
+      &:not(.is-mask):hover {
         @include ivue-elevation(
-          8,
-          getCssVar($name, 'error-shadow-2'),
-          getCssVar($name, 'error-shadow-14'),
-          getCssVar($name, 'error-shadow-12')
+          2,
+          getCssVar($name, 'error-shadow-3'),
+          getCssVar($name, 'error-shadow-15')
         );
       }
     }
