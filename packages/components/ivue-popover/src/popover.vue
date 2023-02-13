@@ -116,7 +116,7 @@ import { transferIndex, transferIncrease } from '@ivue-material-plus/utils';
 // directives
 import { ClickOutside } from '@ivue-material-plus/directives';
 import { PopoverContextKey } from '@ivue-material-plus/tokens';
-import Popper from '@ivue-material-plus/utils/mixins/popper';
+// import Popper from '@ivue-material-plus/utils/mixins/popper';
 
 // popover
 import { popoverProps } from './popover';
@@ -132,7 +132,7 @@ const prefixCls = 'ivue-popover';
 
 export default defineComponent({
   name: prefixCls,
-  mixins: [Popper],
+  // mixins: [Popper],
   emits: ['on-cancel', 'on-confirm'],
   // 注册局部指令
   directives: { ClickOutside },
