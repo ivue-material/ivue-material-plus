@@ -1,14 +1,6 @@
 @use 'sass:map';
 @use '../../mixins/var.scss' as *;
-
-// disabled
-$disabled: () !default;
-$disabled: map.merge(
-  (
-    'color': #c5c8ce,
-  ),
-  $disabled
-);
+@use '../../mixins/function.scss' as *;
 
 // color
 $colors: () !default;
@@ -28,8 +20,40 @@ $colors: map.deep-merge(
       'base': #ffbd3c,
     ),
     'default': #dee2e7,
+    'black': #000000,
   ),
   $colors
+);
+
+// color
+$color-white: map.get($colors, 'white') !default;
+$color-primary: map.get($colors, 'primary', 'base') !default;
+$color-success: map.get($colors, 'success', 'base') !default;
+$color-error: map.get($colors, 'error', 'base') !default;
+$color-warning: map.get($colors, 'warning', 'base') !default;
+$color-default: map.get($colors, 'default') !default;
+$color-black: map.get($colors, 'black') !default;
+$border-color: #dcdee2 !default;
+
+// title
+$title-color: #383d47;
+// text
+$text-color: #4a505e;
+// placeholder
+$placeholder-color: #c5c8ce;
+// arrow
+$arrow-color: #808695;
+// legend
+$legend-color: #999999;
+
+// disabled
+$disabled: () !default;
+$disabled: map.merge(
+  (
+    'color': #c5c8ce,
+    'bg': #f8f9fd,
+  ),
+  $disabled
 );
 
 // badge
@@ -60,20 +84,153 @@ $ivue-bottom-nav: map.merge(
   $ivue-bottom-nav
 );
 
-// color
-$color-white: map.get($colors, 'white') !default;
-$color-primary: map.get($colors, 'primary', 'base') !default;
-$color-success: map.get($colors, 'success', 'base') !default;
-$color-error: map.get($colors, 'error', 'base') !default;
-$color-warning: map.get($colors, 'warning', 'base') !default;
-$color-default: map.get($colors, 'default') !default;
+// ivue-button
+$ivue-button: () !default;
+$ivue-button: map.merge(
+  (
+    'white': getCssVar('ivue-color-white'),
+    'mask-bg': rgba(255, 255, 255, 0.5),
+    'disabled-color': rgba(0, 0, 0, 0.26),
+    'raised-disabled-bg': #f8f9fd,
+    'readonly-color': rgba(0, 0, 0, 0.12),
+    // primary
+    'primary': getCssVar('ivue-color-primary'),
+    'primary-shadow-3': rgba(79, 135, 255, 0.3),
+    'primary-shadow-15': rgba(79, 135, 255, 0.15),
+    // light-primary
+    'light-primary': linear-gradient(135deg, #71cdff 0%, #5ab2ff 100%),
+    'light-primary-color': #71cdff,
+    'light-primary-shadow-3': rgba(90, 178, 255, 0.3),
+    'light-primary-shadow-15': rgba(90, 178, 255, 0.15),
+    // dark-primary
+    'dark-primary': linear-gradient(135deg, #3a9ff6 0%, #5b8eff 100%),
+    'dark-primary-color': #3a9ff6,
+    'dark-primary-shadow-3': rgba(58, 159, 246, 0.3),
+    'dark-primary-shadow-15': rgba(58, 159, 246, 0.15),
+    // success
+    'success': linear-gradient(135deg, #27e2b2 0%, #0ddece 100%),
+    'success-color': #27e2b2,
+    'success-shadow-3': rgba(35, 222, 174, 0.3),
+    'success-shadow-15': rgba(35, 222, 174, 0.15),
+    // warning
+    'warning': linear-gradient(135deg, #ffbd3c 0%, #ffa82d 100%),
+    'warning-color': #ffbd3c,
+    'warning-shadow-3': rgba(255, 182, 41, 0.3),
+    'warning-shadow-15': rgba(255, 182, 41, 0.15),
+    // error
+    'error': linear-gradient(135deg, #ff617f 0%, #ff4772 100%),
+    'error-color': #ff617f,
+    'error-shadow-3': rgba(255, 86, 118, 0.3),
+    'error-shadow-15': rgba(255, 86, 118, 0.15),
+    // loading
+    'loading-color': getCssVar('ivue-color-white'),
+  ),
+  $ivue-button
+);
 
-// title
-$title-color: #383d47;
+// ivue-loading
+$ivue-loading: () !default;
+$ivue-loading: map.merge(
+  (
+    'mask-bg': rgba(255, 255, 255, 0.9),
+    'color': getCssVar('ivue-color-primary'),
+  ),
+  $ivue-loading
+);
+
+// ivue-ripple
+$ivue-ripple: () !default;
+$ivue-ripple: map.merge(
+  (
+    'webkit-mask-image':
+      radial-gradient(
+        circle,
+        getCssVar('ivue-color-white') 100%,
+        getCssVar('ivue-color-black') 100%
+      ),
+  ),
+  $ivue-ripple
+);
+
+// ivue-back-top
+$ivue-back-top: () !default;
+$ivue-back-top: map.merge(
+  (
+    'bg': getCssVar('ivue-color', 'primary'),
+    'color': getCssVar('ivue-color', 'white'),
+  ),
+  $ivue-back-top
+);
+
+// ivue-carousel
+$ivue-carousel: () !default;
+$ivue-carousel: map.merge(
+  (
+    'mask-bg': getCssVar('ivue-color-white'),
+    'outside-button-bg': #8391a5,
+    'dot-button-bg': getCssVar('ivue-color-white'),
+    'label-color': getCssVar('ivue-text-color'),
+    'arrow-color': getCssVar('ivue-color-white'),
+    'arrow-bg': rgba(31, 45, 61, 0.11),
+  ),
+  $ivue-carousel
+);
+
+// ivue-switch
+$ivue-switch: () !default;
+$ivue-switch: map.merge(
+  (
+    'bg': '#858585',
+    'after-bg': getCssVar('ivue-color-white'),
+    'inner-color': getCssVar('ivue-color-white'),
+    'disabled-border-color': getCssVar('ivue-border-color'),
+    'disabled-bg': getCssVar('ivue-disabled-bg'),
+    'emboss-inner-color': getCssVar('ivue-text-color'),
+    'thumb-color': getCssVar('ivue-color-white'),
+    'thumb-disabled-color': #fafafa,
+    'track-disabled-color': rgba(0, 0, 0, 0.12),
+    'track-checked-disabled-color': rgba(0, 0, 0, 0.38),
+  ),
+  $ivue-switch
+);
+
+// ivue-select
+$ivue-select: () !default;
+$ivue-select: map.merge(
+  (
+    'title': getCssVar('ivue-title-color'),
+    'color': getCssVar('ivue-text-color'),
+    'border': getCssVar('ivue-border-color'),
+    // selection
+    'selection-border-visible': rgba(91, 142, 255, 0.8),
+    'selection-bg': getCssVar('ivue-color-white'),
+    // disabled
+    'disabled-color': getCssVar('ivue-disabled-color'),
+    'disabled-bg': getCssVar('ivue-disabled-bg'),
+    // dropdown
+    'dropdown-bg': getCssVar('ivue-color-white'),
+    'dropdown-shadow': rgba(91, 142, 255, 0.2),
+    // loading
+    'loading-color': '#9ab0c6',
+    'loading-height': 100px,
+    // tag
+    'tag-border-color': #e8eaec,
+    'tag-bg': #f8f9fd,
+    // icon
+    'icon-color': #bfcdd9,
+    // not-find
+    'not-find': #9ab0c6,
+  ),
+  $ivue-select
+);
 
 :root {
   // title
   @include set-css-var-value('ivue-title-color', $title-color);
+  // text
+  @include set-css-var-value('ivue-text-color', $text-color);
+  // border-color
+  @include set-css-var-value('ivue-border-color', $border-color);
 
   // color
   @include set-css-var-value('ivue-color-white', $color-white);
@@ -82,6 +239,10 @@ $title-color: #383d47;
   @include set-css-var-value('ivue-color-error', $color-error);
   @include set-css-var-value('ivue-color-warning', $color-warning);
   @include set-css-var-value('ivue-color-default', $color-default);
+  @include set-css-var-value('ivue-color-black', $color-black);
+  @include set-css-var-value('ivue-input-placeholder', $placeholder-color);
+  @include set-css-var-value('ivue-arrow-color', $arrow-color);
+  @include set-css-var-value('ivue-legend-color', $legend-color);
 
   // disabled
   @include set-component-css-var('ivue-disabled', $disabled);
@@ -94,4 +255,18 @@ $title-color: #383d47;
 
   // ivue-bottom-nav
   @include set-component-css-var('ivue-bottom-nav', $ivue-bottom-nav);
+  // ivue-button
+  @include set-component-css-var('ivue-button', $ivue-button);
+  // ivue-loading
+  @include set-component-css-var('ivue-loading', $ivue-loading);
+  // ivue-ripple
+  @include set-component-css-var('ivue-ripple', $ivue-ripple);
+  // ivue-back-top
+  @include set-component-css-var('ivue-back-top', $ivue-back-top);
+  // ivue-carousel
+  @include set-component-css-var('ivue-carousel', $ivue-carousel);
+  // ivue-switch
+  @include set-component-css-var('ivue-switch', $ivue-switch);
+  // ivue-select
+  @include set-component-css-var('ivue-select', $ivue-select);
 }

@@ -1,0 +1,24 @@
+@use 'sass:map';
+
+@use '../../mixins/function.scss' as *;
+
+$carousel: () !default;
+$carousel: map.merge(
+  (
+    'dot-padding': 7px,
+    'dot-padding-vertical': 4px 12px,
+    'dot-width': 24px,
+    'dot-height': 3px,
+    'dot-width-vertical': 2px,
+    'dot-height-vertical': 15px,
+    'dot-radius-size': 6px,
+    // content
+    'content-height': 200px,
+    // arrow
+    'arrow-size': 36px,
+    'arrow-icon-font-size': 24px,
+    'arrow-icon-left': 16px,
+    'arrow-icon-right': 16px,
+  ),
+  $carousel
+);

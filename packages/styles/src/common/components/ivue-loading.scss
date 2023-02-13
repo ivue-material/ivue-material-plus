@@ -1,0 +1,42 @@
+@use 'sass:map';
+
+@use '../../mixins/function.scss' as *;
+
+$loading: () !default;
+$loading: map.merge(
+  (
+    'spinner-circular-size': 42px,
+    'spinner-fullscreen-size': 50px,
+
+    'rotate': ivue-loading-rotate,
+    'circular-animation': ivue-loading-rotate 2s linear infinite,
+    'path-animation': ivue-loading-dash 1.5s ease-in-out infinite,
+    'font-size': getCssVar('ivue-font-size-base'),
+  ),
+  $loading
+);
+
+// 滚动
+@keyframes ivue-loading-rotate {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+// 圆形滚动样式
+@keyframes ivue-loading-dash {
+  0% {
+    stroke-dasharray: 1, 200;
+    stroke-dashoffset: 0;
+  }
+
+  50% {
+    stroke-dasharray: 90, 150;
+    stroke-dashoffset: -40px;
+  }
+
+  100% {
+    stroke-dasharray: 90, 150;
+    stroke-dashoffset: -120px;
+  }
+}

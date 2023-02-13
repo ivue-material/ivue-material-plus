@@ -27,7 +27,12 @@ function kebabCase(key: string) {
 }
 
 // 没有样式的组件
-const noStylesComponents: string[] = [];
+const noStylesComponents: string[] = [
+  'IvueCarouselItem',
+  'IvueFormItem',
+  'IvueOptionGroup',
+  'IvueOption',
+];
 
 function getSideEffects(dirName: string, options: resolverOptions) {
   const { importStyle, ssr } = options;
@@ -71,6 +76,43 @@ const resolveComponent = (
     sideEffects: getSideEffects(partialName, options),
   };
 };
+
+// 导入指令
+function resolveDirective(
+  name: string,
+  options: resolverOptions
+): ComponentInfo | undefined {
+  if (!options.directives) {
+    return;
+  }
+
+  const directives: Record<string, { importName: string; styleName: string }> =
+    {
+      // 水波纹
+      Ripple: {
+        importName: 'RippleDirective',
+        styleName: 'ivue-ripple',
+      },
+      // loading
+      Loading: {
+        importName: 'IvueLoadingDirective',
+        styleName: 'ivue-loading',
+      },
+    };
+
+  const directive = directives[name];
+  if (!directive) {
+    return;
+  }
+
+  const { ssr } = options;
+
+  return {
+    name: directive.importName,
+    from: `ivue-material-plus/${ssr ? 'lib' : 'es'}`,
+    sideEffects: getSideEffects(directive.styleName, options),
+  };
+}
 
 export function IvueMaterialPlusResolver(
   options?: resolverOptions
@@ -116,6 +158,12 @@ export function IvueMaterialPlusResolver(
         else {
           return resolveComponent(name, options);
         }
+      },
+    },
+    {
+      type: 'directive',
+      resolve: async (name: string) => {
+        return resolveDirective(name, await resolveOptions());
       },
     },
   ];

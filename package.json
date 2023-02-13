@@ -30,9 +30,11 @@
   },
   "dependencies": {
     "@ivue-material-plus/components": "workspace:*",
+    "@ivue-material-plus/directives": "workspace:*",
     "@ivue-material-plus/hooks": "workspace:*",
     "@ivue-material-plus/utils": "workspace:*",
     "@ivue-material-plus/test-utils": "workspace:*",
+    "@ivue-material-plus/tokens": "workspace:*",
     "-": "0.0.1",
     "@antfu/utils": "^0.5.2",
     "@popperjs/core": "^2.11.6",
@@ -58,7 +60,6 @@
     "vite-tsconfig-paths": "^4.0.5"
   },
   "peerDependencies": {
-    "vue": ">=3.0.0"
   },
   "devDependencies": {
     "@ivue-material-plus/build": "workspace:^0.0.1",

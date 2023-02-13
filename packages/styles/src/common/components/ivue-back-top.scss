@@ -5,7 +5,8 @@
 $back-top: () !default;
 $back-top: map.merge(
   (
-    'width': 32px,
+    'size': 32px,
+    'radius': getCssVar('ivue-radius', '4px'),
   ),
   $back-top
 );

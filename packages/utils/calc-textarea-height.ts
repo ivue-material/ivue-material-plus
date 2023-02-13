@@ -77,9 +77,9 @@ function calculateNodeStyling(node: any, useCache = false) {
 
 // 计算Textarea高度
 export const calcTextareaHeight = (
-  uiTextNode: Record<string, any>,
-  minRows = null,
-  maxRows = null,
+  uiTextNode: any,
+  minRows: any = null,
+  maxRows: any = null,
   useCache = false
 ) => {
   if (!hiddenTextarea) {

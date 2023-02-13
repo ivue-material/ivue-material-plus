@@ -32,10 +32,6 @@ export const copyFiles = () =>
       path.resolve(projRoot, 'README.md'),
       path.resolve(uiOutput, 'README.md')
     ),
-    copyFile(
-      path.resolve(projRoot, 'global.d.ts'),
-      path.resolve(uiOutput, 'global.d.ts')
-    ),
   ]);
 
 // 复制类型文件

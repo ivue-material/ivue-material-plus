@@ -6,3 +6,9 @@ export const IvueAffix = withInstall(Affix);
 export default IvueAffix;
 
 export * from './src/affix';
+
+declare module '@vue/runtime-core' {
+  export interface GlobalComponents {
+    IvueAffix: typeof import('@ivue-material-plus/components')['IvueAffix'];
+  }
+}

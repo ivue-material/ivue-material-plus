@@ -1,0 +1,12 @@
+{
+  "name": "@ivue-material-plus/directives",
+  "version": "0.0.1",
+  "description": "directives",
+  "license": "MIT",
+  "main": "index.ts",
+  "module": "index.ts",
+  "unpkg": "index.js",
+  "jsdelivr": "index.js",
+  "peerDependencies": {
+  }
+}

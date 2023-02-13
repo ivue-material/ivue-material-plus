@@ -13,7 +13,7 @@
     // 是否在编译时进行库文件检查的是否在编译时进行库文件检查的
     "skipLibCheck": true
   },
-  "include": ["packages", "typings/components.d.ts", "typings/env.d.ts"],
+  "include": ["packages", "typings/env.d.ts"],
   "exclude": [
     "node_modules",
     "packages/test-utils",

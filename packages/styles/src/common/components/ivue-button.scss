@@ -1,0 +1,22 @@
+@use 'sass:map';
+
+@use '../../mixins/function.scss' as *;
+
+$button: () !default;
+$button: map.merge(
+  (
+    'min-width': 99px,
+    'height': 40px,
+    'radius': getCssVar('ivue-radius-4px'),
+    'padding': 0 16px,
+    'font-size': getCssVar('ivue-font-size-base'),
+    // loading
+    'loading-margin-right': 8px,
+    'loading-size': 18px,
+    // icon
+    'icon-size': 36px,
+    // radius
+    'radius-border': 100px,
+  ),
+  $button
+);

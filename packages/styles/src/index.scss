@@ -1,4 +1,17 @@
 @use 'base.scss';
+@use 'theme/default/index.scss';
 
 // 组件样式
 @use 'ivue-affix.scss';
+@use 'ivue-avatar.scss';
+@use 'ivue-back-top.scss';
+@use 'ivue-badge.scss';
+@use 'ivue-button.scss';
+@use 'ivue-carousel.scss';
+@use 'ivue-form.scss';
+@use 'ivue-icon.scss';
+@use 'ivue-loading.scss';
+@use 'ivue-popover.scss';
+@use 'ivue-ripple.scss';
+@use 'ivue-select.scss';
+@use 'ivue-switch.scss';

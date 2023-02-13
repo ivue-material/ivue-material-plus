@@ -1,0 +1,521 @@
+@use 'sass:math';
+@use 'sass:list';
+
+@use 'base.scss' as *;
+@use 'mixins/mixins' as *;
+@use 'common/var.scss' as *;
+@use 'common/transition.scss' as *;
+
+$name: 'ivue-switch';
+
+@mixin transition() {
+  transition: left 0.2s ease-in-out, width 0.2s ease-in-out;
+}
+
+@include b($name) {
+  // 设置组件 css var 变量
+  @include set-component-css-var($name, $switch);
+  @include set-component-css-var($name, $switch-after);
+  @include set-component-css-var($name, $switch-before);
+  @include set-component-css-var($name, $switch-loading);
+
+  position: relative;
+  display: inline-block;
+  vertical-align: middle;
+  cursor: pointer;
+  user-select: none;
+  outline: none;
+  transition: all 0.2s ease-in-out 0s;
+  -webkit-tap-highlight-color: transparent;
+
+  width: getCssVar($name, 'width');
+  height: getCssVar($name, 'height');
+  border-radius: getCssVar($name, 'height');
+  border: 1px solid getCssVar($name, 'bg');
+  background: getCssVar($name, 'bg');
+
+  // focus
+  &:focus {
+    outline: 0;
+
+    // hover
+    &:hover {
+      box-shadow: none;
+    }
+  }
+
+  // after
+  &::after {
+    content: '';
+    position: absolute;
+    top: 1px;
+    left: 1px;
+    cursor: pointer;
+
+    width: getCssVar($name, 'after-size');
+    height: getCssVar($name, 'after-size');
+    border-radius: getCssVar($name, 'after-size');
+    background: getCssVar($name, 'after-bg');
+
+    @include transition;
+  }
+
+  // active
+  &:active:not(.is-disabled) {
+    &::after {
+      width: getCssVar(#{$name}, 'after-active-width');
+    }
+  }
+
+  // before
+  &::before {
+    content: '';
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    display: none;
+    border-radius: 50%;
+    background-color: transparent;
+    z-index: 1;
+    border: 1px solid currentColor;
+    border-color: transparent transparent transparent currentColor;
+    animation: ivue-switch-loading 1s linear;
+    animation-iteration-count: infinite;
+
+    width: getCssVar(#{$name}, 'before-active-width');
+    height: getCssVar(#{$name}, 'before-active-width');
+  }
+
+  // input
+  @include e(input) {
+    position: absolute;
+    width: 0;
+    height: 0;
+    opacity: 0;
+    margin: 0;
+  }
+
+  // 未激活
+  &.is-false {
+    border-color: currentColor;
+    background: currentColor;
+  }
+
+  // 激活
+  &.is-checked {
+    border-color: currentColor;
+    background: currentColor;
+
+    &::after {
+      left: getCssVar($name, 'checked-after-left');
+    }
+
+    &::before {
+      left: getCssVar($name, 'checked-before-left');
+    }
+
+    &:active:not(.ivue-switch-disabled)::after {
+      left: getCssVar($name, 'after-checked-active-left');
+    }
+
+    // 内部文字样式
+    @include e(inner) {
+      left: getCssVar($name, 'checked-inner-left');
+    }
+  }
+
+  // 内部文字样式
+  @include e(inner) {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: auto;
+    right: getCssVar($name, 'checked-inner-left');
+    display: flex;
+    align-items: center;
+    color: getCssVar($name, 'inner-color');
+    font-size: getCssVar('ivue-font-size-small');
+
+    i {
+      position: relative;
+      min-width: auto;
+      width: 12px;
+      height: 12px;
+      text-align: center;
+    }
+  }
+
+  // 禁用
+  &.is-disabled {
+    cursor: not-allowed;
+    border-color: getCssVar($name, 'disabled-border-color') !important;
+    background-color: getCssVar($name, 'disabled-bg') !important;
+
+    &:after {
+      background: getCssVar($name, 'disabled-border-color');
+      cursor: not-allowed;
+    }
+
+    @include e(inner) {
+      color: getCssVar($name, 'disabled-border-color');
+    }
+  }
+
+  // loading
+  &.is-loading {
+    opacity: 0.6;
+
+    &::before {
+      display: block;
+    }
+
+    // checked
+    &.is-checked {
+      &:active:not(.is-disabled)::after {
+        left: getCssVar($name, 'loading-after-checked-active-left');
+      }
+    }
+
+    // active
+    &:active:not(.is-disabled)::after {
+      width: getCssVar($name, 'after-size');
+    }
+
+    // 大型
+    &.is-large {
+      &.is-checked::after {
+        left: 35px !important;
+      }
+
+      &:active:not(.is-disabled)::after {
+        width: 18px;
+      }
+    }
+
+    // 小型
+    &.is-small {
+      &.is-checked {
+        &:active:not(.is-disabled)::after {
+          width: 12px !important;
+          left: 13px !important;
+        }
+      }
+
+      &:active:not(.is-disabled)::after {
+        width: 12px !important;
+      }
+    }
+  }
+
+  // 小
+  &.is-small {
+    width: 28px;
+    height: 16px;
+    line-height: 14px;
+
+    &::after {
+      width: 12px;
+      height: 12px;
+      border-radius: 12px;
+    }
+
+    &:active:not(.is-disabled) {
+      &.is-checked::after {
+        left: 11px;
+      }
+
+      &::after {
+        width: 14px;
+      }
+    }
+
+    &::before {
+      width: 10px;
+      height: 10px;
+    }
+
+    &.is-checked::after {
+      left: 13px;
+    }
+
+    &.is-checked::before {
+      left: 14px;
+      width: 10px;
+      height: 10px;
+    }
+  }
+
+  // 大
+  &.is-large {
+    width: 56px;
+
+    &.is-checked:active:not(.is-disabled) {
+      &:after {
+        left: 23px;
+      }
+    }
+
+    &:active:not(.is-disabled)::after {
+      width: 30px;
+    }
+
+    &.is-checked::after {
+      left: 35px;
+    }
+
+    &.is-checked::before {
+      left: 36px;
+    }
+  }
+}
+
+@include b(#{$name}-emboss) {
+  // 设置组件 css var 变量
+  @include set-component-css-var($name, $switch);
+  @include set-component-css-var($name, $switch-emboss);
+
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  vertical-align: middle;
+  user-select: none;
+  outline: none;
+  cursor: pointer;
+
+  @include e(inner) {
+    position: relative;
+    margin-left: 8px;
+    left: 0;
+    color: getCssVar($name, 'emboss-inner-color');
+  }
+
+  // 扁平化
+  @include e(content) {
+    @include set-component-css-var($name, $switch-emboss-content);
+    @include set-component-css-var($name, $switch-emboss-loading);
+    @include set-component-css-var($name, $switch-emboss-ripple);
+
+    position: relative;
+    display: inline-flex;
+    flex: 0 0 auto;
+
+    width: getCssVar($name, 'emboss-default-width');
+    height: getCssVar($name, 'emboss-default-height');
+
+    // 跟踪
+    @include e(track) {
+      position: absolute;
+      left: 1px;
+      right: 2px;
+      top: calc(50% - 5.5px);
+      border-radius: 8px;
+      opacity: 0.6;
+      background-color: currentColor;
+      transition: all $transition-default;
+      transition-property: color, background-color;
+
+      width: getCssVar($name, 'track-width');
+      height: getCssVar($name, 'track-height');
+      color: getCssVar($name, 'bg');
+
+      // 激活
+      &.is-checked {
+        color: currentColor;
+      }
+    }
+
+    // 指示器
+    @include e(thumb) {
+      position: relative;
+      border-radius: 50%;
+      box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2),
+        0px 4px 5px 0px rgba(0, 0, 0, 0.14),
+        0px 1px 10px 0px rgba(0, 0, 0, 0.12);
+      pointer-events: none;
+      background-color: currentColor;
+      transition: all $transition-default;
+      transition-property: color, transform;
+
+      width: getCssVar($name, 'emboss-default-height');
+      height: getCssVar($name, 'emboss-default-height');
+      color: getCssVar($name, 'thumb-color');
+
+      // 激活
+      &.is-checked {
+        color: currentColor;
+        transform: translate(getCssVar($name, 'thumb-checked-transform'), 0);
+      }
+    }
+
+    // 禁用
+    &.is-disabled {
+      cursor: not-allowed;
+
+      // 跟踪
+      @include e(track) {
+        caret-color: getCssVar($name, 'track-disabled-color') !important;
+        color: getCssVar($name, 'track-disabled-color') !important;
+
+        &.is-checked {
+          caret-color: getCssVar(
+            $name,
+            'track-checked-disabled-color'
+          ) !important;
+          color: getCssVar($name, 'track-checked-disabled-color') !important;
+        }
+      }
+
+      // 指示器
+      @include e(thumb) {
+        color: getCssVar($name, 'thumb-disabled-color') !important;
+      }
+    }
+
+    // loading
+    .is-loading {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      margin: auto;
+      border-radius: 50%;
+      border: 1px solid currentColor;
+      border-color: transparent transparent transparent currentColor;
+      animation: ivue-switch-loading 1s linear;
+      animation-iteration-count: infinite;
+      background-color: transparent;
+
+      width: getCssVar($name, 'emboss-loading-size');
+      height: getCssVar($name, 'emboss-loading-size');
+    }
+
+    // 小
+    &.is-small {
+      width: getCssVar($name, 'emboss-small-width');
+      height: getCssVar($name, 'emboss-small-height');
+
+      .is-loading {
+        width: getCssVar($name, 'emboss-loading-small-size');
+        height: getCssVar($name, 'emboss-loading-small-size');
+      }
+
+      // 跟踪
+      @include e(track) {
+        top: calc(50% - 4px);
+        left: 1px;
+        width: getCssVar($name, 'track-small-width');
+        height: getCssVar($name, 'track-small-height');
+      }
+
+      // 指示器
+      @include e(thumb) {
+        width: getCssVar($name, 'emboss-small-height');
+        height: getCssVar($name, 'emboss-small-height');
+
+        &.is-checked {
+          transform: translate(
+            getCssVar($name, 'thumb-small-checked-transform'),
+            0
+          );
+        }
+      }
+
+      // ripple
+      @include e(ripple) {
+        top: calc(50% - 20px);
+
+        left: getCssVar($name, 'emboss-ripple-small-left');
+        width: getCssVar($name, 'emboss-ripple-small-size');
+        height: getCssVar($name, 'emboss-ripple-small-size');
+
+        &.is-checked {
+          transform: translate(
+            getCssVar($name, 'emboss-ripple-small-checked-transform'),
+            0
+          );
+        }
+      }
+    }
+
+    // 大
+    &.is-large {
+      width: getCssVar($name, 'emboss-large-width');
+      height: getCssVar($name, 'emboss-large-height');
+
+      // loading
+      .is-loading {
+        width: getCssVar($name, 'emboss-loading-large-size');
+        height: getCssVar($name, 'emboss-loading-large-size');
+      }
+
+      // 跟踪
+      @include e(track) {
+        top: calc(50% - 7px);
+        left: 3px;
+        width: getCssVar($name, 'track-large-width');
+        height: getCssVar($name, 'track-large-height');
+      }
+
+      // 指示器
+      @include e(thumb) {
+        width: getCssVar($name, 'emboss-large-height');
+        height: getCssVar($name, 'emboss-large-height');
+
+        &.is-checked {
+          transform: translate(
+            getCssVar($name, 'thumb-large-checked-transform'),
+            0
+          );
+        }
+      }
+
+      // ripple
+      @include e(ripple) {
+        top: calc(50% - 32px);
+        left: getCssVar($name, 'emboss-ripple-large-left');
+
+        width: getCssVar($name, 'emboss-ripple-large-size');
+        height: getCssVar($name, 'emboss-ripple-large-size');
+
+        &.is-checked {
+          transform: translate(
+            getCssVar($name, 'emboss-ripple-large-checked-transform'),
+            0
+          );
+        }
+      }
+    }
+  }
+
+  // ripple
+  @include e(ripple) {
+    position: absolute;
+    top: calc(50% - 25px);
+    border-radius: 50%;
+    transition: all $transition-default;
+
+    left: getCssVar($name, 'emboss-ripple-left');
+    width: getCssVar($name, 'emboss-ripple-size');
+    height: getCssVar($name, 'emboss-ripple-size');
+    margin: getCssVar($name, 'emboss-margin');
+
+    // 激活
+    &.is-checked {
+      transform: translate(
+        getCssVar($name, 'emboss-ripple-checked-transform'),
+        0
+      );
+    }
+  }
+}
+
+@keyframes ivue-switch-loading {
+  0% {
+    transform: rotate(0);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}

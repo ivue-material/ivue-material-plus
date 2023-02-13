@@ -18,10 +18,12 @@ importers:
       '@ivue-material-plus/build-constants': workspace:^0.0.1
       '@ivue-material-plus/build-utils': workspace:^0.0.1
       '@ivue-material-plus/components': workspace:*
+      '@ivue-material-plus/directives': workspace:*
       '@ivue-material-plus/eslint-config': workspace:*
       '@ivue-material-plus/hooks': workspace:*
       '@ivue-material-plus/styles': workspace:*
       '@ivue-material-plus/test-utils': workspace:*
+      '@ivue-material-plus/tokens': workspace:*
       '@ivue-material-plus/utils': workspace:*
       '@pnpm/find-workspace-packages': ^4.0.16
       '@pnpm/types': ^8.4.0
@@ -142,8 +144,10 @@ importers:
       '-': 0.0.1
       '@antfu/utils': 0.5.2
       '@ivue-material-plus/components': link:packages/components
+      '@ivue-material-plus/directives': link:packages/directives
       '@ivue-material-plus/hooks': link:packages/hooks
       '@ivue-material-plus/test-utils': link:packages/test-utils
+      '@ivue-material-plus/tokens': link:packages/tokens
       '@ivue-material-plus/utils': link:packages/utils
       '@popperjs/core': 2.11.6
       '@types/lodash': 4.14.191
@@ -385,7 +389,6 @@ importers:
   examples:
     specifiers:
       '@vitejs/plugin-vue': ^2.3.3
-      ivue-material-plus: workspace:2.0.0-0.0.1
       unplugin-vue-components: 0.21.2
       vite: ^2.9.15
       vite-plugin-inspect: ^0.5.0
@@ -393,7 +396,6 @@ importers:
       vue: ^3.2.45
       vue-router: ^4.1.6
     dependencies:
-      ivue-material-plus: link:../packages/ivue-material-plus
       vue: 3.2.47
       vue-router: 4.1.6_vue@3.2.47
     devDependencies:
@@ -408,6 +410,9 @@ importers:
       vue: ^3.2.45
     dependencies:
       vue: 3.2.47
+
+  packages/directives:
+    specifiers: {}
 
   packages/hooks:
     specifiers: {}
@@ -469,7 +474,7 @@ importers:
 
   packages/styles:
     specifiers:
-      '@esbuild-kit/cjs-loader': ^2.2.1
+      '@esbuild-kit/cjs-loader': ^2.4.2
       '@ivue-material-plus/build': workspace:*
       '@types/gulp-autoprefixer': ^0.0.33
       '@types/gulp-clean-css': ^4.3.0
@@ -492,6 +497,9 @@ importers:
       gulp-sass: 5.1.0
 
   packages/test-utils:
+    specifiers: {}
+
+  packages/tokens:
     specifiers: {}
 
   packages/utils:

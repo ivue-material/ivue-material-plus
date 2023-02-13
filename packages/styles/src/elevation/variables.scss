@@ -1,0 +1,22 @@
+// 暗影
+$ivue-elevation-umbra-color: rgba(0, 0, 0, 0.3);
+// 半影
+$ivue-elevation-penumbra-color: rgba(0, 0, 0, 0.15);
+
+$ivue-elevation-umbra: (
+  0: '0 0 0 0',
+  1: '0px 1px 2px',
+  2: '0px 1px 2px',
+  3: '0px 4px 8px 3px',
+  4: '0px 6px 10px 4px',
+  5: '0px 8px 12px 6px',
+);
+
+$ivue-elevation-penumbra: (
+  0: '0 0 0 0',
+  1: '0px 1px 3px 1px',
+  2: '0px 2px 6px 2px',
+  3: '0px 1px 3px',
+  4: '0px 2px 3px',
+  5: '0px 4px 4px',
+);
