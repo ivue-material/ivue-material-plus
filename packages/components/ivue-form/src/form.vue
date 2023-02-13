@@ -16,18 +16,20 @@ import {
 } from 'vue';
 import { isFunction, debugWarn } from '@ivue-material-plus/utils';
 
-import { formProps, FormContextKey, formEmits } from './form';
+import { formProps, formEmits } from './form';
 import { filterFields, useFormLabelWidth } from './utils';
+import {
+  FormItemContext,
+  FormContextKey,
+  FormContext,
+} from '@ivue-material-plus/tokens';
 
 // type
-import type {
-  FormContext,
-  FormValidateCallback,
-  FormValidationResult,
-} from './form';
-import type { FormItemProp, FormItemContext } from './form-item';
 import type { ValidateFieldsError } from 'async-validator';
 import type { Arrayable } from '@ivue-material-plus/utils';
+
+import type { FormValidateCallback, FormValidationResult } from './form';
+import type { FormItemProp } from './form-item';
 
 const prefixCls = 'ivue-form';
 

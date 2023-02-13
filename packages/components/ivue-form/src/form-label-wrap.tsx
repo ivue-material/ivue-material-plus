@@ -11,13 +11,10 @@ import {
   computed,
 } from 'vue';
 import { useResizeObserver } from '@vueuse/core';
+import { FormItemContextKey, FormContextKey } from '@ivue-material-plus/tokens';
 
 // type
 import type { CSSProperties } from 'vue';
-
-// type
-import { FormContextKey } from './form';
-import { FormItemContextKey } from './form-item';
 
 // prefixCls
 const prefixCls = 'ivue-form-label-wrap';

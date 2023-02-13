@@ -55,27 +55,32 @@ import AsyncValidator from 'async-validator';
 import { refDebounced } from '@vueuse/core';
 import { clone } from 'lodash-unified';
 
-import IvueIcon from '@ivue-material-plus/components/ivue-icon';
+// hooks
 import { useId } from '@ivue-material-plus/hooks';
-
-import FormLabelWrap from './form-label-wrap';
-
+// style
 import { addUnit } from '@ivue-material-plus/utils/dom/style';
+// utils
 import { isFunction, ensureArray, getProp } from '@ivue-material-plus/utils';
+// tokens
+import {
+  FormItemContextKey,
+  FormItemContext,
+  FormContextKey,
+  FormContext,
+} from '@ivue-material-plus/tokens';
 
-import { FormContextKey } from './form';
-import { FormItemContextKey, formItemProps } from './form-item';
+import { formItemProps } from './form-item';
+
+// components
+import IvueIcon from '@ivue-material-plus/components/ivue-icon';
+import FormLabelWrap from './form-label-wrap';
 
 // type
 import type { CSSProperties } from 'vue';
 import type { RuleItem } from 'async-validator';
 
-import type { FormValidateFailure, FormContext } from './form';
-import type {
-  FormItemContext,
-  FormItemRule,
-  FormItemValidateState,
-} from './form-item';
+import type { FormValidateFailure } from './form';
+import type { FormItemRule, FormItemValidateState } from './form-item';
 
 const prefixCls = 'ivue-form-item';
 

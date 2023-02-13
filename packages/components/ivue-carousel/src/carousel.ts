@@ -1,9 +1,8 @@
 import { buildProps } from '@ivue-material-plus/utils';
 
 // type
-import type { ExtractPropTypes, InjectionKey, Ref } from 'vue';
+import type { ExtractPropTypes } from 'vue';
 import type Carousel from './carousel.vue';
-import type { CarouselItemContext } from '../../ivue-carousel-item/src/carousel-item';
 
 // props
 export const carouselProps = buildProps({
@@ -181,19 +180,3 @@ export type CarouselEmits = typeof carouselEmits;
 
 // 组件实例
 export type CarouselInstance = InstanceType<typeof Carousel>;
-
-// CarouselContext
-export type CarouselContext = {
-  wrapper: Ref<HTMLElement | undefined>;
-  items: Ref<CarouselItemContext[]>;
-  isCardType: Ref<any>;
-  isVertical: Ref<any>;
-  loop: boolean;
-  cardScale: number;
-  addItem: (item: CarouselItemContext) => void;
-  removeItem: (uid: number | undefined) => void;
-  setContentHeight: (height: number) => void;
-  setActiveItem: (index: number) => void;
-};
-export const CarouselContextKey: InjectionKey<CarouselContext> =
-  Symbol('ivue-carousel');

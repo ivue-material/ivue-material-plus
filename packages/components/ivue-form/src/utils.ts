@@ -4,8 +4,10 @@ import { ensureArray } from '@ivue-material-plus/utils/arrays';
 import { debugWarn } from '@ivue-material-plus/utils/error';
 
 // types
-import type { FormItemProp, FormItemContext } from './form-item';
 import type { Arrayable } from '@ivue-material-plus/utils';
+import type { FormItemContext } from '@ivue-material-plus/tokens';
+
+import type { FormItemProp } from './form-item';
 
 // 过滤字段
 export const filterFields = (

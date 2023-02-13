@@ -14,7 +14,7 @@ import { isUndefined } from '@ivue-material-plus/utils';
 import {
   CarouselContextKey,
   CarouselContext,
-} from '../../ivue-carousel/src/carousel';
+} from '@ivue-material-plus/tokens';
 
 // type
 import type { ComponentInternalInstance } from 'vue';

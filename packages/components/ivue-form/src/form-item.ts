@@ -1,10 +1,9 @@
 import { buildProps, definePropType } from '@ivue-material-plus/utils';
 
 // type
-import type { ExtractPropTypes, InjectionKey } from 'vue';
+import type { ExtractPropTypes } from 'vue';
 import type { RuleItem } from 'async-validator';
 
-import type { FormValidateCallback, FormValidationResult } from './form';
 import type FormItem from './form-item.vue';
 import type { Arrayable } from '@ivue-material-plus/utils';
 
@@ -105,21 +104,6 @@ export type FormItemEmits = typeof formItemEmits;
 // 组件实例
 export type FormItemInstance = InstanceType<typeof FormItem>;
 
-// FormItemContext
-export type FormItemContext = FormItemProps & {
-  $el: HTMLDivElement | undefined;
-  inputIds: string[];
-  hasLabel: boolean;
-  removeInputId: (id: string) => void;
-  addInputId: (id: string) => void;
-  validate: (
-    trigger: string,
-    callback?: FormValidateCallback
-  ) => FormValidationResult;
-  resetField(): void;
-  clearValidate(): void;
-};
-
 // item 验证
 export interface FormItemRule extends RuleItem {
   trigger?: Arrayable<string>;
@@ -138,7 +122,3 @@ export const formItemValidateStates = [
 
 // FormItemValidateState
 export type FormItemValidateState = (typeof formItemValidateStates)[number];
-
-// inject相关
-export const FormItemContextKey: InjectionKey<FormItemContext> =
-  Symbol('ivue-form-item');

@@ -13,7 +13,7 @@ import { throttle } from 'lodash-unified';
 import { useResizeObserver } from '@vueuse/core';
 
 // carousel
-import { CarouselContextKey } from './carousel';
+import { CarouselContextKey } from '@ivue-material-plus/tokens';
 
 // type
 import type { SetupContext } from 'vue';

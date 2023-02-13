@@ -5,15 +5,11 @@ import { buildProps } from '@ivue-material-plus/utils';
 // type
 import type {
   ExtractPropTypes,
-  UnwrapRef,
-  InjectionKey,
-  SetupContext,
 } from 'vue';
 import type { ValidateFieldsError, ValidateError } from 'async-validator';
+
 import type Form from './form.vue';
-import type { FormItemProp, FormItemContext } from './form-item';
-import type { useFormLabelWidth } from './utils';
-import type { Arrayable } from '@ivue-material-plus/utils';
+import type { FormItemProp } from './form-item';
 
 // props
 export const formProps = buildProps({
@@ -148,8 +144,6 @@ export type FormEmits = typeof formEmits;
 // 组件实例
 export type FormInstance = InstanceType<typeof Form>;
 
-// FormLabelWidthContext
-export type FormLabelWidthContext = ReturnType<typeof useFormLabelWidth>;
 
 // FormValidateCallback
 export type FormValidateCallback = (
@@ -159,27 +153,6 @@ export type FormValidateCallback = (
   invalidFields?: ValidateFieldsError
 ) => void;
 
-// inject相关
-export type FormContext = FormProps &
-  UnwrapRef<FormLabelWidthContext> & {
-    default?: null;
-    emit: SetupContext<FormEmits>['emit'];
-    // 验证具体的某个字段
-    validateField: (
-      props?: Arrayable<FormItemProp>,
-      callback?: FormValidateCallback
-    ) => FormValidationResult;
-    // 添加验证字段
-    addField: (field: FormItemContext) => void;
-    // 删除验证字段
-    removeField: (field: FormItemContext) => void;
-    // 重置该表单项
-    resetFields: (props?: Arrayable<FormItemProp>) => void;
-    // 清理某个字段的表单验证信息
-    clearValidate: (props?: Arrayable<FormItemProp>) => void;
-  };
-// FormContextKey
-export const FormContextKey: InjectionKey<FormContext> = Symbol('ivue-form');
 
 // 对整个表单的内容进行验证
 export type FormValidationResult = Promise<boolean>;

@@ -11,8 +11,11 @@ import {
 
 // 生成随机id
 import { useId } from '../use-id';
-import { FormItemContextKey } from '@ivue-material-plus/components/ivue-form/src/form-item';
-import { FormContextKey } from '@ivue-material-plus/components/ivue-form/src/form';
+import {
+  FormItemContextKey,
+  FormContextKey,
+  FormItemContext,
+} from '@ivue-material-plus/tokens';
 
 // type
 import type {
@@ -21,7 +24,6 @@ import type {
   Ref,
   ComponentInternalInstance,
 } from 'vue';
-import type { FormItemContext } from '@ivue-material-plus/components/ivue-form/src/form-item';
 
 // 获取表单 inject
 export const useFormItem = () => {

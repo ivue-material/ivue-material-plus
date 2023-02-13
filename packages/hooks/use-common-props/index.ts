@@ -1,9 +1,9 @@
 import { computed, inject, unref } from 'vue';
+import { FormContextKey } from '@ivue-material-plus/tokens';
 import { useProp } from '../use-prop';
 
 // type
 import type { MaybeRef } from '@vueuse/core';
-import { FormContextKey } from '@ivue-material-plus/components/ivue-form/src/form';
 
 // 是否禁用
 export const useDisabled = (fallback?: MaybeRef<boolean | undefined>) => {
