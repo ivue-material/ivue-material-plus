@@ -1,5 +1,5 @@
 <template>
-  <div class="ivue-select-dropdown" :class="className" :style="wrapperStyles">
+  <div :class="wrapperClass" :style="wrapperStyles">
     <slot></slot>
   </div>
 </template>
@@ -22,6 +22,7 @@ import {
   transferIncrease,
   getStyle,
 } from '@ivue-material-plus/utils';
+import { useNamespace } from '@ivue-material-plus/hooks';
 
 // createPopper
 import { createPopper } from '@popperjs/core';
@@ -42,6 +43,9 @@ export default defineComponent({
   name: prefixCls,
   props: dropDownProps,
   setup(props) {
+    // bem
+    const bem = useNamespace(prefixCls);
+
     // inject
     const select = inject(SelectContextKey);
 
@@ -62,6 +66,13 @@ export default defineComponent({
     const popper = shallowRef<Instance | undefined>();
 
     // computed
+
+    // wrapperClass
+    const wrapperClass = computed(() => {
+      return [bem.b(), props.className];
+    });
+
+    // wrapperStyles
     const wrapperStyles = computed(() => {
       // 是否将弹层放置于 body 内
       if (props.transfer) {
@@ -165,6 +176,7 @@ export default defineComponent({
     return {
       // computed
       wrapperStyles,
+      wrapperClass,
 
       // methods
       update,

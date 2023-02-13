@@ -1,10 +1,10 @@
 <template>
-  <ul :class="[`${prefixCls}-wrap`]" v-show="visible">
+  <ul v-show="visible">
     <!-- 标题 -->
-    <li :class="[`${prefixCls}-title`]">{{ label }}</li>
+    <li :class="bem.e('title')">{{ label }}</li>
     <!-- 选项 -->
     <ul>
-      <li :class="[`${prefixCls}`]" ref="list">
+      <li :class="bem.b()" ref="list">
         <slot></slot>
       </li>
     </ul>
@@ -21,6 +21,7 @@ import {
   ref,
   nextTick,
 } from 'vue';
+import { useNamespace } from '@ivue-material-plus/hooks';
 
 // option-group
 import { optionGroupProps } from './option-group';
@@ -37,6 +38,9 @@ export default defineComponent({
   name: 'ivue-option-group',
   props: optionGroupProps,
   setup(props) {
+    // bem
+    const bem = useNamespace(prefixCls);
+
     // inject
     const select = inject(SelectContextKey) as SelectContext;
 
@@ -89,6 +93,7 @@ export default defineComponent({
 
     return {
       prefixCls,
+      bem,
 
       // dom
       list,

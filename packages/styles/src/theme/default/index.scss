@@ -34,18 +34,24 @@ $color-warning: map.get($colors, 'warning', 'base') !default;
 $color-default: map.get($colors, 'default') !default;
 $color-black: map.get($colors, 'black') !default;
 $border-color: #dcdee2 !default;
-$disabled-bg: #ededed !default;
 
 // title
 $title-color: #383d47;
 // text
 $text-color: #4a505e;
+// placeholder
+$placeholder-color: #c5c8ce;
+// arrow
+$arrow-color: #808695;
+// legend
+$legend-color: #999999;
 
 // disabled
 $disabled: () !default;
 $disabled: map.merge(
   (
     'color': #c5c8ce,
+    'bg': #f8f9fd,
   ),
   $disabled
 );
@@ -196,6 +202,36 @@ $ivue-switch: map.merge(
   $ivue-switch
 );
 
+// ivue-select
+$ivue-select: () !default;
+$ivue-select: map.merge(
+  (
+    'title': getCssVar('ivue-title-color'),
+    'color': getCssVar('ivue-text-color'),
+    'border': getCssVar('ivue-border-color'),
+    // selection
+    'selection-border-visible': rgba(91, 142, 255, 0.8),
+    'selection-bg': getCssVar('ivue-color-white'),
+    // disabled
+    'disabled-color': getCssVar('ivue-disabled-color'),
+    'disabled-bg': getCssVar('ivue-disabled-bg'),
+    // dropdown
+    'dropdown-bg': getCssVar('ivue-color-white'),
+    'dropdown-shadow': rgba(91, 142, 255, 0.2),
+    // loading
+    'loading-color': '#9ab0c6',
+    'loading-height': 100px,
+    // tag
+    'tag-border-color': #e8eaec,
+    'tag-bg': #f8f9fd,
+    // icon
+    'icon-color': #bfcdd9,
+    // not-find
+    'not-find': #9ab0c6,
+  ),
+  $ivue-select
+);
+
 :root {
   // title
   @include set-css-var-value('ivue-title-color', $title-color);
@@ -203,8 +239,6 @@ $ivue-switch: map.merge(
   @include set-css-var-value('ivue-text-color', $text-color);
   // border-color
   @include set-css-var-value('ivue-border-color', $border-color);
-  // disabled-bg
-  @include set-css-var-value('ivue-disabled-bg', $disabled-bg);
 
   // color
   @include set-css-var-value('ivue-color-white', $color-white);
@@ -214,6 +248,9 @@ $ivue-switch: map.merge(
   @include set-css-var-value('ivue-color-warning', $color-warning);
   @include set-css-var-value('ivue-color-default', $color-default);
   @include set-css-var-value('ivue-color-black', $color-black);
+  @include set-css-var-value('ivue-input-placeholder', $placeholder-color);
+  @include set-css-var-value('ivue-arrow-color', $arrow-color);
+  @include set-css-var-value('ivue-legend-color', $legend-color);
 
   // disabled
   @include set-component-css-var('ivue-disabled', $disabled);
@@ -238,4 +275,6 @@ $ivue-switch: map.merge(
   @include set-component-css-var('ivue-carousel', $ivue-carousel);
   // ivue-switch
   @include set-component-css-var('ivue-switch', $ivue-switch);
+  // ivue-select
+  @include set-component-css-var('ivue-select', $ivue-select);
 }

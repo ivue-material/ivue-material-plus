@@ -17,3 +17,11 @@ export const IvueOptionGroup = withNoopInstall(OptionGroup);
 export * from './src/select';
 export * from './src/option';
 export * from './src/option-group';
+
+declare module '@vue/runtime-core' {
+  export interface GlobalComponents {
+    IvueSelect: typeof import('@ivue-material-plus/components')['IvueSelect'];
+    IvueOption: typeof import('@ivue-material-plus/components')['IvueOption'];
+    IvueOptionGroup: typeof import('@ivue-material-plus/components')['IvueOptionGroup'];
+  }
+}

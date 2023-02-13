@@ -52,6 +52,6 @@ $transition-stand: $transition-stand-duration $transition-stand-timing;
   * $group transition
   */
 
-$transition-drop-timing: cubic-bezier(0.25, 0.8, 0.25, 1);
-$transition-drop-duration: 0.3s;
-$transition-drop: $transition-drop-duration $transition-drop-timing;
+$drop-transition-timing: cubic-bezier(0.25, 0.8, 0.25, 1);
+$drop-transition-duration: 0.3s;
+$drop-transition: $drop-transition-duration $drop-transition-timing;

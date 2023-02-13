@@ -9,6 +9,7 @@
 @forward './components/ivue-loading.scss';
 @forward './components/ivue-carousel.scss';
 @forward './components/ivue-switch.scss';
+@forward './components/ivue-select.scss';
 
 // 变量
 @use '../mixins/var.scss' as *;
@@ -38,6 +39,7 @@ $font-size: map.merge(
   (
     'small': 12px,
     'base': 14px,
+    'middle': 16px,
   ),
   $font-size
 );

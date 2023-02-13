@@ -3,8 +3,8 @@
     v-show="data.visible"
     :data-visible="data.visible"
     data-select="select-item"
-    :class="classes"
-    :style="styles"
+    :class="wrapperClasses"
+    :style="wrapperStyles"
     v-ripple="ripple"
     @click.stop="handleOptionClick"
     @mousedown.prevent
@@ -25,7 +25,9 @@ import {
   onBeforeUnmount,
   onMounted,
   nextTick,
+  unref,
 } from 'vue';
+import { useNamespace } from '@ivue-material-plus/hooks';
 
 import { isCssColor } from '@ivue-material-plus/utils';
 // option
@@ -53,6 +55,9 @@ export default defineComponent({
   },
   props: optionProps,
   setup(props, { emit }) {
+    // bem
+    const bem = useNamespace(prefixCls);
+
     // vm
     const { proxy } = getCurrentInstance() as ComponentInternalInstance;
 
@@ -95,25 +100,27 @@ export default defineComponent({
     // computed
 
     // classes
-    const classes = computed(() => {
+    const wrapperClasses = computed(() => {
       return [
-        prefixCls,
+        bem.b(),
         {
-          [`${prefixCls}-disabled`]: isDisabled.value,
-          [`${prefixCls}-focus`]: data.isFocused,
-          [`${prefixCls}-selected`]:
-            itemSelected.value && select.props.autoComplete,
+          // 禁用
+          [bem.is('disabled')]: unref(isDisabled),
+          // 获取焦点
+          [bem.is('focus')]: data.isFocused,
+          // 选中
+          [bem.is('selected')]: unref(itemSelected) && select.props.autoComplete,
         },
       ];
     });
 
     // styles
-    const styles = computed(() => {
+    const wrapperStyles = computed(() => {
       let obj = {};
 
       // 单选触发
       if (
-        (itemSelected.value && !select.props.autoComplete) ||
+        (unref(itemSelected) && !select.props.autoComplete) ||
         data.isFocused
       ) {
         // 单选
@@ -140,7 +147,7 @@ export default defineComponent({
       }
 
       // 鼠标悬浮
-      if (data.hasMouseHover && !isDisabled.value) {
+      if (data.hasMouseHover && !unref(isDisabled)) {
         // 单选
         if (!select.props.multiple) {
           obj = {
@@ -206,7 +213,7 @@ export default defineComponent({
     // 点击选项
     const handleOptionClick = () => {
       // 禁用
-      if (isDisabled.value) {
+      if (unref(isDisabled)) {
         return;
       }
 
@@ -218,7 +225,7 @@ export default defineComponent({
       else {
         select.handleOptionClick({
           value: props.value,
-          label: getLabel.value,
+          label: unref(getLabel),
         });
       }
     };
@@ -236,7 +243,7 @@ export default defineComponent({
 
     // 两个值是否相等
     const isEqual = (a: string | number, b: string | number) => {
-      if (!isObject.value) {
+      if (!unref(isObject)) {
         return a === b;
       }
     };
@@ -246,7 +253,7 @@ export default defineComponent({
       arr: (string | number)[] = [],
       target: string | number
     ) => {
-      if (!isObject.value) {
+      if (!unref(isObject)) {
         return arr && arr.indexOf(target) > -1;
       }
     };
@@ -325,12 +332,14 @@ export default defineComponent({
     });
 
     return {
+      bem,
+
       // data,
       data,
 
       // computed
-      classes,
-      styles,
+      wrapperClasses,
+      wrapperStyles,
       showLabel,
       getLabel,
       itemSelected,

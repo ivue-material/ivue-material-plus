@@ -1,4 +1,3 @@
-
 @use 'base.scss' as *;
 @use 'mixins/mixins' as *;
 @use 'common/var.scss' as *;
@@ -7,319 +6,74 @@
 
 $name: 'ivue-select';
 
-:root {
-  // loading
-  --#{$name}-loading-padding: 7px 16px;
-  --#{$name}-loading-height: 100px;
-  --#{$name}-loading-load-size: 17px;
+@include b($name) {
+  // 设置组件 css var 变量
+  @include set-component-css-var($name, $select);
 
-  // input
-  --#{$name}-input-height: 36px;
-
-  // close
-  --#{$name}-close-color: #666666;
-
-  // loading
-  --#{$name}-loading-color: #9ab0c6;
-
-  // visible
-  --#{$name}-visible-selection-color: rgba(91, 142, 255, 0.8);
-  --#{$name}-visible-selection-shadow-color: rgba(91, 142, 255, 0.2);
-  --#{$name}-disabled-selection-hover-color: var(--ivue-border-color);
-
-  // tag
-  --#{$name}-tag-border-color: #e8eaec;
-  --#{$name}-tag-border-bg: #f8f9fd;
-  --#{$name}-tag-icon-color: #bfcdd9;
-
-  // dropdown
-  --#{$name}-dropdown-shadow-color: rgba(0, 0, 0, 0.2);
-
-  // not-find
-  --#{$name}-not-find-color: #9ab0c6;
-}
-
-.#{$name} {
   position: relative;
   display: inline-block;
   width: 100%;
   box-sizing: border-box;
   vertical-align: middle;
-  color: var(--ivue-text-color);
-  font-size: var(--ivue-font-base-size);
   line-height: normal;
 
-  // 加载中
-  &-loading {
-    padding: var(--#{$name}-loading-padding);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    color: var(--#{$name}-loading-color);
-    height: var(--#{$name}-loading-height);
-
-    &--load {
-      display: flex;
-      align-items: center;
-
-      .load {
-        margin-right: 10px;
-        position: relative;
-        width: var(--#{$name}-loading-load-size);
-        height: var(--#{$name}-loading-load-size);
-      }
-    }
-  }
+  color: getCssVar($name, 'color');
+  font-size: getCssVar('ivue-font-size-base');
 
   // 禁用样式
-  &-disabled {
-    .#{$name}-selection {
+  @include when(disabled) {
+    @include b(#{$name}-selection) {
       opacity: 1;
       cursor: not-allowed;
-      color: var(--ivue-input-disabled-color);
-      background-color: var(--ivue-input-disabled-bg);
 
+      color: getCssVar($name, 'disabled-color');
+      background-color: getCssVar($name, 'disabled-bg');
+
+      // hover
       &:hover {
-        border-color: var(--#{$name}-disabled-selection-hover-color);
+        border-color: getCssVar($name, 'border');
       }
     }
 
-    .#{$name}-arrow {
-      color: var(--ivue-input-disabled-color);
+    // arrow
+    .#{$name}-head__arrow {
+      color: getCssVar($name, 'disabled-color');
     }
   }
 
   // 默认样式
-  &-default {
-    .#{$name}-selection {
+  @include m(default) {
+    @include b(#{$name}-selection) {
       position: relative;
-      height: var(--#{$name}-input-height);
+      height: getCssVar($name, 'input-height');
 
       // 输入提示
-      .#{$name}-placeholder {
-        color: var(--ivue-input-placeholder-color);
-      }
-
-      .#{$name}-placeholder {
+      .is-placeholder {
         display: block;
-        height: calc(var(--#{$name}-input-height) - 2px);
-        line-height: calc(var(--#{$name}-input-height) - 2px);
-        font-size: var(--ivue-font-base-size);
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
         padding: 0 24px 0 8px;
+
+        font-size: getCssVar('ivue-font-size-base');
+        line-height: calc(getCssVar($name, 'input-height') - 2px);
+        height: calc(getCssVar($name, 'input-height') - 2px);
+        color: getCssVar('ivue-input-placeholder');
       }
     }
 
-    .#{$name}-input-filter {
+    .#{name}-input__filter {
       width: 100%;
     }
   }
 
-  // 多选样式
-  &-multiple &-selection {
-    padding: 0 24px 0 4px;
-
-    .#{$name}-placeholder {
-      position: absolute;
-      top: 0;
-      display: block;
-      height: calc(var(--#{$name}-input-height) - 2px);
-      line-height: calc(var(--#{$name}-input-height) - 2px);
-      color: var(--ivue-input-placeholder-color);
-      font-size: var(--ivue-font-base-size);
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-      padding: 0 22px 0 4px;
-    }
-  }
-
-  // 头部开启prefix
-  &-head-is-prefix {
-    .#{$name}-placeholder {
-      position: relative !important;
-    }
-  }
-
-  &-head-input {
-    padding: 0;
-    outline: 0;
-    border: none;
-    background: 0 0;
-    cursor: inherit;
-  }
-
-  // 选择框
-  &-selection {
-    display: block;
-    position: relative;
-    box-sizing: border-box;
-    outline: none;
-    user-select: none;
-    border-radius: var(--ivue-border-radius);
-    border: 1px solid var(--ivue-border-color);
-    background-color: var(--ivue-white-color);
-    min-height: var(--#{$name}-input-height);
-    cursor: pointer;
-    transition: var(--ivue-all-transition);
-
-    &:hover {
-      border-color: var(--#{$name}-visible-selection-color);
-    }
-  }
-
-  // 多项选择
-  &-selection-multiple {
-    display: inline-block;
-    margin: 3px 4px 3px 0;
-    padding: 0 8px;
-    height: 24px;
-    line-height: 22px;
-    font-size: var(--ivue-font-base-size);
-    vertical-align: middle;
-    opacity: 1;
-    overflow: hidden;
-    border: 1px solid var(--ivue-border-multiple-color);
-    border-radius: 3px;
-    background: var(--ivue-background-color-multiple);
-    cursor: pointer;
-
-    &-close {
-      display: inline-block;
-      position: relative;
-      top: -1px;
-      margin-left: 2px;
-      opacity: 0.6;
-      font-size: var(--ivue-font-base-size);
-      width: auto;
-      min-width: auto;
-      height: auto;
-      color: var(--#{$name}-close-color);
-      cursor: pointer;
-    }
-  }
-
-  // 过滤输入框
-  &-input-filter {
-    display: inline-block;
-    position: relative;
-    padding: 0 24px 0 8px;
-    font-size: var(--ivue-font-base-size);
-    outline: none;
-    border: none;
-    box-sizing: border-box;
-    height: var(--#{$name}-input-height);
-    line-height: var(--#{$name}-input-height);
-    color: var(--ivue-text-color);
-    background-color: transparent;
-    cursor: pointer;
-
-    @include placeholder;
-
-    &[disabled] {
-      cursor: not-allowed;
-      color: var(--ivue-input-disabled-color);
-    }
-  }
-
-  // 在 Select 内显示图标
-  &-prefix {
-    padding-left: 4px;
-    display: inline-block;
-    vertical-align: middle;
-    height: calc(var(--#{$name}-input-height) - 2px);
-    line-height: calc(var(--#{$name}-input-height) - 2px);
-  }
-
-  // 多选头部外层
-  &-head-wrapper {
-    display: inline-flex;
-    align-items: center;
-    flex-wrap: wrap;
-    width: 100%;
-  }
-
-  // 有图标设置样式
-  &-head-with-prefix {
-    flex: 1;
-    padding-left: 4px !important;
-    display: inline-block !important;
-    vertical-align: middle;
-  }
-
-  // 多选和设置了最大显示数时的方框
-  &-tag {
-    position: relative;
-    display: inline-block;
-    height: 22px;
-    line-height: 22px;
-    margin: 2px 4px 2px 0;
-    padding: 0 8px;
-    border: 1px solid var(--#{$name}-tag-border-color);
-    border-radius: 3px;
-    background: var(--#{$name}-tag-border-bg);
-    font-size: var(--ivue-font-base-size);
-    vertical-align: middle;
-    opacity: 1;
-    overflow: hidden;
-    transition: all $transition-default;
-
-    // 文字
-    &-text {
-      color: var(--ivue-text-color);
-      transition: color $transition-default;
-    }
-
-    .ivue-icon {
-      margin: 0;
-      width: auto;
-      min-width: auto;
-      height: auto;
-      cursor: pointer;
-      font-size: 14px;
-      color: var(--#{$name}-tag-icon-color);
-      line-height: 26px;
-      transition: color $transition-default;
-    }
-
-    // hover
-    &:hover {
-      background: var(--ivue-primary-color);
-      border-color: var(--ivue-primary-color);
-
-      // 文字
-      .#{$name}-tag-text,
-      .ivue-icon {
-        color: var(--ivue-white-color);
-      }
-    }
-  }
-
-  // 头部开启了过滤 && 自定义了 prefix
-  &-head-flex {
-    display: flex;
-    align-items: center;
-    padding-left: 4px;
-  }
-
   // 开启了多选
-  &-multiple {
-    .#{$name}-prefix {
+  @include m(multiple) {
+    .#{$name}-head__prefix {
       padding: 0 4px 0 0;
     }
 
-    // tag 隐藏
-    &-tag-hidden {
-      margin-right: 0 !important;
-    }
-
-    .#{$name}-head-with-prefix {
-      padding-left: 0 !important;
-    }
-
+    // tag
     .#{$name}-tag {
       height: 28px;
       line-height: 26px;
@@ -335,7 +89,8 @@ $name: 'ivue-select';
       }
     }
 
-    .#{$name}-tag span:not(.ivue-select-max-tag) {
+    // 没有最大限制值
+    .#{$name}-tag span:not(.is-max) {
       display: block;
       margin-right: 14px;
       overflow: hidden;
@@ -358,110 +113,293 @@ $name: 'ivue-select';
         transition: none;
       }
     }
-  }
 
-  // 头部开启了过滤 && 自定义了 prefix && 开启了多选
-  &-multiple &-head-flex &-prefix {
-    margin-right: 4px;
-  }
-
-  &-multiple &-input-filter {
-    padding: 0 0 0 4px;
-    height: calc(var(--#{$name}-input-height) - 2px);
-    line-height: calc(var(--#{$name}-input-height) - 12px);
-  }
-
-  &-multiple &-input-filter-placeholder {
-    height: calc(var(--#{$name}-input-height) - 2px);
-    line-height: calc(var(--#{$name}-input-height) - 12px);
-  }
-
-  // 输入框箭头方向
-  .#{$name}-arrow {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    right: 0;
-    line-height: 1;
-    font-size: var(--ivue-font-default-size);
-    font-weight: bold;
-    color: var(--ivue-arrow-color);
-    height: 100%;
-    transition: var(--ivue-all-transition);
-  }
-
-  // 删除图标
-  &-clear {
-    text-align: center;
-  }
-
-  &-selection-value {
-    display: block;
-    padding-left: 8px;
-    padding-right: 24px;
-    height: calc(var(--#{$name}-input-height) - 2px);
-    line-height: calc(var(--#{$name}-input-height) - 2px);
-    font-size: var(--ivue-font-base-size);
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-
-  &-visible {
+    // 多选样式
     .#{$name}-selection {
-      border-color: var(--#{$name}-visible-selection-color);
-      outline: 0;
-      box-shadow: 0 0 0 2px var(--#{$name}-visible-selection-shadow-color);
+      padding: 0 24px 0 4px;
+
+      .is-placeholder {
+        position: absolute;
+        top: 0;
+        display: block;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        padding: 0 22px 0 4px;
+
+        height: calc(getCssVar($name, 'input-height') - 2px);
+        line-height: calc(getCssVar($name, 'input-height') - 2px);
+        color: getCssVar('ivue-input-placeholder');
+        font-size: getCssVar('ivue-font-size-base');
+      }
     }
 
-    .#{$name}-arrow {
+    // 输入框过滤
+    .#{$name}-input__filter {
+      flex: 1;
+      padding: 0 0 0 4px;
+
+      height: calc(getCssVar($name, 'input-height') - 2px);
+      line-height: calc(getCssVar($name, 'input-height') - 2px);
+    }
+
+    // 头部开启了过滤 && 自定义了 prefix && 开启了多选
+    .#{$name}-head.is-flex {
+      .#{$name}-head__prefix {
+        margin-right: 4px;
+      }
+    }
+
+    .is-filter-placeholder {
+      height: calc(getCssVar($name, 'input-height') - 2px);
+      line-height: calc(getCssVar($name, 'input-height') - 2px);
+    }
+
+    // tag 隐藏
+    .is-tag-hidden {
+      margin-right: 0 !important;
+    }
+  }
+
+  // 菜单显示
+  @include m(visible) {
+    .#{$name}-selection {
+      outline: 0;
+
+      border-color: getCssVar($name, 'selection-border-visible');
+      box-shadow: 0 0 0 2px getCssVar($name, 'dropdown-shadow');
+    }
+
+    .#{$name}-head__arrow {
       transform: rotate(180deg);
       transform-origin: center center;
     }
   }
 
-  // 下拉菜单
-  &-dropdown {
-    position: absolute;
-    padding: 5px 0;
-    width: inherit;
-    max-height: 200px;
-    overflow: auto;
-    background-color: var(--ivue-white-color);
-    box-sizing: border-box;
-    border-radius: var(--ivue-border-radius);
-    box-shadow: 0 1px 6px var(--#{$name}-dropdown-shadow-color);
-    z-index: 999;
-    transform-origin: center top 0px;
-    opacity: 1;
-
-    &[data-popper-placement='top'] {
-      transform-origin: center bottom 0px;
-    }
-
-    &--transfer {
-      z-index: 1060;
-      width: auto;
-    }
-  }
-
+  // 开启 autoComplete
   .ivue-auto-complete {
     height: auto;
   }
+}
 
-  // 下拉菜单列表
-  &-dropdown-list {
-    width: 100%;
+// 菜单数据列表
+@include b(#{$name}-item) {
+  position: relative;
+  margin: 0;
+  padding: 7px 16px;
+  clear: both;
+  line-height: normal;
+  list-style: none;
+  cursor: pointer;
+  word-break: break-all;
+  display: flex;
+  align-items: center;
+  transition: all $transition-default;
+
+  color: getCssVar($name, 'color');
+  font-size: getCssVar('ivue-font-size-base');
+
+  @media screen and (min-width: 800px) {
+    &:hover {
+      color: getCssVar('ivue-color-white');
+    }
+  }
+
+  @include when(create) {
+    justify-content: space-between;
+
+    .text {
+      flex: 1;
+      width: 100%;
+      margin: 0;
+    }
+
+    i {
+      font-size: getCssVar('ivue-font-size-base');
+      margin: 0;
+      transition: all 0.1s $transition-default-timing;
+    }
+  }
+
+  // 选项菜单禁用样式
+  @include when(disabled) {
+    cursor: not-allowed;
+    color: getCssVar($name, 'disabled-color');
+
+    &:hover {
+      color: getCssVar($name, 'disabled-color');
+    }
+  }
+
+  // 选中
+  @include when(selected) {
+    opacity: 1;
+    color: getCssVar('ivue-color-white');
+  }
+}
+
+// 头部输入框
+@include b(#{$name}-head) {
+  display: inline-flex;
+  align-items: center;
+  flex-wrap: wrap;
+  width: 100%;
+
+  // 头部开启prefix
+  @include when(prefix) {
+    .is-placeholder {
+      position: relative !important;
+    }
+  }
+
+  // 头部开启了过滤 && 自定义了 prefix
+  @include when(flex) {
+    display: flex;
+    align-items: center;
+    padding-left: 4px;
+  }
+
+  // 在 Select 内显示图标
+  @include e(prefix) {
+    padding-left: 4px;
+    display: inline-block;
+    vertical-align: middle;
+
+    height: calc(getCssVar($name, 'input-height') - 2px);
+    line-height: calc(getCssVar($name, 'input-height') - 2px);
+  }
+
+  // 输入框箭头方向
+  @include e(arrow) {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    line-height: 1;
+    font-weight: bold;
+    height: 100%;
+    transition: all 0.2s ease-in-out;
+
+    color: getCssVar('ivue-arrow-color');
+    font-size: getCssVar('ivue-font-size-middle');
+  }
+
+  // 删除图标
+  @include e(clear) {
+    text-align: center;
+  }
+}
+
+// 多选和设置了最大显示数时的方框
+@include b(#{$name}-tag) {
+  position: relative;
+  display: inline-block;
+  height: 22px;
+  line-height: 22px;
+  margin: 2px 4px 2px 0;
+  padding: 0 8px;
+  border-radius: 3px;
+  vertical-align: middle;
+  opacity: 1;
+  overflow: hidden;
+  transition: all $transition-default;
+
+  font-size: getCssVar('ivue-font-size-base');
+  background: getCssVar($name, 'tag-bg');
+  border: 1px solid getCssVar($name, 'tag-border-color');
+
+  // 文字
+  @include e(text) {
+    color: getCssVar($name, 'color');
+    transition: color $transition-default;
+  }
+
+  .ivue-icon {
+    margin: 0;
+    width: auto;
+    min-width: auto;
+    height: auto;
+    cursor: pointer;
+    font-size: 14px;
+    line-height: 26px;
+    transition: color $transition-default;
+
+    color: getCssVar($name, 'icon-color');
+  }
+
+  // hover
+  &:hover {
+    background: getCssVar('ivue-color-primary');
+    border-color: getCssVar('ivue-color-primary');
+
+    // 文字
+    .#{$name}-tag__text,
+    .ivue-icon {
+      color: getCssVar('ivue-color-white');
+    }
+  }
+}
+
+// 下拉菜单
+@include b(#{$name}-dropdown) {
+  position: absolute;
+  padding: 5px 0;
+  width: inherit;
+  max-height: 200px;
+  overflow: auto;
+  box-sizing: border-box;
+  z-index: 999;
+  transform-origin: center top 0px;
+  opacity: 1;
+
+  box-shadow: 0 1px 6px getCssVar($name, 'dropdown-shadow');
+  border-radius: getCssVar($name, 'radius');
+  background-color: getCssVar('ivue-color-white');
+
+  // placement
+  &[data-popper-placement='top'] {
+    transform-origin: center bottom 0px;
+  }
+
+  // 是否将弹层放置于 body 内
+  @include when(transfer) {
+    z-index: 1060;
+    width: auto;
+  }
+
+  // 加载中
+  @include e(loading) {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+
+    color: getCssVar($name, 'loading-color');
+    height: getCssVar($name, 'loading-height');
+    padding: getCssVar($name, 'loading-padding');
+
+    .is-load {
+      margin-right: 10px;
+      position: relative;
+
+      width: getCssVar($name, 'loading-load-size');
+      height: getCssVar($name, 'loading-load-size');
+    }
+
+    .circular {
+      width: 100%;
+      height: 100%;
+    }
   }
 
   // 没有数据时的提示
-  &-not-find {
+  @include e(not-find) {
     padding: 7px 16px;
     display: flex;
     align-items: center;
     justify-content: center;
     text-align: center;
-    color: var(--#{$name}-not-find-color);
+    color: getCssVar($name, 'not-find');
     height: 100px;
 
     li {
@@ -469,79 +407,108 @@ $name: 'ivue-select';
     }
   }
 
-  // 菜单数据列表
-  &-item {
-    position: relative;
-    margin: 0;
-    padding: 7px 16px;
-    clear: both;
-    line-height: normal;
-    font-size: var(--ivue-font-base-size);
-    list-style: none;
-    cursor: pointer;
-    word-break: break-all;
-    display: flex;
-    align-items: center;
-    color: var(--ivue-text-color);
-    transition: all $transition-default;
+  // 下拉菜单列表
+  @include e(list) {
+    width: 100%;
+  }
+}
 
-    @media screen and (min-width: 800px) {
-      &:hover {
-        color: var(--ivue-white-color);
-      }
-    }
+// 选择框
+@include b(#{$name}-selection) {
+  display: block;
+  position: relative;
+  box-sizing: border-box;
+  outline: none;
+  user-select: none;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
 
-    &--create {
-      justify-content: space-between;
+  background-color: getCssVar($name, 'selection-bg');
+  min-height: getCssVar($name, 'input-height');
+  border-radius: getCssVar($name, 'radius');
+  border: 1px solid getCssVar($name, 'border');
 
-      .text {
-        flex: 1;
-        width: 100%;
-        margin: 0;
-      }
+  &:hover {
+    border-color: getCssVar($name, 'selection-border-visible');
+  }
+}
 
-      i {
-        font-size: 14px;
-        margin: 0;
-        transition: all 0.1s $transition-default-timing;
-      }
-    }
+// 输入框
+@include b(#{$name}-input) {
+  padding: 0;
+  outline: 0;
+  border: none;
+  background: 0 0;
+  cursor: inherit;
+  color: getCssVar($name, 'title');
 
-    // 选项菜单禁用样式
-    &-disabled {
-      cursor: not-allowed;
-      color: var(--ivue-input-disabled-color);
-
-      &:hover {
-        color: var(--ivue-input-disabled-color);
-      }
-    }
-
-    &-selected {
-      opacity: 1;
-      color: var(--ivue-white-color);
-    }
+  // 有图标设置样式
+  @include when(with-prefix) {
+    flex: 1;
+    padding-left: 4px !important;
+    display: inline-block !important;
+    vertical-align: middle;
   }
 
-  // 菜单数据列表group
-  &-group {
-    list-style: none;
-    margin: 0;
-    padding: 0;
+  // 有选择数据
+  @include when(selection-value) {
+    display: block;
+    padding-left: 8px;
+    padding-right: 24px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 
-    &-title {
-      padding-left: 8px;
-      font-size: var(--ivue-font-base-size);
-      color: var(--ivue-legend-color);
-      height: 30px;
-      line-height: 30px;
+    font-size: getCssVar('ivue-font-size-base');
+    height: calc(getCssVar($name, 'input-height') - 2px);
+    line-height: calc(getCssVar($name, 'input-height') - 2px);
+  }
+
+  // 过滤输入框
+  @include e(filter) {
+    display: inline-block;
+    position: relative;
+    padding: 0 24px 0 8px;
+    outline: none;
+    border: none;
+    box-sizing: border-box;
+    background-color: transparent;
+    cursor: pointer;
+
+    font-size: getCssVar('ivue-font-size-base');
+    height: getCssVar($name, 'input-height');
+    line-height: getCssVar($name, 'input-height');
+    color: getCssVar($name, 'color');
+
+    // placeholder
+    @include placeholder;
+
+    // disabled
+    &[disabled] {
+      cursor: not-allowed;
+      color: getCssVar($name, 'disabled-color');
     }
   }
 }
 
+// 菜单数据列表group
+@include b(#{$name}-group) {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+
+  @include e(title) {
+    padding-left: getCssVar($name, 'group-padding-left');
+    height: getCssVar($name, 'group-height');
+    line-height: getCssVar($name, 'group-height');
+    font-size: getCssVar('ivue-font-size-base');
+    color: getCssVar('ivue-legend-color');
+  }
+}
+
 // 下拉菜单动画
-.transition-drop-appear,
-.transition-drop-enter-active {
+.drop-transition-appear,
+.drop-transition-enter-active {
   animation-duration: 0.3s;
   animation-fill-mode: both;
   animation-name: transitionDropIn;
@@ -550,7 +517,7 @@ $name: 'ivue-select';
   animation-timing-function: ease-in-out;
 }
 
-.transition-drop-leave-active {
+.drop-transition-leave-active {
   animation-duration: 0.3s;
   animation-fill-mode: both;
   animation-timing-function: ease-in-out;

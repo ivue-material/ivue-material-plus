@@ -1,13 +1,20 @@
 import { getCurrentInstance } from 'vue';
+import { isString } from '@vue/shared';
 import { buildProps, definePropType } from '@ivue-material-plus/utils';
 
 // type
 import type { ExtractPropTypes, ComponentInternalInstance } from 'vue';
 import type { Emitter, EventType } from 'mitt';
 import type Select from './select.vue';
-import type { OptionData, OptionInstance } from './option';
+import type { OptionInstance, OptionData } from './option';
+import { isBoolean } from '@vueuse/core';
 
-type Color = string | string[];
+export type Color = string | string[];
+export type ModelValue = string | number | (string | number)[];
+export type DefaultLabel = string | number | string[];
+export type SelectValue = string | number | (string | number)[] | OptionData;
+
+type SearchMethod = (value: string, status?: string) => void;
 
 // props
 export const selectProps = buildProps({
@@ -17,11 +24,8 @@ export const selectProps = buildProps({
    * @type {String, Number, Array}
    */
   modelValue: {
-    type: definePropType<string | number | OptionData[]>([
-      String,
-      Number,
-      Array,
-    ]),
+    type: definePropType<ModelValue>([String, Number, Array]),
+    default: '',
   },
   /**
    * 远程搜索时，显示默认 label，详见示例
@@ -29,7 +33,7 @@ export const selectProps = buildProps({
    * @type {String, Number, Array}
    */
   defaultLabel: {
-    type: [String, Number, Array],
+    type: definePropType<DefaultLabel>([String, Number, Array]),
     default: '',
   },
   /**
@@ -192,7 +196,7 @@ export const selectProps = buildProps({
    * @type {Function}
    */
   searchMethod: {
-    type: Function,
+    type: definePropType<SearchMethod>(Function),
   },
   /**
    * 下拉图标
@@ -267,10 +271,7 @@ export const selectProps = buildProps({
     default: true,
   },
   /**
-   * 是否将弹层放置于 body 内，在 Tabs、
-   * 带有 fixed 的 Table 列内使用时，
-   * 建议添加此属性，它将不受父级样式影响，
-   * 从而达到更好的效果
+   * 是否将弹层放置于 body 内
    *
    * @type {Boolean}
    */
@@ -309,7 +310,7 @@ export const selectProps = buildProps({
    */
   transferClassName: {
     type: String,
-    default: ''
+    default: '',
   },
   /**
    * 自动完成
@@ -351,7 +352,16 @@ export const selectProps = buildProps({
 export type SelectProps = ExtractPropTypes<typeof selectProps>;
 
 // emits事件类型
-export const selectEmits = {};
+export const selectEmits = {
+  'on-change': (value: ModelValue) => value,
+  'on-clear': () => true,
+  'on-menu-open': (value: boolean) => isBoolean(value),
+  'on-filter-query-change': (value: string) => isString(value),
+  'on-set-default-options': (options: OptionData[]) => options,
+  'on-create': (value: string) => isString(value),
+  'on-select': (value: OptionData) => value,
+  'update:modelValue': (value: ModelValue) => value,
+};
 export type SelectEmits = typeof selectEmits;
 
 // 组件实例

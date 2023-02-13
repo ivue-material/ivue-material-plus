@@ -169,9 +169,3 @@ export type SelectHeadProps = ExtractPropTypes<typeof selectHeadProps>;
 
 // 组件实例
 export type SelectHeadInstance = InstanceType<typeof SelectHead>;
-
-export interface Data {
-  inputLength: number;
-  filterQuery: string;
-  isInputChange: boolean;
-}

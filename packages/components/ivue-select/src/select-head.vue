@@ -1,7 +1,7 @@
 <template>
   <div :class="wrapperClasses" ref="wrapper">
     <!-- 图标 -->
-    <span :class="`${prefixCls}-prefix`" v-if="$slots.prefix || prefix">
+    <span :class="bem.be('head', 'prefix')" v-if="$slots.prefix || prefix">
       <slot name="prefix">
         <ivue-icon v-if="prefix">{{ prefix }}</ivue-icon>
       </slot>
@@ -9,14 +9,14 @@
     <!-- 多选和设置了最大显示数时的方框 -->
     <template v-for="(item, index) in selectedMultiple">
       <div
-        :class="`${prefixCls}-tag`"
+        :class="bem.b('tag')"
         :key="item.value"
         v-if="maxTagCount === undefined || index < maxTagCount"
       >
         <span
           :class="{
-            [`${prefixCls}-tag-text`]: true,
-            [`${prefixCls}-multiple-tag-hidden`]: item.disabled,
+            [bem.be('tag', 'text')]: true,
+            [bem.is('tag-hidden')]: item.disabled,
           }"
           >{{ item.label }}</span
         >
@@ -30,10 +30,15 @@
     </template>
     <!-- 多选达到最大值省略 -->
     <div
-      :class="`${prefixCls}-tag`"
+      :class="bem.b('tag')"
       v-if="maxTagCount !== undefined && selectedMultiple.length > maxTagCount"
     >
-      <span :class="`${prefixCls}-tag-text ${prefixCls}-max-tag`">
+      <span
+        :class="{
+          [bem.be('tag', 'text')]: true,
+          [bem.is('max')]: true,
+        }"
+      >
         <template v-if="maxTagPlaceholder">{{
           maxTagPlaceholder(selectedMultiple.length - maxTagCount)
         }}</template>
@@ -61,7 +66,7 @@
     <input
       type="text"
       v-if="filterable"
-      v-model="data.filterQuery"
+      v-model="filterQuery"
       :class="inputClasses"
       :style="inputStyles"
       :placeholder="showPlaceholder ? placeholder : ''"
@@ -79,15 +84,15 @@
     <!-- 下拉图标 -->
     <transition name="ivue-select-fade">
       <ivue-icon
-        :class="[`${prefixCls}-arrow`]"
+        :class="[bem.be('head', 'arrow')]"
         v-if="!resetSelect && !isSearchMethod"
         >{{ arrowDownIcon }}</ivue-icon
       >
     </transition>
+    <!-- 重置选择 -->
     <transition name="ivue-select-fade">
-      <!-- 重置选择 -->
       <ivue-icon
-        :class="[`${prefixCls}-arrow`, `${prefixCls}-clear`]"
+        :class="[bem.be('head', 'arrow'), bem.be('head', 'clear')]"
         v-if="resetSelect"
         @click.stop="handleClear"
         >{{ resetSelectIcon }}</ivue-icon
@@ -101,14 +106,15 @@ import {
   defineComponent,
   computed,
   inject,
-  reactive,
   watch,
   nextTick,
   ref,
+  unref,
 } from 'vue';
+import { useNamespace } from '@ivue-material-plus/hooks';
 
 // select-head
-import { selectHeadProps, Data } from './select-head';
+import { selectHeadProps } from './select-head';
 // tokens
 import { SelectContextKey, SelectContext } from '@ivue-material-plus/tokens';
 
@@ -124,6 +130,9 @@ export default defineComponent({
   name: 'ivue-select-head',
   props: selectHeadProps,
   setup(props, { slots, emit }) {
+    // bem
+    const bem = useNamespace(prefixCls);
+
     // dom
     const wrapper = ref<HTMLElement>();
     const input = ref<HTMLInputElement>();
@@ -131,38 +140,23 @@ export default defineComponent({
     // inject
     const select = inject(SelectContextKey) as SelectContext;
 
-    // data
-    const data = reactive<Data>({
-      /**
-       * 输入框长度
-       *
-       * @type { Number}
-       */
-      inputLength: 30,
-      /**
-       * 输入框输入数据
-       *
-       * @type { String}
-       */
-      filterQuery: props.filterQueryProp,
-      /**
-       * 输入框是否输入-这里不是判断直接赋值v-model而是输入框确实有输入行为
-       *
-       * @type { Boolean}
-       */
-      isInputChange: false,
-    });
+    // 输入框长度
+    const inputLength = ref<number>(30);
+    // 输入框输入数据
+    const filterQuery = ref<string>(props.filterQueryProp);
+    // 输入框是否输入-这里不是判断直接赋值v-model而是输入框确实有输入行为
+    const isInputChange = ref<boolean>(false);
 
     // computed
 
     // 外层样式
     const wrapperClasses = computed(() => {
       return {
-        [`${prefixCls}-head-wrapper`]: true,
-        [`${prefixCls}-head-is-prefix`]: slots.prefix || props.prefix,
+        [bem.b('head')]: true,
+        // 在 Select 内显示图标
+        [bem.is('prefix')]: slots.prefix || props.prefix,
         // 开启了过滤 && 有图标
-        [`${prefixCls}-head-flex`]:
-          props.filterable && (slots.prefix || props.prefix),
+        [bem.is('flex')]: props.filterable && (slots.prefix || props.prefix),
       };
     });
 
@@ -174,13 +168,12 @@ export default defineComponent({
     // 普通显示的class
     const defaultDisplayClasses = computed(() => {
       return [
-        `${prefixCls}-head-input`,
+        bem.b('input'),
         {
-          [`${prefixCls}-head-with-prefix`]: slots.prefix || props.prefix,
-          [`${prefixCls}-selection-value`]:
+          [bem.is('with-prefix')]: slots.prefix || props.prefix,
+          [bem.is('selection-value')]:
             !showPlaceholder.value && !props.multiple && !props.filterable,
-          [`${prefixCls}-placeholder`]:
-            showPlaceholder.value && !props.filterable,
+          [bem.is('placeholder')]: showPlaceholder.value && !props.filterable,
         },
       ];
     });
@@ -188,9 +181,9 @@ export default defineComponent({
     // 过滤输入框
     const inputClasses = computed(() => {
       return [
-        `${prefixCls}-input-filter`,
+        bem.be('input', 'filter'),
         {
-          'ivue-select-input-filter-placeholder': showPlaceholder.value,
+          [bem.is('filter-placeholder')]: showPlaceholder.value,
         },
       ];
     });
@@ -247,7 +240,7 @@ export default defineComponent({
         if (showPlaceholder.value) {
           style.width = '100%';
         } else {
-          style.width = `${data.inputLength}px`;
+          style.width = `${unref(inputLength)}px`;
         }
       }
 
@@ -284,7 +277,7 @@ export default defineComponent({
 
       // 没有选项
       if (!props.values.length) {
-        data.filterQuery = '';
+        filterQuery.value = '';
       }
 
       emit('on-input-blur');
@@ -294,14 +287,15 @@ export default defineComponent({
     const handleResetInputState = (event?: Event) => {
       const value =
         (event && (event.target as HTMLInputElement).value) ||
-        data.filterQuery;
+        unref(filterQuery);
 
-      data.inputLength = value.length * 12 + 20;
+      // 输入框长度
+      inputLength.value = value.length * 12 + 20;
 
       const wrapperOffsetWidth = wrapper.value!.offsetWidth;
 
-      if (data.inputLength > wrapperOffsetWidth) {
-        data.inputLength = wrapperOffsetWidth;
+      if (unref(inputLength) > wrapperOffsetWidth) {
+        inputLength.value = wrapperOffsetWidth;
       }
     };
 
@@ -312,7 +306,7 @@ export default defineComponent({
       if (
         props.multiple &&
         selectedMultiple.value.length &&
-        data.filterQuery === '' &&
+        unref(filterQuery) === '' &&
         targetValue === ''
       ) {
         handleRemoveSelectItem(
@@ -337,41 +331,44 @@ export default defineComponent({
           return;
         }
 
-        data.isInputChange = true;
+        isInputChange.value = true;
 
         // 判断多选
         if (props.multiple) {
           // 输入框输入数据
-          data.filterQuery = '';
+          filterQuery.value = '';
           // 判断输入框是否输入-这里不是判断直接赋值v-model而是输入框确实有输入行为
-          data.isInputChange = false;
+          isInputChange.value= false;
 
           return;
         }
 
+        // 设置输入框数据
         if (
           typeof value === 'undefined' ||
           (typeof value === 'string' && value === '') ||
           value === null
         ) {
-          data.filterQuery = '';
+          filterQuery.value = '';
         } else {
-          data.filterQuery = `${value.label}`;
+          filterQuery.value = `${value.label}`;
         }
 
+        // nextTick
         nextTick(() => {
           // 判断输入框是否输入-这里不是判断直接赋值v-model而是输入框确实有输入行为
-          data.isInputChange = false;
+          isInputChange.value = false;
         });
       }
     );
 
     // 监听过滤输入
     watch(
-      () => data.filterQuery,
+      () => unref(filterQuery),
       (value) => {
-        if (data.isInputChange) {
-          data.isInputChange = false;
+        if (unref(isInputChange)) {
+          isInputChange.value = false;
+
           return;
         }
 
@@ -382,9 +379,9 @@ export default defineComponent({
     // 监听外部过滤输入
     watch(
       () => props.filterQueryProp,
-      (filterQuery) => {
-        if (filterQuery !== data.filterQuery && props.filterable) {
-          data.filterQuery = filterQuery;
+      (value) => {
+        if (value !== unref(filterQuery) && props.filterable) {
+          filterQuery.value = value;
         }
 
         // 重置输入框长度
@@ -394,13 +391,12 @@ export default defineComponent({
 
     return {
       prefixCls,
+      bem,
 
       // dom
       wrapper,
       input,
-
-      // data
-      data,
+      filterQuery,
 
       // computed
       wrapperClasses,
