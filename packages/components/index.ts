@@ -11,6 +11,7 @@ export * from './ivue-carousel-item';
 export * from './ivue-switch';
 export * from './ivue-form';
 export * from './ivue-select';
+export * from './ivue-popover';
 
 // plugins
 export * from './ivue-ripple';
