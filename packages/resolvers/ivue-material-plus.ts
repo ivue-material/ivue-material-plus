@@ -4,7 +4,7 @@ export interface resolverOptions {
   // use commonjs lib & source css or scss for ssr
   ssr?: boolean;
   // 是否引入style
-  importStyle?: boolean | 'sass' | 'css';
+  importStyle?: boolean | 'less' | 'css';
   // 组件名称
   name?: string;
   // 排除组件名称，如果匹配不解析名称
@@ -37,13 +37,13 @@ const noStylesComponents: string[] = [
 function getSideEffects(dirName: string, options: resolverOptions) {
   const { importStyle, ssr } = options;
 
-  const themeFolder = 'ivue-material-plus/styles';
+  const themeFolder = 'ivue-material-plus/components';
 
   // scss
-  if (importStyle === 'sass') {
+  if (importStyle === 'less') {
     return ssr
-      ? `${themeFolder}/src/${dirName}.scss`
-      : `@${themeFolder}/src/${dirName}.scss`;
+      ? `${themeFolder}/${dirName}/index.less`
+      : `@${themeFolder}/${dirName}/index.less`;
   }
   // 有样式
   else if (importStyle === true || importStyle === 'css') {
@@ -136,6 +136,7 @@ export function IvueMaterialPlusResolver(
 
     return optionsResolved;
   }
+
 
   return [
     {

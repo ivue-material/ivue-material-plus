@@ -117,10 +117,3 @@ export default {
   },
 };
 </script>
-
-<style lang="scss">
-.ivue-icon {
-  font-size: 12px;
-  min-width: 12px;
-}
-</style>

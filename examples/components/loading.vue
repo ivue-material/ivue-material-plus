@@ -81,7 +81,7 @@ export default {
         loadingSpinner: this.renderIcon,
       });
       setTimeout(() => {
-        loading.close();
+        // loading.close();
       }, 2000);
     },
     renderIcon() {
@@ -99,10 +99,6 @@ export default {
   height: 100px;
   width: 100px;
   background: yellow;
-}
-
-.ivue-icon {
-  font-family: 'Material Icons';
 }
 
 .circular1 {

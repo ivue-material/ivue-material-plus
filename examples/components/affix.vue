@@ -9,13 +9,11 @@
   <ivue-affix :offset-bottom="20" @on-change="handleChange">
     <div class="demo-affix">固定在最底部</div>
   </ivue-affix>
-  <IvueAffix></IvueAffix>
   <div style="height: 100vh"></div>
 </template>
 
 <script setup>
 import { onMounted, ref, h } from 'vue';
-import { IvueAffix } from '../../dist/ivue-material-plus/es/components/index';
 
 const dom = ref();
 const affixRef = ref();
@@ -23,17 +21,6 @@ const affixRef = ref();
 const handleChange = (active) => {
   console.log(active);
 };
-
-h(IvueAffix);
-// onMounted(() => {
-//   window.addEventListener(
-//     'scroll',
-//     () => {
-//       affixRef.value.lazyUpdatePosition();
-//     },
-//     true
-//   );
-// });
 </script>
 
 <style lang="scss" scope>

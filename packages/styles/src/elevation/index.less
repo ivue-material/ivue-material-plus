@@ -1,0 +1,20 @@
+@import 'mixins';
+@import 'variables';
+
+// 一个数组 [0 - 5]
+@ivue-elevation-count: length(@ivue-elevation-umbra);
+
+.elevation(@i) when (@i > 0) {
+  .elevation((@i - 1));
+
+  @className: ~"ivue-elevation-@{i}";
+  @item: extract(@ivue-elevation-umbra, @i);
+
+  // 定义class名字 0 开始到 5
+  .@{className} {
+    // 样式内容 -> 通过 ivue-elevation 方法生成
+    .ivue-elevation(@i);
+  }
+}
+
+.elevation(@ivue-elevation-count);

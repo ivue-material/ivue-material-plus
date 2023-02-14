@@ -1,0 +1,134 @@
+@import '@ivue-material-plus/styles/src/animation';
+
+:root {
+  --ivue-loading-spinner-circular-size: 42px;
+  --ivue-loading-spinner-fullscreen-size: 50px;
+
+  --ivue-loading-font-size: var(--ivue-font-size-base);
+
+  --ivue-loading-rotate: ivue-loading-rotate;
+  --ivue-loading-circular-animation: ivue-loading-rotate 2s linear infinite;
+  --ivue-loading-path-animation: ivue-loading-dash 1.5s ease-in-out infinite;
+}
+
+.ivue-loading {
+
+  // 父节点
+  &__parent {
+    &--relative {
+      position: relative !important;
+    }
+
+    &--hidden {
+      overflow: hidden !important;
+    }
+  }
+
+  // 文字
+  &__text {
+    color: currentColor;
+    margin: 5px 0;
+    font-size: var(--ivue-loading-font-size);
+  }
+}
+
+// 蒙版
+.ivue-loading-mask {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 2000;
+  margin: 0;
+
+  background: var(--ivue-loading-mask-bg);
+
+  // 全屏
+  &.is-fullscreen {
+    position: fixed;
+
+    .ivue-loading-spinner {
+      margin-bottom: calc(var(--ivue-loading-spinner-fullscreen-size) / 2);
+    }
+
+    .circular {
+      height: var(--ivue-loading-spinner-fullscreen-size);
+      width: var(--ivue-loading-spinner-fullscreen-size);
+    }
+  }
+}
+
+// 内容
+.ivue-loading-spinner {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  flex-direction: column;
+  justify-content: center;
+  display: flex;
+  align-items: center;
+  margin: auto;
+  width: 100%;
+
+  color: var(--ivue-loading-color);
+
+  &__content {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  // circular
+  .circular {
+    height: var(--ivue-loading-spinner-circular-size);
+    width: var(--ivue-loading-spinner-circular-size);
+    animation: var(--ivue-loading-circular-animation);
+  }
+
+  // path
+  .path {
+    stroke-dasharray: 90, 150;
+    stroke-dashoffset: 0;
+    stroke-width: 3;
+    stroke: currentColor;
+    stroke-linecap: round;
+
+    animation: var(--ivue-loading-path-animation);
+  }
+
+  // 图标
+  i {
+    width: auto;
+    min-width: auto;
+    height: auto;
+    margin: 0;
+  }
+}
+
+
+// 滚动
+@keyframes ivue-loading-rotate {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+// 圆形滚动样式
+@keyframes ivue-loading-dash {
+  0% {
+    stroke-dasharray: 1, 200;
+    stroke-dashoffset: 0;
+  }
+
+  50% {
+    stroke-dasharray: 90, 150;
+    stroke-dashoffset: -40px;
+  }
+
+  100% {
+    stroke-dasharray: 90, 150;
+    stroke-dashoffset: -120px;
+  }
+}

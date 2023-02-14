@@ -1,0 +1,43 @@
+@import 'function';
+
+.zoom-motion(@className, @keyframeName) {
+  .make-motion(@className, @keyframeName);
+
+  .@{className}-enter-active,
+  .@{className}-appear {
+    opacity: 0;
+    animation-timing-function: linear;
+    animation-duration: 0.2s;
+  }
+
+  .@{className}-leave-active {
+    animation-timing-function: linear;
+    animation-duration: 0.2s;
+  }
+}
+
+.zoom-motion(zoom, IvueZoom);
+
+@keyframes IvueZoomIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes IvueZoomOut {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  100% {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+}

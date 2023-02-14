@@ -7,6 +7,9 @@
     <!-- 占位元素 -->
     <div v-show="affixStyle" :style="placeholderStyle"></div>
   </div>
+  <transition name="fade">
+    <div v-show="affixStyle">121221</div>
+  </transition>
 </template>
 
 <script lang="ts">

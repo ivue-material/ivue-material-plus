@@ -143,7 +143,7 @@ export default {};
 * {
   box-sizing: border-box;
 }
-@import '../../packages/styles/src/layout';
+/* @import '../../packages/styles/src/layout'; */
 
 .layout {
   height: 40px;

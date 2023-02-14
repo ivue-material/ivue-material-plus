@@ -1,0 +1,394 @@
+@import '@ivue-material-plus/styles/src/common';
+@import '@ivue-material-plus/styles/src/elevation';
+@import '@ivue-material-plus/components/ivue-ripple/index.less';
+
+:root {
+  // button
+  --ivue-button-min-width: 99px;
+  --ivue-button-height: 40px;
+  --ivue-button-padding: 0 16px;
+  --ivue-button-radius: var(--ivue-radius-4px);
+  --ivue-button-font-size: var(--ivue-font-size-base);
+
+  // loading
+  --ivue-button-loading-margin-right: 8px;
+  --ivue-button-loading-size: 18px;
+
+  // icon
+  --ivue-button-icon-size: 36px;
+
+  // radius
+  --ivue-button-radius-border: 100px;
+}
+
+.ivue-button {
+  margin: 0;
+  padding: 0;
+  display: inline-block;
+  position: relative;
+  outline: none;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  transition: @transition-default, color 1ms;
+  font-family: inherit;
+  line-height: normal;
+  text-decoration: none;
+  vertical-align: top;
+  white-space: nowrap;
+  text-align: center;
+  user-select: none;
+  font-weight: 500;
+  color: currentColor;
+  cursor: pointer;
+  box-sizing: border-box;
+
+  min-width: var(--ivue-button-min-width);
+  height: var(--ivue-button-height);
+  border-radius: var(--ivue-button-radius);
+  font-size: var(--ivue-button-font-size);
+  padding: var(--ivue-button-padding);
+
+  *,
+  ::after,
+  ::before {
+    box-sizing: border-box;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  // active
+  &:active {
+    outline: none;
+  }
+
+  // moz-focus-inner
+  &::-moz-focus-inner {
+    padding: 0;
+    border: 0;
+  }
+
+  // disabled
+  &[disabled] {
+    pointer-events: none;
+
+    color: var(--ivue-disabled-color);
+  }
+
+  @media screen and (min-width: 800px) {
+    &:not([disabled]) {
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+    }
+  }
+
+  &.is-raised:not(.is-depressed):not(.is-flat):not([disabled]) {
+    will-change: box-shadow;
+  }
+
+  &.is-raised:not(.is-depressed):not(.is-flat):not(.is-status):not([disabled]) {
+    // elevation
+    .ivue-elevation(1);
+
+    &:not(.is-mask):active,
+    &:not(.is-mask):hover {
+      // elevation
+      .ivue-elevation(2);
+    }
+  }
+
+  // 突出
+  &.is-raised[disabled] {
+    background-color: var(--ivue-button-raised-disabled-bg);
+    color: var(--ivue-button-disabled-color)
+  }
+
+  // 选中
+  &.is-selected {
+    background: currentColor;
+
+    color: var(--ivue-button-white) !important;
+  }
+
+  // 当前选中
+  &.is-current {
+    border: 1px solid;
+    border-color: currentColor !important;
+  }
+
+  // 轮廓
+  &.is-outline {
+    border: 1px solid currentColor;
+    background: transparent !important;
+    box-shadow: none;
+
+    .ivue-button-content {
+      color: currentColor;
+    }
+  }
+
+  // 只读
+  &.is-readonly {
+    border-color: transparent !important;
+    background-color: var(--ivue-button-readonly-color) !important;
+  }
+
+  // 圆角
+  &.is-radius {
+    border-radius: var(--ivue-button-radius-border);
+  }
+
+  // 蒙版
+  &.is-mask {
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      z-index: 30;
+      opacity: 1 !important;
+      pointer-events: none;
+      background: var(--ivue-button-mask-bg) !important;
+    }
+  }
+
+  // icon
+  &.is-icon {
+    margin: 0 6px;
+    border-radius: 50%;
+    padding: 0;
+
+    width: var(--ivue-button-icon-size);
+    min-width: var(--ivue-button-icon-size);
+    height: var(--ivue-button-icon-size);
+
+    // ripple
+    .ivue-ripple {
+      border-radius: 50%;
+    }
+
+    .ivue-ripple-enter-active {
+      transition-duration: 1.2s;
+    }
+
+    .ivue-ripple-wave {
+      top: 0 !important;
+      right: 0 !important;
+      bottom: 0 !important;
+      left: 0 !important;
+    }
+
+    // icon
+    .ivue-icon {
+      font-size: var(--ivue-button-font-size);
+    }
+  }
+
+  // primary
+  &.is-primary {
+    background: var(--ivue-button-primary);
+    color: var(--ivue-button-white);
+
+    // color
+    &-color {
+      color: var(--ivue-button-primary);
+    }
+
+    &.is-raised:not(.is-depressed):not(.is-flat):not([disabled]) {
+      .ivue-elevation(1,
+        var(--ivue-button-primary-shadow-15),
+        var(--ivue-button-primary-shadow-3));
+
+      &:not(.is-mask):active,
+      &:not(.is-mask):hover {
+        .ivue-elevation(2,
+          var(--ivue-button-primary-shadow-15),
+          var(--ivue-button-primary-shadow-3))
+      }
+    }
+  }
+
+  // light-primary
+  &.is-light-primary {
+    background: var(--ivue-button-light-primary);
+    color: var(--ivue-button-white);
+
+    // color
+    &-color {
+      color: var(--ivue-button-light-primary-color);
+    }
+
+    &.is-raised:not(.is-depressed):not(.is-flat):not([disabled]) {
+      .ivue-elevation(1,
+        var(--ivue-button-light-primary-shadow-15),
+        var(--ivue-button-light-primary-shadow-3),
+      );
+
+      &:not(.is-mask):active,
+      &:not(.is-mask):hover {
+        .ivue-elevation(2,
+          var(--ivue-button-light-primary-shadow-15),
+          var(--ivue-button-light-primary-shadow-3),
+        );
+      }
+    }
+  }
+
+  // dark-primary
+  &.is-dark-primary {
+    background: var(--ivue-button-dark-primary);
+    color: var(--ivue-button-white);
+
+    // color
+    &-color {
+      color: var(--ivue-button-dark-primary-color);
+    }
+
+    &.is-raised:not(.is-depressed):not(.is-flat):not([disabled]) {
+      .ivue-elevation(1,
+        var(--ivue-button-dark-primary-shadow-15),
+        var(--ivue-button-dark-primary-shadow-3),
+      );
+
+      &:not(.is-mask):active,
+      &:not(.is-mask):hover {
+        .ivue-elevation(2,
+          var(--ivue-button-dark-primary-shadow-15),
+          var(--ivue-button-dark-primary-shadow-3),
+        );
+      }
+    }
+  }
+
+  // success
+  &.is-success {
+    background: var(--ivue-button-success);
+    color: var(--ivue-button-white);
+
+    // color
+    &-color {
+      color: var(--ivue-button-success-color);
+    }
+
+    &.is-raised:not(.is-depressed):not(.is-flat):not([disabled]) {
+      .ivue-elevation(1,
+        var(--ivue-button-success-shadow-15),
+        var(--ivue-button-success-shadow-3),
+      );
+
+      &:not(.is-mask):active,
+      &:not(.is-mask):hover {
+        .ivue-elevation(2,
+          var(--ivue-button-success-shadow-15),
+          var(--ivue-button-success-shadow-3),
+        );
+      }
+    }
+  }
+
+  // warning
+  &.is-warning {
+    background: var(--ivue-button-warning);
+    color: var(--ivue-button-white);
+
+    // color
+    &-color {
+      color: var(--ivue-button-warning-color);
+    }
+
+    &.is-raised:not(.is-depressed):not(.is-flat):not([disabled]) {
+      .ivue-elevation(1,
+        var(--ivue-button-warning-shadow-15),
+        var(--ivue-button-warning-shadow-3),
+      );
+
+      &:not(.is-mask):active,
+      &:not(.is-mask):hover {
+        .ivue-elevation(2,
+          var(--ivue-button-warning-shadow-15),
+          var(--ivue-button-warning-shadow-3),
+        );
+      }
+    }
+  }
+
+  // error
+  &.is-error {
+    background: var(--ivue-button-error);
+    color: var(--ivue-button-white);
+
+    // color
+    &-color {
+      color: var(--ivue-button-error);
+    }
+
+    &.is-raised:not(.is-depressed):not(.is-flat):not([disabled]) {
+      .ivue-elevation(1,
+        var(--ivue-button-error-shadow-15),
+        var(--ivue-button-error-shadow-3),
+      );
+
+      &:not(.is-mask):active,
+      &:not(.is-mask):hover {
+        .ivue-elevation(2,
+          var(--ivue-button-error-shadow-15),
+          var(--ivue-button-error-shadow-3),
+        );
+      }
+    }
+  }
+}
+
+
+// 涟漪
+.ivue-button-ripple {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  position: relative;
+  z-index: 10;
+  overflow: hidden;
+  box-sizing: border-box;
+
+  // 内容
+  &__content {
+    position: relative;
+    z-index: 2;
+    color: currentColor;
+    display: flex;
+    align-items: center;
+    line-height: 1;
+  }
+}
+
+// loading
+.ivue-button-loading {
+  position: relative;
+
+  margin-right: var(--ivue-button-loading-margin-right);
+
+  &__content {
+    position: relative;
+
+    width: var(--ivue-button-loading-size);
+    height: var(--ivue-button-loading-size);
+  }
+
+  .ivue-loading-mask {
+    background: none;
+  }
+
+  .ivue-loading-spinner {
+    color: var(--ivue-button-loading-color);
+
+    .circular {
+      width: 100%;
+      height: 100%;
+    }
+  }
+}

@@ -1,0 +1,37 @@
+@import 'function';
+
+.fade-motion(@className, @keyframeName) {
+  .make-motion(@className, @keyframeName, 0.15s);
+
+  .@{className}-enter-active,
+  .@{className}-appear {
+    opacity: 0;
+    animation-timing-function: linear;
+  }
+
+  .@{className}-leave-active {
+    animation-timing-function: linear;
+  }
+}
+
+.fade-motion(fade, IvueFade);
+
+@keyframes IvueFadeIn {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes IvueFadeOut {
+  0% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+  }
+}

@@ -60,7 +60,7 @@ export default defineConfig(({ mode }): any => {
       // 按需引入
       Components({
         include: `${__dirname}/**`,
-        resolvers: IvueMaterialPlusResolver({ importStyle: 'sass' }),
+        resolvers: IvueMaterialPlusResolver({ importStyle: 'less' }),
         dts: false,
       }),
       // 开发服务提供证书支持

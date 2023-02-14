@@ -389,6 +389,7 @@ importers:
   examples:
     specifiers:
       '@vitejs/plugin-vue': ^2.3.3
+      less: ^4.1.3
       unplugin-vue-components: 0.21.2
       vite: ^2.9.15
       vite-plugin-inspect: ^0.5.0
@@ -400,8 +401,9 @@ importers:
       vue-router: 4.1.6_vue@3.2.47
     devDependencies:
       '@vitejs/plugin-vue': 2.3.4_vite@2.9.15+vue@3.2.47
+      less: 4.1.3
       unplugin-vue-components: 0.21.2_vite@2.9.15+vue@3.2.47
-      vite: 2.9.15
+      vite: 2.9.15_less@4.1.3
       vite-plugin-inspect: 0.5.1_vite@2.9.15
       vite-plugin-mkcert: 1.13.0_vite@2.9.15
 
@@ -478,23 +480,31 @@ importers:
       '@ivue-material-plus/build': workspace:*
       '@types/gulp-autoprefixer': ^0.0.33
       '@types/gulp-clean-css': ^4.3.0
+      '@types/gulp-less': ^0.0.32
       '@types/gulp-rename': ^2.0.1
       '@types/gulp-sass': ^5.0.0
+      '@types/less': ^3.0.3
       gulp-autoprefixer: ^8.0.0
       gulp-clean-css: ^4.3.0
+      gulp-less: ^5.0.0
       gulp-rename: ^2.0.0
       gulp-sass: ^5.1.0
+      less: ^4.1.3
     devDependencies:
       '@esbuild-kit/cjs-loader': 2.4.2
       '@ivue-material-plus/build': link:../../build-install/build
       '@types/gulp-autoprefixer': 0.0.33
       '@types/gulp-clean-css': 4.3.0
+      '@types/gulp-less': 0.0.32
       '@types/gulp-rename': 2.0.1
       '@types/gulp-sass': 5.0.0
+      '@types/less': 3.0.3
       gulp-autoprefixer: 8.0.0
       gulp-clean-css: 4.3.0
+      gulp-less: 5.0.0
       gulp-rename: 2.0.0
       gulp-sass: 5.1.0
+      less: 4.1.3
 
   packages/test-utils:
     specifiers: {}
@@ -5365,6 +5375,12 @@ packages:
       '@types/node': 18.13.0
     dev: true
 
+  /@types/gulp-less/0.0.32:
+    resolution: {integrity: sha512-MPOpL7nL383jCkScWbShSUSTWA9r6lnBEc0VCClcaTPmE7vNn8BxgoEFPHB8Uv5hhoP69M1keB/Pv/jbD34XSg==}
+    dependencies:
+      '@types/node': 18.13.0
+    dev: true
+
   /@types/gulp-rename/2.0.1:
     resolution: {integrity: sha512-9ZjeS2RHEnmBmTcyi2+oeye3BgCsWhvi4uv3qCnAg8i6plOuRdaeNxjOves0ELysEXYLBl7bCl5fbVs7AZtgTA==}
     dependencies:
@@ -5441,6 +5457,10 @@ packages:
     resolution: {integrity: sha512-BQ5aZNSCpj7D6K2ksrRCTmKRLEpnPvWDiLPfoGyhZ++8YtiK9d/3DBKPJgry359X/P1PfruyYwvnvwFjuEiEIg==}
     dependencies:
       '@types/node': 18.13.0
+
+  /@types/less/3.0.3:
+    resolution: {integrity: sha512-1YXyYH83h6We1djyoUEqTlVyQtCfJAFXELSKW2ZRtjHD4hQ82CC4lvrv5D0l0FLcKBaiPbXyi3MpMsI9ZRgKsw==}
+    dev: true
 
   /@types/lodash-es/4.17.6:
     resolution: {integrity: sha512-R+zTeVUKDdfoRxpAryaQNRKk3105Rrgx2CFRClIgRGaqDTdjsm8h6IYA8ir584W3ePzkZfst5xIgDwYrlh9HLg==}
@@ -5791,7 +5811,7 @@ packages:
       vite:
         optional: true
     dependencies:
-      vite: 2.9.15
+      vite: 2.9.15_less@4.1.3
       vue: 3.2.47
     dev: true
 
@@ -9319,6 +9339,12 @@ packages:
     engines: {node: '>= 0.6'}
     dev: true
 
+  /copy-anything/2.0.6:
+    resolution: {integrity: sha512-1j20GZTsvKNkc4BY3NpMOM8tt///wY3FpIzozTOFO2ffuZcV61nojHXVKIy3WM+7ADCy5FVhdZYHYDdgTU0yJw==}
+    dependencies:
+      is-what: 3.14.1
+    dev: true
+
   /copy-descriptor/0.1.1:
     resolution: {integrity: sha512-XgZ0pFcakEUlbwQEVNg3+QAis1FyTL3Qel9FYy8pSkQqoG3PNoT0bOCQtOXcOkur21r2Eq2kI+IE+gsmAEVlYw==}
     engines: {node: '>=0.10.0'}
@@ -10230,6 +10256,15 @@ packages:
 
   /err-code/2.0.3:
     resolution: {integrity: sha512-2bmlRpNKBxT/CRmPOlyISQpNj+qSeYvcym/uT0Jx2bMOlKLtSy1ZmLuVxSEKKyor/N5yhvp/ZiG1oE3DEYMSFA==}
+
+  /errno/0.1.8:
+    resolution: {integrity: sha512-dJ6oBr5SQ1VSd9qkk7ByRgb/1SH4JZjCHSW/mr63/QcXO9zLVxvJ6Oy13nio03rxpSnVDDjFor75SjVeZWPW/A==}
+    hasBin: true
+    requiresBuild: true
+    dependencies:
+      prr: 1.0.1
+    dev: true
+    optional: true
 
   /error-ex/1.3.2:
     resolution: {integrity: sha512-7dFHNmqeFSEt2ZBsCriorKnn3Z2pj+fd9kmI6QoWw4//DL+icEBfc0U7qJCisqrTsKTjw4fNFy2pW9OqStD84g==}
@@ -12235,6 +12270,20 @@ packages:
       - supports-color
     dev: false
 
+  /gulp-less/5.0.0:
+    resolution: {integrity: sha512-W2I3TewO/By6UZsM/wJG3pyK5M6J0NYmJAAhwYXQHR+38S0iDtZasmUgFCH3CQj+pQYw/PAIzxvFvwtEXz1HhQ==}
+    engines: {node: '>=6'}
+    dependencies:
+      less: 4.1.3
+      object-assign: 4.1.1
+      plugin-error: 1.0.1
+      replace-ext: 2.0.0
+      through2: 4.0.2
+      vinyl-sourcemaps-apply: 0.2.1
+    transitivePeerDependencies:
+      - supports-color
+    dev: true
+
   /gulp-rename/2.0.0:
     resolution: {integrity: sha512-97Vba4KBzbYmR5VBs9mWmK+HwIf5mj+/zioxfZhOKeXtx5ZjBk57KFlePf5nxq9QsTtFl0ejnHE3zTC9MHXqyQ==}
     engines: {node: '>=4'}
@@ -12704,6 +12753,14 @@ packages:
   /ignore/5.2.4:
     resolution: {integrity: sha512-MAb38BcSbH0eHNBxn7ql2NH/kX33OkB3lZ1BNdh7ENeRChHTYsTvWrMubiIAMNS2llXEEgZ1MUOBtXChP3kaFQ==}
     engines: {node: '>= 4'}
+
+  /image-size/0.5.5:
+    resolution: {integrity: sha512-6TDAlDPZxUFCv+fuOkIoXT/V/f3Qbq8e37p+YOiYrUv3v9cc3/6x78VdfPgFVaB9dZYeLUfKgHRebpkm/oP2VQ==}
+    engines: {node: '>=0.10.0'}
+    hasBin: true
+    requiresBuild: true
+    dev: true
+    optional: true
 
   /immutable/4.2.4:
     resolution: {integrity: sha512-WDxL3Hheb1JkRN3sQkyujNlL/xRjAo3rJtaU5xeufUauG66JdMr32bLj4gF+vWl84DIA3Zxw7tiAjneYzRRw+w==}
@@ -13273,6 +13330,10 @@ packages:
     dependencies:
       call-bind: 1.0.2
 
+  /is-what/3.14.1:
+    resolution: {integrity: sha512-sNxgpk9793nzSs7bA6JQJGeIuRBQhAaNGG77kzYQgMkrID+lS6SlK07K5LaptscDlSaIgH+GPFzf+d75FVxozA==}
+    dev: true
+
   /is-windows/1.0.2:
     resolution: {integrity: sha512-eXK1UInq2bPmjyX6e3VHIzMLobc4J94i4AWn+Hpq3OU5KkrRC96OAcR3PRJ/pGu6m8TRnBHP9dkXQVsT/COVIA==}
     engines: {node: '>=0.10.0'}
@@ -13758,6 +13819,26 @@ packages:
       - bluebird
       - debug
       - encoding
+      - supports-color
+    dev: true
+
+  /less/4.1.3:
+    resolution: {integrity: sha512-w16Xk/Ta9Hhyei0Gpz9m7VS8F28nieJaL/VyShID7cYvP6IL5oHeL6p4TXSDJqZE/lNv0oJ2pGVjJsRkfwm5FA==}
+    engines: {node: '>=6'}
+    hasBin: true
+    dependencies:
+      copy-anything: 2.0.6
+      parse-node-version: 1.0.1
+      tslib: 2.5.0
+    optionalDependencies:
+      errno: 0.1.8
+      graceful-fs: 4.2.10
+      image-size: 0.5.5
+      make-dir: 2.1.0
+      mime: 1.6.0
+      needle: 3.2.0
+      source-map: 0.6.1
+    transitivePeerDependencies:
       - supports-color
     dev: true
 
@@ -14794,6 +14875,20 @@ packages:
       split2: 3.2.2
       through2: 4.0.2
     dev: false
+
+  /needle/3.2.0:
+    resolution: {integrity: sha512-oUvzXnyLiVyVGoianLijF9O/RecZUf7TkBfimjGrLM4eQhXyeJwM6GeAWccwfQ9aa4gMCZKqhAOuLaMIcQxajQ==}
+    engines: {node: '>= 4.4.x'}
+    hasBin: true
+    requiresBuild: true
+    dependencies:
+      debug: 3.2.7
+      iconv-lite: 0.6.3
+      sax: 1.2.4
+    transitivePeerDependencies:
+      - supports-color
+    dev: true
+    optional: true
 
   /negotiator/0.6.3:
     resolution: {integrity: sha512-+EUsqGPLsM+j/zdChZjsnX51g4XrHFOIXwfnCVPGlQk/k5giakcKsuxCObBRu6DSm9opw/O6slWbJdghQM4bBg==}
@@ -16838,6 +16933,11 @@ packages:
     resolution: {integrity: sha512-D+zkORCbA9f1tdWRK0RaCR3GPv50cMxcrz4X8k5LTSUD1Dkw47mKJEZQNunItRTkWwgtaUSo1RVFRIG9ZXiFYg==}
     dev: true
 
+  /prr/1.0.1:
+    resolution: {integrity: sha512-yPw4Sng1gWghHQWj0B3ZggWUm4qVbPwPFcRG8KyxiU7J2OHFSoEHKS+EZ3fv5l1t9CyCiop6l/ZYeWbrgoQejw==}
+    dev: true
+    optional: true
+
   /pseudomap/1.0.2:
     resolution: {integrity: sha512-b/YwNhb8lk1Zz2+bXXpS/LK9OisiZZ1SNsSLxN1x2OXVEhW2Ckr/7mWE5vrC1ZTiJlD9g19jWszTmJsB+oEpFQ==}
     dev: true
@@ -17664,6 +17764,11 @@ packages:
       lodash.assign: 4.2.0
       mingo: 6.2.7
     dev: true
+
+  /sax/1.2.4:
+    resolution: {integrity: sha512-NqVDv9TpANUjFm0N8uM5GxL36UgKi9/atZw+x7YFnQ8ckwFGKrl4xX4yWtrey3UJm5nP1kUbnYgLopqWNSRhWw==}
+    dev: true
+    optional: true
 
   /saxes/6.0.0:
     resolution: {integrity: sha512-xAg7SOnEhrm5zI3puOOKyy1OMcMlIJZYNJY7xLBwSze0UjhPLnWfj2GF2EpT0jmzaJKIWKHLsaSSajf35bcYnA==}
@@ -19483,7 +19588,7 @@ packages:
     dependencies:
       acorn: 8.8.2
       chokidar: 3.5.3
-      vite: 2.9.15
+      vite: 2.9.15_less@4.1.3
       webpack-sources: 3.2.3
       webpack-virtual-modules: 0.4.6
     dev: true
@@ -19784,7 +19889,7 @@ packages:
       kolorist: 1.7.0
       sirv: 2.0.2
       ufo: 0.8.6
-      vite: 2.9.15
+      vite: 2.9.15_less@4.1.3
     transitivePeerDependencies:
       - supports-color
     dev: true
@@ -19802,7 +19907,7 @@ packages:
       axios: 1.3.2_debug@4.3.4
       debug: 4.3.4
       picocolors: 1.0.0
-      vite: 2.9.15
+      vite: 2.9.15_less@4.1.3
     transitivePeerDependencies:
       - encoding
       - supports-color
@@ -19819,7 +19924,7 @@ packages:
       - typescript
     dev: false
 
-  /vite/2.9.15:
+  /vite/2.9.15_less@4.1.3:
     resolution: {integrity: sha512-fzMt2jK4vQ3yK56te3Kqpkaeq9DkcZfBbzHwYpobasvgYmP2SoAr6Aic05CsB4CzCZbsDv4sujX3pkEGhLabVQ==}
     engines: {node: '>=12.2.0'}
     hasBin: true
@@ -19836,6 +19941,7 @@ packages:
         optional: true
     dependencies:
       esbuild: 0.14.54
+      less: 4.1.3
       postcss: 8.4.21
       resolve: 1.22.1
       rollup: 2.77.3

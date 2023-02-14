@@ -1,0 +1,11 @@
+@import 'variables';
+
+.ivue-elevation(@i,
+  @umbra: @ivue-elevation-umbra-color,
+  @penumbra: @ivue-elevation-penumbra-color,
+) {
+  @umbraSize: extract(@ivue-elevation-umbra, @i);
+  @penumbraSize: extract(@ivue-elevation-penumbra, @i);
+
+  box-shadow:~"@{penumbraSize} @{penumbra}, @{umbraSize} @{umbra}";
+}

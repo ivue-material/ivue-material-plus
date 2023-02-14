@@ -14,14 +14,14 @@
 export default {
   data() {
     return {
-      length: 5,
+      length: 6,
     };
   },
 };
 </script>
 
-<style lang="scss">
-@import '../../packages/styles/src/elevation';
+<style lang="less">
+@import '../../packages/styles/src/elevation/index.less';
 
 .elevation-demo {
   padding: 16px;

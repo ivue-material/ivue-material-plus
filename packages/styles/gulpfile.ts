@@ -1,14 +1,14 @@
 import path from 'path';
 import { dest, parallel, series, src } from 'gulp';
-import dartSass from 'sass';
-import gulpSass from 'gulp-sass';
+import less from 'gulp-less';
+
 import autoprefixer from 'gulp-autoprefixer';
 import cleanCSS from 'gulp-clean-css';
 import consola from 'consola';
 import chalk from 'chalk';
 import rename from 'gulp-rename';
 
-import { uiOutput } from '@ivue-material-plus/build-utils';
+import { uiOutput, compRoot } from '@ivue-material-plus/build-utils';
 
 // type
 import type { TaskFunction } from 'gulp';
@@ -27,18 +27,15 @@ export function copyThemeChalkSource() {
 
 /**
  * 编译 styles scss & minify
- * not use sass.sync().on('error', sass.logError) to throw exception
  * @returns
  */
 function buildStylesChalk() {
-  const sass = gulpSass(dartSass);
-
   // 没有前缀的文件
   const noElPrefixFile = /(index|base)/;
 
   return (
-    src(path.resolve(__dirname, 'src/*.scss'))
-      .pipe(sass.sync())
+    src(path.resolve(__dirname, 'src/*.less'))
+      .pipe(less())
       // autoprefixer
       .pipe(autoprefixer({ cascade: false }))
       // 缩小 CSS
@@ -65,14 +62,48 @@ function buildStylesChalk() {
 }
 
 /**
+ * 编译 styles scss & minify
+ * @returns
+ */
+function buildComponentsStylesChalk() {
+  return (
+    src(path.resolve(compRoot, '**/*.less'))
+      .pipe(less())
+      // autoprefixer
+      .pipe(autoprefixer({ cascade: false }))
+      // 缩小 CSS
+      .pipe(
+        cleanCSS({}, (details) => {
+          consola.success(
+            `${chalk.cyan(details.name)}: ${chalk.yellow(
+              details.stats.originalSize / 1000
+            )} KB -> ${chalk.green(details.stats.minifiedSize / 1000)} KB`
+          );
+        })
+      )
+      // 改名
+      .pipe(
+        rename((path) => {
+          return {
+            ...path,
+            dirname: '/',
+            basename: path.dirname,
+          };
+        })
+      )
+      // 打包输出路径
+      .pipe(dest(distFolder))
+  );
+}
+
+/**
  * 打包默认主题变量
  * @returns
  */
 function buildDefaultThemeCssVars() {
-  const sass = gulpSass(dartSass);
   return (
-    src(path.resolve(__dirname, 'src/theme/default/index.scss'))
-      .pipe(sass.sync())
+    src(path.resolve(__dirname, 'src/theme/default/index.less'))
+      .pipe(less())
       // autoprefixer
       .pipe(autoprefixer({ cascade: false }))
       .pipe(
@@ -91,11 +122,9 @@ function buildDefaultThemeCssVars() {
 
 // 打包elevation
 function buildElevation() {
-  const sass = gulpSass(dartSass);
-
   return (
-    src(path.resolve(__dirname, 'src/elevation/index.scss'))
-      .pipe(sass.sync())
+    src(path.resolve(__dirname, 'src/elevation/index.less'))
+      .pipe(less())
       // autoprefixer
       .pipe(autoprefixer({ cascade: false }))
       // 缩小 CSS
@@ -115,11 +144,9 @@ function buildElevation() {
 
 // 打包layout
 function buildLayout() {
-  const sass = gulpSass(dartSass);
-
   return (
-    src(path.resolve(__dirname, 'src/layout/index.scss'))
-      .pipe(sass.sync())
+    src(path.resolve(__dirname, 'src/layout/index.less'))
+      .pipe(less())
       // autoprefixer
       .pipe(autoprefixer({ cascade: false }))
       // 缩小 CSS
@@ -150,6 +177,7 @@ export const build: TaskFunction = parallel(
   copyThemeChalkSource,
   series(
     buildStylesChalk,
+    buildComponentsStylesChalk,
     buildDefaultThemeCssVars,
     buildElevation,
     buildLayout,

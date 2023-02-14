@@ -1,0 +1,23 @@
+@import '@ivue-material-plus/styles/src/common';
+
+:root {
+  --ivue-back-top-size: 32px;
+}
+
+.ivue-back-top {
+  position: fixed;
+  cursor: pointer;
+  z-index: 10;
+
+  &__content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: var(--ivue-back-top-size);
+    height: var(--ivue-back-top-size);
+    border-radius: var(--ivue-back-top-radius);
+    background: var(--ivue-back-top-bg);
+    color: var(--ivue-back-top-color);
+  }
+}
