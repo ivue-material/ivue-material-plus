@@ -31,6 +31,7 @@ const noStylesComponents: string[] = [
   'IvueFormItem',
   'IvueOptionGroup',
   'IvueOption',
+  'IvueSvgLoader',
 ];
 
 function getSideEffects(dirName: string, options: resolverOptions) {

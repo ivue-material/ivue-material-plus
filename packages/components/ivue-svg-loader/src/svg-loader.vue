@@ -8,7 +8,7 @@ import { defineComponent, ref, nextTick, onMounted } from 'vue';
 // svg-loader
 import { svgLoaderProps, svgLoaderEmits } from './svg-loader';
 
-const ivueSVGStore: any = {};
+const ivueSVGStore: Record<string, any> = {};
 
 const prefixCls = 'ivue-svg-loader';
 
