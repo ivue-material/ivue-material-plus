@@ -2,15 +2,15 @@
 
 :root {
   // count
-  --ivue-badge-count-padding: 0 6px;
-  --ivue-badge-count-size: 20px;
+  --ivue-badge-count-padding: 0 4.5px;
+  --ivue-badge-count-size: 16px;
   --ivue-badge-count-radius: 10px;
   --ivue-badge-count-font-size: var(--ivue-font-size-small);
 
   // dot
-  --ivue-badge-dot-position-top: -4px;
-  --ivue-badge-dot-position-right: -8px;
-  --ivue-badge-dot-size: 8px;
+  --ivue-badge-dot-position-top: -2px;
+  --ivue-badge-dot-position-right: -6px;
+  --ivue-badge-dot-size: 6px;
 
   // status dot
   --ivue-badge-status-dot-size: 6px;
@@ -20,12 +20,13 @@
 .ivue-badge {
   position: relative;
   display: inline-block;
+  margin: 10px;
 
   &__count {
     position: absolute;
     transform: translateX(50%);
     transform-origin: -10% center;
-    top: -10px;
+    top: -7px;
     right: 0;
     display: flex;
     justify-content: center;
@@ -33,10 +34,11 @@
     flex-direction: row;
     flex-wrap: wrap;
     z-index: 10;
+    box-sizing: border-box;
+    line-height: 1;
     transition: all @transition-default;
 
     padding: var(--ivue-badge-count-padding);
-    min-width: var(--ivue-badge-count-size);
     height: var(--ivue-badge-count-size);
     border-radius: var(--ivue-badge-count-radius);
     font-size: var(--ivue-badge-count-font-size);
