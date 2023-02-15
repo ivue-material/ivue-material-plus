@@ -9,6 +9,11 @@
   --ivue-color-black: #000000;
 }
 
+// border
+:root {
+  --ivue-border-color: #dcdee2;
+}
+
 // disabled
 :root {
   --ivue-disabled-color: #c5c8ce;
@@ -107,4 +112,47 @@
 :root {
   --ivue-loading-mask-bg: rgba(255, 255, 255, 0.9);
   --ivue-loading-color: var(--ivue-color-primary-base);
+}
+
+// carousel
+:root {
+
+  // 箭头
+  --ivue-carousel-arrow-color: var(--ivue-color-white);
+  --ivue-carousel-arrow-bg: rgba(31, 45, 61, 0.11);
+
+  // mask
+  --ivue-carousel-item-mask-bg: var(--ivue-color-white);
+
+  // 指示器
+  --ivue-carousel-outside-button-bg: #8391a5;
+  --ivue-carousel-dot-button-bg: var(--ivue-color-white);
+  --ivue-carousel-label-color: var(--ivue-text-color);
+}
+
+// switch
+:root {
+  --ivue-switch-color: #515a6e;
+  --ivue-switch-bg: #858585;
+
+  // after
+  --ivue-switch-after-bg: var(--ivue-color-white);
+
+  // inner
+  --ivue-switch-inner-color: var(--ivue-color-white);
+
+  // disabled
+  --ivue-switch-disabled-border-color: var(--ivue-border-color);
+  --ivue-switch-disabled-bg: var(--ivue-disabled-bg);
+
+  // emboss
+  --ivue-switch-emboss-inner-color: var(--ivue-text-color);
+
+  // thumb
+  --ivue-switch-thumb-color: var(--ivue-color-white);
+  --ivue-switch-thumb-disabled-color: #fafafa;
+
+  // track
+  --ivue-switch-track-disabled-color: rgba(0, 0, 0, 0.12);
+  --ivue-switch-track-checked-disabled-color: rgba(0, 0, 0, 0.38);
 }

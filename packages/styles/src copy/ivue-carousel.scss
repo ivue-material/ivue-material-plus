@@ -32,16 +32,6 @@ $name: 'ivue-carousel';
   // 设置组件 css var 变量
   @include set-component-css-var($name, $carousel);
 
-  position: relative;
-  overflow: hidden;
-
-  // 没有初始化
-  &.is-no-init {
-    .is-card {
-      transition: none;
-    }
-  }
-
   // 内容
   @include e(content) {
     position: relative;

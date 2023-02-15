@@ -1,0 +1,223 @@
+:root {
+  // 内容
+  --ivue-carousel-content-height: 200px;
+
+  // 箭头
+  --ivue-carousel-arrow-size: 36px;
+  --ivue-carousel-arrow-icon-font-size: 24px;
+  --ivue-carousel-arrow-icon-left: 16px;
+  --ivue-carousel-arrow-icon-right: 16px;
+
+  // dots
+  --ivue-carousel-dot-padding: 7px;
+  --ivue-carousel-dot-width: 24px;
+  --ivue-carousel-dot-height: 3px;
+  --ivue-carousel-dot-radius-size: 6px;
+  --ivue-carousel-dot-padding-vertical: 4px 12px;
+
+  // vertical
+  --ivue-carousel-dot-width-vertical: 2px;
+  --ivue-carousel-dot-height-vertical: 15px;
+}
+
+.ivue-carousel {
+
+  position: relative;
+  overflow: hidden;
+
+  // 没有初始化
+  &.is-no-init {
+    .is-card {
+      transition: none;
+    }
+  }
+
+  // 内容
+  &__content {
+    position: relative;
+    height: var(--ivue-carousel-content-height);
+    overflow: hidden;
+  }
+
+  // 箭头
+  &__arrow {
+    position: absolute;
+    top: 50%;
+    text-align: center;
+    font-size: 12px;
+    font-family: inherit;
+    line-height: inherit;
+    border: none;
+    outline: none;
+    padding: 0;
+    margin: 0;
+    border-radius: 50%;
+    cursor: pointer;
+    transform: translateY(-50%);
+    transition: all 0.4s ease-in-out;
+    z-index: 15;
+
+    width: var(--ivue-carousel-arrow-size);
+    min-width: var(--ivue-carousel-arrow-size);
+    height: var(--ivue-carousel-arrow-size);
+    color: var(--ivue-carousel-arrow-color);
+    background-color: var(--ivue-carousel-arrow-bg);
+
+    i {
+      font-size: var(--ivue-carousel-arrow-icon-font-size) !important;
+    }
+
+    &.left {
+      left: var(--ivue-carousel-arrow-icon-left);
+    }
+
+    &.right {
+      right: var(--ivue-carousel-arrow-icon-right)
+    }
+  }
+}
+
+// 指示器
+.ivue-carousel-dots {
+  position: relative;
+  display: none;
+  list-style: none;
+  text-align: center;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  height: calc(4px + var(--ivue-carousel-dot-padding) * 2);
+  z-index: 15;
+  pointer-events: none;
+
+  // 内部
+  &.is-inside {
+    display: block;
+    position: absolute;
+    bottom: calc(10px - var(--ivue-carousel-dot-padding));
+  }
+
+  // 外部
+  &.is-outside {
+    position: static;
+    display: block;
+    margin-top: calc(10px - var(var(--ivue-carousel-dot-padding)));
+
+    .ivue-carousel-dots__button {
+      background: var(--ivue-carousel-outside-button-bg);
+    }
+  }
+
+  // 指示器符号
+  &__dot {
+    position: relative;
+    display: inline-block;
+    vertical-align: top;
+    text-align: center;
+    margin: 0 4px;
+    padding: var(--ivue-carousel-dot-padding) 0;
+    cursor: pointer;
+    pointer-events: auto;
+
+    &:hover> {
+      .ivue-carousel-dots__button {
+        opacity: 0.7;
+      }
+    }
+
+    // 激活
+    &.is-active {
+      .ivue-carousel-dots__button {
+        opacity: 1;
+      }
+    }
+  }
+
+  // 按钮
+  &__button {
+    border: 0;
+    opacity: 0.5;
+    outline: none;
+    font-size: 0;
+    display: block;
+    cursor: pointer;
+    color: transparent;
+    transition: all 0.4s ease-in-out;
+
+    width: var(--ivue-carousel-dot-width);
+    height: var(--ivue-carousel-dot-height);
+    border-radius: var(--ivue-carousel-dot-height);
+    background: var(--ivue-carousel-dot-button-bg);
+    box-sizing: border-box;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+
+    // 圆形
+    &.is-radius {
+      padding: 0;
+      border-radius: 50%;
+
+      width: var(--ivue-carousel-dot-radius-size);
+      height: var(--ivue-carousel-dot-radius-size);
+    }
+  }
+
+  // 有指示器的文本
+  &.is-labels {
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin-bottom: 6px;
+    transform: none;
+    text-align: center;
+
+    .ivue-carousel-dots__dot {
+      padding: 0;
+    }
+
+    .ivue-carousel-dots__button {
+      height: auto;
+      width: auto;
+      padding: 2px 18px;
+      font-size: 12px;
+    }
+  }
+
+  // 指示器的文本样式
+  &__label {
+    color: var(--ivue-carousel-label-color);
+  }
+
+  // 竖向
+  &.is-vertical {
+    width: auto;
+    height: auto;
+    top: 0;
+    bottom: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    .ivue-carousel-dots__dot {
+      display: list-item;
+      padding: var(--ivue-carousel-dot-padding-vertical);
+      margin: 0;
+    }
+
+    .ivue-carousel-dots__button {
+      width: var(--ivue-carousel-dot-width-vertical);
+      height: var(--ivue-carousel-dot-height-vertical);
+    }
+  }
+
+  // 左边
+  &.is-left {
+    left: 0;
+  }
+
+  // 右边
+  &.is-right {
+    right: 0;
+  }
+}

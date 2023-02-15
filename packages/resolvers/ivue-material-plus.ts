@@ -28,7 +28,6 @@ function kebabCase(key: string) {
 
 // 没有样式的组件
 const noStylesComponents: string[] = [
-  'IvueCarouselItem',
   'IvueFormItem',
   'IvueOptionGroup',
   'IvueOption',
@@ -136,7 +135,6 @@ export function IvueMaterialPlusResolver(
 
     return optionsResolved;
   }
-
 
   return [
     {
