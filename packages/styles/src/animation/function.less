@@ -4,7 +4,6 @@
 }
 
 .make-motion(@className, @keyframeName, @time: 0.3s) {
-
   .@{className}-enter-active,
   .@{className}-appear {
     .motion-common(@time);
@@ -20,12 +19,12 @@
 
   .@{className}-enter-active,
   .@{className}-appear {
-    animation-name:~"@{keyframeName}In";
+    animation-name: ~'@{keyframeName}In';
     animation-play-state: running;
   }
 
   .@{className}-leave-active {
-    animation-name:~"@{keyframeName}Out";
+    animation-name: ~'@{keyframeName}Out';
     animation-play-state: running;
   }
 }

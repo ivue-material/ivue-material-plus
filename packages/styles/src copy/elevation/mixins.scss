@@ -4,7 +4,7 @@
   $value,
   // color 颜色
   $umbra: $ivue-elevation-umbra-color,
-  $penumbra: $ivue-elevation-penumbra-color,
+  $penumbra: $ivue-elevation-penumbra-color
 ) {
   // 判断参数是否是 number
   @if type-of($value) !=number or not unitless($value) {
@@ -17,5 +17,5 @@
 
   // map-get 查找键值
   box-shadow: #{map-get($ivue-elevation-umbra, $value)} $umbra,
-    #{map-get($ivue-elevation-penumbra, $value)} $penumbra,
+    #{map-get($ivue-elevation-penumbra, $value)} $penumbra;
 }

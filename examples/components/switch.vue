@@ -7,9 +7,7 @@
       :false-color="['#FFA82D', '#FFBD3C']"
       :modelValue="switch1"
     ></ivue-switch>
-    <ivue-switch
-      :modelValue="switch1"
-    ></ivue-switch>
+    <ivue-switch :modelValue="switch1"></ivue-switch>
     <p>flat</p>
     <ivue-switch v-model="switch1" @on-change="handleChange" emboss>
       <template #open>
@@ -96,11 +94,7 @@
       size="small"
     ></ivue-switch>
 
-    <ivue-switch
-      loading
-      :value="true"
-      emboss
-    ></ivue-switch>
+    <ivue-switch loading :value="true" emboss></ivue-switch>
     <ivue-switch loading v-model="switch1" size="large"></ivue-switch>
     <ivue-switch loading v-model="switch1"></ivue-switch>
     <ivue-switch loading v-model="switch1" size="small"></ivue-switch>

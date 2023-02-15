@@ -14,8 +14,7 @@
     "dev": "pnpm run stub",
     "stub": "unbuild --stub"
   },
-  "peerDependencies": {
-  },
+  "peerDependencies": {},
   "dependencies": {
     "@ivue-material-plus/build-constants": "^0.0.1",
     "@pnpm/find-workspace-packages": "^4.0.16",

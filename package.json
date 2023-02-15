@@ -59,8 +59,7 @@
     "raf": "^3.4.1",
     "vite-tsconfig-paths": "^4.0.5"
   },
-  "peerDependencies": {
-  },
+  "peerDependencies": {},
   "devDependencies": {
     "@ivue-material-plus/build": "workspace:^0.0.1",
     "@ivue-material-plus/build-utils": "workspace:^0.0.1",

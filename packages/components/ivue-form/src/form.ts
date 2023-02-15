@@ -3,9 +3,7 @@ import { isArray, isString } from '@vue/shared';
 import { buildProps } from '@ivue-material-plus/utils';
 
 // type
-import type {
-  ExtractPropTypes,
-} from 'vue';
+import type { ExtractPropTypes } from 'vue';
 import type { ValidateFieldsError, ValidateError } from 'async-validator';
 
 import type Form from './form.vue';
@@ -144,7 +142,6 @@ export type FormEmits = typeof formEmits;
 // 组件实例
 export type FormInstance = InstanceType<typeof Form>;
 
-
 // FormValidateCallback
 export type FormValidateCallback = (
   // 是否通过验证
@@ -152,7 +149,6 @@ export type FormValidateCallback = (
   // 无效字段
   invalidFields?: ValidateFieldsError
 ) => void;
-
 
 // 对整个表单的内容进行验证
 export type FormValidationResult = Promise<boolean>;

@@ -10,11 +10,9 @@ import type {
   FormValidationResult,
   FormProps,
   FormEmits,
-  FormItemProp
+  FormItemProp,
 } from '@ivue-material-plus/components/ivue-form';
-import type {
-  useFormLabelWidth
-} from '@ivue-material-plus/components/ivue-form/src/utils';
+import type { useFormLabelWidth } from '@ivue-material-plus/components/ivue-form/src/utils';
 import type { Arrayable } from '@ivue-material-plus/utils';
 
 // FormItemContext

@@ -44,8 +44,7 @@
     "es/components/*/style/*",
     "lib/components/*/style/*"
   ],
-  "peerDependencies": {
-  },
+  "peerDependencies": {},
   "dependencies": {
     "-": "0.0.1",
     "@antfu/utils": "^0.5.2",

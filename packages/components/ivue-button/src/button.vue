@@ -58,7 +58,7 @@ export default defineComponent({
         // 凹陷的按钮依然保持其背景色，但没有框阴影
         [bem.is('depressed')]:
           (props.depressed && !props.flat) || props.outline,
-          // 圆形图标
+        // 圆形图标
         [bem.is('icon')]: props.icon,
         // 轮廓按钮从当前色彩应用继承他们的边框颜色。
         [bem.is('outline')]: props.outline,

@@ -1,8 +1,9 @@
 :root {
-  --ivue-ripple-webkit-mask-image:
-    radial-gradient(circle,
-      getCssVar('ivue-color-white') 100%,
-      getCssVar('ivue-color-black') 100%);
+  --ivue-ripple-webkit-mask-image: radial-gradient(
+    circle,
+    getCssVar('ivue-color-white') 100%,
+    getCssVar('ivue-color-black') 100%
+  );
 }
 
 .ivue-ripple {
@@ -50,7 +51,7 @@
       left: 50%;
     }
 
-    ~*:not(.ivue-ripple__wave) {
+    ~ *:not(.ivue-ripple__wave) {
       position: relative;
       z-index: 2;
     }

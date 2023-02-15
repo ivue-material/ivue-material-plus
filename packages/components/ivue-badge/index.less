@@ -16,7 +16,6 @@
   --ivue-badge-status-dot-size: 6px;
 }
 
-
 .ivue-badge {
   position: relative;
   display: inline-block;
@@ -62,7 +61,6 @@
     }
   }
 
-
   // 小红点
   &__dot {
     position: absolute;
@@ -100,12 +98,12 @@
 
     // error
     &.is-error {
-      background-color: var(--ivue-color-error-base)
+      background-color: var(--ivue-color-error-base);
     }
 
     // default
     &.is-default {
-      background-color: var(--ivue-color-default)
+      background-color: var(--ivue-color-default);
     }
 
     // processing
@@ -131,7 +129,7 @@
 
     // warning
     &.is-warning {
-      background-color: var(--ivue-color-warning-base)
+      background-color: var(--ivue-color-warning-base);
     }
 
     // 生成颜色
@@ -143,7 +141,7 @@
       @darkColor: '--ivue-badge-@{color}';
 
       &.is-@{color} {
-        background-color:~"var(@{darkColor})";
+        background-color: ~'var(@{darkColor})';
       }
     }
 

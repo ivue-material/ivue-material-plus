@@ -1,4 +1,4 @@
-import { buildProps,definePropType } from '@ivue-material-plus/utils';
+import { buildProps, definePropType } from '@ivue-material-plus/utils';
 
 // type
 import type { ExtractPropTypes } from 'vue';
@@ -59,7 +59,7 @@ export const optionProps = buildProps({
    */
   value: {
     type: definePropType<string | number>([String, Number]),
-    default: ''
+    default: '',
   },
   /**
    * 选择选项时的颜色

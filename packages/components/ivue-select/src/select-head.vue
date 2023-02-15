@@ -338,7 +338,7 @@ export default defineComponent({
           // 输入框输入数据
           filterQuery.value = '';
           // 判断输入框是否输入-这里不是判断直接赋值v-model而是输入框确实有输入行为
-          isInputChange.value= false;
+          isInputChange.value = false;
 
           return;
         }

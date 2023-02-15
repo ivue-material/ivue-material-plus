@@ -44,7 +44,6 @@ $name: 'ivue-select';
 
   // 默认样式
   @include m(default) {
-
     // 选择框样式
     @include b(#{$name}-selection) {
       position: relative;

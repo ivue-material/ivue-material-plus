@@ -177,7 +177,7 @@ export const popoverEmits = {
   // 点击取消的回调，只在 confirm 模式下有效
   'on-cancel': () => true,
   // 点击确定的回调，只在 confirm 模式下有效
-  'on-confirm': () => true
+  'on-confirm': () => true,
 };
 export type PopoverEmits = typeof popoverEmits;
 

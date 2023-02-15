@@ -7,6 +7,5 @@
   "module": "index.ts",
   "unpkg": "index.js",
   "jsdelivr": "index.js",
-  "peerDependencies": {
-  }
+  "peerDependencies": {}
 }

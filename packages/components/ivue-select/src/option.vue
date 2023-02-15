@@ -109,7 +109,8 @@ export default defineComponent({
           // 获取焦点
           [bem.is('focus')]: data.isFocused,
           // 选中
-          [bem.is('selected')]: unref(itemSelected) && select.props.autoComplete,
+          [bem.is('selected')]:
+            unref(itemSelected) && select.props.autoComplete,
         },
       ];
     });

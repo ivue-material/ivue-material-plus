@@ -9,7 +9,7 @@
 @after-size: 24px;
 @after-active-width: (@after-size + 4);
 
-@before-checked-left: (@after-size );
+@before-checked-left: (@after-size);
 @before-active-width: (@after-size - 4);
 
 @loading-checked-active-after-left: (@height + 1);
@@ -27,15 +27,28 @@
 @track-large-width: (@emboss-large-width - 10);
 @track-large-height: (@emboss-large-height / 2);
 
-@track-checked-transform: (@emboss-default-height - (@emboss-default-height / 4));
-@thumb-large-checked-transform: (@emboss-large-height + (@emboss-large-height / 4) - 9);
+@track-checked-transform: (
+  @emboss-default-height - (@emboss-default-height / 4)
+);
+@thumb-large-checked-transform: (
+  @emboss-large-height + (@emboss-large-height / 4) - 9
+);
 
 @emboss-ripple-left: (-(@emboss-default-height / 2) - 3);
 @emboss-ripple-size: (@emboss-default-width - 2);
-@emboss-ripple-checked-transform: (@emboss-default-height - (@emboss-default-height / 4));
-@emboss-ripple-large-left: (-(@emboss-large-width - @emboss-large-height - (@emboss-large-height / 4) - 2) + 4);
+@emboss-ripple-checked-transform: (
+  @emboss-default-height - (@emboss-default-height / 4)
+);
+@emboss-ripple-large-left: (
+  -(
+      @emboss-large-width - @emboss-large-height - (@emboss-large-height / 4) -
+        2
+    ) + 4
+);
 @emboss-ripple-large-size: (@emboss-large-width - 10);
-@emboss-ripple-large-checked-transform: (@emboss-large-height + (@emboss-large-height / 4) - 9);
+@emboss-ripple-large-checked-transform: (
+  @emboss-large-height + (@emboss-large-height / 4) - 9
+);
 
 :root {
   --ivue-switch-width: @width;
@@ -152,7 +165,6 @@
       height: var(--ivue-switch-after-active-width);
     }
   }
-
 
   // before
   &::before {
@@ -317,7 +329,6 @@
 
   color: var(--ivue-switch-color);
 
-
   // 跟踪
   &__track {
     position: absolute;
@@ -345,8 +356,7 @@
     position: relative;
     border-radius: 50%;
     box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2),
-      0px 4px 5px 0px rgba(0, 0, 0, 0.14),
-      0px 1px 10px 0px rgba(0, 0, 0, 0.12);
+      0px 4px 5px 0px rgba(0, 0, 0, 0.14), 0px 1px 10px 0px rgba(0, 0, 0, 0.12);
     pointer-events: none;
     background-color: currentColor;
     transition: all @transition-default;
@@ -390,7 +400,9 @@
         color: var(--ivue-switch-track-disabled-color) !important;
 
         &.is-checked {
-          caret-color: var(--ivue-switch-track-checked-disabled-color) !important;
+          caret-color: var(
+            --ivue-switch-track-checked-disabled-color
+          ) !important;
           color: var(--ivue-switch-track-checked-disabled-color) !important;
         }
       }
@@ -446,7 +458,10 @@
         height: var(--ivue-switch-emboss-large-height);
 
         &.is-checked {
-          transform: translate(var(--ivue-switch-thumb-large-checked-transform), 0);
+          transform: translate(
+            var(--ivue-switch-thumb-large-checked-transform),
+            0
+          );
         }
       }
 
@@ -459,12 +474,14 @@
         height: var(--ivue-switch-emboss-ripple-large-size);
 
         &.is-checked {
-          transform: translate(var(--ivue-switch-emboss-ripple-large-checked-transform), 0);
+          transform: translate(
+            var(--ivue-switch-emboss-ripple-large-checked-transform),
+            0
+          );
         }
       }
     }
   }
-
 
   // ripple
   &__ripple {
@@ -480,12 +497,13 @@
 
     // 激活
     &.is-checked {
-      transform: translate(var(--ivue-switch-emboss-ripple-checked-transform), 0);
+      transform: translate(
+        var(--ivue-switch-emboss-ripple-checked-transform),
+        0
+      );
     }
   }
 }
-
-
 
 @keyframes ivue-switch-loading {
   0% {

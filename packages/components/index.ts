@@ -12,6 +12,7 @@ export * from './ivue-switch';
 export * from './ivue-form';
 export * from './ivue-select';
 export * from './ivue-popover';
+export * from './ivue-card';
 
 // plugins
 export * from './ivue-ripple';

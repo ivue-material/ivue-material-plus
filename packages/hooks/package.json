@@ -12,6 +12,5 @@
   "unpkg": "index.js",
   "jsdelivr": "index.js",
   "types": "index.d.ts",
-  "peerDependencies": {
-  }
+  "peerDependencies": {}
 }

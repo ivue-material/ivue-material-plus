@@ -12,6 +12,7 @@ import carousel from '../components/carousel.vue';
 import Switch from '../components/switch.vue';
 import Form from '../components/form.vue';
 import Select from '../components/select.vue';
+import card from '../components/card.vue';
 
 const routes = [
   {
@@ -78,6 +79,11 @@ const routes = [
     path: '/select',
     name: 'Select',
     component: Select,
+  },
+  {
+    path: '/card',
+    name: 'card',
+    component: card,
   },
 ];
 
