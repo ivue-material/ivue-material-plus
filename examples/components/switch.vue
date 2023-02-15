@@ -7,7 +7,9 @@
       :false-color="['#FFA82D', '#FFBD3C']"
       :modelValue="switch1"
     ></ivue-switch>
-
+    <ivue-switch
+      :modelValue="switch1"
+    ></ivue-switch>
     <p>flat</p>
     <ivue-switch v-model="switch1" @on-change="handleChange" emboss>
       <template #open>
@@ -30,11 +32,21 @@
     <p>文字图标</p>
     <ivue-switch size="large">
       <template #open>
-        <span>开</span>
+        <span>开启</span>
       </template>
 
       <template #close>
-        <span>关</span>
+        <span>开启</span>
+      </template>
+    </ivue-switch>
+
+    <ivue-switch size="large" :modelValue="switch1" loading>
+      <template #open>
+        <span>开启</span>
+      </template>
+
+      <template #close>
+        <span>开启</span>
       </template>
     </ivue-switch>
 
@@ -88,7 +100,6 @@
       loading
       :value="true"
       emboss
-      embossLoadingColor="#F41D74"
     ></ivue-switch>
     <ivue-switch loading v-model="switch1" size="large"></ivue-switch>
     <ivue-switch loading v-model="switch1"></ivue-switch>

@@ -1,48 +1,38 @@
 @import '@ivue-material-plus/styles/src/common';
 
-@width: 44px;
-@height: (@width / 2);
+@width: 52px;
+@height: 32px;
 
-@checked-left: (@height + 1);
-@checked-active-left: (@height - (@after-size / 2) + 2);
+@checked-left: (@after-size - 2);
+@checked-active-left: (@height - (@after-size / 2));
 
-@after-size: 18px;
-@after-active-width: (@after-size + 8);
+@after-size: 24px;
+@after-active-width: (@after-size + 4);
 
-@before-checked-left: (@height + 2);
-@before-active-width: (@after-size - 2);
+@before-checked-left: (@after-size );
+@before-active-width: (@after-size - 4);
 
 @loading-checked-active-after-left: (@height + 1);
 
 @emboss-default-width: 38px;
 @emboss-default-height: 22px;
-@emboss-small-width: 28px;
-@emboss-small-height: 16px;
 @emboss-large-width: 60px;
 @emboss-large-height: 28px;
 
-@emboss-loading-small-size: (@emboss-small-height - 4);
+@emboss-loading-size: (@emboss-default-height - 4);
 @emboss-loading-large-size: (@emboss-large-height - 4);
-@emboss-loading-size: (@height - 4);
 
 @track-width: (@emboss-default-width - 2);
 @track-height: (@emboss-default-height / 2);
-@track-small-width: (@emboss-small-width - 2);
-@track-small-height: (@emboss-small-height / 2);
 @track-large-width: (@emboss-large-width - 10);
 @track-large-height: (@emboss-large-height / 2);
 
 @track-checked-transform: (@emboss-default-height - (@emboss-default-height / 4));
-@thumb-small-checked-transform: (@emboss-small-height - (@emboss-small-height / 4));
 @thumb-large-checked-transform: (@emboss-large-height + (@emboss-large-height / 4) - 9);
 
 @emboss-ripple-left: (-(@emboss-default-height / 2) - 3);
 @emboss-ripple-size: (@emboss-default-width - 2);
 @emboss-ripple-checked-transform: (@emboss-default-height - (@emboss-default-height / 4));
-@emboss-ripple-small-left: (-((@emboss-small-height / 2) + (@emboss-small-height / 4)));
-@emboss-ripple-small-size: (@emboss-small-width - 2);
-@emboss-ripple-small-checked-transform: (@emboss-small-height - (@emboss-small-height / 4));
-
 @emboss-ripple-large-left: (-(@emboss-large-width - @emboss-large-height - (@emboss-large-height / 4) - 2) + 4);
 @emboss-ripple-large-size: (@emboss-large-width - 10);
 @emboss-ripple-large-checked-transform: (@emboss-large-height + (@emboss-large-height / 4) - 9);
@@ -74,16 +64,10 @@
   --ivue-switch-emboss-default-width: @emboss-default-width;
   --ivue-switch-emboss-default-height: 22px;
 
-  // emboss small
-  --ivue-switch-emboss-small-width: @emboss-small-width;
-  --ivue-switch-emboss-small-height: @emboss-small-height;
-
   // emboss large
   --ivue-switch-emboss-large-width: @emboss-large-width;
   --ivue-switch-emboss-large-height: @emboss-large-height;
 
-  // emboss loading
-  --ivue-switch-emboss-loading-small-size: @emboss-loading-small-size;
   --ivue-switch-emboss-loading-large-size: @emboss-loading-large-size;
 
   --ivue-switch-emboss-loading-width: 7px;
@@ -96,24 +80,14 @@
   // track-checked
   --ivue-switch-track-checked-transform: @track-checked-transform;
 
-  // track-small
-  --ivue-switch-track-small-width: @track-small-width;
-  --ivue-switch-track-small-height: @track-small-height;
-
   --ivue-switch-track-large-width: @track-large-width;
   --ivue-switch-track-large-height: @track-large-height;
-
-  --ivue-switch-thumb-small-checked-transform: @thumb-small-checked-transform;
   --ivue-switch-thumb-large-checked-transform: @thumb-large-checked-transform;
 
   // ripple
   --ivue-switch-emboss-ripple-left: @emboss-ripple-left;
   --ivue-switch-emboss-ripple-size: @emboss-ripple-size;
   --ivue-switch-emboss-ripple-checked-transform: @emboss-ripple-checked-transform;
-
-  --ivue-switch-emboss-ripple-small-left: @emboss-ripple-small-left;
-  --ivue-switch-emboss-ripple-small-size: @emboss-ripple-small-size;
-  --ivue-switch-emboss-ripple-small-checked-transform: @emboss-ripple-small-checked-transform;
 
   --ivue-switch-emboss-ripple-large-left: @emboss-ripple-large-left;
   --ivue-switch-emboss-ripple-large-size: @emboss-ripple-large-size;
@@ -136,7 +110,7 @@
   width: var(--ivue-switch-width);
   height: var(--ivue-switch-height);
   border-radius: var(--ivue-switch-height);
-  border: 1px solid var(--ivue-switch-bg);
+  border: 2px solid var(--ivue-switch-border);
   color: var(--ivue-switch-color);
   background: var(--ivue-switch-bg);
 
@@ -154,13 +128,15 @@
   &::after {
     content: '';
     position: absolute;
-    top: 1px;
-    left: 1px;
+    top: 0;
+    bottom: 0;
+    left: 2px;
     cursor: pointer;
     box-sizing: border-box;
-    margin: 0;
+    margin: auto;
     padding: 0;
-    transition: left 0.2s ease-in-out, width 0.2s ease-in-out;
+    transition: all 0.2s ease-in-out;
+    will-change: transition;
 
     width: var(--ivue-switch-after-size);
     height: var(--ivue-switch-after-size);
@@ -169,9 +145,11 @@
   }
 
   // active
-  &:active:not(.is-disabled) {
+  &:active:not(.is-disabled):not(.is-loading) {
     &::after {
-      width: var(--ivue-switch-after-active-width)
+      left: 0;
+      width: var(--ivue-switch-after-active-width);
+      height: var(--ivue-switch-after-active-width);
     }
   }
 
@@ -180,8 +158,8 @@
   &::before {
     content: '';
     position: absolute;
-    top: 2px;
-    left: 2px;
+    top: 4px;
+    left: 3px;
     display: none;
     border-radius: 50%;
     background-color: transparent;
@@ -229,7 +207,7 @@
       left: var(--ivue-switch-before-checked-left);
     }
 
-    &:active:not(.ivue-switch-disabled)::after {
+    &:active:not(.is-disabled):not(.is-loading)::after {
       left: var(--ivue-switch-after-checked-active-left);
     }
 
@@ -289,100 +267,38 @@
 
     // checked
     &.is-checked {
-      &:active:not(.is-disabled)::after {
+      &:active:not(.is-disabled):not(.is-loading)::after {
         left: var(--ivue-switch-loading-checked-active-after-left);
       }
     }
 
     // active
-    &:active:not(.is-disabled)::after {
+    &:active:not(.is-disabled):not(.is-loading)::after {
       width: var(--ivue-switch-after-size);
-    }
-
-    // 大型
-    &.is-large {
-      &.is-checked::after {
-        left: 35px !important;
-      }
-
-      &:active:not(.is-disabled)::after {
-        width: 18px;
-      }
-    }
-
-    // 小型
-    &.is-small {
-      &.is-checked {
-        &:active:not(.is-disabled)::after {
-          width: 12px !important;
-          left: 13px !important;
-        }
-      }
-
-      &:active:not(.is-disabled)::after {
-        width: 12px !important;
-      }
-    }
-  }
-
-  // 小
-  &.is-small {
-    width: 28px;
-    height: 16px;
-    line-height: 14px;
-
-    &::after {
-      width: 12px;
-      height: 12px;
-      border-radius: 12px;
-    }
-
-    &:active:not(.is-disabled) {
-      &.is-checked::after {
-        left: 11px;
-      }
-
-      &::after {
-        width: 14px;
-      }
-    }
-
-    &::before {
-      width: 10px;
-      height: 10px;
-    }
-
-    &.is-checked::after {
-      left: 13px;
-    }
-
-    &.is-checked::before {
-      left: 14px;
-      width: 10px;
-      height: 10px;
     }
   }
 
   // 大
   &.is-large {
-    width: 56px;
+    width: 70px;
 
-    &.is-checked:active:not(.is-disabled) {
+    &.is-checked:active:not(.is-disabled):not(.is-loading) {
       &:after {
-        left: 23px;
+        left: 38px;
       }
     }
 
-    &:active:not(.is-disabled)::after {
-      width: 30px;
+    &:active:not(.is-disabled):not(.is-loading)::after {
+      width: 28px;
+      height: 28px;
     }
 
     &.is-checked::after {
-      left: 35px;
+      left: 42px;
     }
 
     &.is-checked::before {
-      left: 36px;
+      left: 44px;
     }
   }
 }
@@ -503,49 +419,6 @@
 
       width: var(--ivue-switch-emboss-loading-size);
       height: var(--ivue-switch-emboss-loading-size);
-    }
-
-    // 小
-    &.is-small {
-      width: var(--ivue-switch-emboss-small-width);
-      height: var(--ivue-switch-emboss-small-height);
-
-      .is-loading {
-        width: var(--ivue-switch-emboss-loading-small-size);
-        height: var(--ivue-switch-emboss-loading-small-size);
-      }
-
-      // 跟踪
-      .ivue-switch-emboss__track {
-        top: calc(50% - 4px);
-        left: 1px;
-
-        width: var(--ivue-switch-track-small-width);
-        height: var(--ivue-switch-track-small-height);
-      }
-
-      // 指示器
-      .ivue-switch-emboss__thumb {
-        width: var(--ivue-switch-emboss-small-height);
-        height: var(--ivue-switch-emboss-small-height);
-
-        &.is-checked {
-          transform: translate(var(--ivue-switch-thumb-small-checked-transform), 0);
-        }
-      }
-
-      // ripple
-      .ivue-switch-emboss__ripple {
-        top: calc(50% - 20px);
-
-        left: var(--ivue-switch-emboss-ripple-small-left);
-        width: var(--ivue-switch-emboss-ripple-small-size);
-        height: var(--ivue-switch-emboss-ripple-small-size);
-
-        &.is-checked {
-          transform: translate(var(--ivue-switch-emboss-ripple-small-checked-transform), 0);
-        }
-      }
     }
 
     // 大

@@ -24,7 +24,7 @@ export const switchProps = buildProps({
    */
   falseColor: {
     type: definePropType<string | string[]>([String, Array]),
-    default: '',
+    default: '#808695',
   },
   /**
    * 是否禁用开关
@@ -60,7 +60,7 @@ export const switchProps = buildProps({
    */
   embossLoadingColor: {
     type: String,
-    default: '',
+    default: '#ffffff',
   },
   /**
    * 选中时的值
@@ -96,7 +96,7 @@ export const switchProps = buildProps({
    */
   size: {
     type: String,
-    values: ['large', 'small', 'default'],
+    values: ['large', 'default'],
     default: 'default',
   },
   /**
@@ -114,7 +114,7 @@ export const switchProps = buildProps({
    */
   color: {
     type: definePropType<string | string[]>([String, Array]),
-    default: '',
+    default: '#5b8eff',
   },
   /**
    * 文字颜色
