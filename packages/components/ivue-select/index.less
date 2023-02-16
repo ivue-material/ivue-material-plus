@@ -2,11 +2,16 @@
 @import '@ivue-material-plus/styles/src/common/input';
 
 :root {
+  // input
   --ivue-select-input-height: 36px;
+
+  // head
   --ivue-select-head-height: 34px;
 
+  // radius
   --ivue-select-radius: var(--ivue-radius-4px);
 
+  // loading
   --ivue-select-loading-height: 100px;
   --ivue-select-loading-padding: 7px 16px;
   --ivue-select-loading-load-size: 17px;
@@ -35,10 +40,8 @@
     padding: 0;
   }
 
-
   // 禁用样式
   &.is-disabled {
-
     // 选择框样式
     .ivue-select-selection {
       opacity: 1;
@@ -61,7 +64,6 @@
 
   // 默认样式
   &--default {
-
     // 选择框样式
     .ivue-select-selection {
       position: relative;
@@ -186,7 +188,6 @@
 
   // 菜单显示
   &--visible {
-
     // 选择框样式
     .ivue-select-selection {
       outline: 0;
@@ -260,7 +261,6 @@
   }
 }
 
-
 // 菜单数据列表
 .ivue-select-item {
   position: relative;
@@ -319,7 +319,6 @@
     color: var(--ivue-color-white);
   }
 }
-
 
 // 多选和设置了最大显示数时的方框
 .ivue-select-tag {
@@ -431,7 +430,6 @@
   }
 }
 
-
 // 下拉菜单
 .ivue-select-dropdown {
   position: absolute;
@@ -446,7 +444,7 @@
 
   box-shadow: 0 1px 6px var(--ivue-select-dropdown-shadow);
   border-radius: var(--ivue-select-radius);
-  background-color: var(--ivue-color-white);
+  background-color: var(--ivue-bg-white);
 
   ul {
     box-sizing: border-box;
@@ -514,8 +512,6 @@
   }
 }
 
-
-
 // 选择框
 .ivue-select-selection {
   display: block;
@@ -526,7 +522,7 @@
   cursor: pointer;
   transition: all 0.2s ease-in-out;
 
-  background-color: var(--ivue-color-white);
+  background-color: var(--ivue-bg-white);
   min-height: var(--ivue-select-input-height);
   border-radius: var(--ivue-select-radius);
   border: 1px solid var(--ivue-select-border-color);
@@ -535,7 +531,6 @@
     border-color: var(--ivue-select-selection-border-visible);
   }
 }
-
 
 // 菜单数据列表group
 .ivue-select-group {

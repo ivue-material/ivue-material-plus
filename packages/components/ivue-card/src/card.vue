@@ -7,15 +7,20 @@
     @click="handleLink"
   >
     <!-- 标题 -->
-    <div :class="`${prefixCls}-title`" :style="titleStyles" v-if="showTitle">
-      <slot name="title">{{ title }}</slot>
-    </div>
-    <!-- 额外显示的内容，默认位置在右上角 -->
-    <div :class="`${prefixCls}-extra`" v-if="showExtra">
-      <slot name="extra"></slot>
+    <div :class="bem.b('header')" :style="titleStyles" v-if="showTitle">
+      <div :class="bem.be('header', 'title')">
+        <slot name="title">{{ title }}</slot>
+      </div>
+      <div :class="bem.be('header', 'desc')">
+        <slot name="desc"></slot>
+      </div>
+      <!-- 额外显示的内容，默认位置在右上角 -->
+      <div :class="extraClass" v-if="showExtra">
+        <slot name="extra"></slot>
+      </div>
     </div>
     <!-- 内容 -->
-    <div :class="`${prefixCls}-body`" :style="bodyStyles">
+    <div :class="bem.e('body')" :style="bodyStyles">
       <slot></slot>
     </div>
   </component>
@@ -24,13 +29,12 @@
 <script lang="ts">
 import { computed, defineComponent } from 'vue';
 import { letter } from '@ivue-material-plus/utils';
+import { useNamespace } from '@ivue-material-plus/hooks';
 
 // card
 import { cardProps } from './card';
+// user-card
 import { useCard } from './user-card';
-
-// type
-// import type { Props } from '../types/card';
 
 const prefixCls = 'ivue-card';
 
@@ -38,6 +42,9 @@ export default defineComponent({
   name: prefixCls,
   props: cardProps,
   setup(props, { slots }) {
+    // bem
+    const bem = useNamespace(prefixCls);
+
     const {
       // data
       showTitle,
@@ -55,11 +62,11 @@ export default defineComponent({
     // 外部样式
     const wrapperClasses = computed(() => {
       return [
-        prefixCls,
+        bem.b(),
         {
-          [`${prefixCls}-border`]: props.border && !props.shadow,
-          [`${prefixCls}-dis-hover`]: props.disHover,
-          [`${prefixCls}-shadow`]: props.shadow,
+          [bem.is('border')]: props.border && !props.shadow,
+          [bem.is('dis-hover')]: props.disHover,
+          [bem.is('shadow')]: props.shadow,
         },
       ];
     });
@@ -68,10 +75,8 @@ export default defineComponent({
     const wrapperStyles = computed(() => {
       // 圆角
       if (props.radius) {
-        const regexp = new RegExp(/[a-zA-Z]/g);
-
         // 是否有单位
-        const isUnit = regexp.test(`${props.radius}`);
+        const isUnit = letter.test(`${props.radius}`);
 
         return {
           borderRadius: !isUnit ? `${props.radius}px` : props.radius,
@@ -115,20 +120,27 @@ export default defineComponent({
       return {};
     });
 
+    // 内容样式
+    const extraClass = computed(() => {
+      return [bem.be('header', 'extra'), bem.is(props.extra)];
+    });
+
     return {
-      prefixCls,
+      bem,
 
       // data
       showTitle,
       showExtra,
 
       // computed
-      tagName,
       wrapperClasses,
       wrapperStyles,
       titleStyles,
       bodyStyles,
+      extraClass,
+
       tagProps,
+      tagName,
 
       // methods
       handleLink,

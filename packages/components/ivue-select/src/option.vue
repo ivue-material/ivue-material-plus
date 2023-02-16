@@ -50,7 +50,6 @@ import type { DataOpen, OptionInstance } from './option';
 // icon
 import IvueIcon from '@ivue-material-plus/components/ivue-icon';
 
-
 const prefixCls = 'ivue-select-item';
 
 export default defineComponent({
@@ -115,7 +114,7 @@ export default defineComponent({
           // 获取焦点
           [bem.is('focus')]: data.isFocused,
           // 选中
-          [bem.is('selected')]: unref(isSelected)
+          [bem.is('selected')]: unref(isSelected),
         },
       ];
     });
@@ -183,7 +182,7 @@ export default defineComponent({
 
     // 是否选中
     const isSelected = computed(() => {
-      return  unref(itemSelected) && !select.props.autoComplete;
+      return unref(itemSelected) && !select.props.autoComplete;
     });
 
     // 是否多选
@@ -371,7 +370,7 @@ export default defineComponent({
     };
   },
   components: {
-    IvueIcon
-  }
+    IvueIcon,
+  },
 });
 </script>

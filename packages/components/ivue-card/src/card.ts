@@ -1,9 +1,9 @@
 import { buildProps, definePropType } from '@ivue-material-plus/utils';
-import { Router } from 'vue-router';
 
 // type
 import type { ExtractPropTypes } from 'vue';
 import type Card from './card.vue';
+import type { RouteLocationRaw } from 'vue-router';
 
 // props
 export const cardProps = buildProps({
@@ -13,7 +13,7 @@ export const cardProps = buildProps({
    * @type {Object | String}
    */
   to: {
-    type: definePropType<Router | string>([Object, String]),
+    type: definePropType<RouteLocationRaw>([Object, String]),
   },
   /**
    * 标题
@@ -102,6 +102,16 @@ export const cardProps = buildProps({
   paddingStylesLinkage: {
     type: Boolean,
     default: true,
+  },
+  /**
+   * 额外显示的内容位置
+   *
+   * @type {String}
+   */
+  extra: {
+    type: String,
+    value: ['top', 'center'],
+    default: 'center',
   },
 } as const);
 // props 类型

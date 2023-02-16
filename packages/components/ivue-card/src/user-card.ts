@@ -1,23 +1,16 @@
-import {
-  ref,
-  getCurrentInstance,
-  ComponentInternalInstance,
-  unref,
-  computed,
-  watch,
-  onMounted,
-  nextTick,
-  onUnmounted,
-} from 'vue';
-
-import type { CardProps } from './card';
+import { ref, getCurrentInstance, unref, computed, onMounted } from 'vue';
 import { isClient } from '@ivue-material-plus/utils/helpers';
+
+// type
+import type { CardProps } from './card';
+import type { ComponentInternalInstance } from 'vue';
+import type { RouteLocationRaw } from 'vue-router';
 
 export const useCard = (
   props: CardProps,
   slots: ComponentInternalInstance['slots']
 ) => {
-  const { proxy } = getCurrentInstance() as any;
+  const { proxy } = getCurrentInstance() as ComponentInternalInstance;
 
   // 是否显示标题
   const showTitle = ref<boolean>(false);
@@ -35,7 +28,7 @@ export const useCard = (
   // 标签名称
   const tagName = computed(() => {
     // 是否是跳转链接
-    return isHrefPattern.value ? 'a' : 'div';
+    return unref(isHrefPattern) ? 'a' : 'div';
   });
 
   // 跳转的链接
@@ -54,7 +47,7 @@ export const useCard = (
     }
 
     // router
-    const router = proxy.$router;
+    const router = proxy?.$router;
 
     // 是否有路由
     if (router) {
@@ -62,7 +55,7 @@ export const useCard = (
       const current = proxy?.$route;
 
       // 路由对象
-      const route = router.resolve(props.to, current);
+      const route = router.resolve(props.to as RouteLocationRaw, current);
 
       return route ? route.href : props.to;
     }
@@ -73,9 +66,9 @@ export const useCard = (
   // 标签属性
   const tagProps = computed(() => {
     // 链接
-    if (isHrefPattern.value) {
+    if (unref(isHrefPattern)) {
       return {
-        href: linkUrl.value,
+        href: unref(linkUrl),
         target: props.target,
       };
     } else {
@@ -92,7 +85,7 @@ export const useCard = (
     }
 
     // 是否是 a 标签
-    if (!isHrefPattern.value) {
+    if (!unref(isHrefPattern)) {
       return;
     }
 
@@ -107,7 +100,7 @@ export const useCard = (
         // preventDefault
         event.preventDefault();
 
-        const router = proxy.$router;
+        const router = proxy?.$router;
 
         // 打开新窗口
         if (openInNewWindow) {
@@ -137,16 +130,16 @@ export const useCard = (
 
   // 打开链接 blank
   const handleLinkBlank = () => {
-    const router = proxy.$router;
+    const router = proxy?.$router;
 
     // 跳转的链接
     let to = props.to;
 
     if (router) {
-      const current = proxy.$route;
+      const current = proxy?.$route;
 
       // 跳转路由
-      const route = router.resolve(props.to, current);
+      const route = router.resolve(props.to as RouteLocationRaw, current);
 
       // 获取跳转链接
       to = route ? route.href : props.to;
