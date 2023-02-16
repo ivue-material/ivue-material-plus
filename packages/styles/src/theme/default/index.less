@@ -14,10 +14,20 @@
   --ivue-border-color: #dcdee2;
 }
 
+// legend
+:root {
+  --ivue-legend-color: #999999;
+}
+
 // disabled
 :root {
   --ivue-disabled-color: #c5c8ce;
   --ivue-disabled-bg: #f8f9fd;
+}
+
+// input
+:root {
+  --ivue-input-placeholder: #c5c8ce;
 }
 
 // title
@@ -29,6 +39,12 @@
 :root {
   --ivue-text-color: #4a505e;
 }
+
+// arrow
+:root {
+  --ivue-arrow-color: #808695;
+}
+
 
 // avatar
 :root {
@@ -159,4 +175,33 @@
   // track
   --ivue-switch-track-disabled-color: rgba(0, 0, 0, 0.12);
   --ivue-switch-track-checked-disabled-color: rgba(0, 0, 0, 0.38);
+}
+
+// select
+:root {
+  --ivue-select-color: var(--ivue-text-color);
+  --ivue-select-border-color: var(--ivue-border-color);
+
+  // disabled
+  --ivue-select-disabled-color: var(--ivue-disabled-color);
+  --ivue-select-disabled-bg: var(--ivue-disabled-bg);
+
+  // selection
+  --ivue-select-selection-border-visible: rgba(91, 142, 255, 0.8);
+
+  // dropdown
+  --ivue-select-dropdown-shadow: rgba(91, 142, 255, 0.2);
+
+  // tag
+  --ivue-select-tag-border-color: #e8eaec;
+  --ivue-select-tag-bg: #f8f9fd;
+
+  // icon
+  --ivue-select-icon-color: #bfcdd9;
+
+  // loading
+  --ivue-select-loading-color: '#9ab0c6';
+
+  // not-find
+  --ivue-select-not-find: #9ab0c6;
 }

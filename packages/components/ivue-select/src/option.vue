@@ -12,6 +12,7 @@
     @mouseleave="handleMouseleave"
   >
     <slot>{{ showLabel }}</slot>
+    <ivue-icon v-if="isSelected && isMultiple">done</ivue-icon>
   </li>
 </template>
 
@@ -44,6 +45,11 @@ import {
 // type
 import type { ComponentInternalInstance } from 'vue';
 import type { DataOpen, OptionInstance } from './option';
+
+// components
+// icon
+import IvueIcon from '@ivue-material-plus/components/ivue-icon';
+
 
 const prefixCls = 'ivue-select-item';
 
@@ -109,8 +115,7 @@ export default defineComponent({
           // 获取焦点
           [bem.is('focus')]: data.isFocused,
           // 选中
-          [bem.is('selected')]:
-            unref(itemSelected) && select.props.autoComplete,
+          [bem.is('selected')]: unref(isSelected)
         },
       ];
     });
@@ -174,6 +179,16 @@ export default defineComponent({
     // 是否禁用
     const isDisabled = computed(() => {
       return data.disabled || selectGroup.disabled;
+    });
+
+    // 是否选中
+    const isSelected = computed(() => {
+      return  unref(itemSelected) && !select.props.autoComplete;
+    });
+
+    // 是否多选
+    const isMultiple = computed(() => {
+      return select.props.multiple;
     });
 
     // 是否显示label
@@ -345,6 +360,8 @@ export default defineComponent({
       getLabel,
       itemSelected,
       isDisabled,
+      isSelected,
+      isMultiple,
 
       // methods
       handleOptionClick,
@@ -353,5 +370,8 @@ export default defineComponent({
       setBackgroundColor,
     };
   },
+  components: {
+    IvueIcon
+  }
 });
 </script>

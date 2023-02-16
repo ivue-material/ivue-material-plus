@@ -2,7 +2,8 @@
   <div>
     <p>基本用法</p>
     <button @click="handleClear">clear</button>
-    <div class="content" style="margin-top: 200px">
+    <div class="content" style="margin: 10px">
+    </div>
       <ivue-select
         filterable
         v-model="model1"
@@ -19,7 +20,6 @@
           :key="item.value"
         ></ivue-option>
       </ivue-select>
-    </div>
     <p>禁用</p>
     <ivue-select v-model="model1" disabled style="width: 200px">
       <ivue-option
@@ -300,8 +300,8 @@ export default {
     return {
       cityList: [
         {
-          value: 'New York12',
-          // label: 'New York',
+          value: 'New York',
+          label: 'New York',
         },
         {
           value: 'London',
@@ -548,9 +548,9 @@ export default {
           (item) => item.label.toLowerCase().indexOf(query.toLowerCase()) > -1
         );
 
-        setTimeout(() => {
-          this.loading1 = false;
-        }, 200);
+        // setTimeout(() => {
+        //   this.loading1 = false;
+        // }, 200);
       }
 
       if (reset) {
