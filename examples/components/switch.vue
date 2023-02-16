@@ -23,8 +23,6 @@
     <p>大小</p>
     <ivue-switch size="large"></ivue-switch>
     <ivue-switch></ivue-switch>
-    <ivue-switch size="small"></ivue-switch>
-    <ivue-switch size="small" emboss></ivue-switch>
     <ivue-switch emboss></ivue-switch>
     <ivue-switch size="large" emboss></ivue-switch>
     <p>文字图标</p>
@@ -91,13 +89,11 @@
       v-model="switch1"
       emboss
       color="#F41D74"
-      size="small"
     ></ivue-switch>
 
     <ivue-switch loading :value="true" emboss></ivue-switch>
     <ivue-switch loading v-model="switch1" size="large"></ivue-switch>
     <ivue-switch loading v-model="switch1"></ivue-switch>
-    <ivue-switch loading v-model="switch1" size="small"></ivue-switch>
 
     <ivue-switch v-model="switch1" :before-change="handleBeforeChange" />
   </div>

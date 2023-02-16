@@ -3,51 +3,44 @@
 @width: 52px;
 @height: 32px;
 
+// checked
 @checked-left: (@after-size - 2);
 @checked-active-left: (@height - (@after-size / 2));
 
+// after
 @after-size: 24px;
 @after-active-width: (@after-size + 4);
 
+// before
 @before-checked-left: (@after-size);
 @before-active-width: (@after-size - 4);
 
+// loading
 @loading-checked-active-after-left: (@height + 1);
 
-@emboss-default-width: 38px;
-@emboss-default-height: 22px;
-@emboss-large-width: 60px;
-@emboss-large-height: 28px;
+// default
+@emboss-default-width: 34px;
+@emboss-default-height: 14px;
 
+// emboss loading
 @emboss-loading-size: (@emboss-default-height - 4);
-@emboss-loading-large-size: (@emboss-large-height - 4);
 
-@track-width: (@emboss-default-width - 2);
-@track-height: (@emboss-default-height / 2);
-@track-large-width: (@emboss-large-width - 10);
-@track-large-height: (@emboss-large-height / 2);
+// track
+@track-width: @emboss-default-width;
+@track-height: @emboss-default-height;
+@track-top: ((@thumb-height - @track-height) / 2);
+@track-checked-transform: (@emboss-default-width - @thumb-height);
 
-@track-checked-transform: (
-  @emboss-default-height - (@emboss-default-height / 4)
-);
-@thumb-large-checked-transform: (
-  @emboss-large-height + (@emboss-large-height / 4) - 9
-);
+// thumb
+@thumb-height: 20px;
 
-@emboss-ripple-left: (-(@emboss-default-height / 2) - 3);
-@emboss-ripple-size: (@emboss-default-width - 2);
+// ripple
+@emboss-ripple-margin: 7px;
+@emboss-ripple-top: (-(@emboss-ripple-size - @thumb-height) / 2);
+@emboss-ripple-left: (-(@emboss-ripple-size - @thumb-height) / 2);
+@emboss-ripple-size: 40px;
 @emboss-ripple-checked-transform: (
-  @emboss-default-height - (@emboss-default-height / 4)
-);
-@emboss-ripple-large-left: (
-  -(
-      @emboss-large-width - @emboss-large-height - (@emboss-large-height / 4) -
-        2
-    ) + 4
-);
-@emboss-ripple-large-size: (@emboss-large-width - 10);
-@emboss-ripple-large-checked-transform: (
-  @emboss-large-height + (@emboss-large-height / 4) - 9
+  @emboss-default-width - (@emboss-ripple-size / 2)
 );
 
 :root {
@@ -72,39 +65,31 @@
 
   // emboss
   --ivue-switch-emboss-loading-size: @emboss-loading-size;
+  --ivue-switch-emboss-ripple-margin: @emboss-ripple-margin;
 
   // emboss default
   --ivue-switch-emboss-default-width: @emboss-default-width;
-  --ivue-switch-emboss-default-height: 22px;
+  --ivue-switch-emboss-content-height: 20px;
 
-  // emboss large
-  --ivue-switch-emboss-large-width: @emboss-large-width;
-  --ivue-switch-emboss-large-height: @emboss-large-height;
-
-  --ivue-switch-emboss-loading-large-size: @emboss-loading-large-size;
-
+  // emboss loading
   --ivue-switch-emboss-loading-width: 7px;
-  --ivue-switch-emboss-margin: 7px;
 
   // emboss track
   --ivue-switch-track-width: @track-width;
   --ivue-switch-track-height: @track-height;
+  --ivue-switch-track-top: @track-top;
 
-  // track-checked
+  // track checked
   --ivue-switch-track-checked-transform: @track-checked-transform;
 
-  --ivue-switch-track-large-width: @track-large-width;
-  --ivue-switch-track-large-height: @track-large-height;
-  --ivue-switch-thumb-large-checked-transform: @thumb-large-checked-transform;
+  // thumb
+  --ivue-switch-thumb-height: @thumb-height;
 
   // ripple
+  --ivue-switch-emboss-ripple-top: @emboss-ripple-top;
   --ivue-switch-emboss-ripple-left: @emboss-ripple-left;
   --ivue-switch-emboss-ripple-size: @emboss-ripple-size;
   --ivue-switch-emboss-ripple-checked-transform: @emboss-ripple-checked-transform;
-
-  --ivue-switch-emboss-ripple-large-left: @emboss-ripple-large-left;
-  --ivue-switch-emboss-ripple-large-size: @emboss-ripple-large-size;
-  --ivue-switch-emboss-ripple-large-checked-transform: @emboss-ripple-large-checked-transform;
 }
 
 .ivue-switch {
@@ -332,9 +317,9 @@
   // 跟踪
   &__track {
     position: absolute;
-    left: 1px;
-    right: 2px;
-    top: calc(50% - 5.5px);
+    left: 0;
+    right: 0;
+    top: var(--ivue-switch-track-top);
     border-radius: 8px;
     opacity: 0.6;
     background-color: currentColor;
@@ -362,8 +347,8 @@
     transition: all @transition-default;
     transition-property: color, transform;
 
-    width: var(--ivue-switch-emboss-default-height);
-    height: var(--ivue-switch-emboss-default-height);
+    width: var(--ivue-switch-thumb-height);
+    height: var(--ivue-switch-thumb-height);
     color: var(--ivue-switch-thumb-color);
 
     // 激活
@@ -373,6 +358,7 @@
     }
   }
 
+  // 文本
   &__inner {
     position: relative;
     margin-left: 8px;
@@ -388,7 +374,7 @@
     flex: 0 0 auto;
 
     width: var(--ivue-switch-emboss-default-width);
-    height: var(--ivue-switch-emboss-default-height);
+    height: var(--ivue-switch-emboss-content-height);
 
     // 禁用
     &.is-disabled {
@@ -432,68 +418,18 @@
       width: var(--ivue-switch-emboss-loading-size);
       height: var(--ivue-switch-emboss-loading-size);
     }
-
-    // 大
-    &.is-large {
-      width: var(--ivue-switch-emboss-large-width);
-      height: var(--ivue-switch-emboss-large-height);
-
-      // loading
-      .is-loading {
-        width: var(--ivue-switch-emboss-loading-large-size);
-        height: var(--ivue-switch-emboss-loading-large-size);
-      }
-
-      // 跟踪
-      .ivue-switch-emboss__track {
-        top: calc(50% - 7px);
-        left: 3px;
-        width: var(--ivue-switch-track-large-width);
-        height: var(--ivue-switch-track-large-height);
-      }
-
-      // 指示器
-      .ivue-switch-emboss__thumb {
-        width: var(--ivue-switch-emboss-large-height);
-        height: var(--ivue-switch-emboss-large-height);
-
-        &.is-checked {
-          transform: translate(
-            var(--ivue-switch-thumb-large-checked-transform),
-            0
-          );
-        }
-      }
-
-      // ripple
-      .ivue-switch-emboss__ripple {
-        top: calc(50% - 32px);
-        left: var(--ivue-switch-emboss-ripple-large-left);
-
-        width: var(--ivue-switch-emboss-ripple-large-size);
-        height: var(--ivue-switch-emboss-ripple-large-size);
-
-        &.is-checked {
-          transform: translate(
-            var(--ivue-switch-emboss-ripple-large-checked-transform),
-            0
-          );
-        }
-      }
-    }
   }
 
   // ripple
   &__ripple {
     position: absolute;
-    top: calc(50% - 25px);
+    top: var(--ivue-switch-emboss-ripple-top);
     border-radius: 50%;
     transition: all @transition-default;
 
     left: var(--ivue-switch-emboss-ripple-left);
     width: var(--ivue-switch-emboss-ripple-size);
     height: var(--ivue-switch-emboss-ripple-size);
-    margin: var(--ivue-switch-emboss-margin);
 
     // 激活
     &.is-checked {

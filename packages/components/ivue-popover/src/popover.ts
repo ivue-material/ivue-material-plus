@@ -1,12 +1,18 @@
 import { getCurrentInstance } from 'vue';
 import { buildProps } from '@ivue-material-plus/utils';
+import {
+  popperProps,
+  popperEmits,
+} from '@ivue-material-plus/utils/mixins/popper';
 
 // type
 import type { ExtractPropTypes } from 'vue';
 import type Popover from './popover.vue';
+import type { PopperProps } from '@ivue-material-plus/utils/mixins/popper';
 
 // props
 export const popoverProps = buildProps({
+  ...popperProps,
   /**
    * 显示的标题
    *
@@ -69,7 +75,7 @@ export const popoverProps = buildProps({
   theme: {
     type: String,
     values: ['dark', 'light'],
-    default: 'light',
+    default: 'dark',
   },
   /**
    * 宽度，最小宽度为 150px，在 confirm 模式下，默认最大宽度为 300px
@@ -170,7 +176,7 @@ export const popoverProps = buildProps({
   },
 } as const);
 // props 类型
-export type PopoverProps = ExtractPropTypes<typeof popoverProps>;
+export type PopoverProps = PopperProps & ExtractPropTypes<typeof popoverProps>;
 
 // emits事件类型
 export const popoverEmits = {
@@ -178,6 +184,7 @@ export const popoverEmits = {
   'on-cancel': () => true,
   // 点击确定的回调，只在 confirm 模式下有效
   'on-confirm': () => true,
+  ...popperEmits,
 };
 export type PopoverEmits = typeof popoverEmits;
 

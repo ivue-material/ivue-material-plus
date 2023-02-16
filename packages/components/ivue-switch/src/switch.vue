@@ -64,7 +64,7 @@ export default defineComponent({
         [bem.is('checked')]: currentValue.value === props.trueValue,
         [bem.is('disabled')]: inputDisabled.value,
         [bem.is('loading')]: props.loading,
-        [bem.is(props.size)]: props.size,
+        [bem.is(props.size)]: props.size && !props.emboss,
       };
     });
 

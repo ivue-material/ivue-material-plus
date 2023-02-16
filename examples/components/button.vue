@@ -89,8 +89,4 @@ export default {
 };
 </script>
 
-<style lang="scss">
-.ivue-button {
-  margin: 10px;
-}
-</style>
+<style lang="scss"></style>

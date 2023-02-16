@@ -1,6 +1,5 @@
 import {
   nextTick,
-  defineComponent,
   onUpdated,
   onBeforeUnmount,
   ref,
@@ -10,6 +9,7 @@ import {
 } from 'vue';
 import { isBoolean } from '@vueuse/core';
 import { createPopper as create } from '@popperjs/core';
+import { buildProps } from '@ivue-material-plus/utils';
 
 import type {
   ExtractPropTypes,
@@ -20,7 +20,7 @@ import type {
 import type { Instance } from '@popperjs/core';
 
 // props
-export const popperProps = {
+export const popperProps = buildProps({
   reference: {
     type: Object,
   },
@@ -42,6 +42,7 @@ export const popperProps = {
    * @type {Array}
    */
   offset: {
+    type: Array,
     default: [0, 0],
   },
   /**
@@ -87,10 +88,10 @@ export const popperProps = {
       };
     },
   },
-};
+} as const);
 
 // props 类型
-export type PopoverProps = ExtractPropTypes<typeof popperProps>;
+export type PopperProps = ExtractPropTypes<typeof popperProps>;
 
 // data
 export type PopoverData = {
@@ -109,7 +110,7 @@ export type PopperEmits = typeof popperEmits;
 
 // poper
 export const popper = (
-  props: PopoverProps,
+  props: PopperProps,
   data: PopoverData,
   emit: SetupContext<PopperEmits>['emit']
 ) => {
@@ -254,6 +255,7 @@ export const popper = (
 
     // methods
     popperDestroy,
+    updatePopper,
   };
 };
 
