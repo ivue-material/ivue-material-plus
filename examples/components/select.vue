@@ -2,24 +2,23 @@
   <div>
     <p>基本用法</p>
     <button @click="handleClear">clear</button>
-    <div class="content" style="margin: 10px">
-    </div>
-      <ivue-select
-        filterable
-        v-model="model1"
-        style="width: 200px"
-        transfer
-        placement="top"
-        labelAndValue
-        ref="selectdefault"
-        @on-change="handleChange"
-      >
-        <ivue-option
-          v-for="item in cityList"
-          :value="item.value"
-          :key="item.value"
-        ></ivue-option>
-      </ivue-select>
+    <div class="content" style="margin: 10px"></div>
+    <ivue-select
+      filterable
+      v-model="model1"
+      style="width: 200px"
+      transfer
+      placement="top"
+      labelAndValue
+      ref="selectdefault"
+      @on-change="handleChange"
+    >
+      <ivue-option
+        v-for="item in cityList"
+        :value="item.value"
+        :key="item.value"
+      ></ivue-option>
+    </ivue-select>
     <p>禁用</p>
     <ivue-select v-model="model1" disabled style="width: 200px">
       <ivue-option

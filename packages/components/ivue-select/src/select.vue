@@ -723,7 +723,8 @@ export default defineComponent({
         // 清除上一次搜索输入
         lastSearchQuery.value = '';
 
-        emit('update:modelValue', '');
+        // 初始化最终渲染的数据
+        values.value = [];
       }
 
       // API 点击清空按钮时触发
@@ -1241,7 +1242,7 @@ export default defineComponent({
         // 当前值是否相等
         else if (
           checkValuesNotEqual(
-            value,
+            value as ModelValue,
             unref(selectValue) as SelectValue,
             unref(values)
           )

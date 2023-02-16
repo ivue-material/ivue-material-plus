@@ -353,14 +353,14 @@ export type SelectProps = ExtractPropTypes<typeof selectProps>;
 
 // emits事件类型
 export const selectEmits = {
-  'on-change': (value: ModelValue) => value,
+  'update:modelValue': (value: ModelValue) => true,
+  'on-change': (value: ModelValue) => true,
   'on-clear': () => true,
   'on-menu-open': (value: boolean) => isBoolean(value),
   'on-filter-query-change': (value: string) => isString(value),
   'on-set-default-options': (options: OptionData[]) => options,
   'on-create': (value: string) => isString(value),
   'on-select': (value: OptionData) => value,
-  'update:modelValue': (value: ModelValue) => value,
 };
 export type SelectEmits = typeof selectEmits;
 
