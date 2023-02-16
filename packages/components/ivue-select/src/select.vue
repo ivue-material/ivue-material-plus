@@ -1354,6 +1354,11 @@ export default defineComponent({
         if (popover.data) {
           popover.data.closeDelay = state ? 300 : 0;
         }
+
+        // 清除焦点项
+        if (!state && unref(values).length == 0) {
+          focusIndex.value = -1;
+        }
       }
     );
 
