@@ -14,6 +14,7 @@ import Form from '../components/form.vue';
 import Select from '../components/select.vue';
 import card from '../components/card.vue';
 import popover from '../components/popover.vue';
+import input from '../components/input.vue';
 
 const routes = [
   {
@@ -90,6 +91,11 @@ const routes = [
     path: '/popover',
     name: 'popover',
     component: popover,
+  },
+  {
+    path: '/input',
+    name: 'input',
+    component: input,
   },
 ];
 

@@ -153,19 +153,6 @@ export const inputProps = buildProps({
     default: '',
   },
   /**
-   * 输入框尺寸，可选值为large、small、default或者不设置
-   *
-   *
-   * @type {String}
-   */
-  size: {
-    type: String,
-    values: ['small', 'large', 'default'],
-    default() {
-      return 'default';
-    },
-  },
-  /**
    * 是否显示清除按钮
    *
    * @type {Boolean}

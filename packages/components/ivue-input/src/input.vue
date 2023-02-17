@@ -1,25 +1,26 @@
 <template>
   <div :class="wrapClasses">
+    <!-- 普通输入框 -->
     <template v-if="type !== 'textarea'">
       <!-- 前置内容，仅在 text 类型下有效 -->
       <div
-        :class="[`${prefixCls}-group-prepend`, ...prependColor]"
+        :class="[bem.e('group-prepend'), ...prependColor]"
         :style="prependStyle"
         v-if="prepend"
       >
         <slot name="prepend"></slot>
       </div>
       <!-- 输入框 -->
-      <div :class="contentClass">
+      <div :class="contentClasses">
         <!-- 首部图标 -->
-        <span :class="[`${prefixCls}-prefix`]" v-show="showPrefix">
+        <span :class="bem.b('prefix')" v-show="showPrefix">
           <slot name="prefix">
-            <i class="ivue-icon">{{ prefix }}</i>
+            <ivue-icon>{{ prefix }}</ivue-icon>
           </slot>
         </span>
-
+        <!-- input -->
         <input
-          :class="inputClass"
+          :class="inputClasses"
           :placeholder="placeholder"
           :spellcheck="spellcheck"
           :type="currentType"
@@ -41,74 +42,78 @@
           @blur="handleBlur"
           ref="input"
         />
-
         <!-- 重置选择 -->
         <div
-          :class="[`${prefixCls}-icon`, `${prefixCls}-clear`]"
+          :class="bem.b('icon')"
           v-if="clearable && currentValue && !disabled"
           @click.stop="handleClear"
         >
           <ivue-icon
-            :class="[`${prefixCls}-icon-clear`, showSuffix ? 'is-suffix' : '']"
-            >{{ clearIcon }}</ivue-icon
+            :class="[bem.be('icon', 'clear'), showSuffix && bem.is('suffix')]"
           >
+            {{ clearIcon }}
+          </ivue-icon>
         </div>
         <!-- 字数统计 -->
-        <span :class="`${prefixCls}-word-count`" v-if="showWordLimit"
+        <span :class="bem.b('word-count')" v-if="showWordLimit"
           >{{ textLength }}/{{ upperLimit }}</span
         >
         <!-- 是否显示密码 -->
         <div
-          :class="[`${prefixCls}-suffix`, `${prefixCls}-password`]"
+          :class="[bem.b('suffix'), bem.b('password')]"
           v-if="password"
           @click="handleShowPassword"
         >
+          <!-- password on-->
           <template v-if="showPassword">
             <slot name="password-on">
-              <i class="ivue-icon">{{ passwordIcon.on }}</i>
+              <ivue-icon>{{ passwordIcon.on }}</ivue-icon>
             </slot>
           </template>
+          <!-- password off -->
           <template v-else>
             <slot name="password-off">
-              <i class="ivue-icon">{{ passwordIcon.off }}</i>
+              <ivue-icon>{{ passwordIcon.off }}</ivue-icon>
             </slot>
           </template>
         </div>
         <!-- 尾部图标 -->
         <span
-          :class="[`${prefixCls}-suffix`]"
+          :class="bem.b('suffix')"
           v-if="showSuffix"
           @click.stop="handleSuffix"
         >
           <slot name="suffix">
-            <i class="ivue-icon">{{ suffix }}</i>
+            <ivue-icon>{{ suffix }}</ivue-icon>
           </slot>
         </span>
       </div>
       <!-- 搜索型输入框 -->
       <template v-if="search && enterButton === false">
-        <i :class="[`${prefixCls}-icon`, 'ivue-icon']" @click="handleSearch"
-          >search</i
-        >
+        <ivue-icon :class="bem.b('icon')" @click="handleSearch">
+          search
+        </ivue-icon>
       </template>
+      <!-- 搜索按钮 -->
       <template v-else-if="search && enterButton">
         <div
-          :class="[`${prefixCls}-group-append`, `${prefixCls}-search`]"
+          :class="[bem.e('group-append'), bem.e('search')]"
           @click="handleSearch"
         >
-          <i :class="['ivue-icon']" v-if="enterButton === true">search</i>
+          <ivue-icon v-if="enterButton === true">search</ivue-icon>
           <template v-else>{{ enterButton }}</template>
         </div>
       </template>
       <!-- 后置内容，仅在 text 类型下有效 -->
       <div
-        :class="[`${prefixCls}-group-append`, ...appendColor]"
+        :class="[bem.e('group-append'), ...appendColor]"
         :style="appendStyle"
         v-if="append"
       >
         <slot name="append"></slot>
       </div>
     </template>
+    <!-- 文本区域 -->
     <template v-else>
       <textarea
         :id="inputId"
@@ -134,7 +139,7 @@
         ref="textarea"
       ></textarea>
       <!-- 字数统计 -->
-      <span :class="`${prefixCls}-word-count`" v-if="showWordLimit"
+      <span :class="bem.b('word-count')" v-if="showWordLimit"
         >{{ textLength }}/{{ upperLimit }}</span
       >
     </template>
@@ -142,9 +147,10 @@
 </template>
 
 <script lang="ts">
-import { ref, computed, defineComponent } from 'vue';
+import { computed, defineComponent } from 'vue';
 
 import { isCssColor } from '@ivue-material-plus/utils';
+import { useNamespace } from '@ivue-material-plus/hooks';
 
 // component
 import IvueIcon from '@ivue-material-plus/components/ivue-icon';
@@ -176,7 +182,12 @@ export default defineComponent({
   props: inputProps,
   // 组合式 API
   setup(props, { slots, emit }) {
+    // bem
+    const bem = useNamespace(prefixCls);
+
     const {
+      inputId,
+
       // dom
       textarea,
       input,
@@ -220,58 +231,58 @@ export default defineComponent({
     // 外层样式
     const wrapClasses = computed(() => {
       return [
-        `${prefixCls}-wrapper`,
+        bem.b('wrapper'),
         {
-          [`${prefixCls}-wrapper-${props.size}`]: !!props.size,
-          [`${prefixCls}-wrapper-clearable`]: props.clearable,
-          [`${prefixCls}-type-${props.type}`]: props.type,
-          [`${prefixCls}-group`]:
+          // 是否显示清除按钮
+          [bem.is('clearable')]: props.clearable,
+          // 当前输入框类型
+          [bem.is(`${props.type}`)]: props.type,
+          // 前置内容
+          [bem.is('group')]:
             prepend.value ||
             append.value ||
             (props.search && props.enterButton),
-          [`${prefixCls}-group-${props.size}`]:
-            (prepend.value ||
-              append.value ||
-              (props.search && props.enterButton)) &&
-            !!props.size,
-          [`${prefixCls}-group-with-prepend`]: prepend.value,
-          [`${prefixCls}-group-with-append`]:
+          // 前置内容
+          [bem.is('group-with-prepend')]: prepend.value,
+          // 后置内容
+          [bem.is('group-with-append')]:
             append.value || (props.search && props.enterButton),
         },
       ];
     });
 
     // 输入框外层样式
-    const contentClass = computed(() => {
+    const contentClasses = computed(() => {
       return [
-        `${prefixCls}-content`,
+        bem.b('content'),
         {
-          [`${prefixCls}-group`]:
+          [bem.is('group')]:
             prepend.value ||
             append.value ||
             (props.search && props.enterButton),
-          [`${prefixCls}-no-border`]: !props.border,
-          [`${prefixCls}-content--prepend`]: prepend.value,
-          [`${prefixCls}-content--append`]:
+          // 没有边框
+          [bem.is('no-border')]: !props.border,
+          // 前置内容
+          [bem.is('prepend')]: prepend.value,
+          // 后置内容
+          [bem.is('append')]:
             append.value || (props.search && props.enterButton),
-          [`${prefixCls}-content--disabled`]: inputDisabled.value,
+          // 禁用
+          [bem.is('disabled')]: inputDisabled.value,
           // 获取焦点
-          [`${prefixCls}-content--focused`]: focused.value,
+          [bem.is('focused')]: focused.value,
         },
       ];
     });
 
     // 输入框样式
-    const inputClass = computed(() => {
+    const inputClasses = computed(() => {
       return [
-        prefixCls,
+        bem.b(),
         {
-          [`${prefixCls}-${props.size}`]: !!props.size,
-          [`${prefixCls}-with-prefix`]: showPrefix.value,
-          [`${prefixCls}-with-suffix`]:
+          [bem.is('with-prefix')]: showPrefix.value,
+          [bem.is('with-suffix')]:
             showSuffix.value || (props.search && props.enterButton === false),
-          [`${prefixCls}-disabled`]: inputDisabled.value,
-          [`${prefixCls}-no-border`]: !props.border,
         },
       ];
     });
@@ -279,8 +290,8 @@ export default defineComponent({
     // 文本框样式
     const textareaClasses = computed(() => {
       return [
-        prefixCls,
-        `${prefixCls}-textarea`,
+        bem.b(),
+        bem.b('textarea'),
         {
           [`${prefixCls}-disabled`]: inputDisabled.value,
           [`${prefixCls}-no-border`]: !props.border,
@@ -332,18 +343,12 @@ export default defineComponent({
       return _color;
     });
 
-    // 设置表单对应的输入框id
-    // const { formItem } = useFormItem();
-
-    // // 输入框id
-    // const { inputId } = useFormItemInputId(props, {
-    //   formItemContext: formItem,
-    // });
-    const inputId = ref('1');
-
     return {
+      // bem
+      bem,
       prefixCls,
 
+      // 输入框id
       inputId,
 
       // dom
@@ -359,8 +364,8 @@ export default defineComponent({
       textareaStyles,
 
       wrapClasses,
-      contentClass,
-      inputClass,
+      contentClasses,
+      inputClasses,
       textareaClasses,
 
       prependColor,

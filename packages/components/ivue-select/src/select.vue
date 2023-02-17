@@ -1083,7 +1083,7 @@ export default defineComponent({
         unref(showCreateItem)
       ) {
         // 创建新列表点击确认阻止上层 key up Enter 事件触发
-        event.stopPropagation();
+        event && event.stopPropagation();
 
         const _filterQuery = unref(filterQuery);
 

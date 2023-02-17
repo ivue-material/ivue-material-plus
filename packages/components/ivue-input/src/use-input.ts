@@ -1,10 +1,11 @@
 import { ref, computed, nextTick, onMounted, watch } from 'vue';
-// import {
-//   useFormItem,
-//   useFormItemInputId,
-//   useDisabled,
-// } from '@ivue-material-plus/hooks';
+import {
+  useFormItem,
+  useFormItemInputId,
+  useDisabled,
+} from '@ivue-material-plus/hooks';
 import { calcTextareaHeight } from '@ivue-material-plus/utils/calc-textarea-height';
+import { debugWarn } from '@ivue-material-plus/utils';
 
 // type
 import type { SetupContext, ComponentInternalInstance } from 'vue';
@@ -15,6 +16,14 @@ export const useInput = (
   emit: SetupContext<InputEmits>['emit'],
   slots: ComponentInternalInstance['slots']
 ) => {
+  // 设置表单对应的输入框id
+  const { formItem } = useFormItem();
+
+  // 输入框id
+  const { inputId } = useFormItemInputId(props, {
+    formItemContext: formItem,
+  });
+
   // 当前输入值
   const currentValue = ref<string | number>(props.modelValue);
 
@@ -33,8 +42,7 @@ export const useInput = (
   const input = ref<HTMLInputElement>();
 
   // 输入框禁用
-  // const inputDisabled = useDisabled();
-  const inputDisabled = ref(false);
+  const inputDisabled = useDisabled();
 
   // computed
 
@@ -226,7 +234,7 @@ export const useInput = (
     emit('on-blur', event);
 
     if (props.validateEvent) {
-      // formItem?.validate?.('blur').catch((err) => debugWarn(err));
+      formItem?.validate?.('blur').catch((err) => debugWarn(err));
     }
   };
 
@@ -318,7 +326,7 @@ export const useInput = (
 
       // 输入时是否触发表单的校验
       if (props.validateEvent) {
-        // formItem?.validate?.('change').catch((err) => debugWarn(err));
+        formItem?.validate?.('change').catch((err) => debugWarn(err));
       }
     }
   );
@@ -350,6 +358,8 @@ export const useInput = (
   });
 
   return {
+    inputId,
+
     // dom
     textarea,
     input,

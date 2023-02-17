@@ -1,0 +1,475 @@
+@import '@ivue-material-plus/styles/src/common';
+@import '@ivue-material-plus/styles/src/common/input';
+
+@input-height: 32px;
+@icon-icon-height: (@input-height - 2);
+
+:root {
+  // input
+  --ivue-input-padding: 4px 7px;
+  --ivue-input-height: @input-height;
+  --ivue-input-radius: var(--ivue-radius-4px);
+
+  // icon suffix
+  --ivue-input-icon-suffix-height: @icon-icon-height;
+
+  // group
+  --ivue-input-group-padding: 4px 7px;
+  // --ivue-input-group-radius: 4px;
+  // --ivue-input-group-font-size: 14px;
+
+  // textarea
+  --ivue-input-textarea-min-height: 32px;
+
+  // 字数统计
+  --ivue-input-word-count-right: 7px;
+  --ivue-input-word-count-top: 1px;
+  --ivue-input-word-count-font-size: 12px;
+
+  // search
+  --ivue-input-search-padding: 0 16px;
+}
+
+// 外层
+.ivue-input-wrapper {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  vertical-align: middle;
+  line-height: normal;
+  width: 100%;
+
+  // 显示清除按钮
+  &.is-clearable {
+    .ivue-input-content {
+      &:hover {
+        .ivue-input-password {
+          opacity: 0 !important;
+        }
+
+        .ivue-input-icon__clear {
+          opacity: 1;
+        }
+      }
+    }
+  }
+
+  &.is-group {
+    position: relative;
+    display: table !important;
+    width: 100%;
+    border-collapse: separate;
+
+    font-size: var(--ivue-font-size-base);
+  }
+
+  // 前置内容
+  &.is-group-with-prepend .ivue-input {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+  }
+
+  // 后置内容
+  &.is-group-with-append .ivue-input {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+
+  // textarea
+  &.is-textarea {
+    .ivue-input-word-count {
+      align-items: flex-end;
+      top: auto;
+    }
+  }
+
+  // 图标
+  // .ivue-input-icon,
+  // .ivue-input-clear {
+  //   position: absolute;
+  //   top: 0;
+  //   bottom: 0;
+  //   right: 0;
+  //   line-height: 1;
+  //   font-size: var(--ivue-font-default-size);
+  //   color: var(--ivue-arrow-color);
+  //   height: auto;
+  //   margin: 0;
+  //   width: var(--ivue-input-icon-width);
+  //   transition: var(--ivue-all-transition);
+  //   cursor: pointer;
+  //   z-index: 10;
+  //   overflow: hidden;
+
+  //   &-clear {
+  //     opacity: 0;
+  //     z-index: 10;
+  //     height: 100%;
+  //     display: flex;
+  //     width: 100%;
+  //     font-size: var(--ivue-font-default-size);
+  //     transition: var(--ivue-all-transition);
+  //   }
+  // }
+
+  // .ivue-input-clear {
+  //   top: 0;
+  //   right: 1px;
+  // }
+
+  // .ivue-input-prefix,
+  // .ivue-input-suffix {
+  //   position: absolute;
+  //   left: 0;
+  //   top: 0;
+  //   width: var(--ivue-input-suffix-padding);
+  //   height: 100%;
+  //   text-align: center;
+  //   z-index: 1;
+
+  //   i {
+  //     font-size: var(--ivue-font-default-size);
+  //     line-height: var(--ivue-input-suffix-padding);
+  //     height: 100%;
+  //     color: var(--ivue-arrow-color);
+  //   }
+  // }
+
+  // .ivue-input-suffix {
+  //   right: 0;
+  //   left: auto;
+  // }
+
+  // 首部图标
+  .ivue-input-prefix {
+    left: 1px;
+  }
+
+  // 尾部图标
+  .ivue-input-suffix {
+    right: 1px;
+  }
+}
+
+// 首部图标 & 尾部图标
+.ivue-input-prefix,
+.ivue-input-suffix {
+  position: absolute;
+  top: 1px;
+  height: 100%;
+  text-align: center;
+  z-index: 1;
+  bottom: 0;
+
+  border-radius: var(--ivue-input-radius);
+  width: var(--ivue-input-icon-suffix-height);
+  height: var(--ivue-input-icon-suffix-height);
+
+  i {
+    height: 100%;
+
+    line-height: var(--ivue-input-icon-suffix-height);
+    font-size: var(--ivue-font-size-middle);
+    color: var(--ivue-input-icon-color);
+  }
+}
+
+// 输入框
+.ivue-input {
+  position: relative;
+  display: inline-block;
+  box-sizing: border-box;
+  cursor: text;
+  width: 100%;
+  line-height: 1;
+  transition: border @transition-default, background @transition-default,
+    box-shadow @transition-default;
+
+  height: var(--ivue-input-height);
+  padding: var(--ivue-input-padding);
+  font-size: var(--ivue-font-size-base);
+  border-radius: var(--ivue-input-radius);
+  border: 1px solid var(--ivue-input-border-color);
+  color: var(--ivue-input-color);
+
+  // placeholder
+  .placeholder();
+
+  // 有首部图标
+  &.is-with-prefix {
+    padding-left: var(--ivue-input-height);
+  }
+
+  // 有尾部图标
+  &.is-with-suffix {
+    padding-right: var(--ivue-input-height);
+  }
+
+  // 密码图标
+  &-password {
+    opacity: 1;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+  }
+
+  // 前置内容
+  &__group-prepend,
+  &__group-append {
+    font-size: inherit;
+    font-weight: 400;
+    line-height: 1;
+    text-align: center;
+    display: table-cell;
+    width: 1px;
+    white-space: nowrap;
+    vertical-align: middle;
+    box-sizing: border-box;
+
+    border-radius: var(--ivue-input-radius);
+    border: 1px solid var(--ivue-input-border-color);
+    padding: var(--ivue-input-group-padding);
+    color: var(--ivue-input-group-color);
+  }
+
+  // 前置内容
+  &__group-prepend {
+    border-right: 0;
+    border-bottom-right-radius: 0 !important;
+    border-top-right-radius: 0 !important;
+  }
+
+  // 后置内容
+  &__group-append {
+    border-left: 0;
+    border-bottom-left-radius: 0 !important;
+    border-top-left-radius: 0 !important;
+  }
+
+  // 搜索输入框
+  &__search {
+    position: relative;
+    transition: all 0.2s ease-in-out;
+    z-index: 2;
+    cursor: pointer;
+
+    padding: var(--ivue-input-search-padding);
+    background: var(--ivue-input-search-bg);
+    color: var(--ivue-input-search-color);
+    border-color: var(--ivue-input-search-bg);
+
+    i {
+      font-size: var(--ivue-font-size-middle);
+      min-width: auto;
+      width: auto;
+      display: inline;
+    }
+
+    &:hover {
+      background: var(--ivue-input-search-bg);
+      border-color: var(--ivue-input-search-bg);
+    }
+
+    .ivue-input-wrapper:hover {
+      border-color: var(--ivue-input-search-bg);
+    }
+  }
+
+  &:focus {
+    outline: 0;
+    box-shadow: 0 0 0 2px var(--ivue-input-shadow-color);
+  }
+
+  &:focus,
+  &:hover {
+    border-color: var(--ivue-input-hover-border-color);
+  }
+
+  // 禁用
+  &[disabled] {
+    opacity: 1;
+    cursor: not-allowed !important;
+
+    color: var(--ivue-input-disabled-color);
+    background-color: var(--ivue-input-disabled-bg);
+
+    &:hover {
+      border-color: var(--ivue-input-border-color);
+    }
+  }
+}
+
+// 输入框外层样式
+.ivue-input-content {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0 !important;
+  transition: border @transition-default, background @transition-default,
+    box-shadow @transition-default;
+
+  border-radius: var(--ivue-input-radius);
+  overflow: hidden;
+
+  // 获取焦点
+  &.is-focused {
+    box-shadow: 0 0 0 2px var(--ivue-input-shadow-color);
+  }
+
+  // 前置内容
+  &.is-prepend {
+    border-bottom-left-radius: 0 !important;
+    border-top-left-radius: 0 !important;
+  }
+
+  // 后置内容
+  &.is-append {
+    border-bottom-right-radius: 0 !important;
+    border-top-right-radius: 0 !important;
+  }
+
+  // 前置内容开启
+  &.is-group {
+    display: table !important;
+    width: 100%;
+    border-collapse: separate;
+    position: relative;
+    font-size: var(--ivue-font-size-base);
+  }
+
+  // 禁用
+  &.is-disabled {
+    &:hover {
+      border-color: var(--ivue-input-border-color);
+    }
+  }
+
+  // 没有边框
+  &.is-no-border {
+    border-radius: 0;
+    box-shadow: none;
+
+    .ivue-input {
+      border-color: transparent;
+      border-radius: 0;
+
+      &:focus,
+      &:hover {
+        border-color: transparent;
+      }
+    }
+  }
+}
+
+// 字数统计
+.ivue-input-word-count {
+  position: absolute;
+  text-align: center;
+  display: inline-flex;
+  align-items: center;
+  z-index: 1;
+
+  right: var(--ivue-input-word-count-right);
+  top: var(--ivue-input-word-count-top);
+  bottom: var(--ivue-input-word-count-top);
+  padding-left: var(--ivue-input-word-count-right);
+  color: var(--ivue-input-word-count-color);
+  background: var(--ivue-input-word-count-bg);
+  font-size: var(--ivue-font-size-small);
+}
+
+// 图标
+.ivue-input-icon {
+  position: absolute;
+  top: 1px;
+  right: 1px;
+  bottom: 0;
+  margin: 0;
+  height: auto;
+  line-height: 1;
+  z-index: 10;
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+
+  border-radius: var(--ivue-input-radius);
+  font-size: var(--ivue-font-default-size);
+  color: var(--ivue-input-icon-color);
+  width: var(--ivue-input-icon-suffix-height);
+  height: var(--ivue-input-icon-suffix-height);
+
+  &__clear {
+    display: flex;
+    height: 100%;
+    width: 100%;
+    opacity: 0;
+    z-index: 10;
+    transition: all 0.2s ease-in-out;
+
+    font-size: var(--ivue-font-default-size);
+    background: var(--ivue-input-icon-bg);
+
+    &.is-suffix {
+      z-index: 2;
+
+      border-radius: var(--ivue-input-radius);
+      background-color: var(--ivue-input-icon-bg);
+    }
+  }
+}
+
+// textarea
+.ivue-input-textarea {
+  max-width: 100%;
+  line-height: 1.5;
+  height: auto;
+  vertical-align: bottom;
+  box-sizing: border-box;
+
+  border: 1px solid var(--ivue-input-border-color);
+  min-height: var(--ivue-input-textarea-min-height);
+}
+
+.ivue-input__group-append,
+.ivue-input__group-prepend {
+  // 有选择框
+  .ivue-select {
+    margin: -5px -7px;
+  }
+
+  // 显示时
+  .ivue-select--visible .ivue-select-selection {
+    box-shadow: none;
+  }
+
+  // 选择框
+  .ivue-select--default .ivue-select-selection {
+    border: none;
+    background: none;
+
+    height: var(--ivue-input-height);
+    min-height: var(--ivue-input-height);
+  }
+
+  // 头部
+  .ivue-select-head {
+    display: block;
+  }
+
+  // 渲染值
+  .is-selection-value {
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+    font-size: var(--ivue-font-size-base);
+    height: var(--ivue-input-height);
+    line-height: var(--ivue-input-height);
+  }
+
+  // 选项
+  .ivue-select-item {
+    font-size: var(--ivue-font-size-base);
+  }
+}
