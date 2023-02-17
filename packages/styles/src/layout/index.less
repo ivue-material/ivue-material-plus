@@ -1,0 +1,70 @@
+@import 'variables';
+@import 'mixins';
+
+
+// layout base
+.ivue-layout {
+
+  .ivue-layout-base();
+
+  flex-wrap: wrap;
+
+  &.ivue-centered {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+}
+
+// 排水沟 size
+.ivue-layout {
+  .ivue-layout-gutter(@ivue-gutter-xlarge);
+
+  .ivue-layout-large(.ivue-layout-gutter(@ivue-gutter-large));
+
+  .ivue-layout-medium(.ivue-layout-gutter(@ivue-gutter-medium));
+
+  .ivue-layout-small(.ivue-layout-gutter(@ivue-gutter-small));
+
+  .ivue-layout-xsmall(.ivue-layout-gutter(@ivue-gutter-xsmall));
+}
+
+// 校对
+.ivue-layout {
+  .ivue-layout-alignment();
+}
+
+// layout item
+.ivue-layout-item {
+  flex: 1 1;
+
+  &.ivue-layout {
+    margin: 0;
+  }
+
+  .ivue-layout-item();
+
+  .ivue-layout-xlarge(.ivue-layout-item(xlarge));
+
+  .ivue-layout-large(.ivue-layout-item(large));
+
+  .ivue-layout-medium(.ivue-layout-item(medium));
+
+  .ivue-layout-small(.ivue-layout-item(small));
+
+  .ivue-layout-xsmall(.ivue-layout-item(xsmall));
+
+}
+
+// layout hide
+.ivue-hide();
+
+.ivue-layout-xlarge(.ivue-hide(xlarge));
+
+.ivue-layout-large(.ivue-hide(large));
+
+.ivue-layout-medium(.ivue-hide(medium));
+
+.ivue-layout-small(.ivue-hide(small));
+
+.ivue-layout-xsmall(.ivue-hide(xsmall));

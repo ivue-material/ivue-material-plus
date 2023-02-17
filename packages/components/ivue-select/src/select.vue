@@ -145,7 +145,7 @@ import {
 import { selectProps, selectEmits } from './select';
 
 // type
-import type { ComponentInternalInstance } from 'vue';
+import type { ComponentInternalInstance, Ref } from 'vue';
 import type { Emitter, EventType } from 'mitt';
 
 import type { ModelValue, SelectValue } from './select';
@@ -179,8 +179,8 @@ export default defineComponent({
     const { proxy } = getCurrentInstance() as ComponentInternalInstance;
 
     // dom
-    const selectWrapper = ref<HTMLDivElement>();
-    const reference = ref<HTMLDivElement>();
+    const selectWrapper = ref<HTMLElement>();
+    const reference = ref<HTMLElement>();
     const dropdown = ref<DropDownInstance>();
     const selectHead = ref<SelectHeadInstance>();
 
@@ -307,7 +307,7 @@ export default defineComponent({
     // 获取菜单选择列表
     const selectOptions = computed(() => {
       // 获取选项的列表
-      const _selectOptions = [];
+      const _selectOptions = [] as Array<{ option: OptionInstance }>;
 
       // 选项计数器，计算有多少个选项
       let optionCounter = -1;
@@ -545,7 +545,9 @@ export default defineComponent({
       option: OptionInstance,
       values: string[],
       isFocused: boolean
-    ) => {
+    ): {
+      option: OptionInstance;
+    } => {
       // 如果选项节点没有子组件就直接返回选项节点
       // 是否获取到焦点
       option.data.isFocused = isFocused;
@@ -1213,8 +1215,8 @@ export default defineComponent({
       reactive({
         // props
         props: toRefs(props) as any,
-        selectWrapper,
-        reference,
+        selectWrapper: selectWrapper as Ref<HTMLElement>,
+        reference: reference as Ref<HTMLElement>,
         dropVisible,
         options: unref(options),
         values: unref(values),

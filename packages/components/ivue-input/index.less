@@ -1,5 +1,5 @@
-@import '@ivue-material-plus/styles/src/common';
-@import '@ivue-material-plus/styles/src/common/input';
+@import '@ivue-material-plus/styles/src/common/index.less';
+@import '@ivue-material-plus/styles/src/common/input.less';
 
 @input-height: 32px;
 @icon-icon-height: (@input-height - 2);
@@ -178,7 +178,6 @@
 .ivue-input {
   position: relative;
   display: inline-block;
-  box-sizing: border-box;
   cursor: text;
   width: 100%;
   line-height: 1;
@@ -223,7 +222,6 @@
     width: 1px;
     white-space: nowrap;
     vertical-align: middle;
-    box-sizing: border-box;
 
     border-radius: var(--ivue-input-radius);
     border: 1px solid var(--ivue-input-border-color);
@@ -303,7 +301,6 @@
   position: relative;
   display: inline-block;
   width: 100%;
-  box-sizing: border-box;
   padding: 0 !important;
   transition: border @transition-default, background @transition-default,
     box-shadow @transition-default;
@@ -424,7 +421,6 @@
   line-height: 1.5;
   height: auto;
   vertical-align: bottom;
-  box-sizing: border-box;
 
   border: 1px solid var(--ivue-input-border-color);
   min-height: var(--ivue-input-textarea-min-height);

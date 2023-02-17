@@ -16,7 +16,7 @@
       v-model="value1"
       placeholder="Enter something..."
       showWordLimit
-      maxlength="100"
+      :maxlength="100"
     >
     </ivue-input>
 
@@ -228,7 +228,7 @@
       v-model="value1"
       type="textarea"
       showWordLimit
-      maxlength="100"
+      :maxlength="100"
       :rows="4"
     ></ivue-input>
 

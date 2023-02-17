@@ -26,7 +26,7 @@
         </ivue-popover>-->
 
     <h1>基础用法</h1>
-    <div>
+    <!-- <div>
       <ivue-popover
         trigger="hover"
         title="Title"
@@ -133,7 +133,7 @@
       placement="bottom-end"
     >
       <ivue-button>Bottom Right</ivue-button>
-    </ivue-popover>
+    </ivue-popover> -->
     <h1>从浮层内关闭</h1>
     <ivue-popover class="button" content="Bottom Right text" v-model="visible">
       <a>Click</a>
@@ -153,7 +153,7 @@
         </ivue-select>
       </template>
     </ivue-popover>
-    <h1>嵌套复杂内容</h1>
+    <!-- <h1>嵌套复杂内容</h1>
     <ivue-popover placement="right" width="900px">
       <ivue-button>Click</ivue-button>
       <template #content> 121 </template>
@@ -174,7 +174,7 @@
       @on-cancel="cancel"
     >
       <ivue-button>Delete</ivue-button>
-    </ivue-popover>
+    </ivue-popover> -->
   </div>
 </template>
 

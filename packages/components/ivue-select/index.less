@@ -1,5 +1,5 @@
-@import '@ivue-material-plus/styles/src/common';
-@import '@ivue-material-plus/styles/src/common/input';
+@import '@ivue-material-plus/styles/src/common/index.less';
+@import '@ivue-material-plus/styles/src/common/input.less';
 
 :root {
   // input
@@ -25,7 +25,6 @@
   position: relative;
   display: inline-block;
   width: 100%;
-  box-sizing: border-box;
   vertical-align: middle;
   line-height: normal;
   color: var(--ivue-select-color);
@@ -33,7 +32,6 @@
 
   // 禁用样式
   &.is-disabled {
-
     // 选择框样式
     .ivue-select-selection {
       opacity: 1;
@@ -60,7 +58,6 @@
 
   // 默认样式
   &--default {
-
     // 选择框样式
     .ivue-select-selection {
       position: relative;
@@ -185,7 +182,6 @@
 
   // 菜单显示
   &--visible {
-
     // 选择框样式
     .ivue-select-selection {
       outline: 0;
@@ -271,7 +267,6 @@
   word-break: break-all;
   display: flex;
   align-items: center;
-  box-sizing: border-box;
   transition: all @transition-default;
 
   color: var(--ivue-select-color);
@@ -376,7 +371,6 @@
   border: none;
   background: 0 0;
   cursor: inherit;
-  box-sizing: border-box;
   color: var(--ivue-title-color);
 
   // 有图标设置样式
@@ -408,7 +402,6 @@
     padding: 0 24px 0 8px;
     outline: none;
     border: none;
-    box-sizing: border-box;
     background-color: transparent;
     cursor: pointer;
 
@@ -435,7 +428,6 @@
   width: inherit;
   max-height: 200px;
   overflow: auto;
-  box-sizing: border-box;
   z-index: 999;
   transform-origin: center top 0px;
   opacity: 1;
@@ -445,7 +437,6 @@
   background-color: var(--ivue-bg-white);
 
   ul {
-    box-sizing: border-box;
     list-style: none;
     margin: 0;
     padding: 0;
@@ -514,7 +505,6 @@
 .ivue-select-selection {
   display: block;
   position: relative;
-  box-sizing: border-box;
   outline: none;
   user-select: none;
   cursor: pointer;
@@ -537,9 +527,9 @@
   padding: 0;
 
   &__title {
-    box-sizing: border-box;
     list-style: none;
     margin: 0;
+
     padding-left: var(--ivue-select-group-padding-left);
     height: var(--ivue-select-group-height);
     line-height: var(--ivue-select-group-height);

@@ -233,7 +233,7 @@ export const usePopover = (
     const input = unref(referenceRef)!.querySelectorAll('input');
     const textarea = unref(referenceRef)!.querySelectorAll('textarea');
 
-    let children = null;
+    let children;
 
     // input
     if (input.length) {

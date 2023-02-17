@@ -1,5 +1,5 @@
-@import '@ivue-material-plus/styles/src/common';
-@import '@ivue-material-plus/styles/src/elevation';
+@import '@ivue-material-plus/styles/src/common/index.less';
+@import '@ivue-material-plus/styles/src/elevation/index.less';
 @import '@ivue-material-plus/components/ivue-ripple/index.less';
 @import '@ivue-material-plus/components/ivue-loading/index.less';
 
@@ -42,7 +42,6 @@
   font-weight: 500;
   color: currentColor;
   cursor: pointer;
-  box-sizing: border-box;
 
   min-width: var(--ivue-button-min-width);
   height: var(--ivue-button-height);
@@ -141,7 +140,6 @@
       bottom: 0;
       left: 0;
       z-index: 30;
-      box-sizing: border-box;
       margin: 0;
       padding: 0;
       opacity: 1 !important;
@@ -347,7 +345,6 @@
   position: relative;
   z-index: 10;
   overflow: hidden;
-  box-sizing: border-box;
 
   // 内容
   &__content {

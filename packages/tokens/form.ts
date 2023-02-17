@@ -1,5 +1,4 @@
 import type {
-  ExtractPropTypes,
   UnwrapRef,
   InjectionKey,
   SetupContext,

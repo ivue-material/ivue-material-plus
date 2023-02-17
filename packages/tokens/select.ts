@@ -9,8 +9,8 @@ import type { Emitter, EventType } from 'mitt';
 
 export interface SelectContext {
   props: SelectProps;
-  reference: HTMLDivElement;
-  selectWrapper: HTMLDivElement;
+  reference: HTMLElement;
+  selectWrapper: HTMLElement;
   dropVisible: boolean;
   options: OptionInstance[];
   values: OptionData[];

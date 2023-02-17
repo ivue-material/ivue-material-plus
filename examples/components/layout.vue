@@ -139,11 +139,8 @@
 export default {};
 </script>
 
-<style lang="scss" scoped>
-* {
-  box-sizing: border-box;
-}
-/* @import '../../packages/styles/src/layout'; */
+<style lang="less" scoped>
+@import '../../packages/styles/src/layout';
 
 .layout {
   height: 40px;

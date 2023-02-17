@@ -1,4 +1,4 @@
-@import '@ivue-material-plus/styles/src/common';
+@import '@ivue-material-plus/styles/src/common/index.less';
 
 @width: 52px;
 @height: 32px;
@@ -99,7 +99,6 @@
   cursor: pointer;
   user-select: none;
   outline: none;
-  box-sizing: border-box;
   margin: 0;
   padding: 0;
   transition: all 0.2s ease-in-out 0s;
@@ -130,7 +129,6 @@
     bottom: 0;
     left: 2px;
     cursor: pointer;
-    box-sizing: border-box;
     margin: auto;
     padding: 0;
     transition: all 0.2s ease-in-out;
@@ -165,7 +163,6 @@
     border-color: transparent transparent transparent currentColor;
     animation: ivue-switch-loading 1s linear;
     animation-iteration-count: infinite;
-    box-sizing: border-box;
     margin: 0;
     padding: 0;
 
@@ -180,7 +177,6 @@
     height: 0;
     opacity: 0;
     margin: 0;
-    box-sizing: border-box;
     margin: 0;
     padding: 0;
   }
@@ -413,7 +409,6 @@
       animation: ivue-switch-loading 1s linear;
       animation-iteration-count: infinite;
       background-color: transparent;
-      box-sizing: border-box;
 
       width: var(--ivue-switch-emboss-loading-size);
       height: var(--ivue-switch-emboss-loading-size);

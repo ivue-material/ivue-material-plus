@@ -37,19 +37,26 @@ const noStylesComponents: string[] = [
 function getSideEffects(dirName: string, options: resolverOptions) {
   const { importStyle, ssr } = options;
 
-  const themeFolder = 'ivue-material-plus/components';
+  const themeFolder = 'ivue-material-plus/styles';
+  const esComponentsFolder = 'ivue-material-plus/es/components';
 
   // scss
   if (importStyle === 'less') {
     return ssr
-      ? `${themeFolder}/${dirName}/index.less`
-      : `@${themeFolder}/${dirName}/index.less`;
+      ? [
+          `${themeFolder}/base/index.less`,
+          `${themeFolder}/${dirName}/index.less`,
+        ]
+      : [
+          `${esComponentsFolder}/base/index`,
+          `${esComponentsFolder}/${dirName}/index.less`,
+        ];
   }
   // 有样式
   else if (importStyle === true || importStyle === 'css') {
     return ssr
-      ? `${themeFolder}/${dirName}.css`
-      : `@${themeFolder}/${dirName}/css`;
+      ? [`${themeFolder}/base.css`, `${themeFolder}/${dirName}.css`]
+      : [`${themeFolder}/base.css`, `${themeFolder}/${dirName}.css`];
   }
 }
 
