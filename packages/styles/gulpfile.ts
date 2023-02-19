@@ -19,8 +19,26 @@ const distBundle = path.resolve(uiOutput, 'styles');
 const distFolder = path.resolve(__dirname, 'dist');
 
 // 将源文件复制到包
-export function copyThemeChalkSource() {
+export function copyStylesSource() {
   return src(path.resolve(__dirname, 'src/**')).pipe(
+    dest(path.resolve(distBundle, 'src'))
+  );
+}
+
+// 将组件源文件复制到包
+export function copyComponentsSource() {
+  return src(path.resolve(compRoot, '**/*.less'))
+   // 改名
+   .pipe(
+    rename((path) => {
+      return {
+        ...path,
+        dirname: '/',
+        basename: path.dirname,
+      };
+    })
+  )
+  .pipe(
     dest(path.resolve(distBundle, 'src'))
   );
 }
@@ -164,8 +182,30 @@ function buildLayout() {
   );
 }
 
+// 打包颜色库
+function buildColors() {
+  return (
+    src(path.resolve(__dirname, 'src/colors/index.less'))
+      .pipe(less())
+      // autoprefixer
+      .pipe(autoprefixer({ cascade: false }))
+      // 缩小 CSS
+      .pipe(
+        cleanCSS({}, (details) => {
+          consola.success(
+            `${chalk.cyan(details.name)}: ${chalk.yellow(
+              details.stats.originalSize / 1000
+            )} KB -> ${chalk.green(details.stats.minifiedSize / 1000)} KB`
+          );
+        })
+      )
+      // dist
+      .pipe(dest(`${distFolder}/colors`))
+  );
+}
+
 /**
- * 复制 dist 到 dist/styles/theme-chalk
+ * 复制 dist 到 dist/styles
  * @returns
  */
 export function copyStylesBundle() {
@@ -174,13 +214,15 @@ export function copyStylesBundle() {
 
 // build
 export const build: TaskFunction = parallel(
-  copyThemeChalkSource,
+  copyStylesSource,
+  copyComponentsSource,
   series(
     buildStylesChalk,
     buildComponentsStylesChalk,
     buildDefaultThemeCssVars,
     buildElevation,
     buildLayout,
+    buildColors,
     copyStylesBundle
   )
 );

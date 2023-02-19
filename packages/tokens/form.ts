@@ -1,8 +1,4 @@
-import type {
-  UnwrapRef,
-  InjectionKey,
-  SetupContext,
-} from 'vue';
+import type { UnwrapRef, InjectionKey, SetupContext } from 'vue';
 import type {
   FormItemProps,
   FormValidateCallback,

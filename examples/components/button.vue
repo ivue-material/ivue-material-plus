@@ -1,11 +1,6 @@
 <template>
   <div>
     <div>
-      <ivue-button :color="['#5AB2FF', '#5B8EFF']" :ripple="false" isActive
-        >Enabled</ivue-button
-      >
-    </div>
-    <div>
       <p>方按钮</p>
       <ivue-button :color="['#5AB2FF', '#5B8EFF']">Button</ivue-button>
     </div>
@@ -40,7 +35,7 @@
       <p>水波纹效果 ripple</p>
       <ivue-button>默认效果</ivue-button>
       <ivue-button :ripple="false">波纹效果关闭</ivue-button>
-      <ivue-button color="blue" :ripple="false">Primary</ivue-button>
+      <ivue-button color="warning" :ripple="false">Primary</ivue-button>
     </div>
 
     <div>
@@ -63,7 +58,6 @@
       <ivue-button status="primary" outline>outline</ivue-button>
       <ivue-button status="primary" flat>flat</ivue-button>
       <ivue-button status="primary">primary</ivue-button>
-      <ivue-button status="light-primary" flat>Light Primary</ivue-button>
       <ivue-button status="light-primary" loading>Light Primary</ivue-button>
       <ivue-button status="dark-primary">Dark Primary</ivue-button>
       <ivue-button status="success" loading>Success</ivue-button>
@@ -89,4 +83,7 @@ export default {
 };
 </script>
 
-<style lang="scss"></style>
+<style lang="scss">
+.ivue-button {
+}
+</style>

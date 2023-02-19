@@ -1,0 +1,143 @@
+@import '@ivue-material-plus/styles/src/common/index.less';
+
+:root {
+  // button
+  --ivue-bottom-nav-button-min-width: 80px;
+  --ivue-bottom-nav-button-max-width: 168px;
+
+  --ivue-bottom-nav-active-scale-icon: translate3d(0, -2px, 0);
+
+  --ivue-bottom-nav-active-scale-span: scale(1.2);
+}
+
+.ivue-bottom-nav {
+  bottom: 0;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  box-shadow: 0 3px 14px 2px var(--ivue-bottom-nav-box-shadow);
+  width: 100%;
+  transition: all @transition-stand;
+
+  // 导航栏固定位置 position
+  &.is-absolute {
+    position: absolute;
+  }
+
+  // 导航栏固定位置 fixed
+  &.is-fixed {
+    position: fixed;
+    z-index: 4;
+  }
+
+  // 控制可见性
+  &.is-active {
+    transform: translate3d(0, 0, 0);
+
+    // 导航缩放效果
+    &-scale {
+      .ivue-button--active {
+        // 图标
+        .ivue-icon {
+          transform: var(--ivue-bottom-nav-active-scale-icon) !important;
+        }
+
+        // 内容
+        .ivue-button-ripple__content {
+          span {
+            transform: var(--ivue-bottom-nav-active-scale-span) !important;
+          }
+        }
+      }
+    }
+  }
+
+  // 不是激活状态时隐藏按钮上的文字
+  &.is-shift {
+    .ivue-button {
+      transition: @transition-default;
+      transition-property: min-width, max-width;
+      will-change: min-width, max-width;
+
+      &--active {
+        min-width: 96px;
+        max-width: 168px;
+      }
+
+      .ivue-button-ripple__content {
+        span {
+          will-change: transform, opacity;
+        }
+      }
+    }
+
+    // 没有激活
+    .ivue-button:not(.is-active) .ivue-button-ripple__content {
+      .ivue-icon {
+        transform: scale(1, 1) translate(0, 8px);
+      }
+
+      span {
+        opacity: 0;
+      }
+    }
+  }
+
+  // 没有激活时的状态
+  .ivue-button:not(.is-active) {
+    color: var(--ivue-bottom-nav-no-active-color) !important;
+  }
+
+  .ivue-button {
+    flex-shrink: 1;
+    margin: 0 !important;
+    text-transform: none;
+    width: 100%;
+    height: 100%;
+    border-radius: 0;
+    box-shadow: none !important;
+    background: transparent !important;
+
+    min-width: var(--ivue-bottom-nav-button-min-width);
+    max-width: var(--ivue-bottom-nav-button-max-width);
+
+    .ivue-ripple {
+      padding: 8px 12px 10px;
+      transition: padding @transition-stand;
+    }
+
+    // 内容
+    .ivue-button-ripple__content {
+      display: flex;
+      flex-direction: column-reverse;
+      justify-content: center;
+      font-size: var(--ivue-font-size-small);
+      white-space: nowrap;
+      height: 100%;
+      transition: all @transition-stand;
+
+      span {
+        line-height: 1;
+        transform: scale(1);
+        transition: all 0.15s @transition-stand-timing;
+      }
+    }
+
+    // 图标
+    .ivue-icon {
+      margin-top: 0;
+      color: inherit;
+      margin-bottom: 4px;
+      transition: all 0.15s @transition-stand-timing;
+    }
+
+    // 激活
+    &--active {
+      opacity: 1;
+
+      &:before {
+        background-color: transparent;
+      }
+    }
+  }
+}

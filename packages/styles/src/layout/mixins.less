@@ -9,7 +9,7 @@
 
 .ivue-layout-small(@content) {
   @media (max-width: @ivue-breakpoints-small) {
-    @content()
+    @content();
   }
 }
 
@@ -43,7 +43,7 @@
 
 .ivue-layout-small-and-up(@content) {
   @media (min-width: 1px) {
-    @content()
+    @content();
   }
 }
 
@@ -74,7 +74,7 @@
     margin-right: -@spacing;
     margin-left: -@spacing;
 
-    >.ivue-layout-item {
+    > .ivue-layout-item {
       padding-right: @spacing;
       padding-left: @spacing;
     }
@@ -83,7 +83,6 @@
 
 // 校对
 .ivue-layout-alignment() {
-
   // 上左
   &.ivue-alignment-top-left {
     justify-content: flex-start;
@@ -242,8 +241,7 @@
 @some: foo;
 
 .ivue-layout-item(@value: '') {
-
-  @size: if((@value =''), ~'', ~'-@{value}');
+  @size: if((@value = ''), ~'', ~'-@{value}');
 
   &.ivue@{size}-size {
     flex: 1 1;
@@ -255,13 +253,12 @@
     @counter: (@i * 5);
 
     &.ivue@{size}-size-@{counter} {
-      min-width:~"@{counter}%";
-      max-width:~"@{counter}%";
-      flex: 0 1~"@{counter}%";
+      min-width: ~'@{counter}%';
+      max-width: ~'@{counter}%';
+      flex: 0 1~ '@{counter}%';
     }
   }
   .loop(19);
-
 
   &.ivue@{size}-size-33 {
     min-width: 33.3333%;
@@ -288,7 +285,7 @@
 */
 
 .ivue-hide(@value: '') {
-  @size: if((@value =''), ~'', ~'-@{value}');
+  @size: if((@value = ''), ~'', ~'-@{value}');
 
   .ivue@{size}-hide {
     display: none;

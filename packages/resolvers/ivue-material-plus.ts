@@ -44,19 +44,41 @@ function getSideEffects(dirName: string, options: resolverOptions) {
   if (importStyle === 'less') {
     return ssr
       ? [
-          `${themeFolder}/base/index.less`,
-          `${themeFolder}/${dirName}/index.less`,
+          // 颜色库
+          `${themeFolder}/src/colors/index.less`,
+          // base
+          `${themeFolder}/src/base.less`,
+          // component
+          `${themeFolder}/src/${dirName}.less`,
         ]
       : [
+          // 颜色库
+          `${esComponentsFolder}/colors/index`,
+          // base
           `${esComponentsFolder}/base/index`,
+          // component
           `${esComponentsFolder}/${dirName}/index.less`,
         ];
   }
   // 有样式
   else if (importStyle === true || importStyle === 'css') {
     return ssr
-      ? [`${themeFolder}/base.css`, `${themeFolder}/${dirName}.css`]
-      : [`${themeFolder}/base.css`, `${themeFolder}/${dirName}.css`];
+      ? [
+          // 颜色库
+          `${themeFolder}/colors/index.css`,
+          // base
+          `${themeFolder}/base.css`,
+          // component
+          `${themeFolder}/${dirName}.css`,
+        ]
+      : [
+          // 颜色库
+          `${themeFolder}/colors/index.css`,
+          // base
+          `${themeFolder}/base.css`,
+          // component
+          `${themeFolder}/${dirName}.css`,
+        ];
   }
 }
 

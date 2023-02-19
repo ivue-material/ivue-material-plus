@@ -15,6 +15,7 @@ import Select from '../components/select.vue';
 import card from '../components/card.vue';
 import popover from '../components/popover.vue';
 import input from '../components/input.vue';
+import bottomNav from '../components/bottom-nav.vue';
 
 const routes = [
   {
@@ -96,6 +97,11 @@ const routes = [
     path: '/input',
     name: 'input',
     component: input,
+  },
+  {
+    path: '/bottom-nav',
+    name: 'bottomNav',
+    component: bottomNav,
   },
 ];
 

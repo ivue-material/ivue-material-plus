@@ -1,6 +1,7 @@
 import { getCurrentInstance } from 'vue';
 import { isString } from '@vue/shared';
 import { buildProps, definePropType } from '@ivue-material-plus/utils';
+import { isNil } from 'lodash-unified';
 
 // type
 import type { ExtractPropTypes, ComponentInternalInstance } from 'vue';
@@ -353,8 +354,8 @@ export type SelectProps = ExtractPropTypes<typeof selectProps>;
 
 // emits事件类型
 export const selectEmits = {
-  'update:modelValue': (value: ModelValue) => true,
-  'on-change': (value: ModelValue) => true,
+  'update:modelValue': (value: ModelValue) => value || isNil(value),
+  'on-change': (value: ModelValue) => value || isNil(value),
   'on-clear': () => true,
   'on-menu-open': (value: boolean) => isBoolean(value),
   'on-filter-query-change': (value: string) => isString(value),

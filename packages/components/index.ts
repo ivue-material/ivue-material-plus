@@ -13,6 +13,8 @@ export * from './ivue-form';
 export * from './ivue-select';
 export * from './ivue-popover';
 export * from './ivue-card';
+export * from './ivue-bottom-nav';
+export * from './ivue-bottom-nav-item';
 
 // plugins
 export * from './ivue-ripple';

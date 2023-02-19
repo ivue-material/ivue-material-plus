@@ -1,0 +1,31 @@
+// @name 样式名称
+// @value 样式变量
+.colors (@name, @value) {
+  // 变量对象循环
+  each(@value, {
+      // 设置不同的样式名称
+      // base 使用 @name
+      @className: if((@key=base), @name, ~"@{name}-@{key}");
+
+      // 内容样式
+      .@{className} {
+        border-color: @value  !important;
+        background: @value  !important;
+
+
+        // 按钮不是扁平按钮
+        &.ivue-button.is-raised.@{className}:not([disabled]) {
+          color: #fff !important;
+          background: @value;
+        }
+      }
+
+      // 文本样式
+      .@{className}--text {
+        color: @value  !important;
+        background: @value;
+      }
+    }
+
+  );
+}
