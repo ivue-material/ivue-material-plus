@@ -16,6 +16,7 @@ import card from '../components/card.vue';
 import popover from '../components/popover.vue';
 import input from '../components/input.vue';
 import bottomNav from '../components/bottom-nav.vue';
+import breadcrumb from '../components/breadcrumb.vue';
 
 const routes = [
   {
@@ -102,6 +103,11 @@ const routes = [
     path: '/bottom-nav',
     name: 'bottomNav',
     component: bottomNav,
+  },
+  {
+    path: '/breadcrumb',
+    name: 'breadcrumb',
+    component: breadcrumb,
   },
 ];
 

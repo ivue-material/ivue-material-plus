@@ -24,7 +24,7 @@ export const bottomNavItemProps = buildProps({
    */
   color: {
     type: definePropType<Color>([String, Array]),
-    default: '',
+    default: '#ffffff',
   },
 } as const);
 // props 类型

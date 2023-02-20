@@ -95,11 +95,9 @@
   --ivue-button-primary-shadow-15: rgba(79, 135, 255, 0.15);
 
   // light-primary
-  --ivue-button-light-primary: linear-gradient(
-    135deg,
-    #71cdff 0%,
-    #5ab2ff 100%
-  );
+  --ivue-button-light-primary: linear-gradient(135deg,
+      #71cdff 0%,
+      #5ab2ff 100%);
   --ivue-button-light-primary-color: #71cdff;
   --ivue-button-light-primary-shadow-3: rgba(90, 178, 255, 0.3);
   --ivue-button-light-primary-shadow-15: rgba(90, 178, 255, 0.15);
@@ -275,4 +273,16 @@
 :root {
   // no-active-color
   --ivue-bottom-nav-no-active-color: rgba(0, 0, 0, 0.54);
+}
+
+// breadcrumb
+:root {
+  --ivue-breadcrumb-divider-color: rgba(0, 0, 0, 0.38);
+
+  // item
+  --ivue-breadcrumb-item-link-color: var(--ivue-title-color);
+
+  // inner
+  --ivue-breadcrumb-item-inner-color: var(--ivue-text-color);
+  --ivue-breadcrumb-item-inner-hover-color: var(--ivue-color-primary-base);
 }

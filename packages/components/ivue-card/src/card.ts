@@ -2,8 +2,8 @@ import { buildProps, definePropType } from '@ivue-material-plus/utils';
 
 // type
 import type { ExtractPropTypes } from 'vue';
-import type Card from './card.vue';
 import type { RouteLocationRaw } from 'vue-router';
+import type Card from './card.vue';
 
 // props
 export const cardProps = buildProps({

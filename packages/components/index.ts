@@ -15,6 +15,8 @@ export * from './ivue-popover';
 export * from './ivue-card';
 export * from './ivue-bottom-nav';
 export * from './ivue-bottom-nav-item';
+export * from './ivue-breadcrumb';
+export * from './ivue-breadcrumb-item';
 
 // plugins
 export * from './ivue-ripple';

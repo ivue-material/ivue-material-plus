@@ -1,0 +1,61 @@
+@import '@ivue-material-plus/styles/src/common/index.less';
+
+.ivue-breadcrumb-item {
+
+  // 链接
+  &.is-link {
+    font-weight: 700;
+    transition: color @transition-default;
+    cursor: pointer;
+
+    color: var(--ivue-breadcrumb-item-link-color);
+  }
+
+  // 内容
+  &__inner {
+    font-weight: bold;
+    align-items: center;
+    justify-content: center;
+    display: inline-flex;
+    text-decoration: none;
+    transition: color @transition-default;
+
+    color: var(--ivue-breadcrumb-item-inner-color);
+
+    // hover
+    &:hover {
+      color: var(--ivue-breadcrumb-item-inner-hover-color);
+    }
+
+    .ivue-icon {
+      margin-right: 4px;
+
+      font-size: var(--ivue-font-size-small);
+    }
+  }
+
+
+  // divider
+  &__divider {
+    padding: 0 12px;
+    display: flex;
+    align-items: center;
+    color: var(--ivue-breadcrumb-divider-color);
+    font-weight: bold;
+
+    .ivue-icon {
+      font-size: var(--ivue-font-size-middle);
+    }
+  }
+
+  // last
+  &:last-child {
+    .ivue-breadcrumb-item__inner {
+      color: var(--ivue-breadcrumb-divider-color);
+    }
+
+    .ivue-breadcrumb-item__divider {
+      display: none;
+    }
+  }
+}
