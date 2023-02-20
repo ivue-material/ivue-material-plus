@@ -69,7 +69,7 @@ export const bottomNavProps = buildProps({
    */
   color: {
     type: definePropType<Color>([String, Array]),
-    default: '',
+    default: '#5b8eff',
   },
 });
 // props 类型

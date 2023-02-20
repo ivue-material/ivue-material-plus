@@ -1,4 +1,4 @@
-import { ref, unref, watch, provide, onMounted } from 'vue';
+import { unref, watch, provide, onMounted, ref } from 'vue';
 
 // type
 import type { SetupContext } from 'vue';
@@ -88,9 +88,12 @@ export const useBottomBav = (
   // 监听按钮导航数组
   watch(
     () => unref(items),
-    () => {
+    (value) => {
       // 初始化
       update();
+    },
+    {
+      deep: true,
     }
   );
 

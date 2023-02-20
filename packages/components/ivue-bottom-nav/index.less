@@ -1,23 +1,16 @@
 @import '@ivue-material-plus/styles/src/common/index.less';
-
-:root {
-  // button
-  --ivue-bottom-nav-button-min-width: 80px;
-  --ivue-bottom-nav-button-max-width: 168px;
-
-  --ivue-bottom-nav-active-scale-icon: translate3d(0, -2px, 0);
-
-  --ivue-bottom-nav-active-scale-span: scale(1.2);
-}
+@import '@ivue-material-plus/styles/src/elevation/index.less';
 
 .ivue-bottom-nav {
   bottom: 0;
   left: 0;
   display: flex;
   justify-content: center;
-  box-shadow: 0 3px 14px 2px var(--ivue-bottom-nav-box-shadow);
   width: 100%;
   transition: all @transition-stand;
+
+  // elevation
+  .ivue-elevation(3);
 
   // 导航栏固定位置 position
   &.is-absolute {
@@ -37,6 +30,7 @@
     // 导航缩放效果
     &-scale {
       .ivue-button--active {
+
         // 图标
         .ivue-icon {
           transform: var(--ivue-bottom-nav-active-scale-icon) !important;
@@ -45,7 +39,7 @@
         // 内容
         .ivue-button-ripple__content {
           span {
-            transform: var(--ivue-bottom-nav-active-scale-span) !important;
+            transform: scale(1.2) !important;
           }
         }
       }
@@ -59,9 +53,9 @@
       transition-property: min-width, max-width;
       will-change: min-width, max-width;
 
-      &--active {
-        min-width: 96px;
-        max-width: 168px;
+      &.is-active {
+        min-width: var(--ivue-bottom-nav-item-min-width);
+        max-width: var(--ivue-bottom-nav-item-max-width);
       }
 
       .ivue-button-ripple__content {
@@ -85,7 +79,8 @@
 
   // 没有激活时的状态
   .ivue-button:not(.is-active) {
-    color: var(--ivue-bottom-nav-no-active-color) !important;
+    // color: var(--ivue-bottom-nav-no-active-color) !important;
+    opacity: .74;
   }
 
   .ivue-button {
@@ -98,13 +93,8 @@
     box-shadow: none !important;
     background: transparent !important;
 
-    min-width: var(--ivue-bottom-nav-button-min-width);
-    max-width: var(--ivue-bottom-nav-button-max-width);
-
-    .ivue-ripple {
-      padding: 8px 12px 10px;
-      transition: padding @transition-stand;
-    }
+    min-width: var(--ivue-bottom-nav-item-min-width);
+    max-width: var(--ivue-bottom-nav-item-max-width);
 
     // 内容
     .ivue-button-ripple__content {
@@ -129,15 +119,6 @@
       color: inherit;
       margin-bottom: 4px;
       transition: all 0.15s @transition-stand-timing;
-    }
-
-    // 激活
-    &--active {
-      opacity: 1;
-
-      &:before {
-        background-color: transparent;
-      }
     }
   }
 }

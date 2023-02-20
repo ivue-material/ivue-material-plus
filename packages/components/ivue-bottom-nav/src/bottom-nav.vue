@@ -24,7 +24,6 @@ export default defineComponent({
     // 背景颜色
     const { setBackgroundColor } = colorable();
 
-    // use
     useBottomBav(props, emit);
 
     // computed

@@ -3,11 +3,19 @@
     <p>有主题颜色</p>
     {{ bottomNav }}
     <ivue-bottom-nav v-model="bottomNav" scale>
-      <ivue-bottom-nav-item color="red-accent-4" name="1">
+      <ivue-bottom-nav-item name="1">
         <span>Recents</span>
         <ivue-icon>history</ivue-icon>
       </ivue-bottom-nav-item>
-      <ivue-bottom-nav-item color="primary" name="2" v-if="show">
+      <ivue-bottom-nav-item name="2" v-if="show">
+        <span>Favorites</span>
+        <ivue-icon>favorite</ivue-icon>
+      </ivue-bottom-nav-item>
+      <ivue-bottom-nav-item name="3">
+        <span>Favorites</span>
+        <ivue-icon>favorite</ivue-icon>
+      </ivue-bottom-nav-item>
+      <ivue-bottom-nav-item name="4">
         <span>Favorites</span>
         <ivue-icon>favorite</ivue-icon>
       </ivue-bottom-nav-item>
@@ -16,11 +24,11 @@
     <button @click="show = !show">show</button>
 
     <ivue-bottom-nav v-model="bottomNav">
-      <ivue-bottom-nav-item color="red-accent-4" name="1">
+      <ivue-bottom-nav-item  name="1">
         <span>Recents</span>
         <ivue-icon>history</ivue-icon>
       </ivue-bottom-nav-item>
-      <ivue-bottom-nav-item color="primary" name="2">
+      <ivue-bottom-nav-item name="2">
         <span>Favorites</span>
         <ivue-icon>favorite</ivue-icon>
       </ivue-bottom-nav-item>
@@ -30,7 +38,7 @@
       <ivue-button @click="showNav = !showNav">显示/隐藏</ivue-button>
 
       <ivue-bottom-nav v-model="bottomNav" :visible="showNav">
-        <ivue-bottom-nav-item color="red-accent-4" name="1">
+        <ivue-bottom-nav-item  name="1">
           <span>Recents</span>
           <ivue-icon>history</ivue-icon>
         </ivue-bottom-nav-item>
@@ -60,7 +68,7 @@
         <span>Recents</span>
         <ivue-icon>history</ivue-icon>
       </ivue-bottom-nav-item>
-      <ivue-bottom-nav-item color="primary" name="2">
+      <ivue-bottom-nav-item name="2">
         <span>Favorites</span>
         <ivue-icon>favorite</ivue-icon>
       </ivue-bottom-nav-item>
