@@ -18,6 +18,7 @@ export * from './ivue-bottom-nav-item';
 export * from './ivue-breadcrumb';
 export * from './ivue-breadcrumb-item';
 export * from './ivue-steps';
+export * from './ivue-upload';
 
 // plugins
 export * from './ivue-ripple';

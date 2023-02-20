@@ -84,7 +84,6 @@ export default defineComponent({
 
         // 如果已存在status,且在初始化时,则略过
         if (!(isInit && child.data.currentStatus)) {
-
           // index === 当前步骤
           if (index === props.currentStep) {
             if (data.status !== 'error') {

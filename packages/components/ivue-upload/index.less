@@ -1,0 +1,259 @@
+@import '@ivue-material-plus/styles/src/common/index.less';
+
+:root {
+  // content
+  --ivue-upload-content-size: 100px;
+  --ivue-upload-content-margin: 0 8px 8px 0;
+  --ivue-upload-content-radius: 8px;
+
+  // loading
+  --ivue-upload-loading-size: 22px;
+
+  // remove
+  --ivue-upload-remove-size: 16px;
+}
+
+.ivue-upload {
+  display: flex;
+  flex-wrap: wrap;
+
+  input[type='file'] {
+    display: none;
+  }
+
+  // 上传组件类型点击选择
+  &-select {
+    display: inline-block;
+  }
+}
+
+// 上传区域
+.ivue-upload-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  cursor: pointer;
+  transition: all @transition-default;
+
+  width: var(--ivue-upload-content-size);
+  height: var(--ivue-upload-content-size);
+  margin: var(--ivue-upload-content-margin);
+  border-radius: var(--ivue-upload-content-radius);
+  border: 2px solid var(--ivue-upload-content-border);
+  color: var(--ivue-upload-content-color);
+  background: var(--ivue-upload-content-bg);
+
+  &:hover {
+    border-color: var(--ivue-upload-content-hover-color);
+    color: var(--ivue-upload-content-hover-color);
+  }
+
+  // 图标
+  &__icon {
+    margin: 0;
+    color: currentColor;
+    transition: none;
+  }
+
+  // 文案
+  &__text {
+    margin-top: 5px;
+    color: currentColor;
+    font-weight: bold;
+  }
+
+  // 只读
+  &.is-readonly {
+    cursor: default;
+
+    &:hover {
+      border-color: var(--ivue-upload-content-border);
+      color: var(--ivue-upload-content-color);
+    }
+  }
+
+  // 禁用
+  &.is-disabled {
+    border-color: var(--ivue-upload-disabled-color);
+    color: var(--ivue-upload-disabled-color);
+    cursor: not-allowed;
+
+    &:hover {
+      border-color: var(--ivue-upload-disabled-color);
+      color: var(--ivue-upload-disabled-color);
+    }
+  }
+
+  // 拖动
+  &.is-drag {
+    position: relative;
+    text-align: center;
+    overflow: hidden;
+    cursor: pointer;
+
+    border: 2px dashed var(--ivue-upload-drag-border-color);
+    border-radius: var(--ivue-upload-content-radius);
+    background-color: var(--ivue-upload-drag-bg);
+
+    // hover
+    &:hover {
+      border: 2px dashed var(--ivue-upload-dragOver-border-color);
+    }
+  }
+
+  // 拖动完成
+  &.is-dragOver {
+    border: 2px dashed var(--ivue-upload-dragOver-border-color);
+  }
+}
+
+// 上传列表
+.ivue-upload-list {
+  display: flex;
+  flex-wrap: wrap;
+
+  // 图片
+  &-image {
+    display: block;
+    overflow: hidden;
+
+    width: var(--ivue-upload-content-size);
+    height: var(--ivue-upload-content-size);
+    border-radius: var(--ivue-upload-content-radius);
+
+    &__img {
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  // 图片放大预览
+  .is-preview {
+    position: relative;
+
+    .ivue-upload-list-image__preview {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 12;
+      opacity: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      pointer-events: none;
+      color: var(--ivue-upload-list-preview-image-color);
+      transition: all @transition-default;
+    }
+
+    // 预览图标
+    .ivue-icon {
+      font-size: var(--ivue-upload-loading-size);
+      color: var(--ivue-upload-list-preview-icon-color);
+    }
+
+    &:hover::after {
+      opacity: 1;
+    }
+
+    &:hover {
+      .ivue-upload-list-image__preview {
+        opacity: 1;
+      }
+    }
+
+    &::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      opacity: 0;
+      transition: all @transition-default;
+      z-index: 10;
+      pointer-events: none;
+
+      background-color: var(--ivue-upload-list-preview-mask-bg);
+    }
+  }
+
+  // 蒙层
+  &-mask {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 5;
+
+    color: var(--ivue-upload-list-mask-color);
+    background-color: var(--ivue-upload-list-mask-bg);
+
+    // 信息
+    &__message {
+      margin-top: 6px;
+      padding: 0 4px;
+      line-height: 14px;
+
+      font-size: var(--ivue-font-size-small);
+    }
+
+    // 图标
+    &__icon {
+      margin: 0;
+    }
+
+    // 加载中
+    .ivue-loading-mask {
+      position: relative;
+      background: none;
+    }
+
+    .ivue-loading-spinner {
+      position: relative;
+      margin-top: 0;
+      top: 0;
+      width: var(--ivue-upload-loading-size);
+      height: var(--ivue-upload-loading-size);
+      color: var(--ivue-upload-list-loading-color);
+
+      .circular {
+        width: var(--ivue-upload-loading-size);
+        height: var(--ivue-upload-loading-size);
+      }
+    }
+  }
+
+  // 删除
+  &-remove {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 0;
+    min-width: auto;
+    border-bottom-left-radius: 50%;
+    z-index: 10;
+
+    width: var(--ivue-upload-remove-size);
+    height: var(--ivue-upload-remove-size);
+    font-size: var(--ivue-font-size-small);
+    color: var(--ivue-upload-list-remove-color);
+    background: var(--ivue-upload-list-remove-bg);
+  }
+
+  // 图片项
+  &-status {
+    position: relative;
+    margin: 0 8px 8px 0;
+    cursor: pointer;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+}

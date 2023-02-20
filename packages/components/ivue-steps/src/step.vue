@@ -84,7 +84,8 @@ import { stepProps } from './step';
 // components
 import IvueIcon from '@ivue-material-plus/components/ivue-icon';
 
-import type { Data } from '../types/step';
+// type
+import type { StepData } from './step';
 
 const prefixCls = 'ivue-step-item';
 
@@ -106,7 +107,7 @@ export default defineComponent({
     const { uid } = getCurrentInstance() as ComponentInternalInstance;
 
     // data
-    const data = reactive<Data>({
+    const data = reactive<StepData>({
       /**
        * 步骤数
        *

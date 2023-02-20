@@ -32,7 +32,7 @@ const noStylesComponents: string[] = [
   'IvueOptionGroup',
   'IvueOption',
   'IvueSvgLoader',
-  'IvueStep'
+  'IvueStep',
 ];
 
 function getSideEffects(dirName: string, options: resolverOptions) {

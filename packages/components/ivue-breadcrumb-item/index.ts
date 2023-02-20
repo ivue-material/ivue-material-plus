@@ -5,7 +5,7 @@ import BreadcrumbItem from './src/breadcrumb-item.vue';
 export const IvueBreadcrumbItem = withInstall(BreadcrumbItem);
 export default IvueBreadcrumbItem;
 
-export * from  './src/breadcrumb-item';
+export * from './src/breadcrumb-item';
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {

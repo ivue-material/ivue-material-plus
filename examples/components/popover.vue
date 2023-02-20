@@ -156,9 +156,7 @@
     <h1>嵌套复杂内容</h1>
     <ivue-popover placement="right" width="900px">
       <ivue-button>Click</ivue-button>
-      <template #content>
-       1221
-      </template>
+      <template #content> 1221 </template>
     </ivue-popover>
     <h1>自动换行</h1>
     <ivue-popover
@@ -170,7 +168,7 @@
     </ivue-popover>
     <h1>确认框</h1>
     <ivue-popover
-    transfer
+      transfer
       confirm
       title="Are you sure you want to delete this Are you sure you want to delete this Are you sure you want to delete this item?"
       @on-confirm="confirm"

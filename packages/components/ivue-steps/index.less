@@ -20,7 +20,7 @@
       padding: 30px 0 4px 0;
       width: 1px;
 
-      >i {
+      > i {
         height: 100%;
         width: 1px;
 
@@ -33,7 +33,7 @@
 
     // 完成状态
     .is-finish {
-      .ivue-step-item-divider>i::after {
+      .ivue-step-item-divider > i::after {
         height: 100%;
       }
     }
@@ -61,7 +61,6 @@
       padding-bottom: 12px;
       padding-left: 0;
     }
-
   }
 }
 
@@ -97,9 +96,8 @@
 
   // 下一个错误状态
   &.is-next-error {
-
-    .ivue-step-item-divider>i,
-    .ivue-step-item-divider>i::after {
+    .ivue-step-item-divider > i,
+    .ivue-step-item-divider > i::after {
       background-color: var(--ivue-step-item-next-error-bg);
     }
   }
@@ -113,20 +111,19 @@
 
   // 完成状态
   &.is-finish {
-
     // 进度标志
     .ivue-step-item-header__content {
       border-color: var(--ivue-step-item-finish-color);
       background-color: var(--ivue-step-item-finish-bg);
 
-      >.ivue-icon,
+      > .ivue-icon,
       span {
         color: var(--ivue-step-item-finish-color);
       }
     }
 
     // 下划线
-    .ivue-step-item-divider>i::after {
+    .ivue-step-item-divider > i::after {
       opacity: 1;
       width: 100%;
 
@@ -144,7 +141,7 @@
     .ivue-step-item-header__content {
       background-color: var(--ivue-step-item-wait-bg);
 
-      >.ivue-icon,
+      > .ivue-icon,
       span {
         color: var(--ivue-step-item-wait-color);
       }
@@ -162,7 +159,7 @@
       border-color: var(--ivue-step-item-process-bg);
       background-color: var(--ivue-step-item-process-bg);
 
-      >.ivue-icon,
+      > .ivue-icon,
       span {
         color: var(--ivue-step-item-process-color);
       }
@@ -180,7 +177,7 @@
       border-color: var(--ivue-step-item-error-bg);
       background-color: var(--ivue-step-item-error-bg);
 
-      >.ivue-icon,
+      > .ivue-icon,
       span {
         color: var(--ivue-step-item-error-color);
       }
@@ -200,7 +197,7 @@
     padding: 0 10px;
     width: 100%;
 
-    >i {
+    > i {
       position: relative;
       display: inline-block;
       width: 100%;
@@ -286,10 +283,8 @@
     }
   }
 
-
   // 文字底部居中
   &.is-bottom-center {
-
     // 头部
     .ivue-step-item-header {
       background: none;
@@ -342,7 +337,7 @@
       padding: 0;
     }
 
-    .ivue-step-item-divider>i::after {
+    .ivue-step-item-divider > i::after {
       left: 0;
     }
   }

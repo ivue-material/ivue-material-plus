@@ -70,10 +70,10 @@ const build: TaskFunction = series(
     series(
       withTaskName('buildStyles', () =>
         run('pnpm run -C packages/styles build')
-      ),
+      )
       // copyFullStyle
     )
-  ),
+  )
 
   // parallel(copyTypesDefinitions, copyFiles)
 );

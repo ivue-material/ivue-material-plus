@@ -31,7 +31,7 @@ export const stepProps = buildProps({
   status: {
     type: String,
     values: ['wait', 'process', 'finish', 'error'],
-    default: ''
+    default: '',
   },
   /**
    * 步骤图标
@@ -51,3 +51,12 @@ export type StepEmits = typeof stepEmits;
 
 // 组件实例
 export type StepInstance = InstanceType<typeof Step>;
+
+export type StepData = {
+  stepNumber: number;
+  currentStatus: string;
+  nextError: boolean;
+  index: number;
+  textDirection: string;
+  direction: string;
+};

@@ -1,10 +1,8 @@
+import { isFunction } from 'lodash';
+export { isFunction } from 'lodash';
+
 export function isDef<T>(val: T): val is NonNullable<T> {
   return val !== undefined && val !== null;
-}
-
-// eslint-disable-next-line @typescript-eslint/ban-types
-export function isFunction(val: unknown): val is Function {
-  return typeof val === 'function';
 }
 
 export function isObject(val: unknown): val is Record<any, any> {

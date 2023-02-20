@@ -95,9 +95,11 @@
   --ivue-button-primary-shadow-15: rgba(79, 135, 255, 0.15);
 
   // light-primary
-  --ivue-button-light-primary: linear-gradient(135deg,
-      #71cdff 0%,
-      #5ab2ff 100%);
+  --ivue-button-light-primary: linear-gradient(
+    135deg,
+    #71cdff 0%,
+    #5ab2ff 100%
+  );
   --ivue-button-light-primary-color: #71cdff;
   --ivue-button-light-primary-shadow-3: rgba(90, 178, 255, 0.3);
   --ivue-button-light-primary-shadow-15: rgba(90, 178, 255, 0.15);
@@ -317,11 +319,41 @@
   --ivue-step-item-error-color: var(--ivue-color-white);
   --ivue-step-item-error-title-color: var(--ivue-color-error-base);
 
-
   // finish
   --ivue-step-item-finish-bg: var(--ivue-color-white);
   --ivue-step-item-finish-color: var(--ivue-color-primary-base);
   --ivue-step-item-finish-title-color: var(--ivue-title-color);
+}
 
+// upload
+:root {
+  // content
+  --ivue-upload-content-bg: var(--ivue-color-white);
+  --ivue-upload-content-border: #999999;
+  --ivue-upload-content-color: #999999;
+  --ivue-upload-content-hover-color: var(--ivue-color-primary-base);
 
+  // disabled
+  --ivue-upload-disabled-color: var(--ivue-disabled-color);
+
+  // dragOver
+  --ivue-upload-drag-border-color: #999999;
+  --ivue-upload-drag-bg: var(--ivue-color-white);
+  --ivue-upload-dragOver-border-color: var(--ivue-color-primary-base);
+
+  // list
+  --ivue-upload-list-preview-mask-bg: rgba(50, 50, 51, 0.5);
+  --ivue-upload-list-preview-image-color: var(--ivue-color-white);
+  --ivue-upload-list-preview-icon-color: var(--ivue-color-white);
+
+  // mask
+  --ivue-upload-list-mask-color: var(--ivue-color-white);
+  --ivue-upload-list-mask-bg: rgba(50, 50, 51, 0.5);
+
+  // loading
+  --ivue-upload-list-loading-color: var(--ivue-color-white);
+
+  // remove
+  --ivue-upload-list-remove-color: var(--ivue-color-white);
+  --ivue-upload-list-remove-bg: var(--ivue-color-black);
 }

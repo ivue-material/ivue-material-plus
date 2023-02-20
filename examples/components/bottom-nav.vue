@@ -24,7 +24,7 @@
     <button @click="show = !show">show</button>
 
     <ivue-bottom-nav v-model="bottomNav">
-      <ivue-bottom-nav-item  name="1">
+      <ivue-bottom-nav-item name="1">
         <span>Recents</span>
         <ivue-icon>history</ivue-icon>
       </ivue-bottom-nav-item>
@@ -38,7 +38,7 @@
       <ivue-button @click="showNav = !showNav">显示/隐藏</ivue-button>
 
       <ivue-bottom-nav v-model="bottomNav" :visible="showNav">
-        <ivue-bottom-nav-item  name="1">
+        <ivue-bottom-nav-item name="1">
           <span>Recents</span>
           <ivue-icon>history</ivue-icon>
         </ivue-bottom-nav-item>

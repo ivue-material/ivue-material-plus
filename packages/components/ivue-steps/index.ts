@@ -12,3 +12,10 @@ export const IvueStep = withNoopInstall(Step);
 
 export * from './src/steps';
 export * from './src/step';
+
+declare module '@vue/runtime-core' {
+  export interface GlobalComponents {
+    IvueSteps: typeof import('@ivue-material-plus/components')['IvueSteps'];
+    IvueStep: typeof import('@ivue-material-plus/components')['IvueStep'];
+  }
+}

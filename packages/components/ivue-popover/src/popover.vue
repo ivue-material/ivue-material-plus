@@ -44,12 +44,9 @@
               </div>
               <!-- 底部 -->
               <div :class="bem.be('inner', 'footer')">
-                <ivue-button
-                  outline
-                  color="#dcdfe6"
-                  @click="handleCancel"
-                  >{{ cancelText }}</ivue-button
-                >
+                <ivue-button outline color="#dcdfe6" @click="handleCancel">{{
+                  cancelText
+                }}</ivue-button>
                 <!-- 确认 -->
                 <ivue-button
                   depressed

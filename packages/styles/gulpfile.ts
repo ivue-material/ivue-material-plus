@@ -27,19 +27,19 @@ export function copyStylesSource() {
 
 // 将组件源文件复制到包
 export function copyComponentsSource() {
-  return src(path.resolve(compRoot, '**/*.less'))
-   // 改名
-   .pipe(
-    rename((path) => {
-      return {
-        ...path,
-        dirname: '/',
-        basename: path.dirname,
-      };
-    })
-  )
-  .pipe(
-    dest(path.resolve(distBundle, 'src'))
+  return (
+    src(path.resolve(compRoot, '**/*.less'))
+      // 改名
+      .pipe(
+        rename((path) => {
+          return {
+            ...path,
+            dirname: '/',
+            basename: path.dirname,
+          };
+        })
+      )
+      .pipe(dest(path.resolve(distBundle, 'src')))
   );
 }
 

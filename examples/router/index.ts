@@ -18,6 +18,7 @@ import input from '../components/input.vue';
 import bottomNav from '../components/bottom-nav.vue';
 import breadcrumb from '../components/breadcrumb.vue';
 import steps from '../components/steps.vue';
+import upLoad from '../components/upLoad.vue';
 
 const routes = [
   {
@@ -114,6 +115,11 @@ const routes = [
     path: '/steps',
     name: 'steps',
     component: steps,
+  },
+  {
+    path: '/upLoad',
+    name: 'upLoad',
+    component: upLoad,
   },
 ];
 
