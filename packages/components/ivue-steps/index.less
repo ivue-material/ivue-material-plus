@@ -1,0 +1,349 @@
+@import '@ivue-material-plus/styles/src/common/index.less';
+
+.ivue-steps {
+  display: flex;
+  width: 100%;
+  font-size: 0;
+  line-height: 1.5;
+
+  // 垂直
+  &.is-vertical {
+    display: flex;
+    flex-flow: column;
+
+    // divider
+    .ivue-step-item-divider {
+      position: absolute;
+      top: 0;
+      height: 100%;
+      left: 13px;
+      padding: 30px 0 4px 0;
+      width: 1px;
+
+      >i {
+        height: 100%;
+        width: 1px;
+
+        &::after {
+          height: 0;
+          width: 100%;
+        }
+      }
+    }
+
+    // 完成状态
+    .is-finish {
+      .ivue-step-item-divider>i::after {
+        height: 100%;
+      }
+    }
+
+    // header
+    .ivue-step-item-header {
+      float: left;
+
+      &-content {
+        margin-right: 16px;
+      }
+    }
+
+    .ivue-step-item-content {
+      min-height: 47px;
+      overflow: hidden;
+      display: block;
+    }
+
+    .ivue-step-item-content__title {
+      line-height: 26px;
+    }
+
+    .ivue-step-item-content__slot {
+      padding-bottom: 12px;
+      padding-left: 0;
+    }
+
+  }
+}
+
+.ivue-step-item {
+  position: relative;
+  display: flex;
+
+  // 最后一项
+  &.is-last {
+    flex-basis: auto !important;
+    flex-shrink: 0;
+    flex-grow: 0;
+  }
+
+  // 图标
+  &.is-custom {
+    .ivue-step-item-header__content {
+      width: inherit;
+      height: inherit;
+      line-height: inherit;
+      border-radius: 0;
+      border: 0;
+      background: 0 0 !important;
+
+      .ivue-icon {
+        width: auto;
+        min-width: auto;
+
+        color: var(--ivue-step-item-custom-icon-color) !important;
+      }
+    }
+  }
+
+  // 下一个错误状态
+  &.is-next-error {
+
+    .ivue-step-item-divider>i,
+    .ivue-step-item-divider>i::after {
+      background-color: var(--ivue-step-item-next-error-bg);
+    }
+  }
+
+  // 最后一个item
+  &:last-child {
+    .ivue-step-item-divider {
+      display: none;
+    }
+  }
+
+  // 完成状态
+  &.is-finish {
+
+    // 进度标志
+    .ivue-step-item-header__content {
+      border-color: var(--ivue-step-item-finish-color);
+      background-color: var(--ivue-step-item-finish-bg);
+
+      >.ivue-icon,
+      span {
+        color: var(--ivue-step-item-finish-color);
+      }
+    }
+
+    // 下划线
+    .ivue-step-item-divider>i::after {
+      opacity: 1;
+      width: 100%;
+
+      background: var(--ivue-step-item-finish-color);
+    }
+
+    .ivue-step-item-content__title,
+    .ivue-step-item-content__slot {
+      color: var(--ivue-step-item-finish-color);
+    }
+  }
+
+  // 等待状态
+  &.is-wait {
+    .ivue-step-item-header__content {
+      background-color: var(--ivue-step-item-wait-bg);
+
+      >.ivue-icon,
+      span {
+        color: var(--ivue-step-item-wait-color);
+      }
+    }
+
+    .ivue-step-item-content__title,
+    .ivue-step-item-content__slot {
+      color: var(--ivue-step-item-wait-title-color);
+    }
+  }
+
+  // 进行中状态
+  &.is-process {
+    .ivue-step-item-header__content {
+      border-color: var(--ivue-step-item-process-bg);
+      background-color: var(--ivue-step-item-process-bg);
+
+      >.ivue-icon,
+      span {
+        color: var(--ivue-step-item-process-color);
+      }
+    }
+
+    .ivue-step-item-content__title,
+    .ivue-step-item-content__slot {
+      color: var(--ivue-step-item-process-title-color);
+    }
+  }
+
+  // 错误状态
+  &.is-error {
+    .ivue-step-item-header__content {
+      border-color: var(--ivue-step-item-error-bg);
+      background-color: var(--ivue-step-item-error-bg);
+
+      >.ivue-icon,
+      span {
+        color: var(--ivue-step-item-error-color);
+      }
+    }
+
+    .ivue-step-item-content__title,
+    .ivue-step-item-content__slot {
+      color: var(--ivue-step-item-error-title-color);
+    }
+  }
+
+  // 下划线
+  &-divider {
+    position: absolute;
+    left: 0;
+    top: 13px;
+    padding: 0 10px;
+    width: 100%;
+
+    >i {
+      position: relative;
+      display: inline-block;
+      width: 100%;
+      height: 1px;
+      vertical-align: top;
+      border-radius: 1px;
+
+      background-color: var(--ivue-step-item-divider-bg);
+
+      &::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        opacity: 0;
+        width: 0;
+        height: 100%;
+        transition: all @transition-default;
+
+        background-color: var(--ivue-step-item-divider-bg);
+      }
+    }
+  }
+
+  // 头部，内容
+  &-header,
+  &-content {
+    position: relative;
+    display: inline-block;
+    vertical-align: top;
+  }
+
+  &-header {
+    background-color: var(--ivue-step-item-header-bg);
+
+    // 内容
+    &__content {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-right: 8px;
+      text-align: center;
+      border-radius: 50%;
+      width: 26px;
+      height: 26px;
+      line-height: 24px;
+      user-select: none;
+      transition: background-color @transition-default;
+      cursor: pointer;
+
+      font-size: var(--ivue-font-size-base);
+      border: 1px solid var(--ivue-step-item-header-content-border-color);
+
+      // icon
+      .ivue-icon {
+        font-size: var(--ivue-font-size-middle);
+      }
+    }
+  }
+
+  // 内容
+  &-content {
+    display: inline;
+
+    // 标题
+    &__title {
+      display: inline-block;
+      margin-bottom: 4px;
+      padding-right: 10px;
+      font-weight: bold;
+      transition: color @transition-default;
+
+      font-size: var(--ivue-font-size-base);
+      color: var(--ivue-step-item-content-title-color);
+      background-color: var(--ivue-step-item-content-title-bg);
+    }
+
+    // 插槽
+    &__slot {
+      transition: color @transition-default;
+
+      font-size: var(--ivue-font-size-small);
+      color: var(--ivue-step-item-content-slot-color);
+    }
+  }
+
+
+  // 文字底部居中
+  &.is-bottom-center {
+
+    // 头部
+    .ivue-step-item-header {
+      background: none;
+      text-align: center;
+
+      // 进度框
+      &__content {
+        position: relative;
+        display: inline-flex;
+      }
+    }
+
+    // 内容
+    .ivue-step-item-content {
+      text-align: center;
+    }
+
+    // 下划线
+    .ivue-step-item-divider {
+      left: 50%;
+      right: -50%;
+    }
+  }
+
+  // 文字方向底部
+  &.is-text-bottom,
+  &.is-text-bottom-center {
+    flex-direction: column;
+
+    // 头部
+    .ivue-step-item-header {
+      padding: 0 !important;
+      margin: 0 !important;
+      background: none;
+      text-align: center;
+
+      // 进度框
+      &__content {
+        position: relative;
+      }
+    }
+
+    // 内容
+    .ivue-step-item-content {
+      padding-top: 8px;
+    }
+
+    // 下划线
+    .ivue-step-item-divider {
+      padding: 0;
+    }
+
+    .ivue-step-item-divider>i::after {
+      left: 0;
+    }
+  }
+}

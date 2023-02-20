@@ -68,16 +68,6 @@ export const popoverProps = buildProps({
     type: String,
   },
   /**
-   * 主题，可选值为 dark 或 light
-   *
-   * @type {String}
-   */
-  theme: {
-    type: String,
-    values: ['dark', 'light'],
-    default: 'dark',
-  },
-  /**
    * 宽度，最小宽度为 150px，在 confirm 模式下，默认最大宽度为 300px
    *
    * @type {String | Number}

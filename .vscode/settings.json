@@ -1,3 +1,9 @@
 {
-  "cSpell.words": ["consola", "esbuild", "mkdist", "vnode"]
+  "cSpell.words": [
+    "consola",
+    "esbuild",
+    "mkdist",
+    "vnode"
+  ],
+  "volar.inlayHints.eventArgumentInInlineHandlers": false
 }

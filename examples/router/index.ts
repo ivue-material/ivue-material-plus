@@ -17,6 +17,7 @@ import popover from '../components/popover.vue';
 import input from '../components/input.vue';
 import bottomNav from '../components/bottom-nav.vue';
 import breadcrumb from '../components/breadcrumb.vue';
+import steps from '../components/steps.vue';
 
 const routes = [
   {
@@ -108,6 +109,11 @@ const routes = [
     path: '/breadcrumb',
     name: 'breadcrumb',
     component: breadcrumb,
+  },
+  {
+    path: '/steps',
+    name: 'steps',
+    component: steps,
   },
 ];
 

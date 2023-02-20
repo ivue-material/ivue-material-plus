@@ -7,7 +7,7 @@
   >
     <!-- 描述 -->
     <div
-      :class="`${prefixCls}-rel`"
+      :class="bem.e('rel')"
       ref="referenceRef"
       @click="handleRelClick"
       @mousedown="handleFocus(false)"
@@ -27,24 +27,24 @@
           ref="popperRef"
           v-show="visible"
         >
-          <div :class="`${prefixCls}-content`">
-            <!-- arrow -->
-            <div :class="`${prefixCls}-arrow`" ref="arrow"></div>
+          <div :class="bem.b('content')">
+            <!-- 箭头 -->
+            <div :class="bem.b('arrow')" ref="arrow"></div>
+
             <!-- 对话框 -->
-            <div :class="`${prefixCls}-inner`" v-if="confirm">
+            <div :class="bem.b('inner')" v-if="confirm">
               <!-- body -->
-              <div :class="`${prefixCls}-body`">
+              <div :class="bem.be('inner', 'body')">
                 <!-- icon -->
-                <ivue-icon :class="`${prefixCls}-body--icon`">help</ivue-icon>
+                <ivue-icon :class="bem.be('inner', 'icon')">help</ivue-icon>
                 <!-- title -->
-                <div :class="`${prefixCls}-body--message`">
+                <div :class="bem.be('inner', 'message')">
                   <slot name="title">{{ title }}</slot>
                 </div>
               </div>
               <!-- 底部 -->
-              <div :class="`${prefixCls}-footer`">
+              <div :class="bem.be('inner', 'footer')">
                 <ivue-button
-                  :class="`${prefixCls}-footer--button`"
                   outline
                   color="#dcdfe6"
                   @click="handleCancel"
@@ -52,7 +52,6 @@
                 >
                 <!-- 确认 -->
                 <ivue-button
-                  :class="`${prefixCls}-footer--button`"
                   depressed
                   status="primary"
                   @click="handleConfirm"
@@ -60,17 +59,16 @@
                 >
               </div>
             </div>
+
             <!-- 不是对话框 -->
-            <div :class="`${prefixCls}-inner`" v-if="!confirm">
+            <div :class="bem.b('inner')" v-if="!confirm">
               <!-- title -->
-              <div :class="`${prefixCls}-title`" v-if="showTitle">
+              <div :class="bem.be('inner', 'title')" v-if="showTitle">
                 <slot name="title">{{ title }}</slot>
               </div>
               <!-- body -->
-              <div :class="`${prefixCls}-body`">
-                <div :class="bodyContentClasses">
-                  <slot name="content">{{ content }}</slot>
-                </div>
+              <div :class="bodyClasses">
+                <slot name="content">{{ content }}</slot>
               </div>
             </div>
           </div>
@@ -82,6 +80,7 @@
 
 <script lang="ts">
 import { defineComponent, computed, unref } from 'vue';
+import { useNamespace } from '@ivue-material-plus/hooks';
 
 // directives
 import { ClickOutside } from '@ivue-material-plus/directives';
@@ -103,6 +102,9 @@ export default defineComponent({
   directives: { ClickOutside },
   props: popoverProps,
   setup(props, { emit, slots }) {
+    // bem
+    const bem = useNamespace(prefixCls);
+
     const {
       // dom
       popperRef,
@@ -132,23 +134,18 @@ export default defineComponent({
 
     // 外部样式
     const wrapperClasses = computed(() => {
-      return [
-        prefixCls,
-        {
-          [`${prefixCls}-confirm`]: props.confirm,
-        },
-      ];
+      return [bem.b()];
     });
 
     // 悬浮框样式
     const popperClasses = computed(() => {
       return [
-        `${prefixCls}-popper`,
+        bem.e('popper'),
         {
-          // 主题
-          [`${prefixCls}-${props.theme}`]: true,
+          // 开启对话框
+          [bem.is('confirm')]: props.confirm,
           // 是否将弹层放置于 body 内
-          [`${prefixCls}-transfer`]: props.transfer,
+          [bem.is('transfer')]: props.transfer,
         },
         // 开启 transfer 时，给浮层添加额外的 class 名称
         props.transferClassName && props.transferClassName,
@@ -175,17 +172,18 @@ export default defineComponent({
       return styles;
     });
 
-    // body
-    const bodyContentClasses = computed(() => {
+    // 内容样式
+    const bodyClasses = computed(() => {
       return [
-        `${prefixCls}-body--content`,
+        bem.be('inner', 'body'),
         {
-          [`${prefixCls}-body--word-wrap`]: props.wordWrap,
+          [bem.is('word-wrap')]: props.wordWrap,
         },
       ];
     });
 
     return {
+      bem,
       prefixCls,
       // dom
       popperRef,
@@ -198,7 +196,7 @@ export default defineComponent({
       wrapperClasses,
       popperClasses,
       popperStyles,
-      bodyContentClasses,
+      bodyClasses,
       showTitle,
 
       // methods
