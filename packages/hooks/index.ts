@@ -6,3 +6,5 @@ export * from './use-prop';
 export * from './use-throttle-render';
 export * from './use-namespace';
 export * from './use-upload';
+export * from './use-input';
+export * from './use-image';

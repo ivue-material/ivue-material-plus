@@ -13,6 +13,22 @@ import {
   IvueForm,
   IvueFormItem,
 } from '@ivue-material-plus/components/ivue-form';
+import {
+  IvueSelect,
+  IvueOption,
+  IvueOptionGroup,
+} from '@ivue-material-plus/components/ivue-select';
+import { IvuePopover } from '@ivue-material-plus/components/ivue-popover';
+import { IvueCard } from '@ivue-material-plus/components/ivue-card';
+import { IvueBottomNav } from '@ivue-material-plus/components/ivue-bottom-nav';
+import { IvueBottomNavItem } from '@ivue-material-plus/components/ivue-bottom-nav-item';
+import { IvueBreadcrumb } from '@ivue-material-plus/components/ivue-breadcrumb';
+import { IvueBreadcrumbItem } from '@ivue-material-plus/components/ivue-breadcrumb-item';
+import { IvueSteps, IvueStep } from '@ivue-material-plus/components/ivue-steps';
+import { IvueUpload } from '@ivue-material-plus/components/ivue-upload';
+import { IvueSpin } from '@ivue-material-plus/components/ivue-spin';
+import { IvueImage } from '@ivue-material-plus/components/ivue-image';
+import { IvueImagePreview } from '@ivue-material-plus/components/ivue-image-preview';
 
 import type { Plugin } from 'vue';
 
@@ -30,4 +46,19 @@ export default [
   IvueSwitch,
   IvueForm,
   IvueFormItem,
+  IvueSelect,
+  IvueOption,
+  IvueOptionGroup,
+  IvuePopover,
+  IvueCard,
+  IvueBottomNav,
+  IvueBottomNavItem,
+  IvueBreadcrumb,
+  IvueBreadcrumbItem,
+  IvueSteps,
+  IvueStep,
+  IvueUpload,
+  IvueSpin,
+  IvueImage,
+  IvueImagePreview,
 ] as Plugin[];

@@ -32,11 +32,10 @@ const computedStyleCache: Record<string, any> = {};
 let hiddenTextarea: any;
 
 // 获取节点样式
-function calculateNodeStyling(node: any, useCache = false) {
-  const nodeRef =
-    node.getAttribute('id') ||
+function calculateNodeStyling(node: HTMLElement, useCache = false) {
+  const nodeRef = (node.getAttribute('id') ||
     node.getAttribute('data-reactid') ||
-    node.getAttribute('name');
+    node.getAttribute('name')) as string;
 
   if (useCache && computedStyleCache[nodeRef]) {
     return computedStyleCache[nodeRef];
@@ -77,9 +76,9 @@ function calculateNodeStyling(node: any, useCache = false) {
 
 // 计算Textarea高度
 export const calcTextareaHeight = (
-  uiTextNode: any,
-  minRows: any = null,
-  maxRows: any = null,
+  uiTextNode: HTMLTextAreaElement,
+  minRows: number | null = null,
+  maxRows: number | null = null,
   useCache = false
 ) => {
   if (!hiddenTextarea) {

@@ -65,7 +65,13 @@
 </template>
 
 <script>
-export default {};
+export default {
+  data() {
+    return {
+      show: false,
+    };
+  },
+};
 </script>
 
 <style lang="scss" scoped>

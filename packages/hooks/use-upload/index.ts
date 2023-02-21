@@ -1,4 +1,4 @@
-import { isFunction } from '@ivue-material-plus/utils';
+import { isFunction, isPromise } from '@ivue-material-plus/utils';
 
 // 文件上传类型
 export type UploaderResultType = 'dataUrl' | 'text' | 'file' | 'url';
@@ -101,4 +101,76 @@ export function filterFiles(
   });
 
   return { valid, invalid };
+}
+
+const IMAGE_REGEXP = /\.(jpeg|jpg|gif|png|svg|webp|jfif|bmp|dpg)/i;
+
+export function isImageUrl(url: string): boolean {
+  return IMAGE_REGEXP.test(url);
+}
+
+// 是图片
+export function isImageFile(item: any): boolean {
+  // some special urls cannot be recognized
+  // user can add `isImage` flag to mark it as an image url
+
+  if (item.isImage) {
+    return true;
+  }
+
+  // 文件类型
+  if (item.file && item.file.type) {
+    return item.file.type.indexOf('image') === 0;
+  }
+
+  // 有链接
+  if (item.url) {
+    return isImageUrl(item.url);
+  }
+
+  // base64
+  if (typeof item.content === 'string') {
+    return item.content.indexOf('data:image') === 0;
+  }
+
+  return false;
+}
+
+// 调用拦截器
+export function callInterceptor(options: {
+  // 拦截器
+  interceptor?: Interceptor;
+  // 需要返回的数据
+  args?: any[];
+  // 事件
+  done: () => void;
+  canceled?: () => void;
+}) {
+  const { interceptor, args, done, canceled } = options;
+
+  // 是否有拦截器
+  if (interceptor) {
+    // eslint-disable-next-line prefer-spread
+    const returnVal = interceptor.apply(null, args || []);
+
+    if (isPromise(returnVal)) {
+      returnVal
+        .then((value) => {
+          if (value) {
+            done();
+          } else if (canceled) {
+            canceled();
+          }
+        })
+        .catch(() => {});
+    } else if (returnVal) {
+      done();
+    } else if (canceled) {
+      canceled();
+    }
+  }
+  // 没有直接返回事件
+  else {
+    done();
+  }
 }

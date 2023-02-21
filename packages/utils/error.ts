@@ -19,7 +19,7 @@ export function debugWarn(scope: string | Error, message?: string): void {
     const error: Error = isString(scope)
       ? new IvueMaterialPlusError(`[${scope}] ${message}`)
       : scope;
-    // eslint-disable-next-line no-console
+
     console.warn(error);
   }
 }

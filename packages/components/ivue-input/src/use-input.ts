@@ -4,7 +4,7 @@ import {
   useFormItemInputId,
   useDisabled,
 } from '@ivue-material-plus/hooks';
-import { calcTextareaHeight } from '@ivue-material-plus/utils/calc-textarea-height';
+import { calcTextareaHeight } from '@ivue-material-plus/hooks';
 import { debugWarn } from '@ivue-material-plus/utils';
 
 // type
@@ -190,7 +190,11 @@ export const useInput = (
     const maxRows = autoHeight.maxRows;
 
     // 文本框样式
-    textareaStyles.value = calcTextareaHeight(textarea.value, minRows, maxRows);
+    textareaStyles.value = calcTextareaHeight(
+      textarea.value!,
+      minRows,
+      maxRows
+    );
   };
 
   // 输入事件

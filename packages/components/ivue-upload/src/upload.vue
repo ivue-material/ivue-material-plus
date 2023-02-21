@@ -54,14 +54,14 @@
     </upload-list>
 
     <!-- 放大图片 -->
-    <!-- <image-preview
+    <image-preview
       transfer
       :bodyOverflow="bodyOverflow"
-      :previewList="data.imagePreviewList"
-      :initialIndex="data.imagePreviewInitialIndex"
-      v-model="data.imagePreview"
+      :previewList="imagePreviewList"
+      :initialIndex="imagePreviewInitialIndex"
+      v-model="imagePreview"
       @on-close="handleClosePreview"
-    ></image-preview> -->
+    ></image-preview>
 
     <!-- 上传框右边 -->
     <div
@@ -108,8 +108,8 @@ import { useUpload } from './use-upload';
 
 // components
 import IvueIcon from '@ivue-material-plus/components/ivue-icon';
+import ImagePreview from '@ivue-material-plus/components/ivue-image-preview';
 import UploadList from './upload-list.vue';
-// import ImagePreview from '../ivue-image-preview';
 
 const prefixCls = 'ivue-upload';
 
@@ -128,6 +128,9 @@ export default defineComponent({
       // data
       dragOver,
       fileList,
+      imagePreview,
+      imagePreviewList,
+      imagePreviewInitialIndex,
 
       // methods
       handleClickInput,
@@ -192,6 +195,9 @@ export default defineComponent({
 
       // data
       fileList,
+      imagePreview,
+      imagePreviewList,
+      imagePreviewInitialIndex,
 
       // computed
       inputWrapClasses,
@@ -216,7 +222,7 @@ export default defineComponent({
   components: {
     UploadList,
     IvueIcon,
-    // ImagePreview,
+    ImagePreview,
   },
 });
 </script>

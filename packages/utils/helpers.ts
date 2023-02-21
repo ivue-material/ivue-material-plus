@@ -1,7 +1,6 @@
-// @ts-nocheck
-
 import { CSSProperties, computed, ref } from 'vue';
 import { isDef, isNumeric } from './validate';
+export { isFunction } from 'lodash';
 
 // 设置随机字符串
 export const getRandomStr = (len = 32) => {
@@ -17,39 +16,6 @@ export const getRandomStr = (len = 32) => {
 
   return str;
 };
-
-const IMAGE_REGEXP = /\.(jpeg|jpg|gif|png|svg|webp|jfif|bmp|dpg)/i;
-
-export function isImageUrl(url: string): boolean {
-  return IMAGE_REGEXP.test(url);
-}
-
-// 是图片
-export function isImageFile(item): boolean {
-  // some special urls cannot be recognized
-  // user can add `isImage` flag to mark it as an image url
-
-  if (item.isImage) {
-    return true;
-  }
-
-  // 文件类型
-  if (item.file && item.file.type) {
-    return item.file.type.indexOf('image') === 0;
-  }
-
-  // 有链接
-  if (item.url) {
-    return isImageUrl(item.url);
-  }
-
-  // base64
-  if (typeof item.content === 'string') {
-    return item.content.indexOf('data:image') === 0;
-  }
-
-  return false;
-}
 
 export function addUnit(value?: string | number): string | undefined {
   if (!isDef(value)) {
@@ -72,27 +38,13 @@ export function getSizeStyle(
   }
 }
 
-// 事件代码
-export const EVENT_CODE = {
-  tab: 'Tab',
-  enter: 'Enter',
-  space: 'Space',
-  left: 'ArrowLeft', // 37
-  up: 'ArrowUp', // 38
-  right: 'ArrowRight', // 39
-  down: 'ArrowDown', // 40
-  esc: 'Escape',
-  delete: 'Delete',
-  backspace: 'Backspace',
-};
-
 // 创建数组范围
-export function createRange(length) {
+export function createRange(length: number) {
   return Array.from({ length }, (v, k) => k);
 }
 
 // 是否是颜色
-export function isCssColor(color) {
+export function isCssColor(color: string) {
   return !!color && !!color.match(/^(#|(rgb|hsl)a?\()/);
 }
 
@@ -123,15 +75,15 @@ export function setTextColor(color: string | string[]) {
 }
 
 // 是否是纯数字
-export function isValueNumber(value) {
+export function isValueNumber(value: string | number) {
   return /^[0-9][0-9]*$/.test(value + '');
 }
 
 // 已经获取滚动条宽度
-let cached;
+let cached: number;
 
 // 获取滚动条宽度
-export function getScrollBarSize(fresh?) {
+export function getScrollBarSize(fresh?: boolean) {
   if (!isClient) {
     return 0;
   }
@@ -201,38 +153,6 @@ export const isElement = (el: HTMLElement) => {
   return typeof HTMLElement === 'object' && el instanceof HTMLElement;
 };
 
-// 下载文件
-export async function downloadFile(url, name = '') {
-  if (!isClient) {
-    return Promise.reject();
-  }
-
-  try {
-    const res = await fetch(url);
-    const blob = await res.blob();
-
-    const split = res.url.split('/');
-    // 文件名称
-    const fileName = split[split.length - 1];
-
-    if (!blob) {
-      return Promise.reject();
-    }
-
-    const localUrl = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.setAttribute('href', localUrl);
-    a.setAttribute('download', name || fileName);
-    a.click();
-
-    URL.revokeObjectURL(localUrl);
-
-    return Promise.resolve();
-  } catch (e) {
-    return Promise.reject(e);
-  }
-}
-
 // requestAnimationFrame
 export function raf(fn: FrameRequestCallback): number {
   return isClient ? requestAnimationFrame(fn) : -1;
@@ -254,7 +174,7 @@ export function doubleRaf(fn: FrameRequestCallback): void {
 export const isUndefined = (val: any): val is undefined => val === undefined;
 
 // Find components upward
-export function findComponentsUpward(context, componentName) {
+export function findComponentsUpward(context: any, componentName: string): any {
   const parents = [];
   const parent = context.$parent;
 
@@ -272,7 +192,8 @@ export function findComponentsUpward(context, componentName) {
 }
 
 // Find components upward
-export function findComponentUpward(context, componentName, componentNames?) {
+export function findComponentUpward(context: any, componentName: string) {
+  let componentNames: string | string[];
   // 当前组件名称
   if (typeof componentName === 'string') {
     componentNames = [componentName];

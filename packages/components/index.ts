@@ -19,6 +19,9 @@ export * from './ivue-breadcrumb';
 export * from './ivue-breadcrumb-item';
 export * from './ivue-steps';
 export * from './ivue-upload';
+export * from './ivue-spin';
+export * from './ivue-image';
+export * from './ivue-image-preview';
 
 // plugins
 export * from './ivue-ripple';

@@ -1,6 +1,7 @@
 import { onMounted, ref, shallowRef } from 'vue';
 import { useEventListener } from '@vueuse/core';
-import { isClient, scrollTop } from '@ivue-material-plus/utils';
+import { isClient } from '@ivue-material-plus/utils';
+import { scrollTop } from './utils';
 
 // type
 import type { SetupContext } from 'vue';

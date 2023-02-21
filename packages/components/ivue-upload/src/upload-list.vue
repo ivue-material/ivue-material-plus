@@ -63,9 +63,9 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 // utils
-import { isImageFile, getSizeStyle } from '@ivue-material-plus/utils';
+import { getSizeStyle } from '@ivue-material-plus/utils';
 // hooks
-import { useNamespace } from '@ivue-material-plus/hooks';
+import { useNamespace, isImageFile } from '@ivue-material-plus/hooks';
 // upload-lists
 import { uploadListProps, uploadListEmits } from './upload-list';
 // use-upload-list

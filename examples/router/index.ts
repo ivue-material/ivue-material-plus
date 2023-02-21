@@ -19,6 +19,8 @@ import bottomNav from '../components/bottom-nav.vue';
 import breadcrumb from '../components/breadcrumb.vue';
 import steps from '../components/steps.vue';
 import upLoad from '../components/upLoad.vue';
+import spin from '../components/spin.vue';
+import image from '../components/image.vue';
 
 const routes = [
   {
@@ -120,6 +122,16 @@ const routes = [
     path: '/upLoad',
     name: 'upLoad',
     component: upLoad,
+  },
+  {
+    path: '/spin',
+    name: 'spin',
+    component: spin,
+  },
+  {
+    path: '/image',
+    name: 'image',
+    component: image,
   },
 ];
 

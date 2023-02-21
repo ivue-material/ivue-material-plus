@@ -1,0 +1,195 @@
+@import '@ivue-material-plus/styles/src/common/transition.less';
+
+:root {
+  // toolbar
+  --ivue-image-preview-toolbar-bottom: 30px;
+  --ivue-image-preview-toolbar-height: 40px;
+  --ivue-image-preview-toolbar-radius: var(--ivue-radius-4px);
+  --ivue-image-preview-toolbar-transform: translate(-50%);
+
+  // toolbar-item
+  --ivue-image-preview-toolbar-item-margin: 0 6px;
+  --ivue-image-preview-toolbar-item-padding: 4px 8px;
+  --ivue-image-preview-toolbar-item-width: 36px;
+  --ivue-image-preview-toolbar-item-height: 40px;
+
+  // icon
+  --ivue-image-preview-icon-size: 40px;
+  --ivue-image-preview-icon-font-size: 26px;
+
+  // close
+  --ivue-image-preview-close-position: 16px;
+
+  // arrow
+  --ivue-image-preview-arrow-font-size: 35px;
+}
+
+// 蒙层
+.ivue-image-preview-mask {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+
+  background-color: var(--ivue-image-mask-bg);
+}
+
+// 外层
+.ivue-image-preview-wrapper {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1000;
+  user-select: none;
+  overflow: hidden;
+}
+
+.ivue-image-preview {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+
+  // 图片
+  &__image {
+    cursor: grab;
+
+    // 抓取
+    &.is-grabbing {
+      cursor: grabbing;
+    }
+
+    // 隐藏图片
+    &.is-hidden {
+      display: none;
+    }
+
+    // transition
+    &.is-transition {
+      transition: transform @transition-default;
+    }
+
+    // 限制图片大小
+    &.is-limit {
+      max-width: 100%;
+      max-height: 100%;
+    }
+  }
+
+  // 关闭
+  &-close,
+  // 左按钮
+  &-left,
+  // 右按钮
+  &-right {
+    border-radius: 50%;
+    z-index: 1;
+    cursor: pointer;
+
+    font-size: var(--ivue-image-preview-icon-font-size);
+    width: var(--ivue-image-preview-icon-size);
+    height: var(--ivue-image-preview-icon-size);
+    line-height: var(--ivue-image-preview-icon-size);
+    color: var(--ivue-image-preview-toolbar-item-color);
+    background: var(--ivue-image-preview-toolbar-bg);
+  }
+
+  // 关闭按钮
+  &-close {
+    position: absolute;
+
+    right: var(--ivue-image-preview-close-position);
+    top: var(--ivue-image-preview-close-position);
+  }
+
+  // 左按钮
+  &-left {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+
+    left: var(--ivue-image-preview-close-position);
+    font-size: var(--ivue-image-preview-arrow-font-size);
+  }
+
+  // 右按钮
+  &-right {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+
+    right: var(--ivue-image-preview-close-position);
+    font-size: var(--ivue-image-preview-arrow-font-size);
+  }
+
+  &__loading,
+  &__error {
+    position: absolute;
+    z-index: 1;
+  }
+
+  &__loading {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  // 加载错误
+  &__error {
+    top: 50%;
+    left: 0;
+    right: 0;
+    text-align: center;
+    color: var(--ivue-image-error-color);
+    font-size: var(--ivue-font-size-middle);
+  }
+}
+
+// toolbar
+.ivue-image-preview-toolbar {
+  position: absolute;
+  left: 50%;
+  z-index: 1;
+  overflow: hidden;
+  display: flex;
+  flex-flow: row wrap;
+  flex-wrap: nowrap;
+  align-items: center;
+
+  bottom: var(--ivue-image-preview-toolbar-bottom);
+  height: var(--ivue-image-preview-toolbar-height);
+  border-radius: var(--ivue-image-preview-toolbar-radius);
+  transform: var(--ivue-image-preview-toolbar-transform);
+  background: var(--ivue-image-preview-toolbar-bg);
+
+  &__item {
+    flex: 1 1 0%;
+    position: relative;
+    max-width: 100%;
+    min-height: 1px;
+    transition: opacity 0.1s ease-in-out;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+
+    margin: var(--ivue-image-preview-toolbar-item-margin);
+    padding: var(--ivue-image-preview-toolbar-item-padding);
+    width: var(--ivue-image-preview-toolbar-item-width);
+    height: var(--ivue-image-preview-toolbar-item-height);
+    color: var(--ivue-image-preview-toolbar-item-color);
+
+    &:hover {
+      opacity: 0.75;
+    }
+
+    &.is-wait {
+      cursor: wait;
+    }
+  }
+}

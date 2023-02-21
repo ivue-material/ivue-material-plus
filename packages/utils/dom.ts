@@ -1,4 +1,3 @@
-/* istanbul ignore next */
 export const on = (
   element: HTMLElement | Document | Window,
   event: string,
@@ -10,7 +9,6 @@ export const on = (
   }
 };
 
-/* istanbul ignore next */
 export const off = (
   element: HTMLElement | Document | Window,
   event: string,

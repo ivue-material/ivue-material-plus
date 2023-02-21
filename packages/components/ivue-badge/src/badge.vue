@@ -155,7 +155,7 @@ export default defineComponent({
       const { status } = props;
 
       // 是颜色参数
-      if (isCssColor(status)) {
+      if (status && isCssColor(status)) {
         return {
           backgroundColor: status,
         };

@@ -1,4 +1,5 @@
-import { callInterceptor } from '@ivue-material-plus/utils/interceptor';
+// hooks
+import { callInterceptor } from '@ivue-material-plus/hooks';
 
 // type
 import type { SetupContext } from 'vue';

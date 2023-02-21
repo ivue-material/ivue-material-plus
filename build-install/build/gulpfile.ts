@@ -15,12 +15,12 @@ import type { Module } from './src';
 
 // 复制文件到dist
 export const copyFullStyle = async () => {
-  // await mkdir(path.resolve(uiOutput, 'dist'), { recursive: true });
+  await mkdir(path.resolve(uiOutput, 'dist'), { recursive: true });
   // index
-  // await copyFile(
-  //   path.resolve(uiOutput, 'styles/index.css'),
-  //   path.resolve(uiOutput, 'dist/index.css')
-  // );
+  await copyFile(
+    path.resolve(uiOutput, 'styles/index.css'),
+    path.resolve(uiOutput, 'dist/index.css')
+  );
 };
 
 // 复制文件
@@ -58,24 +58,24 @@ const build: TaskFunction = series(
   // 开始构建
   parallel(
     // 打包模块
-    // runTask('buildModules'),
+    runTask('buildModules'),
 
-    // // 构建完整包文件
-    // runTask('buildFullBundle'),
+    // 构建完整包文件
+    runTask('buildFullBundle'),
 
-    // // 生成类型定义
-    // runTask('generateTypesDefinitions'),
+    // 生成类型定义
+    runTask('generateTypesDefinitions'),
 
     // 打包样式
     series(
       withTaskName('buildStyles', () =>
         run('pnpm run -C packages/styles build')
-      )
-      // copyFullStyle
+      ),
+      copyFullStyle
     )
-  )
+  ),
 
-  // parallel(copyTypesDefinitions, copyFiles)
+  parallel(copyTypesDefinitions, copyFiles)
 );
 
 export default build;
