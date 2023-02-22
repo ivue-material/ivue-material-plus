@@ -1,0 +1,204 @@
+:root {
+  // notice
+  --ivue-notice-width: 335px;
+  --ivue-notice-padding: 16px;
+  --ivue-notice-radius: 8px;
+  --ivue-notice-shadow: 0 1px 6px rgba(0, 0, 0, 0.2);
+  --ivue-notice-position: 16px;
+
+  // close
+  --ivue-notice-close-position-right: 10px;
+  --ivue-notice-close-position-top: 12px;
+
+  // title
+  --ivue-notice-title-padding-right: 10px;
+  --ivue-notice-title-line-height: 19px;
+
+  // desc
+  --ivue-notice-have-desc-title-margin-bottom: 8px;
+
+
+  // is-have-desc
+  --ivue-notice-is-have-desc-icon-top: -2px;
+  --ivue-notice-is-have-desc-font-size: 36px;
+
+
+  // have-icon
+  --ivue-notice-is-have-icon-title-margin-left: 26px;
+  --ivue-notice-is-have-icon-margin-left: 51px;
+
+
+
+  // icon
+  --ivue-notice-content-icon-font-size: 17px;
+  --ivue-notice-content-icon-ine-height: 19px;
+
+}
+
+
+.ivue-notice {
+  position: fixed;
+  z-index: 1000;
+  overflow: hidden;
+  transition: opacity 0.3s, transform 0.3s, left 0.3s, right 0.3s, top 0.4s,
+    bottom 0.3s;
+
+  width: var(--ivue-notice-width);
+  padding: var(--ivue-notice-padding);
+  border-radius: var(--ivue-notice-radius);
+  box-shadow: var(--ivue-notice-shadow);
+  background-color: var(--ivue-notice-bg);
+
+  // right
+  &.is-right {
+    right: var(--ivue-notice-position);
+  }
+
+  // left
+  &.is-left {
+    left: var(--ivue-notice-position);
+  }
+
+
+  // 内容
+  &-content {
+    position: relative;
+
+    // 有 render 渲染函数
+    &.is-render {
+      .ivue-notice-desc {
+        display: none;
+      }
+    }
+
+    // 是否有有描述
+    &.is-have-desc {
+      .ivue-notice-content__title {
+        margin-bottom: var(--ivue-notice-have-desc-title-margin-bottom);
+      }
+
+      .ivue-notice-content__icon {
+        line-height: 1;
+
+        top: var(--ivue-notice-is-have-desc-icon-top);
+        font-size: var(--ivue-notice-is-have-desc-font-size);
+      }
+
+    }
+
+    // 有状态图标
+    &.is-have-icon {
+      .ivue-notice-content__title {
+        margin-left: var(--ivue-notice-is-have-icon-title-margin-left);
+      }
+    }
+
+    &.is-have-desc&.is-have-icon {
+
+      .ivue-notice-content__title,
+      .ivue-notice-content__desc {
+        margin-left: var(--ivue-notice-is-have-icon-margin-left);
+      }
+
+    }
+
+    // 标题
+    &__title {
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden;
+      font-weight: bold;
+
+      padding-right: var(--ivue-notice-title-padding-right);
+      line-height: var(--ivue-notice-title-line-height);
+      font-size: var(--ivue-font-size-middle);
+      color: var(--ivue-notice-title-color);
+    }
+
+    // 描述
+    &__desc {
+      text-align: justify;
+      line-height: 1.5;
+
+      font-size: var(--ivue-font-size-base);
+      color: var(--ivue-notice-desc-color);
+    }
+
+    // 状态图标
+    &__icon {
+      position: absolute;
+      left: 0;
+      width: auto;
+      min-width: auto;
+      height: auto;
+      font-size: var(--ivue-notice-content-icon-font-size);
+      line-height: var(--ivue-notice-content-icon-ine-height);
+
+      // success
+      &.is-success {
+        display: inline-block;
+
+        color: var(--ivue-notice-success-color);
+      }
+
+      // info
+      &.is-info {
+        color: var(--ivue-notice-primary-color);
+      }
+
+      // warning
+      &.is-warning {
+        color: var(--ivue-notice-warning-color);
+      }
+
+      // error
+      &.is-error {
+        color: var(--ivue-notice-error-color);
+      }
+    }
+  }
+
+  // 关闭按钮
+  &-close {
+    position: absolute;
+
+    outline: none;
+    cursor: pointer;
+
+    color: var(--ivue-notice-close-color);
+    top: var(--ivue-notice-close-position-top);
+    right: var(--ivue-notice-close-position-right);
+
+    .ivue-icon {
+      position: relative;
+      width: auto;
+      min-width: auto;
+      height: auto;
+
+      font-size: var(--ivue-font-size-middle);
+
+      &:hover {
+        color: var(--ivue-notice-close-hover-color);
+      }
+    }
+  }
+}
+
+
+
+
+.ivue-notice-fade-enter-from {
+  &.right {
+    right: 0;
+    transform: translateX(100%);
+  }
+
+  &.left {
+    left: 0;
+    transform: translateX(-100%);
+  }
+}
+
+.ivue-notice-fade-leave-to {
+  opacity: 0;
+}

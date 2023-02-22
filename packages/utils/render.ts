@@ -1,5 +1,3 @@
-const Render = (props: any) => {
+export const RenderCell = (props: any) => {
   return props.render();
 };
-
-export default Render;

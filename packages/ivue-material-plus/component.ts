@@ -31,6 +31,7 @@ import { IvueImage } from '@ivue-material-plus/components/ivue-image';
 import { IvueImagePreview } from '@ivue-material-plus/components/ivue-image-preview';
 import { IvueProgress } from '@ivue-material-plus/components/ivue-progress';
 import { IvueCircular } from '@ivue-material-plus/components/ivue-circular';
+import { IvueNotice } from '@ivue-material-plus/components/ivue-notice';
 
 import type { Plugin } from 'vue';
 
@@ -65,4 +66,5 @@ export default [
   IvueImagePreview,
   IvueProgress,
   IvueCircular,
+  IvueNotice
 ] as Plugin[];

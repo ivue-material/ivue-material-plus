@@ -11,3 +11,4 @@ export * from './objects';
 export * from './transfer-queue';
 export * from './validate';
 export * from './event-code';
+export * from './render';

@@ -24,6 +24,7 @@ export * from './ivue-image';
 export * from './ivue-image-preview';
 export * from './ivue-progress';
 export * from './ivue-circular';
+export * from './ivue-notice';
 
 // plugins
 export * from './ivue-ripple';

@@ -23,8 +23,14 @@ import spin from '../components/spin.vue';
 import image from '../components/image.vue';
 import progress from '../components/progress.vue';
 import circle from '../components/circle.vue';
+import notice from '../components/notice.vue';
 
 const routes = [
+  {
+    path: '/notice',
+    name: 'notice',
+    component: notice,
+  },
   {
     path: '/circle',
     name: 'circle',
