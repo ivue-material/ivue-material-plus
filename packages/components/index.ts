@@ -22,6 +22,7 @@ export * from './ivue-upload';
 export * from './ivue-spin';
 export * from './ivue-image';
 export * from './ivue-image-preview';
+export * from './ivue-progress';
 
 // plugins
 export * from './ivue-ripple';

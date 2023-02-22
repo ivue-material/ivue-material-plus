@@ -1,8 +1,0 @@
-// 公共分隔符
-$common-separator: '-' !default;
-// E 的子元素类型会由双下划"__"线表示，并且嵌套进 block 元素后：.block__element
-$element-separator: '__' !default;
-// Modifier - M 的修饰符则会由中划线表示"--", 并嵌套在 块元素
-$modifier-separator: '--' !default;
-// 状态前缀
-$state-prefix: 'is-' !default;

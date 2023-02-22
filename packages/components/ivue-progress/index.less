@@ -1,0 +1,245 @@
+@import '@ivue-material-plus/styles/src/common/transition.less';
+
+:root {
+  // inner
+  --ivue-progress-inner-radius: 100px;
+
+  // text
+  --ivue-progress-inner-text-margin: 0 5px;
+
+  // show-info
+  --ivue-progress-show-info-outer-padding-right: 55px;
+  --ivue-progress-show-info-outer-margin-right: -55px;
+
+  // active
+  --ivue-progress-active-radius: 10px;
+
+  // vertical
+  --ivue-progress-vertical-height: 100px;
+}
+
+.ivue-progress {
+  display: inline-flex;
+  align-items: center;
+  position: relative;
+  width: 100%;
+  background: none !important;
+
+  font-size: var(--ivue-font-size-small);
+  color: var(--ivue-progress-color);
+
+  // 进度条
+  &-outer {
+    display: inline-flex;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+  }
+
+  // 内容样式
+  &-inner {
+    display: inline-block;
+    position: relative;
+    width: 100%;
+    vertical-align: middle;
+    overflow: hidden;
+
+    background-color: var(--ivue-progress-inner-bg);
+    border-radius: var(--ivue-progress-inner-radius);
+
+    // 已完成的分段百分比
+    &__success {
+      position: absolute;
+      top: 0;
+      left: 0;
+      transition: all 0.6s @transition-default-timing;
+      animation-duration: 3s;
+
+      border-radius: var(--ivue-progress-inner-radius);
+      background-color: var(--ivue-progress-success-bg);
+    }
+
+    // 百分比是否置于进度条内
+    &__text {
+      display: inline-flex;
+      align-items: center;
+      height: 100%;
+      vertical-align: middle;
+
+      margin: var(--ivue-progress-inner-text-margin);
+      color: var(--ivue-progress-inner-text-color);
+      font-size: var(--ivue-font-size-small);
+    }
+  }
+
+  // 背景样式
+  &-bg {
+    text-align: right;
+    position: relative;
+    background-color: currentColor;
+    transition: all 0.6s @transition-default-timing;
+    animation-duration: 3s;
+
+    border-radius: var(--ivue-progress-inner-radius);
+
+    // 是否为动画进度条
+    &.is-indeterminate {
+      animation: indeterminate 3s infinite;
+
+      @keyframes indeterminate {
+        0% {
+          left: -100%;
+        }
+
+        100% {
+          left: 100%;
+        }
+      }
+    }
+  }
+
+  // 状态图标
+  &-text {
+    display: inline-flex;
+
+    color: var(--ivue-progress-text-color);
+    margin: var(--ivue-progress-inner-text-margin);
+
+    .ivue-icon {
+      min-width: auto;
+      width: auto;
+      height: auto;
+
+      font-size: var(--ivue-font-size-small);
+    }
+  }
+
+  // 没有隐藏数值或状态图标 && 没有百分比是否置于进度条内
+  &.is-show-info {
+    .ivue-progress-outer {
+      padding-right: var(--ivue-progress-show-info-outer-padding-right);
+      margin-right: var(--ivue-progress-show-info-outer-margin-right);
+    }
+  }
+
+  // success
+  &.is-success {
+    .ivue-progress-bg {
+      background-color: var(--ivue-progress-success-bg);
+    }
+
+    .ivue-progress-text {
+      color: var(--ivue-progress-success-bg);
+    }
+  }
+
+  // wrong
+  &.is-wrong {
+    .ivue-progress-bg {
+      background-color: var(--ivue-progress-error-bg);
+    }
+
+    .ivue-progress-text {
+      color: var(--ivue-progress-error-bg);
+    }
+  }
+
+  // warning
+  &.is-warning {
+    .ivue-progress-bg {
+      background-color: var(--ivue-progress-warning-bg);
+    }
+
+    .ivue-progress-text {
+      color: var(--ivue-progress-warning-bg);
+    }
+  }
+
+  // active
+  &.is-active {
+    .ivue-progress-bg:before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      opacity: 0;
+      animation: ivue-progress-active 2s ease infinite;
+
+      background: var(--ivue-progress-active-bg);
+      border-radius: var(--ivue-progress-active-radius);
+    }
+
+    @keyframes ivue-progress-active {
+      0% {
+        opacity: 0.3;
+        width: 0;
+      }
+
+      100% {
+        opacity: 0;
+        width: 100%;
+      }
+    }
+  }
+
+
+  // 垂直
+  &.is-vertical {
+    width: auto;
+    flex-direction: column;
+    justify-content: center;
+
+    height: var(--ivue-progress-vertical-height);
+
+    // 进度条
+    .ivue-progress-outer {
+      height: 100%;
+      width: auto;
+      padding: 0;
+      margin: 0;
+    }
+
+    // 背景样式
+    .ivue-progress-bg {
+      display: inline-block;
+      vertical-align: bottom;
+
+      &::before {
+        top: auto;
+        animation: ivue-progress-active-vertical 2s ease infinite;
+      }
+
+      @keyframes ivue-progress-active-vertical {
+        0% {
+          opacity: 0.3;
+          height: 0;
+        }
+
+        100% {
+          opacity: 0;
+          height: 100%;
+        }
+      }
+    }
+
+    // 内容样式
+    .ivue-progress-inner {
+      height: 100%;
+      width: auto;
+
+      &:after {
+        content: '';
+        height: 100%;
+        display: inline-block;
+        vertical-align: bottom;
+      }
+    }
+
+    // 状态图标
+    .ivue-progress-text {
+      margin: 0;
+    }
+  }
+}

@@ -29,6 +29,7 @@ import { IvueUpload } from '@ivue-material-plus/components/ivue-upload';
 import { IvueSpin } from '@ivue-material-plus/components/ivue-spin';
 import { IvueImage } from '@ivue-material-plus/components/ivue-image';
 import { IvueImagePreview } from '@ivue-material-plus/components/ivue-image-preview';
+import { IvueProgress } from '@ivue-material-plus/components/ivue-progress';
 
 import type { Plugin } from 'vue';
 
@@ -61,4 +62,5 @@ export default [
   IvueSpin,
   IvueImage,
   IvueImagePreview,
+  IvueProgress
 ] as Plugin[];

@@ -21,8 +21,14 @@ import steps from '../components/steps.vue';
 import upLoad from '../components/upLoad.vue';
 import spin from '../components/spin.vue';
 import image from '../components/image.vue';
+import progress from '../components/progress.vue';
 
 const routes = [
+  {
+    path: '/progress',
+    name: 'progress',
+    component: progress,
+  },
   {
     path: '/Affix',
     name: 'Affix',
