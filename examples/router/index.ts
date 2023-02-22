@@ -22,8 +22,14 @@ import upLoad from '../components/upLoad.vue';
 import spin from '../components/spin.vue';
 import image from '../components/image.vue';
 import progress from '../components/progress.vue';
+import circle from '../components/circle.vue';
 
 const routes = [
+  {
+    path: '/circle',
+    name: 'circle',
+    component: circle,
+  },
   {
     path: '/progress',
     name: 'progress',

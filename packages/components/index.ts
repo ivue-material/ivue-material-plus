@@ -23,6 +23,7 @@ export * from './ivue-spin';
 export * from './ivue-image';
 export * from './ivue-image-preview';
 export * from './ivue-progress';
+export * from './ivue-circular';
 
 // plugins
 export * from './ivue-ripple';
