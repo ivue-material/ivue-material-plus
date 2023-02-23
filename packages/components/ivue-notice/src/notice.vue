@@ -21,7 +21,7 @@
         </template>
         <!-- 带图标消息 -->
         <template v-else>
-          <ivue-icon :class="[bem.be('content', 'icon'), bem.is(type)]">
+          <ivue-icon :class="bem.is(type)">
             {{ iconTypes[type] }}
           </ivue-icon>
           <div :class="bem.be('content', 'title')">{{ title }}</div>

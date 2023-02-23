@@ -32,9 +32,7 @@
   // icon
   --ivue-notice-content-icon-font-size: 17px;
   --ivue-notice-content-icon-ine-height: 19px;
-
 }
-
 
 .ivue-notice {
   position: fixed;
@@ -77,7 +75,7 @@
         margin-bottom: var(--ivue-notice-have-desc-title-margin-bottom);
       }
 
-      .ivue-notice-content__icon {
+      .ivue-icon {
         line-height: 1;
 
         top: var(--ivue-notice-is-have-desc-icon-top);
@@ -125,7 +123,7 @@
     }
 
     // 状态图标
-    &__icon {
+    .ivue-icon {
       position: absolute;
       left: 0;
       width: auto;
@@ -184,16 +182,13 @@
   }
 }
 
-
-
-
 .ivue-notice-fade-enter-from {
-  &.right {
+  &.is-right {
     right: 0;
     transform: translateX(100%);
   }
 
-  &.left {
+  &.is-left {
     left: 0;
     transform: translateX(-100%);
   }

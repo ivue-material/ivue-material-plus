@@ -74,7 +74,7 @@ export const noticeProps = buildProps({
    */
   duration: {
     type: Number,
-    default: 0,
+    default: 4500,
   },
   /**
    * 偏移位置

@@ -47,17 +47,10 @@
       <ivue-button @click="showCloseAll">关闭所有实利</ivue-button>
     </div>
   </div>
-
-  <IvueNotice
-    id="12"
-    type="success"
-    title="偏移"
-    desc="这是一条带有偏移的提示消息"
-  ></IvueNotice>
 </template>
 
 <script>
-import IvueNotice from '@ivue-material-plus/components/ivue-notice';
+import { IvueNotice } from '@ivue-material-plus/components';
 
 import { h } from 'vue';
 
@@ -65,13 +58,15 @@ export default {
   components: {
     IvueNotice,
   },
-  mounted() {},
+  mounted() {
+    console.log(this);
+  },
   methods: {
     showCloseAll() {
-      this.$notice.closeAll();
+      IvueNotice.closeAll();
     },
     showClose() {
-      this.$notice.open({
+      IvueNotice.open({
         title: '偏移',
         desc: '这是一条带有偏移的提示消息',
         offset: 100,
@@ -79,21 +74,21 @@ export default {
       });
     },
     offsert() {
-      this.$notice.open({
+      IvueNotice.open({
         title: '偏移',
         desc: '这是一条带有偏移的提示消息',
         offset: 100,
       });
     },
     open1() {
-      this.$notice.open({
+      IvueNotice.open({
         title: '自定义位置',
         desc: '右上角弹出的消息',
       });
     },
 
     open2() {
-      this.$notice.open({
+      IvueNotice.open({
         title: '自定义位置',
         desc: '右下角弹出的消息',
         position: 'bottom-right',
@@ -101,7 +96,7 @@ export default {
     },
 
     open3() {
-      this.$notice.open({
+      IvueNotice.open({
         title: '自定义位置',
         desc: '左下角弹出的消息',
         position: 'bottom-left',
@@ -109,14 +104,14 @@ export default {
     },
 
     open4() {
-      this.$notice.open({
+      IvueNotice.open({
         title: '自定义位置',
         desc: '左上角弹出的消息',
         position: 'top-left',
       });
     },
     renderFunc() {
-      this.$notice.success({
+      IvueNotice.success({
         title: 'Notification title',
         desc: 'The desc will hide when you set render.',
         render: () => {
@@ -129,13 +124,13 @@ export default {
       });
     },
     time() {
-      this.$notice.open({
+      IvueNotice.open({
         title: 'Notification title',
         desc: 'This notification does not automatically close, and you need to click the close button to close.',
       });
     },
     open(nodesc) {
-      const success = this.$notice.success({
+      const success = IvueNotice.success({
         title: 'Notification title',
         styles: 'color:red',
         desc: nodesc
@@ -154,7 +149,7 @@ export default {
       }, 1000);
     },
     info(nodesc) {
-      this.$notice.info({
+      IvueNotice.info({
         duration: 0,
         title: 'Notification title',
         desc: nodesc
@@ -163,7 +158,7 @@ export default {
       });
     },
     success(nodesc) {
-      this.$notice.success({
+      IvueNotice.success({
         title: 'Notification title',
         desc: nodesc
           ? ''
@@ -171,7 +166,7 @@ export default {
       });
     },
     warning(nodesc) {
-      this.$notice.warning({
+      IvueNotice.warning({
         title: 'Notification title',
         desc: nodesc
           ? ''
@@ -179,7 +174,7 @@ export default {
       });
     },
     error(nodesc) {
-      this.$notice.error({
+      IvueNotice.error({
         title: 'Notification title',
         desc: nodesc
           ? ''
