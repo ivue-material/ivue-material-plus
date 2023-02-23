@@ -1,5 +1,4 @@
 import { withInstallFunction } from '@ivue-material-plus/utils';
-import './index.less';
 
 import Notice from './src/notice-increase';
 

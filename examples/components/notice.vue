@@ -143,10 +143,10 @@ export default {
       console.log('12');
 
       // this.setTimeout && clearTimeout(this.setTimeout)
-      setTimeout(() => {
-        console.log(success);
-        success && success.close('id');
-      }, 1000);
+      // setTimeout(() => {
+      //   console.log(success);
+      //   success && success.close('id');
+      // }, 1000);
     },
     info(nodesc) {
       IvueNotice.info({
@@ -185,4 +185,6 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="less">
+@import '../../packages/components/ivue-notice/index.less';
+</style>
