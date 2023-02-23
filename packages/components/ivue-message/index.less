@@ -1,0 +1,189 @@
+:root {
+  --ivue-message-top: 16px;
+  --ivue-message-left: 50%;
+  --ivue-message-transform: translateX(-50%);
+
+  // content
+  --ivue-message-content-shadow: 0 1px 6px rgba(0, 0, 0, 0.2);
+  --ivue-message-content-padding: 8px 16px;
+  --ivue-message-content-text-margin-left: 5px;
+
+  // icon
+  --ivue-message-icon-margin-right: 4px;
+  --ivue-message-icon-font-size: 18px;
+
+  // close
+  --ivue-message-close-right: 4px;
+  --ivue-message-close-right: 4px;
+
+  // closable
+  --ivue-message-is-closable-margin-right: 32px;
+
+  // loading
+  --ivue-message-loading-margin-right: 4px;
+  --ivue-message-loading-width: 16px;
+
+
+}
+
+.ivue-message {
+  position: fixed;
+  z-index: 1010;
+  text-align: center;
+  pointer-events: none;
+  transition: opacity 0.3s, transform 0.4s, top 0.4s;
+
+  font-size: var(--ivue-font-size-base);
+  transform: var(--ivue-message-transform);
+  top: var(--ivue-message-top);
+  left: var(--ivue-message-left);
+
+  // 内容
+  &-content {
+    display: flex;
+    align-items: center;
+    position: relative;
+    pointer-events: all;
+
+    padding: var(--ivue-message-content-padding);
+    border-radius: var(--ivue-radius-4px);
+    background-color: var(--ivue-message-content-bg);
+    box-shadow: var(--ivue-message-content-shadow);
+
+    // text
+    &__text {
+      display: inline-block;
+      margin-left: var(--ivue-message-content-text-margin-left);
+    }
+
+    // 状态图标
+    &__icon {
+      vertical-align: middle;
+      width: auto;
+      min-width: auto;
+      height: auto;
+
+      margin-right: var(--ivue-message-icon-margin-right);
+      font-size: var(--ivue-message-icon-font-size);
+
+      &.is-success {
+        color: var(--ivue-message-success-color);
+      }
+
+      &.is-info {
+        color: var(--ivue-message-info-color);
+      }
+
+      &.is-warning {
+        color: var(--ivue-message-warning-color);
+      }
+
+      &.is-error {
+        color: var(--ivue-message-error-color);
+      }
+    }
+
+    // 关闭按钮
+    &__close {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+
+      right: var(--ivue-message-close-right);
+      color: var(--ivue-notice-close-color);
+
+      .ivue-icon {
+        width: auto;
+        min-width: auto;
+        height: auto;
+
+        font-size: var(--ivue-font-size-middle);
+
+        &:hover {
+          color: var(--ivue-notice-close-hover-color);
+        }
+      }
+    }
+
+  }
+
+  // indeterminate
+  &-indeterminate {
+    display: inline-block;
+    margin-right: 9px;
+
+    &__loading {
+      vertical-align: middle;
+
+      color: var(--ivue-message-loading-color);
+      margin-right: var(--ivue-message-loading-margin-right);
+      width: var(--ivue-message-loading-width);
+    }
+
+    &__circle {
+      stroke: currentColor;
+      z-index: 2;
+      transition: all 0.6s ease-in-out;
+    }
+  }
+
+  // 有关闭按钮
+  &.is-closable {
+    .ivue-message-content__text {
+      margin-right: var(--ivue-message-is-closable-margin-right);
+    }
+  }
+
+  // 有背景颜色
+  &.is-have-background {
+    .ivue-message-content {
+      box-shadow: none;
+      color: var(--ivue-message-have-bg-color);
+    }
+
+    .ivue-icon {
+      color: var(--ivue-message-have-bg-color);
+    }
+
+    // success
+    &.is-success {
+      .ivue-message-content {
+        background: var(--ivue-message-success-color);
+        border: 1px solid var(--ivue-message-success-color);
+      }
+    }
+
+    // info
+    &.is-info {
+      .ivue-message-content {
+        background: var(--ivue-message-info-color);
+        border: 1px solid var(--ivue-message-info-color);
+      }
+    }
+
+    // warning
+    &.is-warning {
+      .ivue-message-content {
+        background: var(--ivue-message-warning-color);
+        border: 1px solid var(--ivue-message-warning-color);
+      }
+    }
+
+    // error
+    &.is-error {
+      .ivue-message-content {
+        background: var(--ivue-message-error-color);
+        border: 1px solid var(--ivue-message-error-color);
+      }
+    }
+  }
+}
+
+.ivue-message-fade-enter-from,
+.ivue-message-fade-leave-to {
+  opacity: 0;
+  transform: translate(-50%, -100%);
+}

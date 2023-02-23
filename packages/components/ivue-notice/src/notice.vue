@@ -50,11 +50,10 @@ import { RenderCell, EVENT_CODE } from '@ivue-material-plus/utils';
 import { useNamespace } from '@ivue-material-plus/hooks';
 
 // notice
-
 import { noticeProps } from './notice';
 
 // type
-import type { SetTimeout } from './notice';
+type SetTimeout = ReturnType<typeof setTimeout>;
 
 // components
 import IvueIcon from '@ivue-material-plus/components/ivue-icon';

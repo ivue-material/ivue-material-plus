@@ -24,8 +24,14 @@ import image from '../components/image.vue';
 import progress from '../components/progress.vue';
 import circle from '../components/circle.vue';
 import notice from '../components/notice.vue';
+import message from '../components/message.vue';
 
 const routes = [
+  {
+    path: '/message',
+    name: 'message',
+    component: message,
+  },
   {
     path: '/notice',
     name: 'notice',

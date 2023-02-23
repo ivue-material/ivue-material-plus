@@ -2,10 +2,10 @@ import { buildProps } from '@ivue-material-plus/utils';
 
 // type
 import type { ExtractPropTypes } from 'vue';
-import type Notice from './notice.vue';
+import type Message from './message.vue';
 
 // props
-export const noticeProps = buildProps({
+export const messageProps = buildProps({
   /**
    * 内容
    *
@@ -22,7 +22,7 @@ export const noticeProps = buildProps({
    */
   type: {
     type: String,
-    values: ['normal', 'info', 'warning', 'success', 'error'],
+    values: ['normal', 'info', 'warning', 'success', 'error', 'loading'],
     default: 'normal',
   },
   /**
@@ -40,7 +40,16 @@ export const noticeProps = buildProps({
    */
   closable: {
     type: Boolean,
-    default: true,
+    default: false,
+  },
+  /**
+   * 背景颜色
+   *
+   * @type {Boolean}
+   */
+  background: {
+    type: Boolean,
+    default: false,
   },
   /**
    * render 渲染函数
@@ -74,26 +83,16 @@ export const noticeProps = buildProps({
    */
   duration: {
     type: Number,
-    default: 4500,
+    default: 1500,
   },
   /**
    * 偏移位置
    *
    * @type {Number}
    */
-  offset: {
+  top: {
     type: Number,
     default: 0,
-  },
-  /**
-   * 自定义弹出位置
-   *
-   * @type {String}
-   */
-  position: {
-    type: String,
-    values: ['top-right', 'top-left', 'bottom-right', 'bottom-left'],
-    default: 'top-right',
   },
   /**
    * 当前index
@@ -105,24 +104,16 @@ export const noticeProps = buildProps({
     default: 0,
   },
   /**
-   * 标题
+   * loading icon
    *
    * @type {String}
    */
-  title: {
-    type: String,
-  },
-  /**
-   * 描述
-   *
-   * @type {String}
-   */
-  desc: {
+  loadingIcon: {
     type: String,
   },
 } as const);
 // props 类型
-export type NoticeProps = ExtractPropTypes<typeof noticeProps>;
+export type MessageProps = ExtractPropTypes<typeof messageProps>;
 
 // 组件实例
-export type NoticeInstance = InstanceType<typeof Notice>;
+export type MessageInstance = InstanceType<typeof Message>;
