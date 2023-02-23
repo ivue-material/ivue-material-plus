@@ -25,8 +25,14 @@ import progress from '../components/progress.vue';
 import circle from '../components/circle.vue';
 import notice from '../components/notice.vue';
 import message from '../components/message.vue';
+import loadingbar from '../components/loading-bar.vue';
 
 const routes = [
+  {
+    path: '/loading-bar',
+    name: 'loadingbar',
+    component: loadingbar,
+  },
   {
     path: '/message',
     name: 'message',

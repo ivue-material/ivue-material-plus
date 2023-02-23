@@ -204,7 +204,6 @@ export default defineComponent({
     });
 
     return {
-      prefixCls,
       // bem
       bem,
 

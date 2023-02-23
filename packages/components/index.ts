@@ -30,3 +30,4 @@ export * from './ivue-ripple';
 export * from './ivue-loading';
 export * from './ivue-notice';
 export * from './ivue-message';
+export * from './ivue-loading-bar';

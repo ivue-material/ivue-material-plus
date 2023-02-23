@@ -11,8 +11,8 @@
 
 <script lang="ts">
 import { defineComponent, computed, unref } from 'vue';
+// hooks
 import { useNamespace } from '@ivue-material-plus/hooks';
-
 // affix
 import { affixProps, affixEmits } from './affix';
 // use

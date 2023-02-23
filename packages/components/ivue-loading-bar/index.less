@@ -1,0 +1,23 @@
+.ivue-loading-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  z-index: 2000;
+
+  // inner
+  &__inner {
+    transition: width .2s linear;
+
+    // primary
+    &.is-primary {
+      background-color: var(--ivue-loading-bar-inner-primary-bg);
+    }
+
+    // error
+    &.is-error {
+      background-color: var(--ivue-loading-bar-inner-error-bg);
+    }
+  }
+}
