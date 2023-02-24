@@ -82,7 +82,7 @@ import { useNamespace } from '@ivue-material-plus/hooks';
 import { stepProps } from './step';
 
 // components
-import IvueIcon from '@ivue-material-plus/components/ivue-icon';
+import { IvueIcon } from '@ivue-material-plus/components';
 
 // type
 import type { StepData } from './step';

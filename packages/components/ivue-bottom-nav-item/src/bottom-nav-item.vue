@@ -17,7 +17,7 @@ import { defineComponent } from 'vue';
 import { useNamespace } from '@ivue-material-plus/hooks';
 
 // components
-import IvueButton from '@ivue-material-plus/components/ivue-button';
+import { IvueButton } from '@ivue-material-plus/components';
 // bottom-nav-item
 import { bottomNavItemProps } from './bottom-nav-item';
 // use

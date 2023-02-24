@@ -28,8 +28,10 @@ import {
   nextTick,
   unref,
 } from 'vue';
-import { useNamespace } from '@ivue-material-plus/hooks';
 
+// hooks
+import { useNamespace } from '@ivue-material-plus/hooks';
+// utils
 import { isCssColor } from '@ivue-material-plus/utils';
 // option
 import { optionProps } from './option';
@@ -47,8 +49,7 @@ import type { ComponentInternalInstance } from 'vue';
 import type { DataOpen, OptionInstance } from './option';
 
 // components
-// icon
-import IvueIcon from '@ivue-material-plus/components/ivue-icon';
+import { IvueIcon } from '@ivue-material-plus/components';
 
 const prefixCls = 'ivue-select-item';
 

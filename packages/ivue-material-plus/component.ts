@@ -31,6 +31,11 @@ import { IvueImage } from '@ivue-material-plus/components/ivue-image';
 import { IvueImagePreview } from '@ivue-material-plus/components/ivue-image-preview';
 import { IvueProgress } from '@ivue-material-plus/components/ivue-progress';
 import { IvueCircular } from '@ivue-material-plus/components/ivue-circular';
+import {
+  IvueTabs,
+  IvueTab,
+  IvueTabItem,
+} from '@ivue-material-plus/components/ivue-tabs';
 
 import type { Plugin } from 'vue';
 
@@ -65,4 +70,7 @@ export default [
   IvueImagePreview,
   IvueProgress,
   IvueCircular,
+  IvueTabs,
+  IvueTab,
+  IvueTabItem,
 ] as Plugin[];

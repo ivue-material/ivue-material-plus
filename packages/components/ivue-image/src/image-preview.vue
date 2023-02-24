@@ -153,7 +153,7 @@ import { imagePreviewProps } from './image-preview';
 
 // components
 import IvueSpin from '@ivue-material-plus/components/ivue-spin';
-import IvueIcon from '@ivue-material-plus/components/ivue-icon';
+import { IvueIcon } from '@ivue-material-plus/components';
 
 const prefixCls = 'ivue-image-preview';
 

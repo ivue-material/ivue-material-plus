@@ -32,7 +32,7 @@ import { avatarProps, avatarEmits } from './avatar';
 import { useAvatar } from './use-avatar';
 
 // components
-import IvueIcon from '@ivue-material-plus/components/ivue-icon';
+import { IvueIcon } from '@ivue-material-plus/components';
 
 // type
 import type { CSSProperties } from 'vue';

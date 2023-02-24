@@ -107,7 +107,7 @@ import { uploadProps, uploadEmits } from './upload';
 import { useUpload } from './use-upload';
 
 // components
-import IvueIcon from '@ivue-material-plus/components/ivue-icon';
+import { IvueIcon } from '@ivue-material-plus/components';
 import ImagePreview from '@ivue-material-plus/components/ivue-image-preview';
 import UploadList from './upload-list.vue';
 

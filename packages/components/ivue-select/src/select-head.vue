@@ -117,9 +117,8 @@ import { useNamespace } from '@ivue-material-plus/hooks';
 import { selectHeadProps } from './select-head';
 // tokens
 import { SelectContextKey, SelectContext } from '@ivue-material-plus/tokens';
-
 // components
-import IvueIcon from '@ivue-material-plus/components/ivue-icon';
+import { IvueIcon } from '@ivue-material-plus/components';
 
 // type
 import { OptionData } from './option';

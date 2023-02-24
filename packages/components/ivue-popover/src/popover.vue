@@ -87,8 +87,7 @@ import { popoverProps, popoverEmits } from './popover';
 import { usePopover } from './use-popover';
 
 // components
-import IvueIcon from '@ivue-material-plus/components/ivue-icon';
-import IvueButton from '@ivue-material-plus/components/ivue-button';
+import { IvueIcon, IvueButton } from '@ivue-material-plus/components';
 
 const prefixCls = 'ivue-popover';
 

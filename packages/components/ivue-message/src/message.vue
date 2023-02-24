@@ -22,7 +22,10 @@
               :viewBox="`${viewBoxSize} ${viewBoxSize} ${2 * viewBoxSize} ${
                 2 * viewBoxSize
               }`"
-              :class="[bem.be('indeterminate', 'loading'), 'ivue-animation-loop']"
+              :class="[
+                bem.be('indeterminate', 'loading'),
+                'ivue-animation-loop',
+              ]"
               v-else
             >
               <circle
@@ -78,7 +81,7 @@ import { messageProps } from './message';
 type SetTimeout = ReturnType<typeof setTimeout>;
 
 // components
-import IvueIcon from '@ivue-material-plus/components/ivue-icon';
+import { IvueIcon } from '@ivue-material-plus/components';
 
 const prefixCls = 'ivue-message';
 

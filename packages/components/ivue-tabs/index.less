@@ -1,0 +1,223 @@
+@import '@ivue-material-plus/styles/src/common/transition.less';
+
+:root {
+  // slot
+  --ivue-tabs-header-slot-height: 36px;
+
+  // icon
+  --ivue-tabs-header-icon-width: 32px;
+  --ivue-tabs-header-icon-position: 4px;
+
+  // slider
+  --ivue-tabs-slider-content-height: 4px;
+
+  // tab
+  --ivue-tabs-tab-padding: 8px 12px;
+  --ivue-tabs-tab-max-width: 264px;
+
+  // fixed-tabs
+  --ivue-tabs-fixed-width-min-width: 72px;
+
+  // fixed-tabs media
+  --ivue-tabs-fixed-width-media-min-width: 160px;
+}
+
+.ivue-tabs {
+  // 头部
+  &-header {
+    position: relative;
+
+    // 内容
+    &__content {
+      overflow: hidden;
+      display: flex;
+      border-bottom: 1px solid var(--ivue-tabs-content-border-color);
+      transition: all 0.6s @transition-default-timing;
+    }
+
+    // 容器
+    &__slot {
+      position: relative;
+      flex: 1 0 auto;
+      display: flex;
+      list-style-type: none;
+      white-space: nowrap;
+      transition: transform 0.6s @transition-default-timing;
+
+      height: var(--ivue-tabs-header-slot-height);
+
+      // 固定宽度标签
+      &.is-fixed-width {
+        .ivue-tabs-tab {
+          justify-content: center;
+          user-select: none;
+          white-space: normal;
+          text-align: center;
+          vertical-align: middle;
+
+          min-width: var(--ivue-tabs-fixed-width-min-width);
+        }
+
+        @media only screen and (min-width: 600px) {
+          .ivue-tabs-tab {
+            min-width: var(--ivue-tabs-fixed-width-media-min-width);
+          }
+        }
+      }
+
+      // 自动适应宽度标签
+      &.is-auto-width {
+        .ivue-tabs-tab {
+          flex: 1;
+          justify-content: center;
+        }
+      }
+
+      // 导航内容居中
+      &.is-centered .ivue-tabs-slider + .ivue-tabs-tab {
+        margin-left: auto;
+      }
+
+      &.is-centered > .ivue-tabs-tab:first-child {
+        margin-left: auto;
+      }
+
+      &.is-centered > .ivue-tabs-tab:last-child {
+        margin-right: auto;
+      }
+
+      // 导航内容向右
+      &.is-right > .ivue-tabs-tab:first-child {
+        margin-left: auto;
+      }
+
+      &.is-right .ivue-tabs-slider + .ivue-tabs-tab {
+        margin-left: auto;
+      }
+
+      // 导航栏是否需要滚动
+      &.is-overflow .ivue-tabs-tab {
+        flex: 1 0 auto;
+      }
+    }
+  }
+
+  // 内容
+  &-content {
+    position: relative;
+    overflow: hidden;
+  }
+
+  // 滑动线条
+  &-slider {
+    position: absolute;
+    bottom: 0;
+    margin: 0;
+    transition: @transition-default;
+
+    &__content {
+      width: 100%;
+      background: currentColor;
+
+      height: var(--ivue-tabs-slider-content-height);
+      border-radius: var(--ivue-tabs-slider-content-height);
+    }
+  }
+
+  // 选项
+  &-item {
+    width: 100%;
+    transition: transform @transition-default;
+  }
+
+  // tab
+  &-tab {
+    position: relative;
+    align-items: center;
+    display: inline-flex;
+    flex: 0 1 auto;
+    box-sizing: border-box;
+    width: auto;
+    height: 100%;
+    cursor: pointer;
+    text-decoration: none;
+    opacity: 0.7;
+    font-weight: 500;
+
+    padding: var(--ivue-tabs-tab-padding);
+    font-size: var(--ivue-font-size-base);
+    color: var(--ivue-tabs-tab-color);
+    max-width: var(--ivue-tabs-tab-max-width);
+    transition: color @transition-default;
+
+    // 禁用
+    &.is-disabled {
+      pointer-events: none;
+
+      color: var(--ivue-tabs-tab-disabled-color);
+    }
+
+    // 激活
+    &.is-active {
+      opacity: 1;
+
+      color: var(--ivue-tabs-tab-active-color);
+    }
+  }
+}
+
+// 箭头
+.ivue-tabs-header__icon {
+  position: absolute;
+  top: 0;
+  display: inline-flex;
+  align-content: center;
+  height: 100%;
+  user-select: none;
+  cursor: pointer;
+
+  width: var(--ivue-tabs-header-icon-width);
+  color: var(--ivue-tabs-header-icon-color);
+
+  // 左边按钮
+  &.is-prev {
+    left: var(--ivue-tabs-header-icon-position);
+  }
+
+  // 右边按钮
+  &.is-next {
+    right: var(--ivue-tabs-header-icon-position);
+  }
+}
+
+.ivue-tabs-item-reverse-transition {
+  &-enter-from {
+    position: absolute;
+    top: 0;
+    transform: translate(-100%, 0);
+  }
+
+  &-leave,
+  &-leave-to {
+    top: 0;
+    position: absolute;
+    transform: translate(100%, 0);
+  }
+}
+
+.ivue-tabs-item-transition {
+  &-enter-from {
+    transform: translate(100%, 0);
+  }
+
+  &-leave,
+  &-leave-active {
+    position: absolute;
+    top: 0;
+  }
+
+  &-leave-to {
+    position: absolute;
+    transform: translate(-100%, 0);
+  }
+}

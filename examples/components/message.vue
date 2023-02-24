@@ -70,7 +70,7 @@ export default {
         content: '这是一条带背景色的通知',
         duration: 0,
         id: 'id',
-        closable: true
+        closable: true,
       });
 
       if (this.setTimeout) {

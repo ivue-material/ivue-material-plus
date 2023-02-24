@@ -48,15 +48,13 @@ import { useEventListener } from '@vueuse/core';
 import { RenderCell, EVENT_CODE } from '@ivue-material-plus/utils';
 // hooks
 import { useNamespace } from '@ivue-material-plus/hooks';
-
 // notice
 import { noticeProps } from './notice';
+// components
+import { IvueIcon } from '@ivue-material-plus/components';
 
 // type
 type SetTimeout = ReturnType<typeof setTimeout>;
-
-// components
-import IvueIcon from '@ivue-material-plus/components/ivue-icon';
 
 const prefixCls = 'ivue-notice';
 

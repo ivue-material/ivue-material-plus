@@ -26,8 +26,14 @@ import circle from '../components/circle.vue';
 import notice from '../components/notice.vue';
 import message from '../components/message.vue';
 import loadingbar from '../components/loading-bar.vue';
+import tabs from '../components/tabs.vue';
 
 const routes = [
+  {
+    path: '/tabs',
+    name: 'tabs',
+    component: tabs,
+  },
   {
     path: '/loading-bar',
     name: 'loadingbar',

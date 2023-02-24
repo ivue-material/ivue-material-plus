@@ -86,8 +86,7 @@ import { carouselProps, carouselEmits } from './carousel';
 // use
 import { useCarousel } from './use-carousel';
 // components
-import IvueButton from '@ivue-material-plus/components/ivue-button';
-import IvueIcon from '@ivue-material-plus/components/ivue-icon';
+import { IvueButton, IvueIcon } from '@ivue-material-plus/components';
 
 const prefixCls = 'ivue-carousel';
 

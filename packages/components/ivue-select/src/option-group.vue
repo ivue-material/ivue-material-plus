@@ -21,8 +21,9 @@ import {
   ref,
   nextTick,
 } from 'vue';
-import { useNamespace } from '@ivue-material-plus/hooks';
 
+// hooks
+import { useNamespace } from '@ivue-material-plus/hooks';
 // option-group
 import { optionGroupProps } from './option-group';
 // tokens

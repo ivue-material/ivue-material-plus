@@ -26,10 +26,8 @@ import { useNamespace } from '@ivue-material-plus/hooks';
 
 // createPopper
 import { createPopper } from '@popperjs/core';
-
 // drop-down
 import { dropDownProps } from './drop-down';
-
 // tokens
 import { SelectContextKey } from '@ivue-material-plus/tokens';
 

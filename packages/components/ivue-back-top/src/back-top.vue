@@ -29,7 +29,7 @@ import { backTopProps, backTopEmits } from './back-top';
 import { useBackTop } from './use-back-top';
 
 // components
-import IvueIcon from '@ivue-material-plus/components/ivue-icon';
+import { IvueIcon } from '@ivue-material-plus/components';
 
 // type
 import type { CSSProperties } from 'vue';

@@ -73,7 +73,7 @@ import { useUploadList } from './use-upload-list';
 
 // components
 import { IvueLoadingDirective } from '@ivue-material-plus/components/ivue-loading';
-import IvueIcon from '@ivue-material-plus/components/ivue-icon';
+import { IvueIcon } from '@ivue-material-plus/components';
 
 // type
 import type { CSSProperties } from 'vue';

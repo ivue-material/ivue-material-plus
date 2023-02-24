@@ -160,8 +160,8 @@ import SelectHead from './select-head.vue';
 import DropDown from './drop-down.vue';
 // 选项
 import IvueOption from './option.vue';
-// icon
-import IvueIcon from '@ivue-material-plus/components/ivue-icon';
+// IvueIcon
+import { IvueIcon } from '@ivue-material-plus/components';
 
 const prefixCls = 'ivue-select';
 

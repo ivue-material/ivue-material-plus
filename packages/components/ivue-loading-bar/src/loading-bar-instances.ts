@@ -189,7 +189,6 @@ export default {
   },
   // 公共参数
   config(options: Options) {
-
     // 颜色
     if (options.color) {
       color = options.color;

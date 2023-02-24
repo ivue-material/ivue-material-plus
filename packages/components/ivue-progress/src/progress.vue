@@ -39,9 +39,8 @@ import { defineComponent, computed, ref, onMounted, watch, unref } from 'vue';
 import { useNamespace } from '@ivue-material-plus/hooks';
 // progress
 import { progressProps, progressEmits } from './progress';
-
 // components
-import IvueIcon from '@ivue-material-plus/components/ivue-icon';
+import { IvueIcon } from '@ivue-material-plus/components';
 
 const prefixCls = 'ivue-progress';
 
