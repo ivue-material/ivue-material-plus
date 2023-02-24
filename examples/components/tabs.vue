@@ -4,7 +4,7 @@
     <p>基本用法 分页</p>
     <ivue-tabs v-model="tab" :height="100" :showArrows="false">
       <template #header>
-        <ivue-tab v-for="n in 5" :key="`item${n}`">Item {{ n }}</ivue-tab>
+        <ivue-tab v-for="n in 5" :key="`item${n}`" disabled>Item {{ n }}</ivue-tab>
       </template>
 
       <template #content>
