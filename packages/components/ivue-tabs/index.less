@@ -23,6 +23,7 @@
 }
 
 .ivue-tabs {
+
   // 头部
   &-header {
     position: relative;
@@ -74,24 +75,24 @@
       }
 
       // 导航内容居中
-      &.is-centered .ivue-tabs-slider + .ivue-tabs-tab {
+      &.is-centered .ivue-tabs-slider+.ivue-tabs-tab {
         margin-left: auto;
       }
 
-      &.is-centered > .ivue-tabs-tab:first-child {
+      &.is-centered>.ivue-tabs-tab:first-child {
         margin-left: auto;
       }
 
-      &.is-centered > .ivue-tabs-tab:last-child {
+      &.is-centered>.ivue-tabs-tab:last-child {
         margin-right: auto;
       }
 
       // 导航内容向右
-      &.is-right > .ivue-tabs-tab:first-child {
+      &.is-right>.ivue-tabs-tab:first-child {
         margin-left: auto;
       }
 
-      &.is-right .ivue-tabs-slider + .ivue-tabs-tab {
+      &.is-right .ivue-tabs-slider+.ivue-tabs-tab {
         margin-left: auto;
       }
 
@@ -120,7 +121,8 @@
       background: currentColor;
 
       height: var(--ivue-tabs-slider-content-height);
-      border-radius: var(--ivue-tabs-slider-content-height);
+      border-top-left-radius: var(--ivue-tabs-slider-content-height);
+      border-top-right-radius: var(--ivue-tabs-slider-content-height);
     }
   }
 
