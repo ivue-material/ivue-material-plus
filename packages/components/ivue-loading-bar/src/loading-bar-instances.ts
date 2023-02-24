@@ -53,12 +53,15 @@ const newInstance = (options: Options) => {
     update(options: Options) {
       const proxy = vm.component!.proxy as LoadingBarInstance;
 
+      // 百分比
       if (options.percent !== undefined) {
         proxy.percent = options.percent;
       }
 
+      // 显示
       proxy.visible = options.visible as boolean;
 
+      // 状态
       if (options.status) {
         proxy.status = options.status;
       }
@@ -186,18 +189,23 @@ export default {
   },
   // 公共参数
   config(options: Options) {
+
+    // 颜色
     if (options.color) {
       color = options.color;
     }
 
+    // 错误颜色
     if (options.failedColor) {
       failedColor = options.failedColor;
     }
 
+    // 进度条高度
     if (options.height) {
       height = options.height;
     }
 
+    // 隐藏时的持续时间
     if (options.duration) {
       duration = options.duration;
     }
