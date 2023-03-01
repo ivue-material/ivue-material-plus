@@ -37,6 +37,7 @@ import {
   IvueTabItem,
 } from '@ivue-material-plus/components/ivue-tabs';
 
+// type
 import type { Plugin } from 'vue';
 
 export default [
