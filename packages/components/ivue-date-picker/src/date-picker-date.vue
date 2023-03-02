@@ -10,13 +10,14 @@ import {
   resolveDirective,
   unref,
 } from 'vue';
+import { useNamespace } from '@ivue-material-plus/hooks';
 
 // utils
+import { createRange } from '@ivue-material-plus/utils';
 import CreateNativeLocaleFormatter from './utils/create-native-locale-formatter';
 import Pad from './utils/pad';
 import MonthChange from './utils/month-change';
 import isDateAllowed from './utils/is-date-allowed';
-import { createRange } from '@ivue-material-plus/utils';
 
 // directives
 import { Touch } from '@ivue-material-plus/directives';
@@ -36,6 +37,9 @@ export default defineComponent({
   emits: ['table-date', 'input'],
   props: datePickerDateProps,
   setup(props, { emit }) {
+    // bem
+    const bem = useNamespace(prefixCls);
+
     // 是否使用反向动画
     const isReversing = ref<boolean>(false);
 
@@ -43,7 +47,9 @@ export default defineComponent({
 
     // 动画
     const computedTransition = computed(() => {
-      return unref(isReversing) ? 'tab-reverse-transition' : 'tab-transition';
+      return unref(isReversing)
+        ? 'ivue-date-picker-tab-reverse-transition'
+        : 'ivue-date-picker-tab-transition';
     });
 
     // 格式化每周日期
@@ -100,9 +106,12 @@ export default defineComponent({
     // 按钮样式
     const genButtonClasses = (isSelected: boolean, isCurrent: boolean) => {
       return {
-        'ivue-button--selected': isSelected,
-        'ivue-button--current': isCurrent,
-        'ivue-button--readonly': props.readonly && isSelected,
+        // 是否选中
+        [bem.is('selected')]: isSelected,
+        // 是否有显示当前日期
+        [bem.is('current')]: isCurrent,
+        // 是否只读
+        [bem.is('readonly')]: props.readonly && isSelected,
       };
     };
 
@@ -126,7 +135,7 @@ export default defineComponent({
       return MonthChange(props.tableDate, Math.sign(dates || 1));
     };
 
-    // 点击
+    // 手势
     const touch = (value: number) => {
       emit('table-date', calculateTableDate(value));
     };
@@ -188,8 +197,8 @@ export default defineComponent({
       );
     };
 
-    // genButton
-    const genButton = (value: string, staticClass: string) => {
+    // 渲染日期
+    const genButton = (value: string) => {
       // 是否选中
       const isSelected =
         value === props.value ||
@@ -218,17 +227,17 @@ export default defineComponent({
         isCurrent = value === props.current;
       }
 
-      const setColor = isSelected ? props.backgroundColor : props.textColor;
+      const setColor = isSelected
+        ? props.setBackgroundColor
+        : props.setTextColor;
 
       const color = (isSelected || isCurrent) && (props.color || 'primary');
 
-      const _staticClass = staticClass ? staticClass : '';
-
       return h(
         'button',
-        setColor!(color, {
+        setColor(color, {
           class: {
-            [`ivue-button ${_staticClass}`]: true,
+            ['ivue-button']: true,
             ...genButtonClasses(isSelected, isCurrent),
           },
           disabled: !isAllowed,
@@ -264,6 +273,7 @@ export default defineComponent({
         rows.push(h('td'));
       }
 
+      // 当前日期
       for (day = 1; day <= daysInMonth; day++) {
         const date = `${displayedYear.value}-${Pad(
           displayedMonth.value + 1
@@ -271,7 +281,9 @@ export default defineComponent({
 
         rows.push(
           h('td', [
-            genButton(date, 'ivue-button--icon'),
+            // 按钮
+            genButton(date),
+            // 标记
             isNote(date) ? genNote(date) : null,
           ])
         );
@@ -293,9 +305,12 @@ export default defineComponent({
 
     // 是否有便签
     const isNote = (date: string) => {
+      // 便签用于标记需要注意的日期
       if (Array.isArray(props.note)) {
         return props.note.indexOf(date) > -1;
-      } else if (props.note instanceof Function) {
+      }
+      // Function
+      else if (props.note instanceof Function) {
         return props.note(date);
       } else {
         return false;
@@ -319,9 +334,9 @@ export default defineComponent({
 
       return h(
         'div',
-        props.backgroundColor!(noteColor || props.color || 'warning', {
+        props.setBackgroundColor!(noteColor || props.color || 'warning', {
           class: {
-            [`${prefixCls}--note`]: true,
+            [bem.e('note')]: true,
           },
         })
       );
@@ -335,8 +350,7 @@ export default defineComponent({
       }
     );
 
-    return () =>
-      genTable(`${prefixCls} ${prefixCls}--table`, [genTHead(), genTBody()]);
+    return () => genTable(bem.b(), [genTHead(), genTBody()]);
   },
 });
 </script>

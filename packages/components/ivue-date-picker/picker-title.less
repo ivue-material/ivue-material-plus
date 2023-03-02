@@ -1,0 +1,88 @@
+:root {
+  --ivue-date-picker-title-year-margin-bottom: 8px;
+  --ivue-date-picker-title-date-font-size: 34px;
+  --ivue-date-picker-title-date-padding-bottom: 16px;
+}
+
+.ivue-date-picker-title {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  flex-wrap: wrap;
+  line-height: 1;
+
+  color: var(--ivue-date-picker-title-color);
+
+  &__year {
+    display: inline-flex;
+    align-items: center;
+    font-weight: 500;
+    cursor: pointer;
+
+    transition: @transition-default;
+    margin-bottom: var(--ivue-date-picker-title-year-margin-bottom);
+    font-size: var(--ivue-font-size-base);
+
+    &:hover:not(.is-readonly) {
+      opacity: .6;
+    }
+
+    .ivue-icon {
+      margin: initial;
+      transition: none;
+    }
+  }
+
+  &__date {
+    text-align: left;
+    font-weight: 500;
+    position: relative;
+    overflow: hidden;
+    font-size: var(--ivue-date-picker-title-date-font-size);
+  }
+
+}
+
+.ivue-date-picker-title-transition,
+.ivue-date-picker-title-reverse-transition {
+
+  &-enter-active,
+  &-leave-active {
+    transition: @transition-default;
+  }
+
+  &-enter-from,
+  &-leave-to {
+    opacity: 0;
+  }
+
+  &-enter-to {
+    transform: translate(0, 0);
+  }
+
+  &-leave,
+  &-leave-active,
+  &-leave-to {
+    position: absolute !important;
+  }
+}
+
+.ivue-date-picker-title-transition {
+  &-enter-from {
+    transform: translate(0, 100%);
+  }
+
+  &-leave-to {
+    transform: translate(0, -100%);
+  }
+}
+
+.ivue-date-picker-title-reverse-transition {
+  &-enter-from {
+    transform: translate(0, -100%);
+  }
+
+  &-leave-to {
+    transform: translate(0, 100%);
+  }
+}

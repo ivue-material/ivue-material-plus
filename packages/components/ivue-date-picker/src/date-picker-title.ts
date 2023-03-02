@@ -2,7 +2,6 @@ import { buildProps } from '@ivue-material-plus/utils';
 
 // type
 import type { ExtractPropTypes } from 'vue';
-import type DatePickerTitle from './date-picker-title.vue';
 
 // props
 export const datePickerTitleProps = buildProps({
@@ -14,6 +13,7 @@ export const datePickerTitleProps = buildProps({
   value: {
     type: String,
     default: '',
+    required: true,
   },
   /**
    * 选择年份
@@ -58,11 +58,8 @@ export const datePickerTitleProps = buildProps({
   readonly: {
     type: Boolean,
   },
-});
+} as const);
 // props 类型
 export type DatePickerTitleProps = ExtractPropTypes<
   typeof datePickerTitleProps
 >;
-
-// 组件实例
-export type DatePickerTitleInstance = InstanceType<typeof DatePickerTitle>;

@@ -2,14 +2,14 @@ import { buildProps, definePropType } from '@ivue-material-plus/utils';
 
 // type
 import type { ExtractPropTypes } from 'vue';
-import type DatePickerYears from './date-picker-years.vue';
+import type DatePickerMonth from './date-picker-month.vue';
 
 type Color = string | string[];
 type AllowedDates = (value: string) => boolean;
 type ModelValue = string | string[];
 
 // props
-export const datePickerYearsProps = buildProps({
+export const datePickerMonthProps = buildProps({
   /**
    * 日期时间
    *
@@ -21,6 +21,15 @@ export const datePickerYearsProps = buildProps({
     required: true,
   },
   /**
+   * 格式化函数
+   *
+   * @type {Function}
+   */
+  format: {
+    type: Function,
+    default: null,
+  },
+  /**
    * 年月
    *
    * @type {String}
@@ -28,6 +37,14 @@ export const datePickerYearsProps = buildProps({
   tableDate: {
     type: String,
     required: true,
+  },
+  /**
+   * 当前激活的类型
+   *
+   * @type {String}
+   */
+  activeType: {
+    type: String,
   },
   /**
    * 语言
@@ -39,39 +56,6 @@ export const datePickerYearsProps = buildProps({
     default: 'en-us',
   },
   /**
-   * 最小年份
-   *
-   * @type {String}
-   */
-  min: {
-    type: String,
-  },
-  /**
-   * 最大年份
-   *
-   * @type {String}
-   */
-  max: {
-    type: String,
-  },
-  /**
-   * 当前年份
-   *
-   * @type {Number | String}
-   */
-  year: {
-    type: [Number, String],
-    default: '',
-  },
-  /**
-   * 当前激活的类型
-   *
-   * @type {String}
-   */
-  activeType: {
-    type: String,
-  },
-  /**
    * 当前日期
    *
    * @type {String}
@@ -80,31 +64,22 @@ export const datePickerYearsProps = buildProps({
     type: String,
   },
   /**
-   * 设置背景颜色方法
+   * 设置背景颜色函数
    *
    * @type {Function}
    */
-  backgroundColor: {
+  setBackgroundColor: {
     type: Function,
     default: () => {}
   },
   /**
-   * 设置文字颜色方法
+   * 设置文字颜色函数
    *
    * @type {Function}
    */
-  textColor: {
+  setTextColor: {
     type: Function,
     default: () => {}
-  },
-  /**
-   * 文字颜色
-   *
-   * @type {String | Array}
-   */
-  color: {
-    type: definePropType<Color>([String, Array]),
-    default: ''
   },
   /**
    * 只读
@@ -115,6 +90,22 @@ export const datePickerYearsProps = buildProps({
     type: Boolean,
   },
   /**
+   * 最小月份
+   *
+   * @type {String}
+   */
+  min: {
+    type: String,
+  },
+  /**
+   * 最大月份
+   *
+   * @type {String}
+   */
+  max: {
+    type: String,
+  },
+  /**
    * 设置允许选择日期函数
    *
    * @type {Function}
@@ -122,10 +113,20 @@ export const datePickerYearsProps = buildProps({
   allowedDates: {
     type: definePropType<AllowedDates>(Function),
   },
+  /**
+   * 颜色
+   *
+   * @type {String | Array}
+   */
+  color: {
+    type: definePropType<Color>([String, Array]),
+    default: '',
+  },
 } as const);
 // props 类型
-export type DatePickerYearsProps = ExtractPropTypes<typeof datePickerYearsProps>;
-
+export type DatePickerMonthProps = ExtractPropTypes<
+  typeof datePickerMonthProps
+>;
 
 // 组件实例
-export type DatePickerYearsInstance = InstanceType<typeof DatePickerYears>;
+export type DatePickerMonthInstance = InstanceType<typeof DatePickerMonth>;

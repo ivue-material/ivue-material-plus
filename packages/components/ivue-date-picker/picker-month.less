@@ -1,0 +1,38 @@
+:root {
+  --ivue-date-picker-month-padding: 0 12px 12px 12px;
+  --ivue-date-picker-month-height: 250px;
+
+  --ivue-date-picker-month-td-height: 56px;
+  --ivue-date-picker-month-td-button-max-width: 160px;
+  --ivue-date-picker-month-td-button-min-width: 40px;
+}
+
+.ivue-date-picker-month {
+  position: relative;
+
+  padding: var(--ivue-date-picker-month-padding);
+  height: var(--ivue-date-picker-month-height);
+
+  table {
+    table-layout: fixed;
+    width: 100%;
+    transition: @transition-default;
+  }
+
+  td {
+    position: relative;
+    vertical-align: middle;
+    text-align: center;
+
+    height: var(--ivue-date-picker-month-td-height);
+
+    .ivue-button {
+      margin: 0 auto;
+      width: 100%;
+
+      max-width: var(--ivue-date-picker-month-td-button-max-width);
+      min-width: var(--ivue-date-picker-month-td-button-min-width);
+      color: var(--ivue-date-picker-date-td-button-color);
+    }
+  }
+}

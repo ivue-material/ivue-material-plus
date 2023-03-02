@@ -1,0 +1,47 @@
+:root {
+  --ivue-date-picker-header-padding: 4px 16px;
+  --ivue-date-picker-button-size: 36px;
+  --ivue-date-picker-icon-font-size: 24px;
+}
+
+.ivue-date-picker-header {
+  position: relative;
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+
+  padding: var(--ivue-date-picker-header-padding);
+
+  &__date {
+    flex: 1;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    line-height: 20px;
+
+    strong {
+      display: block;
+      width: 100%;
+
+      transition: @transition-default;
+      font-size: var(--ivue-font-size-base);
+      color: var(--ivue-date-picker-header-date-color);
+
+      &:hover {
+        color: var(--ivue-date-picker-header-date-hover-color);
+      }
+    }
+  }
+
+  .ivue-button {
+    width: var(--ivue-date-picker-button-size);
+    min-width: var(--ivue-date-picker-button-size);
+    height: var(--ivue-date-picker-button-size);
+    margin: 0;
+
+    &.is-icon .ivue-icon {
+      font-size: var(--ivue-date-picker-icon-font-size);
+    }
+  }
+}

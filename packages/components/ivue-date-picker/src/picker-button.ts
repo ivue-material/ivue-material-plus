@@ -32,10 +32,12 @@ export const genPickerButton = (
   return h(
     'div',
     {
-      class: {
-        [`ivue-picker-title-btn ${staticClass}`]: true,
-        ['ivue-picker-readonly']: readonly,
-      },
+      class: [
+        staticClass,
+        {
+          ['is-readonly']: readonly,
+        },
+      ],
       onClick: active || readonly ? undefined : click,
     },
     {

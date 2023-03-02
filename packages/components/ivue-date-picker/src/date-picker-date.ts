@@ -5,11 +5,22 @@ import type { ExtractPropTypes } from 'vue';
 import type DatePickerDate from './date-picker-date.vue';
 
 type Color = string | string[];
-type AllowedDates = (value: string) => boolean
+type AllowedDates = (value: string) => boolean;
 type NoteColor = string | Record<string, any> | ((date: string) => string);
+type ModelValue = string | string[];
 
 // props
 export const datePickerDateProps = buildProps({
+  /**
+   * 日期时间
+   *
+   * @type {String,Array}
+   */
+  value: {
+    type: definePropType<ModelValue>([Array, String]),
+    default: '',
+    required: true,
+  },
   /**
    * 一周的第一天
    *
@@ -45,14 +56,6 @@ export const datePickerDateProps = buildProps({
    */
   activeType: {
     type: String,
-  },
-  /**
-   * 日期 时间
-   *
-   * @type {String,Array}
-   */
-  value: {
-    type: [String, Array],
   },
   /**
    * 最小年份或月份
@@ -103,20 +106,22 @@ export const datePickerDateProps = buildProps({
     type: Function,
   },
   /**
-   * 背景颜色
+   * 设置背景颜色方法
    *
    * @type {Function}
    */
-  backgroundColor: {
+  setBackgroundColor: {
     type: Function,
+    default: () => {},
   },
   /**
-   * 文字颜色
+   * 设置文字颜色方法
    *
    * @type {Function}
    */
-  textColor: {
+  setTextColor: {
     type: Function,
+    default: () => {},
   },
   /**
    * 便签用于标记需要注意的日期
@@ -143,7 +148,7 @@ export const datePickerDateProps = buildProps({
   color: {
     type: definePropType<Color>([String, Array]),
   },
-});
+} as const);
 // props 类型
 export type DatePickerDateProps = ExtractPropTypes<typeof datePickerDateProps>;
 

@@ -1,5 +1,6 @@
 <script lang="ts">
 import { defineComponent, reactive, computed, watch, h, unref } from 'vue';
+import { useNamespace } from '@ivue-material-plus/hooks';
 
 // mixins
 import { colorable } from '@ivue-material-plus/utils/mixins/colorable';
@@ -13,27 +14,28 @@ import isDateAllowed from './utils/is-date-allowed';
 
 // components
 import Picker from './picker.vue';
-// import IvueDatePickerHeader from '../ivue-date-picker-header.vue';
-// import IvueDatePickerDate from '../ivue-date-picker-date.vue';
-// import IvueDatePickerMonth from '../ivue-date-picker-month.vue';
+import DatePickerHeader from './date-picker-header.vue';
+import DatePickerDate from './date-picker-date.vue';
+import DatePickerMonth from './date-picker-month.vue';
 import DatePickerYears from './date-picker-years.vue';
 import DatePickerTitle from './date-picker-title.vue';
-
-// type
-// import { Props, Data } from '../types/date-picker';
 
 // date-picker
 import { datePickerProps } from './date-picker';
 
 // type
 import type { DatePickerData } from './date-picker';
-import type { DatePickerYearsInstance } from './date-picker-years';
+
+const prefixCls = 'ivue-date-picker';
 
 export default defineComponent({
-  name: 'ivue-date-picker',
+  name: prefixCls,
   emits: ['update:modelValue', 'update:pickerDate', 'on-change'],
   props: datePickerProps,
   setup(props, { emit }) {
+    // bem
+    const bem = useNamespace(prefixCls);
+
     // 设置颜色
     const { setBackgroundColor, setTextColor } = colorable();
 
@@ -49,7 +51,7 @@ export default defineComponent({
       tableDate: '',
       // 当前时间
       now: new Date(),
-      // 当前激活的type
+      // 当前激活的类型
       activeType: '',
     });
 
@@ -142,26 +144,27 @@ export default defineComponent({
 
     // 最大月份
     const maxMonth = computed(() => {
-      return props.max ? sanitizeDateString(props.max, 'month') : null;
+      return props.max ? sanitizeDateString(props.max, 'month') : '';
     });
 
     // 最小月份
     const minMonth = computed(() => {
-      return props.min ? sanitizeDateString(props.min, 'month') : null;
+      return props.min ? sanitizeDateString(props.min, 'month') : '';
     });
 
     // 最小年份
     const minYear = computed(() => {
-      return props.min ? sanitizeDateString(props.min, 'year') : null;
+      return props.min ? sanitizeDateString(props.min, 'year') : '';
     });
 
     // 最大年份
     const maxYear = computed(() => {
-      return props.max ? sanitizeDateString(props.max, 'year') : null;
+      return props.max ? sanitizeDateString(props.max, 'year') : '';
     });
 
     // 当前日期
     const current = computed(() => {
+      // 是否显示当前日期
       if (props.showCurrent) {
         return sanitizeDateString(
           `${data.now.getFullYear()}-${
@@ -169,8 +172,10 @@ export default defineComponent({
           }-${data.now.getDate()}`,
           props.type
         );
-      } else {
-        return null;
+      }
+      // 没有当前日期
+      else {
+        return '';
       }
     });
 
@@ -217,7 +222,9 @@ export default defineComponent({
       // 设置年，月，日值
       setInputDate();
 
+      // 日期数据
       data.tableDate = (() => {
+        // 监听pickerDate变化以便在更改时执行某些操作，当选择月/年时触发
         if (props.pickerDate) {
           return props.pickerDate;
         }
@@ -233,6 +240,7 @@ export default defineComponent({
         return sanitizeDateString(date, type);
       })();
 
+      // 监听pickerDate变化以便在更改时执行某些操作，当选择月/年时触发
       if (props.pickerDate !== data.tableDate) {
         emit('update:pickerDate', data.tableDate);
       }
@@ -393,15 +401,22 @@ export default defineComponent({
 
     // 渲染标题内容
     const genPickerTitle = () => {
-      return h(DatePickerTitle as any, {
+      return h(DatePickerTitle, {
+        // 是否只读
         readonly: props.readonly,
+        // 日期
         date: props.modelValue
           ? unref(formatters).titleDate!(props.modelValue)
           : '',
+        // 当前年份
         year: unref(formatters).titleYear!(`${data.inputYear}`),
+        // value
         value: props.multiple ? props.modelValue[0] : props.modelValue,
+        // 选择年份
         selectingYear: data.activeType === 'YEAR',
+        // 年份图标
         yearIcon: props.yearIcon,
+        // 选择年触发
         'onUpdate:selectingYear': (value: string) => {
           data.activeType = value ? 'YEAR' : props.type.toUpperCase();
         },
@@ -410,109 +425,174 @@ export default defineComponent({
 
     // 渲染内容头部
     const genTableHeader = () => {
-      // return h(IvueDatePickerHeader, {
-      //   locale: props.locale,
-      //   tableDate: `${tableYear.value}`,
-      //   value:
-      //     data.activeType === 'DATE'
-      //       ? `${tableYear.value}-${Pad(tableMonth.value + 1)}`
-      //       : `${tableYear.value}`,
-      //   max: data.activeType === 'DATE' ? maxMonth.value : maxYear.value,
-      //   min: data.activeType === 'DATE' ? minMonth.value : minYear.value,
-      //   color: props.color,
-      //   nextIcon: props.nextIcon,
-      //   prevIcon: props.prevIcon,
-      //   readonly: props.readonly,
-      //   activeType: data.activeType,
-      //   format: props.headerDateFormat,
-      //   onInput: (value) => {
-      //     data.tableDate = value;
-      //   },
-      //   onToggle: () => {
-      //     data.activeType = data.activeType === 'DATE' ? 'MONTH' : 'YEAR';
-      //   },
-      // });
+      return h(DatePickerHeader, {
+        // 日期时间
+        value:
+          data.activeType === 'DATE'
+            ? `${tableYear.value}-${Pad(tableMonth.value + 1)}`
+            : `${tableYear.value}`,
+        // 语言
+        locale: props.locale,
+        // 年月
+        tableDate: `${tableYear.value}`,
+        // 最小年份或月份
+        min: data.activeType === 'DATE' ? minMonth.value : minYear.value,
+        // 最大年份或月份
+        max: data.activeType === 'DATE' ? maxMonth.value : maxYear.value,
+        // 文字颜色
+        color: props.color,
+        // 左边按钮图标
+        nextIcon: props.nextIcon,
+        // 右边按钮图标
+        prevIcon: props.prevIcon,
+        // 只读
+        readonly: props.readonly,
+        // 当前激活的类型
+        activeType: data.activeType,
+        // 日期格式化
+        format: props.headerDateFormat,
+        // 日期点击
+        onInput: (value: string) => {
+          data.tableDate = value;
+        },
+        // 切换当前激活类型
+        onToggle: () => {
+          data.activeType = data.activeType === 'DATE' ? 'MONTH' : 'YEAR';
+        },
+      });
     };
 
     // 渲染日期
     const genDateTable = () => {
-      // return h(IvueDatePickerDate, {
-      //   tableDate: `${tableYear.value}-${Pad(tableMonth.value + 1)}`,
-      //   firstDayOfWeek: props.firstDayOfWeek,
-      //   locale: props.locale,
-      //   value: props.modelValue,
-      //   max: props.max,
-      //   min: props.min,
-      //   allowedDates: props.allowedDates,
-      //   readonly: props.readonly,
-      //   current: current.value,
-      //   format: props.dayFormat,
-      //   backgroundColor: setBackgroundColor,
-      //   textColor: setTextColor,
-      //   note: props.note,
-      //   noteColor: props.noteColor,
-      //   color: props.color,
-      //   onInput: dateClick,
-      //   onTableDate: (value: string) => {
-      //     data.tableDate = value;
-      //   },
-      // });
+      return h(DatePickerDate, {
+        // 年月
+        tableDate: `${tableYear.value}-${Pad(tableMonth.value + 1)}`,
+        // 一周的第一天
+        firstDayOfWeek: props.firstDayOfWeek,
+        // 语言
+        locale: props.locale,
+        // value
+        value: props.modelValue,
+        // 最小年份或月份
+        min: props.min,
+        // 最大年份或月份
+        max: props.max,
+        // 设置允许选择日期函数
+        allowedDates: props.allowedDates,
+        // 只读
+        readonly: props.readonly,
+        // 当前日期
+        current: unref(current),
+        // 日期格式化函数
+        format: props.dayFormat,
+        // 设置背景颜色方法
+        setBackgroundColor: setBackgroundColor,
+        // 设置文字颜色方法
+        setTextColor: setTextColor,
+        // 便签用于标记需要注意的日期
+        note: props.note,
+        // 便签用于标记需要注意的日期的颜色
+        noteColor: props.noteColor,
+        // 文字颜色
+        color: props.color,
+        // 点击日期
+        onInput: dateClick,
+        // 监听日期数据变化
+        onTableDate: (value: string) => {
+          data.tableDate = value;
+        },
+      });
     };
 
     // 渲染月
     const genMonthTable = () => {
-      // return h(IvueDatePickerMonth, {
-      //   tableDate: `${tableYear.value}`,
-      //   color: props.color,
-      //   locale: props.locale,
-      //   value: selectedMonths.value,
-      //   max: maxMonth.value,
-      //   min: minMonth.value,
-      //   allowedDates: props.type === 'month' ? props.allowedDates : null,
-      //   readonly: props.readonly,
-      //   current: current.value
-      //     ? sanitizeDateString(current.value, 'month')
-      //     : null,
-      //   activeType: data.activeType,
-      //   format: props.monthFormat,
-      //   backgroundColor: setBackgroundColor,
-      //   textColor: setTextColor,
-      //   onInput: monthClick,
-      //   onTableDate: (value: string) => (data.tableDate = value),
-      // });
+      return h(DatePickerMonth, {
+        // 年月
+        tableDate: `${tableYear.value}`,
+        // 颜色
+        color: props.color,
+        // 语言
+        locale: props.locale,
+        // 日期时间
+        value: selectedMonths.value,
+        // 最小月份
+        min: minMonth.value,
+        // 最大月份
+        max: maxMonth.value,
+        // 设置允许选择日期函数
+        allowedDates: props.type === 'month' ? props.allowedDates : undefined,
+        // 只读
+        readonly: props.readonly,
+        // 当前日期
+        current: current.value
+          ? sanitizeDateString(current.value, 'month')
+          : '',
+        // 当前激活的类型
+        activeType: data.activeType,
+        // 格式化函数
+        format: props.monthFormat,
+        // 设置背景颜色函数
+        setBackgroundColor: setBackgroundColor,
+        // 设置文字颜色函数
+        setTextColor: setTextColor,
+        // 日期点击
+        onInput: monthClick,
+        // 监听当前日期变化
+        onTableDate: (value: string) => {
+          data.tableDate = value;
+        },
+      });
     };
 
     // 渲染年
     const genYears = () => {
-      return h(DatePickerYears as any, {
-        tableDate: `${tableYear.value}`,
-        color: props.color,
-        max: maxYear.value,
-        min: minYear.value,
-        readonly: props.readonly,
-        allowedDates: props.type === 'month' ? props.allowedDates : null,
-        locale: props.locale,
+      return h(DatePickerYears, {
+        // 日期时间
         value: `${tableYear.value}`,
+        // 年月
+        tableDate: `${tableYear.value}`,
+        // 文字颜色
+        color: props.color,
+        // 最小年份
+        min: minYear.value,
+        // 最大年份
+        max: maxYear.value,
+        // 只读
+        readonly: props.readonly,
+        // 设置允许选择日期函数
+        allowedDates: props.type === 'month' ? props.allowedDates : undefined,
+        // 语言
+        locale: props.locale,
+        // 当前日期
         current: current.value,
+        // 当前激活的类型
         activeType: data.activeType,
+        // 当前年份
         year: `${data.inputYear}`,
+        // 设置背景颜色方法
         backgroundColor: setBackgroundColor,
+        // 设置文字颜色方法
         textColor: setTextColor,
-
+        // 日期点击
         onInput: yearClick,
-        onTableDate: (value: string) => (data.tableDate = value),
+        // 日期数据变化
+        onTableDate: (value: string) => {
+          data.tableDate = value;
+        },
       });
     };
 
     // 渲染内容
     const genPickerBody = () => {
-      const children =
-        data.activeType === 'YEAR'
-          ? [genTableHeader(), genYears()]
-          : [
-              genTableHeader(),
-              data.activeType === 'DATE' ? genDateTable() : genMonthTable(),
-            ];
+      let children = [
+        genTableHeader(),
+        data.activeType === 'DATE' ? genDateTable() : genMonthTable(),
+      ];
+
+      // 当前激活类型是年
+      if (data.activeType === 'YEAR') {
+        children = [genTableHeader(), genYears()];
+      }
 
       return h(
         'div',
@@ -548,12 +628,15 @@ export default defineComponent({
         // 设置年，月，日值
         setInputDate();
 
+        // 不是多选 & 有vale & 没有监听月份或者年份的变化
         if (!props.multiple && props.modelValue && !props.pickerDate) {
           data.tableDate = sanitizeDateString(
             inputDate.value,
             props.type === 'month' ? 'year' : 'month'
           );
-        } else if (
+        }
+        // 多选 & 有vale & 之前没有数据 & 没有监听月份或者年份的变化
+        else if (
           props.multiple &&
           props.modelValue.length &&
           !oldValue.length &&
@@ -573,9 +656,13 @@ export default defineComponent({
       (value) => {
         if (value) {
           data.tableDate = value;
-        } else if (computedValue.value && props.type === 'date') {
+        }
+        // 日
+        else if (computedValue.value && props.type === 'date') {
           data.tableDate = sanitizeDateString(computedValue.value, 'month');
-        } else if (computedValue.value && props.type === 'month') {
+        }
+        // 月
+        else if (computedValue.value && props.type === 'month') {
           data.tableDate = sanitizeDateString(computedValue.value, 'year');
         }
       }
@@ -585,11 +672,17 @@ export default defineComponent({
     watch(
       () => props.type,
       (type) => {
+        // 当前激活的type
         data.activeType = type.toUpperCase();
+
+        // modelValue
         if (props.modelValue && props.modelValue.length) {
-          const output = (
-            (props.multiple ? props.modelValue : [props.modelValue]) as string[]
-          )
+          const modelValue = (
+            props.multiple ? props.modelValue : [props.modelValue]
+          ) as string[];
+
+          // 是否是多选
+          const output = modelValue
             .map((val: string) => sanitizeDateString(val, type))
             .filter(canIsDateAllowed);
 
@@ -606,10 +699,11 @@ export default defineComponent({
       return h(
         Picker,
         {
+          // 强制100％宽度
           class: {
-            ['ivue-picker--fullWidth']: props.fullWidth,
+            [bem.is('fullWidth')]: props.fullWidth,
           },
-          // 颜色
+          // 头部颜色 | 整体颜色
           color: props.headerColor || props.color,
           // 日历方向
           landscape: props.landscape,
@@ -619,12 +713,12 @@ export default defineComponent({
           fullWidth: props.fullWidth,
         },
         {
+          // 标题
           title: props.noTitle ? null : () => genPickerTitle(),
           default: () => genPickerBody(),
         }
       );
     };
   },
-  components: {},
 });
 </script>

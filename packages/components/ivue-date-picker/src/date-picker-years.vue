@@ -10,6 +10,7 @@ import {
   ref,
   unref,
 } from 'vue';
+import { useNamespace } from '@ivue-material-plus/hooks';
 
 // directives
 import { Touch } from '@ivue-material-plus/directives';
@@ -33,6 +34,9 @@ export default defineComponent({
   emits: ['table-date', 'input'],
   props: datePickerYearsProps,
   setup(props, { emit }) {
+    // bem
+    const bem = useNamespace(prefixCls);
+
     // 是否使用反向动画
     const isReversing = ref<boolean>(false);
 
@@ -40,7 +44,9 @@ export default defineComponent({
 
     // 动画
     const computedTransition = computed(() => {
-      return unref(isReversing) ? 'tab-reverse-transition' : 'tab-transition';
+      return unref(isReversing)
+        ? 'ivue-date-picker-tab-reverse-transition'
+        : 'ivue-date-picker-tab-transition';
     });
 
     // 显示的年份
@@ -166,9 +172,12 @@ export default defineComponent({
     // 按钮样式
     const genButtonClasses = (isSelected: boolean, isCurrent: boolean) => {
       return {
-        'ivue-button--selected': isSelected,
-        'ivue-button--current': isCurrent,
-        'ivue-button--readonly': props.readonly && isSelected,
+        // 是否选中
+        [bem.is('selected')]: isSelected,
+        // 是否有显示当前日期
+        [bem.is('current')]: isCurrent,
+        // 是否只读
+        [bem.is('readonly')]: props.readonly && isSelected,
       };
     };
 
@@ -206,11 +215,11 @@ export default defineComponent({
 
       const setColor = isSelected ? props.backgroundColor : props.textColor;
 
-      const color = (isSelected || isCurrent) && (!!props.color || 'primary');
+      const color = (isSelected || isCurrent) && (props.color || 'primary');
 
       return h(
         'button',
-        setColor!(color, {
+        setColor(color, {
           class: {
             ['ivue-button']: true,
             ...genButtonClasses(isSelected, isCurrent),
@@ -236,7 +245,7 @@ export default defineComponent({
       }
     );
 
-    return () => genTable(`${prefixCls} ${prefixCls}--table`, [genTBody()]);
+    return () => genTable(bem.b(), [genTBody()]);
   },
 });
 </script>

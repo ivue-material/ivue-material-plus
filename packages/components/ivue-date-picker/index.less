@@ -1,0 +1,41 @@
+@import '@ivue-material-plus/styles/src/common/transition.less';
+
+@import './picker.less';
+@import './picker-title.less';
+@import './picker-header.less';
+@import './picker-date.less';
+@import './picker-month.less';
+@import './picker-years.less';
+
+.ivue-date-picker-tab-transition {
+  &-enter-from {
+    transform: translate(100%, 0);
+  }
+
+  &-leave,
+  &-leave-active {
+    position: absolute;
+    top: 0;
+  }
+
+  &-leave-to {
+    position: absolute;
+    transform: translate(-100%, 0);
+  }
+}
+
+
+.ivue-date-picker-tab-reverse-transition {
+  &-enter-from {
+    position: absolute;
+    top: 0;
+    transform: translate(-100%, 0);
+  }
+
+  &-leave,
+  &-leave-to {
+    top: 0;
+    position: absolute;
+    transform: translate(100%, 0);
+  }
+}

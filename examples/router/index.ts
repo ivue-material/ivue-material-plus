@@ -27,8 +27,14 @@ import notice from '../components/notice.vue';
 import message from '../components/message.vue';
 import loadingbar from '../components/loading-bar.vue';
 import tabs from '../components/tabs.vue';
+import datepicker from '../components/date-picker.vue';
 
 const routes = [
+  {
+    path: '/date-picker',
+    name: 'datepicker',
+    component: datepicker,
+  },
   {
     path: '/tabs',
     name: 'tabs',

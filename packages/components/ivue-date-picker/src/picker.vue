@@ -1,5 +1,6 @@
 <script lang="ts">
 import { defineComponent, Transition, h } from 'vue';
+import { useNamespace } from '@ivue-material-plus/hooks';
 
 // mixins
 import { colorable } from '@ivue-material-plus/utils/mixins/colorable';
@@ -11,6 +12,9 @@ export default defineComponent({
   name: prefixCls,
   props: pickerProps,
   setup(props, { slots }) {
+    // bem
+    const bem = useNamespace(prefixCls);
+
     // mixins
     const { setBackgroundColor } = colorable();
 
@@ -20,10 +24,9 @@ export default defineComponent({
     const genTitle = () => {
       return h(
         'div',
-        setBackgroundColor(props.color || 'ivue-picker-primary', {
+        setBackgroundColor(props.color || bem.is('primary'), {
           class: {
-            [`${prefixCls}-title`]: true,
-            [`${prefixCls}-title--landscape`]: props.landscape,
+            [bem.b('title')]: true,
           },
         }),
         slots.title!()
@@ -48,7 +51,7 @@ export default defineComponent({
       return h(
         'div',
         {
-          class: 'ivue-picker-body',
+          class: bem.b('body'),
           style: props.fullWidth
             ? undefined
             : {
@@ -64,10 +67,14 @@ export default defineComponent({
       h(
         'div',
         {
-          class: {
-            [`${prefixCls} ivue-picker-card`]: true,
-            [`${prefixCls}--landscape`]: props.landscape,
-          },
+          class: [
+            bem.b(),
+            // 日历方向
+            {
+              [bem.is('landscape')]: props.landscape,
+            },
+          ],
+          // 日历方向
           style: props.fullWidth
             ? { display: 'block' }
             : { display: 'inline-flex' },

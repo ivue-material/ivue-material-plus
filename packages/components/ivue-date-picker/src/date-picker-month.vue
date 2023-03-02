@@ -10,14 +10,18 @@ import {
   resolveDirective,
   VNode,
 } from 'vue';
+import { useNamespace } from '@ivue-material-plus/hooks';
 
-import Touch from '../../utils/directives/touch';
-import isDateAllowed from '../../utils/is-date-allowed';
-import CreateNativeLocaleFormatter from '../../utils/create-native-locale-formatter';
-import Pad from '../../utils/pad';
+// directives
+import { Touch } from '@ivue-material-plus/directives';
 
-// type
-import type { Props } from './types/ivue-date-picker-month';
+// utils
+import isDateAllowed from './utils/is-date-allowed';
+import CreateNativeLocaleFormatter from './utils/create-native-locale-formatter';
+import Pad from './utils/pad';
+
+// date-picker-month
+import { datePickerMonthProps } from './date-picker-month';
 
 const prefixCls = 'ivue-date-picker-month';
 
@@ -26,118 +30,11 @@ export default defineComponent({
   directives: { Touch },
   // 声明事件
   emits: ['table-date', 'input'],
-  props: {
-    /**
-     * 格式化函数
-     *
-     * @type {Function}
-     */
-    format: {
-      type: Function,
-      default: null,
-    },
-    /**
-     * 日期时间
-     *
-     * @type {String,Array}
-     */
-    value: {
-      type: [String, Array],
-      required: true,
-    },
-    /**
-     * 年月
-     *
-     * @type {String}
-     */
-    tableDate: {
-      type: String,
-      required: true,
-    },
-    /**
-     * 当前激活的type
-     *
-     * @type {String}
-     */
-    activeType: {
-      type: String,
-    },
-    /**
-     * 语言
-     *
-     * @type {String}
-     */
-    locale: {
-      type: String,
-      default: 'en-us',
-    },
-    /**
-     * 当前日期
-     *
-     * @type {String}
-     */
-    current: {
-      type: String,
-    },
-    /**
-     * 背景颜色
-     *
-     * @type {Function}
-     */
-    backgroundColor: {
-      type: Function,
-    },
-    /**
-     * 文字颜色
-     *
-     * @type {Function}
-     */
-    textColor: {
-      type: Function,
-    },
-    /**
-     * 只读
-     *
-     * @type {Boolean}
-     */
-    readonly: {
-      type: Boolean,
-    },
-    /**
-     * 最小年份或月份
-     *
-     * @type {String}
-     */
-    min: {
-      type: String,
-    },
-    /**
-     * 最大年份或月份
-     *
-     * @type {String}
-     */
-    max: {
-      type: String,
-    },
-    /**
-     * 设置允许选择日期函数
-     *
-     * @type {Function}
-     */
-    allowedDates: {
-      type: Function,
-    },
-    /**
-     * 颜色
-     *
-     * @type {String | Array}
-     */
-    color: {
-      type: [String, Array],
-      default: '',
-    },
-  },
-  setup(props: Props, { emit }) {
+  props: datePickerMonthProps,
+  setup(props, { emit }) {
+    // bem
+    const bem = useNamespace(prefixCls);
+
     // 是否使用反向动画
     const isReversing = ref<boolean>(false);
 
@@ -145,7 +42,9 @@ export default defineComponent({
 
     // 动画
     const computedTransition = computed(() => {
-      return isReversing.value ? 'tab-reverse-transition' : 'tab-transition';
+      return isReversing.value
+        ? 'ivue-date-picker-tab-reverse-transition'
+        : 'ivue-date-picker-tab-transition';
     });
 
     // 日期格式
@@ -214,8 +113,8 @@ export default defineComponent({
           [
             rippleDirective,
             {
-              left: (e) => e.offsetX < -15 && touch(1),
-              right: (e) => e.offsetX > 15 && touch(-1),
+              left: (e: MouseEvent) => e.offsetX < -15 && touch(1),
+              right: (e: MouseEvent) => e.offsetX > 15 && touch(-1),
             },
           ],
         ]
@@ -261,9 +160,12 @@ export default defineComponent({
     // 按钮样式
     const genButtonClasses = (isSelected: boolean, isCurrent: boolean) => {
       return {
-        'ivue-button--selected': isSelected,
-        'ivue-button--current': isCurrent,
-        'ivue-button--readonly': props.readonly && isSelected,
+        // 是否选中
+        [bem.is('selected')]: isSelected,
+        // 是否有显示当前日期
+        [bem.is('current')]: isCurrent,
+        // 是否只读
+        [bem.is('readonly')]: props.readonly && isSelected,
       };
     };
 
@@ -289,16 +191,20 @@ export default defineComponent({
         isCurrent =
           props.activeType === 'YEAR'
             ? `${new Date().getFullYear()}` === value
-            : null || props.activeType === 'MONTH'
+            : false || props.activeType === 'MONTH'
             ? `${new Date().getFullYear()}-${new Date().getMonth() + 1}` ===
               value
-            : null;
+            : false;
       } else {
         isCurrent = value === props.current;
       }
 
-      const setColor = isSelected ? props.backgroundColor : props.textColor;
+      // 设置颜色
+      const setColor = isSelected
+        ? props.setBackgroundColor
+        : props.setTextColor;
 
+      // 颜色
       const color = (isSelected || isCurrent) && (props.color || 'primary');
 
       return h(
@@ -329,7 +235,7 @@ export default defineComponent({
       }
     );
 
-    return () => genTable(`${prefixCls} ${prefixCls}--table`, [genTBody()]);
+    return () => genTable(bem.b(), [genTBody()]);
   },
 });
 </script>

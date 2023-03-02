@@ -1,0 +1,71 @@
+@import '@ivue-material-plus/components/ivue-button/index.less';
+
+:root {
+  --ivue-date-picker-date-padding: 0 12px;
+  --ivue-date-picker-date-height: 250px;
+
+  // th
+  --ivue-date-picker-th-padding: 8px 0;
+  --ivue-date-picker-th-width: 45px;
+  --ivue-date-picker-th-button-size: 33px;
+
+  // note
+  --ivue-date-picker-note-size: 8px;
+  --ivue-date-picker-note-left: 50%;
+  --ivue-date-picker-note-bottom: 2px;
+  --ivue-date-picker-note-transform: translateX(-4px);
+}
+
+.ivue-date-picker-date {
+  position: relative;
+  text-align: center;
+
+  font-size: var(--ivue-font-size-base);
+  padding: var(--ivue-date-picker-date-padding);
+  height: var(--ivue-date-picker-date-height);
+
+  table {
+    table-layout: fixed;
+    width: 100%;
+    transition: @transition-default;
+  }
+
+  th {
+    font-weight: 600;
+    padding: var(--ivue-date-picker-th-padding);
+    color: var(--ivue-date-picker-date-th-color);
+  }
+
+  td {
+    position: relative;
+    text-align: center;
+    width: var(--ivue-date-picker-th-width);
+
+    .ivue-button {
+      text-align: center;
+      border: 1px solid;
+      border-color: transparent;
+      margin: 0;
+      padding: 0;
+      border-radius: 50%;
+
+      width: var(--ivue-date-picker-th-button-size);
+      height: var(--ivue-date-picker-th-button-size);
+      min-width: var(--ivue-date-picker-th-button-size);
+      font-size: var(--ivue-font-size-base);
+      color: var(--ivue-date-picker-date-td-button-color);
+    }
+  }
+
+  &__note {
+    position: absolute;
+    border-radius: 50%;
+    background: currentColor;
+
+    left: var(--ivue-date-picker-note-left);
+    bottom: var(--ivue-date-picker-note-bottom);
+    transform: var(--ivue-date-picker-note-transform);
+    width: var(--ivue-date-picker-note-size);
+    height: var(--ivue-date-picker-note-size);
+  }
+}

@@ -1,0 +1,89 @@
+@import '@ivue-material-plus/styles/src/elevation/index.less';
+
+:root {
+  --ivue-picker-radius: var(--ivue-radius-4px);
+
+  // title
+  --ivue-picker-title-padding: 16px;
+
+  // landscape
+  --ivue-picker-landscape-title-width: 170px;
+}
+
+.ivue-picker {
+  position: relative;
+  min-width: 0;
+  contain: layout style;
+  flex-direction: column;
+  vertical-align: top;
+  border-radius: var(--ivue-picker-radius);
+  transition: @transition-default;
+  overflow: hidden;
+
+  // elevation
+  .ivue-elevation(1);
+
+  // 日历方向
+  &.is-landscape {
+    .ivue-picker-title {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      z-index: 1;
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+
+      width: var(--ivue-picker-landscape-title-width);
+    }
+
+    .ivue-picker-body {
+      margin-left: var(--ivue-picker-landscape-title-width);
+    }
+  }
+
+  // 强制100％宽度
+  &.is-fullWidth {
+    display: flex;
+  }
+
+  // 标题
+  &-title {
+    padding: var(--ivue-picker-title-padding);
+    color: var(--ivue-picker-title-color);
+
+
+    // primary
+    &.is-primary {
+      background-color: var(--ivue-color-primary-base);
+      border-color: var(--ivue-color-primary-base);
+    }
+  }
+
+  // body
+  &-body {
+    height: auto;
+    overflow: hidden;
+    position: relative;
+    z-index: 0;
+    flex: 1 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    >div {
+      width: 100%;
+    }
+  }
+}
+
+.ivue-picker-fade-enter-active,
+.ivue-picker-fade-leave-active {
+  transition: opacity @transition-default;
+}
+
+.ivue-picker-fade-enter-from,
+.ivue-picker-fade-leave-to {
+  position: absolute;
+  opacity: 0;
+}

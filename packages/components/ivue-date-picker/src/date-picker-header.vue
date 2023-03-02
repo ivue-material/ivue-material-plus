@@ -1,118 +1,39 @@
 <script lang="ts">
-import { defineComponent, computed, watch, Transition, h, ref } from 'vue';
+import {
+  defineComponent,
+  computed,
+  watch,
+  Transition,
+  h,
+  ref,
+  unref,
+} from 'vue';
+import { useNamespace } from '@ivue-material-plus/hooks';
 
-import { colorable } from '../../utils/mixins/colorable';
-import CreateNativeLocaleFormatter from '../../utils/create-native-locale-formatter';
-import MonthChange from '../../utils/month-change';
+// mixins
+import { colorable } from '@ivue-material-plus/utils/mixins/colorable';
 
-import IvueButton from '../ivue-button/index.vue';
-import IvueIcon from '../ivue-icon/index.vue';
+// utils
+import CreateNativeLocaleFormatter from './utils/create-native-locale-formatter';
+import MonthChange from './utils/month-change';
 
-// type
-import type { Props } from './types/ivue-date-picker-header';
+// components
+import { IvueButton, IvueIcon } from '@ivue-material-plus/components';
+
+// date-picker-header
+import { datePickerHeaderProps } from './date-picker-header';
 
 const prefixCls = 'ivue-date-picker-header';
 
 export default defineComponent({
   emits: ['toggle', 'input'],
-  props: {
-    /**
-     * 日期 时间
-     *
-     * @type {String}
-     */
-    value: {
-      type: [Number, String],
-      required: true,
-    },
-    /**
-     * 语言
-     *
-     * @type {String}
-     */
-    locale: {
-      type: String,
-      default: 'en-us',
-    },
-    /**
-     * 左边按钮图标
-     *
-     * @type {String}
-     */
-    nextIcon: {
-      type: String,
-      default: 'chevron_right',
-    },
-    /**
-     * 右边按钮图标
-     *
-     * @type {String}
-     */
-    prevIcon: {
-      type: String,
-      default: 'chevron_left',
-    },
-    /**
-     * 最小年份或月份
-     *
-     * @type {String}
-     */
-    min: {
-      type: String,
-    },
-    /**
-     * 最大年份或月份
-     *
-     * @type {String}
-     */
-    max: {
-      type: String,
-    },
-    /**
-     * 是否只读
-     *
-     * @type {Boolean}
-     */
-    readonly: {
-      type: Boolean,
-    },
-    /**
-     * 当前激活的type
-     *
-     * @type {String}
-     */
-    activeType: {
-      type: String,
-    },
-    /**
-     * format
-     *
-     * @type {Function}
-     */
-    format: {
-      type: Function,
-    },
-    /**
-     * 年月
-     *
-     * @type {String}
-     */
-    tableDate: {
-      type: String,
-      required: true,
-    },
-    /**
-     * 文字颜色
-     *
-     * @type {String | Array}
-     */
-    color: {
-      type: [String, Array],
-    },
-  },
-  setup(props: Props, { emit, slots }) {
+  props: datePickerHeaderProps,
+  setup(props, { emit, slots }) {
+    // bem
+    const bem = useNamespace(prefixCls);
+
     // mixins
-    const { setTextColor } = colorable(props);
+    const { setTextColor } = colorable();
 
     // 是否使用反向动画
     const isReversing = ref<boolean>(false);
@@ -151,6 +72,7 @@ export default defineComponent({
 
       const max = Number(props.max.split('-')[0]) * 1;
 
+      // 最大年份
       if (year > max) {
         return max;
       }
@@ -168,14 +90,18 @@ export default defineComponent({
       const endYear = startYear + 9;
 
       let disabled =
+        // 只读
         props.readonly ||
+        // 小于最小值
         (change < 0 && props.min && calculateChange(change) < props.min) ||
+        // 大于最大值
         (change > 0 &&
           props.max &&
           (props.activeType === 'YEAR'
             ? endYear >= Number(props.max)
             : calculateChange(change) > props.max));
 
+      // 是否禁用
       if (props.activeType === 'YEAR' || props.activeType === 'MONTH') {
         if (change > 0 && props.value === props.max) {
           disabled = true;
@@ -185,10 +111,10 @@ export default defineComponent({
       return h(
         IvueButton,
         {
-          class: 'ivue-icon-button',
+          color: props.color,
           flat: true,
           icon: true,
-          disabled,
+          disabled: !!disabled,
           onClick: () => {
             emit('input', calculateChange(change));
           },
@@ -240,6 +166,7 @@ export default defineComponent({
         endYear = startYear + 9;
       }
 
+      // 头部文字
       const header = h(
         'strong',
         setTextColor(color, {
@@ -253,14 +180,18 @@ export default defineComponent({
             ? slots.default()
             : props.activeType === 'YEAR'
             ? `${startYear}-${endYear}`
-            : formatter.value(String(props.value)),
+            : unref(formatter)!(String(props.value)),
         ]
       );
 
+      // transition
       const transition = h(
         Transition,
         {
-          name: isReversing.value ? 'tab-reverse-transition' : 'tab-transition',
+          // 是否使用反向动画
+          name: unref(isReversing)
+            ? 'ivue-date-picker-tab-reverse-transition'
+            : 'ivue-date-picker-tab-transition',
         },
         {
           default: () => header,
@@ -270,11 +201,9 @@ export default defineComponent({
       return h(
         'div',
         {
-          class: {
-            [`${prefixCls}--value`]: true,
-          },
+          class: bem.e('date'),
         },
-        [transition]
+        transition
       );
     };
 
@@ -287,18 +216,17 @@ export default defineComponent({
     );
 
     return () => {
-      let everyClick = null;
+      let everyClick = 1;
 
+      // 是否是年
       if (props.activeType === 'YEAR') {
         everyClick = 10;
-      } else {
-        everyClick = 1;
       }
 
       return h(
         'div',
         {
-          class: prefixCls,
+          class: bem.b(),
         },
         [genBtn(-everyClick), genHeader(), genBtn(everyClick)]
       );

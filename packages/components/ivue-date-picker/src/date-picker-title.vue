@@ -1,5 +1,6 @@
 <script lang="ts">
 import { defineComponent, h, Transition, watch, ref } from 'vue';
+import { useNamespace } from '@ivue-material-plus/hooks';
 
 // 渲染点击按钮
 import { genPickerButton } from './picker-button';
@@ -16,6 +17,9 @@ export default defineComponent({
   emits: ['update:selectingYear'],
   props: datePickerTitleProps,
   setup(props, { emit }) {
+    // bem
+    const bem = useNamespace(prefixCls);
+
     // 是否使用反向动画
     const isReversing = ref<boolean>(false);
 
@@ -33,7 +37,7 @@ export default defineComponent({
           'selectingYear',
           [props.year, props.yearIcon ? genYearIcon() : null],
           props.readonly,
-          `${prefixCls}--year`
+          bem.e('year')
         )
       );
     };
@@ -47,7 +51,7 @@ export default defineComponent({
         'selectingYear',
         genTitleText(),
         false,
-        `${prefixCls}--date`
+        bem.e('date')
       );
     };
 
@@ -57,8 +61,8 @@ export default defineComponent({
         Transition,
         {
           name: isReversing.value
-            ? 'picker-reverse-transition'
-            : 'picker-transition',
+            ? 'ivue-date-picker-title-reverse-transition'
+            : 'ivue-date-picker-title-transition',
         },
         {
           default: () =>
@@ -94,9 +98,7 @@ export default defineComponent({
       h(
         'div',
         {
-          class: {
-            [`${prefixCls}`]: true,
-          },
+          class: bem.b(),
         },
         [genYearBtn(), genTitleDate()]
       );

@@ -1,0 +1,39 @@
+:root {
+  --ivue-date-picker-years-padding: 0 12px 12px 12px;
+  --ivue-date-picker-years-height: 250px;
+
+  --ivue-date-picker-years-td-height: 56px;
+  --ivue-date-picker-td-button-max-width: 160px;
+  --ivue-date-picker-td-button-min-width: 40px;
+
+}
+
+.ivue-date-picker-years {
+  position: relative;
+
+  padding: var(--ivue-date-picker-years-padding);
+  height: var(--ivue-date-picker-years-height);
+
+  table {
+    table-layout: fixed;
+    width: 100%;
+    transition: @transition-default;
+  }
+
+  td {
+    position: relative;
+    vertical-align: middle;
+    text-align: center;
+
+    height: var(--ivue-date-picker-years-td-height);
+
+    .ivue-button {
+      margin: 0 auto;
+      width: 100%;
+
+      max-width: var(--ivue-date-picker-td-button-max-width);
+      min-width: var(--ivue-date-picker-td-button-min-width);
+      color: var(--ivue-date-picker-date-td-button-color);
+    }
+  }
+}

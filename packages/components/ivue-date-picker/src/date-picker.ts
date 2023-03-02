@@ -144,7 +144,7 @@ export const datePickerProps = buildProps({
     type: Boolean,
   },
   /**
-   * 用于监听月份或者年份的变化
+   * 监听pickerDate变化以便在更改时执行某些操作，当选择月/年时触发
    *
    * @type {String}
    */
