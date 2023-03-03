@@ -7,7 +7,7 @@
   </div>
 </template>
 
-<script lang="ts">
+<script lang="ts" setup>
 import { defineComponent, computed } from 'vue';
 
 // hooks
@@ -20,30 +20,20 @@ import { IvueIcon } from '@ivue-material-plus/components';
 
 const prefixCls = 'ivue-skeleton-item';
 
-export default defineComponent({
+// defineComponent
+defineComponent({
   name: prefixCls,
-  props: skeletonItemProps,
-  setup(props) {
-    // bem
-    const bem = useNamespace(prefixCls);
+});
+// defineProps
+const props = defineProps(skeletonItemProps);
 
-    // computed
+// bem
+const bem = useNamespace(prefixCls);
 
-    // 外层样式
-    const wrapperClasses = computed(() => {
-      return [bem.b(), bem.is(props.type)];
-    });
+// computed
 
-    return {
-      // bem
-      bem,
-
-      // computed
-      wrapperClasses,
-    };
-  },
-  components: {
-    IvueIcon,
-  },
+// 外层样式
+const wrapperClasses = computed(() => {
+  return [bem.b(), bem.is(props.type)];
 });
 </script>

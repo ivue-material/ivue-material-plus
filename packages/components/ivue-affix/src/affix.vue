@@ -1,7 +1,7 @@
 <template>
   <div :class="bem.b()" ref="wrapper">
     <!-- slot -->
-    <div ref="content" :class="classes" :style="affixStyle">
+    <div ref="content" :class="contentClasses" :style="affixStyle">
       <slot></slot>
     </div>
     <!-- 占位元素 -->
@@ -9,8 +9,8 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent, computed, unref } from 'vue';
+<script lang="ts" setup>
+import { computed, unref, defineComponent } from 'vue';
 // hooks
 import { useNamespace } from '@ivue-material-plus/hooks';
 // affix
@@ -20,56 +20,42 @@ import { useAffix } from './use-affix';
 
 const prefixCls = 'ivue-affix';
 
-export default defineComponent({
+// defineComponent
+defineComponent({
   name: prefixCls,
-  // 声明事件
-  emits: affixEmits,
-  // props
-  props: affixProps,
-  // 组合式 API
-  setup(props, { emit }) {
-    // bem
-    const bem = useNamespace(prefixCls);
+});
+// defineEmits
+const emit = defineEmits(affixEmits);
+// defineProps
+const props = defineProps(affixProps);
+// bem
+const bem = useNamespace(prefixCls);
 
-    const {
-      // ref
-      wrapper,
-      content,
+// useAffix
+const {
+  // ref
+  wrapper,
+  content,
 
-      // data
-      affixStyle,
-      placeholderStyle,
+  // data
+  affixStyle,
+  placeholderStyle,
 
-      // methods
-      lazyUpdatePosition,
-    } = useAffix(props, emit);
+  // methods
+  lazyUpdatePosition,
+} = useAffix(props, emit);
 
-    // 是否添加class设置 fixed
-    const classes = computed(() => {
-      return [
-        {
-          [bem.m('fixed')]: !!unref(affixStyle),
-        },
-      ];
-    });
+// 是否添加class设置 fixed
+const contentClasses = computed(() => {
+  return [
+    {
+      [bem.m('fixed')]: !!unref(affixStyle),
+    },
+  ];
+});
 
-    return {
-      bem,
-
-      // ref
-      wrapper,
-      content,
-
-      // data
-      affixStyle,
-      placeholderStyle,
-
-      // computed
-      classes,
-
-      // methods
-      lazyUpdatePosition,
-    };
-  },
+// defineExpose
+defineExpose({
+  lazyUpdatePosition,
 });
 </script>

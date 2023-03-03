@@ -19,7 +19,7 @@
   </transition>
 </template>
 
-<script lang="ts">
+<script lang="ts" setup>
 import { computed, defineComponent } from 'vue';
 import { useNamespace } from '@ivue-material-plus/hooks';
 
@@ -36,51 +36,32 @@ import type { CSSProperties } from 'vue';
 
 const prefixCls = 'ivue-back-top';
 
-export default defineComponent({
+// defineComponent
+defineComponent({
   name: prefixCls,
-  // emits
-  emits: backTopEmits,
-  // props
-  props: backTopProps,
-  setup(props, { emit }) {
-    // bem
-    const bem = useNamespace(prefixCls);
+});
+// defineEmits
+const emit = defineEmits(backTopEmits);
+// defineProps
+const props = defineProps(backTopProps);
+// bem
+const bem = useNamespace(prefixCls);
 
-    const {
-      // data
-      backTop,
+const {
+  // data
+  backTop,
 
-      // methods
-      handleScrollTop,
-    } = useBackTop(props, emit);
+  // methods
+  handleScrollTop,
+} = useBackTop(props, emit);
 
-    // computed
+// computed
 
-    // 外层样式
-    const wrapperStyles = computed<CSSProperties>(() => {
-      return {
-        bottom: `${props.bottom}px`,
-        right: `${props.right}px`,
-      };
-    });
-
-    return {
-      bem,
-
-      prefixCls,
-
-      // data
-      backTop,
-
-      // computed
-      wrapperStyles,
-
-      // methods
-      handleScrollTop,
-    };
-  },
-  components: {
-    IvueIcon,
-  },
+// 外层样式
+const wrapperStyles = computed<CSSProperties>(() => {
+  return {
+    bottom: `${props.bottom}px`,
+    right: `${props.right}px`,
+  };
 });
 </script>

@@ -26,8 +26,8 @@
   </component>
 </template>
 
-<script lang="ts">
-import { computed, defineComponent } from 'vue';
+<script lang="ts" setup>
+import { computed, defineComponent, useSlots } from 'vue';
 import { letter } from '@ivue-material-plus/utils';
 import { useNamespace } from '@ivue-material-plus/hooks';
 
@@ -38,113 +38,97 @@ import { useCard } from './user-card';
 
 const prefixCls = 'ivue-card';
 
-export default defineComponent({
+// defineComponent
+defineComponent({
   name: prefixCls,
-  props: cardProps,
-  setup(props, { slots }) {
-    // bem
-    const bem = useNamespace(prefixCls);
+});
+// defineProps
+const props = defineProps(cardProps);
+// useSlots
+const slots = useSlots();
 
-    const {
-      // data
-      showTitle,
-      showExtra,
+// bem
+const bem = useNamespace(prefixCls);
 
-      // computed
-      tagName,
-      tagProps,
+// useCard
+const {
+  // data
+  showTitle,
+  showExtra,
 
-      // methods
-      handleLink,
-    } = useCard(props, slots);
-    // computed
+  // computed
+  tagName,
+  tagProps,
 
-    // 外部样式
-    const wrapperClasses = computed(() => {
-      return [
-        bem.b(),
-        {
-          [bem.is('border')]: props.border && !props.shadow,
-          [bem.is('dis-hover')]: props.disHover,
-          [bem.is('shadow')]: props.shadow,
-        },
-      ];
-    });
+  // methods
+  handleLink,
+} = useCard(props, slots);
 
-    // 外部样式
-    const wrapperStyles = computed(() => {
-      // 圆角
-      if (props.radius) {
-        // 是否有单位
-        const isUnit = letter.test(`${props.radius}`);
+// computed
 
-        return {
-          borderRadius: !isUnit ? `${props.radius}px` : props.radius,
-        };
-      }
+// 外部样式
+const wrapperClasses = computed(() => {
+  return [
+    bem.b(),
+    {
+      [bem.is('border')]: props.border && !props.shadow,
+      [bem.is('dis-hover')]: props.disHover,
+      [bem.is('shadow')]: props.shadow,
+    },
+  ];
+});
 
-      return {};
-    });
-
-    // 标题样式
-    const titleStyles = computed(() => {
-      const padding = props.paddingStylesLinkage
-        ? props.padding
-        : props.titlePadding;
-
-      // padding
-      if (padding) {
-        // 是否有单位
-        const isUnit = letter.test(`${padding}`);
-
-        return {
-          padding: !isUnit ? `${padding}px` : padding,
-        };
-      }
-
-      return {};
-    });
-
-    // 内容样式
-    const bodyStyles = computed(() => {
-      // 卡片内部间距
-      if (props.padding) {
-        // 是否有单位
-        const isUnit = letter.test(`${props.padding}`);
-
-        return {
-          padding: !isUnit ? `${props.padding}px` : props.padding,
-        };
-      }
-
-      return {};
-    });
-
-    // 内容样式
-    const extraClass = computed(() => {
-      return [bem.be('header', 'extra'), bem.is(props.extra)];
-    });
+// 外部样式
+const wrapperStyles = computed(() => {
+  // 圆角
+  if (props.radius) {
+    // 是否有单位
+    const isUnit = letter.test(`${props.radius}`);
 
     return {
-      bem,
-
-      // data
-      showTitle,
-      showExtra,
-
-      // computed
-      wrapperClasses,
-      wrapperStyles,
-      titleStyles,
-      bodyStyles,
-      extraClass,
-
-      tagProps,
-      tagName,
-
-      // methods
-      handleLink,
+      borderRadius: !isUnit ? `${props.radius}px` : props.radius,
     };
-  },
+  }
+
+  return {};
+});
+
+// 标题样式
+const titleStyles = computed(() => {
+  const padding = props.paddingStylesLinkage
+    ? props.padding
+    : props.titlePadding;
+
+  // padding
+  if (padding) {
+    // 是否有单位
+    const isUnit = letter.test(`${padding}`);
+
+    return {
+      padding: !isUnit ? `${padding}px` : padding,
+    };
+  }
+
+  return {};
+});
+
+// 内容样式
+const bodyStyles = computed(() => {
+  // 卡片内部间距
+  if (props.padding) {
+    // 是否有单位
+    const isUnit = letter.test(`${props.padding}`);
+
+    return {
+      padding: !isUnit ? `${props.padding}px` : props.padding,
+    };
+  }
+
+  return {};
+});
+
+// 内容样式
+const extraClass = computed(() => {
+  return [bem.be('header', 'extra'), bem.is(props.extra)];
 });
 </script>

@@ -25,7 +25,7 @@
   </template>
 </template>
 
-<script lang="ts">
+<script lang="ts" setup>
 import { defineComponent, toRef, computed } from 'vue';
 import { isNumber } from '@vueuse/core';
 import { isArray, isString } from '@vue/shared';
@@ -40,101 +40,82 @@ import { IvueSkeletonItem } from '@ivue-material-plus/components/ivue-skeleton-i
 
 const prefixCls = 'ivue-skeleton';
 
-export default defineComponent({
+// defineComponent
+defineComponent({
   name: prefixCls,
-  props: skeletonProps,
-  setup(props) {
-    // bem
-    const bem = useNamespace(prefixCls);
-
-    // 节流渲染
-    const throttledLoading = useThrottleRender(
-      toRef(props, 'loading'),
-      props.throttle
-    );
-
-    // computed
-
-    // 外层样式
-    const wrapperClasses = computed(() => {
-      return [
-        bem.b(),
-        {
-          // 是否使用动画
-          [bem.is('animated')]: props.animated,
-        },
-      ];
-    });
-
-    // methods
-
-    // 段落class
-    const paragraphClasses = (index: number) => {
-      const _paragraph = isNumber(props.paragraph)
-        ? props.paragraph
-        : props.paragraph.rows;
-
-      const obj = {
-        [bem.e('paragraph')]: true,
-        // 第一个
-        [bem.is('first')]: index === 0,
-        // 最后一个
-        [bem.is('last')]: index === _paragraph - 1 && _paragraph > 1,
-      };
-
-      return obj;
-    };
-
-    // 段落style
-    const paragraphStyles = (index: number) => {
-      const obj: {
-        width?: number | string;
-      } = {};
-
-      // 不是NUMBER
-      if (
-        !isNumber(props.paragraph) &&
-        props.paragraph.width &&
-        isArray(props.paragraph.width)
-      ) {
-        let width = props.paragraph.width[index];
-
-        if (props.paragraph.width.length < props.paragraph.rows) {
-          width = props.paragraph.width[0];
-        }
-
-        // number
-        if (isNumber(width)) {
-          obj.width = `${width}px`;
-        }
-        // string
-        else if (isString(width)) {
-          obj.width = width;
-        }
-      }
-
-      return obj;
-    };
-
-    return {
-      // bem
-      bem,
-      prefixCls,
-
-      // data
-      throttledLoading,
-
-      // computed
-      wrapperClasses,
-
-      // methods
-      isNumber,
-      paragraphClasses,
-      paragraphStyles,
-    };
-  },
-  components: {
-    IvueSkeletonItem,
-  },
 });
+// defineProps
+const props = defineProps(skeletonProps);
+
+// bem
+const bem = useNamespace(prefixCls);
+
+// 节流渲染
+const throttledLoading = useThrottleRender(
+  toRef(props, 'loading'),
+  props.throttle
+);
+
+// computed
+
+// 外层样式
+const wrapperClasses = computed(() => {
+  return [
+    bem.b(),
+    {
+      // 是否使用动画
+      [bem.is('animated')]: props.animated,
+    },
+  ];
+});
+
+// methods
+
+// 段落class
+const paragraphClasses = (index: number) => {
+  const _paragraph = isNumber(props.paragraph)
+    ? props.paragraph
+    : props.paragraph.rows;
+
+  const obj = {
+    [bem.e('paragraph')]: true,
+    // 第一个
+    [bem.is('first')]: index === 0,
+    // 最后一个
+    [bem.is('last')]: index === _paragraph - 1 && _paragraph > 1,
+  };
+
+  return obj;
+};
+
+// 段落style
+const paragraphStyles = (index: number) => {
+  const obj: {
+    width?: number | string;
+  } = {};
+
+  // 不是NUMBER
+  if (
+    !isNumber(props.paragraph) &&
+    props.paragraph.width &&
+    isArray(props.paragraph.width)
+  ) {
+    let width = props.paragraph.width[index];
+
+    if (props.paragraph.width.length < props.paragraph.rows) {
+      width = props.paragraph.width[0];
+    }
+
+    // number
+    if (isNumber(width)) {
+      obj.width = `${width}px`;
+    }
+    // string
+    else if (isString(width)) {
+      obj.width = width;
+    }
+  }
+
+  return obj;
+};
 </script>

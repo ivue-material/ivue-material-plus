@@ -4,8 +4,8 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent, computed, provide } from 'vue';
+<script lang="ts" setup>
+import { defineComponent, computed, provide, useSlots } from 'vue';
 import { useNamespace } from '@ivue-material-plus/hooks';
 
 // tokens
@@ -16,45 +16,41 @@ import { breadcrumbProps } from './breadcrumb';
 
 const prefixCls = 'ivue-breadcrumb';
 
-export default defineComponent({
+// defineComponent
+defineComponent({
   name: prefixCls,
-  props: breadcrumbProps,
-  setup(props, { slots }) {
-    // bem
-    const bem = useNamespace(prefixCls);
+});
+// useSlots
+const slots = useSlots();
+// defineProps
+const props = defineProps(breadcrumbProps);
 
-    // computed
+// bem
+const bem = useNamespace(prefixCls);
 
-    // 居中样式
-    const styles = computed(() => {
-      const justify = props.justifyCenter
-        ? 'center'
-        : props.justifyEnd
-        ? 'flex-end'
-        : 'flex-start';
+// computed
 
-      return {
-        'justify-content': justify,
-      };
-    });
+// 居中样式
+const styles = computed(() => {
+  const justify = props.justifyCenter
+    ? 'center'
+    : props.justifyEnd
+    ? 'flex-end'
+    : 'flex-start';
 
-    // 设置分隔符
-    const computedDivider = computed(() => {
-      return slots.divider ? slots.divider : props.divider;
-    });
+  return {
+    'justify-content': justify,
+  };
+});
 
-    // provide
-    provide(BreadcrumbContextKey, {
-      props,
-      divider: computedDivider.value,
-    });
+// 设置分隔符
+const computedDivider = computed(() => {
+  return slots.divider ? slots.divider : props.divider;
+});
 
-    return {
-      bem,
-
-      // computed
-      styles,
-    };
-  },
+// provide
+provide(BreadcrumbContextKey, {
+  props,
+  divider: computedDivider.value,
 });
 </script>

@@ -15,7 +15,7 @@
   </div>
 </template>
 
-<script lang="ts">
+<script lang="ts" setup>
 import { defineComponent, computed, unref } from 'vue';
 import { useNamespace } from '@ivue-material-plus/hooks';
 
@@ -26,96 +26,78 @@ import { useCarouselItem } from './use-carousel-item';
 
 const prefixCls = 'ivue-carousel-item';
 
-export default defineComponent({
+// defineComponent
+defineComponent({
   name: prefixCls,
-  props: carouselItemProps,
-  setup(props) {
-    // bem
-    const bem = useNamespace(prefixCls);
+});
+// defineProps
+const props = defineProps(carouselItemProps);
 
-    const {
-      // dom
-      carouselItem,
+// bem
+const bem = useNamespace(prefixCls);
 
-      // data
-      active,
-      animating,
-      inStage,
-      hover,
-      translate,
-      scale,
-      zIndex,
-      ready,
+const {
+  // dom
+  carouselItem,
 
-      // inject
-      isCardType,
-      isVertical,
+  // data
+  active,
+  animating,
+  inStage,
+  hover,
+  translate,
+  scale,
+  zIndex,
+  ready,
 
-      // methods
-      handleItemClick,
-    } = useCarouselItem(props);
+  // inject
+  isCardType,
+  isVertical,
 
-    // computed
+  // methods
+  handleItemClick,
+} = useCarouselItem(props);
 
-    // 外层样式
-    const wrapperClasses = computed(() => {
-      return [
-        bem.b(),
-        {
-          // 切换动画
-          [bem.is('animating')]: unref(animating),
-          // 激活
-          [bem.is('active')]: unref(active),
-          // hover
-          [bem.is('hover')]: unref(hover),
-          // 卡片类型
-          [bem.is('card')]: unref(isCardType),
-          // 卡片竖向
-          [bem.is('card-vertical')]: unref(isCardType) && unref(isVertical),
-          // 是否可以点击下一个
-          [bem.is('in-stage')]: unref(inStage),
-        },
-      ];
-    });
+// computed
 
-    // 外层样式
-    const wrapperStyles = computed(() => {
-      const translateType = `translate${unref(isVertical) ? 'Y' : 'X'}`;
-      const _translate = `${translateType}(${unref(translate)}px)`;
-      const _scale = `scale(${unref(scale)})`;
-      const transform = [_translate, _scale].join(' ');
+// 外层样式
+const wrapperClasses = computed(() => {
+  return [
+    bem.b(),
+    {
+      // 切换动画
+      [bem.is('animating')]: unref(animating),
+      // 激活
+      [bem.is('active')]: unref(active),
+      // hover
+      [bem.is('hover')]: unref(hover),
+      // 卡片类型
+      [bem.is('card')]: unref(isCardType),
+      // 卡片竖向
+      [bem.is('card-vertical')]: unref(isCardType) && unref(isVertical),
+      // 是否可以点击下一个
+      [bem.is('in-stage')]: unref(inStage),
+    },
+  ];
+});
 
-      // 是卡片 有zIndex
-      if (isCardType.value && unref(zIndex)) {
-        return {
-          transform,
-          zIndex: unref(zIndex),
-        };
-      }
+// 外层样式
+const wrapperStyles = computed(() => {
+  const translateType = `translate${unref(isVertical) ? 'Y' : 'X'}`;
+  const _translate = `${translateType}(${unref(translate)}px)`;
+  const _scale = `scale(${unref(scale)})`;
+  const transform = [_translate, _scale].join(' ');
 
-      return {
-        transform,
-      };
-    });
-
+  // 是卡片 有zIndex
+  if (isCardType.value && unref(zIndex)) {
     return {
-      bem,
-
-      // dom
-      carouselItem,
-
-      // data
-      ready,
-      active,
-
-      // computed
-      wrapperClasses,
-      wrapperStyles,
-      isCardType,
-
-      // methods
-      handleItemClick,
+      transform,
+      zIndex: unref(zIndex),
     };
-  },
+  }
+
+  return {
+    transform,
+  };
 });
 </script>

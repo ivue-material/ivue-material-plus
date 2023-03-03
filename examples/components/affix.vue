@@ -6,7 +6,7 @@
       </ivue-affix>
     </div>
   </div> -->
-  <ivue-affix :offset-bottom="20" @on-change="handleChange">
+  <ivue-affix :offset-top="20" @on-change="handleChange" ref="affixRef">
     <div class="demo-affix">固定在最底部</div>
   </ivue-affix>
   <div style="height: 100vh"></div>
@@ -17,6 +17,11 @@ import { onMounted, ref, h } from 'vue';
 
 const dom = ref();
 const affixRef = ref();
+
+setTimeout(() => {
+console.log(affixRef.value.lazyUpdatePosition);
+
+})
 
 const handleChange = (active) => {
   console.log(active);

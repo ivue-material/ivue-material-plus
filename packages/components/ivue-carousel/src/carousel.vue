@@ -78,7 +78,7 @@
   </div>
 </template>
 
-<script lang="ts">
+<script lang="ts" setup>
 import { computed, defineComponent, unref } from 'vue';
 import { useNamespace } from '@ivue-material-plus/hooks';
 // carousel
@@ -90,127 +90,107 @@ import { IvueButton, IvueIcon } from '@ivue-material-plus/components';
 
 const prefixCls = 'ivue-carousel';
 
-export default defineComponent({
+// defineComponent
+defineComponent({
   name: prefixCls,
-  emits: carouselEmits,
-  props: carouselProps,
-  setup(props, { emit }) {
-    // bem
-    const bem = useNamespace(prefixCls);
+});
+// defineEmits
+const emit = defineEmits(carouselEmits);
+// defineProps
+const props = defineProps(carouselProps);
 
-    const {
-      // dom
-      wrapper,
+// bem
+const bem = useNamespace(prefixCls);
 
-      // data
-      init,
-      hover,
-      items,
-      activeIndex,
-      contentHeight,
+// useCarousel
+const {
+  // dom
+  wrapper,
 
-      // computed
-      isCardType,
-      hasLabel,
-      isVertical,
-      arrowDisplay,
+  // data
+  init,
+  hover,
+  items,
+  activeIndex,
+  contentHeight,
 
-      // methods
-      setActiveItem,
+  // computed
+  isCardType,
+  hasLabel,
+  isVertical,
+  arrowDisplay,
 
-      handleMouseEnter,
-      handleMouseLeave,
-      handleArrowEnter,
-      handleArrowLeave,
-      handleArrowClick,
-      handleThrottleDotHover,
-      handleDotClick,
-      prev,
-      next,
-    } = useCarousel(props, emit);
+  // methods
+  setActiveItem,
 
-    // computed
+  handleMouseEnter,
+  handleMouseLeave,
+  handleArrowEnter,
+  handleArrowLeave,
+  handleArrowClick,
+  handleThrottleDotHover,
+  handleDotClick,
+  prev,
+  next,
+} = useCarousel(props, emit);
 
-    // 外层样式
-    const wrapperClasses = computed(() => {
-      return [
-        bem.b(),
-        {
-          // 展示的方向
-          [bem.b(props.direction)]: true,
-          // 卡片类型
-          [bem.b('card')]: isCardType.value,
-          // 没有初始化完成
-          [bem.is('no-init')]: !unref(init),
-        },
-      ];
-    });
+// computed
 
-    // 内容样式
-    const contentStyles = computed(() => {
-      // 自定义高度
-      if (props.height !== 'auto') {
-        return {
-          height: props.height,
-        };
-      }
+// 外层样式
+const wrapperClasses = computed(() => {
+  return [
+    bem.b(),
+    {
+      // 展示的方向
+      [bem.b(props.direction)]: true,
+      // 卡片类型
+      [bem.b('card')]: isCardType.value,
+      // 没有初始化完成
+      [bem.is('no-init')]: !unref(init),
+    },
+  ];
+});
 
-      // 高度auto
-      return {
-        height: `${unref(contentHeight)}px`,
-        overflow: 'hidden',
-      };
-    });
-
-    // dots 样式
-    const dotsClasses = computed(() => {
-      return [
-        bem.b('dots'),
-        // 指示器的位置
-        bem.is(props.dots),
-        {
-          // 指示器文字
-          [bem.is('labels')]: unref(hasLabel),
-          // 指示器竖向
-          [bem.is('vertical')]: unref(isVertical),
-          // 指示器竖向时方向位置
-          [bem.is(props.verticalDotsDirection)]: isVertical.value,
-        },
-      ];
-    });
-
+// 内容样式
+const contentStyles = computed(() => {
+  // 自定义高度
+  if (props.height !== 'auto') {
     return {
-      bem,
-      // dom
-      wrapper,
-
-      // data
-      hover,
-      items,
-      activeIndex,
-
-      // computed
-      wrapperClasses,
-      dotsClasses,
-      contentStyles,
-      arrowDisplay,
-
-      // methods
-      handleMouseEnter,
-      handleMouseLeave,
-      handleArrowEnter,
-      handleArrowLeave,
-      handleArrowClick,
-      handleThrottleDotHover,
-      handleDotClick,
-      setActiveItem,
-      prev,
-      next,
+      height: props.height,
     };
-  },
-  components: {
-    IvueButton,
-    IvueIcon,
-  },
+  }
+
+  // 高度auto
+  return {
+    height: `${unref(contentHeight)}px`,
+    overflow: 'hidden',
+  };
+});
+
+// dots 样式
+const dotsClasses = computed(() => {
+  return [
+    bem.b('dots'),
+    // 指示器的位置
+    bem.is(props.dots),
+    {
+      // 指示器文字
+      [bem.is('labels')]: unref(hasLabel),
+      // 指示器竖向
+      [bem.is('vertical')]: unref(isVertical),
+      // 指示器竖向时方向位置
+      [bem.is(props.verticalDotsDirection)]: isVertical.value,
+    },
+  ];
+});
+
+// defineExpose
+defineExpose({
+  // 手动切换幻灯片
+  setActiveItem,
+  // 切换至上一张幻灯片
+  prev,
+  // 切换至下一张幻灯片
+  next,
 });
 </script>

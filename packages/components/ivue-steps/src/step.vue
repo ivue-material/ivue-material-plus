@@ -61,7 +61,7 @@
   </div>
 </template>
 
-<script lang="ts">
+<script lang="ts" setup>
 import {
   defineComponent,
   computed,
@@ -69,8 +69,8 @@ import {
   inject,
   getCurrentInstance,
   onBeforeUnmount,
-  ComponentInternalInstance,
   onBeforeMount,
+  useSlots,
 } from 'vue';
 
 // tokens
@@ -85,176 +85,161 @@ import { stepProps } from './step';
 import { IvueIcon } from '@ivue-material-plus/components';
 
 // type
+import type { ComponentInternalInstance } from 'vue';
 import type { StepData } from './step';
 
 const prefixCls = 'ivue-step-item';
 
-export default defineComponent({
+// defineComponent
+defineComponent({
   name: prefixCls,
-  emits: ['on-step'],
-  props: stepProps,
-  setup(props, { slots, emit }) {
-    // bem
-    const bem = useNamespace(prefixCls);
+});
+// defineEmits
+const emit = defineEmits(['on-step']);
+// defineProps
+const props = defineProps(stepProps);
+// useSlots
+const slots = useSlots();
+// bem
+const bem = useNamespace(prefixCls);
 
-    // inject
-    const steps = inject(StepsContextKey) as StepsContext;
+// inject
+const steps = inject(StepsContextKey) as StepsContext;
 
-    // options
-    const options = steps.data.options;
+// options
+const options = steps.data.options;
 
-    // vm
-    const { uid } = getCurrentInstance() as ComponentInternalInstance;
+// vm
+const { uid } = getCurrentInstance() as ComponentInternalInstance;
 
-    // data
-    const data = reactive<StepData>({
-      /**
-       * 步骤数
-       *
-       * @type {Number}
-       */
-      stepNumber: 0,
-      /**
-       * 当前状态
-       *
-       * @type {String}
-       */
-      currentStatus: props.status,
-      /**
-       * 下一个错误状态
-       *
-       * @type {Boolean}
-       */
-      nextError: false,
-      /**
-       * 初始化下标
-       *
-       * @type {Number}
-       */
-      index: 0,
-      /**
-       * 文字方向
-       *
-       * @type {String}
-       */
-      textDirection: steps.props.textDirection,
-      /**
-       * 步骤条方向
-       *
-       * @type {String}
-       * @default horizontal
-       */
-      direction: steps.props.direction,
-    });
+// data
+const data = reactive<StepData>({
+  /**
+   * 步骤数
+   *
+   * @type {Number}
+   */
+  stepNumber: 0,
+  /**
+   * 当前状态
+   *
+   * @type {String}
+   */
+  currentStatus: props.status,
+  /**
+   * 下一个错误状态
+   *
+   * @type {Boolean}
+   */
+  nextError: false,
+  /**
+   * 初始化下标
+   *
+   * @type {Number}
+   */
+  index: 0,
+  /**
+   * 文字方向
+   *
+   * @type {String}
+   */
+  textDirection: steps.props.textDirection,
+  /**
+   * 步骤条方向
+   *
+   * @type {String}
+   * @default horizontal
+   */
+  direction: steps.props.direction,
+});
 
-    // computed
+// computed
 
-    // 外层class
-    const wrapClasses = computed(() => {
-      return [
-        bem.b(),
-        bem.is(data.currentStatus),
-        {
-          // 有步骤图标
-          [bem.is('custom')]: props.icon || slots.icon,
-          [bem.is('next-error')]: data.nextError,
-          [bem.is(`text-${data.textDirection}`)]: !isVertical.value,
-          [bem.is(data.textDirection)]: !isVertical.value,
-          [bem.is('last')]:
-            isLast.value && !steps.props.space && !isCenter.value,
-        },
-      ];
-    });
+// 外层class
+const wrapClasses = computed(() => {
+  return [
+    bem.b(),
+    bem.is(data.currentStatus),
+    {
+      // 有步骤图标
+      [bem.is('custom')]: props.icon || slots.icon,
+      [bem.is('next-error')]: data.nextError,
+      [bem.is(`text-${data.textDirection}`)]: !isVertical.value,
+      [bem.is(data.textDirection)]: !isVertical.value,
+      [bem.is('last')]: isLast.value && !steps.props.space && !isCenter.value,
+    },
+  ];
+});
 
-    // 进行居中对齐
-    const isCenter = computed(() => {
-      return data.textDirection.includes('center');
-    });
+// 进行居中对齐
+const isCenter = computed(() => {
+  return data.textDirection.includes('center');
+});
 
-    // 是否竖向
-    const isVertical = computed(() => {
-      return steps.props.direction === 'vertical';
-    });
+// 是否竖向
+const isVertical = computed(() => {
+  return steps.props.direction === 'vertical';
+});
 
-    const isLast = computed(() => {
-      return options[stepsCount.value - 1]?.uid === uid;
-    });
+const isLast = computed(() => {
+  return options[stepsCount.value - 1]?.uid === uid;
+});
 
-    // 进度总长度
-    const stepsCount = computed(() => {
-      return options.length;
-    });
+// 进度总长度
+const stepsCount = computed(() => {
+  return options.length;
+});
 
-    // 外层样式
-    const wrapStyles = computed(() => {
-      const space = steps.props.space;
+// 外层样式
+const wrapStyles = computed(() => {
+  const space = steps.props.space;
 
-      const style: {
-        flexBasis: string;
-        maxWidth?: string;
-      } = {
-        flexBasis:
-          typeof space === 'number'
-            ? `${space}px`
-            : space
-            ? space
-            : `${100 / (options.length - (isCenter.value ? 0 : 1))}%`,
-      };
+  const style: {
+    flexBasis: string;
+    maxWidth?: string;
+  } = {
+    flexBasis:
+      typeof space === 'number'
+        ? `${space}px`
+        : space
+        ? space
+        : `${100 / (options.length - (isCenter.value ? 0 : 1))}%`,
+  };
 
-      // 竖向
-      if (isVertical.value) {
-        return style;
-      }
+  // 竖向
+  if (isVertical.value) {
+    return style;
+  }
 
-      // 是否是最后一个元素
-      if (isLast.value) {
-        style.maxWidth = `${100 / stepsCount.value}%`;
-      }
+  // 是否是最后一个元素
+  if (isLast.value) {
+    style.maxWidth = `${100 / stepsCount.value}%`;
+  }
 
-      return style;
-    });
+  return style;
+});
 
-    // methods
+// methods
 
-    // 点击
-    const handleClick = () => {
-      emit('on-step');
-    };
+// 点击
+const handleClick = () => {
+  emit('on-step');
+};
 
-    // onBeforeMount
-    onBeforeMount(() => {
-      // 步骤状态
-      options.push(
-        reactive({
-          uid: uid,
-          data: data,
-        })
-      );
-    });
+// onBeforeMount
+onBeforeMount(() => {
+  // 步骤状态
+  options.push(
+    reactive({
+      uid: uid,
+      data: data,
+    })
+  );
+});
 
-    // onBeforeUnmount
-    onBeforeUnmount(() => {
-      // 销毁选项
-      steps.onOptionDestroy(data.index);
-    });
-
-    return {
-      bem,
-      prefixCls,
-
-      // data
-      data,
-
-      // computed
-      wrapClasses,
-      wrapStyles,
-
-      // methods
-      handleClick,
-    };
-  },
-  components: {
-    IvueIcon,
-  },
+// onBeforeUnmount
+onBeforeUnmount(() => {
+  // 销毁选项
+  steps.onOptionDestroy(data.index);
 });
 </script>

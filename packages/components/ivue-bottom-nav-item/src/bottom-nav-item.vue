@@ -42,7 +42,7 @@ export default defineComponent({
     } = useBottomNavItem(props);
 
     return {
-      prefixCls,
+      // bem
       bem,
 
       // data
