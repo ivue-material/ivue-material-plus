@@ -28,8 +28,14 @@ import message from '../components/message.vue';
 import loadingbar from '../components/loading-bar.vue';
 import tabs from '../components/tabs.vue';
 import datepicker from '../components/date-picker.vue';
+import skeleton from '../components/skeleton.vue';
 
 const routes = [
+  {
+    path: '/skeleton',
+    name: 'skeleton',
+    component: skeleton,
+  },
   {
     path: '/date-picker',
     name: 'datepicker',

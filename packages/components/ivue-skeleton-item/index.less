@@ -1,0 +1,101 @@
+:root {
+  --ivue-skeleton-item-radius: var(--ivue-radius-4px);
+  --ivue-skeleton-item-height: 16px;
+
+  // circle
+  --ivue-skeleton-item-circle-size: 40px;
+
+  // square
+  --ivue-skeleton-item-square-size: 40px;
+
+  // image
+  --ivue-skeleton-item-image-size: 96px;
+
+  // h1
+  --ivue-skeleton-item-h1-size: 20px;
+
+  // h3
+  --ivue-skeleton-item-h3-size: 18px;
+
+  // caption
+  --ivue-skeleton-item-caption-size: 12px;
+
+  // button
+  --ivue-skeleton-item-button-width: 88px;
+  --ivue-skeleton-item-button-height: 36px;
+}
+
+.ivue-skeleton-item {
+  display: inline-block;
+  width: 100%;
+  font-size: 24px;
+
+  height: var(--ivue-skeleton-item-height);
+  border-radius: var(--ivue-skeleton-item-radius);
+  background: var(--ivue-skeleton-item-bg);
+
+  // p
+  &.is-p {
+    width: 100%;
+  }
+
+  &.is-p.is-first {
+    width: 38%;
+  }
+
+  &.is-p.is-last {
+    width: 62%;
+  }
+
+  // 圆形
+  &.is-circle {
+    border-radius: 50%;
+
+    width: var(--ivue-skeleton-item-circle-size);
+    height: var(--ivue-skeleton-item-circle-size);
+    line-height: var(--ivue-skeleton-item-circle-size);
+  }
+
+  // 正方形
+  &.is-square {
+    width: var(--ivue-skeleton-item-square-size);
+    height: var(--ivue-skeleton-item-square-size);
+    line-height: var(--ivue-skeleton-item-square-size);
+  }
+
+  // image
+  &.is-image {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: var(--ivue-skeleton-item-image-size);
+    height: var(--ivue-skeleton-item-image-size);
+
+    .ivue-icon {
+      font-size: inherit;
+      color: var(--ivue-skeleton-animated-item-image-color);
+    }
+  }
+
+  // h1
+  &.is-h1 {
+    height: var(--ivue-skeleton-item-h1-size);
+  }
+
+  // h3
+  &.is-h3 {
+    height: var(--ivue-skeleton-item-h3-size);
+  }
+
+  // caption
+  &.is-caption {
+    height: var(--ivue-skeleton-item-caption-size);
+  }
+
+  // button
+  &.is-button {
+    width: var(--ivue-skeleton-item-button-width);
+    height: var(--ivue-skeleton-item-button-height);
+  }
+}

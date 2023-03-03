@@ -37,6 +37,8 @@ import {
   IvueTabItem,
 } from '@ivue-material-plus/components/ivue-tabs';
 import { IvueDatePicker } from '@ivue-material-plus/components/ivue-date-picker';
+import { IvueSkeleton } from '@ivue-material-plus/components/ivue-skeleton';
+import { IvueSkeletonItem } from '@ivue-material-plus/components/ivue-skeleton-item';
 
 // type
 import type { Plugin } from 'vue';
@@ -75,5 +77,7 @@ export default [
   IvueTabs,
   IvueTab,
   IvueTabItem,
-  IvueDatePicker
+  IvueDatePicker,
+  IvueSkeleton,
+  IvueSkeletonItem
 ] as Plugin[];

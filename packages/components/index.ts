@@ -26,6 +26,8 @@ export * from './ivue-progress';
 export * from './ivue-circular';
 export * from './ivue-tabs';
 export * from './ivue-date-picker';
+export * from './ivue-skeleton';
+export * from './ivue-skeleton-item';
 
 // plugins
 export * from './ivue-ripple';
