@@ -29,8 +29,14 @@ import loadingbar from '../components/loading-bar.vue';
 import tabs from '../components/tabs.vue';
 import datepicker from '../components/date-picker.vue';
 import skeleton from '../components/skeleton.vue';
+import collapse from '../components/collapse.vue';
 
 const routes = [
+  {
+    path: '/collapse',
+    name: 'collapse',
+    component: collapse,
+  },
   {
     path: '/skeleton',
     name: 'skeleton',

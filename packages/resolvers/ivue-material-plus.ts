@@ -34,7 +34,7 @@ const noStylesComponents: string[] = [
   'IvueSvgLoader',
   'IvueStep',
   'IvueTabItem',
-  'IvueTab'
+  'IvueTab',
 ];
 
 function getSideEffects(dirName: string, options: resolverOptions) {

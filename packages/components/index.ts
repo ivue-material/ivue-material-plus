@@ -28,6 +28,8 @@ export * from './ivue-tabs';
 export * from './ivue-date-picker';
 export * from './ivue-skeleton';
 export * from './ivue-skeleton-item';
+export * from './ivue-collapse';
+export * from './ivue-collapse-panel';
 
 // plugins
 export * from './ivue-ripple';

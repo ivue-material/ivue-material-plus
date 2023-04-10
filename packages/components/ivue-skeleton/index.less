@@ -11,19 +11,19 @@
   &__paragraph {
     margin-bottom: var(--ivue-skeleton-paragraph-margin-bottom);
 
-
     &.is-last {
       margin-bottom: 0;
     }
   }
 
-
   // 是否使用动画
   &.is-animated &-item {
-    background: linear-gradient(90deg,
-        var(--ivue-skeleton-animated-item-color) 25%,
-        var(--ivue-skeleton-animated-item-to-color) 37%,
-        var(--ivue-skeleton-animated-item-color) 63%);
+    background: linear-gradient(
+      90deg,
+      var(--ivue-skeleton-animated-item-color) 25%,
+      var(--ivue-skeleton-animated-item-to-color) 37%,
+      var(--ivue-skeleton-animated-item-color) 63%
+    );
     background-size: 400% 100%;
     animation: ivue-skeleton-animated 1.4s ease infinite;
   }
@@ -37,5 +37,4 @@
       background-position: 0 50%;
     }
   }
-
 }

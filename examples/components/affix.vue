@@ -19,9 +19,8 @@ const dom = ref();
 const affixRef = ref();
 
 setTimeout(() => {
-console.log(affixRef.value.lazyUpdatePosition);
-
-})
+  console.log(affixRef.value.lazyUpdatePosition);
+});
 
 const handleChange = (active) => {
   console.log(active);

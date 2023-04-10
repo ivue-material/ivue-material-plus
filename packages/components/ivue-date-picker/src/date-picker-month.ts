@@ -70,7 +70,7 @@ export const datePickerMonthProps = buildProps({
    */
   setBackgroundColor: {
     type: Function,
-    default: () => {}
+    default: () => {},
   },
   /**
    * 设置文字颜色函数
@@ -79,7 +79,7 @@ export const datePickerMonthProps = buildProps({
    */
   setTextColor: {
     type: Function,
-    default: () => {}
+    default: () => {},
   },
   /**
    * 只读

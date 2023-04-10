@@ -79,5 +79,5 @@ export default [
   IvueTabItem,
   IvueDatePicker,
   IvueSkeleton,
-  IvueSkeletonItem
+  IvueSkeletonItem,
 ] as Plugin[];

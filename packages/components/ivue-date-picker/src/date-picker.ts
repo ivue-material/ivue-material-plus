@@ -5,7 +5,7 @@ import type { ExtractPropTypes } from 'vue';
 import type DatePicker from './date-picker.vue';
 
 type ModelValue = string | string[];
-type AllowedDates = (value: string) => boolean
+type AllowedDates = (value: string) => boolean;
 
 // props
 export const datePickerProps = buildProps({
@@ -16,7 +16,7 @@ export const datePickerProps = buildProps({
    */
   modelValue: {
     type: definePropType<ModelValue>([Array, String]),
-    default: ''
+    default: '',
   },
   /**
    * 日历方向

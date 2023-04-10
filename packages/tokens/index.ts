@@ -6,3 +6,4 @@ export * from './bottom-nav';
 export * from './breadcrumb';
 export * from './steps';
 export * from './tabs';
+export * from './collapse';

@@ -5,7 +5,7 @@
     <ivue-tabs v-model="tab" :height="100" :showArrows="false">
       <template #header>
         <ivue-tab v-for="n in 5" :key="`item${n}`">Item {{ n }}</ivue-tab>
-        <ivue-tab >Item 12122112</ivue-tab>
+        <ivue-tab>Item 12122112</ivue-tab>
       </template>
 
       <template #content>

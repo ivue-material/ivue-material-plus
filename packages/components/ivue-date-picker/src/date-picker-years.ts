@@ -86,7 +86,7 @@ export const datePickerYearsProps = buildProps({
    */
   backgroundColor: {
     type: Function,
-    default: () => {}
+    default: () => {},
   },
   /**
    * 设置文字颜色方法
@@ -95,7 +95,7 @@ export const datePickerYearsProps = buildProps({
    */
   textColor: {
     type: Function,
-    default: () => {}
+    default: () => {},
   },
   /**
    * 文字颜色
@@ -104,7 +104,7 @@ export const datePickerYearsProps = buildProps({
    */
   color: {
     type: definePropType<Color>([String, Array]),
-    default: ''
+    default: '',
   },
   /**
    * 只读
@@ -124,8 +124,9 @@ export const datePickerYearsProps = buildProps({
   },
 } as const);
 // props 类型
-export type DatePickerYearsProps = ExtractPropTypes<typeof datePickerYearsProps>;
-
+export type DatePickerYearsProps = ExtractPropTypes<
+  typeof datePickerYearsProps
+>;
 
 // 组件实例
 export type DatePickerYearsInstance = InstanceType<typeof DatePickerYears>;

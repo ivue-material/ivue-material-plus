@@ -10,7 +10,7 @@ export type Options = {
   uid: number | string;
 };
 
-export type Data = {
+type Data = {
   options: Options[];
   status: string;
   initData: boolean;
